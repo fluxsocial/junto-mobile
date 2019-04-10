@@ -25,7 +25,7 @@ class JuntoCollective extends StatelessWidget {
                     Container(
                         margin: EdgeInsets.only(left: 10.0),  
                         child: Text(
-                          'JUNTO',
+                          'JUNTO COLLECTIVE',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: Colors.black,
