@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 
-import './pages/collective.dart';
+import './screens/collective.dart';
 
 void main() => runApp(JuntoMobile());
 

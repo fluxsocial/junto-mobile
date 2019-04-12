@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import './../custom_icons.dart';
 import './../components/bottom_nav.dart';
 
-class JuntoCollective extends StatelessWidget {
+class JuntoSpheres extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -13,12 +13,12 @@ class JuntoCollective extends StatelessWidget {
           elevation: 0,
           title: Row(
             children: <Widget>[
-              Image.asset('assets/images/junto-mobile__logo--collective.png',
+              Image.asset('assets/images/junto-mobile__logo--spheres.png',
                   height: 24.0, width: 24.0),
               Container(
                 margin: EdgeInsets.only(left: 10.0),
                 child: Text(
-                  'JUNTO',
+                  'SPHERES',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       color: Colors.black,
@@ -33,7 +33,7 @@ class JuntoCollective extends StatelessWidget {
             IconButton(
               icon: Icon(CustomIcons.moon),
               color: Colors.black,
-              tooltip: 'open notifcations',
+              tooltip: 'Open shopping cart',
               onPressed: () {
                 // ...
               },
@@ -43,31 +43,21 @@ class JuntoCollective extends StatelessWidget {
         body: Column(
           children: <Widget>[
             Container(
-                decoration: BoxDecoration(
-                    border: Border(
-                        bottom:
-                            BorderSide(width: 1.5, color: Colors.lightBlue)))),
-            Container(
-                width: 1000,
-                color: Colors.white,
-                padding: EdgeInsets.symmetric(vertical: 24.0, horizontal: 24.0),
-                foregroundDecoration: BoxDecoration(
-                    border: Border(
-                        bottom: BorderSide(width: 1.5, color: Colors.grey))),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('COLLECTIVE',
-                          style: TextStyle(fontWeight: FontWeight.w600)),
-                      IconButton(icon: Icon(Icons.arrow_right))
-                    ])),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(width: 1.5, color: Colors.green),
+                ),
+              ),
+            ),
             Container(
                 padding: EdgeInsets.symmetric(vertical: 24.0, horizontal: 24.0),
                 width: 1000,
                 color: Colors.white,
                 foregroundDecoration: BoxDecoration(
-                    border: Border(
-                        bottom: BorderSide(width: 1.5, color: Colors.grey))),
+                  border: Border(
+                    bottom: BorderSide(width: 1.5, color: Colors.grey),
+                  ),
+                ),
                 child: Row(children: [
                   IconButton(
                     color: Colors.blue,
@@ -75,7 +65,7 @@ class JuntoCollective extends StatelessWidget {
                     icon: Icon(Icons.search),
                     padding: EdgeInsets.all(0.0),
                   ),
-                  Text('filter by channel',
+                  Text('search spheres',
                       style: TextStyle(
                           color: Colors.black, fontWeight: FontWeight.w500))
                 ]))
