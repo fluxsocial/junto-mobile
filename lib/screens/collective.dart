@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import './../custom_icons.dart';
 import './../components/bottom_nav.dart';
+import './../components/expression_preview/expression__preview.dart';
 
 class JuntoCollective extends StatelessWidget {
   @override
@@ -42,6 +43,8 @@ class JuntoCollective extends StatelessWidget {
         ),
         body: Column(
           children: <Widget>[
+
+            // navigation border
             Container(
               decoration: BoxDecoration(
                 border: Border(
@@ -49,6 +52,8 @@ class JuntoCollective extends StatelessWidget {
                 ),
               ),
             ),
+
+            // perspectives
             Container(
               width: 1000,
               color: Colors.white,
@@ -70,6 +75,8 @@ class JuntoCollective extends StatelessWidget {
                     )
                   ]),
             ),
+
+            // filter by channel
             Container(
               padding: EdgeInsets.symmetric(vertical: 24.0, horizontal: 24.0),
               width: 1000,
@@ -92,7 +99,10 @@ class JuntoCollective extends StatelessWidget {
                       color: Colors.black, fontWeight: FontWeight.w500),
                 )
               ]),
-            )
+            ),
+
+            ExpressionPreview(),
+
           ],
         ),
         bottomNavigationBar: BottomNav());
