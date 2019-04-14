@@ -15,37 +15,44 @@ class JuntoCollective extends StatelessWidget {
           backgroundColor: Colors.white,
           elevation: 0,
           title: Row(
-            children: <Widget>[
-              Image.asset('assets/images/junto-mobile__logo--collective.png',
-                  height: 24.0, width: 24.0),
-              Container(
-                margin: EdgeInsets.only(left: 10.0),
-                child: Text(
-                  'JUNTO',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontFamily: 'Raleway',
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1.3),
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Image.asset(
+                        'assets/images/junto-mobile__logo--collective.png',
+                        height: 24.0,
+                        width: 24.0),
+                    Container(
+                      margin: EdgeInsets.only(left: 10.0),
+                      child: Text(
+                        'JUNTO',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Raleway',
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 1.3),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(CustomIcons.moon),
-              color: Colors.black,
-              tooltip: 'open notifcations',
-              onPressed: () {
-                // ...
-              },
-            ),
-          ],
+
+                  IconButton(
+                    alignment: Alignment.centerRight,
+                    icon: Icon(CustomIcons.moon),
+                    color: Colors.black,
+                    tooltip: 'open notifcations',
+                    onPressed: () {
+                      // ...
+                    },
+                  ),
+                
+              ]),
         ),
+
         body: Column(
           children: <Widget>[
-
             // navigation border
             Container(
               decoration: BoxDecoration(
