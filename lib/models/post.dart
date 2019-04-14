@@ -1,4 +1,6 @@
 
+import './../components/expression_preview/expression_preview.dart';
+
 class Expression {
   final expressionType; 
   final expressionTitle;
