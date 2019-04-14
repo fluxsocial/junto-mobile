@@ -14,7 +14,10 @@ class JuntoCollective extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.white,
           elevation: 0,
-          title: Row(
+          title: 
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [Row(
             children: <Widget>[
               Image.asset('assets/images/junto-mobile__logo--collective.png',
                   height: 24.0, width: 24.0),
@@ -32,8 +35,9 @@ class JuntoCollective extends StatelessWidget {
               ),
             ],
           ),
-          actions: <Widget>[
-            IconButton(
+
+          IconButton(
+              alignment: Alignment.centerRight,
               icon: Icon(CustomIcons.moon),
               color: Colors.black,
               tooltip: 'open notifcations',
@@ -41,7 +45,7 @@ class JuntoCollective extends StatelessWidget {
                 // ...
               },
             ),
-          ],
+          ])
         ),
         body: Column(
           children: <Widget>[
