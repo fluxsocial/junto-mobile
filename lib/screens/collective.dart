@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 
 import './../custom_icons.dart';
 import './../components/bottom_nav.dart';
-import './../components/expression_preview/expression__preview.dart';
+import './../components/expression_preview/expression_preview.dart';
 
 class JuntoCollective extends StatelessWidget {
+  // List expressions_collective = [{}]
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -78,7 +80,7 @@ class JuntoCollective extends StatelessWidget {
 
             // filter by channel
             Container(
-              padding: EdgeInsets.symmetric(vertical: 24.0, horizontal: 24.0),
+              padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
               width: 1000,
               color: Colors.white,
               foregroundDecoration: BoxDecoration(
@@ -102,7 +104,6 @@ class JuntoCollective extends StatelessWidget {
             ),
 
             ExpressionPreview(),
-
           ],
         ),
         bottomNavigationBar: BottomNav());
