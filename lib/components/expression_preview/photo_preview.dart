@@ -7,9 +7,7 @@ class PhotoPreview extends StatelessWidget {
     // TODO: implement build
     return 
       Container(
-        // placeholder
-        width: 0,
-        height: 0,
+        child: Image.asset('assets/images/junto-mobile__expression--photo.png')
       );     
   }
 }
