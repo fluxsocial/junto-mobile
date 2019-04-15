@@ -23,7 +23,6 @@ class JuntoCollective extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.white,
           elevation: 0,
-<<<<<<< HEAD
           title: 
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -47,29 +46,6 @@ class JuntoCollective extends StatelessWidget {
           ),
 
           IconButton(
-=======
-          title:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Row(
-              children: <Widget>[
-                Image.asset('assets/images/junto-mobile__logo--collective.png',
-                    height: 24.0, width: 24.0),
-                Container(
-                  margin: EdgeInsets.only(left: 10.0),
-                  child: Text(
-                    'JUNTO',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontFamily: 'Raleway',
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 1.3),
-                  ),
-                ),
-              ],
-            ),
-            IconButton(
->>>>>>> feat/expression_preview
               alignment: Alignment.centerRight,
               icon: Icon(CustomIcons.moon),
               color: Colors.black,
@@ -78,11 +54,7 @@ class JuntoCollective extends StatelessWidget {
                 // ...
               },
             ),
-<<<<<<< HEAD
           ])
-=======
-          ]),
->>>>>>> feat/expression_preview
         ),
         body: Container(
           
