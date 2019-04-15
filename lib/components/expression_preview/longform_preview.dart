@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
 class LongformPreview extends StatelessWidget {
+  var title;
+  var body;
+
+  LongformPreview(this.title, this.body);
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -13,15 +18,15 @@ class LongformPreview extends StatelessWidget {
           Container(
             margin: EdgeInsets.only(bottom: 5.0),
             child: Text(
-              'The Medium is the Message',
+              title,
               textAlign: TextAlign.left,
               style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.w600),
             ),
           ),
           
           Text(
-            'Hallos, my name is Urk and I am a dogie',
-            textAlign: TextAlign.right,
+            body,
+            textAlign: TextAlign.left,
             style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400),
           ),
         ],

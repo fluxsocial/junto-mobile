@@ -26,13 +26,13 @@ class ExpressionPreview extends StatelessWidget {
   Widget _returnExpression() {
 
     if (expressionsCollective[index]['expressionType'] == 'longform') {
-      return LongformPreview();
+      return LongformPreview(expressionsCollective[index]['title'], expressionsCollective[index]['body']);
     } else if(expressionsCollective[index]['expressionType'] == 'shortform') {
       return ShortformPreview();
     } else if(expressionsCollective[index]['expressionType'] == 'bullet') {
       return BulletPreview();
     } else if(expressionsCollective[index]['expressionType'] == 'photo') {
-      return PhotoPreview();
+      return PhotoPreview(expressionsCollective[index]['image']);
     } else if(expressionsCollective[index]['expressionType'] == 'event') {
       return EventPreview();
     } else if(expressionsCollective[index]['expressionType'] == 'music') {

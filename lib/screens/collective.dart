@@ -5,12 +5,25 @@ import './../components/bottom_nav/bottom_nav.dart';
 import './../components/expression_preview/expression_preview.dart';
 import './../components/filter_channel_collective/filter_channel_collective.dart';
 
-class JuntoCollective extends StatelessWidget {
-  List expressions = [
-    {'expressionType': 'longform'}, 
-    {'expressionType': 'photo'},
-    {'expressionType': 'shortform'}, 
-    {'expressionType': 'longform'}, ];
+import './../models/expressions.dart';
+
+class JuntoCollective extends StatefulWidget {
+
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return _JuntoCollectiveState();
+  }
+}
+
+class _JuntoCollectiveState extends State {
+  List expressions; 
+
+  initState() {
+    super.initState();
+
+    expressions = Expressions.fetchExpressions(); 
+  }
 
   Widget _collectiveExpressions(BuildContext context, int index) {
     return ExpressionPreview(expressions, index);
