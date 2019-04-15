@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
 
 import './../custom_icons.dart';
-import './../components/bottom_nav.dart';
+import './../components/bottom_nav/bottom_nav.dart';
 import './../components/expression_preview/expression_preview.dart';
+import './../components/filter_channel_collective/filter_channel_collective.dart';
 
 class JuntoCollective extends StatelessWidget {
-  // List expressions_collective = [{}]
+  List expressions = [
+    {'expressionType': 'longform'}, 
+    {'expressionType': 'photo'},
+    {'expressionType': 'shortform'}, 
+    {'expressionType': 'longform'}, ];
+
+  Widget _collectiveExpressions(BuildContext context, int index) {
+    return ExpressionPreview(expressions, index);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,104 +23,86 @@ class JuntoCollective extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.white,
           elevation: 0,
-          title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          title:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Row(
               children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Image.asset(
-                        'assets/images/junto-mobile__logo--collective.png',
-                        height: 24.0,
-                        width: 24.0),
-                    Container(
-                      margin: EdgeInsets.only(left: 10.0),
-                      child: Text(
-                        'JUNTO',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: 'Raleway',
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 1.3),
-                      ),
-                    ),
-                  ],
-                ),
-
-                  IconButton(
-                    alignment: Alignment.centerRight,
-                    icon: Icon(CustomIcons.moon),
-                    color: Colors.black,
-                    tooltip: 'open notifcations',
-                    onPressed: () {
-                      // ...
-                    },
+                Image.asset('assets/images/junto-mobile__logo--collective.png',
+                    height: 24.0, width: 24.0),
+                Container(
+                  margin: EdgeInsets.only(left: 10.0),
+                  child: Text(
+                    'JUNTO',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'Raleway',
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 1.3),
                   ),
-                
-              ]),
+                ),
+              ],
+            ),
+            IconButton(
+              alignment: Alignment.centerRight,
+              icon: Icon(CustomIcons.moon),
+              color: Colors.black,
+              tooltip: 'open notifcations',
+              onPressed: () {
+                // ...
+              },
+            ),
+          ]),
         ),
-
-        body: Column(
-          children: <Widget>[
-            // navigation border
-            Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(width: 1.5, color: Colors.lightBlue),
+        body: Container(
+          
+          decoration: BoxDecoration(color: Colors.white),
+          child: Column(
+            children: <Widget>[
+              // navigation border
+              Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(width: 1.5, color: Colors.lightBlue),
+                  ),
                 ),
               ),
-            ),
 
-            // perspectives
-            Container(
-              width: 1000,
-              color: Colors.white,
-              padding: EdgeInsets.symmetric(vertical: 24.0, horizontal: 24.0),
-              foregroundDecoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(width: 1.5, color: Colors.grey),
+              // perspectives
+              Container(
+                // width: 1000,
+                color: Colors.white,
+                padding: EdgeInsets.symmetric(vertical: 22.0, horizontal: 17.0),
+                foregroundDecoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(width: .75, color: Colors.grey),
+                  ),
                 ),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'COLLECTIVE',
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                      IconButton(
+                        padding: EdgeInsets.all(0.0),
+                        alignment: Alignment.centerRight,
+                        icon: Icon(Icons.arrow_right),
+                        onPressed: () {},
+                      )
+                    ]),
               ),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'COLLECTIVE',
-                      style: TextStyle(fontWeight: FontWeight.w600),
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.arrow_right),
-                    )
-                  ]),
-            ),
+            
+              // filter by channel
+              FilterChannelCollective(),
 
-            // filter by channel
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
-              width: 1000,
-              color: Colors.white,
-              foregroundDecoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(width: 1.5, color: Colors.grey),
-                ),
+              Expanded(
+                child: ListView.builder(
+                    itemBuilder: _collectiveExpressions, itemCount: expressions.length),
               ),
-              child: Row(children: [
-                IconButton(
-                  color: Colors.blue,
-                  alignment: Alignment(-1.0, 0),
-                  icon: Icon(Icons.search),
-                  padding: EdgeInsets.all(0.0),
-                ),
-                Text(
-                  'filter by channel',
-                  style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.w500),
-                )
-              ]),
-            ),
-
-            ExpressionPreview(),
-          ],
+            ],
+          ),
         ),
         bottomNavigationBar: BottomNav());
   }

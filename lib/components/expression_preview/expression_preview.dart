@@ -15,35 +15,35 @@ import './video_preview.dart';
 
 class ExpressionPreview extends StatelessWidget {
 
+  final List expressionsCollective;
+  var index;
+
+  ExpressionPreview(this.expressionsCollective, this.index);
+
+
   final String urk = 'sunyatax'; 
-  var longform = true; 
-  var shortform = false;
-  var bullet = false; 
-  var photo = false;  
-  var event = false; 
-  var music = false;
-  var video = false;
 
   Widget _returnExpression() {
-    if(longform) {
+
+    if (expressionsCollective[index]['expressionType'] == 'longform') {
       return LongformPreview();
-    } else if (shortform) {
+    } else if(expressionsCollective[index]['expressionType'] == 'shortform') {
       return ShortformPreview();
-    } else if (bullet) {
+    } else if(expressionsCollective[index]['expressionType'] == 'bullet') {
       return BulletPreview();
-    } else if (photo) {
+    } else if(expressionsCollective[index]['expressionType'] == 'photo') {
       return PhotoPreview();
-    } else if (event) {
+    } else if(expressionsCollective[index]['expressionType'] == 'event') {
       return EventPreview();
-    } else if (music) {
+    } else if(expressionsCollective[index]['expressionType'] == 'music') {
       return MusicPreview();
-    } else if (video) {
+    } else if(expressionsCollective[index]['expressionType'] == 'video') {
       return VideoPreview();
     } else {
-      return Container(width: 0 , height: 0);
+      return Container(width: 0, height: 0,);
     }
   }
-
+ 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
