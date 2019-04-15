@@ -7,7 +7,8 @@ class PreviewProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Container(
+    return 
+    Container(
       padding: EdgeInsets.symmetric(horizontal: 15.0),
       margin: EdgeInsets.only(bottom: 15.0),
       child: Row(
