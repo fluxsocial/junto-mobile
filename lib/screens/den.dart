@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import './../custom_icons.dart';
-import './../components/bottom_nav.dart';
+import './../components/bottom_nav/bottom_nav.dart';
 
 class JuntoDen extends StatelessWidget {
   @override

@@ -5,6 +5,7 @@ class LongformPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Container(
+      padding: EdgeInsets.symmetric(horizontal: 15.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

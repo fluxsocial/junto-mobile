@@ -7,6 +7,7 @@ class ShortformPreview extends StatelessWidget {
     // TODO: implement build
     return 
       Container(
+            padding: EdgeInsets.symmetric(horizontal: 15.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
