@@ -6,7 +6,7 @@ import './../components/bottom_nav/bottom_nav.dart';
 class JuntoDen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,

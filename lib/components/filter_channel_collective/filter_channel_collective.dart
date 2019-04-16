@@ -5,7 +5,7 @@ class FilterChannelCollective extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+
     return 
       // filter by channel
       Container(
@@ -19,6 +19,7 @@ class FilterChannelCollective extends StatelessWidget {
         ),
         child: Row(children: [
           IconButton(
+            onPressed: () {},
             color: Colors.blue,
             alignment: Alignment(-1.0, 0),
             icon: Icon(Icons.search),

@@ -6,7 +6,7 @@ import './../components/bottom_nav/bottom_nav.dart';
 class JuntoSpheres extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
@@ -31,12 +31,10 @@ class JuntoSpheres extends StatelessWidget {
           ),
           actions: <Widget>[
             IconButton(
+              onPressed: () {},
               icon: Icon(CustomIcons.moon),
               color: Colors.black,
               tooltip: 'Open shopping cart',
-              onPressed: () {
-                // ...
-              },
             ),
           ],
         ),
@@ -60,6 +58,7 @@ class JuntoSpheres extends StatelessWidget {
                 ),
                 child: Row(children: [
                   IconButton(
+                    onPressed: () {},
                     color: Colors.blue,
                     alignment: Alignment(-1.0, 0),
                     icon: Icon(Icons.search),

@@ -8,8 +8,12 @@ void main() => runApp(JuntoMobile());
 class JuntoMobile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+    
     return MaterialApp(
+      theme: ThemeData(
+        fontFamily: 'Avenir', 
+
+      ),
       home: JuntoCollective()
     );
   }

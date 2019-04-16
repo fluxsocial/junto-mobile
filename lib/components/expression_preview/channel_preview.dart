@@ -6,7 +6,6 @@ import './../../theme.dart';
 class ChannelPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Container(
       margin: EdgeInsets.only(top: 10.0, right: 5.0),
       decoration: BoxDecoration(

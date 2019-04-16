@@ -14,7 +14,6 @@ class JuntoCollective extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return _JuntoCollectiveState();
   }
 }
@@ -34,7 +33,7 @@ class _JuntoCollectiveState extends State {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+
     return Scaffold(
         appBar: AppBar(
           backgroundColor: JuntoTheme.juntoWhite,

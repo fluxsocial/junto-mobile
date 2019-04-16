@@ -6,7 +6,6 @@ class PreviewProfile extends StatelessWidget {
   PreviewProfile(this.handle);
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return 
     Container(
       padding: EdgeInsets.symmetric(horizontal: 15.0),
@@ -34,9 +33,9 @@ class PreviewProfile extends StatelessWidget {
                   Text(
                     'Eric Yang',
                     style:
-                        TextStyle(fontSize: 14.0, fontWeight: FontWeight.w600),
+                        TextStyle(fontSize: 14.0, fontWeight: FontWeight.w700),
                   ),
-                  Text('@' + handle)
+                  Text('@' + handle, style: TextStyle(fontWeight: FontWeight.w500))
                 ],
               ),
             ),

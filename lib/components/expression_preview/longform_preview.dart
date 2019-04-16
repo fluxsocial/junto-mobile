@@ -4,14 +4,13 @@ import 'package:flutter/material.dart';
 import './../../theme.dart';
 
 class LongformPreview extends StatelessWidget {
-  var title;
-  var body;
+  final title;
+  final body;
 
   LongformPreview(this.title, this.body);
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return 
     Container(
       padding: EdgeInsets.symmetric(horizontal: 15.0),
@@ -23,7 +22,7 @@ class LongformPreview extends StatelessWidget {
             child: Text(
               title,
               textAlign: TextAlign.left,
-              style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.w600, color: JuntoTheme.juntoGrey),
+              style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.w700, color: JuntoTheme.juntoGrey),
             ),
           ),
           

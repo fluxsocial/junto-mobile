@@ -16,7 +16,7 @@ import './video_preview.dart';
 class ExpressionPreview extends StatelessWidget {
 
   final List expressionsCollective;
-  var index;
+  final index;
 
   ExpressionPreview(this.expressionsCollective, this.index);
 
@@ -46,7 +46,6 @@ class ExpressionPreview extends StatelessWidget {
  
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Container(
       padding: EdgeInsets.symmetric(vertical: 15.0),
       child: Column(
