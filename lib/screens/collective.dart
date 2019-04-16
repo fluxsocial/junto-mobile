@@ -1,6 +1,9 @@
+
 import 'package:flutter/material.dart';
 
+import './../theme.dart';
 import './../custom_icons.dart';
+
 import './../components/bottom_nav/bottom_nav.dart';
 import './../components/expression_preview/expression_preview.dart';
 import './../components/filter_channel_collective/filter_channel_collective.dart';
@@ -34,7 +37,7 @@ class _JuntoCollectiveState extends State {
     // TODO: implement build
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: JuntoTheme.juntoWhite,
           elevation: 0,
           title: 
           Row(
@@ -49,7 +52,7 @@ class _JuntoCollectiveState extends State {
                   'JUNTO',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: Colors.black,
+                      color: JuntoTheme.juntoSleek,
                       fontFamily: 'Raleway',
                       fontWeight: FontWeight.w600,
                       letterSpacing: 1.3),
@@ -61,7 +64,7 @@ class _JuntoCollectiveState extends State {
           IconButton(
               alignment: Alignment.centerRight,
               icon: Icon(CustomIcons.moon),
-              color: Colors.black,
+              color: JuntoTheme.juntoSleek,
               tooltip: 'open notifcations',
               onPressed: () {
                 // ...
@@ -71,14 +74,14 @@ class _JuntoCollectiveState extends State {
         ),
         body: Container(
           
-          decoration: BoxDecoration(color: Colors.white),
+          decoration: BoxDecoration(color: JuntoTheme.juntoWhite),
           child: Column(
             children: <Widget>[
               // navigation border
               Container(
                 decoration: BoxDecoration(
                   border: Border(
-                    bottom: BorderSide(width: 1.5, color: Colors.lightBlue),
+                    bottom: BorderSide(width: 1.5, color: JuntoTheme.juntoBlue),
                   ),
                 ),
               ),
@@ -86,11 +89,11 @@ class _JuntoCollectiveState extends State {
               // perspectives
               Container(
                 // width: 1000,
-                color: Colors.white,
+                color: JuntoTheme.juntoWhite,
                 padding: EdgeInsets.symmetric(vertical: 22.0, horizontal: 17.0),
                 foregroundDecoration: BoxDecoration(
                   border: Border(
-                    bottom: BorderSide(width: .75, color: Colors.grey),
+                    bottom: BorderSide(width: .75, color: JuntoTheme.juntoSleek),
                   ),
                 ),
                 child: Row(
