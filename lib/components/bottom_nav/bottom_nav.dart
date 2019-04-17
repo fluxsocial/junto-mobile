@@ -11,12 +11,14 @@ class BottomNav extends StatelessWidget {
   Widget build(BuildContext context) {
     return 
         Container(
-          padding: EdgeInsets.only(bottom: 12.0),
+          height: 45,
           color: Colors.white,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               IconButton( 
+                padding: EdgeInsets.all(0.0),
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
@@ -27,6 +29,7 @@ class BottomNav extends StatelessWidget {
                 color: Colors.black),
 
               IconButton(     
+                padding: EdgeInsets.all(0.0),
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
@@ -36,7 +39,8 @@ class BottomNav extends StatelessWidget {
                 icon: Icon(CustomIcons.home, size: 24.0,),
                 color: Colors.black),
 
-              IconButton(        
+              IconButton(       
+                padding: EdgeInsets.all(0.0),
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
@@ -46,7 +50,8 @@ class BottomNav extends StatelessWidget {
                 icon: Icon(CustomIcons.home, size: 24.0,),
                 color: Colors.black),
 
-              IconButton(        
+              IconButton(    
+                padding: EdgeInsets.all(0.0),
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
@@ -57,7 +62,7 @@ class BottomNav extends StatelessWidget {
                 color: Colors.black),
 
               IconButton(         
-
+                padding: EdgeInsets.all(0.0),
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
