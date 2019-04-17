@@ -15,7 +15,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
@@ -76,24 +76,7 @@ flutter:
   # example:
 
   
-  # fonts:
-  #   - family: AvenirNext
-  #     fonts:
-  #       - asset: assets/fonts/AvenirNext-Regular.ttf
-  #         weight: 400
-  #       - asset: assets/fonts/AvenirNext-Medium.ttf
-  #         weight: 500
-  #       - asset: assets/fonts/AvenirNext-Heavy.ttf
-  #         weight: 600
-  #       - asset: assets/fonts/AvenirNext-Bold.ttf
-  #         weight: 700
-
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
+  
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.io/custom-fonts/#from-packages

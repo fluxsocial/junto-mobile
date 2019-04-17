@@ -10,73 +10,68 @@ class BottomNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return 
-      Theme(
-        data: Theme.of(context).copyWith(
-        // sets the background color of the `BottomNavigationBar`
-          canvasColor: Colors.white,
-        ), 
+        Container(
+          padding: EdgeInsets.only(bottom: 12.0),
+          color: Colors.white,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              IconButton( 
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => JuntoCollective()),
+                  );
+                },
+                icon: Icon(CustomIcons.home, size: 24.0,),
+                color: Colors.black),
 
-        child: BottomNavigationBar(
-          // type fixes alignment of BottomNavigationBarItem if x > 3
-          type: BottomNavigationBarType.fixed,
-          items: [
-            BottomNavigationBarItem(
-              icon: IconButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => JuntoCollective()),
-                    );
-                  },
-                  icon: Icon(CustomIcons.home),
-                  color: Colors.black),
-                  title: SizedBox.shrink()
+              IconButton(     
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => JuntoSpheres()),
+                  );
+                },
+                icon: Icon(CustomIcons.home, size: 24.0,),
+                color: Colors.black),
 
-            ),
-            BottomNavigationBarItem(
-              icon: IconButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => JuntoSpheres()),
-                    );
-                  },
-                  icon: Icon(CustomIcons.home),
-                  color: Colors.black),
-                  title: Container(height: 0, width: 0)
+              IconButton(        
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => JuntoCollective()),
+                  );
+                },
+                icon: Icon(CustomIcons.home, size: 24.0,),
+                color: Colors.black),
 
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(CustomIcons.home, color: Colors.black),
-                  title: Container(height: 0, width: 0)
+              IconButton(        
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => JuntoPack()),
+                  );
+                },
+                icon: Icon(CustomIcons.home, size: 24.0,),
+                color: Colors.black),
 
-            ),
-            BottomNavigationBarItem(
-              icon: IconButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => JuntoPack()),
-                    );
-                  },
-                  icon: Icon(CustomIcons.home),
-                  color: Colors.black),
-                  title: Container(height: 0, width: 0)
+              IconButton(         
 
-            ),
-            BottomNavigationBarItem(
-              icon: IconButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => JuntoDen()),
-                    );
-                  },
-                  icon: Icon(CustomIcons.home),
-                  color: Colors.black),
-                  title: Container(height: 0, width: 0)
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => JuntoDen()),
+                  );
+                },
+                icon: Icon(CustomIcons.home, size: 24.0,),
+                color: Colors.black),                                                                
+        
+            ],
+          )
+        );
 
-            ),
-        ])
-      );}
+       
+          
+    }
 }

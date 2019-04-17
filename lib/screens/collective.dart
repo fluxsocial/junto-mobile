@@ -33,36 +33,42 @@ class _JuntoCollectiveState extends State {
 
   @override
   Widget build(BuildContext context) {
-
+      
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: JuntoTheme.juntoWhite,
-          elevation: 0,
-          title: 
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [Row(
-            children: <Widget>[
-              Image.asset('assets/images/junto-mobile__logo--collective.png',
-                  height: 24.0, width: 24.0),
-              Container(
-                margin: EdgeInsets.only(left: 10.0),
-                child: Text(
-                  'JUNTO',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: JuntoTheme.juntoSleek,
-                      fontFamily: 'Raleway',
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1.3),
-                ),
+
+        appBar: 
+        PreferredSize(
+          preferredSize: Size.fromHeight(45.0),
+          child: AppBar(
+            backgroundColor: JuntoTheme.juntoWhite,
+            // backgroundColor: Colors.blue,
+            brightness: Brightness.light,
+            elevation: 0,   
+            title: 
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [Row(
+                children: <Widget>[
+                  Image.asset('assets/images/junto-mobile__logo--collective.png',
+                      height: 20.0, width: 20.0),
+                  Container(
+                    margin: EdgeInsets.only(left: 10.0),
+                    child: Text(
+                      'JUNTO',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: JuntoTheme.juntoSleek,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 1.3),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
 
           IconButton(
               alignment: Alignment.centerRight,
               icon: Icon(CustomIcons.moon),
+              iconSize: 20.0,
               color: JuntoTheme.juntoSleek,
               tooltip: 'open notifcations',
               onPressed: () {
@@ -70,8 +76,10 @@ class _JuntoCollectiveState extends State {
               },
             ),
           ])
-        ),
-        body: Container(
+        ),),
+        body: 
+        
+        Container(
           
           decoration: BoxDecoration(color: JuntoTheme.juntoWhite),
           child: Column(
@@ -87,12 +95,12 @@ class _JuntoCollectiveState extends State {
 
               // perspectives
               Container(
-                // width: 1000,
+                // height: 45.0,
                 color: JuntoTheme.juntoWhite,
-                padding: EdgeInsets.symmetric(vertical: 22.0, horizontal: 17.0),
+                padding: EdgeInsets.symmetric(vertical: 11.0, horizontal: 17.0),
                 foregroundDecoration: BoxDecoration(
                   border: Border(
-                    bottom: BorderSide(width: .75, color: JuntoTheme.juntoSleek),
+                    bottom: BorderSide(width: .75, color: Color(0xffeeeeee)),
                   ),
                 ),
                 child: Row(
@@ -100,7 +108,7 @@ class _JuntoCollectiveState extends State {
                     children: [
                       Text(
                         'COLLECTIVE',
-                        style: TextStyle(fontWeight: FontWeight.w600),
+                        style: TextStyle(fontWeight: FontWeight.w700),
                       ),
                       IconButton(
                         padding: EdgeInsets.all(0.0),
