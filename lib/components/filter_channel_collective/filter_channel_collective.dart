@@ -22,23 +22,25 @@ class FilterChannelCollective extends StatelessWidget {
         child: Row(
           // mainAxisAlignment: MainAxisAlignment.start,
           children: [
-       
-                IconButton(
-                  splashColor: Colors.purple,
-                  onPressed: () {},
-                  color: JuntoTheme.juntoSleek,
-                  alignment: Alignment.centerLeft,
-                  icon: Icon(Icons.search),
-                  iconSize: 20.0,
-                  padding: EdgeInsets.all(0.0),
-                ),
+
+                // IconButton(
+                //   splashColor: Colors.purple,
+                //   onPressed: () {},
+                //   color: JuntoTheme.juntoSleek,
+                //   alignment: Alignment.centerLeft,
+                //   icon: Icon(Icons.search),
+                //   iconSize: 20.0,
+                //   padding: EdgeInsets.all(0.0),
+                // ),
+
+                Icon(Icons.search),
 
             Text(
               'filter by channel',
               
               textAlign: TextAlign.start,
               style: TextStyle(
-                  color: Colors.black, fontWeight: FontWeight.w500, fontSize: 14),
+              color: Colors.black, fontWeight: FontWeight.w500, fontSize: 14),
             )
         ]),
       );

@@ -13,6 +13,7 @@ import './event_preview.dart';
 import './music_preview.dart';
 import './video_preview.dart';
 
+/// Renders a concise overview of one given [Expression]. 
 class ExpressionPreview extends StatelessWidget {
 
   final List expressionsCollective;
@@ -23,7 +24,7 @@ class ExpressionPreview extends StatelessWidget {
 
   final String urk = 'sunyatax'; 
 
-  Widget _returnExpression() {
+  Widget _returnExpression() { 
 
     if (expressionsCollective[index]['expressionType'] == 'longform') {
       return LongformPreview(expressionsCollective[index]['title'], expressionsCollective[index]['body']);

@@ -37,21 +37,21 @@ flutter:
   uses-material-design: true
   
   fonts:
-     - family:  Avenir
-       fonts:
-       - asset: assets/fonts/Avenir-Medium.ttf
-       - asset: assets/fonts/Avenir-Black.ttf
-         weight: 700
-       - asset: assets/fonts/Avenir-Heavy.ttf
-         weight: 600         
+    - family:  Avenir
+      fonts:
+      - asset: assets/fonts/Avenir-Medium.ttf
+      - asset: assets/fonts/Avenir-Black.ttf
+        weight: 700
+      - asset: assets/fonts/Avenir-Heavy.ttf
+        weight: 600         
 
-     - family:  home
-       fonts:
-       - asset: assets/fonts/j_home.ttf
+    - family:  home
+      fonts:
+      - asset: assets/fonts/j_home.ttf
 
-     - family:  MyFlutterApp
-       fonts:
-       - asset: assets/fonts/MyFlutterApp.ttf
+    - family:  MyFlutterApp
+      fonts:
+      - asset: assets/fonts/MyFlutterApp.ttf
 
   # To add assets to your application, add an assets section, like this:
   assets:
