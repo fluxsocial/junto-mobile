@@ -1,50 +1,22 @@
-
 import 'package:flutter/material.dart';
-
-import './preview_profile.dart';
-import './preview_bottom.dart';
-
-// expression types
-import './longform_preview.dart';
-import './shortform_preview.dart';
+import '../../models/expression.dart';
 import './bullet_preview.dart';
-import './photo_preview.dart';
 import './event_preview.dart';
+import './longform_preview.dart';
 import './music_preview.dart';
+import './photo_preview.dart';
+import './preview_bottom.dart';
+import './preview_profile.dart';
+import './shortform_preview.dart';
 import './video_preview.dart';
 
-/// Renders a concise overview of one given [Expression]. 
+/// Renders a concise overview of one given [Expression].
 class ExpressionPreview extends StatelessWidget {
+  final Expression _expression;
+  final String urk = 'sunyatax';
 
-  final List expressionsCollective;
-  final index;
+  ExpressionPreview(this._expression);
 
-  ExpressionPreview(this.expressionsCollective, this.index);
-
-
-  final String urk = 'sunyatax'; 
-
-  Widget _returnExpression() { 
-
-    if (expressionsCollective[index]['expressionType'] == 'longform') {
-      return LongformPreview(expressionsCollective[index]['title'], expressionsCollective[index]['body']);
-    } else if(expressionsCollective[index]['expressionType'] == 'shortform') {
-      return ShortformPreview();
-    } else if(expressionsCollective[index]['expressionType'] == 'bullet') {
-      return BulletPreview();
-    } else if(expressionsCollective[index]['expressionType'] == 'photo') {
-      return PhotoPreview(expressionsCollective[index]['image']);
-    } else if(expressionsCollective[index]['expressionType'] == 'event') {
-      return EventPreview();
-    } else if(expressionsCollective[index]['expressionType'] == 'music') {
-      return MusicPreview();
-    } else if(expressionsCollective[index]['expressionType'] == 'video') {
-      return VideoPreview();
-    } else {
-      return Container(width: 0, height: 0,);
-    }
-  }
- 
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -52,18 +24,40 @@ class ExpressionPreview extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          
           // expression preview profile
           PreviewProfile(urk),
 
           // expression preview body
           _returnExpression(),
-          
+
           // expression preview channels, resonation, and comments
           PreviewBottom()
-
         ],
       ),
     );
+  }
+
+// TODO cite what this method does
+  Widget _returnExpression() {
+    if (_expression.expressionType == 'longform') {
+      return LongformPreview(_expression.title, _expression.body);
+    } else if (_expression.expressionType == 'shortform') {
+      return ShortformPreview();
+    } else if (_expression.expressionType == 'bullet') {
+      return BulletPreview();
+    } else if (_expression.expressionType == 'photo') {
+      return PhotoPreview(_expression.image);
+    } else if (_expression.expressionType == 'event') {
+      return EventPreview();
+    } else if (_expression.expressionType == 'music') {
+      return MusicPreview();
+    } else if (_expression.expressionType == 'video') {
+      return VideoPreview();
+    } else {
+      return Container(
+        width: 0,
+        height: 0,
+      );
+    }
   }
 }
