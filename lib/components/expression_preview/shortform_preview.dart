@@ -20,7 +20,7 @@ class ShortformPreview extends StatelessWidget {
                 ),
                 
                 Text(
-                  'Hallos, my name is Urk and I am a dogie',
+                  'Hello, my name is Eric',
                   textAlign: TextAlign.right,
                   style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400),
                 ),
