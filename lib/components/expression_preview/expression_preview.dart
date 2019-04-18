@@ -12,7 +12,7 @@ import './video_preview.dart';
 
 /// Renders a concise overview of one given [Expression].
 class ExpressionPreview extends StatelessWidget {
-  final Expression _expression;
+  final _expression;
   final String urk = 'sunyatax';
 
   ExpressionPreview(this._expression);
