@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 
-import './../../theme.dart';
+import './../../palette.dart';
 
 class FilterChannelCollective extends StatelessWidget {
 
@@ -11,7 +11,8 @@ class FilterChannelCollective extends StatelessWidget {
     return 
       // filter by channel
       Container(
-        padding: EdgeInsets.symmetric(vertical: 11.0, horizontal: 17.0),
+        height: 75.0,
+        padding: EdgeInsets.symmetric(horizontal: 17.0),
         width: 1000,
         color: Colors.white,
         foregroundDecoration: BoxDecoration(
@@ -33,7 +34,10 @@ class FilterChannelCollective extends StatelessWidget {
                 //   padding: EdgeInsets.all(0.0),
                 // ),
 
-                Icon(Icons.search),
+            Container(
+              margin: EdgeInsets.only(right: 5.0),
+              padding: EdgeInsets.all(0),
+              child: Icon(Icons.search, size: 14.0, color: JuntoPalette.juntoGrey),),
 
             Text(
               'filter by channel',

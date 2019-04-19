@@ -6,6 +6,8 @@ import './../../screens/spheres.dart';
 import './../../screens/pack.dart';
 import './../../screens/den.dart';
 
+import '../../screens/create/create.dart';
+
 class BottomNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -44,10 +46,10 @@ class BottomNav extends StatelessWidget {
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => JuntoCollective()),
+                    MaterialPageRoute(builder: (context) => Create()),
                   );
                 },
-                icon: Icon(CustomIcons.home, size: 24.0,),
+                icon: Icon(CustomIcons.lotus, size: 24.0,),
                 color: Colors.black),
 
               IconButton(    

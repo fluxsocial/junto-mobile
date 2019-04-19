@@ -1,7 +1,8 @@
 
 import 'package:flutter/material.dart';
 
-import './../theme.dart';
+import './../palette.dart';
+import '../style.dart';
 import './../custom_icons.dart';
 import './../components/bottom_nav/bottom_nav.dart';
 
@@ -14,7 +15,7 @@ class JuntoPack extends StatelessWidget {
         PreferredSize(
           preferredSize: Size.fromHeight(45.0),
           child: AppBar(
-            backgroundColor: JuntoTheme.juntoWhite,
+            backgroundColor: JuntoPalette.juntoWhite,
             // backgroundColor: Colors.blue,
             brightness: Brightness.light,
             elevation: 0,   
@@ -30,10 +31,8 @@ class JuntoPack extends StatelessWidget {
                     child: Text(
                       'PACKS',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: JuntoTheme.juntoSleek,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 1.3),
+                      style: JuntoStyles.appbarTitle
+
                     ),
                   ),
                 ],
@@ -43,7 +42,7 @@ class JuntoPack extends StatelessWidget {
               alignment: Alignment.centerRight,
               icon: Icon(CustomIcons.moon),
               iconSize: 20.0,
-              color: JuntoTheme.juntoSleek,
+              color: JuntoPalette.juntoSleek,
               tooltip: 'open notifcations',
               onPressed: () {
                 // ...

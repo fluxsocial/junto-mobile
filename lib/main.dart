@@ -12,7 +12,6 @@ class JuntoMobile extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         fontFamily: 'Avenir', 
-
       ),
       home: JuntoCollective()
     );

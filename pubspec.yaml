@@ -49,6 +49,26 @@ flutter:
       fonts:
       - asset: assets/fonts/j_home.ttf
 
+    - family:  lotus
+      fonts:
+      - asset: assets/fonts/j_home.ttf  
+      
+    - family:  moon
+      fonts:
+      - asset: assets/fonts/j_home.ttf  
+
+    - family:  circle
+      fonts:
+      - asset: assets/fonts/j_home.ttf 
+
+    - family:  triangle
+      fonts:
+      - asset: assets/fonts/j_home.ttf   
+
+    - family:  member
+      fonts:
+      - asset: assets/fonts/j_home.ttf                    
+
     - family:  MyFlutterApp
       fonts:
       - asset: assets/fonts/MyFlutterApp.ttf

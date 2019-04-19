@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 
-import './../../theme.dart';
+import './../../palette.dart';
 
 class LongformPreview extends StatelessWidget {
   final title;
@@ -22,14 +22,14 @@ class LongformPreview extends StatelessWidget {
             child: Text(
               title,
               textAlign: TextAlign.left,
-              style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.w700, color: JuntoTheme.juntoGrey),
+              style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.w700, color: JuntoPalette.juntoGrey),
             ),
           ),
           
           Text(
             body,
             textAlign: TextAlign.left,
-            style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500, color: JuntoTheme.juntoGrey),
+            style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500, color: JuntoPalette.juntoGrey),
           ),
         ],
       ),

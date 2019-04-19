@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 
-import './../theme.dart';
+import './../palette.dart';
 import './../custom_icons.dart';
+import '../style.dart';
+
+import './perspectives.dart';
 
 import './../components/bottom_nav/bottom_nav.dart';
 import './../components/expression_preview/expression_preview.dart';
 import './../components/filter_channel_collective/filter_channel_collective.dart';
 
-import './../models/expressions.dart';
+// import './../models/expressions.dart';
+import './../models/expression.dart';
 
 class JuntoCollective extends StatefulWidget {
   @override
@@ -22,22 +26,18 @@ class _JuntoCollectiveState extends State {
   initState() {
     super.initState();
 
-    expressions = Expressions.fetchExpressions();
-  }
-
-  Widget _collectiveExpressions(BuildContext context, int index) {
-    return ExpressionPreview(expressions, index);
+    expressions = Expression.fetchExpressions();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: 
-        // PreferredSize(
-        //   preferredSize: Size.fromHeight(45.0),
-        //   child: 
+        PreferredSize(
+          preferredSize: Size.fromHeight(45.0),
+          child: 
           AppBar(
-              backgroundColor: JuntoTheme.juntoWhite,
+              backgroundColor: JuntoPalette.juntoWhite,
               // backgroundColor: Colors.blue,
               brightness: Brightness.light,
               elevation: 0,
@@ -55,10 +55,7 @@ class _JuntoCollectiveState extends State {
                           child: Text(
                             'JUNTO',
                             textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: JuntoTheme.juntoSleek,
-                                fontWeight: FontWeight.w700,
-                                letterSpacing: 1.3),
+                            style: JuntoStyles.appbarTitle
                           ),
                         ),
                       ],
@@ -67,33 +64,32 @@ class _JuntoCollectiveState extends State {
                       alignment: Alignment.centerRight,
                       icon: Icon(CustomIcons.moon),
                       iconSize: 20.0,
-                      color: JuntoTheme.juntoSleek,
+                      color: JuntoPalette.juntoSleek,
                       tooltip: 'open notifcations',
                       onPressed: () {
-                        // ...
-                      },
+               
+                        },
                     ),
-                  ])),
-        // ),
+                  ])),),
 
         body: Container(
-          decoration: BoxDecoration(color: JuntoTheme.juntoWhite),
+          decoration: BoxDecoration(color: JuntoPalette.juntoWhite),
           child: Column(
             children: <Widget>[
               // navigation border
               Container(
                 decoration: BoxDecoration(
                   border: Border(
-                    bottom: BorderSide(width: 1.5, color: JuntoTheme.juntoBlue),
+                    bottom: BorderSide(width: 1.5, color: JuntoPalette.juntoBlue),
                   ),
                 ),
               ),
 
               // perspectives
-              Container(
-                // height: 45.0,
-                color: JuntoTheme.juntoWhite,
-                padding: EdgeInsets.symmetric(vertical: 11.0, horizontal: 17.0),
+              Container(                
+                height: 75.0,
+                color: JuntoPalette.juntoWhite,
+                padding: EdgeInsets.symmetric(horizontal: 17.0),
                 foregroundDecoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(width: .75, color: Color(0xffeeeeee)),
@@ -106,23 +102,35 @@ class _JuntoCollectiveState extends State {
                         'COLLECTIVE',
                         style: TextStyle(fontWeight: FontWeight.w700),
                       ),
-                      IconButton(
+
+                      // Icon(Icons.arrow_right)
+                      IconButton(                        
                         padding: EdgeInsets.all(0.0),
                         alignment: Alignment.centerRight,
                         icon: Icon(Icons.arrow_right),
-                        onPressed: () {},
+                        onPressed: () {
+                        // Navigator.pushReplacement(
+                        //   context,
+                        //   MaterialPageRoute(builder: (context) => JuntoX()),
+                        // );    
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => JuntoPerspectives()),
+                        );                                                         
+                        },
                       )
                     ]),
               ),
-
+ 
               // filter by channel
               FilterChannelCollective(),
 
               Expanded(
-                child: ListView.builder(
-                    itemBuilder: _collectiveExpressions,
-                    itemCount: expressions.length),
-              ),
+                child: ListView(
+                children: 
+                  expressions.map((expression) => 
+                  ExpressionPreview(expression.expressionType, expression.title, expression.body, expression.image)).toList(),
+              ))                                
             ],
           ),
         ),

@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 import './../palette.dart';
@@ -5,12 +6,12 @@ import './../custom_icons.dart';
 import '../style.dart';
 import './../components/bottom_nav/bottom_nav.dart';
 
-class JuntoSpheres extends StatelessWidget {
+class JuntoPerspectives extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
-        appBar: 
+        appBar:
         PreferredSize(
           preferredSize: Size.fromHeight(45.0),
           child: AppBar(
@@ -23,14 +24,15 @@ class JuntoSpheres extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [Row(
                 children: <Widget>[
-                  Image.asset('assets/images/junto-mobile__logo--spheres.png',
+                  Image.asset('assets/images/junto-mobile__logo--den.png',
                       height: 20.0, width: 20.0),
                   Container(
                     margin: EdgeInsets.only(left: 10.0),
                     child: Text(
-                      'SPHERES',
+                      'PERSPECTIVES',
                       textAlign: TextAlign.center,
                       style: JuntoStyles.appbarTitle
+
                     ),
                   ),
                 ],
@@ -47,38 +49,18 @@ class JuntoSpheres extends StatelessWidget {
               },
             ),
           ])
-        ),),
+        ),),        
+
 
         body: Column(
           children: <Widget>[
             Container(
               decoration: BoxDecoration(
                 border: Border(
-                  bottom: BorderSide(width: 1.5, color: Colors.green),
+                  bottom: BorderSide(width: 1.5, color: JuntoPalette.juntoGrey),
                 ),
               ),
             ),
-            Container(
-                padding: EdgeInsets.symmetric(vertical: 24.0, horizontal: 24.0),
-                width: 1000,
-                color: Colors.white,
-                foregroundDecoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(width: 1.5, color: Colors.grey),
-                  ),
-                ),
-                child: Row(children: [
-                  IconButton(
-                    onPressed: () {},
-                    color: Colors.blue,
-                    alignment: Alignment(-1.0, 0),
-                    icon: Icon(Icons.search),
-                    padding: EdgeInsets.all(0.0),
-                  ),
-                  Text('search spheres',
-                      style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.w500))
-                ]))
           ],
         ),
         bottomNavigationBar: BottomNav());

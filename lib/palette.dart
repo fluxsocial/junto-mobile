@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 
-class JuntoTheme {
+class JuntoPalette {
     
     static const juntoBlue = const Color(0xFF307FAB);
     static const juntoPurple = const Color(0xFFA46BCC);
