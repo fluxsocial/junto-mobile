@@ -4,13 +4,15 @@ import 'package:flutter/material.dart';
 import './../palette.dart';
 import './../custom_icons.dart';
 import '../style.dart';
-import './../components/bottom_nav/bottom_nav.dart';
+
+import '../components/appbar_border/appbar_border.dart';
 
 class JuntoPerspectives extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {  
 
     return Scaffold(
+      backgroundColor: Colors.white,
         appBar:
         PreferredSize(
           preferredSize: Size.fromHeight(45.0),
@@ -54,15 +56,11 @@ class JuntoPerspectives extends StatelessWidget {
 
         body: Column(
           children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(width: 1.5, color: JuntoPalette.juntoGrey),
-                ),
-              ),
-            ),
+            
+            // App bar border
+            AppbarBorder(JuntoPalette.juntoGrey)
           ],
         ),
-        bottomNavigationBar: BottomNav());
+    );
   }
 }

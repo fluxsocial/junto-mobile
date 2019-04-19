@@ -6,6 +6,9 @@ import '../style.dart';
 import './../custom_icons.dart';
 import './../components/bottom_nav/bottom_nav.dart';
 
+import '../components/appbar_border/appbar_border.dart';
+
+
 class JuntoDen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -53,13 +56,8 @@ class JuntoDen extends StatelessWidget {
 
         body: Column(
           children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(width: 1.5, color: Colors.black38),
-                ),
-              ),
-            ),
+            // App bar border
+            AppbarBorder(JuntoPalette.juntoGrey)
           ],
         ),
         bottomNavigationBar: BottomNav());

@@ -5,6 +5,9 @@ import './../custom_icons.dart';
 import '../style.dart';
 import './../components/bottom_nav/bottom_nav.dart';
 
+import '../components/appbar_border/appbar_border.dart';
+
+
 class JuntoSpheres extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -51,13 +54,9 @@ class JuntoSpheres extends StatelessWidget {
 
         body: Column(
           children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(width: 1.5, color: Colors.green),
-                ),
-              ),
-            ),
+            // App bar bordewr
+            AppbarBorder(JuntoPalette.juntoGreen),
+            
             Container(
                 padding: EdgeInsets.symmetric(vertical: 24.0, horizontal: 24.0),
                 width: 1000,

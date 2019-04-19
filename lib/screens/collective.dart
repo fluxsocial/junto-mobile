@@ -4,6 +4,8 @@ import './../palette.dart';
 import './../custom_icons.dart';
 import '../style.dart';
 
+import '../components/appbar_border/appbar_border.dart';
+
 import './perspectives.dart';
 
 import './../components/bottom_nav/bottom_nav.dart';
@@ -76,14 +78,8 @@ class _JuntoCollectiveState extends State {
           decoration: BoxDecoration(color: JuntoPalette.juntoWhite),
           child: Column(
             children: <Widget>[
-              // navigation border
-              Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(width: 1.5, color: JuntoPalette.juntoBlue),
-                  ),
-                ),
-              ),
+              // App bar border
+              AppbarBorder(JuntoPalette.juntoBlue),
 
               // perspectives
               Container(                

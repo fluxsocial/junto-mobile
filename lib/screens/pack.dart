@@ -6,6 +6,9 @@ import '../style.dart';
 import './../custom_icons.dart';
 import './../components/bottom_nav/bottom_nav.dart';
 
+import '../components/appbar_border/appbar_border.dart';
+
+
 class JuntoPack extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -54,13 +57,10 @@ class JuntoPack extends StatelessWidget {
 
         body: Column(
           children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(width: 1.5, color: Colors.purple),
-                ),
-              ),
-            ),
+            
+            // App bar border
+            AppbarBorder(JuntoPalette.juntoPurple),
+
             Container(
               padding: EdgeInsets.symmetric(vertical: 24.0, horizontal: 24.0),
               width: 1000,
