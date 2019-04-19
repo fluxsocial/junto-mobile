@@ -6,7 +6,7 @@ import '../style.dart';
 
 import '../components/appbar_border/appbar_border.dart';
 
-import './perspectives.dart';
+import './perspectives/perspectives.dart';
 
 import './../components/bottom_nav/bottom_nav.dart';
 import './../components/expression_preview/expression_preview.dart';

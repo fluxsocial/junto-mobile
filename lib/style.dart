@@ -12,6 +12,10 @@ class JuntoStyles {
     letterSpacing: 1
   );
 
+  static const perspectiveTitle = TextStyle(
+    color: JuntoPalette.juntoGrey,
+    fontWeight: FontWeight.w700
+  );
   
 
 }

@@ -62,7 +62,8 @@ class JuntoPack extends StatelessWidget {
             AppbarBorder(JuntoPalette.juntoPurple),
 
             Container(
-              padding: EdgeInsets.symmetric(vertical: 24.0, horizontal: 24.0),
+              height: 80.0,
+              padding: EdgeInsets.symmetric(horizontal: 17.0),
               width: 1000,
               color: Colors.white,
               foregroundDecoration: BoxDecoration(
@@ -70,19 +71,18 @@ class JuntoPack extends StatelessWidget {
                   bottom: BorderSide(width: 1.5, color: Colors.grey),
                 ),
               ),
-              child: Row(children: [
-                IconButton(
-                  onPressed: () {},
-                  color: Colors.blue,
-                  alignment: Alignment(-1.0, 0),
-                  icon: Icon(Icons.search),
-                  padding: EdgeInsets.all(0.0),
-                ),
-                Text(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Icon(Icons.search, size: 20.0),
+                
+                Container(
+                  margin: EdgeInsets.only(left: 5.0),
+                  child: Text(
                   'search packs',
                   style: TextStyle(
                       color: Colors.black, fontWeight: FontWeight.w500),
-                )
+                ))
               ]),
             )
           ],

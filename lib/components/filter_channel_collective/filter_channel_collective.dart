@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import './../../palette.dart';
 
 class FilterChannelCollective extends StatelessWidget {
+  String textValue = '';
 
   @override
   Widget build(BuildContext context) {
@@ -11,6 +12,7 @@ class FilterChannelCollective extends StatelessWidget {
     return 
       // filter by channel
       Container(
+        alignment: Alignment.center,
         height: 75.0,
         padding: EdgeInsets.symmetric(horizontal: 17.0),
         width: 1000,
@@ -20,33 +22,21 @@ class FilterChannelCollective extends StatelessWidget {
             bottom: BorderSide(width: .75, color: Color(0xffeeeeee)),
           ),
         ),
-        child: Row(
-          // mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-
-                // IconButton(
-                //   splashColor: Colors.purple,
-                //   onPressed: () {},
-                //   color: JuntoTheme.juntoSleek,
-                //   alignment: Alignment.centerLeft,
-                //   icon: Icon(Icons.search),
-                //   iconSize: 20.0,
-                //   padding: EdgeInsets.all(0.0),
-                // ),
-
-            Container(
-              margin: EdgeInsets.only(right: 5.0),
-              padding: EdgeInsets.all(0),
-              child: Icon(Icons.search, size: 14.0, color: JuntoPalette.juntoGrey),),
-
-            Text(
-              'filter by channel',
-              
-              textAlign: TextAlign.start,
-              style: TextStyle(
-              color: Colors.black, fontWeight: FontWeight.w500, fontSize: 14),
-            )
-        ]),
+        child: 
+          TextField(
+            cursorColor: JuntoPalette.juntoGrey,
+            cursorWidth: 1.0,
+            decoration: InputDecoration(
+              icon: Icon(Icons.search, size: 14.0, color: JuntoPalette.juntoGrey),            
+              border: InputBorder.none,
+              hintText: 'filter by channel',
+              hintStyle: TextStyle(color: JuntoPalette.juntoGrey, fontSize: 14.0)
+            
+            ),
+          )
       );
   }
 }
+
+
+
