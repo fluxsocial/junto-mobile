@@ -1,19 +1,24 @@
+
 import 'package:flutter/material.dart';
 
-import './../palette.dart';
-import './../custom_icons.dart';
-import '../style.dart';
+// typography + icons 
+import '../palette.dart';
 
+// app bar + bottom nav
+import '../components/appbar/appbar.dart';
 import '../components/appbar_border/appbar_border.dart';
+import './../components/bottom_nav/bottom_nav.dart';
 
+// perspectives
 import './perspectives/perspectives.dart';
 
-import './../components/bottom_nav/bottom_nav.dart';
-import './../components/expression_preview/expression_preview.dart';
+// filter channel
 import './../components/filter_channel_collective/filter_channel_collective.dart';
 
-// import './../models/expressions.dart';
+// expression preview + model
 import './../models/expression.dart';
+import './../components/expression_preview/expression_preview.dart';
+
 
 class JuntoCollective extends StatefulWidget {
   @override
@@ -23,56 +28,18 @@ class JuntoCollective extends StatefulWidget {
 }
 
 class _JuntoCollectiveState extends State {
-  List expressions;
+  List _collectiveExpressions;
 
   initState() {
     super.initState();
 
-    expressions = Expression.fetchExpressions();
+   _collectiveExpressions = Expression.fetchExpressions();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: 
-        PreferredSize(
-          preferredSize: Size.fromHeight(45.0),
-          child: 
-          AppBar(
-              backgroundColor: JuntoPalette.juntoWhite,
-              // backgroundColor: Colors.blue,
-              brightness: Brightness.light,
-              elevation: 0,
-              title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: <Widget>[
-                        Image.asset(
-                            'assets/images/junto-mobile__logo--collective.png',
-                            height: 20.0,
-                            width: 20.0),
-                        Container(
-                          margin: EdgeInsets.only(left: 10.0),
-                          child: Text(
-                            'JUNTO',
-                            textAlign: TextAlign.center,
-                            style: JuntoStyles.appbarTitle
-                          ),
-                        ),
-                      ],
-                    ),
-                    IconButton(
-                      alignment: Alignment.centerRight,
-                      icon: Icon(CustomIcons.moon),
-                      iconSize: 20.0,
-                      color: JuntoPalette.juntoSleek,
-                      tooltip: 'open notifcations',
-                      onPressed: () {
-               
-                        },
-                    ),
-                  ])),),
+        appBar: juntoAppBar.getJuntoAppBar('assets/images/junto-mobile__logo--collective.png', 'JUNTO'),
 
         body: Container(
           decoration: BoxDecoration(color: JuntoPalette.juntoWhite),
@@ -124,7 +91,7 @@ class _JuntoCollectiveState extends State {
               Expanded(
                 child: ListView(
                 children: 
-                  expressions.map((expression) => 
+                  _collectiveExpressions.map((expression) => 
                   ExpressionPreview(expression.expressionType, expression.title, expression.body, expression.image)).toList(),
               ))                                
             ],

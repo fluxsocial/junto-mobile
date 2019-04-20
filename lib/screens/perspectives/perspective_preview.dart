@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 
 import '../../style.dart';
 
-class PerspectiveTemplate extends StatelessWidget {
+class PerspectivePreview extends StatelessWidget {
   final String perspectiveName;
 
-  PerspectiveTemplate(this.perspectiveName);
+  PerspectivePreview(this.perspectiveName);
 
   @override
   Widget build(BuildContext context) {
