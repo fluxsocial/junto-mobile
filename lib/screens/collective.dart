@@ -117,7 +117,7 @@ class _JuntoCollectiveState extends State {
                       )
                     ]),
               ),
- 
+   
               // filter by channel
               FilterChannelCollective(),
 
