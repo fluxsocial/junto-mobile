@@ -7,8 +7,27 @@ import './../components/bottom_nav/bottom_nav.dart';
 
 import '../components/appbar_border/appbar_border.dart';
 
+import './spheres/sphere_preview.dart';
+import '../models/sphere.dart';
 
-class JuntoSpheres extends StatelessWidget {
+
+class JuntoSpheres extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return _JuntoSpheresState();
+  }
+}
+
+class _JuntoSpheresState extends State {
+  List spheres; 
+  @override
+  void initState() {
+    super.initState();
+
+    spheres = Sphere.fetchSphere();
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -77,7 +96,13 @@ class JuntoSpheres extends StatelessWidget {
                   Text('search spheres',
                       style: TextStyle(
                           color: Colors.black, fontWeight: FontWeight.w500))
-                ]))
+                ]),),
+
+                Expanded(
+                  child: ListView(
+                    children: spheres.map((sphere) => SpherePreview(sphere.sphereTitle, sphere.sphereMembers)).toList()
+                  )
+                )                    
           ],
         ),
         bottomNavigationBar: BottomNav());
