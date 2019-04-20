@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 
-import './../../palette.dart';
+import './../../typography/palette.dart';
 
 class ChannelPreview extends StatelessWidget {
   @override

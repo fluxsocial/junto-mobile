@@ -2,22 +2,22 @@
 import 'package:flutter/material.dart';
 
 // typography + icons 
-import '../palette.dart';
+import '../../typography/palette.dart';
 
 // app bar + bottom nav
-import '../components/appbar/appbar.dart';
-import '../components/appbar_border/appbar_border.dart';
-import './../components/bottom_nav/bottom_nav.dart';
+import '../../components/appbar/appbar.dart';
+import '../../components/appbar/appbar_border/appbar_border.dart';
+import './../../components/bottom_nav/bottom_nav.dart';
 
 // perspectives
-import './perspectives/perspectives.dart';
+import './../perspectives/perspectives.dart';
 
 // filter channel
-import './../components/filter_channel_collective/filter_channel_collective.dart';
+import './../../components/filter_channel_collective/filter_channel_collective.dart';
 
 // expression preview + model
-import './../models/expression.dart';
-import './../components/expression_preview/expression_preview.dart';
+import './../../models/expression.dart';
+import './../../components/expression_preview/expression_preview.dart';
 
 
 class JuntoCollective extends StatefulWidget {

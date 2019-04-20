@@ -2,11 +2,11 @@
 import 'package:flutter/material.dart';
 
 // typography
-import './../../palette.dart';
+import './../../typography/palette.dart';
 
 // app bar + bottom nav
 import '../../components/appbar/appbar.dart';
-import '../../components/appbar_border/appbar_border.dart';
+import '../../components/appbar/appbar_border/appbar_border.dart';
 import '../../components/bottom_nav/bottom_nav.dart';
 
 // perspective view + model
@@ -37,8 +37,6 @@ class _JuntoPerspectivesState extends State {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: juntoAppBar.getJuntoAppBar('assets/images/junto-mobile__logo--den.png', 'PERSPECTIVES'),
-
-
 
         body: Column(
           children: <Widget>[

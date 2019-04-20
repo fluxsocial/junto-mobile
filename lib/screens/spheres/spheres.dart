@@ -2,16 +2,16 @@
 import 'package:flutter/material.dart';
 
 // typography
-import './../palette.dart';
+import './../../typography/palette.dart';
 
 // app bar + bottom nav
-import '../components/appbar/appbar.dart';
-import '../components/appbar_border/appbar_border.dart';
-import './../components/bottom_nav/bottom_nav.dart';
+import '../../components/appbar/appbar.dart';
+import '../../components/appbar/appbar_border/appbar_border.dart';
+import './../../components/bottom_nav/bottom_nav.dart';
 
 // sphere preview + model
-import '../models/sphere.dart';
-import './spheres/sphere_preview.dart';
+import '../../models/sphere.dart';
+import './sphere_preview.dart';
 
 
 class JuntoSpheres extends StatefulWidget {

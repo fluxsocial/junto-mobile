@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../../style.dart';
+import '../../typography/style.dart';
 
 class PerspectivePreview extends StatelessWidget {
   final String perspectiveName;

@@ -2,16 +2,16 @@
 import 'package:flutter/material.dart';
 
 // typography
-import './../palette.dart';
+import './../../typography/palette.dart';
 
 // appbar + bottom nav
-import '../components/appbar/appbar.dart';
-import '../components/appbar_border/appbar_border.dart';
-import './../components/bottom_nav/bottom_nav.dart';
+import '../../components/appbar/appbar.dart';
+import '../../components/appbar/appbar_border/appbar_border.dart';
+import './../../components/bottom_nav/bottom_nav.dart';
 
 // pack preview + model
-import '../models/pack.dart';
-import './pack/pack_preview.dart';
+import '../../models/pack.dart';
+import './pack_preview.dart';
 
 
 class JuntoPack extends StatefulWidget {

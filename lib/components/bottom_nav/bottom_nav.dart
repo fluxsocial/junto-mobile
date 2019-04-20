@@ -1,12 +1,15 @@
+
 import 'package:flutter/material.dart';
 
+// typography + icons
 import './../../custom_icons.dart';
-import './../../screens/collective.dart';
-import './../../screens/spheres.dart';
-import './../../screens/pack.dart';
-import './../../screens/den.dart';
 
+// main screens
+import './../../screens/collective/collective.dart';
 import '../../screens/create/create.dart';
+import './../../screens/den/den.dart';
+import './../../screens/pack/pack.dart';
+import './../../screens/spheres/spheres.dart';
 
 class BottomNav extends StatelessWidget {
   @override

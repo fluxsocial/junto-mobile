@@ -2,12 +2,12 @@
 import 'package:flutter/material.dart';
 
 // typography + icons
-import './../palette.dart';
+import './../../typography/palette.dart';
 
 // appbar + bottom nav
-import '../components/appbar/appbar.dart';
-import '../components/appbar_border/appbar_border.dart';
-import './../components/bottom_nav/bottom_nav.dart';
+import '../../components/appbar/appbar.dart';
+import '../../components/appbar/appbar_border/appbar_border.dart';
+import './../../components/bottom_nav/bottom_nav.dart';
 
 class JuntoDen extends StatelessWidget {
   @override

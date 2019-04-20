@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 // typography + icons
 import '../../custom_icons.dart';
-import '../../palette.dart';
-import '../../style.dart';
+import '../../typography/palette.dart';
+import '../../typography/style.dart';
 
 class juntoAppBar {
 
