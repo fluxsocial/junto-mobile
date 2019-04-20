@@ -5,7 +5,7 @@ import '../../custom_icons.dart';
 import '../../typography/palette.dart';
 import '../../typography/style.dart';
 
-class juntoAppBar {
+class JuntoAppBar {
 
    static getJuntoAppBar(_juntoAppBarLogo, _juntoAppBarTitle) {
     return PreferredSize(

@@ -18,7 +18,7 @@ import '../../components/filter/filter_packs/filter_packs.dart';
 class JuntoPack extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
+
     return _JuntoPackState();
   }
 }
@@ -38,7 +38,7 @@ class _JuntoPackState extends State {
 
     return Scaffold(
       backgroundColor: Colors.white,
-        appBar: juntoAppBar.getJuntoAppBar('assets/images/junto-mobile__logo--pack.png', 'PACKS'),
+        appBar: JuntoAppBar.getJuntoAppBar('assets/images/junto-mobile__logo--pack.png', 'PACKS'),
 
         body: Column(
           children: <Widget>[

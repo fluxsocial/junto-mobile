@@ -2,14 +2,14 @@
 import 'package:flutter/material.dart';
 
 class PackPreview extends StatelessWidget {
-  String packTitle;
-  String packUser;
+  final String packTitle;
+  final String packUser;
 
   PackPreview(this.packTitle, this.packUser);
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+
     return 
             // My Pack
             Container(

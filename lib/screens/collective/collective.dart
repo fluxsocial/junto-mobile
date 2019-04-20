@@ -9,9 +9,6 @@ import '../../components/appbar/appbar.dart';
 import '../../components/appbar/appbar_border/appbar_border.dart';
 import './../../components/bottom_nav/bottom_nav.dart';
 
-// perspectives
-import './../perspectives/perspectives.dart';
-
 // filter channel
 import './../../components/filter/filter_channels/filter_channels_collective.dart';
 
@@ -39,7 +36,7 @@ class _JuntoCollectiveState extends State {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: juntoAppBar.getJuntoAppBar('assets/images/junto-mobile__logo--collective.png', 'JUNTO'),
+        appBar: JuntoAppBar.getJuntoAppBar('assets/images/junto-mobile__logo--collective.png', 'JUNTO'),
 
         body: Container(
           decoration: BoxDecoration(color: JuntoPalette.juntoWhite),
@@ -76,10 +73,7 @@ class _JuntoCollectiveState extends State {
                         //   context,
                         //   MaterialPageRoute(builder: (context) => JuntoX()),
                         // );    
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) => JuntoPerspectives()),
-                        );                                                         
+                        Navigator.pushReplacementNamed(context, '/perspectives');                                                         
                         },
                       )
                     ]),

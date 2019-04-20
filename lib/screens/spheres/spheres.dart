@@ -18,7 +18,6 @@ import '../../components/filter/filter_spheres/filter_spheres.dart';
 class JuntoSpheres extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return _JuntoSpheresState();
   }
 }
@@ -37,7 +36,7 @@ class _JuntoSpheresState extends State {
 
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: juntoAppBar.getJuntoAppBar('assets/images/junto-mobile__logo--spheres.png', 'SPHERES'),
+        appBar: JuntoAppBar.getJuntoAppBar('assets/images/junto-mobile__logo--spheres.png', 'SPHERES'),
 
         body: Column(
           children: <Widget>[

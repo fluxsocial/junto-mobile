@@ -2,14 +2,14 @@
 import 'package:flutter/material.dart';
 
 class SpherePreview extends StatelessWidget {
-  String sphereTitle;
-  String sphereMembers;
+  final String sphereTitle;
+  final String sphereMembers;
 
   SpherePreview(this.sphereTitle, this.sphereMembers);
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+
     return 
             Container(
               height: 90.0,
