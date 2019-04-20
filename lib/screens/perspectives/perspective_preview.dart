@@ -13,7 +13,7 @@ class PerspectivePreview extends StatelessWidget {
     // TODO: implement build
     return Container(
         padding: EdgeInsets.symmetric(horizontal: 15.0),
-        height: 90.0,
+        height: 75.0,
         decoration: BoxDecoration(
           border: Border(
             bottom: BorderSide(width: 1.5, color: Color(0xffeeeeee)),

@@ -12,6 +12,7 @@ import './../../components/bottom_nav/bottom_nav.dart';
 // pack preview + model
 import '../../models/pack.dart';
 import './pack_preview.dart';
+import '../../components/filter/filter_packs/filter_packs.dart';
 
 
 class JuntoPack extends StatefulWidget {
@@ -89,36 +90,13 @@ class _JuntoPackState extends State {
             ),
 
                 // Search packs text field
-                Container(
-                  alignment: Alignment.center,
-                  height: 75.0,
-                  padding: EdgeInsets.symmetric(horizontal: 17.0),
-                  width: 1000,
-                  color: Colors.white,
-                  foregroundDecoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(width: .75, color: Color(0xffeeeeee)),
-                    ),
-                  ),
-                  child: 
-                    TextField(
-                      cursorColor: JuntoPalette.juntoGrey,
-                      cursorWidth: 1.0,
-                      decoration: InputDecoration(
-                        icon: Icon(Icons.search, size: 14.0, color: JuntoPalette.juntoGrey),            
-                        border: InputBorder.none,
-                        hintText: 'filter by channel',
-                        hintStyle: TextStyle(color: JuntoPalette.juntoGrey, fontSize: 14.0)
-                      
-                      ),
-                    )
-                ) ,
+            FilterPacks(),
 
-                Expanded(
-                  child: ListView(
-                    children: packs.map((pack) => PackPreview(pack.packTitle, pack.packUser)).toList()
-                  )
-                )       
+            Expanded(
+              child: ListView(
+                children: packs.map((pack) => PackPreview(pack.packTitle, pack.packUser)).toList()
+              )
+            )       
             
           ],
         ),

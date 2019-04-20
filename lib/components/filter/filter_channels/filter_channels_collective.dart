@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 
-import './../../typography/palette.dart';
+import './../../../typography/palette.dart';
 
 class FilterChannelCollective extends StatelessWidget {
   String textValue = '';

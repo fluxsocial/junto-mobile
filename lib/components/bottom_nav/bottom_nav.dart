@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 // typography + icons
@@ -14,15 +13,19 @@ import './../../screens/spheres/spheres.dart';
 class BottomNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return 
-        Container(
-          height: 45,
+    return Container(
+        decoration: BoxDecoration(
           color: Colors.white,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              IconButton( 
+          border: Border(
+            top: BorderSide(color: Color(0xffeeeeee), width: .75),
+          ),
+        ),
+        height: 45,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            IconButton(
                 padding: EdgeInsets.all(0.0),
                 onPressed: () {
                   Navigator.pushReplacement(
@@ -30,10 +33,12 @@ class BottomNav extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => JuntoCollective()),
                   );
                 },
-                icon: Icon(CustomIcons.home, size: 24.0,),
+                icon: Icon(
+                  CustomIcons.home,
+                  size: 24.0,
+                ),
                 color: Colors.black),
-
-              IconButton(     
+            IconButton(
                 padding: EdgeInsets.all(0.0),
                 onPressed: () {
                   Navigator.pushReplacement(
@@ -41,10 +46,12 @@ class BottomNav extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => JuntoSpheres()),
                   );
                 },
-                icon: Icon(CustomIcons.home, size: 24.0,),
+                icon: Icon(
+                  CustomIcons.home,
+                  size: 24.0,
+                ),
                 color: Colors.black),
-
-              IconButton(       
+            IconButton(
                 padding: EdgeInsets.all(0.0),
                 onPressed: () {
                   Navigator.pushReplacement(
@@ -52,10 +59,12 @@ class BottomNav extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => Create()),
                   );
                 },
-                icon: Icon(CustomIcons.lotus, size: 24.0,),
+                icon: Icon(
+                  CustomIcons.lotus,
+                  size: 24.0,
+                ),
                 color: Colors.black),
-
-              IconButton(    
+            IconButton(
                 padding: EdgeInsets.all(0.0),
                 onPressed: () {
                   Navigator.pushReplacement(
@@ -63,10 +72,12 @@ class BottomNav extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => JuntoPack()),
                   );
                 },
-                icon: Icon(CustomIcons.home, size: 24.0,),
+                icon: Icon(
+                  CustomIcons.home,
+                  size: 24.0,
+                ),
                 color: Colors.black),
-
-              IconButton(         
+            IconButton(
                 padding: EdgeInsets.all(0.0),
                 onPressed: () {
                   Navigator.pushReplacement(
@@ -74,14 +85,12 @@ class BottomNav extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => JuntoDen()),
                   );
                 },
-                icon: Icon(CustomIcons.home, size: 24.0,),
-                color: Colors.black),                                                                
-        
-            ],
-          )
-        );
-
-       
-          
-    }
+                icon: Icon(
+                  CustomIcons.home,
+                  size: 24.0,
+                ),
+                color: Colors.black),
+          ],
+        ));
+  }
 }

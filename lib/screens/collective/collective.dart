@@ -13,7 +13,7 @@ import './../../components/bottom_nav/bottom_nav.dart';
 import './../perspectives/perspectives.dart';
 
 // filter channel
-import './../../components/filter_channel_collective/filter_channel_collective.dart';
+import './../../components/filter/filter_channels/filter_channels_collective.dart';
 
 // expression preview + model
 import './../../models/expression.dart';

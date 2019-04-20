@@ -12,6 +12,7 @@ import '../../components/bottom_nav/bottom_nav.dart';
 // perspective view + model
 import '../../models/perspective.dart';
 import './perspective_preview.dart';
+import '../../components/filter/filter_perspectives/filter_perspectives.dart';
 
 class JuntoPerspectives extends StatefulWidget {
   @override
@@ -58,14 +59,16 @@ class _JuntoPerspectivesState extends State {
               
             // ),)
             PerspectivePreview('COLLECTIVE'),
-              
+            PerspectivePreview('SELECTIVE'),
 
-              Expanded(
-                child: ListView(
-                children:               
-                  perspectives.map((perspective) => 
-                  PerspectivePreview(perspective.perspectiveTitle)).toList(),
-              ))                
+            FilterPerspectives(),
+
+            Expanded(
+              child: ListView(
+              children:               
+                perspectives.map((perspective) => 
+                PerspectivePreview(perspective.perspectiveTitle)).toList(),
+            ))                
             
           ],
         ),

@@ -12,6 +12,7 @@ import './../../components/bottom_nav/bottom_nav.dart';
 // sphere preview + model
 import '../../models/sphere.dart';
 import './sphere_preview.dart';
+import '../../components/filter/filter_spheres/filter_spheres.dart';
 
 
 class JuntoSpheres extends StatefulWidget {
@@ -35,40 +36,23 @@ class _JuntoSpheresState extends State {
   Widget build(BuildContext context) {
 
     return Scaffold(
+        backgroundColor: Colors.white,
         appBar: juntoAppBar.getJuntoAppBar('assets/images/junto-mobile__logo--spheres.png', 'SPHERES'),
 
         body: Column(
           children: <Widget>[
             // App bar border
             AppbarBorder(JuntoPalette.juntoGreen),
-            
-            Container(
-                padding: EdgeInsets.symmetric(vertical: 24.0, horizontal: 24.0),
-                width: 1000,
-                color: Colors.white,
-                foregroundDecoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(width: 1.5, color: Colors.grey),
-                  ),
-                ),
-                child: Row(children: [
-                  IconButton(
-                    onPressed: () {},
-                    color: Colors.blue,
-                    alignment: Alignment(-1.0, 0),
-                    icon: Icon(Icons.search),
-                    padding: EdgeInsets.all(0.0),
-                  ),
-                  Text('search spheres',
-                      style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.w500))
-                ]),),
 
-                Expanded(
-                  child: ListView(
-                    children: spheres.map((sphere) => SpherePreview(sphere.sphereTitle, sphere.sphereMembers)).toList()
-                  )
-                )                    
+            // Search spheres text field
+            FilterSpheres(),
+
+            // List of spheres member belongs to
+            Expanded(
+              child: ListView(
+                children: spheres.map((sphere) => SpherePreview(sphere.sphereTitle, sphere.sphereMembers)).toList()
+              )
+            )                    
           ],
         ),
         bottomNavigationBar: BottomNav());
