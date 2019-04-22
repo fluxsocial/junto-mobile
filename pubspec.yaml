@@ -40,10 +40,10 @@ flutter:
     - family:  Avenir
       fonts:
       - asset: assets/fonts/Avenir-Medium.ttf
-      - asset: assets/fonts/Avenir-Black.ttf
-        weight: 700
       - asset: assets/fonts/Avenir-Heavy.ttf
-        weight: 600         
+        weight: 600 
+      - asset: assets/fonts/Avenir-Black.ttf
+        weight: 700                
 
     - family:  home
       fonts:

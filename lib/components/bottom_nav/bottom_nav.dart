@@ -3,9 +3,15 @@ import 'package:flutter/material.dart';
 // typography + icons
 import './../../custom_icons.dart';
 
+import '../../route_animations/route_main_screens/route_main_screens.dart';
+import '../../screens/spheres/spheres.dart';
+import '../../screens/collective/collective.dart';
+import '../../screens/pack/pack.dart';
+import '../../screens/den/den.dart';
+
 class BottomNav extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { 
     return Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -21,7 +27,9 @@ class BottomNav extends StatelessWidget {
             IconButton(
                 padding: EdgeInsets.all(0.0),
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, '');
+                  // Navigator.pushReplacementNamed(context, '');
+                  Navigator.pushReplacement(context, CustomRoute(builder: (context) => JuntoCollective()));
+
                 },
                 icon: Icon(
                   CustomIcons.home,
@@ -31,7 +39,8 @@ class BottomNav extends StatelessWidget {
             IconButton(
                 padding: EdgeInsets.all(0.0),
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/spheres');
+                  // Navigator.pushReplacementNamed(context, '/spheres');
+                  Navigator.pushReplacement(context, CustomRoute(builder: (context) => JuntoSpheres()));
                 },
                 icon: Icon(
                   CustomIcons.home,
@@ -52,7 +61,9 @@ class BottomNav extends StatelessWidget {
             IconButton(
                 padding: EdgeInsets.all(0.0),
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/pack');
+                  // Navigator.pushReplacementNamed(context, '/pack');
+                  Navigator.pushReplacement(context, CustomRoute(builder: (context) => JuntoPack()));
+
                 },
                 icon: Icon(
                   CustomIcons.home,
@@ -62,7 +73,9 @@ class BottomNav extends StatelessWidget {
             IconButton(
                 padding: EdgeInsets.all(0.0),
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/den');
+                  // Navigator.pushReplacementNamed(context, '/den');
+                  Navigator.pushReplacement(context, CustomRoute(builder: (context) => JuntoDen()));
+                
                 },
                 icon: Icon(
                   CustomIcons.home,
