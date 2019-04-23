@@ -1,16 +1,14 @@
-
 class Perspective {
-  String perspectiveTitle;
+  final String perspectiveTitle;
 
   Perspective(this.perspectiveTitle);
 
-    static fetchPerspective() {
-      return [
-        Perspective('NYC'),
-        Perspective('MEDITATION'),
-        Perspective('DESIGN'),
-        Perspective('CRYPTO'),      
-
-      ];
-  }  
+  static List<Perspective> fetchAll() {
+    return [
+      Perspective('NYC'),
+      Perspective('MEDITATION'),
+      Perspective('DESIGN'),
+      Perspective('CRYPTO'),
+    ];
+  }
 }

@@ -16,15 +16,11 @@ import './video_preview.dart';
 /// Renders a concise overview of one given [Expression]. 
 class ExpressionPreview extends StatelessWidget {
 
-  // final List expressionsCollective;  
-  // final index;
-
-  // ExpressionPreview(this.expressionsCollective, this.index);
-
   final String _expressionType;
   final String _expressionTitle;
   final String _expressionBody;
-  final String _expressionPhoto;
+  final String _expressionPhoto; 
+
 
   ExpressionPreview(this._expressionType, this._expressionTitle, this._expressionBody, this._expressionPhoto);
 
@@ -49,24 +45,6 @@ class ExpressionPreview extends StatelessWidget {
     } else {
       return Container(width: 0, height: 0,);
     }
-
-    // if (expressionsCollective[index]['expressionType'] == 'longform') {
-    //   return LongformPreview(expressionsCollective[index]['title'], expressionsCollective[index]['body']);
-    // } else if(expressionsCollective[index]['expressionType'] == 'shortform') {
-    //   return ShortformPreview();
-    // } else if(expressionsCollective[index]['expressionType'] == 'bullet') {
-    //   return BulletPreview();
-    // } else if(expressionsCollective[index]['expressionType'] == 'photo') {
-    //   return PhotoPreview(expressionsCollective[index]['image']);
-    // } else if(expressionsCollective[index]['expressionType'] == 'event') {
-    //   return EventPreview();
-    // } else if(expressionsCollective[index]['expressionType'] == 'music') {
-    //   return MusicPreview();
-    // } else if(expressionsCollective[index]['expressionType'] == 'video') {
-    //   return VideoPreview();
-    // } else {
-    //   return Container(width: 0, height: 0,);
-    // }    
   }
  
   @override

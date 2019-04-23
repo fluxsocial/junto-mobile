@@ -1,7 +1,9 @@
-
 import 'package:flutter/material.dart';
 
-// typography + icons 
+import 'package:scoped_model/scoped_model.dart';
+import '../../scoped_models/scoped_expressions.dart';
+
+// typography + icons
 import '../../typography/palette.dart';
 
 // app bar + bottom nav
@@ -13,31 +15,15 @@ import './../../components/bottom_nav/bottom_nav.dart';
 import './../../components/filter/filter_channels/filter_channels_collective.dart';
 
 // expression preview + model
-import './../../models/expression.dart';
 import './../../components/expression_preview/expression_preview.dart';
 
-
-class JuntoCollective extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _JuntoCollectiveState();
-  }
-}
-
-class _JuntoCollectiveState extends State {
-  List _collectiveExpressions;
-
-  initState() {
-    super.initState();
-
-   _collectiveExpressions = Expression.fetchExpressions();
-  }
-
+class JuntoCollective extends StatelessWidget {
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: JuntoAppBar.getJuntoAppBar('assets/images/junto-mobile__logo--collective.png', 'JUNTO'),
-
+        appBar: JuntoAppBar.getJuntoAppBar(
+            'assets/images/junto-mobile__logo--collective.png', 'JUNTO'),
         body: Container(
           decoration: BoxDecoration(color: JuntoPalette.juntoWhite),
           child: Column(
@@ -46,7 +32,7 @@ class _JuntoCollectiveState extends State {
               AppbarBorder(JuntoPalette.juntoBlue),
 
               // perspectives
-              Container(                
+              Container(
                 height: 75.0,
                 color: JuntoPalette.juntoWhite,
                 padding: EdgeInsets.symmetric(horizontal: 17.0),
@@ -64,33 +50,47 @@ class _JuntoCollectiveState extends State {
                       ),
 
                       // Icon(Icons.arrow_right)
-                      IconButton(                        
+                      IconButton(
                         padding: EdgeInsets.all(0.0),
                         alignment: Alignment.centerRight,
                         icon: Icon(Icons.arrow_right),
                         onPressed: () {
-                        // Navigator.pushReplacement(
-                        //   context,
-                        //   MaterialPageRoute(builder: (context) => JuntoX()),
-                        // );    
-                        Navigator.pushReplacementNamed(context, '/perspectives');                                                         
+                          // Navigator.pushReplacement(
+                          //   context,
+                          //   MaterialPageRoute(builder: (context) => JuntoX()),
+                          // );
+                          Navigator.pushReplacementNamed(
+                              context, '/perspectives');
                         },
                       )
                     ]),
               ),
-   
+
               // filter by channel
               FilterChannelCollective(),
 
-              Expanded(
-                child: ListView(
-                children: 
-                  _collectiveExpressions.map((expression) => 
-                  ExpressionPreview(expression.expressionType, expression.title, expression.body, expression.image)).toList(),
-              ))                                
+              ScopedModelDescendant<ScopedExpressions>(
+                  builder: (context, child, model) => Expanded(
+                          child: ListView(
+                        children: model.expressions
+                            .map((expression) => ExpressionPreview(
+                                expression.expressionType,
+                                expression.title,
+                                expression.body,
+                                expression.image))
+                            .toList(),
+                      )))
             ],
           ),
         ),
         bottomNavigationBar: BottomNav());
   }
 }
+
+
+              // Expanded(
+              //   child: ListView(
+              //   children:
+              //     _collectiveExpressions.map((expression) =>
+              //     ExpressionPreview(expression.expressionType, expression.title, expression.body, expression.image)).toList(),
+              // ))

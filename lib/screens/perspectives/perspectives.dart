@@ -29,7 +29,7 @@ class _JuntoPerspectivesState extends State {
   void initState() {
     super.initState();
 
-    perspectives = Perspective.fetchPerspective();
+    perspectives = Perspective.fetchAll();
   }
 
   @override
@@ -58,12 +58,15 @@ class _JuntoPerspectivesState extends State {
 
               
             // ),)
-            PerspectivePreview('COLLECTIVE'),
-            PerspectivePreview('SELECTIVE'),
+
+
+            // PerspectivePreview('COLLECTIVE'),
+            // PerspectivePreview('SELECTIVE'),
 
             FilterPerspectives(),
 
             Expanded(
+
               child: ListView(
               children:               
                 perspectives.map((perspective) => 

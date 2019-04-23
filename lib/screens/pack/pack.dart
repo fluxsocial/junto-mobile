@@ -30,7 +30,7 @@ class _JuntoPackState extends State {
   void initState() {
     super.initState();
 
-    packs = Pack.fetchPack();
+    packs = Pack.fetchAll();
   }
 
   @override

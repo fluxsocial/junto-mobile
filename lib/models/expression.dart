@@ -1,35 +1,35 @@
 
 class Expression {
-  String expressionType;
-  String title;
-  String body;
-  String image;
+  final String expressionType;
+  final String title;
+  final String body;
+  final String image;
 
-  Expression(this.expressionType, this.title, this.body, this.image);
-    static fetchExpressions() {
-      
-    return [
-      Expression(
-        'longform', 
-        'The Medium is the Message', 
-        'The forms we communicate through are just as important as the message itself. The evolution of social media starts with revisiting the fundamentals and redesigning them in more humane ways.',
-        ''
+  Expression({this.expressionType, this.title, this.body, this.image});
+  static fetchAll() {
+
+      return [
+        Expression(
+            expressionType: 'longform',
+            title: 'The Medium is the Message',
+            body: 'The forms we communicate through are just as important as the message itself. The evolution of social media starts with revisiting the fundamentals and redesigning them in more humane ways.',
+            image: ''
         ),
 
-      Expression(
-        'photo', 
-        '', 
-        '',
-        'assets/images/junto-mobile__expression--photo.png'
-        ),    
+        Expression(
+          expressionType: 'photo', 
+          title: '', 
+          body: '',
+          image: 'assets/images/junto-mobile__expression--photo.png'
+        ),
 
-      Expression(
-        'shortform', 
-        '', 
-        '',
-        'shortform'
-        ),                        
-    ];
-  }
+        Expression(
+          expressionType: 'shortform', 
+          title: '', 
+          body: '', 
+          image: 'shortform'
+        ),
+      ];
+    }
 }
-
+ 

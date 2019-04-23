@@ -1,9 +1,6 @@
 
 import 'package:flutter/material.dart';
 
-import '../../custom_icons.dart';
-import '../../typography/palette.dart';
-
 import '../../components/bottom_nav/bottom_nav_create.dart';
 
 class JuntoCreate extends StatelessWidget {

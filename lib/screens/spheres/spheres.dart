@@ -28,7 +28,7 @@ class _JuntoSpheresState extends State {
   void initState() {
     super.initState();
 
-    spheres = Sphere.fetchSphere();
+    spheres = Sphere.fetchAll();
   }
 
   @override

@@ -5,7 +5,7 @@ class User {
 
   User(this.userName, this.userHandle);
 
-  List<User> fetchUsers() {
+  List<User> fetchAll() {
     return [
       User(
         'Eric Yang',
