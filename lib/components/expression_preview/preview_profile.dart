@@ -1,7 +1,6 @@
-
 import 'package:flutter/material.dart';
 import '../../typography/style.dart';
-import '../../custom_icons.dart'; 
+import '../../custom_icons.dart';
 
 class PreviewProfile extends StatelessWidget {
   final String handle;
@@ -9,10 +8,9 @@ class PreviewProfile extends StatelessWidget {
   PreviewProfile(this.handle);
   @override
   Widget build(BuildContext context) {
-    return 
-    Container(
-      padding: EdgeInsets.symmetric(horizontal: 15.0),
-      margin: EdgeInsets.only(bottom: 15.0),
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 12.0),
+      margin: EdgeInsets.only(bottom: 12.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -23,9 +21,9 @@ class PreviewProfile extends StatelessWidget {
                 'assets/images/junto-mobile__eric.png',
                 height: 36.0,
                 width: 36.0,
-                fit: BoxFit.cover, 
+                fit: BoxFit.cover,
               ),
-            ), 
+            ),
 
             // profile name and handle
             Container(
@@ -33,25 +31,20 @@ class PreviewProfile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                    Text(
-                      'Eric Yang',
-                      style:
-                          JuntoStyles.expressionPreviewName,
-                    ),
+                  Text(
+                    'Eric Yang',
+                    style: JuntoStyles.expressionPreviewName,
+                  ),
                   Text('@' + handle, style: JuntoStyles.expressionPreviewHandle)
                 ],
               ),
             ),
           ]),
-
-          Row(
-            children: [
-              // Text(time, style: TextStyle(fontSize: 12)),
-              // more option on expression preview
-              Container(child: Icon(CustomIcons.more, size: 17))
-            ]
-          )
-
+          Row(children: [
+            // Text(time, style: TextStyle(fontSize: 12)),
+            // more option on expression preview
+            Container(child: Icon(CustomIcons.more, size: 17))
+          ])
         ],
       ),
     );

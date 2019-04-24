@@ -12,8 +12,8 @@ class PreviewBottom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 7.5),
-      padding: EdgeInsets.symmetric(horizontal: 15.0),
+      margin: EdgeInsets.only(top: 5),
+      padding: EdgeInsets.symmetric(horizontal: 12.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -24,16 +24,18 @@ class PreviewBottom extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Row(
-                  
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    ChannelPreview(),
-                    ChannelPreview(),
-                    ChannelPreview(),
-                  ]),
+                Container(
+                  margin: EdgeInsets.only(bottom:2.5),
+                  child:
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        ChannelPreview(),
+                        ChannelPreview(),
+                        ChannelPreview(),
+                      ]),
+                  ),
                  Container(
-                   margin: EdgeInsets.only(top: 2.5),
                    child: Text(time + ' MINUTES AGO', style: TextStyle(fontSize: 10, color: Colors.grey, fontWeight: FontWeight.w600), textAlign: TextAlign.start,)
 
                  ) 

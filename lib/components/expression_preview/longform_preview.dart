@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 import './../../typography/palette.dart';
+import './../../typography/style.dart';
 
 class LongformPreview extends StatelessWidget {
   final title;
@@ -13,11 +14,11 @@ class LongformPreview extends StatelessWidget {
     if(title != '') {
       return 
           Container(
-            margin: EdgeInsets.only(bottom: 5.0),
+            margin: EdgeInsets.only(bottom: 2.5),
             child: Text(
               title,
               textAlign: TextAlign.left,
-              style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.w700, color: JuntoPalette.juntoGrey),
+              style: JuntoStyles.longformTitle,
             ),
           );     
     } else {
@@ -32,7 +33,7 @@ class LongformPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     return 
     Container(
-      padding: EdgeInsets.symmetric(horizontal: 15.0),
+      padding: EdgeInsets.symmetric(horizontal: 12.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -42,7 +43,7 @@ class LongformPreview extends StatelessWidget {
           Text(
             body,
             textAlign: TextAlign.left,
-            style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500, color: JuntoPalette.juntoGrey),
+            style: JuntoStyles.longformBody,
           ),
         ],
       ),
