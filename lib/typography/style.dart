@@ -22,11 +22,17 @@ class JuntoStyles {
 
 
   static const expressionPreviewName =
-      TextStyle(fontSize: 14.0, fontWeight: FontWeight.w700);
+      TextStyle(fontSize: 14.0, fontWeight: FontWeight.w700, color: JuntoPalette.juntoGrey);
 
   static const expressionPreviewHandle =
-      TextStyle(fontWeight: FontWeight.w500);      
+      TextStyle(fontSize: 12.0, fontWeight: FontWeight.w500, color: JuntoPalette.juntoGrey);      
 
+  static const expressionPreviewTime = 
+      TextStyle(fontSize: 10, color: Colors.grey,fontWeight: FontWeight.w600);
+
+  static const expressionPreviewChannel = 
+      TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: JuntoPalette.juntoSleek);
+      
   // // longform preview
   static const longformTitle = 
       TextStyle(fontSize: 17.0, fontWeight: FontWeight.w700, color: JuntoPalette.juntoGrey); 

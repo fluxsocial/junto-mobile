@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 import './../../typography/palette.dart';
+import './../../typography/style.dart';
 
 class ChannelPreview extends StatelessWidget {
   @override
@@ -25,7 +26,7 @@ class ChannelPreview extends StatelessWidget {
           margin: EdgeInsets.only(right: 5.0),
           child: Text(
             '#channel',
-            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: JuntoPalette.juntoSleek),
+            style: JuntoStyles.expressionPreviewChannel,
           ),
         );    
   }

@@ -52,7 +52,7 @@ class ExpressionPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 12.0),
+      margin: EdgeInsets.only(bottom: 10.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -62,16 +62,6 @@ class ExpressionPreview extends StatelessWidget {
 
           // expression preview body
           _returnExpression(),
-
-          // Container(
-          //   margin: EdgeInsets.only(top: 7.5, left: 14),
-          //   child: Row(
-          //     children: <Widget>[
-          //       ChannelPreview(),
-          //       ChannelPreview(),
-          //     ],
-          //   )
-          // ),
           
           // expression preview channels, resonation, and comments
           PreviewBottom(_expressionTime)

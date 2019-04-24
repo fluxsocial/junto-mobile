@@ -9,12 +9,14 @@ class PreviewProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12.0),
-      margin: EdgeInsets.only(bottom: 12.0),
+      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Row(children: <Widget>[
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+            
             // profile picture
             ClipOval(
               child: Image.asset(
@@ -35,7 +37,7 @@ class PreviewProfile extends StatelessWidget {
                     'Eric Yang',
                     style: JuntoStyles.expressionPreviewName,
                   ),
-                  Text('@' + handle, style: JuntoStyles.expressionPreviewHandle)
+                  Text(handle, style: JuntoStyles.expressionPreviewHandle)
                 ],
               ),
             ),
