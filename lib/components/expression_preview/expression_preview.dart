@@ -22,9 +22,13 @@ class ExpressionPreview extends StatelessWidget {
   final String _expressionTitle;
   final String _expressionBody;
   final String _expressionPhoto; 
+  final String _channelOne;
+  final String _channelTwo;
+  final String _channelThree;
 
 
-  ExpressionPreview(this._expressionType, this._expressionTime, this._expressionTitle, this._expressionBody, this._expressionPhoto);
+
+  ExpressionPreview(this._expressionType, this._expressionTime, this._expressionTitle, this._expressionBody, this._expressionPhoto, this._channelOne, this._channelTwo, this._channelThree);
 
   final String urk = 'sunyatax'; 
 
@@ -64,7 +68,7 @@ class ExpressionPreview extends StatelessWidget {
           _returnExpression(),
           
           // expression preview channels, resonation, and comments
-          PreviewBottom(_expressionTime)
+          PreviewBottom(_expressionTime, _channelOne, _channelTwo, _channelThree)
 
         ],
       ),

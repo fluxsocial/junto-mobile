@@ -39,6 +39,11 @@ class JuntoStyles {
 
   static const longformBody = 
       TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500, color: JuntoPalette.juntoGrey);
+  
+  // // photo preview
+  static const photoCaption = 
+      TextStyle(fontSize: 14, fontWeight: FontWeight.w500);
+
 }
 
 

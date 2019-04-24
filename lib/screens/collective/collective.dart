@@ -78,7 +78,11 @@ class JuntoCollective extends StatelessWidget {
                                 expression.time,
                                 expression.title,
                                 expression.body,
-                                expression.image))
+                                expression.image,
+                                expression.channelOne,
+                                expression.channelTwo,
+                                expression.channelThree
+                                ))
                             .toList(),
                       )))
             ],
