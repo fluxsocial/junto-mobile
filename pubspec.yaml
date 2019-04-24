@@ -54,6 +54,14 @@ flutter:
     - family:  lotus
       fonts:
       - asset: assets/fonts/j_home.ttf  
+
+    - family:  resonate
+      fonts:
+      - asset: assets/fonts/j_home.ttf
+
+    - family:  comment
+      fonts:
+      - asset: assets/fonts/j_home.ttf        
       
     - family:  moon
       fonts:

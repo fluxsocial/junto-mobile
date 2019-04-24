@@ -1,7 +1,7 @@
 
 class Expression {
   final String expressionType;
-  final String title;
+  final title;
   final String body;
   final String image;
 

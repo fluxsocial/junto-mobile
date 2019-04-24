@@ -9,5 +9,6 @@ class CustomIcons {
   static const IconData circle = const IconData(0xe904, fontFamily: 'circle');
   static const IconData triangle = const IconData(0xe903, fontFamily: 'triangle');
   static const IconData member = const IconData(0xe905, fontFamily: 'member');
-
+  static const IconData resonate = const IconData(0xe906, fontFamily: 'resonate');
+  static const IconData comment = const IconData(0xe907, fontFamily: 'comment');
 }

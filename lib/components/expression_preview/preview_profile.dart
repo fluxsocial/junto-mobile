@@ -22,7 +22,7 @@ class PreviewProfile extends StatelessWidget {
                 width: 36.0,
                 fit: BoxFit.cover,
               ),
-            ),
+            ), 
 
             // profile name and handle
             Container(
