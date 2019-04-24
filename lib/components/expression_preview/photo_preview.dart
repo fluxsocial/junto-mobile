@@ -6,9 +6,21 @@ class PhotoPreview extends StatelessWidget {
   PhotoPreview(this.image);
   @override
   Widget build(BuildContext context) {
-    return 
-      Container(
-        child: Image.asset(image)
-      );     
+    return
+      Column(
+        
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+        Container(
+          child: Image.asset(image)
+        ),
+
+        Container(
+          margin: EdgeInsets.only(top: 10, left: 14),
+          child: Text('Hello my name is Urk. This marks the collaboratin between Junto and Holochain. Stay tuned.', textAlign: TextAlign.start, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600))
+
+        ) 
+    ],);
+  
   }
 }

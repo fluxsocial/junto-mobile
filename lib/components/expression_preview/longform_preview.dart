@@ -38,8 +38,7 @@ class LongformPreview extends StatelessWidget {
         children: <Widget>[
 
           _buildTitle(),
-      
-          
+    
           Text(
             body,
             textAlign: TextAlign.left,

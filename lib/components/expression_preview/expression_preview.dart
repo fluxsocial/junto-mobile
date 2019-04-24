@@ -13,16 +13,18 @@ import './event_preview.dart';
 import './music_preview.dart';
 import './video_preview.dart';
 
+import './channel_preview.dart';
 /// Renders a concise overview of one given [Expression]. 
 class ExpressionPreview extends StatelessWidget {
 
   final String _expressionType;
+  final String _expressionTime;
   final String _expressionTitle;
   final String _expressionBody;
   final String _expressionPhoto; 
 
 
-  ExpressionPreview(this._expressionType, this._expressionTitle, this._expressionBody, this._expressionPhoto);
+  ExpressionPreview(this._expressionType, this._expressionTime, this._expressionTitle, this._expressionBody, this._expressionPhoto);
 
   final String urk = 'sunyatax'; 
 
@@ -60,9 +62,19 @@ class ExpressionPreview extends StatelessWidget {
 
           // expression preview body
           _returnExpression(),
+
+          // Container(
+          //   margin: EdgeInsets.only(top: 7.5, left: 14),
+          //   child: Row(
+          //     children: <Widget>[
+          //       ChannelPreview(),
+          //       ChannelPreview(),
+          //     ],
+          //   )
+          // ),
           
           // expression preview channels, resonation, and comments
-          PreviewBottom()
+          PreviewBottom(_expressionTime)
 
         ],
       ),

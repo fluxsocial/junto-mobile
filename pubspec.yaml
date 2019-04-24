@@ -77,7 +77,11 @@ flutter:
 
     - family:  member
       fonts:
-      - asset: assets/fonts/j_home.ttf                    
+      - asset: assets/fonts/j_home.ttf   
+
+    - family:  more
+      fonts:
+      - asset: assets/fonts/j_home.ttf
 
     - family:  MyFlutterApp
       fonts:

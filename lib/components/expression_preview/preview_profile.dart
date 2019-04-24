@@ -1,4 +1,7 @@
+
 import 'package:flutter/material.dart';
+import '../../typography/style.dart';
+import '../../custom_icons.dart'; 
 
 class PreviewProfile extends StatelessWidget {
   final String handle;
@@ -20,7 +23,7 @@ class PreviewProfile extends StatelessWidget {
                 'assets/images/junto-mobile__eric.png',
                 height: 36.0,
                 width: 36.0,
-                fit: BoxFit.cover,
+                fit: BoxFit.cover, 
               ),
             ), 
 
@@ -30,19 +33,25 @@ class PreviewProfile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    'Eric Yang',
-                    style:
-                        TextStyle(fontSize: 14.0, fontWeight: FontWeight.w700),
-                  ),
-                  Text('@' + handle, style: TextStyle(fontWeight: FontWeight.w500))
+                    Text(
+                      'Eric Yang',
+                      style:
+                          JuntoStyles.expressionPreviewName,
+                    ),
+                  Text('@' + handle, style: JuntoStyles.expressionPreviewHandle)
                 ],
               ),
             ),
           ]),
 
-          // more option on expression preview
-          Container(child: Icon(Icons.arrow_drop_down))
+          Row(
+            children: [
+              // Text(time, style: TextStyle(fontSize: 12)),
+              // more option on expression preview
+              Container(child: Icon(CustomIcons.more, size: 17))
+            ]
+          )
+
         ],
       ),
     );

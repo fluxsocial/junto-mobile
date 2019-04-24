@@ -18,7 +18,7 @@ import './../../components/filter/filter_channels/filter_channels_collective.dar
 import './../../components/expression_preview/expression_preview.dart';
 
 class JuntoCollective extends StatelessWidget {
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,6 +75,7 @@ class JuntoCollective extends StatelessWidget {
                         children: model.expressions
                             .map((expression) => ExpressionPreview(
                                 expression.expressionType,
+                                expression.time,
                                 expression.title,
                                 expression.body,
                                 expression.image))
