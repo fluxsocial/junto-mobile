@@ -7,7 +7,8 @@ class JuntoCreate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
+    return 
+    Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       backgroundColor: Colors.white,
       body: 
@@ -24,4 +25,4 @@ class JuntoCreate extends StatelessWidget {
       bottomNavigationBar: BottomNavCreate(),
     );
   }
-}
+} 

@@ -17,18 +17,19 @@ class ChannelPreview extends StatelessWidget {
       );
     } else {
       return 
-        Text(
+      Container(
+        margin: EdgeInsets.only(right: 5.0),
+        child: Text(
           '#' + channel,
           style: JuntoStyles.expressionPreviewChannel,
-        );   
+        )
+      );
     }
   }
   @override
   Widget build(BuildContext context) {
 
-    return Container(
-          margin: EdgeInsets.only(right: 5.0),
-          child: _buildChannel()
-        );    
+    return 
+        _buildChannel();
   }
 }

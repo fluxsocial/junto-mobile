@@ -24,7 +24,7 @@ class BottomNavCreate extends StatelessWidget {
                   height: 45,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    // padding: EdgeInsets.symmetric(horizontal: 20.0),
                     
                     children: <Widget>[
                       Container(margin: EdgeInsets.symmetric(horizontal: 25.0), child: Icon(CustomIcons.moon, color: JuntoPalette.juntoSleek)),

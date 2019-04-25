@@ -17,36 +17,27 @@ import './channel_preview.dart';
 /// Renders a concise overview of one given [Expression]. 
 class ExpressionPreview extends StatelessWidget {
 
-  final String _expressionType;
-  final String _expressionTime;
-  final String _expressionTitle;
-  final String _expressionBody;
-  final String _expressionPhoto; 
-  final String _channelOne;
-  final String _channelTwo;
-  final String _channelThree;
+  final expression; 
 
-
-
-  ExpressionPreview(this._expressionType, this._expressionTime, this._expressionTitle, this._expressionBody, this._expressionPhoto, this._channelOne, this._channelTwo, this._channelThree);
+  ExpressionPreview(this.expression);
 
   final String urk = 'sunyatax'; 
 
   Widget _returnExpression() { 
 
-    if (_expressionType == 'longform') {
-      return LongformPreview(_expressionTitle, _expressionBody);
-    } else if(_expressionType == 'shortform') {
-      return ShortformPreview();
-    } else if(_expressionType == 'bullet') {
+    if (expression.expressionType == 'longform') {
+      return LongformPreview(expression.title, expression.body);
+    } else if(expression.expressionType == 'shortform') {
+      return ShortformPreview(expression.shortformText);
+    } else if(expression.expressionType == 'bullet') {
       return BulletPreview();
-    } else if(_expressionType == 'photo') {
-      return PhotoPreview(_expressionPhoto);
-    } else if(_expressionType == 'event') {
+    } else if(expression.expressionType == 'photo') {
+      return PhotoPreview(expression.image, expression.imageCaption);
+    } else if(expression.expressionType == 'event') {
       return EventPreview();
-    } else if(_expressionType == 'music') {
+    } else if(expression.expressionType == 'music') {
       return MusicPreview();
-    } else if(_expressionType == 'video') {
+    } else if(expression.expressionType == 'video') {
       return VideoPreview();
     } else {
       return Container(width: 0, height: 0,);
@@ -68,7 +59,7 @@ class ExpressionPreview extends StatelessWidget {
           _returnExpression(),
           
           // expression preview channels, resonation, and comments
-          PreviewBottom(_expressionTime, _channelOne, _channelTwo, _channelThree)
+          PreviewBottom(expression.time, expression.channelOne, expression.channelTwo, expression.channelThree)
 
         ],
       ),

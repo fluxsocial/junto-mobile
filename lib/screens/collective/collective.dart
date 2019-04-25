@@ -74,14 +74,15 @@ class JuntoCollective extends StatelessWidget {
                           child: ListView(
                         children: model.expressions
                             .map((expression) => ExpressionPreview(
-                                expression.expressionType,
-                                expression.time,
-                                expression.title,
-                                expression.body,
-                                expression.image,
-                                expression.channelOne,
-                                expression.channelTwo,
-                                expression.channelThree
+                              expression
+                                // expression.expressionType,
+                                // expression.time,
+                                // expression.title,
+                                // expression.body,
+                                // expression.image,
+                                // expression.channelOne,
+                                // expression.channelTwo,
+                                // expression.channelThree
                                 ))
                             .toList(),
                       )))
@@ -91,11 +92,3 @@ class JuntoCollective extends StatelessWidget {
         bottomNavigationBar: BottomNav());
   }
 }
-
-
-              // Expanded(
-              //   child: ListView(
-              //   children:
-              //     _collectiveExpressions.map((expression) =>
-              //     ExpressionPreview(expression.expressionType, expression.title, expression.body, expression.image)).toList(),
-              // ))
