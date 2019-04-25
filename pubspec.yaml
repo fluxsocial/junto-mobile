@@ -15,10 +15,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
+  scoped_model: ^1.0.1        
 
 dev_dependencies:
   flutter_test:
@@ -37,13 +38,53 @@ flutter:
   uses-material-design: true
   
   fonts:
-     - family:  MyFlutterApp
-       fonts:
-       - asset: assets/fonts/MyFlutterApp.ttf
+    - family:  Avenir
+      fonts:
+      - asset: assets/fonts/Avenir-Medium.ttf
+      - asset: assets/fonts/Avenir-Heavy.ttf
+        weight: 600 
+      - asset: assets/fonts/Avenir-Black.ttf
+        weight: 700                
 
-     - family:  home
-       fonts:
-       - asset: assets/fonts/j_home.ttf
+    - family:  home
+      fonts:
+      - asset: assets/fonts/j_home.ttf
+
+    - family:  lotus
+      fonts:
+      - asset: assets/fonts/j_home.ttf  
+
+    - family:  resonate
+      fonts:
+      - asset: assets/fonts/j_home.ttf
+
+    - family:  comment
+      fonts:
+      - asset: assets/fonts/j_home.ttf        
+      
+    - family:  moon
+      fonts:
+      - asset: assets/fonts/j_home.ttf  
+
+    - family:  circle
+      fonts:
+      - asset: assets/fonts/j_home.ttf 
+
+    - family:  triangle
+      fonts:
+      - asset: assets/fonts/j_home.ttf   
+
+    - family:  member
+      fonts:
+      - asset: assets/fonts/j_home.ttf   
+
+    - family:  more
+      fonts:
+      - asset: assets/fonts/j_home.ttf
+
+    - family:  MyFlutterApp
+      fonts:
+      - asset: assets/fonts/MyFlutterApp.ttf
 
   # To add assets to your application, add an assets section, like this:
   assets:
@@ -51,6 +92,9 @@ flutter:
     - assets/images/junto-mobile__logo--pack.png
     - assets/images/junto-mobile__logo--den.png
     - assets/images/junto-mobile__logo--spheres.png 
+    - assets/images/junto-mobile__eric.png 
+    - assets/images/junto-mobile__expression--photo.png
+    - assets/images/junto-mobile__den--photo.png
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -66,17 +110,7 @@ flutter:
   # example:
 
   
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
+  
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.io/custom-fonts/#from-packages

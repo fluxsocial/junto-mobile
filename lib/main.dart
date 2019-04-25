@@ -1,16 +1,7 @@
 
 import 'package:flutter/material.dart';
 
-import './pages/collective.dart';
+import './app.dart';
 
-void main() => runApp(JuntoMobile());
+void main() => runApp(JuntoApp());
 
-class JuntoMobile extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return MaterialApp(
-      home: JuntoCollective()
-    );
-  }
-}
