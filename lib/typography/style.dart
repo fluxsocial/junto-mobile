@@ -18,8 +18,25 @@ class JuntoStyles {
   static const perspectiveTitle =
       TextStyle(color: JuntoPalette.juntoGrey, fontWeight: FontWeight.w700);
 
-  // Styles for expression preview
+  // Styles for creation templates
+  static const lotusExpressionType = 
+      TextStyle(fontSize: 17, color: JuntoPalette.juntoGrey, fontWeight: FontWeight.w700, letterSpacing: 1.25); 
 
+  static const lotusAddChannels = 
+      TextStyle(fontWeight: FontWeight.w700, fontSize: 12);
+
+  static const lotusCreate = 
+      TextStyle(fontWeight: FontWeight.w700, fontSize: 12);
+  
+  // Longform styles 
+  static const lotusLongformTitle = 
+      TextStyle(fontSize: 17.0, fontWeight: FontWeight.w700, color: JuntoPalette.juntoGrey);
+
+  static const lotusLongformBody =
+      TextStyle(height: 1.25, fontSize: 17.0, fontWeight: FontWeight.w600, color: JuntoPalette.juntoGrey); 
+
+
+  // Styles for expression preview
 
   static const expressionPreviewName =
       TextStyle(fontSize: 14.0, fontWeight: FontWeight.w700, color: JuntoPalette.juntoGrey);
