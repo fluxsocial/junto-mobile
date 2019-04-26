@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 import '../../components/bottom_nav/bottom_nav_create.dart';
 
+import './longform.dart';
+
 class JuntoCreate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -11,16 +13,16 @@ class JuntoCreate extends StatelessWidget {
     Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       backgroundColor: Colors.white,
-      body: 
+      body: Longform(),
 
-      Center(child:
-        RaisedButton(
-          onPressed: () {
-            Navigator.pushReplacementNamed(context, '/');
-          },
-          child: Text('Home')
-        )
-      ),
+      // Center(child:
+      //   RaisedButton(
+      //     onPressed: () {
+      //       Navigator.pushReplacementNamed(context, '/');
+      //     },
+      //     child: Text('Home')
+      //   )
+      // ),
 
       bottomNavigationBar: BottomNavCreate(),
     );
