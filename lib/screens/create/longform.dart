@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../typography/palette.dart';
 
 class Longform extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -50,36 +51,50 @@ class Longform extends StatelessWidget {
           child: ListView(
               padding: EdgeInsets.symmetric(horizontal: 10),
               children: [
-            TextField(
+
+              Container(
+                constraints: BoxConstraints(
+                  minHeight: MediaQuery.of(context).size.height * .7,
+                ),
+                child: TextField(
                 keyboardType: TextInputType.multiline,
                 // textInputAction: TextInputAction,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                 ),
                 cursorColor: JuntoPalette.juntoGrey,
-                cursorWidth: 2,
+                cursorWidth: 2,                
                 maxLines: null,
                 style: TextStyle(
                     fontSize: 17.0,
                     fontWeight: FontWeight.w600,
-                    color: JuntoPalette.juntoGrey)),
+                    color: JuntoPalette.juntoGrey)),)
           ])),
-      Container(
-        decoration: BoxDecoration(
-            border:
-                Border(top: BorderSide(color: Color(0xffeeeeee), width: 1))),
-        padding: EdgeInsets.symmetric(horizontal: 10),
-        // color: Colors.teal,
-        height: 50,
-        width: MediaQuery.of(context).size.width,
-        child:
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Text('# ADD CHANNELS',
-              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12)),
-          Text('CREATE',
-              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12))
-        ]),
-      ),
+          GestureDetector(
+            onVerticalDragDown: (details) {
+              FocusScope.of(context).requestFocus(new FocusNode());   
+
+            },            
+            // onTap: () {
+            //   FocusScope.of(context).requestFocus(new FocusNode());   
+            // },
+            child: Container(
+              decoration: BoxDecoration(
+                  border:
+                      Border(top: BorderSide(color: Color(0xffeeeeee), width: 1))),
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              // color: Colors.teal,
+              height: 50,
+              width: MediaQuery.of(context).size.width,
+              child:
+                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                Text('# ADD CHANNELS',
+                    style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12)),
+                Text('CREATE',
+                    style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12))
+              ]),
+            ),
+          )
     ]);
   }
 }
