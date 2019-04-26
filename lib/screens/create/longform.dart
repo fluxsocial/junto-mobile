@@ -40,6 +40,7 @@ class Longform extends StatelessWidget {
           cursorColor: JuntoPalette.juntoGrey,
           cursorWidth: 2,
           style: TextStyle(
+              height: 1,
               fontSize: 17.0,
               fontWeight: FontWeight.w700,
               color: JuntoPalette.juntoGrey),
@@ -66,6 +67,7 @@ class Longform extends StatelessWidget {
                 cursorWidth: 2,                
                 maxLines: null,
                 style: TextStyle(
+                    height: 1.25,
                     fontSize: 17.0,
                     fontWeight: FontWeight.w600,
                     color: JuntoPalette.juntoGrey)),)

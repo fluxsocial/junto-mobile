@@ -16,8 +16,8 @@ class BottomNavCreate extends StatelessWidget {
 
         Column(
           mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-
+          children: 
+              [
                 Container(
                   alignment: Alignment.center,
                   color: Colors.white,
@@ -45,9 +45,9 @@ class BottomNavCreate extends StatelessWidget {
               height: 45,
               color: Colors.white,
               // margin: EdgeInsets.only(top: 15.0),
-              child: Icon(CustomIcons.lotus, color: JuntoPalette.juntoBlue)
-                  
-                
+              child: IconButton(
+                onPressed: () => Navigator.pushReplacementNamed(context, '/'),
+                icon: Icon(CustomIcons.lotus, color: JuntoPalette.juntoBlue, size: 30))                              
             ),
           ]
         ),
