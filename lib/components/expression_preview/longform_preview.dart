@@ -43,6 +43,8 @@ class LongformPreview extends StatelessWidget {
           Text(
             body,
             textAlign: TextAlign.left,
+            maxLines: 4,
+            overflow: TextOverflow.ellipsis,
             style: JuntoStyles.longformBody,
           ),
         ],

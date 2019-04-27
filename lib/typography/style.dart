@@ -9,6 +9,9 @@ import './palette.dart';
 
 
 class JuntoStyles {
+  // Global Stles
+  static const horizontalPadding = EdgeInsets.symmetric(horizontal: 10);
+
   // Styles for app bar
   static const appbarTitle = TextStyle(
       color: JuntoPalette.juntoSleek,

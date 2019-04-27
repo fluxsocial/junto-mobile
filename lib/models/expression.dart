@@ -92,7 +92,20 @@ class Expression {
           channelOne: 'holochain',
           channelTwo: 'junto',
           channelThree: ''          
-        ),        
+        ),      
+
+        Expression(
+            expressionType: 'longform',
+            time: '2',
+            title: 'The Medium is the Message: Rebalancing Our Relationship With Technology',
+            body: 'The forms we communicate through are just as important as the message itself. The evolution of social media starts with revisiting the fundamentals and redesigning them in more humane ways.  The forms we communicate through are just as important as the message itself. The evolution of social media starts with revisiting the fundamentals and redesigning them in more humane ways  The forms we communicate through are just as important as the message itself. The evolution of social media starts with revisiting the fundamentals and redesigning them in more humane ways  The forms we communicate through are just as important as the message itself. The evolution of social media starts with revisiting the fundamentals and redesigning them in more humane ways',
+            image: null,
+            imageCaption: null, 
+            shortformText: null,
+            channelOne: 'technology',
+            channelTwo: 'design',
+            channelThree: 'authenticity'
+        ),          
       ];
     }
 }
