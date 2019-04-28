@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../components/appbar/appbar_border/appbar_border.dart';
 import '../../typography/palette.dart';
-import '../../typography/style.dart';
+import './expression_open_bottomnav/expression_open_bottomnav.dart';
 import '../../custom_icons.dart';
-import '../../components/bottom_nav/bottom_nav.dart';
 import './longform_open.dart';
 
 class ExpressionOpen extends StatelessWidget {
@@ -212,54 +211,12 @@ class ExpressionOpen extends StatelessWidget {
               ]),
             ),
 
-      Container(
-        constraints: BoxConstraints(
-          maxHeight: 250,
-        ),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            border:
-                Border(top: BorderSide(width: 1, color: Color(0xffeeeeee)))),
-        // color: Colors.white,
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-        child: Container(
-          decoration: BoxDecoration(
-              color: Color(0xffeeeeee),
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-          padding: EdgeInsets.only(left: 10, right: 10),
-          // color: Color(0xffeeeeee),
-          child: TextField(
-              style: TextStyle(fontSize: 17),
-              maxLines: null,
-              keyboardType: TextInputType.text,
-              decoration: InputDecoration(
-                  border: InputBorder.none, hintText: 'Reply to Eric')),
-        ),
-      ),            
+            ExpressionOpenBottomnav()     
           ],
 
           
         ),
       ),
-      // bottomNavigationBar: 
-      // Container(
-      //   decoration: BoxDecoration(
-      //       color: Colors.white,
-      //       border:
-      //           Border(top: BorderSide(width: 1, color: Color(0xffeeeeee)))),
-      //   // color: Colors.white,
-      //   padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-      //   child: Container(
-      //     decoration: BoxDecoration(
-      //         color: Color(0xffeeeeee),
-      //         borderRadius: BorderRadius.all(Radius.circular(10))),
-      //     padding: EdgeInsets.symmetric(horizontal: 10),
-      //     // color: Color(0xffeeeeee),
-      //     child: TextField(
-      //         decoration: InputDecoration(
-      //             border: InputBorder.none, hintText: 'Reply to Eric')),
-      //   ),
-      // ),
     );
   }
 }
