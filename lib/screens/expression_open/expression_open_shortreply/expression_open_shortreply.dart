@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ExpressionOpenBottomnav extends StatelessWidget {
+class ExpressionOpenShortreply extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
