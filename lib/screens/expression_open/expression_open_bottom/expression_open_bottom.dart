@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../custom_icons.dart';
+import './../expression_open_channel/expression_open_channel.dart';
 
 class ExpressionOpenBottom extends StatelessWidget {
 
@@ -12,6 +13,27 @@ class ExpressionOpenBottom extends StatelessWidget {
 
   ExpressionOpenBottom({this.channelOne, this.channelTwo, this.channelThree, this.time});
 
+  _buildChannels() {
+    if (channelOne == '' && channelTwo == '' && channelThree == '') {
+      return Container(
+        height: 0,
+        width: 0
+      );
+    } else {
+      return 
+        Container(
+          margin: EdgeInsets.only(bottom: 2.5),
+          child: 
+            Row(
+              children: <Widget>[
+                ExpressionOpenChannel(channelOne),
+                ExpressionOpenChannel(channelTwo),
+                ExpressionOpenChannel(channelThree)
+              ],
+            ),
+        );
+    }
+  }
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -31,31 +53,8 @@ class ExpressionOpenBottom extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.only(right: 5),
-                          child: Text('#' + channelOne,
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700)),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(right: 5),
-                          child: Text('#' + channelTwo,
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700)),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(right: 5),
-                          child: Text('#' + channelThree,
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700)),
-                        ),
-                      ],
-                    ),
+                    _buildChannels(),
+
                     Text(time,
                         style: TextStyle(
                             fontSize: 14,
