@@ -55,11 +55,11 @@ class ExpressionOpenBottom extends StatelessWidget {
                   children: <Widget>[
                     _buildChannels(),
 
-                    Text(time,
+                    Text(time + ' MINUTES AGO',
                         style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xff555555)))
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xff333333),),),
                   ],
                 ),
 
