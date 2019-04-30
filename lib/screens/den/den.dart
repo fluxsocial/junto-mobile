@@ -72,29 +72,33 @@ class JuntoDen extends StatelessWidget {
                   width: MediaQuery.of(context).size.width),
 
               Container(
-                padding: EdgeInsets.only(top: 10, left: 10, right: 10),
+                padding: EdgeInsets.only(top: 10),
                 color: Colors.white,
                 width: MediaQuery.of(context).size.width,
                 child: Column(children: [
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('ERIC YANG',
-                                  style: TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w700)),
-                              Text('sunyata',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                  ))
-                            ]),
-                        Icon(Icons.edit, size: 14)
-                      ]),
                   Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('ERIC YANG',
+                                    style: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w700)),
+                                Text('sunyata',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                    ))
+                              ]),
+                          Icon(Icons.edit, size: 14)
+                        ]),
+                  ),
+                  Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
                       margin: EdgeInsets.only(top: 10, bottom: 10),
                       // color: Colors.blue,
                       width: MediaQuery.of(context).size.width,
@@ -105,6 +109,7 @@ class JuntoDen extends StatelessWidget {
                             fontWeight: FontWeight.w500,
                           ))),
                   Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
                       margin: EdgeInsets.only(bottom: 10),
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -134,17 +139,7 @@ class JuntoDen extends StatelessWidget {
                                 shrinkWrap: true,
                                 physics: ClampingScrollPhysics(),
                                 children: model.expressions
-                                    .map((expression) => ExpressionPreview(
-                                      expression
-                                        // expression.expressionType,
-                                        // expression.time,
-                                        // expression.title,
-                                        // expression.body,
-                                        // expression.image,
-                                        // expression.channelOne,
-                                        // expression.channelTwo,
-                                        // expression.channelThree
-                                        ))
+                                    .map((expression) => ExpressionPreview(expression))
                                     .toList(),
                               ))
 
