@@ -1,12 +1,9 @@
 
 import 'package:flutter/material.dart';
 
-// typography
-import './../../typography/palette.dart';
 
 // appbar + bottom nav
 import '../../components/appbar/appbar.dart';
-import '../../components/appbar/appbar_border/appbar_border.dart';
 import './../../components/bottom_nav/bottom_nav.dart';
 
 // pack preview + model
@@ -38,14 +35,11 @@ class _JuntoPackState extends State {
 
     return Scaffold(
       backgroundColor: Colors.white,
-        appBar: JuntoAppBar.getJuntoAppBar('assets/images/junto-mobile__logo--pack.png', 'PACKS'),
+        appBar: JuntoAppBar.getJuntoAppBar('assets/images/junto-mobile__logo--pack.png', 'PACKS', Colors.red),
 
         body: Column(
           children: <Widget>[
             
-            // App bar border
-            AppbarBorder(JuntoPalette.juntoPurple),
-
             // My Pack
             Container(
               height: 90.0,

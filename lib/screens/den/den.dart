@@ -8,7 +8,6 @@ import './../../typography/palette.dart';
 
 // appbar + bottom nav
 import '../../components/appbar/appbar.dart';
-import '../../components/appbar/appbar_border/appbar_border.dart';
 import './../../components/bottom_nav/bottom_nav.dart';
 
 import './../../components/expression_preview/expression_preview.dart';
@@ -18,7 +17,7 @@ class JuntoDen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: JuntoAppBar.getJuntoAppBar(
-          'assets/images/junto-mobile__logo--den.png', 'DEN'),
+          'assets/images/junto-mobile__logo--den.png', 'DEN', JuntoPalette.juntoGrey),
       body: ListView(children: [
         Container(
           constraints: BoxConstraints(
@@ -27,8 +26,6 @@ class JuntoDen extends StatelessWidget {
           color: Colors.white,
           child: Column(
             children: <Widget>[
-              // App bar border
-              AppbarBorder(JuntoPalette.juntoGrey),
 
               // Den cover photo
               Container(

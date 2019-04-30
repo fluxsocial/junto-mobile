@@ -6,7 +6,7 @@ import '../../../typography/palette.dart';
 class ExpressionOpenProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+
     return 
         Container(
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),

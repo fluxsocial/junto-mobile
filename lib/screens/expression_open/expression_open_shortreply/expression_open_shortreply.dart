@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class ExpressionOpenShortreply extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+
     return Container(
       constraints: BoxConstraints(
         maxHeight: 250,
@@ -17,7 +17,7 @@ class ExpressionOpenShortreply extends StatelessWidget {
           ),
         ),
       ),
-      // color: Colors.white,
+
       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       child: Container(
         decoration: BoxDecoration(
@@ -27,7 +27,6 @@ class ExpressionOpenShortreply extends StatelessWidget {
           ),
         ),
         padding: EdgeInsets.only(left: 10, right: 10),
-        // color: Color(0xffeeeeee),
         child: TextField(
           style: TextStyle(fontSize: 17),
           maxLines: null,

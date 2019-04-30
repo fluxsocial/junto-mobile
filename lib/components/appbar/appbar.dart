@@ -7,12 +7,18 @@ import '../../typography/style.dart';
 
 class JuntoAppBar {
 
-   static getJuntoAppBar(_juntoAppBarLogo, _juntoAppBarTitle) {
+   static getJuntoAppBar(_juntoAppBarLogo, _juntoAppBarTitle, _juntoAppBarBorder) {
     return PreferredSize(
       preferredSize: Size.fromHeight(45.0),
       child: AppBar(
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(1.5),
+          child: Container(
+            height: 1.5,
+            color: _juntoAppBarBorder
+          )
+        ),
         backgroundColor: JuntoPalette.juntoWhite,
-        // backgroundColor: Colors.blue,
         brightness: Brightness.light,
         elevation: 0,
         title:

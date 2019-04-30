@@ -6,7 +6,6 @@ import './../../typography/palette.dart';
 
 // app bar + bottom nav
 import '../../components/appbar/appbar.dart';
-import '../../components/appbar/appbar_border/appbar_border.dart';
 import '../../components/bottom_nav/bottom_nav.dart';
 
 // perspective view + model
@@ -37,31 +36,10 @@ class _JuntoPerspectivesState extends State {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: JuntoAppBar.getJuntoAppBar('assets/images/junto-mobile__logo--den.png', 'PERSPECTIVES'),
+      appBar: JuntoAppBar.getJuntoAppBar('assets/images/junto-mobile__logo--den.png', 'PERSPECTIVES', JuntoPalette.juntoGrey),
 
         body: Column(
-          children: <Widget>[
-            
-            // App bar border
-            AppbarBorder(JuntoPalette.juntoGrey),
-
-            // Expanded(child: ListView(
-            //   children: 
-            //     // Collective perspective widget
-            //     PerspectiveTemplate('COLLECTIVE'),
-
-            //     // Selective perspective widget
-            //     PerspectiveTemplate('SELECTIVE'),
-
-            //     perspectives.map((perspective) => PerspectiveTemplate(perspective.perspectiveTitle)).toList(),
-
-
-              
-            // ),)
-
-
-            // PerspectivePreview('COLLECTIVE'),
-            // PerspectivePreview('SELECTIVE'),
+          children: <Widget>[        
 
             FilterPerspectives(),
 

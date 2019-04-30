@@ -8,7 +8,6 @@ import '../../typography/palette.dart';
 
 // app bar + bottom nav
 import '../../components/appbar/appbar.dart';
-import '../../components/appbar/appbar_border/appbar_border.dart';
 import './../../components/bottom_nav/bottom_nav.dart';
 
 // filter channel
@@ -23,14 +22,12 @@ class JuntoCollective extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: JuntoAppBar.getJuntoAppBar(
-            'assets/images/junto-mobile__logo--collective.png', 'JUNTO'),
+            'assets/images/junto-mobile__logo--collective.png', 'JUNTO', JuntoPalette.juntoBlue),
         body: Container(
           decoration: BoxDecoration(color: JuntoPalette.juntoWhite),
           child: Column(
             children: <Widget>[
-              // App bar border
-              AppbarBorder(JuntoPalette.juntoBlue),
-
+              
               // perspectives
               Container(
                 height: 75.0,

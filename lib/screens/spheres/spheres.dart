@@ -6,7 +6,6 @@ import './../../typography/palette.dart';
 
 // app bar + bottom nav
 import '../../components/appbar/appbar.dart';
-import '../../components/appbar/appbar_border/appbar_border.dart';
 import './../../components/bottom_nav/bottom_nav.dart';
 
 // sphere preview + model
@@ -36,13 +35,10 @@ class _JuntoSpheresState extends State {
 
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: JuntoAppBar.getJuntoAppBar('assets/images/junto-mobile__logo--spheres.png', 'SPHERES'),
+        appBar: JuntoAppBar.getJuntoAppBar('assets/images/junto-mobile__logo--spheres.png', 'SPHERES', JuntoPalette.juntoGreen),
 
         body: Column(
           children: <Widget>[
-            // App bar border
-            AppbarBorder(JuntoPalette.juntoGreen),
-
             // Search spheres text field
             FilterSpheres(),
 

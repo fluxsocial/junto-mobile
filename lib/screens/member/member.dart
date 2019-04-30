@@ -8,7 +8,6 @@ import './../../typography/palette.dart';
 import './../../custom_icons.dart';
 
 // appbar + bottom nav
-import '../../components/appbar/appbar.dart';
 import '../../components/appbar/appbar_border/appbar_border.dart';
 import './../../components/bottom_nav/bottom_nav.dart';
 
@@ -23,6 +22,7 @@ class JuntoMember extends StatelessWidget {
           preferredSize: Size.fromHeight(45.0),
           child: AppBar(
             bottom: PreferredSize(
+              preferredSize: Size.fromHeight(1.5),
               child: Container(
                 height: 1.5,
                 color: JuntoPalette.juntoGrey

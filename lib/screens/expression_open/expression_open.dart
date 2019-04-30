@@ -15,7 +15,6 @@ class ExpressionOpen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
 
     _buildExpression() {
       if (expression.expressionType == 'longform') {
