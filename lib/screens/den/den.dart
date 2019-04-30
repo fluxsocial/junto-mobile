@@ -79,7 +79,7 @@ class JuntoDen extends StatelessWidget {
                           Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('ERIC YANG',
+                                Text('Eric Yang',
                                     style: TextStyle(
                                         fontSize: 17,
                                         fontWeight: FontWeight.w700)),
