@@ -62,8 +62,6 @@ class JuntoDen extends StatelessWidget {
                     ),
                   ),
                 ),
-
-                // Text('hello', style: TextStyle(fontSize: 24.0, color: Colors.white))
               ),
 
               Container(
@@ -109,7 +107,8 @@ class JuntoDen extends StatelessWidget {
                             fontWeight: FontWeight.w500,
                           ))),
                   Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Color(0xffeeeeee), width: 1))),
+                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                       margin: EdgeInsets.only(bottom: 10),
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
