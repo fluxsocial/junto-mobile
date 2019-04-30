@@ -22,6 +22,12 @@ class JuntoMember extends StatelessWidget {
         PreferredSize(
           preferredSize: Size.fromHeight(45.0),
           child: AppBar(
+            bottom: PreferredSize(
+              child: Container(
+                height: 1.5,
+                color: JuntoPalette.juntoGrey
+              )
+            ),
             automaticallyImplyLeading: false,
             brightness: Brightness.light,
             iconTheme: IconThemeData(color: JuntoPalette.juntoSleek),
