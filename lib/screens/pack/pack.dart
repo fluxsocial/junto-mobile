@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import '../../components/appbar/appbar.dart';
 import './../../components/bottom_nav/bottom_nav.dart';
 
+import './../../typography/palette.dart';
+
 // pack preview + model
 import '../../models/pack.dart';
 import './pack_preview.dart';
@@ -35,7 +37,7 @@ class _JuntoPackState extends State {
 
     return Scaffold(
       backgroundColor: Colors.white,
-        appBar: JuntoAppBar.getJuntoAppBar('assets/images/junto-mobile__logo--pack.png', 'PACKS', Colors.red),
+        appBar: JuntoAppBar.getJuntoAppBar('assets/images/junto-mobile__logo--pack.png', 'PACKS', JuntoPalette.juntoPurple),
 
         body: Column(
           children: <Widget>[
