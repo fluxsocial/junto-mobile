@@ -12,7 +12,7 @@ class SpherePreview extends StatelessWidget {
 
     return 
             Container(
-              height: 90.0,
+              height: 75.0,
               padding: EdgeInsets.symmetric(horizontal: 17.0),
               color: Colors.white,
               foregroundDecoration: BoxDecoration(

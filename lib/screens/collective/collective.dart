@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 import '../../components/appbar/appbar.dart';
 import './../../components/bottom_nav/bottom_nav.dart';
 import './collective_perspectives/collective_perspectives.dart';
 import './../../components/expression_preview/expression_preview.dart';
 import '../../scoped_models/scoped_expressions.dart';
-import 'package:scoped_model/scoped_model.dart';
-import '../../typography/palette.dart';
+import '../../typography/palette.dart'; 
 
 class JuntoCollective extends StatelessWidget {
 
