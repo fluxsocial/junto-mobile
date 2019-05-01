@@ -22,7 +22,7 @@ class CollectivePerspectives extends StatelessWidget {
             children: [
               Text(
                 'Collective',
-                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 17),
+                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
               ),                      
 
               GestureDetector(

@@ -13,8 +13,8 @@ class PackPreview extends StatelessWidget {
     return 
             // My Pack
             Container(
-              height: 90.0,
-              padding: EdgeInsets.symmetric(horizontal: 17.0),
+              height: 75.0,
+              padding: EdgeInsets.symmetric(horizontal: 10.0),
               color: Colors.white,
               foregroundDecoration: BoxDecoration(
                 border: Border(
