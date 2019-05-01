@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../components/appbar/appbar.dart';
 import './../../components/bottom_nav/bottom_nav.dart';
 import './../../components/expression_preview/expression_preview.dart';
-import './../../components/filter/filter_channels/filter_channels_collective.dart';
 import '../../scoped_models/scoped_expressions.dart';
 import 'package:scoped_model/scoped_model.dart';
 import '../../typography/palette.dart';
@@ -38,7 +37,7 @@ class JuntoCollective extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Collective',
+                        'COLLECTIVE',
                         style: TextStyle(fontWeight: FontWeight.w700),
                       ),
 
@@ -54,9 +53,6 @@ class JuntoCollective extends StatelessWidget {
                     ]),
               ),
 
-              // filter by channel
-              FilterChannelCollective(),
-
               // expressions
               ScopedModelDescendant<ScopedExpressions>(
                   builder: (context, child, model) => 
@@ -66,7 +62,8 @@ class JuntoCollective extends StatelessWidget {
                         children: model.expressions
                             .map((expression) => ExpressionPreview(expression))
                             .toList(),
-                      ))
+                    ),
+              ),                   
             ],
           ),
         ),

@@ -22,27 +22,40 @@ class JuntoAppBar {
         brightness: Brightness.light,
         elevation: 0,
         title:
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Row(
-            children: <Widget>[
-              Image.asset(_juntoAppBarLogo,
-                  height: 20.0, width: 20.0),
-              Container(
-                margin: EdgeInsets.only(left: 10.0),
-                child: Text(_juntoAppBarTitle,
-                    textAlign: TextAlign.center,
-                    style: JuntoStyles.appbarTitle),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Row(
+              children: <Widget>[
+                Image.asset(_juntoAppBarLogo,
+                    height: 20.0, width: 20.0),
+                Container(
+                  margin: EdgeInsets.only(left: 10.0),
+                  child: Text(_juntoAppBarTitle,
+                      textAlign: TextAlign.center,
+                      style: JuntoStyles.appbarTitle),
+                ),
+              ],
+            ),
+
+            Row(children: <Widget>[
+              IconButton(
+                alignment: Alignment.centerRight,
+                icon: Icon(Icons.search),
+                iconSize: 20.0,
+                color: JuntoPalette.juntoSleek,
+                tooltip: 'open notifcations',
+                onPressed: () {},
               ),
-            ],
-          ),
-          IconButton(
-            alignment: Alignment.centerRight,
-            icon: Icon(CustomIcons.moon),
-            iconSize: 20.0,
-            color: JuntoPalette.juntoSleek,
-            tooltip: 'open notifcations',
-            onPressed: () {},
-          ),
+
+              IconButton(
+                alignment: Alignment.centerRight,
+                icon: Icon(CustomIcons.moon),
+                iconSize: 20.0,
+                color: JuntoPalette.juntoSleek,
+                tooltip: 'open notifcations',
+                onPressed: () {},
+              ),
+            ],)
+
         ]),
       ),
     );
