@@ -27,7 +27,7 @@ class JuntoCollective extends StatelessWidget {
               Container(
                 height: 75.0,
                 color: JuntoPalette.juntoWhite,
-                padding: EdgeInsets.symmetric(horizontal: 17.0),
+                padding: EdgeInsets.symmetric(horizontal: 10.0),
                 foregroundDecoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(width: .75, color: Color(0xffeeeeee)),

@@ -22,9 +22,13 @@ class JuntoAppBar {
         brightness: Brightness.light,
         elevation: 0,
         title:
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+
+          Row(
+          
+          mainAxisAlignment: MainAxisAlignment.spaceBetween, 
+          children: [
             Row(
-              children: <Widget>[
+              children: <Widget>[                
                 Image.asset(_juntoAppBarLogo,
                     height: 20.0, width: 20.0),
                 Container(
@@ -37,23 +41,15 @@ class JuntoAppBar {
             ),
 
             Row(children: <Widget>[
-              IconButton(
-                alignment: Alignment.centerRight,
-                icon: Icon(Icons.search),
-                iconSize: 20.0,
-                color: JuntoPalette.juntoSleek,
-                tooltip: 'open notifcations',
-                onPressed: () {},
+
+              Container(                
+                child: Icon(Icons.search, color: JuntoPalette.juntoSleek, size: 20),
               ),
 
-              IconButton(
-                alignment: Alignment.centerRight,
-                icon: Icon(CustomIcons.moon),
-                iconSize: 20.0,
-                color: JuntoPalette.juntoSleek,
-                tooltip: 'open notifcations',
-                onPressed: () {},
-              ),
+              Container(
+                margin: EdgeInsets.only(left: 10),
+                child: Icon(CustomIcons.moon, color: JuntoPalette.juntoSleek, size: 20),
+              )              
             ],)
 
         ]),
