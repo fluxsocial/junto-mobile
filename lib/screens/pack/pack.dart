@@ -33,22 +33,19 @@ class _JuntoPackState extends State {
       backgroundColor: Colors.white,
         appBar: JuntoAppBar.getJuntoAppBar('assets/images/junto-mobile__logo--pack.png', 'PACKS', JuntoPalette.juntoPurple),
 
-        body:
-        
-        ListView(
-          children: <Widget>[
-                        
-            MyPackPreview(),
-            
-            ListView(
-                physics: ClampingScrollPhysics(),
-                shrinkWrap: true,
-                children: packs.map((pack) => PackPreview(pack.packTitle, pack.packUser)).toList()
-              )
-            
-            
-          ],
-        ),
+        body:          
+          ListView(
+            children: <Widget>[
+                          
+              MyPackPreview(),
+              
+              ListView(
+                  physics: ClampingScrollPhysics(),
+                  shrinkWrap: true,
+                  children: packs.map((pack) => PackPreview(pack.packTitle, pack.packUser)).toList()
+                )              
+            ],
+          ),
         bottomNavigationBar: BottomNav());
   }
 }
