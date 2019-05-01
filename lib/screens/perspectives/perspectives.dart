@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 import '../../components/appbar/appbar.dart';
 import '../../components/bottom_nav/bottom_nav.dart';
-import '../../components/filter/filter_perspectives/filter_perspectives.dart';
 import '../../models/perspective.dart';
+import './perspectives__create/perspectives__create.dart';
 import './perspective_preview.dart';
 import './../../typography/palette.dart';
 
@@ -16,7 +16,6 @@ class JuntoPerspectives extends StatefulWidget {
 }
 
 class _JuntoPerspectivesState extends State {
-
   List perspectives;
 
   @override
@@ -35,23 +34,8 @@ class _JuntoPerspectivesState extends State {
 
         body: ListView(
           children: <Widget>[        
-            Container(
-              height: 75,
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              decoration: BoxDecoration(border: 
-                Border(bottom: BorderSide(color: Color(0xffeeeeee), width: 1))
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text('Create a perspective', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: JuntoPalette.juntoGrey)),
-                  Container(
-                    child: Icon(Icons.add_circle_outline, size: 17, color: JuntoPalette.juntoGrey)
-                  )
-                ],
-              )
-            ),
+
+            PerspectivesCreate(),
 
             ListView(
               physics: ClampingScrollPhysics(),
