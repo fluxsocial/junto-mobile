@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../../typography/style.dart';
 import '../../custom_icons.dart';
 
+import '../../screens/member/member.dart';
+
 class PreviewProfile extends StatelessWidget {
   final String handle;
 
@@ -33,10 +35,18 @@ class PreviewProfile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    'Eric Yang',
-                    style: JuntoStyles.expressionPreviewName,
+                  GestureDetector(
+                    onTap: () => {
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => JuntoMember()
+                      ))
+                    },
+                    child: Text(
+                      'Eric Yang',
+                      style: JuntoStyles.expressionPreviewName,
+                    ),
                   ),
+                  
                   Text(handle, style: JuntoStyles.expressionPreviewHandle)
                 ],
               ),

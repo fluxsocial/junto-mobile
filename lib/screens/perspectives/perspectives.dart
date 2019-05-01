@@ -1,18 +1,12 @@
 
 import 'package:flutter/material.dart';
 
-// typography
-import './../../typography/palette.dart';
-
-// app bar + bottom nav
 import '../../components/appbar/appbar.dart';
-import '../../components/appbar/appbar_border/appbar_border.dart';
 import '../../components/bottom_nav/bottom_nav.dart';
-
-// perspective view + model
 import '../../models/perspective.dart';
+import './perspectives__create/perspectives__create.dart';
 import './perspective_preview.dart';
-import '../../components/filter/filter_perspectives/filter_perspectives.dart';
+import './../../typography/palette.dart';
 
 class JuntoPerspectives extends StatefulWidget {
   @override
@@ -22,7 +16,6 @@ class JuntoPerspectives extends StatefulWidget {
 }
 
 class _JuntoPerspectivesState extends State {
-
   List perspectives;
 
   @override
@@ -37,42 +30,20 @@ class _JuntoPerspectivesState extends State {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: JuntoAppBar.getJuntoAppBar('assets/images/junto-mobile__logo--den.png', 'PERSPECTIVES'),
+      appBar: JuntoAppBar.getJuntoAppBar('assets/images/junto-mobile__logo--den.png', 'PERSPECTIVES', JuntoPalette.juntoGrey),
 
-        body: Column(
-          children: <Widget>[
-            
-            // App bar border
-            AppbarBorder(JuntoPalette.juntoGrey),
+        body: ListView(
+          children: <Widget>[        
 
-            // Expanded(child: ListView(
-            //   children: 
-            //     // Collective perspective widget
-            //     PerspectiveTemplate('COLLECTIVE'),
+            PerspectivesCreate(),
 
-            //     // Selective perspective widget
-            //     PerspectiveTemplate('SELECTIVE'),
-
-            //     perspectives.map((perspective) => PerspectiveTemplate(perspective.perspectiveTitle)).toList(),
-
-
-              
-            // ),)
-
-
-            // PerspectivePreview('COLLECTIVE'),
-            // PerspectivePreview('SELECTIVE'),
-
-            FilterPerspectives(),
-
-            Expanded(
-
-              child: ListView(
+            ListView(
+              physics: ClampingScrollPhysics(),
+              shrinkWrap: true,
               children:               
                 perspectives.map((perspective) => 
                 PerspectivePreview(perspective.perspectiveTitle)).toList(),
-            ))                
-            
+            )                          
           ],
         ),
 

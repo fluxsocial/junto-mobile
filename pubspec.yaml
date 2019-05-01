@@ -82,6 +82,10 @@ flutter:
       fonts:
       - asset: assets/fonts/j_home.ttf
 
+    - family:  back_arrow_left
+      fonts:
+      - asset: assets/fonts/j_home.ttf      
+
     - family:  MyFlutterApp
       fonts:
       - asset: assets/fonts/MyFlutterApp.ttf

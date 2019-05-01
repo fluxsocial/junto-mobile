@@ -7,37 +7,54 @@ import '../../typography/style.dart';
 
 class JuntoAppBar {
 
-   static getJuntoAppBar(_juntoAppBarLogo, _juntoAppBarTitle) {
+   static getJuntoAppBar(_juntoAppBarLogo, _juntoAppBarTitle, _juntoAppBarBorder) {
     return PreferredSize(
       preferredSize: Size.fromHeight(45.0),
       child: AppBar(
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(1.5),
+          child: Container(
+            height: 1.5,
+            color: _juntoAppBarBorder
+          )
+        ),
         backgroundColor: JuntoPalette.juntoWhite,
-        // backgroundColor: Colors.blue,
         brightness: Brightness.light,
         elevation: 0,
+        titleSpacing: 0.0,
         title:
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Row(
-            children: <Widget>[
-              Image.asset(_juntoAppBarLogo,
-                  height: 20.0, width: 20.0),
-              Container(
-                margin: EdgeInsets.only(left: 10.0),
-                child: Text(_juntoAppBarTitle,
-                    textAlign: TextAlign.center,
-                    style: JuntoStyles.appbarTitle),
-              ),
-            ],
-          ),
-          IconButton(
-            alignment: Alignment.centerRight,
-            icon: Icon(CustomIcons.moon),
-            iconSize: 20.0,
-            color: JuntoPalette.juntoSleek,
-            tooltip: 'open notifcations',
-            onPressed: () {},
-          ),
-        ]),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            child: 
+              Row(              
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,                 
+                children: [
+                  Row(
+                    children: <Widget>[                
+                      Image.asset(_juntoAppBarLogo,
+                          height: 20.0, width: 20.0),
+                      Container(
+                        margin: EdgeInsets.only(left: 7.5),
+                        child: Text(_juntoAppBarTitle,
+                            textAlign: TextAlign.center,
+                            style: JuntoStyles.appbarTitle),
+                      ),
+                    ],
+                  ),
+
+                  Row(children: <Widget>[
+
+                    Container(                
+                      child: Icon(Icons.search, color: JuntoPalette.juntoSleek, size: 20),
+                    ),
+
+                    Container(
+                      margin: EdgeInsets.only(left: 7.5),
+                      child: Icon(CustomIcons.moon, color: JuntoPalette.juntoSleek, size: 20),
+                    )              
+                  ],)
+              ]),
+          )
       ),
     );
   }

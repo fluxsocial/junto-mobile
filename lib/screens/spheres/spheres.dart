@@ -1,19 +1,13 @@
 
 import 'package:flutter/material.dart';
+// import 'package:scoped_model/scoped_model.dart';
 
-// typography
-import './../../typography/palette.dart';
-
-// app bar + bottom nav
 import '../../components/appbar/appbar.dart';
-import '../../components/appbar/appbar_border/appbar_border.dart';
 import './../../components/bottom_nav/bottom_nav.dart';
-
-// sphere preview + model
 import '../../models/sphere.dart';
+import './spheres__create/spheres__create.dart';
 import './sphere_preview.dart';
-import '../../components/filter/filter_spheres/filter_spheres.dart';
-
+import './../../typography/palette.dart';
 
 class JuntoSpheres extends StatefulWidget {
   @override
@@ -36,24 +30,27 @@ class _JuntoSpheresState extends State {
 
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: JuntoAppBar.getJuntoAppBar('assets/images/junto-mobile__logo--spheres.png', 'SPHERES'),
+        appBar: JuntoAppBar.getJuntoAppBar('assets/images/junto-mobile__logo--spheres.png', 'SPHERES', JuntoPalette.juntoGreen),
 
-        body: Column(
-          children: <Widget>[
-            // App bar border
-            AppbarBorder(JuntoPalette.juntoGreen),
+        body: 
+        Container(          
+          child: 
+            ListView(
+              children: <Widget>[
+                // Create sphere
+                SpheresCreate(),
 
-            // Search spheres text field
-            FilterSpheres(),
+                // List of spheres member belongs to
+                  ListView(
+                    shrinkWrap: true,
+                    physics: ClampingScrollPhysics(),
+                    children: spheres.map((sphere) => SpherePreview(sphere.sphereTitle, sphere.sphereMembers)).toList()
+                  )
+                                
+              ],
+            ),
+          ),
 
-            // List of spheres member belongs to
-            Expanded(
-              child: ListView(
-                children: spheres.map((sphere) => SpherePreview(sphere.sphereTitle, sphere.sphereMembers)).toList()
-              )
-            )                    
-          ],
-        ),
         bottomNavigationBar: BottomNav());
   }
 }

@@ -5,19 +5,49 @@ import '../../scoped_models/scoped_expressions.dart';
 
 // typography + icons
 import './../../typography/palette.dart';
+import './../../custom_icons.dart';
 
 // appbar + bottom nav
-import '../../components/appbar/appbar.dart';
+import '../../components/appbar/appbar_border/appbar_border.dart';
 import './../../components/bottom_nav/bottom_nav.dart';
 
 import './../../components/expression_preview/expression_preview.dart';
 
-class JuntoDen extends StatelessWidget {
+class JuntoMember extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: JuntoAppBar.getJuntoAppBar(
-          'assets/images/junto-mobile__logo--den.png', 'DEN', JuntoPalette.juntoGrey),
+      appBar: 
+        PreferredSize(
+          preferredSize: Size.fromHeight(45.0),
+          child: AppBar(
+            bottom: PreferredSize(
+              preferredSize: Size.fromHeight(1.5),
+              child: Container(
+                height: 1.5,
+                color: JuntoPalette.juntoGrey
+              )
+            ),
+            automaticallyImplyLeading: false,
+            brightness: Brightness.light,
+            iconTheme: IconThemeData(color: JuntoPalette.juntoSleek),
+            backgroundColor: Colors.white,
+            elevation: 0,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () => Navigator.pop(context),
+                  child: Icon(CustomIcons.back_arrow_left,
+                      color: JuntoPalette.juntoSleek, size: 24),
+                ),
+                Icon(CustomIcons.more,
+                    color: JuntoPalette.juntoSleek, size: 24)
+              ],
+            ),
+          ),
+        ),      
+
       body: ListView(children: [
         Container(
           constraints: BoxConstraints(
@@ -26,6 +56,8 @@ class JuntoDen extends StatelessWidget {
           color: Colors.white,
           child: Column(
             children: <Widget>[
+              // App bar border
+              AppbarBorder(JuntoPalette.juntoGrey),
 
               // Den cover photo
               Container(
@@ -79,7 +111,7 @@ class JuntoDen extends StatelessWidget {
                           Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Eric Yang',
+                                Text('ERIC YANG',
                                     style: TextStyle(
                                         fontSize: 17,
                                         fontWeight: FontWeight.w700)),
@@ -89,7 +121,31 @@ class JuntoDen extends StatelessWidget {
                                       fontWeight: FontWeight.w500,
                                     ))
                               ]),
-                          Icon(Icons.edit, size: 14)
+
+                          Row(children: <Widget>[
+                              GestureDetector(
+                                onTap: () {},
+                                child:  
+                                  Container(
+                                      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                                      decoration: BoxDecoration(border: Border.all(color: Color(0xff555555), width: 1), borderRadius: BorderRadius.circular(2)),                               
+                                      child: Text('FOLLOW', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700))
+                                    ),
+                              ),
+
+                              GestureDetector(
+                                onTap: () {},
+                                child: 
+                                  Container(
+                                    margin: EdgeInsets.only(left: 5.0),
+                                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                                    decoration: BoxDecoration(border: Border.all(color: Color(0xff555555), width: 1), borderRadius: BorderRadius.circular(2)),                               
+                                    child: Text('JOIN PACK', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700))
+                                  ),                                    
+                              )                      
+                          ],)
+
+                       
                         ]),
                   ),
                   Container(
