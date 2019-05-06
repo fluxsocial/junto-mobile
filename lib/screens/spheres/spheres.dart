@@ -1,29 +1,15 @@
 
 import 'package:flutter/material.dart';
-// import 'package:scoped_model/scoped_model.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 import '../../components/appbar/appbar.dart';
 import './../../components/bottom_nav/bottom_nav.dart';
-import '../../models/sphere.dart';
+import '../../scoped_models/scoped_user.dart';
 import './spheres__create/spheres__create.dart';
 import './sphere_preview.dart';
 import './../../typography/palette.dart';
 
-class JuntoSpheres extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _JuntoSpheresState();
-  }
-}
-
-class _JuntoSpheresState extends State {
-  List spheres; 
-  @override
-  void initState() {
-    super.initState();
-
-    spheres = Sphere.fetchAll();
-  }
+class JuntoSpheres extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
@@ -40,13 +26,15 @@ class _JuntoSpheresState extends State {
                 // Create sphere
                 SpheresCreate(),
 
+                ScopedModelDescendant<ScopedUser> (
                 // List of spheres member belongs to
+                  builder: (context, child, model) => 
                   ListView(
                     shrinkWrap: true,
                     physics: ClampingScrollPhysics(),
-                    children: spheres.map((sphere) => SpherePreview(sphere.sphereTitle, sphere.sphereMembers)).toList()
+                    children: model.spheres.map((sphere) => SpherePreview(sphere.sphereTitle, sphere.sphereMembers)).toList()
                   )
-                                
+                )                                
               ],
             ),
           ),

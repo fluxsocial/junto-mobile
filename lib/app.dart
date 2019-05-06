@@ -2,8 +2,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:scoped_model/scoped_model.dart';
-import 'scoped_models/scoped_expressions.dart';
-
+import 'scoped_models/scoped_user.dart';
 import './screens/collective/collective.dart';
 import './screens/spheres/spheres.dart';
 import './screens/pack/pack.dart';
@@ -17,7 +16,7 @@ class JuntoApp extends StatelessWidget {
 
     return 
       ScopedModel(
-        model: ScopedExpressions(),
+        model: ScopedUser(),
         child:       
           MaterialApp(
             theme: ThemeData(

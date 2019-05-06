@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:scoped_model/scoped_model.dart';
-import '../../scoped_models/scoped_expressions.dart';
+import '../../scoped_models/scoped_user.dart';
 
 // typography + icons
 import './../../typography/palette.dart';
@@ -186,11 +186,11 @@ class JuntoMember extends StatelessWidget {
                         // ),
                       ])),
 
-                      ScopedModelDescendant<ScopedExpressions>(
+                      ScopedModelDescendant<ScopedUser>(
                           builder: (context, child, model) => ListView(
                                 shrinkWrap: true,
                                 physics: ClampingScrollPhysics(),
-                                children: model.expressions
+                                children: model.collectiveExpressions
                                     .map((expression) => ExpressionPreview(expression))
                                     .toList(),
                               ))
