@@ -1,9 +1,9 @@
 
 import 'package:flutter/material.dart';
 
-import './sign_up_two/sign_up_two.dart';
+import '../../collective/collective.dart';
 
-class SignUp extends StatelessWidget {
+class SignUpFour extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +34,7 @@ class SignUp extends StatelessWidget {
                     children: <Widget> [
                       Container(                
                         margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * .17),
-                        child: Text('Hey, great to have you here. What is your name?',
+                        child: Text('We are almost done! Feel free to upload a photo and write a brief bio of who you are',
                           style: TextStyle(color: Colors.white, fontSize: 27)
                         )
                       ),   
@@ -52,32 +52,13 @@ class SignUp extends StatelessWidget {
                                         borderSide: BorderSide(color: Colors.white)
                                       ),
                                       labelStyle: TextStyle(color: Colors.green),
-                                      hintText: 'FIRST NAME',
+                                      hintText: 'A LITTLE BIT ABOUT MYSELF..',
                                       hintStyle: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w400),
                                       fillColor: Colors.white,
                                   ),
                                   style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w500)
                                 )
                             ),
-
-                            Container(
-                              child: 
-                                TextField(
-                                  decoration: InputDecoration(
-                                      enabledBorder: InputBorder.none,
-                                      focusedBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.white)
-                                      ),
-                                      labelStyle: TextStyle(color: Colors.green),
-                                      hintText: 'LAST NAME',
-                                      hintStyle: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w400),
-                                      fillColor: Colors.white,
-                                  ),
-
-                                  style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w500)
-
-                                )
-                            ),    
                           ]
                         )
                       )                
@@ -99,27 +80,21 @@ class SignUp extends StatelessWidget {
             right: 20,
             child: Row(
               children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(right: 17),
-                  child: GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(Icons.arrow_left, color: Colors.white, size: 27),
-                    ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Icon(Icons.arrow_left, color: Colors.white, size: 22),
                 ),
-
+              
                 GestureDetector(
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => SignUpTwo()
+                      builder: (context) => JuntoCollective()
                     ));
                   },
-
-                child: Icon(Icons.arrow_right, color: Colors.white, size: 27),
-
-                ),
-              ],
+                  child: Icon(Icons.arrow_right, color: Colors.white, size: 22),
+                ),                ],
             )
           ),                            
         ])

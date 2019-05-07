@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
 
+import '../sign_up_four/sign_up_four.dart';
+
 class SignUpThree extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -85,7 +87,14 @@ class SignUpThree extends StatelessWidget {
                   child: Icon(Icons.arrow_left, color: Colors.white, size: 22),
                 ),
               
-                Icon(Icons.arrow_right, color: Colors.white, size: 22),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => SignUpFour()
+                    ));
+                  },
+                  child: Icon(Icons.arrow_right, color: Colors.white, size: 22),
+                ),                
               ],
             )
           ),                            
