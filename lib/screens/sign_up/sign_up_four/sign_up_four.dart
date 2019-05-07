@@ -52,7 +52,7 @@ class SignUpFour extends StatelessWidget {
                                         borderSide: BorderSide(color: Colors.white)
                                       ),
                                       labelStyle: TextStyle(color: Colors.green),
-                                      hintText: 'A LITTLE BIT ABOUT MYSELF..',
+                                      hintText: 'A LITTLE BIT ABOUT MYSELF...',
                                       hintStyle: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w400),
                                       fillColor: Colors.white,
                                   ),
@@ -89,7 +89,7 @@ class SignUpFour extends StatelessWidget {
               
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(
+                    Navigator.pushReplacement(context, MaterialPageRoute(
                       builder: (context) => JuntoCollective()
                     ));
                   },
