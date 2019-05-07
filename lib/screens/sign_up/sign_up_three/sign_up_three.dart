@@ -1,9 +1,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../sign_up_three/sign_up_three.dart';
-
-class SignUpTwo extends StatelessWidget {
+class SignUpThree extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +32,7 @@ class SignUpTwo extends StatelessWidget {
                     children: <Widget> [
                       Container(                
                         margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * .17),
-                        child: Text('What username would you like to reserve?',
+                        child: Text('Create a password. Make sure it is secure!',
                           style: TextStyle(color: Colors.white, fontSize: 27)
                         )
                       ),   
@@ -52,7 +50,7 @@ class SignUpTwo extends StatelessWidget {
                                         borderSide: BorderSide(color: Colors.white)
                                       ),
                                       labelStyle: TextStyle(color: Colors.green),
-                                      hintText: 'USERNAME',
+                                      hintText: 'PASSWORD',
                                       hintStyle: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w400),
                                       fillColor: Colors.white,
                                   ),
@@ -87,14 +85,8 @@ class SignUpTwo extends StatelessWidget {
                   child: Icon(Icons.arrow_left, color: Colors.white, size: 22),
                 ),
               
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => SignUpThree()
-                    ));
-                  },
-                  child: Icon(Icons.arrow_right, color: Colors.white, size: 22),
-                ),              ],
+                Icon(Icons.arrow_right, color: Colors.white, size: 22),
+              ],
             )
           ),                            
         ])
