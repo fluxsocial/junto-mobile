@@ -6,10 +6,7 @@ class SignIn extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      // appBar: AppBar(
-      //   elevation: 0,
-      //   backgroundColor: Colors.transparent
-      // ),
+
       body: Stack(
         children: [
           Container(
@@ -47,9 +44,7 @@ class SignIn extends StatelessWidget {
                           hintStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w400),
                           fillColor: Colors.white,
                       ),
-
                       style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w500)
-
                     )
                 ),
 
@@ -75,8 +70,6 @@ class SignIn extends StatelessWidget {
                     )
                 ),                                                
             ],)
-
-
           ),
 
           Positioned(

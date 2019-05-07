@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../typography/palette.dart';
 import '../sign_in/sign_in.dart';
+import '../sign_up/sign_up.dart';
 
 class Welcome extends StatelessWidget {
   @override
@@ -30,7 +31,7 @@ class Welcome extends StatelessWidget {
             Column(
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 120, bottom: 17),
+                  margin: EdgeInsets.only(top: 120, bottom: 23),
                   child: Image.asset('assets/images/junto-mobile__logo--white.png', height: 69)
                 ),
 
@@ -51,7 +52,9 @@ class Welcome extends StatelessWidget {
                 margin: EdgeInsets.only(bottom: 30),
                 child: RaisedButton(                      
                   onPressed: () {
-
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => SignUp()
+                    ));
                   },  
                   padding: EdgeInsets.symmetric(
                     horizontal: 50,
