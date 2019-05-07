@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
 
+import '../collective/collective.dart';
+
 class SignIn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -49,6 +51,7 @@ class SignIn extends StatelessWidget {
                 ),
 
                 Container(
+                  margin: EdgeInsets.only(bottom: 40),                  
                   padding: EdgeInsets.symmetric(horizontal: 45),
                   child: 
                     TextField(
@@ -68,7 +71,31 @@ class SignIn extends StatelessWidget {
                       style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w500)
 
                     )
-                ),                                                
+                ),       
+
+                Container(
+                  child: 
+                    RaisedButton(                      
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => JuntoCollective()
+                        ));
+                      },  
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 100,
+                        vertical: 20
+                      ),                        
+                      // color: Colors.white,  
+                      color: Color(0xff4968BF),
+                      child: Text('SIGN IN', 
+                        style: TextStyle(
+                          // color: JuntoPalette.juntoBlue, 
+                          color: Colors.white, 
+                          fontWeight: FontWeight.w700,
+                          fontSize: 14)),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100))
+                    )                  
+                )                                         
             ],)
           ),
 
