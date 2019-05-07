@@ -5,9 +5,11 @@ import '../../components/appbar/appbar.dart';
 import './../../components/bottom_nav/bottom_nav.dart';
 import './collective_perspectives/collective_perspectives.dart';
 import './../../components/expression_preview/expression_preview.dart';
-import '../../scoped_models/scoped_expressions.dart';
-import '../../typography/palette.dart'; 
+import '../../scoped_models/scoped_user.dart';
+import '../../typography/palette.dart';   
 
+// This screen shows a list of public expressions that can be filtered 
+// by channel or perspective
 class JuntoCollective extends StatelessWidget {
 
   @override
@@ -28,12 +30,12 @@ class JuntoCollective extends StatelessWidget {
               CollectivePerspectives(),
 
               // expressions
-              ScopedModelDescendant<ScopedExpressions>(
+              ScopedModelDescendant<ScopedUser>(
                   builder: (context, child, model) => 
                     ListView(
                         shrinkWrap: true,
                         physics: ClampingScrollPhysics(),
-                        children: model.expressions
+                        children: model.collectiveExpressions
                             .map((expression) => ExpressionPreview(expression))
                             .toList(),
                     ),

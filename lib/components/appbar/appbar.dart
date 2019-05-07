@@ -11,6 +11,7 @@ class JuntoAppBar {
     return PreferredSize(
       preferredSize: Size.fromHeight(45.0),
       child: AppBar(
+        automaticallyImplyLeading: false, 
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(1.5),
           child: Container(
