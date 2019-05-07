@@ -137,7 +137,7 @@ class JuntoDen extends StatelessWidget {
                                 children: model.collectiveExpressions
                                     .map((expression) => ExpressionPreview(expression))
                                     .toList(),
-                              ))
+                      ))
 
 
 

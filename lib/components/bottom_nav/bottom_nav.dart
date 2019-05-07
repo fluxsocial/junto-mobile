@@ -8,6 +8,8 @@ import '../../screens/spheres/spheres.dart';
 import '../../screens/collective/collective.dart';
 import '../../screens/pack/pack.dart';
 import '../../screens/den/den.dart';
+import '../../screens/welcome/welcome.dart';
+
 
 class BottomNav extends StatelessWidget {
   @override
@@ -40,7 +42,7 @@ class BottomNav extends StatelessWidget {
                 padding: EdgeInsets.all(0.0),
                 onPressed: () {
                   // Navigator.pushReplacementNamed(context, '/spheres');
-                  Navigator.pushReplacement(context, CustomRoute(builder: (context) => JuntoSpheres()));
+                  Navigator.pushReplacement(context, CustomRoute(builder: (context) => Welcome()));
                 },
                 icon: Icon(
                   CustomIcons.home,

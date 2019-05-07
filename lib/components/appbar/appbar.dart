@@ -45,13 +45,14 @@ class JuntoAppBar {
                   Row(children: <Widget>[
 
                     Container(                
-                      child: Icon(Icons.search, color: JuntoPalette.juntoSleek, size: 20),
+                      child: Icon(Icons.search, color: JuntoPalette.juntoSleek, size: 20),                      
                     ),
 
                     Container(
                       margin: EdgeInsets.only(left: 7.5),
                       child: Icon(CustomIcons.moon, color: JuntoPalette.juntoSleek, size: 20),
-                    )              
+                    )   
+                              
                   ],)
               ]),
           )
