@@ -51,8 +51,7 @@ class BottomNav extends StatelessWidget {
             IconButton(
                 padding: EdgeInsets.all(0.0),
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/create');
-
+                  Navigator.pushNamed(context, '/create');
                 },
                 icon: Icon(
                   CustomIcons.lotus,

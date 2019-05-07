@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 
+import '../../screens/collective/collective.dart';
 import '../../custom_icons.dart';
 import '../../typography/palette.dart';
 
@@ -46,7 +47,8 @@ class BottomNavCreate extends StatelessWidget {
               color: Colors.white,
               // margin: EdgeInsets.only(top: 15.0),
               child: IconButton(
-                onPressed: () => Navigator.pushReplacementNamed(context, '/'),
+
+                onPressed: () => Navigator.pop(context),
                 icon: Icon(CustomIcons.lotus, color: JuntoPalette.juntoBlue, size: 30))                              
             ),
           ]

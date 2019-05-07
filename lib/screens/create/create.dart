@@ -15,15 +15,6 @@ class JuntoCreate extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Longform(),
 
-      // Center(child:
-      //   RaisedButton(
-      //     onPressed: () {
-      //       Navigator.pushReplacementNamed(context, '/');
-      //     },
-      //     child: Text('Home')
-      //   )
-      // ),
-
       bottomNavigationBar: BottomNavCreate(),
     );
   }
