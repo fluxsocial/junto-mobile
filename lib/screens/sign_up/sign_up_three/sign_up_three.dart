@@ -80,11 +80,14 @@ class SignUpThree extends StatelessWidget {
             right: 20,
             child: Row(
               children: <Widget>[
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Icon(Icons.arrow_left, color: Colors.white, size: 22),
+                Container(
+                  margin: EdgeInsets.only(right: 17),
+                  child: GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(Icons.arrow_left, color: Colors.white, size: 27),
+                    ),
                 ),
               
                 GestureDetector(
