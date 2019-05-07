@@ -2,11 +2,12 @@
 import 'package:flutter/material.dart';
 
 import '../../typography/palette.dart';
+import '../sign_in/sign_in.dart';
 
 class Welcome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+
     return Scaffold(
       body: Container(
         width: MediaQuery.of(context).size.width,
@@ -49,7 +50,9 @@ class Welcome extends StatelessWidget {
               Container(
                 margin: EdgeInsets.only(bottom: 30),
                 child: RaisedButton(                      
-                  onPressed: () {},  
+                  onPressed: () {
+
+                  },  
                   padding: EdgeInsets.symmetric(
                     horizontal: 50,
                     vertical: 20
@@ -68,60 +71,16 @@ class Welcome extends StatelessWidget {
 
               Container(
                 margin: EdgeInsets.only(bottom: 120),
-                child: Text('SIGN IN', style: TextStyle(color: Colors.white, fontSize: 14))
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => SignIn()
+                    ));
+                  },
+                  child: Text('SIGN IN', style: TextStyle(color: Colors.white, fontSize: 14))
+                  )
               ),    
-
-            ],)
-            
-         
-
-          
-            // Container(
-            //   padding: EdgeInsets.symmetric(horizontal: 45),
-            //   child: 
-            //     TextField(
-            //       decoration: InputDecoration(
-            //           enabledBorder: UnderlineInputBorder(
-            //             borderSide: BorderSide(color: Colors.white)
-            //           ),
-            //           focusedBorder: UnderlineInputBorder(
-            //             borderSide: BorderSide(color: Colors.white)
-            //           ),
-            //           labelStyle: TextStyle(color: Colors.green),
-            //           hintText: 'USERNAME',
-            //           hintStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w400),
-            //           fillColor: Colors.white,
-            //       ),
-
-            //       style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w500)
-
-            //     )
-            // ),
-
-            // Container(
-            //   padding: EdgeInsets.symmetric(horizontal: 45),
-            //   child: 
-            //     TextField(
-            //       decoration: InputDecoration(
-            //           enabledBorder: UnderlineInputBorder(
-            //             borderSide: BorderSide(color: Colors.white)
-            //           ),
-            //           focusedBorder: UnderlineInputBorder(
-            //             borderSide: BorderSide(color: Colors.white)
-            //           ),
-            //           labelStyle: TextStyle(color: Colors.green),
-            //           hintText: 'PASSWORD',
-            //           hintStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w400),
-            //           fillColor: Colors.white,
-            //       ),
-
-            //       style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w500)
-
-            //     )
-            // ),            
-
-            
-                     
+            ],)                     
         ],)
 
 
