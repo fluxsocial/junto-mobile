@@ -32,7 +32,7 @@ class SignUpTwo extends StatelessWidget {
                     children: <Widget> [
                       Container(                
                         margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * .17),
-                        child: Text('Hey, great to have you here. What is your name?',
+                        child: Text('What username would you like to reserve?',
                           style: TextStyle(color: Colors.white, fontSize: 27)
                         )
                       ),   
@@ -50,7 +50,7 @@ class SignUpTwo extends StatelessWidget {
                                         borderSide: BorderSide(color: Colors.white)
                                       ),
                                       labelStyle: TextStyle(color: Colors.green),
-                                      hintText: 'FIRST NAME',
+                                      hintText: 'USERNAME',
                                       hintStyle: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w400),
                                       fillColor: Colors.white,
                                   ),
