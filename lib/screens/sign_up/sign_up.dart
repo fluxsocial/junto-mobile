@@ -64,7 +64,6 @@ class SignUpState extends State {
                                   onChanged: (text) {
                                     setState(() {
                                       firstName = text;
-                                      print(firstName);
                                     });
                                   },
                                   decoration: InputDecoration(
@@ -86,7 +85,6 @@ class SignUpState extends State {
                                   onChanged: (text) {
                                     setState(() {
                                       lastName = text;
-                                      print(lastName);
                                     });
                                   },                                  
                                   decoration: InputDecoration(

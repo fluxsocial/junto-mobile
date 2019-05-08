@@ -82,12 +82,6 @@ class SignUpFourState extends State<SignUpFour> {
                                   style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w500)
                                 )
                             ),
-
-                            Text(widget.firstName),
-                            Text(widget.lastName),
-                            Text(widget.username),
-                            Text(widget.password),
-                            Text(bio),
                           ]
                         )
                       )                
