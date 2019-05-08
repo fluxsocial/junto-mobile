@@ -122,10 +122,13 @@ class SignUpTwoState extends State<SignUpTwo> {
               
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => SignUpThree()
-                    ));
+                    if(widget.firstName != '' && widget.lastName != '' && username != '') {
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => SignUpThree(widget.firstName, widget.lastName, username)
+                      ));
+                    }
                   },
+                  
                   child: Icon(Icons.arrow_right, color: Colors.white, size: 22),
                 ),              
             ],)

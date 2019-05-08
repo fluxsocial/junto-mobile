@@ -4,6 +4,13 @@ import 'package:flutter/material.dart';
 import '../../collective/collective.dart';
 
 class SignUpFour extends StatelessWidget {
+  final firstName;
+  final lastName;
+  final username;
+  final password;
+
+  SignUpFour(this.firstName, this.lastName, this.username, this.password);
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
