@@ -112,6 +112,8 @@ class SignUpThreeState extends State<SignUpThree> {
               
                 GestureDetector(
                   onTap: () {
+                    passwordController.text = '';
+                    
                     if(widget.firstName != '' && widget.lastName != '' && 
                        widget.username != '' && password != '' && password.length > 4) {
                           Navigator.push(context, MaterialPageRoute(

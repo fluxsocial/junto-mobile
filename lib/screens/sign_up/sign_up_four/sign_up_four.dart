@@ -82,6 +82,12 @@ class SignUpFourState extends State<SignUpFour> {
                                   style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w500)
                                 )
                             ),
+
+                            Text(widget.firstName),
+                            Text(widget.lastName),
+                            Text(widget.username),
+                            Text(widget.password),
+                            Text(bio),
                           ]
                         )
                       )                
@@ -115,6 +121,8 @@ class SignUpFourState extends State<SignUpFour> {
               
                 GestureDetector(
                   onTap: () {
+                    bioController.text = '';
+
                     if(widget.firstName != '' && widget.lastName != '' && 
                     widget.username != '' && widget.password != '') {    
 

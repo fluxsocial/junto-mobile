@@ -112,6 +112,8 @@ class SignUpTwoState extends State<SignUpTwo> {
               
                 GestureDetector(
                   onTap: () {
+                    usernameController.text = '';
+
                     if(widget.firstName != '' && widget.lastName != '' && username != '') {
                       Navigator.push(context, MaterialPageRoute(
                         builder: (context) => SignUpThree(widget.firstName, widget.lastName, username)
