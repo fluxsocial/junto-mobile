@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 
-import '../../typography/palette.dart';
 import '../sign_in/sign_in.dart';
 import '../sign_up/sign_up.dart';
 

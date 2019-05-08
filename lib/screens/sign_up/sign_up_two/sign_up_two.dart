@@ -3,7 +3,23 @@ import 'package:flutter/material.dart';
 
 import '../sign_up_three/sign_up_three.dart';
 
-class SignUpTwo extends StatelessWidget {
+class SignUpTwo extends StatefulWidget {
+  final firstName;
+  final lastName;
+
+  SignUpTwo(this.firstName, this.lastName);
+
+  @override
+  State<StatefulWidget> createState() {
+
+    return SignUpTwoState();
+  }
+}
+
+class SignUpTwoState extends State<SignUpTwo> {
+  static TextEditingController usernameController = TextEditingController();
+  var username = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,6 +62,12 @@ class SignUpTwo extends StatelessWidget {
                               margin: EdgeInsets.only(bottom: 36),
                               child: 
                                 TextField(
+                                  controller: usernameController,
+                                  onChanged: (text) {
+                                    setState(() {
+                                      username = text; 
+                                    });
+                                  },
                                   decoration: InputDecoration(
                                       enabledBorder: InputBorder.none,
                                       focusedBorder: UnderlineInputBorder(
@@ -61,7 +83,15 @@ class SignUpTwo extends StatelessWidget {
                             ),
                           ]
                         )
-                      )                
+                      ),
+
+                      Container(
+                        child: Text(widget.firstName)
+                      ),  
+
+                      Container(
+                        child: Text(username)
+                      ),                                  
                   ],)
               )
           ),

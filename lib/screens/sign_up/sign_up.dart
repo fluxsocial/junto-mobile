@@ -3,7 +3,21 @@ import 'package:flutter/material.dart';
 
 import './sign_up_two/sign_up_two.dart';
 
-class SignUp extends StatelessWidget {
+class SignUp extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+
+    return SignUpState();
+  }
+}
+  
+class SignUpState extends State {
+
+  static TextEditingController firstNameController = TextEditingController();
+  static TextEditingController lastNameController = TextEditingController();
+  var firstName = '';
+  var lastName = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,6 +60,13 @@ class SignUp extends StatelessWidget {
                               margin: EdgeInsets.only(bottom: 36),
                               child: 
                                 TextField(
+                                  controller: firstNameController,
+                                  onChanged: (text) {
+                                    setState(() {
+                                      firstName = text;
+                                      print(firstName);
+                                    });
+                                  },
                                   decoration: InputDecoration(
                                       enabledBorder: InputBorder.none,
                                       focusedBorder: UnderlineInputBorder(
@@ -63,6 +84,13 @@ class SignUp extends StatelessWidget {
                             Container(
                               child: 
                                 TextField(
+                                  controller: lastNameController,
+                                  onChanged: (text) {
+                                    setState(() {
+                                      lastName = text;
+                                      print(lastName);
+                                    });
+                                  },                                  
                                   decoration: InputDecoration(
                                       enabledBorder: InputBorder.none,
                                       focusedBorder: UnderlineInputBorder(
@@ -78,6 +106,15 @@ class SignUp extends StatelessWidget {
 
                                 )
                             ),    
+
+                            Container(
+                              child: Text(firstName)
+                            ),
+
+
+                            Container(
+                              child: Text(lastName)
+                            )                            
                           ]
                         )
                       )                
@@ -111,9 +148,11 @@ class SignUp extends StatelessWidget {
 
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => SignUpTwo()
-                    ));
+                    if(firstName != '' && lastName != '') {
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => SignUpTwo(firstName, lastName)
+                      ));
+                    }
                   },
 
                 child: Icon(Icons.arrow_right, color: Colors.white, size: 27),

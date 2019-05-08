@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import './../../custom_icons.dart';
 
 import '../../route_animations/route_main_screens/route_main_screens.dart';
-import '../../screens/spheres/spheres.dart';
 import '../../screens/collective/collective.dart';
+import '../../screens/spheres/spheres.dart';
 import '../../screens/pack/pack.dart';
 import '../../screens/den/den.dart';
 
