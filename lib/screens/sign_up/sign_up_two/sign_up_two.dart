@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 import '../sign_up_three/sign_up_three.dart';
+import './../sign_up_logo/sign_up_logo.dart';
 
 class SignUpTwo extends StatefulWidget {
   final firstName;
@@ -86,14 +87,7 @@ class SignUpTwoState extends State<SignUpTwo> {
               )
           ),
 
-          Positioned(
-            top: MediaQuery.of(context).size.height * .05,
-            left: 20,
-            child: Image.asset(
-              'assets/images/junto-mobile__logo--white.png',
-              height: 36,
-              )
-          ), 
+          SignUpLogo(),
 
           Positioned(
             bottom: MediaQuery.of(context).size.height * .05,

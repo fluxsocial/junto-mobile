@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 import '../sign_up_four/sign_up_four.dart';
+import './../sign_up_logo/sign_up_logo.dart';
 
 class SignUpThree extends StatefulWidget {
   final firstName;
@@ -86,14 +87,7 @@ class SignUpThreeState extends State<SignUpThree> {
               )
           ),
 
-          Positioned(
-            top: MediaQuery.of(context).size.height * .05,
-            left: 20,
-            child: Image.asset(
-              'assets/images/junto-mobile__logo--white.png',
-              height: 36,
-              )
-          ), 
+          SignUpLogo(),
 
           Positioned(
             bottom: MediaQuery.of(context).size.height * .05,
@@ -113,7 +107,7 @@ class SignUpThreeState extends State<SignUpThree> {
                 GestureDetector(
                   onTap: () {
                     passwordController.text = '';
-                    
+
                     if(widget.firstName != '' && widget.lastName != '' && 
                        widget.username != '' && password != '' && password.length > 4) {
                           Navigator.push(context, MaterialPageRoute(

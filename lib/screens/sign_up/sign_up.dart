@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 import './sign_up_two/sign_up_two.dart';
+import './sign_up_logo/sign_up_logo.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -107,14 +108,7 @@ class SignUpState extends State {
               )
           ),
 
-          Positioned(
-            top: MediaQuery.of(context).size.height * .05,
-            left: 20,
-            child: Image.asset(
-              'assets/images/junto-mobile__logo--white.png',
-              height: 36,
-              )
-          ), 
+          SignUpLogo(),
 
           Positioned(
             bottom: MediaQuery.of(context).size.height * .05,
