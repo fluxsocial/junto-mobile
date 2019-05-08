@@ -10,7 +10,7 @@ class ScopedUser extends Model {
   List<Expression> _collectiveExpressions = Expression.fetchAll();
   List<Sphere> _spheres = Sphere.fetchAll();
   List<Pack> _packs = Pack.fetchAll();
-
+  
   List get collectiveExpressions {
     return List.from(_collectiveExpressions);
   }

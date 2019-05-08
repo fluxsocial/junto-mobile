@@ -1,8 +1,8 @@
 
 import 'package:flutter/material.dart';
 
-import '../../collective/collective.dart';
 import './../sign_up_logo/sign_up_logo.dart';
+import './../sign_up_welcome/sign_up_welcome.dart';
 
 class SignUpFour extends StatefulWidget {
   final firstName;
@@ -115,7 +115,8 @@ class SignUpFourState extends State<SignUpFour> {
                     widget.username != '' && widget.password != '') {    
 
                       Navigator.pushReplacement(context, MaterialPageRoute(
-                        builder: (context) => JuntoCollective()
+                        builder: (context) => SignUpWelcome(widget.firstName, 
+                        widget.lastName, widget.username, widget.password, bio, profilePicture)
                       ));
                     }
                   },
