@@ -70,9 +70,7 @@ class SignUpThreeState extends State<SignUpThree> {
                                   },
                                   decoration: InputDecoration(
                                       enabledBorder: InputBorder.none,
-                                      focusedBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.white)
-                                      ),
+                                      focusedBorder: InputBorder.none,                 
                                       labelStyle: TextStyle(color: Colors.green),
                                       hintText: 'PASSWORD',
                                       hintStyle: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w400),
@@ -81,12 +79,6 @@ class SignUpThreeState extends State<SignUpThree> {
                                   style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w500)
                                 )
                             ),
-
-                            Text(widget.firstName),
-                            Text(widget.lastName),
-                            Text(widget.username),
-                            Text(password),
-
                           ]
                         )
                       )                

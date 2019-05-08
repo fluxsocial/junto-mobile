@@ -3,14 +3,26 @@ import 'package:flutter/material.dart';
 
 import '../../collective/collective.dart';
 
-class SignUpFour extends StatelessWidget {
+class SignUpFour extends StatefulWidget {
   final firstName;
   final lastName;
   final username;
   final password;
 
   SignUpFour(this.firstName, this.lastName, this.username, this.password);
-  
+
+  @override
+  State<StatefulWidget> createState() {
+
+    return SignUpFourState();
+  }
+}
+
+class SignUpFourState extends State<SignUpFour> {
+  static TextEditingController bioController = TextEditingController();
+  var bio = '';
+  var profilePicture = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,11 +65,15 @@ class SignUpFour extends StatelessWidget {
                               margin: EdgeInsets.only(bottom: 36),
                               child: 
                                 TextField(
+                                  controller: bioController,
+                                  onChanged: (text) {
+                                    setState(() {
+                                      bio = text;
+                                    });
+                                  },
                                   decoration: InputDecoration(
                                       enabledBorder: InputBorder.none,
-                                      focusedBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.white)
-                                      ),
+                                      focusedBorder: InputBorder.none,                 
                                       labelStyle: TextStyle(color: Colors.green),
                                       hintText: 'A LITTLE BIT ABOUT MYSELF...',
                                       hintStyle: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w400),
@@ -99,9 +115,13 @@ class SignUpFour extends StatelessWidget {
               
                 GestureDetector(
                   onTap: () {
-                    Navigator.pushReplacement(context, MaterialPageRoute(
-                      builder: (context) => JuntoCollective()
-                    ));
+                    if(widget.firstName != '' && widget.lastName != '' && 
+                    widget.username != '' && widget.password != '') {    
+
+                      Navigator.pushReplacement(context, MaterialPageRoute(
+                        builder: (context) => JuntoCollective()
+                      ));
+                    }
                   },
                   child: Icon(Icons.arrow_right, color: Colors.white, size: 22),
                 ),                ],

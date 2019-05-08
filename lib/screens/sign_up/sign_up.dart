@@ -69,9 +69,7 @@ class SignUpState extends State {
                                   },
                                   decoration: InputDecoration(
                                       enabledBorder: InputBorder.none,
-                                      focusedBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.white)
-                                      ),
+                                      focusedBorder: InputBorder.none,                 
                                       labelStyle: TextStyle(color: Colors.green),
                                       hintText: 'FIRST NAME',
                                       hintStyle: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w400),
@@ -93,9 +91,7 @@ class SignUpState extends State {
                                   },                                  
                                   decoration: InputDecoration(
                                       enabledBorder: InputBorder.none,
-                                      focusedBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.white)
-                                      ),
+                                      focusedBorder: InputBorder.none,                       
                                       labelStyle: TextStyle(color: Colors.green),
                                       hintText: 'LAST NAME',
                                       hintStyle: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w400),
@@ -105,16 +101,7 @@ class SignUpState extends State {
                                   style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w500)
 
                                 )
-                            ),    
-
-                            Container(
-                              child: Text(firstName)
-                            ),
-
-
-                            Container(
-                              child: Text(lastName)
-                            )                            
+                            ),                            
                           ]
                         )
                       )                

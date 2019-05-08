@@ -70,9 +70,7 @@ class SignUpTwoState extends State<SignUpTwo> {
                                   },
                                   decoration: InputDecoration(
                                       enabledBorder: InputBorder.none,
-                                      focusedBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.white)
-                                      ),
+                                      focusedBorder: InputBorder.none,                 
                                       labelStyle: TextStyle(color: Colors.green),
                                       hintText: 'USERNAME',
                                       hintStyle: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w400),
@@ -83,15 +81,7 @@ class SignUpTwoState extends State<SignUpTwo> {
                             ),
                           ]
                         )
-                      ),
-
-                      Container(
-                        child: Text(widget.firstName)
-                      ),  
-
-                      Container(
-                        child: Text(username)
-                      ),                                  
+                      ),                               
                   ],)
               )
           ),
