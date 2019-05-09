@@ -100,27 +100,42 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
        
                         Container(
                           width: 200,
-                          child:     
+                           
+                          decoration: 
+                              BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    stops: [0.1, 0.9],
+                                    colors: [
+                                      Color(0xff5E54D0),
+                                      Color(0xff307FAB)
+                                    ]
+                                  ),
+                                  borderRadius: BorderRadius.circular(100)
+                                ),                          
+                          child: 
                             RaisedButton(                                        
                               onPressed: () {
                                 Navigator.push(context, MaterialPageRoute(
                                   builder: (context) => JuntoCollective()
                                 ));
-                              },  
+                              },        
                               padding: EdgeInsets.symmetric(
                                 horizontal: 20,
                                 vertical: 20
-                              ),            
-
-                              color: Color(0xff4968BF),
-                              child: Text('LET\'S GO!', 
-                                style: TextStyle(
-                                  // color: JuntoPalette.juntoBlue, 
-                                  color: Colors.white, 
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 14)),
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100))
-                            )                                           
+                              ),    
+                              color: Colors.transparent,
+                              elevation: 0,
+                              // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
+                              child: 
+                                Text('LET\'S GO!', 
+                                  style: TextStyle(
+                                    // color: JuntoPalette.juntoBlue, 
+                                    color: Colors.white, 
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 14)),
+                              )                                                                                        
                         )                                  
                   ],)
               )
