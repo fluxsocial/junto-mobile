@@ -1,8 +1,11 @@
 
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+
 
 import './../sign_up_logo/sign_up_logo.dart';
 import './../sign_up_welcome/sign_up_welcome.dart';
+import './../../../scoped_models/scoped_user.dart';
 
 class SignUpFour extends StatefulWidget {
   final firstName;
@@ -92,38 +95,49 @@ class SignUpFourState extends State<SignUpFour> {
 
           SignUpLogo(),
 
-          Positioned(
-            bottom: MediaQuery.of(context).size.height * .05,
-            right: 20,
-            child: Row(
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(right: 17),
-                  child: GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(Icons.arrow_left, color: Colors.white, size: 27),
+
+          ScopedModelDescendant<ScopedUser> (
+            builder: (context, child, model) =>
+              Positioned(
+                bottom: MediaQuery.of(context).size.height * .05,
+                right: 20,
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(right: 17),
+                      child: GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Icon(Icons.arrow_left, color: Colors.white, size: 27),
+                        ),
                     ),
-                ),
-              
-                GestureDetector(
-                  onTap: () {
-                    bioController.text = '';
 
-                    if(widget.firstName != '' && widget.lastName != '' && 
-                    widget.username != '' && widget.password != '') {    
+                    GestureDetector(
+                      onTap: () {
+                        bioController.text = '';
 
-                      Navigator.pushReplacement(context, MaterialPageRoute(
-                        builder: (context) => SignUpWelcome(widget.firstName, 
-                        widget.lastName, widget.username, widget.password, bio, profilePicture)
-                      ));
-                    }
-                  },
-                  child: Icon(Icons.arrow_right, color: Colors.white, size: 22),
-                ),                ],
-            )
-          ),                            
+                        if(widget.firstName != '' && widget.lastName != '' && 
+                        widget.username != '' && widget.password != '') {    
+
+                          model.setFirstName(widget.firstName);
+                          model.setLastName(widget.lastName);
+                          model.setUsername(widget.username);
+                          model.setPassword(widget.password);
+                          model.setBio(bio);
+                          model.setProfilePicture(profilePicture);
+
+                          Navigator.pushReplacement(context, MaterialPageRoute(
+                            builder: (context) => SignUpWelcome(widget.firstName, 
+                            widget.lastName, widget.username, widget.password, bio, profilePicture)
+                          ));
+                        }
+                      },
+                      child: Icon(Icons.arrow_right, color: Colors.white, size: 22),
+                    ),                ],
+                )
+              ),  
+          )                          
         ])
     
     );      

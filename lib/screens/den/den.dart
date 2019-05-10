@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
 import 'package:scoped_model/scoped_model.dart';
+
 import '../../scoped_models/scoped_user.dart';
 
 // typography + icons
@@ -12,7 +12,16 @@ import './../../components/bottom_nav/bottom_nav.dart';
 
 import './../../components/expression_preview/expression_preview.dart';
 
-class JuntoDen extends StatelessWidget {
+class JuntoDen extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return JuntoDenState();
+  }
+}
+
+class JuntoDenState extends State<JuntoDen> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,30 +88,47 @@ class JuntoDen extends StatelessWidget {
                           Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Eric Yang',
-                                    style: TextStyle(
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w700)),
-                                Text('sunyata',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                    ))
+
+                                ScopedModelDescendant<ScopedUser>(
+                                  builder: (context, child, model) {
+                                    return 
+                                      Text(model.firstName + ' ' + model.lastName,
+                                        style: TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w700)
+                                      );                                    
+                                  } ),
+                                                                                                    
+                                
+                                ScopedModelDescendant<ScopedUser>(
+                                  builder: (context, child, model) =>
+                                    Text(model.username,
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                        ))                                                                    
+                                  )                                                                
                               ]),
+
                           Icon(Icons.edit, size: 14)
                         ]),
                   ),
-                  Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      margin: EdgeInsets.only(top: 10, bottom: 10),
-                      // color: Colors.blue,
-                      width: MediaQuery.of(context).size.width,
-                      child: Text(
-                          'To a mind that is still, the whole universe surrenders - Lao Tzu. Houston-raised, NYC based. ',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ))),
+
+                  ScopedModelDescendant<ScopedUser>(
+                    builder: (context, child, model) =>
+                      Container(
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          margin: EdgeInsets.only(top: 10, bottom: 10),
+                          // color: Colors.blue,
+                          width: MediaQuery.of(context).size.width,
+                          child: Text(
+                              model.bio,
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ))),
+                    ),                
+
                   Container(
                       decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Color(0xffeeeeee), width: 1))),
                       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),

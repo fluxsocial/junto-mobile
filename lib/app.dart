@@ -16,7 +16,7 @@ class JuntoApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return 
-      ScopedModel(
+      ScopedModel<ScopedUser>(
         model: ScopedUser(),
         child:       
           MaterialApp(

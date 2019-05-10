@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
+import 'dart:async';
 
+import '../../../scoped_models/scoped_user.dart';
 import '../../collective/collective.dart';
 import '../../../typography/palette.dart';
 
@@ -24,14 +26,32 @@ class SignUpWelcome extends StatefulWidget {
 
 }
 
+
 class SignUpWelcomeState extends State<SignUpWelcome> {
+
+  // var model = ScopedUser();
 
   @override
   void initState() {
+    init();
     
-
     super.initState();
   }
+
+  init() async {
+    var address = await createUser(widget.firstName, widget.lastName, widget.username, widget.password, widget.bio, widget.profilePicture);
+    
+    print(ScopedUser().firstName);
+    ScopedUser().setFirstName(widget.firstName);
+    print(ScopedUser().firstName);
+  }
+
+  createUser(firstName, lastName, username, password, bio, profilePicture) {
+
+    var userAddress = Future.delayed(const Duration(milliseconds: 1000), () => '#uniqueaddress');
+
+    return userAddress;
+  }    
 
   @override
   Widget build(BuildContext context) {
