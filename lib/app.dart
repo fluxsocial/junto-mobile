@@ -25,7 +25,7 @@ class JuntoApp extends StatelessWidget {
             ),
             home: Welcome(),
             routes: {
-              '/welcome': (BuildContext context) => Welcome(),
+              '/welcome': (BuildContext context) => Welcome (),
               '/collective': (BuildContext context) => JuntoCollective(),
               '/spheres': (BuildContext context) => JuntoSpheres(),
               '/pack': (BuildContext context) => JuntoPack(),

@@ -14,50 +14,78 @@ class ScopedUser extends Model {
   String _bio = '';
   String _profilePicture = '';
 
-  List<Expression> _collectiveExpressions = Expression.fetchAll();
+  List<Expression> _collectiveExpressions = [];
   List<Sphere> _spheres = Sphere.fetchAll();
   List<Pack> _packs = Pack.fetchAll();
 
-  
-  setUsername(x) {
-    _username = x; 
+  // set username for member
+  void setUsername(username) {
+    _username = username; 
     
-    print(_username);
     notifyListeners();
   }
   
-  setFirstName(x) {
-    _firstName = x; 
+  // set first for member
+  void setFirstName(firstName) {
+    _firstName = firstName; 
     
-    print(firstName);
     notifyListeners();
   }
 
-  setLastName(x) {
-    _lastName = x; 
+  // set last name for member
+  void setLastName(lastName) {
+    _lastName = lastName; 
     
-    print(_lastName);
     notifyListeners();
   }    
 
-  setPassword(x) {
-    _password = x; 
+  // set password for member (temporary function)
+  void setPassword(password) {
+    _password = password; 
     
     notifyListeners();
   }
   
-  setBio(x) {
-    _bio = x; 
+  // set bio for member
+  void setBio(bio) {
+    _bio = bio; 
     
     notifyListeners();
   }
 
-  setProfilePicture(x) {
-    _profilePicture = x; 
+  // set profile picture for member
+  void setProfilePicture(profilePicture) {
+    _profilePicture = profilePicture; 
     
     notifyListeners();
   }      
 
+  // Set collective expressions for member
+  void setCollectiveExpressions() {
+    _collectiveExpressions = Expression.fetchAll();
+  }
+
+  // Set following list for member
+  setFollowingExpressions() {
+    return ;
+  }
+  
+  // Set perspectives for member 
+  setPerspectives() {
+    return;
+  }
+
+  // set spheres for member
+  setSpheres() {
+    return;
+  }
+
+  // set packs for member
+  setPacks() {
+    return;
+  }
+
+  // getters
   get username {
     return _username;
   }

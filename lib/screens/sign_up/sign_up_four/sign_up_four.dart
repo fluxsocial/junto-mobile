@@ -127,6 +127,8 @@ class SignUpFourState extends State<SignUpFour> {
                           model.setBio(bio);
                           model.setProfilePicture(profilePicture);
 
+                          model.setCollectiveExpressions();
+
                           Navigator.pushReplacement(context, MaterialPageRoute(
                             builder: (context) => SignUpWelcome(widget.firstName, 
                             widget.lastName, widget.username, widget.password, bio, profilePicture)
