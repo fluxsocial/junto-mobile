@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+import '../../scoped_models/scoped_user.dart';
 
 // typography + icons
 import '../../custom_icons.dart';
 import '../../typography/palette.dart';
-import '../../typography/style.dart';
+import '../../typography/style.dart'; 
 
 class JuntoAppBar {
 
@@ -49,10 +51,47 @@ class JuntoAppBar {
                       child: Icon(Icons.search, color: JuntoPalette.juntoSleek, size: 20),
                     ),
 
-                    Container(
-                      margin: EdgeInsets.only(left: 7.5),
-                      child: Icon(CustomIcons.moon, color: JuntoPalette.juntoSleek, size: 20),
-                    )              
+                  ScopedModelDescendant<ScopedUser>(
+                      builder: (context, child, model) => 
+                        Container(
+                          margin: EdgeInsets.only(left: 7.5),
+                          child: RaisedButton(
+                            onPressed: () {
+                              model.createUser();
+                            }
+                          )
+                        )     
+                  ),    
+
+                  ScopedModelDescendant<ScopedUser>(
+                      builder: (context, child, model) => 
+                        Container(
+                          margin: EdgeInsets.only(left: 7.5),
+                          child: RaisedButton(
+                            onPressed: () {
+                              model.getDens();
+                            }
+                          )
+                        )     
+                  ),  
+
+                  ScopedModelDescendant<ScopedUser>(
+                      builder: (context, child, model) => 
+                        Container(
+                          margin: EdgeInsets.only(left: 7.5),
+                          child: RaisedButton(
+                            onPressed: () {
+                              model.getPack();
+                            }
+                          )
+                        )     
+                  ),                                      
+
+                        // Container(
+                        //   margin: EdgeInsets.only(left: 7.5),
+                        //   child: Icon(CustomIcons.moon, color: JuntoPalette.juntoSleek, size: 20),
+                        // )                                          
+ 
                   ],)
               ]),
           )

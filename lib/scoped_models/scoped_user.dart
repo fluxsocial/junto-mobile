@@ -1,6 +1,7 @@
+import 'dart:convert';
 
-// import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:http/http.dart';
 
 import '../models/expression.dart';
 import '../models/sphere.dart';
@@ -18,47 +19,88 @@ class ScopedUser extends Model {
   List<Sphere> _spheres = Sphere.fetchAll();
   List<Pack> _packs = Pack.fetchAll();
 
+  // get dens
+  void getDens() async {
+    String url = 'http://127.0.0.1:8888';
+    Map<String, String> headers = {"Content-type": "application/json"};
+    final json =
+        '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "core", "function": "user_dens", "function":"user_dens", "args": {"username_address":"hellos"}}}';
+
+    Response response = await post(url, headers: headers, body: json);
+    int statusCode = response.statusCode;
+    print(statusCode);
+    print(response.body);
+  }
+
+  // get pack
+  void getPack() async {
+    String url = 'http://127.0.0.1:8888';
+    Map<String, String> headers = {"Content-type": "application/json"};
+    final json =
+        '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "core", "function": "user_pack", "function":"user_dens", "args": {"username_address":"hellos"}}}';
+
+    Response response = await post(url, headers: headers, body: json);
+    int statusCode = response.statusCode;
+    print(statusCode);
+    print(response.body);
+  }  
+
+  // create user
+  void createUser() async {
+    String url = 'http://127.0.0.1:8888';
+    Map<String, String> headers = {"Content-type": "application/json"};
+    final body =
+        '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "core", "function": "create_user", "args": {"user_data": {"username": "sunyata", "first_name": "Eric", "last_name": "Yang", "profile_picture":"yeo", "bio":"hellos"}}}}';
+
+    Response response = await post(url, headers: headers, body: body);
+    int statusCode = response.statusCode;
+    print(statusCode);
+
+    var hellos = json.decode(response.body);
+    print(hellos);
+  }  
+
   // set username for member
   void setUsername(username) {
-    _username = username; 
-    
+    _username = username;
+
     notifyListeners();
   }
-  
+
   // set first for member
   void setFirstName(firstName) {
-    _firstName = firstName; 
-    
+    _firstName = firstName;
+
     notifyListeners();
   }
 
   // set last name for member
   void setLastName(lastName) {
-    _lastName = lastName; 
-    
+    _lastName = lastName;
+
     notifyListeners();
-  }    
+  }
 
   // set password for member (temporary function)
   void setPassword(password) {
-    _password = password; 
-    
+    _password = password;
+
     notifyListeners();
   }
-  
+
   // set bio for member
   void setBio(bio) {
-    _bio = bio; 
-    
+    _bio = bio;
+
     notifyListeners();
   }
 
   // set profile picture for member
   void setProfilePicture(profilePicture) {
-    _profilePicture = profilePicture; 
-    
+    _profilePicture = profilePicture;
+
     notifyListeners();
-  }      
+  }
 
   // Set collective expressions for member
   void setCollectiveExpressions() {
@@ -67,10 +109,10 @@ class ScopedUser extends Model {
 
   // Set following list for member
   setFollowingExpressions() {
-    return ;
+    return;
   }
-  
-  // Set perspectives for member 
+
+  // Set perspectives for member
   setPerspectives() {
     return;
   }
@@ -92,11 +134,11 @@ class ScopedUser extends Model {
 
   get firstName {
     return _firstName;
-  }  
+  }
 
   get lastName {
     return _lastName;
-  }    
+  }
 
   get password {
     return _password;
@@ -104,11 +146,11 @@ class ScopedUser extends Model {
 
   get bio {
     return _bio;
-  }     
+  }
 
   get profilePicture {
     return _profilePicture;
-  }  
+  }
 
   List get collectiveExpressions {
     return List.from(_collectiveExpressions);
@@ -116,9 +158,9 @@ class ScopedUser extends Model {
 
   List get spheres {
     return _spheres;
-  }  
+  }
 
   List get packs {
     return _packs;
-  }    
+  }
 }
