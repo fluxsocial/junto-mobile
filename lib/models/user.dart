@@ -1,16 +1,30 @@
 
+import 'dart:convert';
+
 class User {
-  final userName;
-  final userHandle;
+  String jsonrpc;
+  var result;
 
-  User(this.userName, this.userHandle);
+  User({this.jsonrpc, this.result});
 
-  List<User> fetchAll() {
-    return [
-      User(
-        'Eric Yang',
-        'sunyata',
-         )
-    ];
+  factory User.fromJson(Map<String, dynamic> parsedJson){
+    return User(
+      jsonrpc: parsedJson['jsonrpc'],
+      result: Result.fromJson(json.decode(parsedJson['result']))
+    );
   }
 }
+
+class Result {
+  var address;
+
+  Result({this.address});
+
+  factory Result.fromJson(Map<String, dynamic> json){
+    return Result(
+      address: json['Ok']
+    );
+  }
+
+}
+

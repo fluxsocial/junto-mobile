@@ -6,8 +6,10 @@ import 'package:http/http.dart';
 import '../models/expression.dart';
 import '../models/sphere.dart';
 import '../models/pack.dart';
+import '../models/user.dart';
 
 class ScopedUser extends Model {
+  String _userAddress = '';
   String _username = '';
   String _firstName = '';
   String _lastName = '';
@@ -23,15 +25,14 @@ class ScopedUser extends Model {
   void getDens() async {
     String url = 'http://127.0.0.1:8888';
     Map<String, String> headers = {"Content-type": "application/json"};
-    final json =
+    final body =
         '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "core", "function": "user_dens", "function":"user_dens", "args": {"username_address":"hellos"}}}';
 
-    Response response = await post(url, headers: headers, body: json);
+    Response response = await post(url, headers: headers, body: body);
     int statusCode = response.statusCode;
     print(statusCode);
-    print(response.body);
   }
-
+  
   // get pack
   void getPack() async {
     String url = 'http://127.0.0.1:8888';
@@ -58,6 +59,12 @@ class ScopedUser extends Model {
 
     var hellos = json.decode(response.body);
     print(hellos);
+    var hello = response.body;
+    print(hello);
+    User user = User.fromJson(hellos);
+    // print(user);
+    print(user.result.address);
+    _userAddress = user.result.address;
   }  
 
   // set username for member
