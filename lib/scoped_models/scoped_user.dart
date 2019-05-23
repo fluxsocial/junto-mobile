@@ -64,6 +64,7 @@ class ScopedUser extends Model {
 
     _userAddress = user.result.ok.privateDen.entry.parent;
     print(_userAddress);
+    print(user.result.ok.username.usernameEntry.username);
   }  
 
   // set username for member
