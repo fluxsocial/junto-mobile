@@ -57,7 +57,7 @@ class JuntoAppBar {
                           margin: EdgeInsets.only(left: 7.5),
                           child: RaisedButton(
                             onPressed: () {
-                              model.createUser();
+                              model.createUser('sunyata', 'urk', 'yang', 'hello', 'hellos');
                             }
                           )
                         )     

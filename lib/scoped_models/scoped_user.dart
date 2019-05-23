@@ -47,11 +47,13 @@ class ScopedUser extends Model {
   }  
 
   // create user
-  void createUser() async {
+  void createUser(username, firstName, lastName, profilePicture, bio) async {
     String url = 'http://127.0.0.1:8888';
     Map<String, String> headers = {"Content-type": "application/json"};
     final body =
-        '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "core", "function": "create_user", "args": {"user_data": {"username": "sunyata", "first_name": "Eric", "last_name": "Yang", "profile_picture":"yeo", "bio":"hellos"}}}}';
+        '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "core", "function": "create_user", "args": {"user_data": {"username": "' + username + '", "first_name":"' + firstName + '", "last_name":"' + lastName + '", "profile_picture":"' + profilePicture + '", "bio":"' + bio + '"}}}}';
+
+        // '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "core", "function": "create_user", "args": {"user_data": {"username": "sunyata", "first_name": "Eric", "last_name": "Yang", "profile_picture": "yeo", "bio":"hellos"}}}}';
 
     Response response = await post(url, headers: headers, body: body);
     int statusCode = response.statusCode;
@@ -69,7 +71,7 @@ class ScopedUser extends Model {
 
   // set username for member
   void setUsername(username) {
-    _username = username;
+    _username = username; 
 
     notifyListeners();
   }
