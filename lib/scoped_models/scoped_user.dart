@@ -53,20 +53,28 @@ class ScopedUser extends Model {
     final body =
         '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "core", "function": "create_user", "args": {"user_data": {"username": "' + username + '", "first_name":"' + firstName + '", "last_name":"' + lastName + '", "profile_picture":"' + profilePicture + '", "bio":"' + bio + '"}}}}';
 
-        // '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "core", "function": "create_user", "args": {"user_data": {"username": "sunyata", "first_name": "Eric", "last_name": "Yang", "profile_picture": "yeo", "bio":"hellos"}}}}';
-
     Response response = await post(url, headers: headers, body: body);
     int statusCode = response.statusCode;
-    print(statusCode);
+    // print(statusCode);
 
     var hellos = json.decode(response.body);
-    print(hellos);
+    // print(hellos);
 
-    User user = User.fromJson(hellos);
+    if (statusCode == 200) {
+      User user = User.fromJson(hellos);
 
-    _userAddress = user.result.ok.privateDen.entry.parent;
-    print(_userAddress);
-    print(user.result.ok.username.usernameEntry.username);
+      _userAddress = user.result.ok.privateDen.entry.parent;
+      print(_userAddress);
+      _username = user.result.ok.username.usernameEntry.username;
+
+      _username = user.result.ok.username.usernameEntry.username;
+      _firstName = user.result.ok.profile.profileEntry.firstName;
+      _lastName = user.result.ok.profile.profileEntry.lastName;
+      _bio = user.result.ok.profile.profileEntry.bio;
+      _profilePicture = user.result.ok.profile.profileEntry.profilePicture;
+    } else {
+      print(hellos);
+    }
   }  
 
   // set username for member

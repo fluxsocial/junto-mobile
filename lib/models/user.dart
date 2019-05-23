@@ -31,13 +31,16 @@ class Result {
 class Ok {
   var privateDen;
   var username;
+  var profile;
 
-  Ok({this.privateDen, this.username});
+  Ok({this.privateDen, this.username, this.profile});
 
   factory Ok.fromJson(Map<String, dynamic> parsedJson){
     return Ok(
       privateDen: PrivateDen.fromJson(parsedJson['private_den']),
-      username: Username.fromJson(parsedJson['username'])
+      username: Username.fromJson(parsedJson['username']),
+      profile: Profile.fromJson(parsedJson['profile'])
+
     );
   }  
 }
@@ -86,6 +89,38 @@ class UsernameEntry {
   factory UsernameEntry.fromJson(Map<String, dynamic> json){
     return UsernameEntry(
       username: json['username']
+    );
+  }    
+
+}
+
+class Profile {
+  var profileEntry;
+
+  Profile({this.profileEntry});
+
+  factory Profile.fromJson(Map<String, dynamic> parsedJson){
+    return Profile(
+      profileEntry: ProfileEntry.fromJson(parsedJson['entry'])
+    );
+  }    
+}
+
+class ProfileEntry {
+  var firstName;
+  var lastName;
+  var bio;
+  var profilePicture;
+
+  ProfileEntry({this.firstName, this.lastName, this.bio, this.profilePicture});
+
+  factory ProfileEntry.fromJson(Map<String, dynamic> json){
+    return ProfileEntry(
+      firstName: json['first_name'],
+      lastName: json['last_name'],
+      bio: json['bio'],
+      profilePicture: json['profile_picture'],
+
     );
   }    
 

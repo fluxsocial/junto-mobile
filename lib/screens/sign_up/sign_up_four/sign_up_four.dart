@@ -120,12 +120,13 @@ class SignUpFourState extends State<SignUpFour> {
                         if(widget.firstName != '' && widget.lastName != '' && 
                         widget.username != '' && widget.password != '') {    
 
-                          model.setFirstName(widget.firstName);
-                          model.setLastName(widget.lastName);
-                          model.setUsername(widget.username);
-                          model.setPassword(widget.password);
-                          model.setBio(bio);
-                          model.setProfilePicture(profilePicture);
+                          // model.setFirstName(widget.firstName);
+                          // model.setLastName(widget.lastName);
+                          // model.setUsername(widget.username);
+                          // model.setPassword(widget.password);
+                          // model.setBio(bio);
+                          // model.setProfilePicture(profilePicture);
+                          model.createUser(widget.username, widget.firstName, widget.lastName, profilePicture, bio);
 
                           model.setCollectiveExpressions();
 
