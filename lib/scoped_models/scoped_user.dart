@@ -59,12 +59,11 @@ class ScopedUser extends Model {
 
     var hellos = json.decode(response.body);
     print(hellos);
-    var hello = response.body;
-    print(hello);
+
     User user = User.fromJson(hellos);
-    // print(user);
-    print(user.result.address);
-    _userAddress = user.result.address;
+
+    _userAddress = user.result.ok.privateDen.entry.parent;
+    print(_userAddress);
   }  
 
   // set username for member

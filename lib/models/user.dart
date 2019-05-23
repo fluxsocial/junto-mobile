@@ -16,15 +16,49 @@ class User {
 }
 
 class Result {
-  var address;
+  var ok;
 
-  Result({this.address});
+  Result({this.ok}); 
 
-  factory Result.fromJson(Map<String, dynamic> json){
+  factory Result.fromJson(Map<String, dynamic> parsedJson){
     return Result(
-      address: json['Ok']
+      ok: Ok.fromJson(parsedJson['Ok'])
     );
   }
 
 }
 
+class Ok {
+  var privateDen;
+  Ok({this.privateDen});
+
+  factory Ok.fromJson(Map<String, dynamic> parsedJson){
+    return Ok(
+      privateDen: PrivateDen.fromJson(parsedJson['private_den'])
+    );
+  }  
+}
+class PrivateDen {
+  var entry;
+
+  PrivateDen({this.entry});
+
+  factory PrivateDen.fromJson(Map<String, dynamic> parsedJson){
+    return PrivateDen(
+      entry: Entry.fromJson(parsedJson['entry'])
+    );
+  }  
+}
+
+class Entry {
+  var parent;
+
+  Entry({this.parent});
+
+  factory Entry.fromJson(Map<String, dynamic> json){
+    return Entry(
+      parent: json['parent']
+    );
+  }  
+
+}
