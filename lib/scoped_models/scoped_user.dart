@@ -65,13 +65,12 @@ class ScopedUser extends Model {
 
       _userAddress = user.result.ok.privateDen.entry.parent;
       print(_userAddress);
-      _username = user.result.ok.username.usernameEntry.username;
 
-      _username = user.result.ok.username.usernameEntry.username;
-      _firstName = user.result.ok.profile.profileEntry.firstName;
-      _lastName = user.result.ok.profile.profileEntry.lastName;
-      _bio = user.result.ok.profile.profileEntry.bio;
-      _profilePicture = user.result.ok.profile.profileEntry.profilePicture;
+      setUsername(user.result.ok.username.usernameEntry.username);
+      setFirstName(user.result.ok.profile.profileEntry.firstName);
+      setLastName(user.result.ok.profile.profileEntry.lastName);
+      setProfilePicture(user.result.ok.profile.profileEntry.profilePicture);      
+      setBio(user.result.ok.profile.profileEntry.bio);
     } else {
       print(hellos);
     }
