@@ -7,6 +7,7 @@ import '../models/expression.dart';
 import '../models/sphere.dart';
 import '../models/pack.dart';
 import '../models/user.dart';
+import '../models/setUser.dart';
 
 class ScopedUser extends Model {
   String _userAddress = '';
@@ -20,31 +21,6 @@ class ScopedUser extends Model {
   List<Expression> _collectiveExpressions = [];
   List<Sphere> _spheres = Sphere.fetchAll();
   List<Pack> _packs = Pack.fetchAll();
-
-  // get dens
-  void getDens() async {
-    String url = 'http://127.0.0.1:8888';
-    Map<String, String> headers = {"Content-type": "application/json"};
-    final body =
-        '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "core", "function": "user_dens", "function":"user_dens", "args": {"username_address":"hellos"}}}';
-
-    Response response = await post(url, headers: headers, body: body);
-    int statusCode = response.statusCode;
-    print(statusCode);
-  }
-  
-  // get pack
-  void getPack() async {
-    String url = 'http://127.0.0.1:8888';
-    Map<String, String> headers = {"Content-type": "application/json"};
-    final json =
-        '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "core", "function": "user_pack", "function":"user_dens", "args": {"username_address":"hellos"}}}';
-
-    Response response = await post(url, headers: headers, body: json);
-    int statusCode = response.statusCode;
-    print(statusCode);
-    print(response.body);
-  }  
 
   // create user
   void createUser(username, firstName, lastName, profilePicture, bio) async {
@@ -74,6 +50,58 @@ class ScopedUser extends Model {
     } else {
       print(hellos);
     }
+  }  
+
+  void setUser(usernameAddress) async {  
+    String url = 'http://127.0.0.1:8888';
+    Map<String, String> headers = {"Content-type": "application/json"};
+
+    // get username from address
+    final usernameBody =
+        '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "core", "function": "get_username_from_address", "args": {"username_address": "' + usernameAddress + '"}}}';
+    
+    Response usernameResponse = await post(url, headers: headers, body: usernameBody);
+
+    // get profile from address
+    final profileBody =
+        '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "core", "function": "get_user_profile_from_address", "args": {"username_address": "' + usernameAddress + '"}}}';    
+
+    Response profileResponse = await post(url, headers: headers, body: profileBody);
+
+    SetUserUsername setUserUsername = SetUserUsername.fromJson(json.decode(usernameResponse.body));
+    SetUserProfile setUserProfile = SetUserProfile.fromJson(json.decode(profileResponse.body));
+    _username = setUserUsername.result.ok.username;
+    _firstName = setUserProfile.result.ok.firstName;
+    _lastName = setUserProfile.result.ok.lastName;
+    _profilePicture = setUserProfile.result.ok.profilePicture;
+    _bio = setUserProfile.result.ok.bio;
+
+  }
+
+
+  // get dens
+  void getDens() async {
+    String url = 'http://127.0.0.1:8888';
+    Map<String, String> headers = {"Content-type": "application/json"};
+    final body =
+        '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "core", "function": "user_dens", "function":"user_dens", "args": {"username_address":"hellos"}}}';
+
+    Response response = await post(url, headers: headers, body: body);
+    int statusCode = response.statusCode;
+    print(statusCode);
+  }
+  
+  // get pack
+  void getPack() async {
+    String url = 'http://127.0.0.1:8888';
+    Map<String, String> headers = {"Content-type": "application/json"};
+    final json =
+        '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "core", "function": "user_pack", "function":"user_dens", "args": {"username_address":"hellos"}}}';
+
+    Response response = await post(url, headers: headers, body: json);
+    int statusCode = response.statusCode;
+    print(statusCode);
+    print(response.body);
   }  
 
   // set username for member

@@ -69,7 +69,7 @@ class JuntoAppBar {
                           margin: EdgeInsets.only(left: 7.5),
                           child: RaisedButton(
                             onPressed: () {
-                              model.getDens();
+                              model.setUser('QmZnYuSUwRQ6v2vWNnVxApBJQLCBsTRKAd5v2KzpLKHSbQ');
                             }
                           )
                         )     
