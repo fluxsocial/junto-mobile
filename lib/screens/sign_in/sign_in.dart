@@ -84,6 +84,8 @@ class SignIn extends StatelessWidget {
                           onPressed: () async {
                             await model.setUser('QmZnYuSUwRQ6v2vWNnVxApBJQLCBsTRKAd5v2KzpLKHSbQ');
 
+                            model.setCollectiveExpressions();
+
                             Navigator.push(context, MaterialPageRoute(
                               builder: (context) => JuntoCollective()
                             ));
