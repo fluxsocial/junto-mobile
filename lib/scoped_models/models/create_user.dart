@@ -1,121 +1,122 @@
 
 import 'dart:convert';
 
-class User {
-  String jsonrpc;
-  var result;
+// Model for create user function
+class CreateUser {
+  final String jsonrpc;   
+  final result;
 
-  User({this.jsonrpc, this.result});
+  CreateUser({this.jsonrpc, this.result});
 
-  factory User.fromJson(Map<String, dynamic> parsedJson){
-    return User(
+  factory CreateUser.fromJson(Map<String, dynamic> parsedJson){
+    return CreateUser(
       jsonrpc: parsedJson['jsonrpc'],
-      result: Result.fromJson(json.decode(parsedJson['result']))
+      result: CreateUserResult.fromJson(json.decode(parsedJson['result']))
     );
   }
 }
 
-class Result {
-  var ok;
+class CreateUserResult {
+  final ok;
 
-  Result({this.ok}); 
+  CreateUserResult({this.ok}); 
 
-  factory Result.fromJson(Map<String, dynamic> parsedJson){
-    return Result(
-      ok: Ok.fromJson(parsedJson['Ok'])
+  factory CreateUserResult.fromJson(Map<String, dynamic> parsedJson){
+    return CreateUserResult(
+      ok: CreateUserOk.fromJson(parsedJson['Ok'])
     );
   }
 
 }
 
-class Ok {
-  var privateDen;
-  var username;
-  var profile;
+class CreateUserOk {
+  final privateDen;
+  final username;
+  final profile;
 
-  Ok({this.privateDen, this.username, this.profile});
+  CreateUserOk({this.privateDen, this.username, this.profile});
 
-  factory Ok.fromJson(Map<String, dynamic> parsedJson){
-    return Ok(
-      privateDen: PrivateDen.fromJson(parsedJson['private_den']),
-      username: Username.fromJson(parsedJson['username']),
-      profile: Profile.fromJson(parsedJson['profile'])
+  factory CreateUserOk.fromJson(Map<String, dynamic> parsedJson){
+    return CreateUserOk(
+      privateDen: CreateUserPrivateDen.fromJson(parsedJson['private_den']),
+      username: CreateUserUsername.fromJson(parsedJson['username']),
+      profile: CreateUserProfile.fromJson(parsedJson['profile'])
 
     );
   }  
 }
-class PrivateDen {
-  var entry;
+class CreateUserPrivateDen {
+  final entry;
 
-  PrivateDen({this.entry});
+  CreateUserPrivateDen({this.entry});
 
-  factory PrivateDen.fromJson(Map<String, dynamic> parsedJson){
-    return PrivateDen(
-      entry: Entry.fromJson(parsedJson['entry'])
+  factory CreateUserPrivateDen.fromJson(Map<String, dynamic> parsedJson){
+    return CreateUserPrivateDen(
+      entry: CreateUserPrivateDenEntry.fromJson(parsedJson['entry'])
     );
   }  
 }
 
-class Entry {
-  var parent;
+class CreateUserPrivateDenEntry {
+  final parent;
 
-  Entry({this.parent});
+  CreateUserPrivateDenEntry({this.parent});
 
-  factory Entry.fromJson(Map<String, dynamic> json){
-    return Entry(
+  factory CreateUserPrivateDenEntry.fromJson(Map<String, dynamic> json){
+    return CreateUserPrivateDenEntry(
       parent: json['parent']
     );
   }  
 
 }
 
-class Username {
-  var usernameEntry;
+class CreateUserUsername {
+  final usernameEntry;
 
-  Username({this.usernameEntry});
+  CreateUserUsername({this.usernameEntry});
 
-  factory Username.fromJson(Map<String, dynamic> parsedJson){
-    return Username(
-      usernameEntry: UsernameEntry.fromJson(parsedJson['entry'])
+  factory CreateUserUsername.fromJson(Map<String, dynamic> parsedJson){
+    return CreateUserUsername(
+      usernameEntry: CreateUserUsernameEntry.fromJson(parsedJson['entry'])
     );
   }    
 }
 
-class UsernameEntry {
-  var username;
+class CreateUserUsernameEntry {
+  final username;
 
-  UsernameEntry({this.username});
+  CreateUserUsernameEntry({this.username});
 
-  factory UsernameEntry.fromJson(Map<String, dynamic> json){
-    return UsernameEntry(
+  factory CreateUserUsernameEntry.fromJson(Map<String, dynamic> json){
+    return CreateUserUsernameEntry(
       username: json['username']
     );
   }    
 
 }
 
-class Profile {
-  var profileEntry;
+class CreateUserProfile {
+  final profileEntry;
 
-  Profile({this.profileEntry});
+  CreateUserProfile({this.profileEntry});
 
-  factory Profile.fromJson(Map<String, dynamic> parsedJson){
-    return Profile(
-      profileEntry: ProfileEntry.fromJson(parsedJson['entry'])
+  factory CreateUserProfile.fromJson(Map<String, dynamic> parsedJson){
+    return CreateUserProfile(
+      profileEntry: CreateUserProfileEntry.fromJson(parsedJson['entry'])
     );
   }    
 }
 
-class ProfileEntry {
-  var firstName;
-  var lastName;
-  var bio;
-  var profilePicture;
+class CreateUserProfileEntry {
+  final firstName;
+  final lastName;
+  final bio;
+  final profilePicture;
 
-  ProfileEntry({this.firstName, this.lastName, this.bio, this.profilePicture});
+  CreateUserProfileEntry({this.firstName, this.lastName, this.bio, this.profilePicture});
 
-  factory ProfileEntry.fromJson(Map<String, dynamic> json){
-    return ProfileEntry(
+  factory CreateUserProfileEntry.fromJson(Map<String, dynamic> json){
+    return CreateUserProfileEntry(
       firstName: json['first_name'],
       lastName: json['last_name'],
       bio: json['bio'],

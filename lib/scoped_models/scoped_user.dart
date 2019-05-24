@@ -44,7 +44,7 @@ class ScopedUser extends Model {
     // Generate unique user address and store address, username, first name, last name,
     // profile picture, and bio into state if status code succeeds
     if (createUserStatus == 200) {
-      User user = User.fromJson(createUserResponse);
+      CreateUser user = CreateUser.fromJson(createUserResponse);
       _userAddress = user.result.ok.privateDen.entry.parent;
       setUsername(user.result.ok.username.usernameEntry.username);
       setFirstName(user.result.ok.profile.profileEntry.firstName);

@@ -1,6 +1,7 @@
 
 import 'dart:convert';
 
+// Username model for set user function
 class SetUserUsername {
   String jsonrpc;
   var result;
@@ -41,10 +42,7 @@ class SetUserUsernameOk {
 
 }
 
-
-
-
-
+// Profile model for set user function
 class SetUserProfile {
   String jsonrpc;
   var result;
