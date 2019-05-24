@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
-// typography + icons
 import '../../custom_icons.dart';
 import '../../typography/palette.dart';
-import '../../typography/style.dart';
+import '../../typography/style.dart'; 
 
 class JuntoAppBar {
 
@@ -47,12 +46,13 @@ class JuntoAppBar {
 
                     Container(                
                       child: Icon(Icons.search, color: JuntoPalette.juntoSleek, size: 20),
-                    ),
+                    ),                            
 
                     Container(
                       margin: EdgeInsets.only(left: 7.5),
                       child: Icon(CustomIcons.moon, color: JuntoPalette.juntoSleek, size: 20),
-                    )              
+                    )                                          
+ 
                   ],)
               ]),
           )

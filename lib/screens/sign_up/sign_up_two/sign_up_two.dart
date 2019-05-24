@@ -2,8 +2,25 @@
 import 'package:flutter/material.dart';
 
 import '../sign_up_three/sign_up_three.dart';
+import './../sign_up_logo/sign_up_logo.dart';
 
-class SignUpTwo extends StatelessWidget {
+class SignUpTwo extends StatefulWidget {
+  final firstName;
+  final lastName;
+
+  SignUpTwo(this.firstName, this.lastName);
+
+  @override
+  State<StatefulWidget> createState() {
+
+    return SignUpTwoState();
+  }
+}
+
+class SignUpTwoState extends State<SignUpTwo> {
+  static TextEditingController usernameController = TextEditingController();
+  var username = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,11 +63,15 @@ class SignUpTwo extends StatelessWidget {
                               margin: EdgeInsets.only(bottom: 36),
                               child: 
                                 TextField(
+                                  controller: usernameController,
+                                  onChanged: (text) {
+                                    setState(() {
+                                      username = text; 
+                                    });
+                                  },
                                   decoration: InputDecoration(
                                       enabledBorder: InputBorder.none,
-                                      focusedBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.white)
-                                      ),
+                                      focusedBorder: InputBorder.none,                 
                                       labelStyle: TextStyle(color: Colors.green),
                                       hintText: 'USERNAME',
                                       hintStyle: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w400),
@@ -61,19 +82,12 @@ class SignUpTwo extends StatelessWidget {
                             ),
                           ]
                         )
-                      )                
+                      ),                               
                   ],)
               )
           ),
 
-          Positioned(
-            top: MediaQuery.of(context).size.height * .05,
-            left: 20,
-            child: Image.asset(
-              'assets/images/junto-mobile__logo--white.png',
-              height: 36,
-              )
-          ), 
+          SignUpLogo(),
 
           Positioned(
             bottom: MediaQuery.of(context).size.height * .05,
@@ -92,10 +106,15 @@ class SignUpTwo extends StatelessWidget {
               
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => SignUpThree()
-                    ));
+                    usernameController.text = '';
+
+                    if(widget.firstName != '' && widget.lastName != '' && username != '') {
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => SignUpThree(widget.firstName, widget.lastName, username)
+                      ));
+                    }
                   },
+                  
                   child: Icon(Icons.arrow_right, color: Colors.white, size: 22),
                 ),              
             ],)

@@ -11,13 +11,29 @@ import './screens/den/den.dart';
 import './screens/create/create.dart';
 import './screens/perspectives/perspectives.dart';
 
-class JuntoApp extends StatelessWidget {
+class JuntoApp extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+
+  return JuntoAppState();
+  }
+}
+
+class JuntoAppState extends State<JuntoApp> {
+  ScopedUser scopedUser;
+
+  @override
+  void initState() {
+    scopedUser = ScopedUser();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
 
     return 
-      ScopedModel(
-        model: ScopedUser(),
+      ScopedModel<ScopedUser>(
+        model: scopedUser,
         child:       
           MaterialApp(
             theme: ThemeData(
@@ -25,8 +41,8 @@ class JuntoApp extends StatelessWidget {
             ),
             home: Welcome(),
             routes: {
-              '/welcome': (BuildContext context) => Welcome(),
-              '': (BuildContext context) => JuntoCollective(),
+              '/welcome': (BuildContext context) => Welcome (),
+              '/collective': (BuildContext context) => JuntoCollective(),
               '/spheres': (BuildContext context) => JuntoSpheres(),
               '/pack': (BuildContext context) => JuntoPack(),
               '/den': (BuildContext context) => JuntoDen(),

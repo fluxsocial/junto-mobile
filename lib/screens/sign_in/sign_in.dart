@@ -1,12 +1,15 @@
 
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 import '../collective/collective.dart';
+import '../../scoped_models/scoped_user.dart';
 
 class SignIn extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+
     return Scaffold(
 
       body: Stack(
@@ -73,28 +76,36 @@ class SignIn extends StatelessWidget {
                     )
                 ),       
 
-                Container(
-                  child: 
-                    RaisedButton(                      
-                      onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => JuntoCollective()
-                        ));
-                      },  
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 100,
-                        vertical: 20
-                      ),                        
-                      // color: Colors.white,  
-                      color: Color(0xff4968BF),
-                      child: Text('SIGN IN', 
-                        style: TextStyle(
-                          // color: JuntoPalette.juntoBlue, 
-                          color: Colors.white, 
-                          fontWeight: FontWeight.w700,
-                          fontSize: 14)),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100))
-                    )                  
+                ScopedModelDescendant<ScopedUser>(
+                  builder: (context, child, model) =>
+                    Container(
+                      child: 
+                          RaisedButton(                      
+                          onPressed: () async {
+                            await model.setUser('QmZnYuSUwRQ6v2vWNnVxApBJQLCBsTRKAd5v2KzpLKHSbQ');
+
+                            model.setCollectiveExpressions();
+
+                            Navigator.push(context, MaterialPageRoute(
+                              builder: (context) => JuntoCollective()
+                            ));
+                          },  
+
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 100,
+                            vertical: 20
+                          ),                        
+                          // color: Colors.white,  
+                          color: Color(0xff4968BF),
+                          child: Text('SIGN IN', 
+                            style: TextStyle(
+                              // color: JuntoPalette.juntoBlue, 
+                              color: Colors.white, 
+                              fontWeight: FontWeight.w700,
+                              fontSize: 14)),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100))
+                        )      
+                      )            
                 )                                         
             ],)
           ),
@@ -112,4 +123,5 @@ class SignIn extends StatelessWidget {
     
     );      
   }
+  
 }

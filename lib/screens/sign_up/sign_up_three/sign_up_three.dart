@@ -2,8 +2,25 @@
 import 'package:flutter/material.dart';
 
 import '../sign_up_four/sign_up_four.dart';
+import './../sign_up_logo/sign_up_logo.dart';
 
-class SignUpThree extends StatelessWidget {
+class SignUpThree extends StatefulWidget {
+  final firstName;
+  final lastName;
+  final username;
+
+  SignUpThree(this.firstName, this.lastName, this.username);
+  @override
+  State<StatefulWidget> createState() {
+
+    return SignUpThreeState();
+  }
+}
+
+class SignUpThreeState extends State<SignUpThree> {
+  static TextEditingController passwordController = TextEditingController();
+  var password = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,11 +63,15 @@ class SignUpThree extends StatelessWidget {
                               margin: EdgeInsets.only(bottom: 36),
                               child: 
                                 TextField(
+                                  controller: passwordController,
+                                  onChanged:(text) {
+                                    setState(() {
+                                        password = text;
+                                    });
+                                  },
                                   decoration: InputDecoration(
                                       enabledBorder: InputBorder.none,
-                                      focusedBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.white)
-                                      ),
+                                      focusedBorder: InputBorder.none,                 
                                       labelStyle: TextStyle(color: Colors.green),
                                       hintText: 'PASSWORD',
                                       hintStyle: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w400),
@@ -66,14 +87,7 @@ class SignUpThree extends StatelessWidget {
               )
           ),
 
-          Positioned(
-            top: MediaQuery.of(context).size.height * .05,
-            left: 20,
-            child: Image.asset(
-              'assets/images/junto-mobile__logo--white.png',
-              height: 36,
-              )
-          ), 
+          SignUpLogo(),
 
           Positioned(
             bottom: MediaQuery.of(context).size.height * .05,
@@ -92,9 +106,15 @@ class SignUpThree extends StatelessWidget {
               
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => SignUpFour()
-                    ));
+                    passwordController.text = '';
+
+                    if(widget.firstName != '' && widget.lastName != '' && 
+                       widget.username != '' && password != '' && password.length > 4) {
+                          Navigator.push(context, MaterialPageRoute(
+                            builder: (context) => SignUpFour(widget.firstName, widget.lastName,
+                                                             widget.username, password)
+                          ));
+                    }
                   },
                   child: Icon(Icons.arrow_right, color: Colors.white, size: 22),
                 ),                

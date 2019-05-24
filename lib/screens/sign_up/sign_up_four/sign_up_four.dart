@@ -1,14 +1,38 @@
 
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 
-import '../../collective/collective.dart';
 
-class SignUpFour extends StatelessWidget {
+import './../sign_up_logo/sign_up_logo.dart';
+import './../sign_up_welcome/sign_up_welcome.dart';
+import './../../../scoped_models/scoped_user.dart';
+
+class SignUpFour extends StatefulWidget {
+  final firstName;
+  final lastName;
+  final username;
+  final password;
+
+  SignUpFour(this.firstName, this.lastName, this.username, this.password);
+
+  @override
+  State<StatefulWidget> createState() {
+
+    return SignUpFourState();
+  }
+}
+
+class SignUpFourState extends State<SignUpFour> {
+  static TextEditingController bioController = TextEditingController();
+  var bio = '';
+  var profilePicture = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
 
-      body: Stack(
+      body: 
+      Stack(
         children: [
           Container(
             width: MediaQuery.of(context).size.width,
@@ -46,11 +70,15 @@ class SignUpFour extends StatelessWidget {
                               margin: EdgeInsets.only(bottom: 36),
                               child: 
                                 TextField(
+                                  controller: bioController,
+                                  onChanged: (text) {
+                                    setState(() {
+                                      bio = text;
+                                    });
+                                  },
                                   decoration: InputDecoration(
                                       enabledBorder: InputBorder.none,
-                                      focusedBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.white)
-                                      ),
+                                      focusedBorder: InputBorder.none,                 
                                       labelStyle: TextStyle(color: Colors.green),
                                       hintText: 'A LITTLE BIT ABOUT MYSELF...',
                                       hintStyle: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w400),
@@ -66,42 +94,50 @@ class SignUpFour extends StatelessWidget {
               )
           ),
 
-          Positioned(
-            top: MediaQuery.of(context).size.height * .05,
-            left: 20,
-            child: Image.asset(
-              'assets/images/junto-mobile__logo--white.png',
-              height: 36,
-              )
-          ), 
+          SignUpLogo(),
 
-          Positioned(
-            bottom: MediaQuery.of(context).size.height * .05,
-            right: 20,
-            child: Row(
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(right: 17),
-                  child: GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(Icons.arrow_left, color: Colors.white, size: 27),
+
+          ScopedModelDescendant<ScopedUser> (
+            builder: (context, child, model) =>
+              Positioned(
+                bottom: MediaQuery.of(context).size.height * .05,
+                right: 20,
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(right: 17),
+                      child: GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Icon(Icons.arrow_left, color: Colors.white, size: 27),
+                        ),
                     ),
-                ),
-              
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pushReplacement(context, MaterialPageRoute(
-                      builder: (context) => JuntoCollective()
-                    ));
-                  },
-                  child: Icon(Icons.arrow_right, color: Colors.white, size: 22),
-                ),                ],
-            )
-          ),                            
-        ])
-    
+
+                    GestureDetector(
+                      onTap: () async {
+                        bioController.text = '';
+
+                        if(widget.firstName != '' && widget.lastName != '' && 
+                        widget.username != '' && widget.password != '') {    
+
+                          await model.createUser(widget.username, widget.firstName, widget.lastName, profilePicture, bio);
+                          
+                          model.setCollectiveExpressions();
+
+                          Navigator.pushReplacement(context, MaterialPageRoute(
+                            builder: (context) => SignUpWelcome(widget.firstName, 
+                            widget.lastName, widget.username, widget.password, bio, profilePicture)
+                          ));
+                        }
+                      },
+                      child: Icon(Icons.arrow_right, color: Colors.white, size: 22),
+                    ),                ],
+                )
+              ),  
+          )                          
+        ])    
     );      
   }
+  
 }

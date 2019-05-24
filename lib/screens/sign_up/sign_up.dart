@@ -2,8 +2,23 @@
 import 'package:flutter/material.dart';
 
 import './sign_up_two/sign_up_two.dart';
+import './sign_up_logo/sign_up_logo.dart';
 
-class SignUp extends StatelessWidget {
+class SignUp extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+
+    return SignUpState();
+  }
+}
+  
+class SignUpState extends State {
+
+  static TextEditingController firstNameController = TextEditingController();
+  static TextEditingController lastNameController = TextEditingController();
+  var firstName = '';
+  var lastName = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,11 +61,15 @@ class SignUp extends StatelessWidget {
                               margin: EdgeInsets.only(bottom: 36),
                               child: 
                                 TextField(
+                                  controller: firstNameController,
+                                  onChanged: (text) {
+                                    setState(() {
+                                      firstName = text;
+                                    });
+                                  },
                                   decoration: InputDecoration(
                                       enabledBorder: InputBorder.none,
-                                      focusedBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.white)
-                                      ),
+                                      focusedBorder: InputBorder.none,                 
                                       labelStyle: TextStyle(color: Colors.green),
                                       hintText: 'FIRST NAME',
                                       hintStyle: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w400),
@@ -63,11 +82,15 @@ class SignUp extends StatelessWidget {
                             Container(
                               child: 
                                 TextField(
+                                  controller: lastNameController,
+                                  onChanged: (text) {
+                                    setState(() {
+                                      lastName = text;
+                                    });
+                                  },                                  
                                   decoration: InputDecoration(
                                       enabledBorder: InputBorder.none,
-                                      focusedBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.white)
-                                      ),
+                                      focusedBorder: InputBorder.none,                       
                                       labelStyle: TextStyle(color: Colors.green),
                                       hintText: 'LAST NAME',
                                       hintStyle: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w400),
@@ -77,7 +100,7 @@ class SignUp extends StatelessWidget {
                                   style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w500)
 
                                 )
-                            ),    
+                            ),                            
                           ]
                         )
                       )                
@@ -85,14 +108,7 @@ class SignUp extends StatelessWidget {
               )
           ),
 
-          Positioned(
-            top: MediaQuery.of(context).size.height * .05,
-            left: 20,
-            child: Image.asset(
-              'assets/images/junto-mobile__logo--white.png',
-              height: 36,
-              )
-          ), 
+          SignUpLogo(),
 
           Positioned(
             bottom: MediaQuery.of(context).size.height * .05,
@@ -111,9 +127,14 @@ class SignUp extends StatelessWidget {
 
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => SignUpTwo()
-                    ));
+                    firstNameController.text = '';
+                    lastNameController.text = '';
+
+                    if(firstName != '' && lastName != '') {
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => SignUpTwo(firstName, lastName)
+                      ));
+                    }
                   },
 
                 child: Icon(Icons.arrow_right, color: Colors.white, size: 27),
