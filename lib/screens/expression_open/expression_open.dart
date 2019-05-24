@@ -34,18 +34,24 @@ class ExpressionOpen extends StatelessWidget {
             iconTheme: IconThemeData(color: JuntoPalette.juntoSleek),
             backgroundColor: Colors.white,
             elevation: 0,
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: Icon(CustomIcons.back_arrow_left,
-                      color: JuntoPalette.juntoSleek, size: 24),
-                ),
-                Icon(Icons.bookmark_border,
-                    color: JuntoPalette.juntoSleek, size: 24)
-              ],
-            ),
+            titleSpacing: 0,
+            title: 
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: 
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      GestureDetector(
+                        onTap: () => Navigator.pop(context),
+                        child: Icon(CustomIcons.back_arrow_left,
+                            color: JuntoPalette.juntoSleek, size: 24),
+                      ),
+                      Icon(Icons.bookmark_border,
+                          color: JuntoPalette.juntoSleek, size: 24)
+                    ],
+                  ),
+              )
           ),
         ),
 
@@ -55,7 +61,7 @@ class ExpressionOpen extends StatelessWidget {
         color: Colors.white,
         child: Column(
           children: <Widget>[
-            AppbarBorder(JuntoPalette.juntoSleek),
+            AppbarBorder(Color(0xffeeeeee)),
             Expanded(
               child: ListView(children: [
 

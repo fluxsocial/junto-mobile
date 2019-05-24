@@ -53,7 +53,7 @@ class ExpressionPreview extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           
-          // expression preview profile
+          // expression preview profile 
           PreviewProfile(urk),
 
           GestureDetector(
