@@ -16,7 +16,8 @@ class JuntoPack extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
-        appBar: JuntoAppBar.getJuntoAppBar('assets/images/junto-mobile__logo--pack.png', 'PACKS', JuntoPalette.juntoPurple),
+        appBar: JuntoAppBar.getJuntoAppBar('assets/images/junto-mobile__logo--pack.png', 
+        'PACKS', JuntoPalette.juntoPurple, JuntoPalette.juntoPurpleLight),
 
         body:          
           ListView(
