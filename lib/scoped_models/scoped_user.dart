@@ -1,13 +1,12 @@
 import 'dart:convert';
-
 import 'package:scoped_model/scoped_model.dart';
 import 'package:http/http.dart';
 
 import '../models/expression.dart';
 import '../models/sphere.dart';
 import '../models/pack.dart';
-import '../models/user.dart';
-import '../models/setUser.dart';
+import './models/create_user.dart';
+import './models/set_user.dart';
 
 class ScopedUser extends Model {
   String _userAddress = '';
@@ -17,129 +16,134 @@ class ScopedUser extends Model {
   String _password = '';
   String _bio = '';
   String _profilePicture = '';
-
   List<Expression> _collectiveExpressions = [];
   List<Sphere> _spheres = Sphere.fetchAll();
   List<Pack> _packs = Pack.fetchAll();
 
-  // create user
+  // Holochain API address
+  String _url = 'http://127.0.0.1:8888';
+
+  // Headers
+  Map<String, String> _headers = {"Content-type": "application/json"};
+
+  // Create a unique user 
   void createUser(username, firstName, lastName, profilePicture, bio) async {
-    String url = 'http://127.0.0.1:8888';
-    Map<String, String> headers = {"Content-type": "application/json"};
+    // JSON body
     final body =
-        '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "core", "function": "create_user", "args": {"user_data": {"username": "' + username + '", "first_name":"' + firstName + '", "last_name":"' + lastName + '", "profile_picture":"' + profilePicture + '", "bio":"' + bio + '"}}}}';
+      '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "core", "function": "create_user", "args": {"user_data": {"username": "' + username + '", "first_name":"' + firstName + '", "last_name":"' + lastName + '", "profile_picture":"' + profilePicture + '", "bio":"' + bio + '"}}}}';
 
-    Response response = await post(url, headers: headers, body: body);
-    int statusCode = response.statusCode;
-    // print(statusCode);
+    // Retrieve response from create_user function
+    Response response = await post(_url, headers: _headers, body: body);
 
-    var hellos = json.decode(response.body);
-    // print(hellos);
+    // Generate status code of response
+    int createUserStatus = response.statusCode;
 
-    if (statusCode == 200) {
-      User user = User.fromJson(hellos);
+    // Decode and store JSON from reponse.body
+    final createUserResponse = json.decode(response.body);
 
+    // Generate unique user address and store address, username, first name, last name,
+    // profile picture, and bio into state if status code succeeds
+    if (createUserStatus == 200) {
+      User user = User.fromJson(createUserResponse);
       _userAddress = user.result.ok.privateDen.entry.parent;
-      print(_userAddress);
-
       setUsername(user.result.ok.username.usernameEntry.username);
       setFirstName(user.result.ok.profile.profileEntry.firstName);
       setLastName(user.result.ok.profile.profileEntry.lastName);
       setProfilePicture(user.result.ok.profile.profileEntry.profilePicture);      
       setBio(user.result.ok.profile.profileEntry.bio);
+
+      notifyListeners();
     } else {
-      print(hellos);
+      print(createUserResponse);
     }
   }  
 
+  // Set user state attributes (i.e. sign in)
   void setUser(usernameAddress) async {  
-    String url = 'http://127.0.0.1:8888';
-    Map<String, String> headers = {"Content-type": "application/json"};
-
-    // get username from address
+    // JSON providing unique username address to retrieve username
     final usernameBody =
-        '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "core", "function": "get_username_from_address", "args": {"username_address": "' + usernameAddress + '"}}}';
+      '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "core", "function": "get_username_from_address", "args": {"username_address": "' + usernameAddress + '"}}}';
     
-    Response usernameResponse = await post(url, headers: headers, body: usernameBody);
+    // Retrieve username JSON from Holochain API
+    Response usernameResponse = await post(_url, headers: _headers, body: usernameBody);
 
-    // get profile from address
+    // JSON providing unique username address to retrieve profile
     final profileBody =
-        '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "core", "function": "get_user_profile_from_address", "args": {"username_address": "' + usernameAddress + '"}}}';    
+      '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "core", "function": "get_user_profile_from_address", "args": {"username_address": "' + usernameAddress + '"}}}';    
 
-    Response profileResponse = await post(url, headers: headers, body: profileBody);
+    // Retrieve profile JSON from Holochain API
+    Response profileResponse = await post(_url, headers: _headers, body: profileBody);
 
+    // Instantiate setUser classes
     SetUserUsername setUserUsername = SetUserUsername.fromJson(json.decode(usernameResponse.body));
     SetUserProfile setUserProfile = SetUserProfile.fromJson(json.decode(profileResponse.body));
-    _username = setUserUsername.result.ok.username;
-    _firstName = setUserProfile.result.ok.firstName;
-    _lastName = setUserProfile.result.ok.lastName;
-    _profilePicture = setUserProfile.result.ok.profilePicture;
-    _bio = setUserProfile.result.ok.bio;
 
+    // Update state
+    setUsername(setUserUsername.result.ok.username);
+    setFirstName(setUserProfile.result.ok.firstName);
+    setLastName(setUserProfile.result.ok.lastName);
+    setProfilePicture(setUserProfile.result.ok.profilePicture);
+    setBio(setUserProfile.result.ok.bio);
+
+    notifyListeners();
   }
 
-
-  // get dens
+  // Retrieve user dens 
   void getDens() async {
-    String url = 'http://127.0.0.1:8888';
-    Map<String, String> headers = {"Content-type": "application/json"};
     final body =
-        '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "core", "function": "user_dens", "function":"user_dens", "args": {"username_address":"hellos"}}}';
+      '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "core", "function": "user_dens", "function":"user_dens", "args": {"username_address":"hellos"}}}';
 
-    Response response = await post(url, headers: headers, body: body);
+    Response response = await post(_url, headers: _headers, body: body);
     int statusCode = response.statusCode;
     print(statusCode);
   }
   
-  // get pack
+  // Retrieve user pack
   void getPack() async {
-    String url = 'http://127.0.0.1:8888';
-    Map<String, String> headers = {"Content-type": "application/json"};
     final json =
-        '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "core", "function": "user_pack", "function":"user_dens", "args": {"username_address":"hellos"}}}';
+      '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "core", "function": "user_pack", "function":"user_dens", "args": {"username_address":"hellos"}}}';
 
-    Response response = await post(url, headers: headers, body: json);
+    Response response = await post(_url, headers: _headers, body: json);
     int statusCode = response.statusCode;
     print(statusCode);
-    print(response.body);
   }  
 
-  // set username for member
+  // Update username in state
   void setUsername(username) {
     _username = username; 
 
     notifyListeners();
   }
 
-  // set first for member
+  // Update first name in state
   void setFirstName(firstName) {
     _firstName = firstName;
 
     notifyListeners();
   }
 
-  // set last name for member
+  // Update last name in state
   void setLastName(lastName) {
     _lastName = lastName;
 
     notifyListeners();
   }
 
-  // set password for member (temporary function)
+  // Update password in state
   void setPassword(password) {
     _password = password;
 
     notifyListeners();
   }
 
-  // set bio for member
+  // Update bio in state
   void setBio(bio) {
     _bio = bio;
 
     notifyListeners();
   }
 
-  // set profile picture for member
+  // Update profile picture in state
   void setProfilePicture(profilePicture) {
     _profilePicture = profilePicture;
 

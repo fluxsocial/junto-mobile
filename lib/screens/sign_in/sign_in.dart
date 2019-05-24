@@ -6,6 +6,7 @@ import '../collective/collective.dart';
 import '../../scoped_models/scoped_user.dart';
 
 class SignIn extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
 
@@ -87,6 +88,7 @@ class SignIn extends StatelessWidget {
                               builder: (context) => JuntoCollective()
                             ));
                           },  
+
                           padding: EdgeInsets.symmetric(
                             horizontal: 100,
                             vertical: 20
@@ -119,4 +121,5 @@ class SignIn extends StatelessWidget {
     
     );      
   }
+  
 }

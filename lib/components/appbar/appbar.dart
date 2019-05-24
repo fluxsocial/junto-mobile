@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:scoped_model/scoped_model.dart';
-import '../../scoped_models/scoped_user.dart';
 
-// typography + icons
 import '../../custom_icons.dart';
 import '../../typography/palette.dart';
 import '../../typography/style.dart'; 

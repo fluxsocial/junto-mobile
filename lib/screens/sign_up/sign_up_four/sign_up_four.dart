@@ -31,7 +31,8 @@ class SignUpFourState extends State<SignUpFour> {
   Widget build(BuildContext context) {
     return Scaffold(
 
-      body: Stack(
+      body: 
+      Stack(
         children: [
           Container(
             width: MediaQuery.of(context).size.width,
@@ -121,7 +122,7 @@ class SignUpFourState extends State<SignUpFour> {
                         widget.username != '' && widget.password != '') {    
 
                           await model.createUser(widget.username, widget.firstName, widget.lastName, profilePicture, bio);
-
+                          
                           model.setCollectiveExpressions();
 
                           Navigator.pushReplacement(context, MaterialPageRoute(
@@ -135,8 +136,8 @@ class SignUpFourState extends State<SignUpFour> {
                 )
               ),  
           )                          
-        ])
-    
+        ])    
     );      
   }
+  
 }
