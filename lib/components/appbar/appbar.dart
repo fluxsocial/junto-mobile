@@ -49,48 +49,12 @@ class JuntoAppBar {
 
                     Container(                
                       child: Icon(Icons.search, color: JuntoPalette.juntoSleek, size: 20),
-                    ),
+                    ),                            
 
-                  ScopedModelDescendant<ScopedUser>(
-                      builder: (context, child, model) => 
-                        Container(
-                          margin: EdgeInsets.only(left: 7.5),
-                          child: RaisedButton(
-                            onPressed: () {
-                              model.createUser('sunyata', 'urk', 'yang', 'hello', 'hellos');
-                            }
-                          )
-                        )     
-                  ),    
-
-                  ScopedModelDescendant<ScopedUser>(
-                      builder: (context, child, model) => 
-                        Container(
-                          margin: EdgeInsets.only(left: 7.5),
-                          child: RaisedButton(
-                            onPressed: () {
-                              model.setUser('QmZnYuSUwRQ6v2vWNnVxApBJQLCBsTRKAd5v2KzpLKHSbQ');
-                            }
-                          )
-                        )     
-                  ),  
-
-                  ScopedModelDescendant<ScopedUser>(
-                      builder: (context, child, model) => 
-                        Container(
-                          margin: EdgeInsets.only(left: 7.5),
-                          child: RaisedButton(
-                            onPressed: () {
-                              model.getPack();
-                            }
-                          )
-                        )     
-                  ),                                      
-
-                        // Container(
-                        //   margin: EdgeInsets.only(left: 7.5),
-                        //   child: Icon(CustomIcons.moon, color: JuntoPalette.juntoSleek, size: 20),
-                        // )                                          
+                    Container(
+                      margin: EdgeInsets.only(left: 7.5),
+                      child: Icon(CustomIcons.moon, color: JuntoPalette.juntoSleek, size: 20),
+                    )                                          
  
                   ],)
               ]),

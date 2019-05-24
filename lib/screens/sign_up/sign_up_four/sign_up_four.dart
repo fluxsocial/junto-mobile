@@ -114,19 +114,13 @@ class SignUpFourState extends State<SignUpFour> {
                     ),
 
                     GestureDetector(
-                      onTap: () {
+                      onTap: () async {
                         bioController.text = '';
 
                         if(widget.firstName != '' && widget.lastName != '' && 
                         widget.username != '' && widget.password != '') {    
 
-                          // model.setFirstName(widget.firstName);
-                          // model.setLastName(widget.lastName);
-                          // model.setUsername(widget.username);
-                          // model.setPassword(widget.password);
-                          // model.setBio(bio);
-                          // model.setProfilePicture(profilePicture);
-                          model.createUser(widget.username, widget.firstName, widget.lastName, profilePicture, bio);
+                          await model.createUser(widget.username, widget.firstName, widget.lastName, profilePicture, bio);
 
                           model.setCollectiveExpressions();
 

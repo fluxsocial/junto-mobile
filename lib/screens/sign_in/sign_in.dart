@@ -8,7 +8,7 @@ import '../../scoped_models/scoped_user.dart';
 class SignIn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+
     return Scaffold(
 
       body: Stack(
@@ -80,8 +80,9 @@ class SignIn extends StatelessWidget {
                     Container(
                       child: 
                           RaisedButton(                      
-                          onPressed: () {
-                            
+                          onPressed: () async {
+                            await model.setUser('QmZnYuSUwRQ6v2vWNnVxApBJQLCBsTRKAd5v2KzpLKHSbQ');
+
                             Navigator.push(context, MaterialPageRoute(
                               builder: (context) => JuntoCollective()
                             ));
