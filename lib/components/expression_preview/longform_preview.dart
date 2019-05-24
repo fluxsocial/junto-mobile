@@ -13,7 +13,6 @@ class LongformPreview extends StatelessWidget {
     if(title != '') {
       return 
           Container(
-            margin: EdgeInsets.only(bottom: 2.5),
             child: Text(
               title,
               textAlign: TextAlign.left,
