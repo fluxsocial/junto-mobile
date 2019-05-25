@@ -1,9 +1,12 @@
 
 import 'package:flutter/material.dart';
 
-import '../../components/bottom_nav/bottom_nav_create.dart';
-import './longform.dart'; 
-import './create_actions.dart';
+import './create_bottom_nav.dart';
+import '../../typography/style.dart';
+import '../../typography/palette.dart';
+import './longform/longform.dart'; 
+import './shortform/shortform.dart'; 
+import './create_actions.dart'; 
 
 class JuntoCreate extends StatefulWidget {
   @override
@@ -14,6 +17,7 @@ class JuntoCreate extends StatefulWidget {
 }
 
 class JuntoCreateState extends State<JuntoCreate> {
+  String _expressionType = 'LONGFORM';
   bool _longform = true;
   bool _shortform = false;
   bool _bullet = false;
@@ -26,7 +30,7 @@ class JuntoCreateState extends State<JuntoCreate> {
     if(_longform) {
       return Longform();
     } else if (_shortform) {
-      return Center(child: Text('shortform'));
+      return Shortform();
     } else if(_bullet) {
       return Center(child: Text('bullet'));
     } else if (_photo) {
@@ -52,8 +56,12 @@ class JuntoCreateState extends State<JuntoCreate> {
 
   // Switch between different expression templates
   switchTemplate(templateType) {
+    // Reset State
     _resetState();
+    // Update expression type
+    _expressionType = templateType; 
 
+    // Update state
   if(templateType == 'longform') {    
     setState(() {
       _longform = true;
@@ -90,9 +98,28 @@ class JuntoCreateState extends State<JuntoCreate> {
     Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       backgroundColor: Colors.white,
-      body: _buildTemplate(),
+      body: 
+      
+      Column(
+        children: <Widget>[
+          Container(
+            alignment: Alignment.centerLeft,
+            margin: EdgeInsets.only(top: 20, bottom: 20),
+            padding: EdgeInsets.only(left: 10, right: 10, top: 30),
+            width: MediaQuery.of(context).size.width,
+            child: Text(_expressionType.toUpperCase(),
+                textAlign: TextAlign.start, style: JuntoStyles.lotusExpressionType),
+          ),  
 
-      bottomNavigationBar: BottomNavCreate(switchTemplate),
+        _buildTemplate(),
+
+        CreateActions()
+
+        ],
+      ),
+      
+        
+      bottomNavigationBar: CreateBottomNav(switchTemplate),
     );
   }
 } 

@@ -23,7 +23,7 @@ class JuntoStyles {
 
   // Styles for creation templates
   static const lotusExpressionType = 
-      TextStyle(fontSize: 17, color: JuntoPalette.juntoGrey, fontWeight: FontWeight.w700, letterSpacing: 1.25); 
+      TextStyle(fontSize: 17, color: JuntoPalette.juntoGrey, fontWeight: FontWeight.w700, letterSpacing: 1.25,); 
 
   static const lotusAddChannels = 
       TextStyle(fontWeight: FontWeight.w700, fontSize: 12);

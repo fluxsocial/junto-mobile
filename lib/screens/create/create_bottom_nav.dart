@@ -4,9 +4,9 @@ import '../../screens/collective/collective.dart';
 import '../../custom_icons.dart';
 import '../../typography/palette.dart';
 
-class BottomNavCreate extends StatelessWidget {
+class CreateBottomNav extends StatelessWidget {
   Function switchTemplate;
-  BottomNavCreate(this.switchTemplate);
+  CreateBottomNav(this.switchTemplate);
 
   @override
   Widget build(BuildContext context) {
