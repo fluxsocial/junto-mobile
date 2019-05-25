@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class LongformOpen extends StatelessWidget {
-  final longformExpression;
+  final longformExpression; 
 
   LongformOpen(this.longformExpression);
 
