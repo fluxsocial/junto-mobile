@@ -40,12 +40,12 @@ class ExpressionOpenBottom extends StatelessWidget {
         Container(
             margin: EdgeInsets.symmetric(vertical: 7.5),
             padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-            decoration: BoxDecoration(
-              border: Border(
-                bottom:
-                    BorderSide(color: Color(0xffeeeeee), width: 1.5),
-              ),
-            ),
+            // decoration: BoxDecoration(
+            //   border: Border(
+            //     bottom:
+            //         BorderSide(color: Color(0xffeeeeee), width: 1.5),
+            //   ),
+            // ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -62,14 +62,9 @@ class ExpressionOpenBottom extends StatelessWidget {
                   ],
                 ),
 
-                Row(
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(right: 10),
-                      child: Icon(CustomIcons.resonate),
-                    ),
-                    Icon(CustomIcons.comment)
-                  ],
+                Container(
+                  margin: EdgeInsets.only(right: 10),
+                  child: Icon(CustomIcons.half_lotus, size: 15)
                 )
               ],
             ));  
