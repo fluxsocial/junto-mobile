@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../components/bottom_nav/bottom_nav_create.dart';
 import './longform.dart'; 
+import './create_actions.dart';
 
 class JuntoCreate extends StatefulWidget {
   @override
