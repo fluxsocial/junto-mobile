@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../screens/collective/collective.dart';
 import '../../custom_icons.dart';
 import '../../typography/palette.dart';
+import './create_actions.dart';
 
 class CreateBottomNav extends StatelessWidget {
   Function switchTemplate;
@@ -11,8 +11,10 @@ class CreateBottomNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 90,
+      height: 140,
       child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+        CreateActions(),
+
         Container(
           alignment: Alignment.center,
           color: Colors.white,

@@ -98,27 +98,22 @@ class JuntoCreateState extends State<JuntoCreate> {
     Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       backgroundColor: Colors.white,
-      body: 
-      
-      Column(
-        children: <Widget>[
-          Container(
-            alignment: Alignment.centerLeft,
-            margin: EdgeInsets.only(top: 20, bottom: 20),
-            padding: EdgeInsets.only(left: 10, right: 10, top: 30),
-            width: MediaQuery.of(context).size.width,
-            child: Text(_expressionType.toUpperCase(),
-                textAlign: TextAlign.start, style: JuntoStyles.lotusExpressionType),
-          ),  
+      body:     
+        Column(
+          children: <Widget>[
+            Container(
+              // alignment: Alignment.centerLeft,
+              margin: EdgeInsets.only(top: 20, bottom: 20),
+              padding: EdgeInsets.only(left: 10, right: 10, top: 30),
+              width: MediaQuery.of(context).size.width,
+              child: Text(_expressionType.toUpperCase(),
+                  textAlign: TextAlign.start, style: JuntoStyles.lotusExpressionType),
+            ),  
 
-        _buildTemplate(),
-
-        CreateActions()
-
-        ],
-      ),
-      
-        
+            _buildTemplate(),
+                                            
+          ],
+        ),
       bottomNavigationBar: CreateBottomNav(switchTemplate),
     );
   }
