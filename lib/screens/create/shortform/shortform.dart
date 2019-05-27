@@ -14,8 +14,8 @@ class Shortform extends StatefulWidget {
 }
 
 class ShortformState extends State<Shortform> {
-  var gradientOne = JuntoPalette.juntoPurple;
-  var gradientTwo = JuntoPalette.juntoBlue;
+  var gradientOne = Colors.white;
+  var gradientTwo = Colors.white;
   var fontColor = JuntoPalette.juntoGrey;
 
   @override
