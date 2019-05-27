@@ -144,7 +144,7 @@ class ShortformState extends State<Shortform> {
 
           Container(
             padding: EdgeInsets.only(left: 10.0, right: 10.0, top: MediaQuery.of(context).size.height * .1225),
-            height: MediaQuery.of(context).size.height * .44,
+            height: MediaQuery.of(context).size.height * .40,
             decoration: BoxDecoration(gradient: LinearGradient(
               begin: Alignment.bottomLeft,
               end: Alignment.topRight,
@@ -166,6 +166,8 @@ class ShortformState extends State<Shortform> {
                 maxLines: null,
                 style: TextStyle(color: fontColor, fontSize: 24, fontWeight: FontWeight.w700),
                 textAlign: TextAlign.center,
+                maxLength: 220,
+                textInputAction: TextInputAction.done
                      
             )
           )

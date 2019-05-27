@@ -82,8 +82,9 @@ class SignIn extends StatelessWidget {
                       child: 
                           RaisedButton(                      
                           onPressed: () async {
-                            await model.setUser('QmZnYuSUwRQ6v2vWNnVxApBJQLCBsTRKAd5v2KzpLKHSbQ');
+                            // await model.setUser('QmZnYuSUwRQ6v2vWNnVxApBJQLCBsTRKAd5v2KzpLKHSbQ');
 
+                            await model.mockSetUser();
                             model.setCollectiveExpressions();
 
                             Navigator.push(context, MaterialPageRoute(
