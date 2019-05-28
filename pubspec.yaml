@@ -90,7 +90,11 @@ flutter:
 
     - family:  half-lotus
       fonts:
-      - asset: assets/fonts/j_home.ttf            
+      - asset: assets/fonts/j_home.ttf
+      
+    - family:  add
+      fonts:
+      - asset: assets/fonts/j_home.ttf      
 
     - family:  MyFlutterApp
       fonts:

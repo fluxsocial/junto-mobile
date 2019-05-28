@@ -2,7 +2,7 @@
 import 'package:flutter/widgets.dart';
 
 class CustomIcons {
-
+  static const IconData add = const IconData(0xe90b, fontFamily: 'add');
   static const IconData moon = const IconData(0xe901, fontFamily: 'moon');
   static const IconData home = const IconData(0xe902, fontFamily: 'home');
   static const IconData lotus = const IconData(0xe900, fontFamily: 'lotus');
