@@ -26,14 +26,16 @@ class CreatePhotoState extends State<CreatePhoto> {
 
   _buildUploadImage() {
     return 
-        Center(
+        Container(          
+          margin: EdgeInsets.only(top: 170),
           child: Column(children: [
           GestureDetector(
             onTap: () {
               _getImage(context, ImageSource.gallery);
             },
-            child: Icon(CustomIcons.add),
+            child: Icon(CustomIcons.add, size: 130, color: Color(0xff555555)),
           ),
+          SizedBox(height: 20),
           Text('UPLOAD AN IMAGE')
         ]));    
   }
