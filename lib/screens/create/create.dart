@@ -6,6 +6,7 @@ import '../../typography/style.dart';
 import '../../typography/palette.dart';
 import './longform/longform.dart'; 
 import './shortform/shortform.dart'; 
+import './photo/photo.dart'; 
 import './create_actions.dart'; 
 
 class JuntoCreate extends StatefulWidget {
@@ -34,7 +35,7 @@ class JuntoCreateState extends State<JuntoCreate> {
     } else if(_bullet) {
       return Center(child: Text('bullet'));
     } else if (_photo) {
-      return Center(child: Text('photo'));
+      return CreatePhoto();
     } else if(_events) {
       return Center(child: Text('events'));
     } else if(_music) {

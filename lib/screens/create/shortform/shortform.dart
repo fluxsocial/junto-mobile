@@ -59,6 +59,62 @@ class ShortformState extends State<Shortform> {
               GestureDetector(
                 onTap: () {
                   setState(() {
+                    gradientOne = JuntoPalette.juntoBlue;
+                    gradientTwo = JuntoPalette.juntoBlueLight;
+                    fontColor = Colors.white;
+
+                  });
+                },
+                child: 
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomLeft,
+                      end: Alignment.topRight,
+                      stops: [0.1, 0.9],
+                      colors: [
+                        JuntoPalette.juntoBlue,
+                        JuntoPalette.juntoBlueLight
+                      ]
+                    ),
+                  ),                  
+                  margin: EdgeInsets.only(right: 10),
+                  height: 36,
+                  width: 36,                  
+                ),
+              ),              
+
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    gradientOne = JuntoPalette.juntoPurple;
+                    gradientTwo = JuntoPalette.juntoPurpleLight;
+                    fontColor = Colors.white;
+
+                  });
+                },
+                child: 
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomLeft,
+                      end: Alignment.topRight,
+                      stops: [0.1, 0.9],
+                      colors: [
+                        JuntoPalette.juntoPurple,
+                        JuntoPalette.juntoPurpleLight
+                      ]
+                    ),
+                  ),                  
+                  margin: EdgeInsets.only(right: 10),
+                  height: 36,
+                  width: 36,                  
+                ),
+              ),               
+
+              GestureDetector(
+                onTap: () {
+                  setState(() {
                     gradientOne = JuntoPalette.juntoPurple;
                     gradientTwo = JuntoPalette.juntoBlue;
                     fontColor = Colors.white;
