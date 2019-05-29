@@ -16,7 +16,8 @@ class JuntoSpheres extends StatelessWidget {
 
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: JuntoAppBar.getJuntoAppBar('assets/images/junto-mobile__logo--spheres.png', 'SPHERES', JuntoPalette.juntoGreen),
+        appBar: JuntoAppBar.getJuntoAppBar('assets/images/junto-mobile__logo--spheres.png', 'SPHERES', 
+        JuntoPalette.juntoGreen, JuntoPalette.juntoGreenLight),
 
         body: 
         Container(          

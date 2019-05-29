@@ -30,7 +30,8 @@ class _JuntoPerspectivesState extends State {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: JuntoAppBar.getJuntoAppBar('assets/images/junto-mobile__logo--den.png', 'PERSPECTIVES', JuntoPalette.juntoGrey),
+      appBar: JuntoAppBar.getJuntoAppBar('assets/images/junto-mobile__logo--den.png', 'PERSPECTIVES', 
+      JuntoPalette.juntoGrey, JuntoPalette.juntoSleek),
 
         body: ListView(
           children: <Widget>[        

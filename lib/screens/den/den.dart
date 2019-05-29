@@ -26,7 +26,8 @@ class JuntoDenState extends State<JuntoDen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: JuntoAppBar.getJuntoAppBar(
-          'assets/images/junto-mobile__logo--den.png', 'DEN', JuntoPalette.juntoGrey),
+          'assets/images/junto-mobile__logo--den.png', 'DEN', 
+          JuntoPalette.juntoGrey, JuntoPalette.juntoSleek),
       body: ListView(children: [
         Container(
           constraints: BoxConstraints(

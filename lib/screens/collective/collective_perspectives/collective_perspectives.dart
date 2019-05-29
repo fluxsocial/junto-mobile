@@ -29,7 +29,7 @@ class CollectivePerspectives extends StatelessWidget {
                 onTap: () {
                   Navigator.pushReplacementNamed(context, '/perspectives');
                 },
-                child:Icon(Icons.arrow_right, color: JuntoPalette.juntoSleek, size: 17)
+                child:Icon(Icons.keyboard_arrow_right, color: JuntoPalette.juntoSleek, size: 17)
               ),
             ]),
       );    

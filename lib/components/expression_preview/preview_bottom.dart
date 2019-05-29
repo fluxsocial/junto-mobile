@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import './channel_preview.dart';
 import '../../custom_icons.dart';
 import '../../typography/style.dart';
+import '../../typography/palette.dart';
 
 class PreviewBottom extends StatelessWidget {
   final String time;
@@ -35,8 +36,7 @@ class PreviewBottom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // color: Colors.blue,
-      margin: EdgeInsets.only(top: 5),
+      margin: EdgeInsets.only(top: 7.5),
       padding: EdgeInsets.symmetric(horizontal: 10.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -56,15 +56,11 @@ class PreviewBottom extends StatelessWidget {
               ))
             ],
           )),
+
           Container(
-              alignment: Alignment.center,
-              child: Row(children: [
-                Icon(CustomIcons.resonate, size: 24, color: Colors.black),
-                Container(
-                    margin: EdgeInsets.only(left: 17),
-                    child: Icon(CustomIcons.comment,
-                        size: 24, color: Colors.black)),
-              ]))
+            margin: EdgeInsets.only(right: 10),
+            child: Icon(CustomIcons.half_lotus, size: 15, color: JuntoPalette.juntoBlue)
+          )      
         ],
       ),
     );

@@ -58,6 +58,13 @@ class ScopedUser extends Model {
     }
   }  
 
+  void mockSetUser() {
+     _username = 'sunyata';
+     _firstName = 'Eric';
+     _lastName = 'Yang';
+     _bio = 'To a mind that is still, the whole universe surrenders';    
+  }
+
   // Set user state attributes (i.e. sign in)
   void setUser(usernameAddress) async {  
     // JSON providing unique username address to retrieve username

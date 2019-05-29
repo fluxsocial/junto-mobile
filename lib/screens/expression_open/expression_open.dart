@@ -5,6 +5,8 @@ import '../../typography/palette.dart';
 import './expression_open_profile/expression_open_profile.dart';
 import './expression_open_shortreply/expression_open_shortreply.dart';
 import './expression_open_bottom/expression_open_bottom.dart';
+import './expression_open_response/expression_open_response.dart';
+import './expression_open_replies_text/expression_open_replies_text.dart';
 import '../../custom_icons.dart';
 import './longform_open.dart';
 
@@ -34,18 +36,24 @@ class ExpressionOpen extends StatelessWidget {
             iconTheme: IconThemeData(color: JuntoPalette.juntoSleek),
             backgroundColor: Colors.white,
             elevation: 0,
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: Icon(CustomIcons.back_arrow_left,
-                      color: JuntoPalette.juntoSleek, size: 24),
-                ),
-                Icon(Icons.bookmark_border,
-                    color: JuntoPalette.juntoSleek, size: 24)
-              ],
-            ),
+            titleSpacing: 0,
+            title: 
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: 
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      GestureDetector(                        
+                        onTap: () => Navigator.pop(context),
+                        child: Icon(CustomIcons.back_arrow_left,
+                            color: JuntoPalette.juntoSleek, size: 24),
+                      ),
+                      Icon(Icons.bookmark_border,
+                          color: JuntoPalette.juntoSleek, size: 24)
+                    ],
+                  ),
+              )
           ),
         ),
 
@@ -55,7 +63,7 @@ class ExpressionOpen extends StatelessWidget {
         color: Colors.white,
         child: Column(
           children: <Widget>[
-            AppbarBorder(JuntoPalette.juntoSleek),
+            AppbarBorder(Color(0xffeeeeee)),
             Expanded(
               child: ListView(children: [
 
@@ -63,7 +71,12 @@ class ExpressionOpen extends StatelessWidget {
 
                 _buildExpression(),
 
-                ExpressionOpenBottom(channelOne: expression.channelOne, channelTwo: expression.channelTwo, channelThree: expression.channelThree, time: expression.time)
+                ExpressionOpenBottom(channelOne: expression.channelOne, channelTwo: expression.channelTwo, channelThree: expression.channelThree, time: expression.time),
+
+                ExpressionOpenResponse(),
+
+                ExpressionOpenRepliesText()            
+
 
               ]),
             ),

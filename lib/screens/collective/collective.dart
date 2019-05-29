@@ -18,7 +18,8 @@ class JuntoCollective extends StatelessWidget {
         appBar: JuntoAppBar.getJuntoAppBar(
           'assets/images/junto-mobile__logo--collective.png', 
           'JUNTO', 
-          JuntoPalette.juntoBlue
+          JuntoPalette.juntoBlue,
+          JuntoPalette.juntoBlueLight
         ),
 
         body: Container(

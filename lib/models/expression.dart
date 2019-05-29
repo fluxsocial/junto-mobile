@@ -89,8 +89,8 @@ class Expression {
           image: 'assets/images/junto-mobile__expression--photo.png',
           imageCaption: '',
           shortformText: null,
-          channelOne: 'holochain',
-          channelTwo: 'junto',
+          channelOne: '',
+          channelTwo: '',
           channelThree: ''          
         ),      
 
