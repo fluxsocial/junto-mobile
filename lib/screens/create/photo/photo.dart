@@ -6,7 +6,7 @@ import './../../../custom_icons.dart';
 import './../../../typography/palette.dart';
 import './../../../typography/style.dart';
 
-
+// Create using photo form
 class CreatePhoto extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -19,7 +19,7 @@ class CreatePhotoState extends State<CreatePhoto> {
   bool _libraryActive = true;
   bool _cameraActive = false;
 
-
+  // Function to retrieve image from source (i.e. library or camera)
   void _getImage(context, source) {
     print('hellos');
 
@@ -30,6 +30,7 @@ class CreatePhotoState extends State<CreatePhoto> {
     });
   }
 
+  // Upload Image component - rendered in _photoTypeTemplate()
   _buildUploadImage() {
     return               
       Expanded(
@@ -42,7 +43,7 @@ class CreatePhotoState extends State<CreatePhoto> {
                 _getImage(context, ImageSource.gallery);
               },
               child: Icon(CustomIcons.add,
-                  size: 130, color: Color(0xff555555)),
+                  size: 100, color: Color(0xff555555)),
             ),
             SizedBox(height: 20),
             Text('UPLOAD AN IMAGE'),
@@ -51,6 +52,7 @@ class CreatePhotoState extends State<CreatePhoto> {
       );
   }
 
+  // Use camera component - rendered in _photoTypeTemplate()
   _buildUseCamera() {
     return
       Expanded(
@@ -69,10 +71,10 @@ class CreatePhotoState extends State<CreatePhoto> {
       );
   }
 
+  // Component shown to prompt user to retrieve image
   _photoTypeTemplate() {
     return 
     Container(
-        // color: Colors.purple,
         child: 
           Column(            
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -122,30 +124,14 @@ class CreatePhotoState extends State<CreatePhoto> {
             ]));
   }
 
+  // Component once image is retrieved
   _buildImagePreview() {
     return Column(children: [
       Container(
-        padding: EdgeInsets.symmetric(horizontal: 10),
-        margin: EdgeInsets.only(bottom: 10),
-        child: TextField(
-          buildCounter: (BuildContext context,
-                  {int currentLength, int maxLength, bool isFocused}) =>
-              null,
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            hintText: 'Caption (optional)',
-          ),
-          cursorColor: JuntoPalette.juntoGrey,
-          cursorWidth: 2,
-          style: JuntoStyles.lotusLongformTitle,
-          maxLines: 1,
-          maxLength: 80,
-        ),
-      ),
-      Container(
+        width: MediaQuery.of(context).size.width, 
+        height: MediaQuery.of(context).size.width,        
         color: Colors.blue,
-        child: Image.file(_imageFile,
-          width: MediaQuery.of(context).size.width, height: MediaQuery.of(context).size.width),
+        child: Image.file(_imageFile, fit: BoxFit.contain),
       ),
       Container(child: RaisedButton(onPressed: () {
         setState(() {
@@ -163,3 +149,26 @@ class CreatePhotoState extends State<CreatePhoto> {
       );
   }
 }
+
+
+
+// Caption
+
+      // Container(
+      //   padding: EdgeInsets.symmetric(horizontal: 10),
+      //   margin: EdgeInsets.only(bottom: 10),
+      //   child: TextField(
+      //     buildCounter: (BuildContext context,
+      //             {int currentLength, int maxLength, bool isFocused}) =>
+      //         null,
+      //     decoration: InputDecoration(
+      //       border: InputBorder.none,
+      //       hintText: 'Caption (optional)',
+      //     ),
+      //     cursorColor: JuntoPalette.juntoGrey,
+      //     cursorWidth: 2,
+      //     style: JuntoStyles.lotusLongformTitle,
+      //     maxLines: 1,
+      //     maxLength: 80,
+      //   ),
+      // ),
