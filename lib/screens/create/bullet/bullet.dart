@@ -10,7 +10,46 @@ class CreateBullet extends StatefulWidget {
   }
 }
 
+
 class CreateBulletState extends State<CreateBullet> {
+
+
+  List _bullets = [];
+  var id = 1;
+
+  void _addBullet(bullet) {
+    setState(() {
+      id += 1;
+      _bullets.add(bullet);
+    });
+  }
+
+  void _removeBullet() {
+    setState(() {
+      id -= 1;
+      _bullets.removeLast();
+    });
+  }
+
+  _removeBulletWidget() {
+      return 
+        GestureDetector(
+          onTap: () {
+            _removeBullet();
+          },
+          child: Icon(Icons.remove_circle_outline)
+        );          
+  }
+
+  @override
+  void initState() {
+    Map bullet = {
+      'key': id 
+    };
+
+    _addBullet(bullet); 
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Column(children: <Widget>[
@@ -39,7 +78,16 @@ class CreateBulletState extends State<CreateBullet> {
                 ),
               ),
 
-              Icon(Icons.add_circle_outline)
+              GestureDetector(
+                onTap: () {
+                  Map bullet = {
+                    'key': id 
+                  };              
+                  _addBullet(bullet);
+                  print(_bullets);
+                },
+                child: Icon(Icons.add_circle_outline)
+              )
             ],),
       ),
       Container(
@@ -49,24 +97,20 @@ class CreateBulletState extends State<CreateBullet> {
           child: ListView(
             scrollDirection: Axis.horizontal,
             shrinkWrap: true,
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.only(right: 10),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Color(0xff333333), width: 1)
-                  ),
-                  height: 200,
-                  width: MediaQuery.of(context).size.width - 20,
-              ),
-
-              Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Color(0xff333333), width: 1)
-                  ),
-                  height: 200,
-                  width: MediaQuery.of(context).size.width - 20,
-              ),              
-            ],
+            children: _bullets.map((bullet) =>       
+            Container(
+              margin: EdgeInsets.only(right: 10),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Color(0xff333333), width: 1)
+                ),
+                height: 200,
+                width: MediaQuery.of(context).size.width - 20,
+                child: Column(
+                  children: [
+                    Text(bullet['key'].toString() +'/' + _bullets.length.toString()),
+                    bullet['key'] > 1 ? _removeBulletWidget() : Container()
+                  ])
+            )).toList(),
           ))
     ]);
   }
