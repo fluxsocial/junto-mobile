@@ -8,6 +8,7 @@ import './longform/longform.dart';
 import './shortform/shortform.dart'; 
 import './photo/photo.dart'; 
 import './bullet/bullet.dart'; 
+import './event/event.dart'; 
 import './create_actions.dart'; 
 
 class JuntoCreate extends StatefulWidget {
@@ -38,7 +39,7 @@ class JuntoCreateState extends State<JuntoCreate> {
     } else if (_photo) {
       return CreatePhoto();
     } else if(_events) {
-      return Center(child: Text('events'));
+      return CreateEvent();
     } else if(_music) {
       return Center(child: Text('music'));
     }
@@ -98,6 +99,7 @@ class JuntoCreateState extends State<JuntoCreate> {
 
     return 
     Scaffold(
+      resizeToAvoidBottomPadding: false,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       backgroundColor: Colors.white,
       body:     
