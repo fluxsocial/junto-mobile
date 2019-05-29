@@ -6,6 +6,7 @@ import './../../../custom_icons.dart';
 import './../../../typography/palette.dart';
 import './../../../typography/style.dart';
 
+
 class CreatePhoto extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -17,6 +18,7 @@ class CreatePhotoState extends State<CreatePhoto> {
   File _imageFile;
   bool _libraryActive = true;
   bool _cameraActive = false;
+
 
   void _getImage(context, source) {
     print('hellos');
@@ -30,8 +32,10 @@ class CreatePhotoState extends State<CreatePhoto> {
 
   _buildUploadImage() {
     return               
-      Container(
+      Expanded(
+        // color: Colors.blue,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             GestureDetector(
               onTap: () {
@@ -49,18 +53,17 @@ class CreatePhotoState extends State<CreatePhoto> {
 
   _buildUseCamera() {
     return
-      Container(
+      Expanded(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             GestureDetector(
               onTap: () {
                 _getImage(context, ImageSource.camera);
               },
-              child: Icon(CustomIcons.add,
-                  size: 130, color: Color(0xff555555)),
+              child: Text('USE CAMERA'),
             ),
-            SizedBox(height: 20),
-            Text('USE CAMERA'),
+        
           ],
         ),
       );
@@ -69,10 +72,13 @@ class CreatePhotoState extends State<CreatePhoto> {
   _photoTypeTemplate() {
     return 
     Container(
-        child: Column(
+        // color: Colors.purple,
+        child: 
+          Column(            
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               _libraryActive ? _buildUploadImage() : _buildUseCamera(),
+              
               Container(
                   child: Row(
                 children: <Widget>[
@@ -139,7 +145,7 @@ class CreatePhotoState extends State<CreatePhoto> {
       Container(
         color: Colors.blue,
         child: Image.file(_imageFile,
-            fit: BoxFit.cover, width: MediaQuery.of(context).size.width),
+          width: MediaQuery.of(context).size.width, height: MediaQuery.of(context).size.width),
       ),
       Container(child: RaisedButton(onPressed: () {
         setState(() {
@@ -151,8 +157,9 @@ class CreatePhotoState extends State<CreatePhoto> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return 
+      Expanded(
         child: _imageFile == null ? _photoTypeTemplate() : _buildImagePreview()
-    );
+      );
   }
 }
