@@ -32,13 +32,13 @@ class CreateBulletState extends State<CreateBullet> {
   }
 
   _removeBulletWidget() {
-      return 
-        GestureDetector(
-          onTap: () {
-            _removeBullet();
-          },
-          child: Icon(Icons.remove_circle_outline)
-        );          
+    return 
+      GestureDetector(
+        onTap: () {
+          _removeBullet();
+        },
+        child: Icon(Icons.remove_circle_outline)
+      );          
   }
 
   @override
@@ -101,14 +101,47 @@ class CreateBulletState extends State<CreateBullet> {
             Container(
               margin: EdgeInsets.only(right: 10),
                 decoration: BoxDecoration(
-                  border: Border.all(color: Color(0xff333333), width: 1)
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(color: Color(0xffdddddd), width: 1)
                 ),
                 height: 200,
                 width: MediaQuery.of(context).size.width - 20,
-                child: Column(
+                child: 
+                Column(
                   children: [
-                    Text(bullet['key'].toString() +'/' + _bullets.length.toString()),
-                    bullet['key'] > 1 ? _removeBulletWidget() : Container()
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      child: 
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              bullet['key'].toString() +'/' + _bullets.length.toString(),
+                              style: TextStyle(color: Color(0xff333333))
+                            ),
+                            bullet['key'] > 1 ? _removeBulletWidget() : Container()
+                        ],),
+                    ),
+
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      margin: EdgeInsets.only(top: 20),
+                      child: 
+                        TextField(
+                          buildCounter: (BuildContext context,
+                                  {int currentLength, int maxLength, bool isFocused}) =>
+                              null,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                          ),
+                          cursorColor: JuntoPalette.juntoGrey,
+                          cursorWidth: 2,
+                          maxLines: null,
+                          maxLength: 220,
+                          textInputAction: TextInputAction.done,
+                        ),
+                    )
+
                   ])
             )).toList(),
           ))
