@@ -21,8 +21,10 @@ class ShortformState extends State<Shortform> {
   @override
   Widget build(BuildContext context) {    
     return 
-      Container(
-        child: Column(children: <Widget>[
+      Expanded(
+        child: ListView(
+          padding: EdgeInsets.all(0),
+          children: <Widget>[
           Container(
             padding: EdgeInsets.symmetric(horizontal: 10),
             margin: EdgeInsets.only(bottom: 20),

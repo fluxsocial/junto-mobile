@@ -106,7 +106,6 @@ class JuntoCreateState extends State<JuntoCreate> {
         Column(
           children: <Widget>[
             Container(
-              // alignment: Alignment.centerLeft,
               margin: EdgeInsets.only(top: 20, bottom: 20),
               padding: EdgeInsets.only(left: 10, right: 10, top: 30),
               width: MediaQuery.of(context).size.width,
@@ -115,6 +114,8 @@ class JuntoCreateState extends State<JuntoCreate> {
             ),  
 
             _buildTemplate(),
+
+            _expressionType != 'photo' ? CreateActions() : Container()
                                             
           ],
         ),

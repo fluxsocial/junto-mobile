@@ -55,7 +55,11 @@ class CreateBulletState extends State<CreateBullet> {
   
   @override
   Widget build(BuildContext context) {
-    return Column(children: <Widget>[
+    return 
+    Expanded(      
+      child: ListView(
+        padding: EdgeInsets.all(0),
+        children: <Widget>[
       Container(
           margin: EdgeInsets.only(bottom: 10),
           padding: EdgeInsets.symmetric(horizontal: 10),
@@ -148,6 +152,6 @@ class CreateBulletState extends State<CreateBullet> {
                   ])
             )).toList(),
           ))
-    ]);
+    ]));
   }
 }

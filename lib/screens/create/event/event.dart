@@ -29,12 +29,12 @@ class CreateEvent extends StatelessWidget {
             ),                   
           ), 
 
-          Container(
-            color: Color(0xffeeeeee),
-            height: 200,
-            width: MediaQuery.of(context).size.width,
-            child: Center(child: Text('Add a cover photo (optional)'))
-          ), 
+          // Container(
+          //   color: Color(0xfffbfbfb),
+          //   height: 200,
+          //   width: MediaQuery.of(context).size.width,
+          //   child: Center(child: Text('Add a cover photo (optional)'))
+          // ), 
 
           Container(
             child: 
@@ -73,6 +73,8 @@ class CreateEvent extends StatelessWidget {
           ),
 
           Container(
+            constraints: BoxConstraints(minHeight: 100, maxHeight: 240),
+            padding: EdgeInsets.only(bottom: 40),            
             child: TextField(
                 buildCounter: (BuildContext context,
                         {int currentLength, int maxLength, bool isFocused}) =>
