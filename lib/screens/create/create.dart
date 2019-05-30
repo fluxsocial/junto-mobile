@@ -9,6 +9,7 @@ import './shortform/shortform.dart';
 import './photo/photo.dart'; 
 import './bullet/bullet.dart'; 
 import './event/event.dart'; 
+import './music/music.dart'; 
 import './create_actions.dart'; 
 
 class JuntoCreate extends StatefulWidget {
@@ -41,7 +42,7 @@ class JuntoCreateState extends State<JuntoCreate> {
     } else if(_events) {
       return CreateEvent();
     } else if(_music) {
-      return Center(child: Text('music'));
+      return CreateMusic();
     }
   }
 

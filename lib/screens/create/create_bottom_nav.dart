@@ -14,7 +14,6 @@ class CreateBottomNav extends StatelessWidget {
       color: Colors.blue,
       height: 90,
       child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-        // CreateActions(),
 
         Container(
           alignment: Alignment.center,
