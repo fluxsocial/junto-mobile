@@ -212,22 +212,21 @@ class CreateShortformState extends State<CreateShortform> {
                 gradientTwo
               ]
             )),
-            child: TextField(
-                buildCounter: (BuildContext context,
-                        {int currentLength, int maxLength, bool isFocused}) =>
-                    null,
+            child: 
+              TextField(
+                buildCounter: (BuildContext context, 
+                    {int currentLength, int maxLength, bool isFocused}) => null,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                 ),              
-                cursorColor: JuntoPalette.juntoGrey,
+                cursorColor: fontColor,
                 cursorWidth: 2,
                 maxLines: null,
                 style: TextStyle(color: fontColor, fontSize: 24, fontWeight: FontWeight.w700),
-                textAlign: TextAlign.center,
                 maxLength: 220,
-                textInputAction: TextInputAction.done
-                     
-            )
+                textAlign: TextAlign.center,
+                textInputAction: TextInputAction.done                    
+              )
           )
         ],)
       );
