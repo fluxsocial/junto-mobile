@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../typography/palette.dart';
 import '../../../typography/style.dart';
 
-class Longform extends StatelessWidget {
+class CreateLongform extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 

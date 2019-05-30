@@ -32,9 +32,9 @@ class JuntoCreateState extends State<JuntoCreate> {
   // Build expression template based off state
   _buildTemplate() {
     if(_longform) {
-      return Longform();
+      return CreateLongform();
     } else if (_shortform) {
-      return Shortform();
+      return CreateShortform();
     } else if(_bullet) {
       return CreateBullet();
     } else if (_photo) {
@@ -58,10 +58,16 @@ class JuntoCreateState extends State<JuntoCreate> {
     });
   }
 
+  // Ask for user confirmation to switch between expressions if field is not empty
+  confirmSwitch() {
+
+  }
+
   // Switch between different expression templates
   switchTemplate(templateType) {
     // Reset State
     _resetState();
+
     // Update expression type
     _expressionType = templateType; 
 
@@ -97,30 +103,29 @@ class JuntoCreateState extends State<JuntoCreate> {
 
   @override
   Widget build(BuildContext context) {
-
     return 
-    Scaffold(
-      resizeToAvoidBottomPadding: false,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      backgroundColor: Colors.white,
-      body:     
-        Column(
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.only(top: 20, bottom: 20),
-              padding: EdgeInsets.only(left: 10, right: 10, top: 30),
-              width: MediaQuery.of(context).size.width,
-              child: Text(_expressionType.toUpperCase(),
-                  textAlign: TextAlign.start, style: JuntoStyles.lotusExpressionType),
-            ),  
+      Scaffold(
+        resizeToAvoidBottomPadding: false,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        backgroundColor: Colors.white,
+        body:     
+          Column(
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(top: 20, bottom: 20),
+                padding: EdgeInsets.only(left: 10, right: 10, top: 30),
+                width: MediaQuery.of(context).size.width,
+                child: Text(_expressionType.toUpperCase(),
+                    textAlign: TextAlign.start, style: JuntoStyles.lotusExpressionType),
+              ),  
 
-            _buildTemplate(),
+              _buildTemplate(),
 
-            _expressionType != 'photo' ? CreateActions() : Container()
-                                            
-          ],
-        ),
-      bottomNavigationBar: CreateBottomNav(switchTemplate),
-    );
+              _expressionType != 'photo' ? CreateActions() : SizedBox()
+                                              
+            ],
+          ),
+        bottomNavigationBar: CreateBottomNav(switchTemplate),
+      );
   }
 } 

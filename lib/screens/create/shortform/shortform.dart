@@ -5,15 +5,15 @@ import '../../../typography/palette.dart';
 import '../../../typography/style.dart';
 
 
-class Shortform extends StatefulWidget {
+class CreateShortform extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
 
-    return ShortformState();
+    return CreateShortformState();
   }
 }
 
-class ShortformState extends State<Shortform> {
+class CreateShortformState extends State<CreateShortform> {
   var gradientOne = Colors.white;
   var gradientTwo = Colors.white;
   var fontColor = JuntoPalette.juntoGrey;
