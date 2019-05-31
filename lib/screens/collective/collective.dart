@@ -3,6 +3,7 @@ import 'package:scoped_model/scoped_model.dart';
 
 import '../../components/appbar/appbar.dart';
 import './../../components/bottom_nav/bottom_nav.dart';
+import './degrees/degrees.dart';
 import './../../components/expression_preview/expression_preview.dart';
 import './perspectives/perspective_preview.dart';
 import '../../scoped_models/scoped_user.dart';
@@ -18,7 +19,6 @@ class JuntoCollective extends StatefulWidget {
 }
 
 class JuntoCollectiveState extends State<JuntoCollective> {
-  bool _collectiveActive = true;
   String _currentPerspective = 'JUNTO';
 
   bool _infinityActive = true;
@@ -29,6 +29,17 @@ class JuntoCollectiveState extends State<JuntoCollective> {
   bool _fiveDegreesActive = false;
   bool _sixDegreesActive = false;
 
+  Color _degreeColor ;
+  Color activeColor = Color(0xff333333);
+  Color passiveColor = Color(0xff999999);
+  Color _infinityColor = Color(0xff333333);
+  Color _oneDegreeColor = Color(0xff999999);
+  Color _twoDegreesColor = Color(0xff999999);
+  Color _threeDegreesColor = Color(0xff999999);
+  Color _fourDegreesColor = Color(0xff999999);
+  Color _fiveDegreesColor = Color(0xff999999);
+  Color _sixDegreesColor = Color(0xff999999);
+  
   void _resetDegrees() {
     setState(() {
       _infinityActive = false;
@@ -38,8 +49,49 @@ class JuntoCollectiveState extends State<JuntoCollective> {
       _fourDegreesActive = false;
       _fiveDegreesActive = false;
       _sixDegreesActive = false;
+
+      _infinityColor = Color(0xff999999);
+      _oneDegreeColor = Color(0xff999999);
+      _twoDegreesColor = Color(0xff999999);
+      _threeDegreesColor = Color(0xff999999);
+      _fourDegreesColor = Color(0xff999999);
+      _fiveDegreesColor = Color(0xff999999);
+      _sixDegreesColor = Color(0xff999999);      
     });
   }
+
+  void _changeDegree(degree) {
+    setState(() {
+      _resetDegrees();
+      if (degree == 'infinity') {
+        _infinityActive = true;
+        _infinityColor = Color(0xff333333);
+
+      } else if(degree == 'one') {
+        _oneDegreeActive = true;
+        _oneDegreeColor = Color(0xff333333);        
+      } else if(degree == 'two') {
+        _twoDegreesActive = true;
+        _twoDegreesColor = Color(0xff333333);        
+      } else if(degree == 'three') {
+        _threeDegreesActive = true;
+        _threeDegreesColor = Color(0xff333333);
+
+      } else if(degree == 'four') {
+        _fourDegreesActive = true;
+        _fourDegreesColor = Color(0xff333333);        
+      } else if(degree == 'five') {
+        _fiveDegreesActive = true;
+        _fiveDegreesColor = Color(0xff333333);
+
+      } else if(degree == 'six') {
+        _sixDegreesActive = true;
+        _sixDegreesColor = Color(0xff333333);      
+
+      }
+    });
+  }
+
 
   void _changePerspective(perspective) {
     setState(() {
@@ -49,8 +101,9 @@ class JuntoCollectiveState extends State<JuntoCollective> {
     });  }
 
   _navPerspectives() {
-    Navigator.pushReplacementNamed(context, '/perspectives');
+    return ;
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +116,8 @@ class JuntoCollectiveState extends State<JuntoCollective> {
             // ~ 28 character limit - tbd
             JuntoPalette.juntoBlue,
             JuntoPalette.juntoBlueLight,
-            _navPerspectives),
+            _navPerspectives()
+        ),
         drawer: SizedBox(
           width: MediaQuery.of(context).size.width * .9,
           child: Drawer(
@@ -101,7 +155,7 @@ class JuntoCollectiveState extends State<JuntoCollective> {
                         },
                         title: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [Text('JUNTO'), Icon(Icons.edit, size: 12)]),
+                          children: [Text('JUNTO')]),
                       ),
                     ),
 
@@ -115,7 +169,7 @@ class JuntoCollectiveState extends State<JuntoCollective> {
                         },
                         title: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [Text('FOLLOWING'), Icon(Icons.edit, size: 12)]),
+                          children: [Text('FOLLOWING')]),
                       ),
                     ),
 
@@ -139,147 +193,8 @@ class JuntoCollectiveState extends State<JuntoCollective> {
           decoration: BoxDecoration(color: JuntoPalette.juntoWhite),
           child: ListView(
             children: <Widget>[
-              Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 25),
-                  color: Colors.white,
-                  foregroundDecoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(width: .75, color: Color(0xffeeeeee)),
-                    ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      // Container(
-                      //   margin: EdgeInsets.only(bottom: 10),
-                      //   child: Text('DEGREES OF SEPARATION', style: TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w700))
-                      // ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _resetDegrees();
-                                _infinityActive = true;
-                              });
-                            },
-                            child: Container(
-                                child: Text('oo',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 14,
-                                      color: _infinityActive == true
-                                          ? Color(0xff333333)
-                                          : Color(0xff999999),
-                                    ))),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _resetDegrees();
-                                _oneDegreeActive = true;
-                              });
-                            },
-                            child: Container(
-                                child: Text('i',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 14,
-                                      color: _oneDegreeActive == true
-                                          ? Color(0xff333333)
-                                          : Color(0xff999999),
-                                    ))),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _resetDegrees();
-                                _twoDegreesActive = true;
-                              });
-                            },
-                            child: Container(
-                                child: Text('ii',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 14,
-                                      color: _twoDegreesActive == true
-                                          ? Color(0xff333333)
-                                          : Color(0xff999999),
-                                    ))),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _resetDegrees();
-                                _threeDegreesActive = true;
-                              });
-                            },
-                            child: Container(
-                                child: Text('iii',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 14,
-                                      color: _threeDegreesActive == true
-                                          ? Color(0xff333333)
-                                          : Color(0xff999999),
-                                    ))),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _resetDegrees();
-                                _fourDegreesActive = true;
-                              });
-                            },
-                            child: Container(
-                                child: Text('iv',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 14,
-                                      color: _fourDegreesActive == true
-                                          ? Color(0xff333333)
-                                          : Color(0xff999999),
-                                    ))),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _resetDegrees();
-                                _fiveDegreesActive = true;
-                              });
-                            },
-                            child: Container(
-                                child: Text('v',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 14,
-                                      color: _fiveDegreesActive == true
-                                          ? Color(0xff333333)
-                                          : Color(0xff999999),
-                                    ))),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _resetDegrees();
-                                _sixDegreesActive = true;
-                              });
-                            },
-                            child: Container(
-                                child: Text('vi',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 14,
-                                      color: _sixDegreesActive == true
-                                          ? Color(0xff333333)
-                                          : Color(0xff999999),
-                                    ))),
-                          ),
-                        ],
-                      )
-                    ],
-                  )),
+              DegreesOfSeparation(_changeDegree, _infinityColor, _oneDegreeColor, _twoDegreesColor,
+              _threeDegreesColor, _fourDegreesColor, _fiveDegreesColor, _sixDegreesColor),
 
               // expressions
               ScopedModelDescendant<ScopedUser>(
