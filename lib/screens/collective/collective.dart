@@ -19,6 +19,7 @@ class JuntoCollective extends StatefulWidget {
 
 class JuntoCollectiveState extends State<JuntoCollective> {
   bool _collectiveActive = true;
+  String _currentPerspective = 'JUNTO';
 
   bool _infinityActive = true;
   bool _oneDegreeActive = false;
@@ -40,6 +41,13 @@ class JuntoCollectiveState extends State<JuntoCollective> {
     });
   }
 
+  void _changePerspective(perspective) {
+    setState(() {
+      _currentPerspective = perspective;
+
+      // re render feed          
+    });  }
+
   _navPerspectives() {
     Navigator.pushReplacementNamed(context, '/perspectives');
   }
@@ -51,7 +59,7 @@ class JuntoCollectiveState extends State<JuntoCollective> {
     return Scaffold(
         appBar: JuntoAppBar.getJuntoAppBar(
             'assets/images/junto-mobile__logo--collective.png',
-            'JUNTO',
+            _currentPerspective,
             // ~ 28 character limit - tbd
             JuntoPalette.juntoBlue,
             JuntoPalette.juntoBlueLight,
@@ -77,20 +85,40 @@ class JuntoCollectiveState extends State<JuntoCollective> {
                                   style: TextStyle(
                                       fontWeight: FontWeight.w700,
                                       color: Color(0xff333333))),
-                              Icon(Icons.add_circle_outline)
+                              Icon(Icons.add_circle_outline, size: 14)
                             ]),
                         height: 45,
                         margin: EdgeInsets.only(top: statusBarHeight)),
                     Expanded(
                         child: ListView(padding: EdgeInsets.all(0), children: [
                     Container(
-                      padding: EdgeInsets.symmetric(vertical: 20),
-                      child: Text('JUNTO')
+                      child: ListTile(
+                        contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                        onTap: () {
+                          _changePerspective('JUNTO');
+
+                          Navigator.pop(context);
+                        },
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [Text('JUNTO'), Icon(Icons.edit, size: 12)]),
+                      ),
                     ),
+
                     Container(
-                      padding: EdgeInsets.symmetric(vertical: 20),
-                      child: Text('FOLLOWING')
-                    ),                    
+                      child: ListTile(
+                        contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                        onTap: () {
+                          _changePerspective('FOLLOWING');
+
+                          Navigator.pop(context);
+                        },
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [Text('FOLLOWING'), Icon(Icons.edit, size: 12)]),
+                      ),
+                    ),
+
                       ScopedModelDescendant<ScopedUser>(
                         builder: (context, child, model) => ListView(
                               padding: EdgeInsets.all(0),
@@ -98,7 +126,7 @@ class JuntoCollectiveState extends State<JuntoCollective> {
                               physics: ClampingScrollPhysics(),
                               children: model.perspectives
                                   .map((perspective) => PerspectivePreview(
-                                      perspective.perspectiveTitle))
+                                      perspective.perspectiveTitle, _changePerspective))
                                   .toList(),
                             ),
                       ),

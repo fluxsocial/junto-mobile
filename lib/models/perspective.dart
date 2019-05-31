@@ -7,8 +7,8 @@ class Perspective {
     return [
       Perspective('NYC'),
       Perspective('MEDITATION'),
-      Perspective('DESIGN'),
-      Perspective('CRYPTO'),
+      Perspective('Design'),
+      Perspective('Crypto'),
     ];
   }
 }
