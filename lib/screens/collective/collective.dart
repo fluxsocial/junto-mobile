@@ -38,14 +38,18 @@ class JuntoCollectiveState extends State<JuntoCollective> {
     });
   }
 
+  _navPerspectives() {
+    Navigator.pushReplacementNamed(context, '/perspectives');
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: JuntoAppBar.getJuntoAppBar(
           'assets/images/junto-mobile__logo--collective.png', 
-          'collective', 
+          'COLLECTIVE', 
           JuntoPalette.juntoBlue,
-          JuntoPalette.juntoBlueLight
+          JuntoPalette.juntoBlueLight,
+          _navPerspectives
         ),
 
         body: Container(

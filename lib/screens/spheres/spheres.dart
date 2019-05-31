@@ -10,6 +10,9 @@ import './sphere_preview.dart';
 import './../../typography/palette.dart';
 
 class JuntoSpheres extends StatelessWidget {
+  void noNav() {
+    return ;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +20,7 @@ class JuntoSpheres extends StatelessWidget {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: JuntoAppBar.getJuntoAppBar('assets/images/junto-mobile__logo--spheres.png', 'SPHERES', 
-        JuntoPalette.juntoGreen, JuntoPalette.juntoGreenLight),
+        JuntoPalette.juntoGreen, JuntoPalette.juntoGreenLight, noNav),
 
         body: 
         Container(          

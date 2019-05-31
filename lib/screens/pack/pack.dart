@@ -10,6 +10,9 @@ import '../../scoped_models/scoped_user.dart';
 import './../../typography/palette.dart';
 
 class JuntoPack extends StatelessWidget {
+  void noNav() {
+    return ;
+  }  
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +20,7 @@ class JuntoPack extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
         appBar: JuntoAppBar.getJuntoAppBar('assets/images/junto-mobile__logo--pack.png', 
-        'PACKS', JuntoPalette.juntoPurple, JuntoPalette.juntoPurpleLight),
+        'PACKS', JuntoPalette.juntoPurple, JuntoPalette.juntoPurpleLight, noNav),
 
         body:          
           ListView(

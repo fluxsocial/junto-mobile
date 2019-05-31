@@ -25,13 +25,16 @@ class _JuntoPerspectivesState extends State {
     perspectives = Perspective.fetchAll();
   }
 
+  void noNav() {
+    return ;
+  }
   @override
   Widget build(BuildContext context) {  
 
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: JuntoAppBar.getJuntoAppBar('assets/images/junto-mobile__logo--den.png', 'PERSPECTIVES', 
-      JuntoPalette.juntoGrey, JuntoPalette.juntoSleek),
+      JuntoPalette.juntoGrey, JuntoPalette.juntoSleek, noNav),
 
         body: ListView(
           children: <Widget>[        
