@@ -70,15 +70,15 @@ class JuntoCollectiveState extends State<JuntoCollective> {
                     height: 45,
                 ),
 
-                // ScopedModelDescendant<ScopedUser>(
-                //   builder: (context, child, model) => ListView(
-                //         shrinkWrap: true,
-                //         physics: ClampingScrollPhysics(),
-                //         children: model.collectiveExpressions
-                //             .map((expression) => ExpressionPreview(expression))
-                //             .toList(),
-                //       ),
-                // ),
+                ScopedModelDescendant<ScopedUser>(
+                  builder: (context, child, model) => ListView(
+                        shrinkWrap: true,
+                        physics: ClampingScrollPhysics(),
+                        children: model.perspectives
+                            .map((perspective) => Container(child: Text(perspective.perspectiveTitle)))
+                            .toList(),
+                      ),
+                ),
               ])),
           ),
         ),

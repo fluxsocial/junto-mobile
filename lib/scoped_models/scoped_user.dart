@@ -5,6 +5,7 @@ import 'package:http/http.dart';
 import '../models/expression.dart';
 import '../models/sphere.dart';
 import '../models/pack.dart';
+import '../models/perspective.dart';
 import './models/create_user.dart';
 import './models/set_user.dart';
 
@@ -19,6 +20,7 @@ class ScopedUser extends Model {
   List<Expression> _collectiveExpressions = [];
   List<Sphere> _spheres = Sphere.fetchAll();
   List<Pack> _packs = Pack.fetchAll();
+  List<Perspective> _perspectives = Perspective.fetchAll();
 
   // Holochain API address
   String _url = 'http://127.0.0.1:8888';
@@ -218,4 +220,9 @@ class ScopedUser extends Model {
   List get packs {
     return _packs;
   }
+
+
+  List get perspectives {
+    return _perspectives;
+  }  
 }
