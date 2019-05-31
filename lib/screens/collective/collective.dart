@@ -5,7 +5,7 @@ import '../../components/appbar/appbar.dart';
 import './../../components/bottom_nav/bottom_nav.dart';
 import './degrees/degrees.dart';
 import './../../components/expression_preview/expression_preview.dart';
-import './perspectives/perspective_preview.dart';
+import './perspectives/perspectives.dart';
 import '../../scoped_models/scoped_user.dart';
 import '../../typography/palette.dart';
 
@@ -92,7 +92,6 @@ class JuntoCollectiveState extends State<JuntoCollective> {
     });
   }
 
-
   void _changePerspective(perspective) {
     setState(() {
       _currentPerspective = perspective;
@@ -103,7 +102,6 @@ class JuntoCollectiveState extends State<JuntoCollective> {
   _navPerspectives() {
     return ;
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -118,77 +116,7 @@ class JuntoCollectiveState extends State<JuntoCollective> {
             JuntoPalette.juntoBlueLight,
             _navPerspectives()
         ),
-        drawer: SizedBox(
-          width: MediaQuery.of(context).size.width * .9,
-          child: Drawer(
-            elevation: 0,
-            child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                        decoration: BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(
-                                    color: Color(0xffeeeeee), width: 1))),
-                        alignment: Alignment.centerLeft,
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('PERSPECTIVES',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      color: Color(0xff333333))),
-                              Icon(Icons.add_circle_outline, size: 14)
-                            ]),
-                        height: 45,
-                        margin: EdgeInsets.only(top: statusBarHeight)),
-                    Expanded(
-                        child: ListView(padding: EdgeInsets.all(0), children: [
-                    Container(
-                      child: ListTile(
-                        contentPadding: EdgeInsets.symmetric(horizontal: 0),
-                        onTap: () {
-                          _changePerspective('JUNTO');
-
-                          Navigator.pop(context);
-                        },
-                        title: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [Text('JUNTO')]),
-                      ),
-                    ),
-
-                    Container(
-                      child: ListTile(
-                        contentPadding: EdgeInsets.symmetric(horizontal: 0),
-                        onTap: () {
-                          _changePerspective('FOLLOWING');
-
-                          Navigator.pop(context);
-                        },
-                        title: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [Text('FOLLOWING')]),
-                      ),
-                    ),
-
-                      ScopedModelDescendant<ScopedUser>(
-                        builder: (context, child, model) => ListView(
-                              padding: EdgeInsets.all(0),
-                              shrinkWrap: true,
-                              physics: ClampingScrollPhysics(),
-                              children: model.perspectives
-                                  .map((perspective) => PerspectivePreview(
-                                      perspective.perspectiveTitle, _changePerspective))
-                                  .toList(),
-                            ),
-                      ),
-                    ]))
-                  ],
-                )),
-          ),
-        ),
+        drawer: Perspectives(_changePerspective),
         body: Container(
           decoration: BoxDecoration(color: JuntoPalette.juntoWhite),
           child: ListView(
