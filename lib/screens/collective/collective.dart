@@ -83,7 +83,7 @@ class JuntoCollectiveState extends State<JuntoCollective> {
                         child: 
                           Container(
                             child: Text('oo', 
-                            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14, color: _infinityActive == true ? JuntoPalette.juntoBlue : Color(0xff555555),))
+                            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14, color: _infinityActive == true ? Color(0xff333333) : Color(0xff999999),))
                           ),
                       ),                    
                       GestureDetector(
@@ -96,7 +96,7 @@ class JuntoCollectiveState extends State<JuntoCollective> {
                         child: 
                           Container(
                             child: Text('i', 
-                            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14, color: _oneDegreeActive == true ? JuntoPalette.juntoBlue : Color(0xff555555),))
+                            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14, color: _oneDegreeActive == true ? Color(0xff333333) : Color(0xff999999),))
                           ),
                       ),
                       GestureDetector(
@@ -109,7 +109,7 @@ class JuntoCollectiveState extends State<JuntoCollective> {
                         child: 
                           Container(
                             child: Text('ii', 
-                            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14, color: _twoDegreesActive == true ? JuntoPalette.juntoBlue : Color(0xff555555),))
+                            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14, color: _twoDegreesActive == true ? Color(0xff333333) : Color(0xff999999),))
                           ),
                       ),
                  
@@ -123,10 +123,10 @@ class JuntoCollectiveState extends State<JuntoCollective> {
                         child: 
                           Container(
                             child: Text('iii', 
-                            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14, color: _threeDegreesActive == true ? JuntoPalette.juntoBlue : Color(0xff555555),))
+                            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14, color: _threeDegreesActive == true ? Color(0xff333333) : Color(0xff999999),))
                           ),
                       ),
-                      
+
                       GestureDetector(
                         onTap: () {
                           setState(() {
@@ -137,7 +137,7 @@ class JuntoCollectiveState extends State<JuntoCollective> {
                         child: 
                           Container(
                             child: Text('iv', 
-                            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14, color: _fourDegreesActive == true ? JuntoPalette.juntoBlue : Color(0xff555555),))
+                            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14, color: _fourDegreesActive == true ? Color(0xff333333) : Color(0xff999999),))
                           ),
                       ),                    
                       GestureDetector(
@@ -150,7 +150,7 @@ class JuntoCollectiveState extends State<JuntoCollective> {
                         child: 
                           Container(
                             child: Text('v', 
-                            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14, color: _fiveDegreesActive == true ? JuntoPalette.juntoBlue : Color(0xff555555),))
+                            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14, color: _fiveDegreesActive == true ? Color(0xff333333) : Color(0xff999999),))
                           ),
                       ),
                       GestureDetector(
@@ -163,7 +163,7 @@ class JuntoCollectiveState extends State<JuntoCollective> {
                         child: 
                           Container(
                             child: Text('vi', 
-                            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14, color: _sixDegreesActive == true ? JuntoPalette.juntoBlue : Color(0xff555555),))
+                            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14, color: _sixDegreesActive == true ? Color(0xff333333) : Color(0xff999999),))
                           ),
                       ),                                                                                                   
                     ],
