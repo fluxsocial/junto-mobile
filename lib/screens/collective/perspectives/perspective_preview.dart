@@ -9,7 +9,13 @@ class PerspectivePreview extends StatelessWidget {
   Widget build(BuildContext context) {
     return 
       Container(
-        child: Text(title)
+        padding: EdgeInsets.symmetric(vertical: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(title),
+            Icon(Icons.edit, size: 12)
+          ])
       );    
   }
 }
