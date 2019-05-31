@@ -3,14 +3,14 @@ import 'package:scoped_model/scoped_model.dart';
 
 import '../../components/appbar/appbar.dart';
 import './../../components/bottom_nav/bottom_nav.dart';
-import './collective_perspectives/collective_perspectives.dart';
 import './../../components/expression_preview/expression_preview.dart';
+import './perspectives/perspective_preview.dart';
 import '../../scoped_models/scoped_user.dart';
 import '../../typography/palette.dart';
 
 // This screen shows a list of public expressions that can be filtered
 // by channel or perspective
-class JuntoCollective extends StatefulWidget {
+class JuntoCollective extends StatefulWidget {  
   @override
   State<StatefulWidget> createState() {
     return JuntoCollectiveState();
@@ -18,7 +18,7 @@ class JuntoCollective extends StatefulWidget {
 }
 
 class JuntoCollectiveState extends State<JuntoCollective> {
-  bool _collectiveActive = true;
+    bool _collectiveActive = true;
 
   bool _infinityActive = true;
   bool _oneDegreeActive = false;
@@ -46,6 +46,8 @@ class JuntoCollectiveState extends State<JuntoCollective> {
 
   @override
   Widget build(BuildContext context) {
+    final double statusBarHeight = MediaQuery.of(context).padding.top;  
+
     return Scaffold(
         appBar: JuntoAppBar.getJuntoAppBar(
             'assets/images/junto-mobile__logo--collective.png',
@@ -54,32 +56,48 @@ class JuntoCollectiveState extends State<JuntoCollective> {
             JuntoPalette.juntoBlue,
             JuntoPalette.juntoBlueLight,
             _navPerspectives),
-        drawer: SizedBox(
+        drawer: SizedBox(          
           width: MediaQuery.of(context).size.width * .9,
           child: Drawer(
               elevation: 0,
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 10),
-                child: ListView(children: [
-                Container(            
-                    decoration: BoxDecoration(border: Border(
-                      bottom: BorderSide(color: Color(0xffeeeeee), width: 1)
-                    )),                       
-                    alignment: Alignment.centerLeft,
-                    child: Text('PERSPECTIVES'),
-                    height: 45,
-                ),
+                child: Column(children: <Widget>[
+                  Container(            
+                      decoration: BoxDecoration(
+                        border: Border(
+                        bottom: BorderSide(color: Color(0xffeeeeee), width: 1)
+                      )),                       
+                      alignment: Alignment.centerLeft,
+                      child: Text('PERSPECTIVES', style: TextStyle(fontWeight: FontWeight.w700, color: Color(0xff333333))),
+                      height: 45,
+                      margin: EdgeInsets.only(top: statusBarHeight)
+                    
+                  ),
 
-                ScopedModelDescendant<ScopedUser>(
-                  builder: (context, child, model) => ListView(
-                        shrinkWrap: true,
-                        physics: ClampingScrollPhysics(),
-                        children: model.perspectives
-                            .map((perspective) => Container(child: Text(perspective.perspectiveTitle)))
-                            .toList(),
-                      ),
-                ),
-              ])),
+                  Expanded(
+                    child: 
+                      ListView(
+                        padding: EdgeInsets.all(0),
+                        children: [
+                        PerspectivePreview('JUNTO'),
+                        PerspectivePreview('FOLLOWING'),
+
+
+                        ScopedModelDescendant<ScopedUser>(
+                          builder: (context, child, model) => ListView(
+                                padding: EdgeInsets.all(0),
+                                shrinkWrap: true,
+                                physics: ClampingScrollPhysics(),
+                                children: model.perspectives
+                                    .map((perspective) => 
+                                    PerspectivePreview(perspective.perspectiveTitle))
+                                    .toList(),
+                              ),
+                        ),
+                    ])                      
+                  )              
+                ],)),
           ),
         ),
         body: Container(
