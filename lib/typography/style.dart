@@ -26,10 +26,10 @@ class JuntoStyles {
       TextStyle(fontSize: 17, color: JuntoPalette.juntoGrey, fontWeight: FontWeight.w700, letterSpacing: 1.25,); 
 
   static const lotusAddChannels = 
-      TextStyle(fontWeight: FontWeight.w700, fontSize: 12);
+      TextStyle(fontWeight: FontWeight.w700);
 
   static const lotusCreate = 
-      TextStyle(fontWeight: FontWeight.w700, fontSize: 12);
+      TextStyle(fontWeight: FontWeight.w700);
   
   // Longform styles 
   static const lotusLongformTitle = 

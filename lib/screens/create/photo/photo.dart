@@ -1,7 +1,9 @@
+
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker_modern/image_picker_modern.dart';
 
+import './../create_actions.dart';
 import './../../../custom_icons.dart';
 import './../../../typography/palette.dart';
 import './../../../typography/style.dart';
@@ -82,6 +84,10 @@ class CreatePhotoState extends State<CreatePhoto> {
               _libraryActive ? _buildUploadImage() : _buildUseCamera(),
               
               Container(
+                padding: EdgeInsets.only(top: 5),
+                decoration: BoxDecoration(border: Border(
+                  top: BorderSide(color: Color(0xffeeeeee), width: 1),
+                )),
                   child: Row(
                 children: <Widget>[
                   Container(
@@ -126,18 +132,26 @@ class CreatePhotoState extends State<CreatePhoto> {
 
   // Component once image is retrieved
   _buildImagePreview() {
-    return Column(children: [
-      Container(
-        width: MediaQuery.of(context).size.width, 
-        height: MediaQuery.of(context).size.width,        
-        color: Colors.blue,
-        child: Image.file(_imageFile, fit: BoxFit.contain),
-      ),
-      Container(child: RaisedButton(onPressed: () {
-        setState(() {
-          _imageFile = null;
-        });
-      }))
+    return 
+    Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+      Column(children: <Widget>[
+        Container(
+          width: MediaQuery.of(context).size.width, 
+          height: MediaQuery.of(context).size.width,        
+          color: Colors.blue,
+          child: Image.file(_imageFile, fit: BoxFit.contain),
+        ),
+        Container(child: RaisedButton(onPressed: () {
+          setState(() {
+            _imageFile = null;
+          });
+        }))
+      ],),
+
+      CreateActions()
+
     ]);
   }
 
@@ -149,8 +163,6 @@ class CreatePhotoState extends State<CreatePhoto> {
       );
   }
 }
-
-
 
 // Caption
 

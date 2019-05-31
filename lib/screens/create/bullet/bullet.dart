@@ -10,13 +10,12 @@ class CreateBullet extends StatefulWidget {
   }
 }
 
-
 class CreateBulletState extends State<CreateBullet> {
-
 
   List _bullets = [];
   var id = 1;
 
+  // Function to add Bullet
   void _addBullet(bullet) {
     setState(() {
       id += 1;
@@ -24,6 +23,7 @@ class CreateBulletState extends State<CreateBullet> {
     });
   }
 
+  // Function to remove bullet
   void _removeBullet() {
     setState(() {
       id -= 1;
@@ -31,6 +31,7 @@ class CreateBulletState extends State<CreateBullet> {
     });
   }
 
+  // Return the widget that calls _removeBullet()
   _removeBulletWidget() {
     return 
       GestureDetector(
@@ -41,6 +42,7 @@ class CreateBulletState extends State<CreateBullet> {
       );          
   }
 
+  // Initiate the first bullet
   @override
   void initState() {
     Map bullet = {
@@ -50,9 +52,14 @@ class CreateBulletState extends State<CreateBullet> {
     _addBullet(bullet); 
     super.initState();
   }
+  
   @override
   Widget build(BuildContext context) {
-    return Column(children: <Widget>[
+    return 
+    Expanded(      
+      child: ListView(
+        padding: EdgeInsets.all(0),
+        children: <Widget>[
       Container(
           margin: EdgeInsets.only(bottom: 10),
           padding: EdgeInsets.symmetric(horizontal: 10),
@@ -145,6 +152,6 @@ class CreateBulletState extends State<CreateBullet> {
                   ])
             )).toList(),
           ))
-    ]);
+    ]));
   }
 }

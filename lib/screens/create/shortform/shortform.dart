@@ -5,15 +5,15 @@ import '../../../typography/palette.dart';
 import '../../../typography/style.dart';
 
 
-class Shortform extends StatefulWidget {
+class CreateShortform extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
 
-    return ShortformState();
+    return CreateShortformState();
   }
 }
 
-class ShortformState extends State<Shortform> {
+class CreateShortformState extends State<CreateShortform> {
   var gradientOne = Colors.white;
   var gradientTwo = Colors.white;
   var fontColor = JuntoPalette.juntoGrey;
@@ -21,8 +21,10 @@ class ShortformState extends State<Shortform> {
   @override
   Widget build(BuildContext context) {    
     return 
-      Container(
-        child: Column(children: <Widget>[
+      Expanded(
+        child: ListView(
+          padding: EdgeInsets.all(0),
+          children: <Widget>[
           Container(
             padding: EdgeInsets.symmetric(horizontal: 10),
             margin: EdgeInsets.only(bottom: 20),
@@ -210,22 +212,21 @@ class ShortformState extends State<Shortform> {
                 gradientTwo
               ]
             )),
-            child: TextField(
-                buildCounter: (BuildContext context,
-                        {int currentLength, int maxLength, bool isFocused}) =>
-                    null,
+            child: 
+              TextField(
+                buildCounter: (BuildContext context, 
+                    {int currentLength, int maxLength, bool isFocused}) => null,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                 ),              
-                cursorColor: JuntoPalette.juntoGrey,
+                cursorColor: fontColor,
                 cursorWidth: 2,
                 maxLines: null,
                 style: TextStyle(color: fontColor, fontSize: 24, fontWeight: FontWeight.w700),
-                textAlign: TextAlign.center,
                 maxLength: 220,
-                textInputAction: TextInputAction.done
-                     
-            )
+                textAlign: TextAlign.center,
+                textInputAction: TextInputAction.done                    
+              )
           )
         ],)
       );

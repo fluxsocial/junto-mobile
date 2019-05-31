@@ -9,8 +9,6 @@ import './screens/spheres/spheres.dart';
 import './screens/pack/pack.dart';
 import './screens/den/den.dart';
 import './screens/create/create.dart';
-import './screens/perspectives/perspectives.dart';
-
 class JuntoApp extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -47,7 +45,6 @@ class JuntoAppState extends State<JuntoApp> {
               '/pack': (BuildContext context) => JuntoPack(),
               '/den': (BuildContext context) => JuntoDen(),
               '/create': (BuildContext context) => JuntoCreate(),
-              '/perspectives': (BuildContext context) => JuntoPerspectives(),
           } 
       )
     );

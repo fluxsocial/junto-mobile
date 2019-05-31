@@ -11,9 +11,9 @@ class CreateBottomNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 140,
+      color: Colors.blue,
+      height: 90,
       child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-        CreateActions(),
 
         Container(
           alignment: Alignment.center,

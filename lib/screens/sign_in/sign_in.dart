@@ -87,7 +87,7 @@ class SignIn extends StatelessWidget {
                             await model.mockSetUser();
                             model.setCollectiveExpressions();
 
-                            Navigator.push(context, MaterialPageRoute(
+                            Navigator.pushReplacement(context, MaterialPageRoute(
                               builder: (context) => JuntoCollective()
                             ));
                           },  
