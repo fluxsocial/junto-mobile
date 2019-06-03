@@ -97,8 +97,6 @@ class JuntoTemplateState extends State<JuntoTemplate> {
               ),       
 
               bottomNavigationBar: BottomNav(_bottomNavIndex, _setBottomIndex)
-
-
         )
     );
   }

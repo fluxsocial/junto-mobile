@@ -58,7 +58,7 @@ class BottomNavState extends State<BottomNav> {
 
       GestureDetector(
         onTap:() {
-          // widget.setIndex(2);
+          Navigator.pushNamed(context, '/create');
         },
         child: Icon(CustomIcons.lotus, color: Color(0xff999999))
       ),
