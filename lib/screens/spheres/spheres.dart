@@ -43,6 +43,6 @@ class JuntoSpheres extends StatelessWidget {
             ),
           ),
 
-        bottomNavigationBar: BottomNav());
+        bottomNavigationBar: BottomNav('spheres'));
   }
 }

@@ -181,7 +181,7 @@ class JuntoDenState extends State<JuntoDen> {
       ]),
 
       // Bottom nav widget
-      bottomNavigationBar: BottomNav(),
+      bottomNavigationBar: BottomNav('den'),
     );
   }
 }

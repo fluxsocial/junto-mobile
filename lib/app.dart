@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'scoped_models/scoped_user.dart';
 import './screens/welcome/welcome.dart';
+import './screens/template/template.dart';
 import './screens/collective/collective.dart';
 import './screens/spheres/spheres.dart';
 import './screens/pack/pack.dart';
@@ -40,7 +41,8 @@ class JuntoAppState extends State<JuntoApp> {
             ),
             home: Welcome(),
             routes: {
-              '/welcome': (BuildContext context) => Welcome (),
+              '/welcome': (BuildContext context) => Welcome(),
+              '/template': (BuildContext context) => JuntoTemplate(),
               '/collective': (BuildContext context) => JuntoCollective(),
               '/spheres': (BuildContext context) => JuntoSpheres(),
               '/pack': (BuildContext context) => JuntoPack(),

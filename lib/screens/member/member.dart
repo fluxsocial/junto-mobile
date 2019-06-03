@@ -206,7 +206,7 @@ class JuntoMember extends StatelessWidget {
       ]),
 
       // Bottom nav widget
-      bottomNavigationBar: BottomNav(),
+      // bottomNavigationBar: BottomNav(),
     );
   }
 }

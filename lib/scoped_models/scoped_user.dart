@@ -10,6 +10,7 @@ import './models/create_user.dart';
 import './models/set_user.dart';
 
 class ScopedUser extends Model {
+  String _currentScreen = '';
   String _userAddress = '';
   String _username = '';
   String _firstName = '';
@@ -221,8 +222,16 @@ class ScopedUser extends Model {
     return _packs;
   }
 
-
   List get perspectives {
     return _perspectives;
   }  
+
+  setScreen(screen) {
+    _currentScreen = screen;
+  }
+
+  String get currentScreen {
+    return _currentScreen;
+  }
 }
+

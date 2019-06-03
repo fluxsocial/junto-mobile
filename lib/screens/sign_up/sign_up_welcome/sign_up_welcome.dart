@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:scoped_model/scoped_model.dart';
 
 import '../../../scoped_models/scoped_user.dart';
 import '../../collective/collective.dart';
@@ -134,7 +135,7 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
                                   ),
                                   borderRadius: BorderRadius.circular(100)
                                 ),                          
-                          child: 
+                          child:                            
                             RaisedButton(                                        
                               onPressed: () {
                                 Navigator.push(context, MaterialPageRoute(
@@ -156,7 +157,8 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
                                     fontWeight: FontWeight.w700,
                                     fontSize: 14)),
                               )                                                                                        
-                        )                                  
+                                
+                      )                         
                   ],)
               )
           ),                            

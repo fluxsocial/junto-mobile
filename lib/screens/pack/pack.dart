@@ -38,6 +38,6 @@ class JuntoPack extends StatelessWidget {
               )         
             ],
           ),
-        bottomNavigationBar: BottomNav());
+        bottomNavigationBar: BottomNav('pack'));
   }
 }
