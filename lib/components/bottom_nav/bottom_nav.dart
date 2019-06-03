@@ -16,10 +16,6 @@ import '../../screens/den/den.dart';
 
 class BottomNav extends StatefulWidget { 
 
-  final _active;
-
-  BottomNav(this._active);
-
   @override
   State<StatefulWidget> createState() {
 
@@ -28,45 +24,6 @@ class BottomNav extends StatefulWidget {
 }
 
 class BottomNavState extends State<BottomNav> {
-  Color _collectiveColor = Color(0xff333333);
-  Color _spheresColor = Color(0xff999999);
-  Color _packColor = Color(0xff999999);
-  Color _denColor = Color(0xff999999);    
-
-  _iconColor() {
-    if(widget._active == 'collective') {
-      setState(() {
-        _collectiveColor = Color(0xff333333);      
-      });
-    } else if(widget._active == 'spheres') {
-      setState(() {
-        _spheresColor = Color(0xff333333);      
-      });
-    } else if (widget._active == 'pack') {
-      setState(() {
-        _packColor = Color(0xff333333);      
-      });
-    } else if (widget._active == 'den') {
-      setState(() {
-        _denColor = Color(0xff333333);      
-      });
-    }
-  }  
-
-  _resetState() {
-    _collectiveColor = Color(0xff999999);
-    _spheresColor = Color(0xff999999);
-    _packColor = Color(0xff999999);
-    _denColor = Color(0xff999999);       
-  }
-
-  @override
-  void initState() {
-    _resetState();
-    _iconColor();
-
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) { 
@@ -95,7 +52,7 @@ class BottomNavState extends State<BottomNav> {
                   CustomIcons.home,
                   size: 24.0,
                 ),
-                color: _collectiveColor),
+                ),
             IconButton(
                 padding: EdgeInsets.all(0.0),
                 onPressed: () {
@@ -106,7 +63,7 @@ class BottomNavState extends State<BottomNav> {
                   CustomIcons.home,
                   size: 24.0,
                 ),
-                color: _spheresColor),
+                ),
             IconButton(
                 padding: EdgeInsets.all(0.0),
                 onPressed: () {
@@ -128,7 +85,7 @@ class BottomNavState extends State<BottomNav> {
                   CustomIcons.home,
                   size: 24.0,
                 ),
-                color: _packColor),
+                ),
             IconButton(
                 padding: EdgeInsets.all(0.0),
                 onPressed: () {
@@ -139,8 +96,7 @@ class BottomNavState extends State<BottomNav> {
                 icon: Icon(
                   CustomIcons.home,
                   size: 24.0,
-                ),
-                color: _denColor),
+                ),                ),
           ],
         ));
   }

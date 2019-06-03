@@ -150,7 +150,6 @@ class JuntoCollectiveState extends State<JuntoCollective> {
                 ],
               ),
             ),
-          bottomNavigationBar: BottomNav('collective')
         ),
 
         JuntoSpheres(),
