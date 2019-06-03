@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
+import '../spheres/spheres.dart';
+import '../create/create.dart';
+import '../pack/pack.dart';
+import '../den/den.dart';
 import '../../components/appbar/appbar.dart';
 import './../../components/bottom_nav/bottom_nav.dart';
 import './degrees/degrees.dart';
@@ -19,6 +23,7 @@ class JuntoCollective extends StatefulWidget {
 }
 
 class JuntoCollectiveState extends State<JuntoCollective> {
+
   String _currentPerspective = 'JUNTO';
 
   bool _infinityActive = true;
@@ -107,36 +112,49 @@ class JuntoCollectiveState extends State<JuntoCollective> {
   Widget build(BuildContext context) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
 
-    return Scaffold(
-        appBar: JuntoAppBar.getJuntoAppBar(
-            'assets/images/junto-mobile__logo--collective.png',
-            _currentPerspective,
-            // ~ 28 character limit - tbd
-            JuntoPalette.juntoBlue,
-            JuntoPalette.juntoBlueLight,
-            _navPerspectives()
-        ),
-        drawer: Perspectives(_changePerspective),
-        body: Container(
-          decoration: BoxDecoration(color: JuntoPalette.juntoWhite),
-          child: ListView(
-            children: <Widget>[
-              DegreesOfSeparation(_changeDegree, _infinityColor, _oneDegreeColor, _twoDegreesColor,
-              _threeDegreesColor, _fourDegreesColor, _fiveDegreesColor, _sixDegreesColor),
+    return 
 
-              // expressions
-              ScopedModelDescendant<ScopedUser>(
-                builder: (context, child, model) => ListView(
-                      shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
-                      children: model.collectiveExpressions
-                          .map((expression) => ExpressionPreview(expression))
-                          .toList(),
-                    ),
-              ),
-            ],
+    PageView(children: <Widget>[
+      Scaffold(
+          appBar: JuntoAppBar.getJuntoAppBar(
+              'assets/images/junto-mobile__logo--collective.png',
+              _currentPerspective,
+              // ~ 28 character limit - tbd
+              JuntoPalette.juntoBlue,
+              JuntoPalette.juntoBlueLight,
+              _navPerspectives()
           ),
+          drawer: Perspectives(_changePerspective),
+          body: 
+          
+            Container(
+              decoration: BoxDecoration(color: JuntoPalette.juntoWhite),
+              child: ListView(
+                children: <Widget>[
+                  DegreesOfSeparation(_changeDegree, _infinityColor, _oneDegreeColor, _twoDegreesColor,
+                  _threeDegreesColor, _fourDegreesColor, _fiveDegreesColor, _sixDegreesColor),
+
+                  // expressions
+                  ScopedModelDescendant<ScopedUser>(
+                    builder: (context, child, model) => ListView(
+                          shrinkWrap: true,
+                          physics: ClampingScrollPhysics(),
+                          children: model.collectiveExpressions
+                              .map((expression) => ExpressionPreview(expression))
+                              .toList(),
+                        ),
+                  ),
+                ],
+              ),
+            ),
+          bottomNavigationBar: BottomNav()
         ),
-        bottomNavigationBar: BottomNav());
+
+        JuntoSpheres(),
+        
+        JuntoPack(),
+
+        JuntoDen()
+    ],);
   }
 }

@@ -18,6 +18,7 @@ class JuntoApp extends StatefulWidget {
 }
 
 class JuntoAppState extends State<JuntoApp> {
+
   ScopedUser scopedUser;
 
   @override
