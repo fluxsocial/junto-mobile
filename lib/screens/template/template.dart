@@ -28,14 +28,14 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   Color _appbarBorderRight = JuntoPalette.juntoBlueLight;
 
   int _bottomNavIndex = 0;
+  final controller = PageController(
+    initialPage: 0
+  );  
 
   @override
   Widget build(BuildContext context) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
-    final controller = PageController(
-      initialPage: 0
-    );
-    
+
     return 
     ScopedModelDescendant<ScopedUser>(
       builder: (context, child, model) =>
@@ -47,6 +47,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
             drawer: Perspectives(_changePerspective),
             body: 
               PageView(      
+                controller: controller,
                 onPageChanged: (int) {
                   if(int == 0) {
                     setState(() {
@@ -105,7 +106,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   _setBottomIndex(x) {
     setState(() {
       _bottomNavIndex = x;
-      
+      controller.jumpToPage(x);      
     });
   }
   _navPerspectives() {

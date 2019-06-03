@@ -46,35 +46,35 @@ class BottomNavState extends State<BottomNav> {
         onTap:() {
           widget.setIndex(0);
         },
-        child: Icon(Icons.add, color: widget.currentIndex == 0 ? Color(0xff333333) : Color(0xff999999))
+        child: Icon(CustomIcons.home, color: widget.currentIndex == 0 ? Color(0xff333333) : Color(0xff999999))
       ),
 
       GestureDetector(
         onTap:() {
-          widget.setIndex(0);
+          widget.setIndex(1);
         },
-        child: Icon(Icons.add, color: widget.currentIndex == 1 ? Color(0xff333333) : Color(0xff999999))
+        child: Icon(CustomIcons.home, color: widget.currentIndex == 1 ? Color(0xff333333) : Color(0xff999999))
       ),
 
       GestureDetector(
         onTap:() {
-          widget.setIndex(0);
+          // widget.setIndex(2);
         },
-        child: Icon(Icons.add, color: widget.currentIndex == 2 ? Color(0xff333333) : Color(0xff999999))
+        child: Icon(CustomIcons.lotus, color: Color(0xff999999))
       ),
 
       GestureDetector(
         onTap:() {
-          widget.setIndex(0);
+          widget.setIndex(2);
         },
-        child: Icon(Icons.add, color: widget.currentIndex == 3 ? Color(0xff333333) : Color(0xff999999))
+        child: Icon(CustomIcons.home, color: widget.currentIndex == 2 ? Color(0xff333333) : Color(0xff999999))
       ),
 
       GestureDetector(
         onTap:() {
-          widget.setIndex(0);
+          widget.setIndex(3);
         },
-        child: Icon(Icons.add, color: widget.currentIndex == 3 ? Color(0xff333333) : Color(0xff999999))
+        child: Icon(CustomIcons.home, color: widget.currentIndex == 3 ? Color(0xff333333) : Color(0xff999999))
       )                  
     ],)
   );    
