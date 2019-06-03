@@ -15,6 +15,9 @@ import '../../screens/den/den.dart';
 
 
 class BottomNav extends StatefulWidget { 
+  final currentIndex;
+  final setIndex;
+  BottomNav(this.currentIndex, this.setIndex);
 
   @override
   State<StatefulWidget> createState() {
@@ -27,77 +30,53 @@ class BottomNavState extends State<BottomNav> {
 
   @override
   Widget build(BuildContext context) { 
-    return Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border(
-            top: BorderSide(color: Color(0xffeeeeee), width: .75),
-          ),
+    return 
+    Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(color: Color(0xffeeeeee), width: .75),
         ),
-        height: 45,
-        child: 
+      ),
+      height: 45,                  
+      child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: <Widget>[
+      GestureDetector(
+        onTap:() {
+          widget.setIndex(0);
+        },
+        child: Icon(Icons.add, color: widget.currentIndex == 0 ? Color(0xff333333) : Color(0xff999999))
+      ),
 
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[            
-            IconButton(
-                padding: EdgeInsets.all(0.0),
-                onPressed: () {
-                  // Navigator.pushReplacementNamed(context, '');
-                  Navigator.pushReplacement(context, CustomRoute(builder: (context) => JuntoCollective()));
+      GestureDetector(
+        onTap:() {
+          widget.setIndex(0);
+        },
+        child: Icon(Icons.add, color: widget.currentIndex == 1 ? Color(0xff333333) : Color(0xff999999))
+      ),
 
-                },
-                icon: Icon(
-                  CustomIcons.home,
-                  size: 24.0,
-                ),
-                ),
-            IconButton(
-                padding: EdgeInsets.all(0.0),
-                onPressed: () {
-                  // Navigator.pushReplacementNamed(context, '/spheres');
-                  Navigator.pushReplacement(context, CustomRoute(builder: (context) => JuntoSpheres()));
-                },
-                icon: Icon(
-                  CustomIcons.home,
-                  size: 24.0,
-                ),
-                ),
-            IconButton(
-                padding: EdgeInsets.all(0.0),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/create');
-                },
-                icon: Icon(
-                  CustomIcons.lotus,
-                  size: 24.0,
-                ),
-                color: Color(0xff999999)),
-            IconButton(
-                padding: EdgeInsets.all(0.0),
-                onPressed: () {
-                  // Navigator.pushReplacementNamed(context, '/pack');
-                  Navigator.pushReplacement(context, CustomRoute(builder: (context) => JuntoPack()));
+      GestureDetector(
+        onTap:() {
+          widget.setIndex(0);
+        },
+        child: Icon(Icons.add, color: widget.currentIndex == 2 ? Color(0xff333333) : Color(0xff999999))
+      ),
 
-                },
-                icon: Icon(
-                  CustomIcons.home,
-                  size: 24.0,
-                ),
-                ),
-            IconButton(
-                padding: EdgeInsets.all(0.0),
-                onPressed: () {
-                  // Navigator.pushReplacementNamed(context, '/den');
-                  Navigator.pushReplacement(context, CustomRoute(builder: (context) => JuntoDen()));
-                
-                },
-                icon: Icon(
-                  CustomIcons.home,
-                  size: 24.0,
-                ),                ),
-          ],
-        ));
+      GestureDetector(
+        onTap:() {
+          widget.setIndex(0);
+        },
+        child: Icon(Icons.add, color: widget.currentIndex == 3 ? Color(0xff333333) : Color(0xff999999))
+      ),
+
+      GestureDetector(
+        onTap:() {
+          widget.setIndex(0);
+        },
+        child: Icon(Icons.add, color: widget.currentIndex == 3 ? Color(0xff333333) : Color(0xff999999))
+      )                  
+    ],)
+  );    
   }
 }

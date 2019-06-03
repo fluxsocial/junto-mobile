@@ -27,14 +27,20 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   Color _appbarBorderLeft = JuntoPalette.juntoBlue;
   Color _appbarBorderRight = JuntoPalette.juntoBlueLight;
 
+  int _bottomNavIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
-
+    final controller = PageController(
+      initialPage: 0
+    );
+    
     return 
     ScopedModelDescendant<ScopedUser>(
       builder: (context, child, model) =>
         Scaffold(
+            backgroundColor: Colors.white,
             appBar: JuntoAppBar.getJuntoAppBar(
                 _appbarLogo, _appbarTitle, _appbarBorderLeft,
                 _appbarBorderRight, _navPerspectives),
@@ -48,7 +54,8 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                       _appbarTitle = 'JUNTO';
                       _appbarLogo = 'assets/images/junto-mobile__logo--collective.png';
                       _appbarBorderLeft = JuntoPalette.juntoBlue;
-                      _appbarBorderRight = JuntoPalette.juntoBlueLight;                    
+                      _appbarBorderRight = JuntoPalette.juntoBlueLight;  
+                      _bottomNavIndex = 0;                  
                     });
                   } else if(int == 1) {
                     setState(() {
@@ -56,7 +63,9 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                       _appbarTitle = 'SPHERES';
                       _appbarLogo = 'assets/images/junto-mobile__logo--spheres.png';
                       _appbarBorderLeft = JuntoPalette.juntoGreen;
-                      _appbarBorderRight = JuntoPalette.juntoGreenLight;                     
+                      _appbarBorderRight = JuntoPalette.juntoGreenLight;     
+
+                      _bottomNavIndex = 1;                  
                     });
                   } else if(int == 2) {
                     setState(() {
@@ -64,7 +73,9 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                       _appbarTitle = 'PACKS';
                       _appbarLogo = 'assets/images/junto-mobile__logo--pack.png';
                       _appbarBorderLeft = JuntoPalette.juntoPurple;
-                      _appbarBorderRight = JuntoPalette.juntoPurpleLight;                     
+                      _appbarBorderRight = JuntoPalette.juntoPurpleLight; 
+                      _bottomNavIndex = 2;                  
+
                     });
                   } else if(int == 3) {
                     setState(() {
@@ -82,14 +93,21 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                   JuntoPack(),
                   JuntoDen()
                 ],
-              ),            
+              ),       
 
-            bottomNavigationBar: BottomNav(),
+              bottomNavigationBar: BottomNav(_bottomNavIndex, _setBottomIndex)
+
+
         )
     );
   }
 
-
+  _setBottomIndex(x) {
+    setState(() {
+      _bottomNavIndex = x;
+      
+    });
+  }
   _navPerspectives() {
     return;
   }
