@@ -20,13 +20,21 @@ class JuntoTemplate extends StatefulWidget {
 }
 
 class JuntoTemplateState extends State<JuntoTemplate> {
-  var _currentScreen; 
-
+  var _currentScreen = 'collective';
   String _currentPerspective = 'JUNTO';
   String _appbarLogo = 'assets/images/junto-mobile__logo--collective.png';
   String _appbarTitle = 'JUNTO';
   Color _appbarBorderLeft = JuntoPalette.juntoBlue;
   Color _appbarBorderRight = JuntoPalette.juntoBlueLight;
+
+  final controller = PageController(
+    initialPage: 1
+  );
+
+  _createAppBarTitle() {
+    return 'collective';
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -39,26 +47,58 @@ class JuntoTemplateState extends State<JuntoTemplate> {
             appBar: JuntoAppBar.getJuntoAppBar(
                 _appbarLogo, _appbarTitle, _appbarBorderLeft,
                 _appbarBorderRight, _navPerspectives),
-            drawer: model.currentScreen == 'collective' ? Perspectives(_changePerspective) : null,
-            body: PageView(
-              children: <Widget>[
-                JuntoCollective(),
-                JuntoSpheres(),
-                JuntoPack(),
-                JuntoDen()
-              ],
-            ),
+            drawer: Perspectives(_changePerspective),
+            body: 
+              PageView(      
+                controller: controller,          
+                onPageChanged: (int) {
+                  if(int == 0) {
+                    setState(() {
+                      _currentScreen = 'collective';
+                      _appbarTitle = 'JUNTO';
+                      _appbarLogo = 'assets/images/junto-mobile__logo--collective.png';
+                      _appbarBorderLeft = JuntoPalette.juntoBlue;
+                      _appbarBorderRight = JuntoPalette.juntoBlueLight;                    
+                    });
+                  } else if(int == 1) {
+                    setState(() {
+                      _currentScreen = 'spheres';
+                      _appbarTitle = 'SPHERES';
+                      _appbarLogo = 'assets/images/junto-mobile__logo--spheres.png';
+                      _appbarBorderLeft = JuntoPalette.juntoGreen;
+                      _appbarBorderRight = JuntoPalette.juntoGreenLight;                     
+                    });
+                  } else if(int == 2) {
+                    setState(() {
+                      _currentScreen = 'packs';
+                      _appbarTitle = 'PACKS';
+                      _appbarLogo = 'assets/images/junto-mobile__logo--pack.png';
+                      _appbarBorderLeft = JuntoPalette.juntoPurple;
+                      _appbarBorderRight = JuntoPalette.juntoPurpleLight;                     
+                    });
+                  } else if(int == 3) {
+                    setState(() {
+                      _currentScreen = 'den';
+                      _appbarTitle = 'DEN';
+                      _appbarLogo = 'assets/images/junto-mobile__logo--den.png';
+                      _appbarBorderLeft = JuntoPalette.juntoGrey;
+                      _appbarBorderRight = JuntoPalette.juntoSleek; 
+                    });
+                  } 
+                },
+                children: <Widget>[
+                  JuntoCollective(),
+                  JuntoSpheres(),
+                  JuntoPack(),
+                  JuntoDen()
+                ],
+              ),            
+
             bottomNavigationBar: BottomNav('collective'),
         )
     );
   }
 
-  void _setCurrentScreen(screen) {
-    setState(() {
-      ScopedModelDescendant<ScopedUser>(context, child, model) => 
-      model.setScreen('collective');
-    });
-  }
 
   _navPerspectives() {
     return;

@@ -225,13 +225,5 @@ class ScopedUser extends Model {
   List get perspectives {
     return _perspectives;
   }  
-
-  setScreen(screen) {
-    _currentScreen = screen;
-  }
-
-  String get currentScreen {
-    return _currentScreen;
-  }
 }
 

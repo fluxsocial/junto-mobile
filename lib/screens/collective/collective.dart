@@ -10,6 +10,8 @@ import '../../typography/palette.dart';
 // This screen shows a list of public expressions that can be filtered
 // by channel or perspective
 class JuntoCollective extends StatefulWidget {
+  var currentScreen = 'collective';
+
   @override
   State<StatefulWidget> createState() {
     return JuntoCollectiveState();
@@ -18,15 +20,7 @@ class JuntoCollective extends StatefulWidget {
 
 class JuntoCollectiveState extends State<JuntoCollective> {
 
-  @override
-  void initState() {
-    ScopedModelDescendant<ScopedUser>(
-      builder: (context, child, model) => model.setScreen('collective')
-    );
-
-    super.initState();
-  }
-
+  
   @override
   Widget build(BuildContext context) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
@@ -35,7 +29,7 @@ class JuntoCollectiveState extends State<JuntoCollective> {
       Container(
         decoration: BoxDecoration(color: JuntoPalette.juntoWhite),
         child: ListView(
-          children: <Widget>[
+          children: <Widget>[       
             DegreesOfSeparation(_changeDegree, _infinityColor, _oneDegreeColor, _twoDegreesColor,
             _threeDegreesColor, _fourDegreesColor, _fiveDegreesColor, _sixDegreesColor),
 
