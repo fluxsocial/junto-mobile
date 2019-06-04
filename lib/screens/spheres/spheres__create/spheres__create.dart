@@ -9,25 +9,8 @@ class SpheresCreate extends StatelessWidget {
 
     return 
       Container(
-        // height: 75,
-        // margin: EdgeInsets.symmetric(horizontal: 5),
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-        // decoration: BoxDecoration(
-        //   color: Colors.white,
-        //   border: Border.all(color: Color(0xffeeeeee), width: 1 ),
-        //   borderRadius: BorderRadius.circular(5),
-        //   boxShadow: [
-        //     BoxShadow(
-        //       color: Color(0xffeeeeee),
-        //       blurRadius: 3,
-        //       offset: Offset(1, 3),
-        //       // spreadRadius: 5
-        //     )
-        // ],          
-        // ),
-
-      
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

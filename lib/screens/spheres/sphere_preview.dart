@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 class SpherePreview extends StatelessWidget {
   final String sphereTitle;
   final String sphereMembers;
+  final String sphereImage;
 
-  SpherePreview(this.sphereTitle, this.sphereMembers);
+  SpherePreview(this.sphereTitle, this.sphereMembers, this.sphereImage);
 
   @override
   Widget build(BuildContext context) {
@@ -23,27 +24,20 @@ class SpherePreview extends StatelessWidget {
           )
         ],
       ),
-
       child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            
             decoration: BoxDecoration(
-              // image: DecorationImage(
-              //   image: AssetImage('assets/images/junto-mobile__den--photo.png'),
-              //   fit: BoxFit.cover
-              // ),
+              image: sphereImage != ''
+                  ? DecorationImage(
+                      image: AssetImage(sphereImage), fit: BoxFit.cover)
+                  : null,
               gradient: LinearGradient(
-                begin: Alignment.bottomLeft,
-                end: Alignment.bottomRight,
-                stops: [0.1, 0.9],
-                colors: [
-                  Colors.green,
-                  Colors.lightGreen
-                ]
-              ),
+                  begin: Alignment.bottomLeft,
+                  end: Alignment.bottomRight,
+                  stops: [0.1, 0.9],
+                  colors: [Colors.green, Colors.lightGreen]),
               color: Colors.white,
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(5), topRight: Radius.circular(5)),
@@ -55,7 +49,7 @@ class SpherePreview extends StatelessWidget {
                 )
               ],
             ),
-            height: 140,
+            height: MediaQuery.of(context).size.height * .2,
           ),
           Container(
               padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -72,10 +66,12 @@ class SpherePreview extends StatelessWidget {
                           fontWeight: FontWeight.w700),
                     ),
                   ),
-
                   Container(
-                    child: Text(sphereMembers + ' MEMBERS', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, ))
-                  )
+                      child: Text(sphereMembers + ' MEMBERS',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          )))
                 ],
               ))
         ],
