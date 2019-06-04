@@ -6,7 +6,7 @@ import '../../typography/style.dart';
 
 class JuntoAppBar {
 
-   static getJuntoAppBar(_juntoAppBarLogo, _juntoAppBarTitle, _juntoAppBarBorderLeft, _juntoAppBarBorderRight, _navPerspectives) {
+   static getJuntoAppBar(_juntoAppBarLogo, _juntoAppBarTitle, _juntoAppBarBorderLeft, _juntoAppBarBorderRight) {
     return PreferredSize(
       preferredSize: Size.fromHeight(45.0),
       child: AppBar(
@@ -40,24 +40,28 @@ class JuntoAppBar {
               Row(              
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,                 
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      _navPerspectives();
-                    },                  
-                    child: Row(
-                      children: <Widget>[                
-                          Image.asset(_juntoAppBarLogo,
-                            height: 20.0, width: 20.0),
-                      
-                        Container(
-                          margin: EdgeInsets.only(left: 7.5),
-                          child: Text(_juntoAppBarTitle,
-                              textAlign: TextAlign.center,
-                              style: JuntoStyles.appbarTitle),
+                  Builder(builder: (context) {
+                    return 
+                      GestureDetector(
+                        onTap: () {
+                          Scaffold.of(context).openDrawer();
+                        },                  
+                        child: Row(
+                          children: <Widget>[                
+                              Image.asset(_juntoAppBarLogo,
+                                height: 20.0, width: 20.0),
+                          
+                            Container(
+                              margin: EdgeInsets.only(left: 7.5),
+                              child: Text(_juntoAppBarTitle,
+                                  textAlign: TextAlign.center,
+                                  style: JuntoStyles.appbarTitle),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
+                      );                    
+                  }),
+
 
                   Row(children: <Widget>[
 

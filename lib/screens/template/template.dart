@@ -27,6 +27,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   Color _appbarBorderLeft = JuntoPalette.juntoBlue;
   Color _appbarBorderRight = JuntoPalette.juntoBlueLight;
 
+
   int _bottomNavIndex = 0;
   final controller = PageController(
     initialPage: 0
@@ -43,7 +44,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
             backgroundColor: Colors.white,
             appBar: JuntoAppBar.getJuntoAppBar(
                 _appbarLogo, _appbarTitle, _appbarBorderLeft,
-                _appbarBorderRight, _navPerspectives),
+                _appbarBorderRight),
             drawer: 
             _currentScreen == 'collective' ? WillPopScope(
               onWillPop: () async {
@@ -114,10 +115,14 @@ class JuntoTemplateState extends State<JuntoTemplate> {
     });
   }
   _navPerspectives() {
-    return;
   }
 
-  _changePerspective() {
-    return;
+  void _changePerspective(perspective) {
+    setState(() {
+      _currentPerspective = perspective;
+      _appbarTitle = perspective;
+
+      // re render feed
+    });
   }
 }
