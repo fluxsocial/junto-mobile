@@ -44,7 +44,13 @@ class JuntoTemplateState extends State<JuntoTemplate> {
             appBar: JuntoAppBar.getJuntoAppBar(
                 _appbarLogo, _appbarTitle, _appbarBorderLeft,
                 _appbarBorderRight, _navPerspectives),
-            drawer: Perspectives(_changePerspective),
+            drawer: 
+            _currentScreen == 'collective' ? WillPopScope(
+              onWillPop: () async {
+                return false; 
+              },
+              child: Perspectives(_changePerspective),
+            ) : null,
             body: 
               PageView(      
                 controller: controller,

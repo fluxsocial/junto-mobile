@@ -1,18 +1,7 @@
 
 import 'package:flutter/material.dart';
-import 'package:scoped_model/scoped_model.dart';
-import '../../scoped_models/scoped_user.dart';
 
-
-// typography + icons
 import './../../custom_icons.dart';
-import './../../typography/palette.dart';
-import '../../route_animations/route_main_screens/route_main_screens.dart';
-import '../../screens/collective/collective.dart';
-import '../../screens/spheres/spheres.dart';
-import '../../screens/pack/pack.dart';
-import '../../screens/den/den.dart';
-
 
 class BottomNav extends StatefulWidget { 
   final currentIndex;
