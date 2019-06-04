@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
+import '../template/template.dart';
 import '../collective/collective.dart';
 import '../../scoped_models/scoped_user.dart';
 
@@ -88,7 +89,7 @@ class SignIn extends StatelessWidget {
                             model.setCollectiveExpressions();
 
                             Navigator.pushReplacement(context, MaterialPageRoute(
-                              builder: (context) => JuntoCollective()
+                              builder: (context) => JuntoTemplate()
                             ));
                           },  
 

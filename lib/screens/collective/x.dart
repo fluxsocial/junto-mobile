@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-
+import '../spheres/spheres.dart';
+import '../create/create.dart';
+import '../pack/pack.dart';
+import '../den/den.dart';
+import '../../components/appbar/appbar.dart';
+import './../../components/bottom_nav/bottom_nav.dart';
 import './degrees/degrees.dart';
 import './../../components/expression_preview/expression_preview.dart';
+import './perspectives/perspectives.dart';
 import '../../scoped_models/scoped_user.dart';
 import '../../typography/palette.dart';
 
 // This screen shows a list of public expressions that can be filtered
 // by channel or perspective
 class JuntoCollective extends StatefulWidget {
-  var currentScreen = 'collective';
-
   @override
   State<StatefulWidget> createState() {
     return JuntoCollectiveState();
@@ -19,34 +23,9 @@ class JuntoCollective extends StatefulWidget {
 }
 
 class JuntoCollectiveState extends State<JuntoCollective> {
+  bool collective = false;
 
-  
-  @override
-  Widget build(BuildContext context) {
-    final double statusBarHeight = MediaQuery.of(context).padding.top;
-
-    return 
-      Container(
-        decoration: BoxDecoration(color: JuntoPalette.juntoWhite),
-        child: ListView(
-          children: <Widget>[       
-            DegreesOfSeparation(_changeDegree, _infinityColor, _oneDegreeColor, _twoDegreesColor,
-            _threeDegreesColor, _fourDegreesColor, _fiveDegreesColor, _sixDegreesColor),
-
-            // expressions
-            ScopedModelDescendant<ScopedUser>(
-              builder: (context, child, model) => ListView(
-                    shrinkWrap: true,
-                    physics: ClampingScrollPhysics(),
-                    children: model.collectiveExpressions
-                        .map((expression) => ExpressionPreview(expression))
-                        .toList(),
-                  ),
-            ),
-          ],
-        ),
-      ); 
-  }
+  String _currentPerspective = 'JUNTO';
 
   bool _infinityActive = true;
   bool _oneDegreeActive = false;
@@ -117,5 +96,67 @@ class JuntoCollectiveState extends State<JuntoCollective> {
 
       }
     });
-  }  
+  }
+
+  void _changePerspective(perspective) {
+    setState(() {
+      _currentPerspective = perspective;
+
+      // re render feed          
+    });  }
+
+  _navPerspectives() {
+    return ;
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    final double statusBarHeight = MediaQuery.of(context).padding.top;
+
+    return 
+
+    PageView(children: <Widget>[
+      Scaffold(
+          appBar: JuntoAppBar.getJuntoAppBar(
+              'assets/images/junto-mobile__logo--collective.png',
+              _currentPerspective,
+              // ~ 28 character limit - tbd
+              JuntoPalette.juntoBlue,
+              JuntoPalette.juntoBlueLight,
+              _navPerspectives()
+          ),
+          // drawer: Perspectives(_changePerspective),
+          drawer: collective == true ? Perspectives(_changePerspective) : null,
+          body: 
+          
+            Container(
+              decoration: BoxDecoration(color: JuntoPalette.juntoWhite),
+              child: ListView(
+                children: <Widget>[
+                  DegreesOfSeparation(_changeDegree, _infinityColor, _oneDegreeColor, _twoDegreesColor,
+                  _threeDegreesColor, _fourDegreesColor, _fiveDegreesColor, _sixDegreesColor),
+
+                  // expressions
+                  ScopedModelDescendant<ScopedUser>(
+                    builder: (context, child, model) => ListView(
+                          shrinkWrap: true,
+                          physics: ClampingScrollPhysics(),
+                          children: model.collectiveExpressions
+                              .map((expression) => ExpressionPreview(expression))
+                              .toList(),
+                        ),
+                  ),
+                ],
+              ),
+            ),
+        ),
+
+        JuntoSpheres(),
+        
+        JuntoPack(),
+
+        JuntoDen()
+    ],);
+  }
 }

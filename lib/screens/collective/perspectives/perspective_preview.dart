@@ -7,7 +7,8 @@ class PerspectivePreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return 
+    Container(
       child: ListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 0),
         onTap: () {
@@ -17,7 +18,7 @@ class PerspectivePreview extends StatelessWidget {
         },
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [Text(title), Icon(Icons.edit, size: 12)]),
+          children: [Text(title, ), Icon(Icons.edit, size: 12)]),
       ),
     );
   }

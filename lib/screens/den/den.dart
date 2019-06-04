@@ -28,11 +28,8 @@ class JuntoDenState extends State<JuntoDen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: JuntoAppBar.getJuntoAppBar(
-          'assets/images/junto-mobile__logo--den.png', 'DEN', 
-          JuntoPalette.juntoGrey, JuntoPalette.juntoSleek, noNav),
-      body: ListView(children: [
+    return 
+      ListView(children: [
         Container(
           constraints: BoxConstraints(
             minHeight: MediaQuery.of(context).size.height,
@@ -178,10 +175,6 @@ class JuntoDenState extends State<JuntoDen> {
             ],
           ),
         ),
-      ]),
-
-      // Bottom nav widget
-      bottomNavigationBar: BottomNav(),
-    );
+      ]);    
   }
 }

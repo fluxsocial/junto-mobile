@@ -2,27 +2,16 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import '../../components/appbar/appbar.dart';
-import './../../components/bottom_nav/bottom_nav.dart';
 import '../../scoped_models/scoped_user.dart';
 import './spheres__create/spheres__create.dart';
 import './sphere_preview.dart';
-import './../../typography/palette.dart';
 
 class JuntoSpheres extends StatelessWidget {
-  void noNav() {
-    return ;
-  }
 
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-        backgroundColor: Colors.white,
-        appBar: JuntoAppBar.getJuntoAppBar('assets/images/junto-mobile__logo--spheres.png', 'SPHERES', 
-        JuntoPalette.juntoGreen, JuntoPalette.juntoGreenLight, noNav),
-
-        body: 
+    return 
         Container(          
           child: 
             ListView(
@@ -41,8 +30,7 @@ class JuntoSpheres extends StatelessWidget {
                 )                                
               ],
             ),
-          ),
-
-        bottomNavigationBar: BottomNav());
+        );
+        
   }
 }
