@@ -11,21 +11,23 @@ class JuntoPack extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return       
-          ListView(
-            children: <Widget>[
+    return   
+    
+    Container()    ;
+          // ListView(
+          //   children: <Widget>[
                           
-              MyPackPreview(),
+          //     MyPackPreview(),
               
-              ScopedModelDescendant<ScopedUser>(
-                builder: (context, child, model) =>               
-                ListView(
-                    physics: ClampingScrollPhysics(),
-                    shrinkWrap: true,
-                    children: model.packs.map((pack) => PackPreview(pack.packTitle, pack.packUser)).toList()
-                  )     
-              )         
-            ],
-          );
+          //     ScopedModelDescendant<ScopedUser>(
+          //       builder: (context, child, model) =>               
+          //       ListView(
+          //           physics: ClampingScrollPhysics(),
+          //           shrinkWrap: true,
+          //           children: model.packs.map((pack) => PackPreview(pack.packTitle, pack.packUser)).toList()
+          //         )     
+          //     )         
+          //   ],
+          // );
   }
 }
