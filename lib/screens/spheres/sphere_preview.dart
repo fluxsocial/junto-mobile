@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class SpherePreview extends StatelessWidget {
@@ -9,48 +8,78 @@ class SpherePreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Color(0xffeeeeee), width: 1),
+        borderRadius: BorderRadius.circular(5),
+        boxShadow: [
+          BoxShadow(
+            color: Color(0xffeeeeee),
+            blurRadius: 3,
+            offset: Offset(1, 3),
+            // spreadRadius: 5
+          )
+        ],
+      ),
 
-    return 
-            Container(
-              height: 75.0,
-              padding: EdgeInsets.symmetric(horizontal: 17.0),
+      child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+
+        children: <Widget>[
+          Container(
+            
+            decoration: BoxDecoration(
+              // image: DecorationImage(
+              //   image: AssetImage('assets/images/junto-mobile__den--photo.png'),
+              //   fit: BoxFit.cover
+              // ),
+              gradient: LinearGradient(
+                begin: Alignment.bottomLeft,
+                end: Alignment.bottomRight,
+                stops: [0.1, 0.9],
+                colors: [
+                  Colors.green,
+                  Colors.lightGreen
+                ]
+              ),
               color: Colors.white,
-              foregroundDecoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(width: .75, color: Color(0xffeeeeee)),
-                ),
-              ),              
-              child: Row(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(5), topRight: Radius.circular(5)),
+              boxShadow: [
+                BoxShadow(
+                  color: Color(0xffeeeeee),
+                  blurRadius: 2,
+                  offset: Offset(1, 2),
+                )
+              ],
+            ),
+            height: 140,
+          ),
+          Container(
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Row(
-                    // crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      ClipOval(                                                                        
-                          child: Image.asset(
-                            'assets/images/junto-mobile__eric.png',
-                            height: 36.0,
-                            width: 36.0,
-                            fit: BoxFit.cover,
-                            
-                          ),
-                        ),                    
+                  Container(
+                    margin: EdgeInsets.only(bottom: 5.0),
+                    child: Text(
+                      sphereTitle,
+                      style: TextStyle(
+                          color: Color(0xff333333),
+                          fontSize: 17,
+                          fontWeight: FontWeight.w700),
+                    ),
+                  ),
 
-                      Container(
-                        margin: EdgeInsets.only(left: 10.0),
-                        child:
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(sphereTitle, textAlign: TextAlign.start,),
-                            Text(sphereMembers + ' members', textAlign: TextAlign.start,)
-                          ],
-                        ),)
-                  ],),
-
+                  Container(
+                    child: Text(sphereMembers + ' MEMBERS', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, ))
+                  )
                 ],
-              )
-
-            );        
+              ))
+        ],
+      ),
+    );
   }
 }
