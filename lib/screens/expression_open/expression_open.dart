@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../components/appbar/appbar_border/appbar_border.dart';
+// import '../../components/appbar/appbar_border/appbar_border.dart';
 import '../../typography/palette.dart';
 import './expression_open_profile/expression_open_profile.dart';
 import './expression_open_shortreply/expression_open_shortreply.dart';
@@ -63,7 +63,7 @@ class ExpressionOpen extends StatelessWidget {
         color: Colors.white,
         child: Column(
           children: <Widget>[
-            AppbarBorder(Color(0xffeeeeee)),
+            // AppbarBorder(Color(0xffeeeeee)),
             Expanded(
               child: ListView(children: [
 

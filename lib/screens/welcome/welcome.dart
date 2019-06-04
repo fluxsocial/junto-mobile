@@ -75,7 +75,7 @@ class Welcome extends StatelessWidget {
                 margin: EdgeInsets.only(bottom: 120),
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(
+                    Navigator.pushReplacement(context, MaterialPageRoute(
                       builder: (context) => SignIn()
                     ));
                   },

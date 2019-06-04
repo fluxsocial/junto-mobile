@@ -111,6 +111,10 @@ flutter:
     - assets/images/junto-mobile__den--photo.png
     - assets/images/junto-mobile__logo--white.png
     - assets/images/junto-mobile__outlinelogo--gradient.png
+    - assets/images/junto-mobile__flutter.png
+    - assets/images/junto-mobile__ecstatic.png
+    - assets/images/junto-mobile__stillmind.png    
+    - assets/images/junto-mobile__junto.png    
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
