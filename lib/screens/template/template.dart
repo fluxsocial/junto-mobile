@@ -40,7 +40,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
         builder: (context, child, model) => Scaffold(
             backgroundColor: Colors.white,
             appBar: JuntoAppBar.getJuntoAppBar(_appbarLogo, _appbarTitle,
-                _appbarBorderLeft, _appbarBorderRight),
+                _appbarBorderLeft, _appbarBorderRight, _navNotifications),
             drawer: 
             // only enable drawer if current screen is collective
             _currentScreen == 'collective'                
@@ -120,5 +120,9 @@ class JuntoTemplateState extends State<JuntoTemplate> {
 
       // re render feed
     });
+  }
+
+  _navNotifications() {
+    Navigator.pushNamed(context, '/notifications');
   }
 }

@@ -7,10 +7,6 @@ import '../../scoped_models/scoped_user.dart';
 import './../../typography/palette.dart';
 import './../../custom_icons.dart';
 
-// appbar + bottom nav
-import '../../components/appbar/appbar_border/appbar_border.dart';
-import './../../components/bottom_nav/bottom_nav.dart';
-
 import './../../components/expression_preview/expression_preview.dart';
 
 class JuntoMember extends StatelessWidget {
@@ -56,9 +52,6 @@ class JuntoMember extends StatelessWidget {
           color: Colors.white,
           child: Column(
             children: <Widget>[
-              // App bar border
-              AppbarBorder(JuntoPalette.juntoGrey),
-
               // Den cover photo
               Container(
                 height: 150.0,
