@@ -9,20 +9,12 @@ class PackPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return
-        // My Pack
         Container(
             margin: EdgeInsets.only(left: 10.0),
-            // padding: EdgeInsets.symmetric(vertical: 25),
             color: Colors.white,
-            // foregroundDecoration: BoxDecoration(
-            //   border: Border(
-            //     bottom: BorderSide(width: .75, color: Color(0xffeeeeee)),
-            //   ),
-            // ),
             child: Row(
               children: <Widget>[
                 Row(
-                  // crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     ClipOval(
                       child: Image.asset(
