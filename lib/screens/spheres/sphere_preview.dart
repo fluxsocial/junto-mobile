@@ -13,14 +13,13 @@ class SpherePreview extends StatelessWidget {
       margin: EdgeInsets.only(left: 10, right: 10, bottom: 10.0),
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border.all(color: Color(0xffeeeeee), width: 1),
+        border: Border.all(color: Color(0xffeeeeee), width: .25),
         borderRadius: BorderRadius.circular(5),
         boxShadow: [
           BoxShadow(
             color: Color(0xffeeeeee),
             blurRadius: 3,
             offset: Offset(1, 3),
-            // spreadRadius: 5
           )
         ],
       ),

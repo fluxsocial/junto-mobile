@@ -10,6 +10,7 @@ class Pack {
       Pack('Cats', 'Yaz'),
       Pack('Ecstatic Dancers', 'Josh'),
       Pack('HeruPandie', 'Dora'),
+      Pack('ByDrea', 'Drea'),
     ];
   }
 }
