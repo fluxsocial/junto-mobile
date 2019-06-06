@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import './pack_preview.dart';
+import './pack_preview/pack_preview.dart';
 import '../../scoped_models/scoped_user.dart';
 
-class JuntoPack extends StatelessWidget {
+// This class renders the screen of packs a user belongs to
+class JuntoPacks extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
       children: <Widget>[
+        // My Pack
         PackPreview('The Gnarly Nomads', 'Eric Yang', 'assets/images/junto-mobile__eric.png'),
+        
+        // Other Packs user belongs to
         ScopedModelDescendant<ScopedUser>(
             builder: (context, child, model) => ListView(
                 physics: ClampingScrollPhysics(),

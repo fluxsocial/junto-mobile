@@ -7,7 +7,7 @@ import '../collective/collective.dart';
 import '../collective/filter_screen/filter_screen.dart';
 import '../collective/filter_fab/filter_fab.dart';
 import '../spheres/spheres.dart';
-import '../pack/pack.dart';
+import '../packs/packs.dart';
 import '../den/den.dart';
 import '../../components/appbar/appbar.dart';
 import './../../components/bottom_nav/bottom_nav.dart';
@@ -104,7 +104,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                   children: <Widget>[
                     JuntoCollective(_hideFABController),
                     JuntoSpheres(),
-                    JuntoPack(),
+                    JuntoPacks(),
                     JuntoDen()
                   ],
                 ),                      

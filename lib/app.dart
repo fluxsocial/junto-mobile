@@ -6,9 +6,6 @@ import 'scoped_models/scoped_user.dart';
 import './screens/welcome/welcome.dart';
 import './screens/template/template.dart';
 import './screens/collective/collective.dart';
-import './screens/spheres/spheres.dart';
-import './screens/pack/pack.dart';
-import './screens/den/den.dart';
 import './screens/create/create.dart';
 import './screens/notifications/notifications.dart';
 
@@ -49,7 +46,7 @@ class JuntoAppState extends State<JuntoApp> {
               // '/spheres': (BuildContext context) => JuntoSpheres(),
               // '/pack': (BuildContext context) => JuntoPack(),
               // '/den': (BuildContext context) => JuntoDen(),
-              // '/create': (BuildContext context) => JuntoCreate(),
+              '/create': (BuildContext context) => JuntoCreate(),
               '/notifications': (BuildContext context) => JuntoNotifications(),
           } 
       )
