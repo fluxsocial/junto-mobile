@@ -41,7 +41,7 @@ class PackPreview extends StatelessWidget {
                           Text(packTitle,
                               textAlign: TextAlign.start,
                               style: TextStyle(
-                                  fontSize: 17,
+                                  fontSize: 14,
                                   color: Color(0xff333333),
                                   fontWeight: FontWeight.w700)),
                           Text(
