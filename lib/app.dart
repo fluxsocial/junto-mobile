@@ -5,7 +5,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'scoped_models/scoped_user.dart';
 import './screens/welcome/welcome.dart';
 import './screens/template/template.dart';
-import './screens/collective/collective.dart';
+// import './screens/collective/collective.dart';
 import './screens/create/create.dart';
 import './screens/notifications/notifications.dart';
 

@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:scoped_model/scoped_model.dart';
 
 import '../../../scoped_models/scoped_user.dart';
 import '../../template/template.dart';
