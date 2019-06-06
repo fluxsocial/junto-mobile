@@ -1,10 +1,9 @@
 
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:scoped_model/scoped_model.dart';
 
 import '../../../scoped_models/scoped_user.dart';
-import '../../collective/collective.dart';
+import '../../template/template.dart';
 import '../../../typography/palette.dart';
 
 class SignUpWelcome extends StatefulWidget {
@@ -26,7 +25,6 @@ class SignUpWelcome extends StatefulWidget {
   }
 
 }
-
 
 class SignUpWelcomeState extends State<SignUpWelcome> {
 
@@ -139,7 +137,7 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
                             RaisedButton(                                        
                               onPressed: () {
                                 Navigator.push(context, MaterialPageRoute(
-                                  builder: (context) => JuntoCollective()
+                                  builder: (context) => JuntoTemplate()
                                 ));
                               },        
                               padding: EdgeInsets.symmetric(

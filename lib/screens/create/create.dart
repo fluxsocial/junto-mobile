@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import './create_bottom_nav.dart';
 import '../../typography/style.dart';
-import '../../typography/palette.dart';
 import './longform/longform.dart'; 
 import './shortform/shortform.dart'; 
 import './photo/photo.dart'; 

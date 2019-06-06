@@ -5,8 +5,6 @@ import 'package:image_picker_modern/image_picker_modern.dart';
 
 import './../create_actions.dart';
 import './../../../custom_icons.dart';
-import './../../../typography/palette.dart';
-import './../../../typography/style.dart';
 
 // Create using photo form
 class CreatePhoto extends StatefulWidget {
