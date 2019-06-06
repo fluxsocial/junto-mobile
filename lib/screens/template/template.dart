@@ -91,6 +91,8 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                     _appbarLogo = 'assets/images/junto-mobile__logo--den.png';
                     _appbarBorderLeft = JuntoPalette.juntoGrey;
                     _appbarBorderRight = JuntoPalette.juntoSleek;
+                    _bottomNavIndex = 3;
+
                   });
                 }
               },

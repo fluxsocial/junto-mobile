@@ -1,4 +1,8 @@
+
 import 'package:flutter/material.dart';
+
+import '../../typography/palette.dart';
+
 
 class SpherePreview extends StatelessWidget {
   final String sphereTitle;
@@ -10,17 +14,16 @@ class SpherePreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+      margin: EdgeInsets.only(left: 10, right: 10, bottom: 10.0),
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border.all(color: Color(0xffeeeeee), width: 1),
+        border: Border.all(color: Color(0xffeeeeee), width: .25),
         borderRadius: BorderRadius.circular(5),
         boxShadow: [
           BoxShadow(
             color: Color(0xffeeeeee),
             blurRadius: 3,
             offset: Offset(1, 3),
-            // spreadRadius: 5
           )
         ],
       ),
@@ -37,7 +40,7 @@ class SpherePreview extends StatelessWidget {
                   begin: Alignment.bottomLeft,
                   end: Alignment.bottomRight,
                   stops: [0.1, 0.9],
-                  colors: [Colors.green, Colors.lightGreen]),
+                  colors: [JuntoPalette.juntoGreen, JuntoPalette.juntoGreenLight]),
               color: Colors.white,
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(5), topRight: Radius.circular(5)),
