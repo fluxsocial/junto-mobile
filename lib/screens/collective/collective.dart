@@ -33,6 +33,16 @@ class JuntoCollectiveState extends State<JuntoCollective> {
             DegreesOfSeparation(_changeDegree, _infinityColor, _oneDegreeColor, _twoDegreesColor,
             _threeDegreesColor, _fourDegreesColor, _fiveDegreesColor, _sixDegreesColor),
 
+            // Container(
+            //   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+            //   color: Colors.white,
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     children:[
+            //       Text('Filter by channel', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
+            //       Icon(Icons.add, size: 14)
+            //     ])
+            // ),
             // expressions
             ScopedModelDescendant<ScopedUser>(
               builder: (context, child, model) => ListView(
@@ -92,28 +102,28 @@ class JuntoCollectiveState extends State<JuntoCollective> {
       _resetDegrees();
       if (degree == 'infinity') {
         _infinityActive = true;
-        _infinityColor = Color(0xff333333);
+        _infinityColor = Color(0xffffffff);
 
       } else if(degree == 'one') {
         _oneDegreeActive = true;
-        _oneDegreeColor = Color(0xff333333);        
+        _oneDegreeColor = Color(0xffffffff);        
       } else if(degree == 'two') {
         _twoDegreesActive = true;
-        _twoDegreesColor = Color(0xff333333);        
+        _twoDegreesColor = Color(0xffffffff);        
       } else if(degree == 'three') {
         _threeDegreesActive = true;
-        _threeDegreesColor = Color(0xff333333);
+        _threeDegreesColor = Color(0xffffffff);
 
       } else if(degree == 'four') {
         _fourDegreesActive = true;
-        _fourDegreesColor = Color(0xff333333);        
+        _fourDegreesColor = Color(0xffffffff);        
       } else if(degree == 'five') {
         _fiveDegreesActive = true;
-        _fiveDegreesColor = Color(0xff333333);
+        _fiveDegreesColor = Color(0xffffffff);
 
       } else if(degree == 'six') {
         _sixDegreesActive = true;
-        _sixDegreesColor = Color(0xff333333);      
+        _sixDegreesColor = Color(0xffffffff);      
 
       }
     });

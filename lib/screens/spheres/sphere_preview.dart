@@ -14,7 +14,7 @@ class SpherePreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: 10, right: 10, bottom: 10.0),
+      margin: EdgeInsets.only(left: 10, right: 10, bottom: 15.0),
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(color: Color(0xffeeeeee), width: .25),
