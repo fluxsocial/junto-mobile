@@ -68,7 +68,8 @@ class JuntoTemplateState extends State<JuntoTemplate> {
             appBar: JuntoAppBar.getJuntoAppBar(_appbarLogo, _appbarTitle,
                 _appbarBorderLeft, _appbarBorderRight, _navNotifications),
             floatingActionButton: _currentScreen == 'collective'
-                ? Opacity(
+                ? AnimatedOpacity(                  
+                    duration: Duration(milliseconds: 200),          
                     opacity: _isVisible ? 1 : 0,
                     child: Container(
                         height: 45,
