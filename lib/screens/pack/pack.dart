@@ -9,13 +9,13 @@ class JuntoPack extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       children: <Widget>[
-        PackPreview('The Gnarly Nomads', 'Eric Yang'),
+        PackPreview('The Gnarly Nomads', 'Eric Yang', 'assets/images/junto-mobile__eric.png'),
         ScopedModelDescendant<ScopedUser>(
             builder: (context, child, model) => ListView(
                 physics: ClampingScrollPhysics(),
                 shrinkWrap: true,
                 children: model.packs
-                    .map((pack) => PackPreview(pack.packTitle, pack.packUser))
+                    .map((pack) => PackPreview(pack.packTitle, pack.packUser, pack.packImage))
                     .toList()))
       ],
     );

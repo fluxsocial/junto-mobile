@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 class PackPreview extends StatelessWidget {
   final String packTitle;
   final String packUser;
+  final String packImage;
 
-  PackPreview(this.packTitle, this.packUser);
+  PackPreview(this.packTitle, this.packUser, this.packImage);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,7 @@ class PackPreview extends StatelessWidget {
                   children: <Widget>[
                     ClipOval(
                       child: Image.asset(
-                        'assets/images/junto-mobile__eric.png',
+                        packImage,
                         height: 45.0,
                         width: 45.0,
                         fit: BoxFit.cover,
