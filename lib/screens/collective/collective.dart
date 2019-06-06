@@ -50,10 +50,7 @@ class JuntoCollectiveState extends State<JuntoCollective> {
       ); 
   }
 
-
-
-  Color activeColor = Color(0xff333333);
-  Color passiveColor = Color(0xff999999);
+  // Default colors for degrees
   Color _infinityColor = Color(0xff333333);
   Color _oneDegreeColor = Color(0xff999999);
   Color _twoDegreesColor = Color(0xff999999);
@@ -62,6 +59,7 @@ class JuntoCollectiveState extends State<JuntoCollective> {
   Color _fiveDegreesColor = Color(0xff999999);
   Color _sixDegreesColor = Color(0xff999999);
   
+  // Reset all degree colors to inactive
   void _resetDegrees() {
     setState(() {
       _infinityColor = Color(0xff999999);
@@ -74,19 +72,18 @@ class JuntoCollectiveState extends State<JuntoCollective> {
     });
   }
 
+  // Switch degrees
   void _changeDegree(degree) {
     setState(() {
       _resetDegrees();
       if (degree == 'infinity') {
         _infinityColor = Color(0xff333333);
-
       } else if(degree == 'one') {
         _oneDegreeColor = Color(0xff333333);        
       } else if(degree == 'two') {
         _twoDegreesColor = Color(0xff333333);        
       } else if(degree == 'three') {
         _threeDegreesColor = Color(0xff333333);
-
       } else if(degree == 'four') {
         _fourDegreesColor = Color(0xff333333);        
       } else if(degree == 'five') {
@@ -94,7 +91,6 @@ class JuntoCollectiveState extends State<JuntoCollective> {
 
       } else if(degree == 'six') {
         _sixDegreesColor = Color(0xff333333);      
-
       }
     });
   }  

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import './degree/degree.dart';
 
+// Degrees of Separation widget rendered in Collective screen under 'JUNTO' perspective
 class DegreesOfSeparation extends StatelessWidget {
   Function changeDegree;
   final colorInfinity;
