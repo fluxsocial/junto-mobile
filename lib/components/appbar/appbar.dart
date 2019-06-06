@@ -12,9 +12,9 @@ class JuntoAppBar {
       child: AppBar(
           automaticallyImplyLeading: false,
           bottom: PreferredSize(
-              preferredSize: Size.fromHeight(1.5),
+              preferredSize: Size.fromHeight(1),
               child: Container(
-                height: 1.5,
+                height: 1,
                 decoration: BoxDecoration(
                     gradient: LinearGradient(
                         begin: Alignment.centerLeft,
