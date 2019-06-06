@@ -16,6 +16,7 @@ class JuntoStyles {
   static const appbarTitle = TextStyle(
       color: JuntoPalette.juntoSleek,
       fontSize: 17,
+      letterSpacing: .5,
       fontWeight: FontWeight.w700);
 
   static const perspectiveTitle =

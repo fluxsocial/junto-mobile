@@ -11,7 +11,9 @@ import '../../typography/palette.dart';
 // by channel or perspective
 class JuntoCollective extends StatefulWidget {
   var currentScreen = 'collective';
+  final controller;
 
+  JuntoCollective(this.controller);
   @override
   State<StatefulWidget> createState() {
     return JuntoCollectiveState();
@@ -29,9 +31,10 @@ class JuntoCollectiveState extends State<JuntoCollective> {
       Container(
         decoration: BoxDecoration(color: JuntoPalette.juntoWhite),
         child: ListView(
-          children: <Widget>[       
-            DegreesOfSeparation(_changeDegree, _infinityColor, _oneDegreeColor, _twoDegreesColor,
-            _threeDegreesColor, _fourDegreesColor, _fiveDegreesColor, _sixDegreesColor),
+          controller: widget.controller,
+          children: <Widget>[   
+            // DegreesOfSeparation(_changeDegree, _infinityColor, _oneDegreeColor, _twoDegreesColor,
+            // _threeDegreesColor, _fourDegreesColor, _fiveDegreesColor, _sixDegreesColor),
 
             // Container(
             //   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
@@ -39,8 +42,8 @@ class JuntoCollectiveState extends State<JuntoCollective> {
             //   child: Row(
             //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
             //     children:[
-            //       Text('Filter by channel', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
-            //       Icon(Icons.add, size: 14)
+                  
+            //       Text('# filter by channel', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
             //     ])
             // ),
             // expressions

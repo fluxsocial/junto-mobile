@@ -29,14 +29,14 @@ class DegreesOfSeparation extends StatelessWidget {
         color: Colors.white,
         foregroundDecoration: BoxDecoration(
           border: Border(
-            bottom: BorderSide(width: .75, color: Color(0xffeeeeee)),
+            bottom: BorderSide(width: .5, color: Color(0xffeeeeee)),
           ),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
-                margin: EdgeInsets.only(bottom: 10),
+                margin: EdgeInsets.only(bottom: 7.5),
                 child: Text('DEGREES OF SEPARATION',
                     style: TextStyle(
                         color: Color(0xff333333),
@@ -52,8 +52,8 @@ class DegreesOfSeparation extends StatelessWidget {
                   },
                   child: Container(
                       alignment: Alignment.center,
-                      width: 27,
-                      height: 27,
+                      width: 25,
+                      height: 25,
                       decoration: colorInfinity == Color(0xffffffff)
                           ? BoxDecoration(
                               borderRadius: BorderRadius.circular(25),
@@ -72,7 +72,7 @@ class DegreesOfSeparation extends StatelessWidget {
                       child: Text('oo',
                           style: TextStyle(
                             fontWeight: FontWeight.w700,
-                            fontSize: 14,
+                            fontSize: 12,
                             color: colorInfinity
                           ))),
                 ),
@@ -82,8 +82,8 @@ class DegreesOfSeparation extends StatelessWidget {
                   },
                   child: Container(
                       alignment: Alignment.center,
-                      width: 27,
-                      height: 27,
+                      width: 25,
+                      height: 25,
                       decoration: colorOne == Color(0xffffffff)
                           ? BoxDecoration(
                               borderRadius: BorderRadius.circular(25),
@@ -102,7 +102,7 @@ class DegreesOfSeparation extends StatelessWidget {
                       child: Text('i',
                           style: TextStyle(
                             fontWeight: FontWeight.w700,
-                            fontSize: 14,
+                            fontSize: 12,
                             color: colorOne
                           ))),
                 ),
@@ -112,8 +112,8 @@ class DegreesOfSeparation extends StatelessWidget {
                   },
                   child: Container(
                       alignment: Alignment.center,
-                      width: 27,
-                      height: 27,
+                      width: 25,
+                      height: 25,
                       decoration: colorTwo == Color(0xffffffff)
                           ? BoxDecoration(
                               borderRadius: BorderRadius.circular(25),
@@ -132,7 +132,7 @@ class DegreesOfSeparation extends StatelessWidget {
                       child: Text('ii',
                           style: TextStyle(
                             fontWeight: FontWeight.w700,
-                            fontSize: 14,
+                            fontSize: 12,
                             color: colorTwo
                           ))),
                 ),
@@ -142,8 +142,8 @@ class DegreesOfSeparation extends StatelessWidget {
                   },
                   child: Container(
                       alignment: Alignment.center,
-                      width: 27,
-                      height: 27,
+                      width: 25,
+                      height: 25,
                       decoration: colorThree == Color(0xffffffff)
                           ? BoxDecoration(
                               borderRadius: BorderRadius.circular(25),
@@ -162,7 +162,7 @@ class DegreesOfSeparation extends StatelessWidget {
                       child: Text('iii',
                           style: TextStyle(
                             fontWeight: FontWeight.w700,
-                            fontSize: 14,
+                            fontSize: 12,
                             color: colorThree
                           ))),
                 ),
@@ -172,8 +172,8 @@ class DegreesOfSeparation extends StatelessWidget {
                   },
                   child: Container(
                       alignment: Alignment.center,
-                      width: 27,
-                      height: 27,
+                      width: 25,
+                      height: 25,
                       decoration: colorFour == Color(0xffffffff)
                           ? BoxDecoration(
                               borderRadius: BorderRadius.circular(25),
@@ -192,7 +192,7 @@ class DegreesOfSeparation extends StatelessWidget {
                       child: Text('iv',
                           style: TextStyle(
                             fontWeight: FontWeight.w700,
-                            fontSize: 14,
+                            fontSize: 12,
                             color: colorFour
                           ))),
                 ),
@@ -202,8 +202,8 @@ class DegreesOfSeparation extends StatelessWidget {
                   },
                   child: Container(
                       alignment: Alignment.center,
-                      width: 27,
-                      height: 27,
+                      width: 25,
+                      height: 25,
                       decoration: colorFive == Color(0xffffffff)
                           ? BoxDecoration(
                               borderRadius: BorderRadius.circular(25),
@@ -222,7 +222,7 @@ class DegreesOfSeparation extends StatelessWidget {
                       child: Text('v',
                           style: TextStyle(
                             fontWeight: FontWeight.w700,
-                            fontSize: 14,
+                            fontSize: 12,
                             color: colorFive
                           ))),
                 ),
@@ -232,8 +232,8 @@ class DegreesOfSeparation extends StatelessWidget {
                   },
                   child: Container(
                       alignment: Alignment.center,
-                      width: 27,
-                      height: 27,
+                      width: 25,
+                      height: 25,
                       decoration: colorSix == Color(0xffffffff)
                           ? BoxDecoration(
                               borderRadius: BorderRadius.circular(25),
@@ -252,7 +252,7 @@ class DegreesOfSeparation extends StatelessWidget {
                       child: Text('vi',
                           style: TextStyle(
                             fontWeight: FontWeight.w700,
-                            fontSize: 14,
+                            fontSize: 12,
                             color: colorSix
                           ))),
                 ),

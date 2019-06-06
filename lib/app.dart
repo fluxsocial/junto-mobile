@@ -45,11 +45,11 @@ class JuntoAppState extends State<JuntoApp> {
             routes: {
               '/welcome': (BuildContext context) => Welcome(),
               '/template': (BuildContext context) => JuntoTemplate(),
-              '/collective': (BuildContext context) => JuntoCollective(),
-              '/spheres': (BuildContext context) => JuntoSpheres(),
-              '/pack': (BuildContext context) => JuntoPack(),
-              '/den': (BuildContext context) => JuntoDen(),
-              '/create': (BuildContext context) => JuntoCreate(),
+              // '/collective': (BuildContext context) => JuntoCollective(),
+              // '/spheres': (BuildContext context) => JuntoSpheres(),
+              // '/pack': (BuildContext context) => JuntoPack(),
+              // '/den': (BuildContext context) => JuntoDen(),
+              // '/create': (BuildContext context) => JuntoCreate(),
               '/notifications': (BuildContext context) => JuntoNotifications(),
           } 
       )
