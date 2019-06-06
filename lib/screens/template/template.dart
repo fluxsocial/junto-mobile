@@ -70,8 +70,8 @@ class JuntoTemplateState extends State<JuntoTemplate> {
         ScopedModelDescendant<ScopedUser>(
         builder: (context, child, model) => Scaffold(
             backgroundColor: Colors.white,
-            appBar: JuntoAppBar.getJuntoAppBar(_appbarLogo, _appbarTitle,
-                _appbarBorderLeft, _appbarBorderRight, _navNotifications),
+            appBar: PreferredSize(preferredSize: Size.fromHeight(45), child: JuntoAppBar(_appbarLogo, _appbarTitle,
+                _appbarBorderLeft, _appbarBorderRight, _navNotifications)),
             floatingActionButton: _currentScreen == 'collective'
                 ? CollectiveFilterFAB(_isVisible, _toggleFilter)
                 : null,

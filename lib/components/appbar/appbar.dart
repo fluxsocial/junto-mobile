@@ -1,15 +1,24 @@
+
 import 'package:flutter/material.dart';
 
 import '../../custom_icons.dart';
 import '../../typography/palette.dart';
 import '../../typography/style.dart';
 
-class JuntoAppBar {
-  static getJuntoAppBar(_juntoAppBarLogo, _juntoAppBarTitle,
-      _juntoAppBarBorderLeft, _juntoAppBarBorderRight, _navNotifications) {
-    return PreferredSize(
-      preferredSize: Size.fromHeight(45.0),
-      child: AppBar(
+class JuntoAppBar extends StatelessWidget {
+  final juntoAppBarLogo;
+  final juntoAppBarTitle;
+  final juntoAppBarBorderRight;
+  final juntoAppBarBorderLeft;
+  final navNotifications;
+
+  JuntoAppBar(this.juntoAppBarLogo, this.juntoAppBarTitle, 
+  this.juntoAppBarBorderRight, this.juntoAppBarBorderLeft, this.navNotifications);
+
+  @override
+  Widget build(BuildContext context) {
+    return     
+        AppBar(
           automaticallyImplyLeading: false,
           bottom: PreferredSize(
               preferredSize: Size.fromHeight(1),
@@ -23,11 +32,10 @@ class JuntoAppBar {
                       0.1,
                       0.9
                     ],
-                        colors: [
-                      _juntoAppBarBorderLeft,
-                      _juntoAppBarBorderRight
+                    colors: [
+                      juntoAppBarBorderLeft,
+                      juntoAppBarBorderRight
                     ])),
-                // color: _juntoAppBarBorder
               )),
           backgroundColor: JuntoPalette.juntoWhite,
           brightness: Brightness.light,
@@ -45,11 +53,11 @@ class JuntoAppBar {
                       },
                       child: Row(
                         children: <Widget>[
-                          Image.asset(_juntoAppBarLogo,
+                          Image.asset(juntoAppBarLogo,
                               height: 20.0, width: 20.0),
                           Container(
                             margin: EdgeInsets.only(left: 7.5),
-                            child: Text(_juntoAppBarTitle,
+                            child: Text(juntoAppBarTitle,
                                 textAlign: TextAlign.center,
                                 style: JuntoStyles.appbarTitle),
                           ),
@@ -65,7 +73,7 @@ class JuntoAppBar {
                       ),
                       GestureDetector(
                           onTap: () {
-                            _navNotifications();
+                            navNotifications();
                           },
                           child: Container(
                             margin: EdgeInsets.only(left: 7.5),
@@ -75,7 +83,7 @@ class JuntoAppBar {
                     ],
                   )
                 ]),
-          )),
+          )
     );
-  }
+  }  
 }

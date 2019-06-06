@@ -13,7 +13,7 @@ class CollectiveFilterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: null,
-        bottomNavigationBar: SizedBox(height: 45),
+        bottomNavigationBar: Container(color: Colors.white, height: 45),
         floatingActionButton: CollectiveFilterFAB(isVisible, toggleFilter),
         body: Stack(
           children: <Widget>[
