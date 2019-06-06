@@ -4,6 +4,8 @@ import 'package:flutter/rendering.dart';
 
 import '../collective/perspectives/perspectives.dart';
 import '../collective/collective.dart';
+import '../collective/filter_screen/filter_screen.dart';
+import '../collective/filter_fab/filter_fab.dart';
 import '../spheres/spheres.dart';
 import '../pack/pack.dart';
 import '../den/den.dart';
@@ -39,6 +41,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   ScrollController _hideFABController;
   bool _isVisible;
 
+  bool _filterOn = false;
   @override
   void initState() {
     _isVisible = true;
@@ -62,41 +65,15 @@ class JuntoTemplateState extends State<JuntoTemplate> {
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<ScopedUser>(
+    return 
+      Stack(children: [
+        ScopedModelDescendant<ScopedUser>(
         builder: (context, child, model) => Scaffold(
             backgroundColor: Colors.white,
             appBar: JuntoAppBar.getJuntoAppBar(_appbarLogo, _appbarTitle,
                 _appbarBorderLeft, _appbarBorderRight, _navNotifications),
             floatingActionButton: _currentScreen == 'collective'
-                ? AnimatedOpacity(                  
-                    duration: Duration(milliseconds: 200),          
-                    opacity: _isVisible ? 1 : 0,
-                    child: Container(
-                        height: 45,
-                        width: 45,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                              begin: Alignment.bottomLeft,
-                              end: Alignment.topRight,
-                              stops: [
-                                0.1,
-                                0.9
-                              ],
-                              colors: [
-                                JuntoPalette.juntoPurple,
-                                JuntoPalette.juntoBlue
-                              ]),
-                          color: Colors.white.withOpacity(.5),
-                          border: Border.all(
-                            color: Colors.white,
-                            width: 1.5,
-                          ),
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                        alignment: Alignment.center,
-                        child: Text('#',
-                            style: TextStyle(color: Color(0xffffffff)))),
-                  )
+                ? CollectiveFilterFAB(_isVisible, _toggleFilter)
                 : null,
             drawer:
                 // only enable drawer if current screen is collective
@@ -108,29 +85,33 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                         child: Perspectives(_changePerspective),
                       )
                     : null,
-            body: PageView(
-              controller: controller,
-              onPageChanged: (int) {
-                if (int == 0) {
-                  _switchScreen('collective');
-                } else if (int == 1) {
-                  _switchScreen('spheres');
+            body: 
+                PageView(
+                  controller: controller,
+                  onPageChanged: (int) {
+                    if (int == 0) {
+                      _switchScreen('collective');
+                    } else if (int == 1) {
+                      _switchScreen('spheres');
 
-                } else if (int == 2) {
-                  _switchScreen('packs');
+                    } else if (int == 2) {
+                      _switchScreen('packs');
 
-                } else if (int == 3) {
-                  _switchScreen('den');
-                }
-              },
-              children: <Widget>[
-                JuntoCollective(_hideFABController),
-                JuntoSpheres(),
-                JuntoPack(),
-                JuntoDen()
-              ],
-            ),
-            bottomNavigationBar: BottomNav(_bottomNavIndex, _setBottomIndex)));
+                    } else if (int == 3) {
+                      _switchScreen('den');
+                    }
+                  },
+                  children: <Widget>[
+                    JuntoCollective(_hideFABController),
+                    JuntoSpheres(),
+                    JuntoPack(),
+                    JuntoDen()
+                  ],
+                ),                      
+            bottomNavigationBar: BottomNav(_bottomNavIndex, _setBottomIndex))),
+            
+                _filterOn ? CollectiveFilterScreen(_isVisible, _toggleFilter) : SizedBox(),            
+            ]);
   }
 
   // Set the bottom navbar index; used when bottom nav icon is pressed.
@@ -197,5 +178,18 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   
   _navNotifications() {
     Navigator.pushNamed(context, '/notifications');
+  }
+
+  _toggleFilter() {
+    if(_filterOn) {
+      setState(() {
+        _filterOn = false;
+      });      
+    } else if(_filterOn == false) {
+      setState(() {
+        _filterOn = true;
+      });         
+    }
+    print(_filterOn);
   }
 }
