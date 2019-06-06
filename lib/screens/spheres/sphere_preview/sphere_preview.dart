@@ -1,9 +1,8 @@
-
 import 'package:flutter/material.dart';
 
-import '../../typography/palette.dart';
+import '../../../typography/palette.dart';
 
-
+// This class renders a preview of a sphere
 class SpherePreview extends StatelessWidget {
   final String sphereTitle;
   final String sphereMembers;
@@ -39,8 +38,14 @@ class SpherePreview extends StatelessWidget {
               gradient: LinearGradient(
                   begin: Alignment.bottomLeft,
                   end: Alignment.bottomRight,
-                  stops: [0.1, 0.9],
-                  colors: [JuntoPalette.juntoGreen, JuntoPalette.juntoGreenLight]),
+                  stops: [
+                    0.1,
+                    0.9
+                  ],
+                  colors: [
+                    JuntoPalette.juntoGreen,
+                    JuntoPalette.juntoGreenLight
+                  ]),
               color: Colors.white,
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(5), topRight: Radius.circular(5)),
