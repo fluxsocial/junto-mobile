@@ -16,7 +16,6 @@ import '../../typography/palette.dart';
 
 // This class is a template screen that contains the navbar, bottom bar,
 // and screen (collective, spheres, pack, etc) depending on condition.
-
 class JuntoTemplate extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -38,27 +37,28 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   final controller = PageController(initialPage: 0);
 
   // Controller for scroll
-  ScrollController _hideFABController;
-  bool _isVisible;
+  ScrollController _hideFABController = ScrollController();
+  bool _isVisible = true;
 
   bool _filterOn = false;
   @override
   void initState() {
-    _isVisible = true;
-    _hideFABController = ScrollController();
-
     _hideFABController.addListener(() {
-      if (_hideFABController.position.userScrollDirection ==
-          ScrollDirection.reverse) {
-        setState(() {
-          _isVisible = false;
-        });
-      } else if (_hideFABController.position.userScrollDirection ==
-          ScrollDirection.forward) {
+      if (_hideFABController.position.userScrollDirection == ScrollDirection.idle) {
         setState(() {
           _isVisible = true;
         });
-      }
+      }           
+      else if (_hideFABController.position.userScrollDirection == ScrollDirection.reverse) {
+        setState(() {
+          _isVisible = false;
+        });
+      }       
+      else if (_hideFABController.position.userScrollDirection == ScrollDirection.forward) {
+        setState(() {
+          _isVisible = true;
+        });
+      } 
     });
     super.initState();
   }
@@ -108,8 +108,9 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                     JuntoDen()
                   ],
                 ),                      
-            bottomNavigationBar: BottomNav(_bottomNavIndex, _setBottomIndex))),
-            
+                bottomNavigationBar: BottomNav(_bottomNavIndex, _setBottomIndex))),
+
+                // Render Filter Channels Screen conditionally
                 _filterOn ? CollectiveFilterScreen(_isVisible, _toggleFilter) : SizedBox(),            
             ]);
   }
@@ -176,10 +177,12 @@ class JuntoTemplateState extends State<JuntoTemplate> {
     }
   }
   
+  // Navigate to Notifications screen
   _navNotifications() {
     Navigator.pushNamed(context, '/notifications');
   }
 
+  // Toggle filter FAB
   _toggleFilter() {
     if(_filterOn) {
       setState(() {
@@ -190,6 +193,5 @@ class JuntoTemplateState extends State<JuntoTemplate> {
         _filterOn = true;
       });         
     }
-    print(_filterOn);
   }
 }
