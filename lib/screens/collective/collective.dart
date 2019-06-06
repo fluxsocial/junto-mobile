@@ -33,8 +33,8 @@ class JuntoCollectiveState extends State<JuntoCollective> {
         child: ListView(
           controller: widget.controller,
           children: <Widget>[   
-            // DegreesOfSeparation(_changeDegree, _infinityColor, _oneDegreeColor, _twoDegreesColor,
-            // _threeDegreesColor, _fourDegreesColor, _fiveDegreesColor, _sixDegreesColor),
+            DegreesOfSeparation(_changeDegree, _infinityColor, _oneDegreeColor, _twoDegreesColor,
+            _threeDegreesColor, _fourDegreesColor, _fiveDegreesColor, _sixDegreesColor),
 
             // Container(
             //   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
