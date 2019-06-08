@@ -55,18 +55,18 @@ class Perspectives extends StatelessWidget {
                           children: [Text('JUNTO')]),
                       ),
                     ),
-
+ 
                     Container(
                       child: ListTile(
                         contentPadding: EdgeInsets.symmetric(horizontal: 0),
                         onTap: () {
-                          _changePerspective('FOLLOWING');
+                          _changePerspective('Following');
 
                           Navigator.pop(context);
                         },
                         title: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [Text('FOLLOWING')]),
+                          children: [Text('Following')]),
                       ),
                     ),
 

@@ -18,7 +18,7 @@ class PerspectivePreview extends StatelessWidget {
         },
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [Text(title, ), Icon(Icons.edit, size: 12)]),
+          children: [Text(title, style: TextStyle(fontWeight: FontWeight.w500)), Icon(Icons.edit, size: 12)]),
       ),
     );
   }

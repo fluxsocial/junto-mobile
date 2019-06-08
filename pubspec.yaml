@@ -94,7 +94,43 @@ flutter:
       
     - family:  add
       fonts:
-      - asset: assets/fonts/j_home.ttf      
+      - asset: assets/fonts/j_home.ttf 
+      
+    - family:  packs
+      fonts:
+      - asset: assets/fonts/j_home.ttf 
+      
+    - family:  spheres
+      fonts:
+      - asset: assets/fonts/j_home.ttf 
+      
+    - family:  profile
+      fonts:
+      - asset: assets/fonts/j_home.ttf  
+      
+    - family:  book
+      fonts:
+      - asset: assets/fonts/j_home.ttf 
+      
+    - family:  event_available
+      fonts:
+      - asset: assets/fonts/j_home.ttf 
+      
+    - family:  pen-angled
+      fonts:
+      - asset: assets/fonts/j_home.ttf 
+      
+    - family:  feather
+      fonts:
+      - asset: assets/fonts/j_home.ttf    
+      
+    - family:  camera
+      fonts:
+      - asset: assets/fonts/j_home.ttf   
+      
+    - family:  longform
+      fonts:
+      - asset: assets/fonts/j_home.ttf         
 
     - family:  MyFlutterApp
       fonts:

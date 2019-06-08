@@ -58,6 +58,7 @@ class SignIn extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 45),
                   child: 
                     TextField(
+                      obscureText: true,
                       decoration: InputDecoration(
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.white)

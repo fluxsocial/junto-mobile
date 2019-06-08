@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 
 import './../../custom_icons.dart';
 import '../../screens/create/create.dart';
@@ -36,14 +37,14 @@ class BottomNavState extends State<BottomNav> {
             onTap:() {
               widget.setIndex(0);
             },
-            child: Icon(CustomIcons.home, color: widget.currentIndex == 0 ? Color(0xff333333) : Color(0xff999999))
+            child: Icon(CustomIcons.home, size: 20, color: widget.currentIndex == 0 ? Color(0xff333333) : Color(0xff999999))
           ),
 
           GestureDetector(
             onTap:() {
               widget.setIndex(1);
             },
-            child: Icon(CustomIcons.home, color: widget.currentIndex == 1 ? Color(0xff333333) : Color(0xff999999))
+            child: Icon(CustomIcons.resonate, size: 20, color: widget.currentIndex == 1 ? Color(0xff333333) : Color(0xff999999))
           ),
 
           GestureDetector(
@@ -70,14 +71,14 @@ class BottomNavState extends State<BottomNav> {
             onTap:() {
               widget.setIndex(2);
             },
-            child: Icon(CustomIcons.home, color: widget.currentIndex == 2 ? Color(0xff333333) : Color(0xff999999))
+            child: Icon(CustomIcons.triangle, size: 20, color: widget.currentIndex == 2 ? Color(0xff333333) : Color(0xff999999))            
           ),
 
           GestureDetector(
             onTap:() {
               widget.setIndex(3);
             },
-            child: Icon(CustomIcons.home, color: widget.currentIndex == 3 ? Color(0xff333333) : Color(0xff999999))
+            child: Icon(CustomIcons.profile, size: 20, color: widget.currentIndex == 3 ? Color(0xff333333) : Color(0xff999999))
           )                  
         ],)
       
