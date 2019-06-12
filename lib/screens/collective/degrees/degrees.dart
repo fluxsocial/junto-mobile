@@ -28,7 +28,6 @@ class DegreesOfSeparation extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         // This padding is just a placeholder for demo
-        padding: EdgeInsets.symmetric(vertical: 10),
         color: Colors.white,
         foregroundDecoration: BoxDecoration(
           border: Border(
@@ -38,15 +37,15 @@ class DegreesOfSeparation extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            // Container(
-            //   padding: EdgeInsets.symmetric(horizontal: 10, ),
-            //     margin: EdgeInsets.only(top: 15),
-            //     child: Text('Degrees of Separation'.toUpperCase(),                    
-            //         style: TextStyle(                      
-            //             color: Color(0xff333333),
-            //             fontWeight: FontWeight.w700,
-            //             fontSize: 12,
-            //             letterSpacing: 1),),),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 10, ),
+                margin: EdgeInsets.only(top: 15),
+                child: Text('Degrees of Separation'.toUpperCase(),                    
+                    style: TextStyle(                      
+                        color: Color(0xff333333),
+                        fontWeight: FontWeight.w700,
+                        fontSize: 12,
+                        letterSpacing: 1),),),
             Container(
               margin: EdgeInsets.only(bottom: 5),
               child: 

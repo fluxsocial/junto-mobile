@@ -44,7 +44,7 @@ class BottomNavState extends State<BottomNav> {
             onTap:() {
               widget.setIndex(1);
             },
-            child: Icon(CustomIcons.resonate, size: 20, color: widget.currentIndex == 1 ? Color(0xff333333) : Color(0xff999999))
+            child: Icon(CustomIcons.circle, size: 20, color: widget.currentIndex == 1 ? Color(0xff333333) : Color(0xff999999))
           ),
 
           GestureDetector(
@@ -71,7 +71,9 @@ class BottomNavState extends State<BottomNav> {
             onTap:() {
               widget.setIndex(2);
             },
-            child: Icon(CustomIcons.triangle, size: 20, color: widget.currentIndex == 2 ? Color(0xff333333) : Color(0xff999999))            
+            child: RotatedBox(
+              quarterTurns: 2,
+              child: Icon(CustomIcons.triangle, size: 20, color: widget.currentIndex == 2 ? Color(0xff333333) : Color(0xff999999)))
           ),
 
           GestureDetector(

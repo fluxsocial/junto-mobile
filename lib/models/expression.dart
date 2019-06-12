@@ -34,7 +34,7 @@ class Expression {
           title: null, 
           body: null,
           image: 'assets/images/junto-mobile__expression--photo.png',
-          imageCaption: 'Hello my name is Urk. This marks the collaboratin between Junto and Holochain. Stay tuned.',
+          imageCaption: 'Some exciting developments happening between Junto and Holochain coming your way.',
           shortformText: null,
           channelOne: 'holochain',
           channelTwo: 'junto',
@@ -48,7 +48,7 @@ class Expression {
           body: null, 
           image: null,
           imageCaption: null, 
-          shortformText: 'I love Junto <3',
+          shortformText: 'Get ready for our 2019 release!',
           channelOne: '',
           channelTwo: '',
           channelThree: ''             

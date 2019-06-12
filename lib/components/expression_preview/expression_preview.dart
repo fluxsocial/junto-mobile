@@ -27,7 +27,7 @@ class ExpressionPreview extends StatelessWidget {
         children: <Widget>[
           
           // expression preview profile 
-          PreviewProfile('sunyatax'),
+          PreviewProfile('sunyata'),
 
           GestureDetector(
             onTap: () {
