@@ -17,7 +17,7 @@ class PackPreview extends StatelessWidget {
     GestureDetector(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(
-         builder: (context) => PackOpen()
+         builder: (context) => PackOpen(packTitle, packUser, packImage)
         ));
       },
       child: 
