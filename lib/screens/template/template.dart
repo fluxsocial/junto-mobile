@@ -99,7 +99,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
 
                     } else if (int == 3) {
                       _switchScreen('den');
-                    }
+                    } 
                   },
                   children: <Widget>[
                     JuntoCollective(_hideFABController),
