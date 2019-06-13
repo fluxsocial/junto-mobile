@@ -28,6 +28,7 @@ class ExpressionPreview extends StatelessWidget {
           // expression preview profile 
           PreviewProfile('sunyata'),
 
+          // open expression
           GestureDetector(
             onTap: () {
               Navigator.push(context, MaterialPageRoute(
@@ -56,7 +57,7 @@ class ExpressionPreview extends StatelessWidget {
     } else if(expression.expressionType == 'photo') {
       return PhotoPreview(expression.image, expression.imageCaption);
     } else if(expression.expressionType == 'event') {
-      return EventPreview();
+      return EventPreview(expression.title, expression.location, expression.image);
     } else if(expression.expressionType == 'music') {
       return MusicPreview();
     } else {

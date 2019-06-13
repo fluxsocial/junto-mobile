@@ -3,6 +3,7 @@ class Expression {
   final String expressionType;
   final String time;
   final String title;
+  final String location;
   final String body;
   final String image;
   final String imageCaption;
@@ -11,7 +12,7 @@ class Expression {
   final String channelTwo;
   final String channelThree;
 
-  Expression({this.expressionType, this.time, this.title, this.body, this.image, this.imageCaption, this.shortformText, this.channelOne, this.channelTwo,this.channelThree,});
+  Expression({this.expressionType, this.time, this.title, this.location, this.body, this.image, this.imageCaption, this.shortformText, this.channelOne, this.channelTwo,this.channelThree,});
   static fetchAll() {
 
       return [   
@@ -55,6 +56,20 @@ class Expression {
         ), 
 
         Expression(
+          expressionType: 'event', 
+          time: '24',
+          title: 'Saturday Zazen Meditation at Still Mind Zendo', 
+          location: 'Still Mind Zendo',
+          body: null, 
+          image: 'assets/images/junto-mobile__stillmind.png',
+          imageCaption: null, 
+          shortformText: 'Get ready for our 2019 release!',
+          channelOne: '',
+          channelTwo: '',
+          channelThree: ''             
+        ),         
+
+        Expression(
           expressionType: 'longform', 
           time: '45',
           title: 'Rebalancing our relationship with technology', 
@@ -82,6 +97,20 @@ class Expression {
         ),           
 
         Expression(
+          expressionType: 'event', 
+          time: '24',
+          title: 'Junto Den Freeform II', 
+          location: 'Junto Haus',
+          body: null, 
+          image: 'assets/images/junto-mobile__ecstatic.png',
+          imageCaption: null, 
+          shortformText: 'Get ready for our 2019 release!',
+          channelOne: '',
+          channelTwo: '',
+          channelThree: ''             
+        ), 
+
+        Expression(
           expressionType: 'photo', 
           time: '17',
           title: null, 
@@ -105,7 +134,7 @@ class Expression {
             channelOne: 'technology',
             channelTwo: 'design',
             channelThree: 'authenticity'
-        ),          
+        ),                 
       ];
     }
 }
