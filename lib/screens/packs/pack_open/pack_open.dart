@@ -56,26 +56,56 @@ class PackOpenState extends State<PackOpen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return 
+    DefaultTabController(
+      length: 2,
+      
+      child: 
+      Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(45.0),
-        child:
-            PackOpenAppbar(widget.packTitle, widget.packUser, widget.packImage),
+        preferredSize: Size.fromHeight(45),
+        child: PackOpenAppbar(widget.packTitle, widget.packUser, widget.packImage),
       ),
-
+    
       floatingActionButton: PackOpenFAB(_isVisible),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked ,
+      body:   
+        Column(children: <Widget>[  
+          Container(
+            // height: 60,
+            color: Colors.white,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                // Container(
+                //   width: MediaQuery.of(context).size.width * .5,
+                //   child: Icon(CustomIcons.half_lotus, size: 17)
+                // ),
+                // Container(
+                //   width: MediaQuery.of(context).size.width * .5,
+                //   child: RotatedBox(
+                //     quarterTurns: 2,
+                //     child: Icon(CustomIcons.triangle, size: 17)
+                //   )
+                // )
+            ],)
+          ),
 
-      body: ScopedModelDescendant<ScopedUser>(
-        builder: (context, child, model) => ListView(
-              controller: _hideFABController,
-              children: model.collectiveExpressions
-                  .map((expression) => ExpressionPreview(expression))
-                  .toList(),
-            ),
-      ),
+          Expanded(
+            child: 
+              ScopedModelDescendant<ScopedUser>(
+                builder: (context, child, model) => ListView(
+                      controller: _hideFABController,
+                      children: model.collectiveExpressions
+                          .map((expression) => ExpressionPreview(expression))
+                          .toList(),
+                    ),
+              ),            
+          )
+        ],)    
+      ) 
     );
   }
 }

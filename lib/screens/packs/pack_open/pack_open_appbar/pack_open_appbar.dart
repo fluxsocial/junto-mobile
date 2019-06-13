@@ -52,7 +52,8 @@ class PackOpenAppbar extends StatelessWidget {
           ],
         ),
       ),
-      bottom: PreferredSize(
+      bottom: 
+      PreferredSize(
           preferredSize: Size.fromHeight(1),
           child: Container(
             height: 1,

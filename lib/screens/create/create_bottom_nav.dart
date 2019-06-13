@@ -29,7 +29,7 @@ class CreateBottomNav extends StatelessWidget {
                   },
                   child: Container(
                       margin: EdgeInsets.symmetric(horizontal: 25.0),
-                      child: Icon(CustomIcons.longform, size: 20,
+                      child: Icon(CustomIcons.moon, size: 20,
                           color: Color(0xff000000)))),
               GestureDetector(
                   onTap: () {
@@ -37,7 +37,7 @@ class CreateBottomNav extends StatelessWidget {
                   },
                   child: Container(
                       margin: EdgeInsets.symmetric(horizontal: 25.0),
-                      child: Icon(CustomIcons.feather, size: 20,
+                      child: Icon(CustomIcons.moon, size: 20,
                           color: JuntoPalette.juntoGrey))),
               GestureDetector(
                   onTap: () {
@@ -45,7 +45,7 @@ class CreateBottomNav extends StatelessWidget {
                   },
                   child: Container(
                       margin: EdgeInsets.symmetric(horizontal: 25.0),
-                      child: Icon(CustomIcons.book, size: 20,
+                      child: Icon(CustomIcons.moon, size: 20,
                           color: JuntoPalette.juntoGrey))),
               GestureDetector(
                   onTap: () {
@@ -53,7 +53,7 @@ class CreateBottomNav extends StatelessWidget {
                   },
                   child: Container(
                       margin: EdgeInsets.symmetric(horizontal: 25.0),
-                      child: Icon(CustomIcons.camera, size: 20,
+                      child: Icon(CustomIcons.moon, size: 20,
                           color: JuntoPalette.juntoGrey))),
               GestureDetector(
                   onTap: () {
@@ -61,7 +61,7 @@ class CreateBottomNav extends StatelessWidget {
                   },
                   child: Container(
                       margin: EdgeInsets.symmetric(horizontal: 25.0),
-                      child: Icon(CustomIcons.event, size: 20,
+                      child: Icon(CustomIcons.moon, size: 20,
                           color: JuntoPalette.juntoGrey))),
               GestureDetector(
                   onTap: () {

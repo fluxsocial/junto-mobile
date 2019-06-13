@@ -32,16 +32,16 @@ class PackOpenFAB extends StatelessWidget {
             margin: EdgeInsets.only(left: 15, right: 15, bottom: 10),
             // padding: EdgeInsets.symmetric(vertical: 15),
             height: 50,
-            width: MediaQuery.of(context).size.width * .75,
+            width: MediaQuery.of(context).size.width * .5,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Container(                
-                  width: MediaQuery.of(context).size.width * .37,
+                  width: MediaQuery.of(context).size.width * .25,
                   child: Icon(CustomIcons.half_lotus, size: 17, color: JuntoPalette.juntoGrey),
                 ),
                 Container(
-                  width: MediaQuery.of(context).size.width * .37,
+                  width: MediaQuery.of(context).size.width * .25,
                   child:
                     RotatedBox(
                       quarterTurns: 2,

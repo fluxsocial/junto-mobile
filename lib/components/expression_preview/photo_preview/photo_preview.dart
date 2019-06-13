@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../typography/style.dart';
+import '../../../typography/style.dart';
 
 class PhotoPreview extends StatelessWidget {
   final image;
