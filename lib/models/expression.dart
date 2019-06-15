@@ -123,7 +123,7 @@ class Expression {
           channelThree: ''          
         ),      
 
-        Expression(
+        Expression(            
             expressionType: 'longform',
             time: '2',
             title: 'The Medium is the Message: Rebalancing Our Relationship With Technology',

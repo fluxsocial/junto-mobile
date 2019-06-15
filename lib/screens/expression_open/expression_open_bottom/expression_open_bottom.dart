@@ -38,29 +38,20 @@ class ExpressionOpenBottom extends StatelessWidget {
   Widget build(BuildContext context) {
     return 
         Container(
-            margin: EdgeInsets.symmetric(vertical: 7.5),
+            margin: EdgeInsets.only(top: 7.5),
             padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-            // decoration: BoxDecoration(
-            //   border: Border(
-            //     bottom:
-            //         BorderSide(color: Color(0xffeeeeee), width: 1.5),
-            //   ),
-            // ),
+            decoration: BoxDecoration(
+              border: Border(
+                bottom:
+                    BorderSide(color: Color(0xffeeeeee), width: 1),
+              ),
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    _buildChannels(),
 
-                    Text(time + ' MINUTES AGO',
-                        style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xff333333),),),
-                  ],
-                ),
+                _buildChannels(),
 
                 Container(
                   margin: EdgeInsets.only(right: 10),

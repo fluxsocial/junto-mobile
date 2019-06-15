@@ -47,7 +47,7 @@ class EventPreview extends StatelessWidget {
           ),
 
           Container(
-            width: MediaQuery.of(context).size.width * .25,
+            width: MediaQuery.of(context).size.width * .27,
             child: Image.asset(eventPhoto)
           ),              
 

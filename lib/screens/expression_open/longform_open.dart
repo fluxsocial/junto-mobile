@@ -21,14 +21,14 @@ class LongformOpen extends StatelessWidget {
               textAlign: TextAlign.start,
               style: TextStyle(
                   color: Colors.black,
-                  fontSize: 20,
+                  fontSize: 17,
                   fontWeight: FontWeight.w700),
             ),
           ),
 
           Container(
             width: MediaQuery.of(context).size.width,
-            child: Text(longformExpression.body, textAlign: TextAlign.start, style: TextStyle(fontSize: 16))
+            child: Text(longformExpression.body, textAlign: TextAlign.start, style: TextStyle(fontSize: 15))
 
           )
         ],
