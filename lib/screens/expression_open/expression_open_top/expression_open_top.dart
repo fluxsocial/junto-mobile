@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../typography/palette.dart';
 import '../../../custom_icons.dart';
 
-class ExpressionOpenProfile extends StatelessWidget {
+class ExpressionOpenTop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
