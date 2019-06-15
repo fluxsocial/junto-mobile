@@ -16,7 +16,7 @@ class ExpressionOpenShowReplies extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             decoration: BoxDecoration(
                 border: Border(
-              bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
+              bottom: BorderSide(color: Color(0xffeeeeee), width: .5),
             )),
             child: GestureDetector(
                 onTap: () {

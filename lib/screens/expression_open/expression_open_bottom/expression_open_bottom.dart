@@ -43,7 +43,7 @@ class ExpressionOpenBottom extends StatelessWidget {
             decoration: BoxDecoration(
               border: Border(
                 bottom:
-                    BorderSide(color: Color(0xffeeeeee), width: 1),
+                    BorderSide(color: Color(0xffeeeeee), width: .5),
               ),
             ),
             child: Row(
