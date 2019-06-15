@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 
 import './expression_open_appbar/expression_open_appbar.dart';
-import '../../typography/palette.dart';
 import './expression_open_top/expression_open_top.dart';
 import './expression_open_shortreply/expression_open_shortreply.dart';
 import './expression_open_bottom/expression_open_bottom.dart';
-import './expression_open_replies_text/expression_open_replies_text.dart';
-import '../../custom_icons.dart';
+import './expression_open_showreplies/expression_open_showreplies.dart';
 import './longform_open.dart';
 
 class ExpressionOpen extends StatelessWidget {
@@ -42,7 +40,7 @@ class ExpressionOpen extends StatelessWidget {
                     channelTwo: expression.channelTwo,
                     channelThree: expression.channelThree,
                     time: expression.time),
-                ExpressionOpenRepliesText(),
+                ExpressionOpenShowReplies(),
                 // Container(
                 //     padding: EdgeInsets.only(left: 10, right: 10, top: 10),
                 //     child: Row(
