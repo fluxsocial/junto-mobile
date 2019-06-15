@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../components/comment_preview/comment_preview.dart';
 import './expression_open_appbar/expression_open_appbar.dart';
 import './expression_open_top/expression_open_top.dart';
 import './expression_open_shortreply/expression_open_shortreply.dart';
@@ -7,26 +8,70 @@ import './expression_open_bottom/expression_open_bottom.dart';
 import './expression_open_showreplies/expression_open_showreplies.dart';
 import './longform_open.dart';
 
-class ExpressionOpen extends StatelessWidget {
+class ExpressionOpen extends StatefulWidget {
   final expression;
-
   ExpressionOpen(this.expression);
+
+  @override
+  State<StatefulWidget> createState() {
+    return ExpressionOpenState();
+  }
+}
+
+class ExpressionOpenState extends State<ExpressionOpen> {
+  bool _showReplies = false;
+  Widget _showRepliesText = Row(
+    children: <Widget>[
+      Text('SHOW REPLIES',
+          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
+      SizedBox(width: 5),
+      Icon(Icons.keyboard_arrow_down, size: 17, color: Color(0xff555555))
+    ],
+  );
 
   @override
   Widget build(BuildContext context) {
     _buildExpression() {
-      if (expression.expressionType == 'longform') {
-        return LongformOpen(expression);
+      if (widget.expression.expressionType == 'longform') {
+        return LongformOpen(widget.expression);
       } else {
         return Container(child: Text('hellos'));
       }
     }
 
+    void _toggleReplies() {
+      if (_showReplies == false) {
+        setState(() {
+          _showReplies = true;
+          _showRepliesText =  
+            Row(
+              children: <Widget>[
+                Text('REPLIES',
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
+                SizedBox(width: 5),
+                Icon(Icons.keyboard_arrow_up, size: 17, color: Color(0xff555555))
+              ],
+            );
+        });
+      } else {
+        setState(() {
+          _showReplies = false;
+          _showRepliesText = 
+            Row(
+              children: <Widget>[
+                Text('SHOW REPLIES',
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
+                SizedBox(width: 5),
+                Icon(Icons.keyboard_arrow_down, size: 17, color: Color(0xff555555))
+              ],
+            );          
+        });
+      }
+    }
+
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(45.0),
-        child: ExpressionOpenAppbar()
-      ),
+          preferredSize: Size.fromHeight(45.0), child: ExpressionOpenAppbar()),
       body: Container(
         color: Colors.white,
         child: Column(
@@ -36,70 +81,15 @@ class ExpressionOpen extends StatelessWidget {
                 ExpressionOpenTop(),
                 _buildExpression(),
                 ExpressionOpenBottom(
-                    channelOne: expression.channelOne,
-                    channelTwo: expression.channelTwo,
-                    channelThree: expression.channelThree,
-                    time: expression.time),
-                ExpressionOpenShowReplies(),
-                // Container(
-                //     padding: EdgeInsets.only(left: 10, right: 10, top: 10),
-                //     child: Row(
-                //       crossAxisAlignment: CrossAxisAlignment.start,
-                //       children: <Widget>[
-                //         ClipOval(
-                //           child: Image.asset(
-                //             'assets/images/junto-mobile__riley.png',
-                //             height: 36.0,
-                //             width: 36.0,
-                //             fit: BoxFit.cover,
-                //           ),
-                //         ),
-                //         Container(
-                //             padding: EdgeInsets.only(bottom: 15),
-                //             decoration: BoxDecoration(
-                //               border: Border(bottom: BorderSide(color: Color(0xffeeeeee), width: .5))
-                //             ),                          
-                //             margin: EdgeInsets.only(left: 10),
-                //             child: Column(
-                //               crossAxisAlignment: CrossAxisAlignment.start,
-                //               children: <Widget>[
-                //                 Container(
-                //                   width: MediaQuery.of(context).size.width - 66,
-                //                   child: 
-                //                     Row(
-                //                       crossAxisAlignment: CrossAxisAlignment.center,
-                //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //                       children: <Widget>[
-                //                         Row(children: <Widget>[
-                //                           Text('Riley Wagner', style: TextStyle(fontWeight: FontWeight.w700)),
-                //                           SizedBox(width: 5),
-                //                           Text('ryewags'),
-                //                         ],),
-
-                //                         Icon(CustomIcons.more, size: 20)
-
-                //                       ],
-                //                     ),                                  
-                //                 ),
-
-                //                 Container(
-                //                   margin: EdgeInsets.only(top: 5, bottom: 5),
-                //                   width: MediaQuery.of(context).size.width - 66,
-                //                   child: Text(
-                //                       'Hi this is a comment preview',
-                //                       style: TextStyle(fontSize: 15)),
-                //                 ),
-
-                //                 Container(
-                //                   child: Text('5 MINUTES AGO', style: TextStyle(fontSize: 10, color: Color(0xff555555)))
-                //                 )
-                //               ],
-                //             ))
-                //       ],
-                //     )),                                                                  
+                    channelOne: widget.expression.channelOne,
+                    channelTwo: widget.expression.channelTwo,
+                    channelThree: widget.expression.channelThree,
+                    time: widget.expression.time),
+                ExpressionOpenShowReplies(_toggleReplies, _showRepliesText),
+                _showReplies == true ? CommentPreview() : SizedBox(),
               ]),
             ),
-            ExpressionOpenShortreply()
+            // ExpressionOpenShortreply()
           ],
         ),
       ),

@@ -1,31 +1,29 @@
-
 import 'package:flutter/material.dart';
 
 class ExpressionOpenShowReplies extends StatelessWidget {
+  Function toggleReplies;
+  Widget showRepliesText;
+
+  ExpressionOpenShowReplies(this.toggleReplies, this.showRepliesText);
+
   @override
   Widget build(BuildContext context) {
-
     return Container(
-      // padding: EdgeInsets.symmetric(vertical: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,        
-        children: <Widget>[
-
+        child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
         Container(
-          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          decoration: BoxDecoration(
-            border: Border(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            decoration: BoxDecoration(
+                border: Border(
               bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
-            )
-          ),
-          child: Row(children: <Widget>[
-            Text('SHOW REPLIES', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
-            SizedBox(width: 5),
-            Icon(Icons.keyboard_arrow_down, size: 17, color: Color(0xff555555))
-          ],)                            
-          ),
-      
-      ],)
-    );
+            )),
+            child: GestureDetector(
+                onTap: () {
+                  toggleReplies();
+                },
+                child: showRepliesText)),
+      ],
+    ));
   }
 }
