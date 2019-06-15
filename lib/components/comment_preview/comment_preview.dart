@@ -53,7 +53,7 @@ class CommentPreview extends StatelessWidget {
                         margin: EdgeInsets.only(top: 5, bottom: 5),
                         width: MediaQuery.of(context).size.width - 66,
                         child: Text(
-                            'Hi this is a comment preview',
+                            'Hi Urk',
                             style: TextStyle(fontSize: 15)),
                       ),
 
