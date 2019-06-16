@@ -18,7 +18,7 @@ class ExpressionOpenChannel extends StatelessWidget {
           margin: EdgeInsets.only(right: 5),
           child: Text('#' + channel,
               style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 12,
                   fontWeight: FontWeight.w700)),
         );      
     }

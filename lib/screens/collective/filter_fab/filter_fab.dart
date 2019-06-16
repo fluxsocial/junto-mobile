@@ -34,7 +34,7 @@ class CollectiveFilterFAB extends StatelessWidget {
                     JuntoPalette.juntoPurple,
                     JuntoPalette.juntoBlue
                   ]),
-              color: Colors.white.withOpacity(.5),
+              color: Colors.white.withOpacity(.7),
               border: Border.all(
                 color: Colors.white,
                 width: 1.5,

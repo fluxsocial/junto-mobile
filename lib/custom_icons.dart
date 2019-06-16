@@ -14,4 +14,13 @@ class CustomIcons {
   static const IconData comment = const IconData(0xe907, fontFamily: 'comment');
   static const IconData more = const IconData(0xe908, fontFamily: 'more');
   static const IconData back_arrow_left = const IconData(0xe909, fontFamily: 'back_arrow_left');
+  static const IconData packs = const IconData(0xe90d, fontFamily: 'packs');
+  static const IconData spheres = const IconData(0xe90e, fontFamily: 'spheres');
+  static const IconData profile = const IconData(0xe90c, fontFamily: 'profile');  
+  static const IconData feather = const IconData(0xe912, fontFamily: 'feather');
+  static const IconData pen = const IconData(0xe911, fontFamily: 'pen-angled');
+  static const IconData book = const IconData(0xe90f, fontFamily: 'book');
+  static const IconData event = const IconData(0xe910, fontFamily: 'event_available');    
+  static const IconData camera = const IconData(0xe913, fontFamily: 'camera');   
+  static const IconData longform = const IconData(0xe914, fontFamily: 'longform');    
 }

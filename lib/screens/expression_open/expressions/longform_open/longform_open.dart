@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 
 class LongformOpen extends StatelessWidget {
-  final longformExpression; 
+  final longformExpression;
 
   LongformOpen(this.longformExpression);
 
   @override
   Widget build(BuildContext context) {
-
-    return 
-    Container(
+    return Container(
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: Column(
         children: <Widget>[
@@ -21,16 +19,16 @@ class LongformOpen extends StatelessWidget {
               textAlign: TextAlign.start,
               style: TextStyle(
                   color: Colors.black,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700),
+                  fontSize: 17,
+                  fontWeight: FontWeight.w700,
+                  height: 1.1),
             ),
           ),
-
           Container(
-            width: MediaQuery.of(context).size.width,
-            child: Text(longformExpression.body, textAlign: TextAlign.start, style: TextStyle(fontSize: 16))
-
-          )
+              width: MediaQuery.of(context).size.width,
+              child: Text(longformExpression.body,
+                  textAlign: TextAlign.start,
+                  style: TextStyle(fontSize: 15, height: 1.2)))
         ],
       ),
     );

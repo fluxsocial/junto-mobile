@@ -71,7 +71,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
         builder: (context, child, model) => Scaffold(
             backgroundColor: Colors.white,
             appBar: PreferredSize(preferredSize: Size.fromHeight(45), child: JuntoAppBar(_appbarLogo, _appbarTitle,
-                _appbarBorderLeft, _appbarBorderRight, _navNotifications)),
+                _appbarBorderRight,_appbarBorderLeft, _navNotifications)),
             floatingActionButton: _currentScreen == 'collective'
                 ? CollectiveFilterFAB(_isVisible, _toggleFilter)
                 : null,
@@ -99,7 +99,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
 
                     } else if (int == 3) {
                       _switchScreen('den');
-                    }
+                    } 
                   },
                   children: <Widget>[
                     JuntoCollective(_hideFABController),

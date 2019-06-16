@@ -10,7 +10,7 @@ class Sphere {
       return [
         Sphere('Ecstatic Dance', '12000', 'assets/images/junto-mobile__ecstatic.png'),
         Sphere('Flutter NYC', '690', 'assets/images/junto-mobile__flutter.png'),
-        Sphere('Still Mind Zendo', '77', 'assets/images/junto-mobile__stillmind.png'),
+        Sphere('Zen', '77', 'assets/images/junto-mobile__stillmind.png'),
         Sphere('JUNTO Core', '5', 'assets/images/junto-mobile__junto.png'),
         Sphere('Holochain', '22', 'assets/images/junto-mobile__expression--photo.png'),                
         Sphere('Salsa', '117', ''),                

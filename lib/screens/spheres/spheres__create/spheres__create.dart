@@ -7,8 +7,8 @@ class SpheresCreate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+        padding: EdgeInsets.symmetric(vertical: 5),
+        margin: EdgeInsets.only(left: 10, right: 10, bottom: 15.0, top: 15),  
         child:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Text('Create a Sphere'.toUpperCase(),

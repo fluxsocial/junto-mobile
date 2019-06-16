@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import '../../../typography/palette.dart';
 import '../../../custom_icons.dart';
 
-class ExpressionOpenProfile extends StatelessWidget {
+class ExpressionOpenTop extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
 
@@ -49,7 +50,7 @@ class ExpressionOpenProfile extends StatelessWidget {
                   ),                  
                 ]),
 
-                Icon(CustomIcons.more)
+                Text('2m', style: TextStyle(fontSize: 12))
               ]),
         );
   }

@@ -29,48 +29,48 @@ class CreateBottomNav extends StatelessWidget {
                   },
                   child: Container(
                       margin: EdgeInsets.symmetric(horizontal: 25.0),
-                      child: Icon(CustomIcons.moon,
-                          color: JuntoPalette.juntoSleek))),
+                      child: Icon(CustomIcons.moon, size: 20,
+                          color: Color(0xff000000)))),
               GestureDetector(
                   onTap: () {
                     switchTemplate('shortform');
                   },
                   child: Container(
                       margin: EdgeInsets.symmetric(horizontal: 25.0),
-                      child: Icon(CustomIcons.moon,
-                          color: JuntoPalette.juntoSleek))),
+                      child: Icon(CustomIcons.moon, size: 20,
+                          color: JuntoPalette.juntoGrey))),
               GestureDetector(
                   onTap: () {
                     switchTemplate('bullet');
                   },
                   child: Container(
                       margin: EdgeInsets.symmetric(horizontal: 25.0),
-                      child: Icon(CustomIcons.moon,
-                          color: JuntoPalette.juntoSleek))),
+                      child: Icon(CustomIcons.moon, size: 20,
+                          color: JuntoPalette.juntoGrey))),
               GestureDetector(
                   onTap: () {
                     switchTemplate('photo');
                   },
                   child: Container(
                       margin: EdgeInsets.symmetric(horizontal: 25.0),
-                      child: Icon(CustomIcons.moon,
-                          color: JuntoPalette.juntoSleek))),
+                      child: Icon(CustomIcons.moon, size: 20,
+                          color: JuntoPalette.juntoGrey))),
               GestureDetector(
                   onTap: () {
                     switchTemplate('events');
                   },
                   child: Container(
                       margin: EdgeInsets.symmetric(horizontal: 25.0),
-                      child: Icon(CustomIcons.moon,
-                          color: JuntoPalette.juntoSleek))),
+                      child: Icon(CustomIcons.moon, size: 20,
+                          color: JuntoPalette.juntoGrey))),
               GestureDetector(
                   onTap: () {
                     switchTemplate('music');
                   },
                   child: Container(
                       margin: EdgeInsets.symmetric(horizontal: 25.0),
-                      child: Icon(CustomIcons.moon,
-                          color: JuntoPalette.juntoSleek))),                       
+                      child: Icon(CustomIcons.moon, size: 20,
+                          color: JuntoPalette.juntoGrey))),                       
             ],
           ),
         ),

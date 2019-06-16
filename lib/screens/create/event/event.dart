@@ -62,7 +62,7 @@ class CreateEvent extends StatelessWidget {
                   null,
               decoration: InputDecoration(
                 border: InputBorder.none,
-                hintText: 'Name of event',
+                hintText: 'Location',
               ),
               cursorColor: JuntoPalette.juntoGrey,
               cursorWidth: 2,

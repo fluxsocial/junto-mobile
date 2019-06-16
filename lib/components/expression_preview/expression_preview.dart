@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 
 import './preview_profile.dart';
 import './preview_bottom.dart';
-import './longform_preview.dart';
-import './shortform_preview.dart';
-import './bullet_preview.dart';
-import './photo_preview.dart';
-import './event_preview.dart';
-import './music_preview.dart';
-import './video_preview.dart';
+import './longform_preview/longform_preview.dart';
+import './shortform_preview/shortform_preview.dart';
+import './bullet_preview/bullet_preview.dart';
+import './photo_preview/photo_preview.dart';
+import './event_preview/event_preview.dart';
+import './music_preview/music_preview.dart';
 import '../../screens/expression_open/expression_open.dart';
 
 /// Renders a concise overview of one given [Expression]. 
@@ -27,8 +26,9 @@ class ExpressionPreview extends StatelessWidget {
         children: <Widget>[
           
           // expression preview profile 
-          PreviewProfile('sunyatax'),
+          PreviewProfile('sunyata'),
 
+          // open expression
           GestureDetector(
             onTap: () {
               Navigator.push(context, MaterialPageRoute(
@@ -57,11 +57,9 @@ class ExpressionPreview extends StatelessWidget {
     } else if(expression.expressionType == 'photo') {
       return PhotoPreview(expression.image, expression.imageCaption);
     } else if(expression.expressionType == 'event') {
-      return EventPreview();
+      return EventPreview(expression.title, expression.location, expression.image);
     } else if(expression.expressionType == 'music') {
       return MusicPreview();
-    } else if(expression.expressionType == 'video') {
-      return VideoPreview();
     } else {
       return Container(width: 0, height: 0,);
     }

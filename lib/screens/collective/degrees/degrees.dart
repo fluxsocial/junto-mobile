@@ -27,6 +27,7 @@ class DegreesOfSeparation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+        // This padding is just a placeholder for demo
         color: Colors.white,
         foregroundDecoration: BoxDecoration(
           border: Border(

@@ -5,10 +5,12 @@ class Perspective {
 
   static List<Perspective> fetchAll() {
     return [
-      Perspective('NYC'),
-      Perspective('MEDITATION'),
+      Perspective('NYC 🗽🏙️  '),
       Perspective('Design'),
-      Perspective('Crypto'),
+      Perspective('Meditation'),
+      Perspective('Hoops 🏀'),
+      Perspective('Austrian Economics📈'),      
+      Perspective('Holochain ♓'),
     ];
   }
 }
