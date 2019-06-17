@@ -28,6 +28,16 @@ class JuntoCreateState extends State<JuntoCreate> {
   bool _events = false;
   bool _music = false;
 
+  bool _bottomNavVisible = true;
+  
+  _toggleBottomNavVisibility() {
+    if(_bottomNavVisible) {
+      _bottomNavVisible = false;
+    } else {
+      _bottomNavVisible = true;
+    }
+  }
+
   // Build expression template based off state
   _buildTemplate() {
     if(_longform) {
@@ -37,7 +47,7 @@ class JuntoCreateState extends State<JuntoCreate> {
     } else if(_bullet) {
       return CreateBullet();
     } else if (_photo) {
-      return CreatePhoto();
+      return CreatePhoto(_toggleBottomNavVisibility);
     } else if(_events) {
       return CreateEvent();
     } else if(_music) {
@@ -124,7 +134,7 @@ class JuntoCreateState extends State<JuntoCreate> {
                                               
             ],
           ),
-        bottomNavigationBar: CreateBottomNav(switchTemplate),
+        bottomNavigationBar: CreateBottomNav(switchTemplate, _bottomNavVisible),
       );
   }
-} 
+}   

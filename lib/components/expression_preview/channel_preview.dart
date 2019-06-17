@@ -22,7 +22,7 @@ class ChannelPreview extends StatelessWidget {
           '#' + channel,
           style: JuntoStyles.expressionPreviewChannel,
         )
-      );
+      ); 
     }
   }
   @override
