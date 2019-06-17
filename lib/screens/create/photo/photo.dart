@@ -42,7 +42,7 @@ class CreatePhotoState extends State<CreatePhoto> {
   Future<Null> _cropImage(File imageFile) async {
     File croppedFile = await ImageCropper.cropImage(
       sourcePath: imageFile.path,
-      ratioX: 1.91,
+      ratioX: 1,
       ratioY: 1,
       maxWidth: 512,
       maxHeight: 512,
@@ -151,10 +151,10 @@ class CreatePhotoState extends State<CreatePhoto> {
       Column(
         children: <Widget>[
           Container(
+            color: Colors.blue,
             width: MediaQuery.of(context).size.width,
-            // height: MediaQuery.of(context).size.height * .6,
-            // color: Colors.blue,
-            child: Image.file(_croppedFile, fit: BoxFit.contain),
+            height: MediaQuery.of(context).size.width,
+            child: Image.file(_croppedFile, fit: BoxFit.fitHeight ),
             alignment: Alignment.topCenter,
           ),
 
@@ -179,7 +179,6 @@ class CreatePhotoState extends State<CreatePhoto> {
                     _imageFile = null;
                     _croppedFile = null;                                
                   });
-
                   widget.toggleBottomNavVisibility();
                 }, 
                 child:                 
@@ -189,15 +188,28 @@ class CreatePhotoState extends State<CreatePhoto> {
                 ),                
               ),
 
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                child: Icon(CustomIcons.camera, size: 17)
+              GestureDetector(
+                onTap: () {
+                  _getImage(context, ImageSource.gallery);
+                }, 
+                child:                 
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: Icon(CustomIcons.camera, size: 17)
+                ),                
               ),
 
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                child: Icon(Icons.crop, size: 17)
+              GestureDetector(
+                onTap: () {
+                  _cropImage(_imageFile);
+                }, 
+                child:                 
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: Icon(Icons.crop, size: 17)
+                ),                
               ),
+
 
               Container(
                 padding: EdgeInsets.symmetric(vertical: 10),
