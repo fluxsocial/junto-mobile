@@ -20,11 +20,19 @@ class CreateActions extends StatelessWidget {
           height: 50,
           width: MediaQuery.of(context).size.width,
           child:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text('# ADD CHANNELS',
-                style: JuntoStyles.lotusAddChannels),
-            Text('CREATE',
-                style: JuntoStyles.lotusCreate)
+              Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+                Container(
+                  width: MediaQuery.of(context).size.width * .5 - 10,
+                  child: Text('# CHANNELS', style: JuntoStyles.lotusAddChannels),
+                  alignment: Alignment.center,
+                ),
+
+                Container(
+                  width: MediaQuery.of(context).size.width * .5 - 10,
+                  child: Text('CREATE', style: JuntoStyles.lotusAddChannels),
+                  alignment: Alignment.center,
+
+                ),                
           ]),
         ),
       );

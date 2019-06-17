@@ -21,6 +21,8 @@ class CreatePhoto extends StatefulWidget {
 class CreatePhotoState extends State<CreatePhoto> {
   File _imageFile;
   File _croppedFile;
+  bool _onFirstScreen = true;
+  bool _photoEdit = false;
   bool _libraryActive = true;
   bool _cameraActive = false;
 
@@ -34,8 +36,12 @@ class CreatePhotoState extends State<CreatePhoto> {
       });
 
       _cropImage(image);
-      widget.toggleBottomNavVisibility();
 
+      if(_onFirstScreen) {
+        widget.toggleBottomNavVisibility();
+        _onFirstScreen = false; 
+        _photoEdit = true;
+      }    
     });
   }
 
@@ -146,7 +152,7 @@ class CreatePhotoState extends State<CreatePhoto> {
   }
 
   // Component once image is retrieved
-  _buildImagePreview() {
+  _buildImageEdit() {
     return Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
       Column(
         children: <Widget>[
@@ -154,14 +160,13 @@ class CreatePhotoState extends State<CreatePhoto> {
             color: Colors.blue,
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.width,
-            child: Image.file(_croppedFile, fit: BoxFit.fitHeight ),
-            alignment: Alignment.topCenter,
+            child: Image.file(_croppedFile, fit: BoxFit.fill),
+            alignment: Alignment.center,
           ),
 
         ],
       ),
 
-      // CreateActions()
 
       Container(
           padding: EdgeInsets.only(top: 5),
@@ -177,9 +182,12 @@ class CreatePhotoState extends State<CreatePhoto> {
                 onTap: () {
                   setState(() {
                     _imageFile = null;
-                    _croppedFile = null;                                
+                    _croppedFile = null;                                                    
                   });
                   widget.toggleBottomNavVisibility();
+                  setState(() {
+                    _onFirstScreen = true;                                             
+                  });                  
                 }, 
                 child:                 
                 Container(
@@ -210,11 +218,77 @@ class CreatePhotoState extends State<CreatePhoto> {
                 ),                
               ),
 
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _photoEdit = false;
 
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                child: Icon(Icons.arrow_forward_ios, size: 17)
-              ),              
+                  });
+                }, 
+                child:                 
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: Icon(Icons.arrow_forward_ios, size: 17)
+                ),                
+              ),                    
+            ],
+          ))
+    ]);
+  }
+
+  // Component once image is retrieved
+  _buildImageCaption() {
+    return Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+      Container(child: Text('edit caption')),
+      // CreateActions()
+
+      Container(
+          padding: EdgeInsets.only(top: 5),
+          decoration: BoxDecoration(
+              border: Border(
+            top: BorderSide(color: Color(0xffeeeeee), width: 1),
+          )),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _photoEdit = true;                                                 
+                  });           
+                }, 
+                child:                 
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: Icon(Icons.arrow_back_ios, size: 17)
+                ),                
+              ),
+
+              GestureDetector(
+                onTap: () {
+               
+                }, 
+                child:                 
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: Text('# CHANNELS', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700))
+                ),                
+              ),
+
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _photoEdit = false;
+
+                  });
+                }, 
+                child:                 
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: Text('CREATE', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700))
+                ),                     
+              ),                    
             ],
           ))
     ]);
@@ -223,28 +297,19 @@ class CreatePhotoState extends State<CreatePhoto> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-        child:
-            _croppedFile == null ? _photoTypeTemplate() : _buildImagePreview());
+        child: _currentScreen()
+    );
   }
+
+
+  _currentScreen() {
+    if(_croppedFile == null) {
+      return _photoTypeTemplate();
+    } else if (_croppedFile != null && _photoEdit) {
+      return _buildImageEdit();
+    } else if (_croppedFile != null && _photoEdit != true) {
+      return _buildImageCaption();
+    }
+  }  
 }
 
-// Caption
-
-// Container(
-//   padding: EdgeInsets.symmetric(horizontal: 10),
-//   margin: EdgeInsets.only(bottom: 10),
-//   child: TextField(
-//     buildCounter: (BuildContext context,
-//             {int currentLength, int maxLength, bool isFocused}) =>
-//         null,
-//     decoration: InputDecoration(
-//       border: InputBorder.none,
-//       hintText: 'Caption (optional)',
-//     ),
-//     cursorColor: JuntoPalette.juntoGrey,
-//     cursorWidth: 2,
-//     style: JuntoStyles.lotusLongformTitle,
-//     maxLines: 1,
-//     maxLength: 80,
-//   ),
-// ),
