@@ -32,10 +32,13 @@ class JuntoCreateState extends State<JuntoCreate> {
   
   _toggleBottomNavVisibility() {
     if(_bottomNavVisible) {
-      _bottomNavVisible = false;
+      setState(() {
+        _bottomNavVisible = false;      
+      });
     } else {
-      _bottomNavVisible = true;
-    }
+      setState(() {
+        _bottomNavVisible = true;      
+      });    }
   }
 
   // Build expression template based off state

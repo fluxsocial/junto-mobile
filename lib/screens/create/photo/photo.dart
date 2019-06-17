@@ -33,9 +33,9 @@ class CreatePhotoState extends State<CreatePhoto> {
         _imageFile = image;
       });
 
+      _cropImage(image);
       widget.toggleBottomNavVisibility();
 
-      _cropImage(image);
     });
   }
 
@@ -173,9 +173,20 @@ class CreatePhotoState extends State<CreatePhoto> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                child: Icon(Icons.arrow_back_ios, size: 17)
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _imageFile = null;
+                    _croppedFile = null;                                
+                  });
+
+                  widget.toggleBottomNavVisibility();
+                }, 
+                child:                 
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: Icon(Icons.arrow_back_ios, size: 17)
+                ),                
               ),
 
               Container(
