@@ -6,16 +6,17 @@ import '../../typography/palette.dart';
 
 class CreateBottomNav extends StatelessWidget {
   Function switchTemplate;
-  CreateBottomNav(this.switchTemplate);
+  bool bottomNavVisible;
+  CreateBottomNav(this.switchTemplate, this.bottomNavVisible);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.blue,
-      height: 90,
+      height: bottomNavVisible ? 90 : 45,
       child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
 
-        Container(
+        bottomNavVisible ? Container(
           alignment: Alignment.center,
           color: Colors.white,
           height: 45,
@@ -73,7 +74,7 @@ class CreateBottomNav extends StatelessWidget {
                           color: JuntoPalette.juntoGrey))),                       
             ],
           ),
-        ),
+        ) : SizedBox(),
         Container(
             alignment: Alignment.center,
             height: 45,

@@ -29,8 +29,9 @@ class JuntoDenState extends State<JuntoDen> {
           children: <Widget>[
             // Den cover photo
             Container(
-              height: 150.0,
-              width: 1000,
+              constraints: BoxConstraints.expand(
+                height: 150
+              ),
               decoration: BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage(
