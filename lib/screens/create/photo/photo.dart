@@ -4,6 +4,8 @@ import 'package:image_picker_modern/image_picker_modern.dart';
 import 'package:image_cropper/image_cropper.dart';
 
 import './../create_actions.dart';
+import './../../../typography/palette.dart';
+import './../../../typography/style.dart';
 import './../../../custom_icons.dart';
 
 // Create using photo form
@@ -157,11 +159,8 @@ class CreatePhotoState extends State<CreatePhoto> {
       Column(
         children: <Widget>[
           Container(
-            color: Colors.blue,
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.width,
-            child: Image.file(_croppedFile, fit: BoxFit.fill),
-            alignment: Alignment.center,
+            child: Image.file(_croppedFile, fit: BoxFit.fitWidth)
           ),
 
         ],
@@ -239,8 +238,39 @@ class CreatePhotoState extends State<CreatePhoto> {
   // Component once image is retrieved
   _buildImageCaption() {
     return Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-      Container(child: Text('edit caption')),
-      // CreateActions()
+      Container(
+        padding: EdgeInsets.symmetric(horizontal: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+          Container(
+            // color: Colors.blue,
+            padding: EdgeInsets.only(right: 10),
+            width: MediaQuery.of(context).size.width - 70,
+            child: 
+              TextField(
+                buildCounter: (BuildContext context,
+                        {int currentLength, int maxLength, bool isFocused}) =>
+                    null,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Write a caption (optional)',
+                ),
+                cursorColor: JuntoPalette.juntoGrey,
+                cursorWidth: 2,
+                style: TextStyle(fontSize: 15, color: Color(0xff333333)),
+                maxLines: null,
+                maxLength: 2200,
+              ),            
+          ),
+          Container(
+            height: 50,
+            width: 50,
+            child: Image.file(_croppedFile)
+          )
+
+      ],),),
 
       Container(
           padding: EdgeInsets.only(top: 5),
