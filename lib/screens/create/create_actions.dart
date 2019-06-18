@@ -14,6 +14,7 @@ class CreateActions extends StatelessWidget {
 
         child: Container(
           decoration: BoxDecoration(
+              // color: Colors.blue,
               border:
                   Border(top: BorderSide(color: Color(0xffeeeeee), width: 1))),
           padding: EdgeInsets.symmetric(horizontal: 10),
@@ -23,13 +24,13 @@ class CreateActions extends StatelessWidget {
               Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
                 Container(
                   width: MediaQuery.of(context).size.width * .5 - 10,
-                  child: Text('# CHANNELS', style: JuntoStyles.lotusAddChannels),
+                  child: Text('# CHANNELS', style: TextStyle(fontWeight: FontWeight.w700, color: Color(0xff333333))),
                   alignment: Alignment.center,
                 ),
 
                 Container(
                   width: MediaQuery.of(context).size.width * .5 - 10,
-                  child: Text('CREATE', style: JuntoStyles.lotusAddChannels),
+                  child: Text('CREATE', style: TextStyle(fontWeight: FontWeight.w700, color: Color(0xff333333))),
                   alignment: Alignment.center,
 
                 ),                

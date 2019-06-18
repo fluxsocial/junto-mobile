@@ -108,7 +108,8 @@ class CreatePhotoState extends State<CreatePhoto> {
             children: [
           _libraryActive ? _buildUploadImage() : _buildUseCamera(),
           Container(
-              padding: EdgeInsets.only(top: 5),
+              // padding: EdgeInsets.only(top: 5),
+              height: 50,
               decoration: BoxDecoration(
                   border: Border(
                 top: BorderSide(color: Color(0xffeeeeee), width: 1),
