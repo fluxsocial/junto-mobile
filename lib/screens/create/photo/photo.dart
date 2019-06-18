@@ -20,6 +20,7 @@ class CreatePhoto extends StatefulWidget {
   }
 }
 
+// State for CreatePhoto class
 class CreatePhotoState extends State<CreatePhoto> {
   File _imageFile;
   File _croppedFile;
@@ -32,21 +33,22 @@ class CreatePhotoState extends State<CreatePhoto> {
   void _getImage(context, source) {
     print('hellos');
 
-    ImagePicker.pickImage(source: source, maxWidth: 400).then((File image) {
+    ImagePicker.pickImage(source: source, maxWidth: 512).then((File image) {
       setState(() {
         _imageFile = image;
       });
 
       _cropImage(image);
 
-      if(_onFirstScreen) {
+      if (_onFirstScreen) {
         widget.toggleBottomNavVisibility();
-        _onFirstScreen = false; 
+        _onFirstScreen = false;
         _photoEdit = true;
-      }    
+      }
     });
   }
 
+  // Function to crop an image
   Future<Null> _cropImage(File imageFile) async {
     File croppedFile = await ImageCropper.cropImage(
       sourcePath: imageFile.path,
@@ -159,14 +161,10 @@ class CreatePhotoState extends State<CreatePhoto> {
       Column(
         children: <Widget>[
           Container(
-            width: MediaQuery.of(context).size.width,
-            child: Image.file(_croppedFile, fit: BoxFit.fitWidth)
-          ),
-
+              width: MediaQuery.of(context).size.width,
+              child: Image.file(_croppedFile, fit: BoxFit.fitWidth)),
         ],
       ),
-
-
       Container(
           padding: EdgeInsets.only(top: 5),
           decoration: BoxDecoration(
@@ -176,60 +174,47 @@ class CreatePhotoState extends State<CreatePhoto> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              
               GestureDetector(
                 onTap: () {
                   setState(() {
                     _imageFile = null;
-                    _croppedFile = null;                                                    
+                    _croppedFile = null;
                   });
                   widget.toggleBottomNavVisibility();
                   setState(() {
-                    _onFirstScreen = true;                                             
-                  });                  
-                }, 
-                child:                 
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  child: Icon(Icons.arrow_back_ios, size: 17)
-                ),                
+                    _onFirstScreen = true;
+                  });
+                },
+                child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: Icon(Icons.arrow_back_ios, size: 17)),
               ),
-
               GestureDetector(
                 onTap: () {
                   _getImage(context, ImageSource.gallery);
-                }, 
-                child:                 
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  child: Icon(CustomIcons.camera, size: 17)
-                ),                
+                },
+                child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: Icon(CustomIcons.camera, size: 17)),
               ),
-
               GestureDetector(
                 onTap: () {
                   _cropImage(_imageFile);
-                }, 
-                child:                 
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  child: Icon(Icons.crop, size: 17)
-                ),                
+                },
+                child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: Icon(Icons.crop, size: 17)),
               ),
-
               GestureDetector(
                 onTap: () {
                   setState(() {
                     _photoEdit = false;
-
                   });
-                }, 
-                child:                 
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  child: Icon(Icons.arrow_forward_ios, size: 17)
-                ),                
-              ),                    
+                },
+                child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: Icon(Icons.arrow_forward_ios, size: 17)),
+              ),
             ],
           ))
     ]);
@@ -244,12 +229,11 @@ class CreatePhotoState extends State<CreatePhoto> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-          Container(
-            // color: Colors.blue,
-            padding: EdgeInsets.only(right: 10),
-            width: MediaQuery.of(context).size.width - 70,
-            child: 
-              TextField(
+            Container(
+              // color: Colors.blue,
+              padding: EdgeInsets.only(right: 10),
+              width: MediaQuery.of(context).size.width - 70,
+              child: TextField(
                 buildCounter: (BuildContext context,
                         {int currentLength, int maxLength, bool isFocused}) =>
                     null,
@@ -262,16 +246,12 @@ class CreatePhotoState extends State<CreatePhoto> {
                 style: TextStyle(fontSize: 15, color: Color(0xff333333)),
                 maxLines: null,
                 maxLength: 2200,
-              ),            
-          ),
-          Container(
-            height: 50,
-            width: 50,
-            child: Image.file(_croppedFile)
-          )
-
-      ],),),
-
+              ),
+            ),
+            Container(height: 50, width: 50, child: Image.file(_croppedFile))
+          ],
+        ),
+      ),
       Container(
           padding: EdgeInsets.only(top: 5),
           decoration: BoxDecoration(
@@ -281,44 +261,36 @@ class CreatePhotoState extends State<CreatePhoto> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              
               GestureDetector(
                 onTap: () {
                   setState(() {
-                    _photoEdit = true;                                                 
-                  });           
-                }, 
-                child:                 
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  child: Icon(Icons.arrow_back_ios, size: 17)
-                ),                
+                    _photoEdit = true;
+                  });
+                },
+                child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: Icon(Icons.arrow_back_ios, size: 17)),
               ),
-
               GestureDetector(
-                onTap: () {
-               
-                }, 
-                child:                 
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  child: Text('# CHANNELS', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700))
-                ),                
+                onTap: () {},
+                child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: Text('# CHANNELS',
+                        style: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.w700))),
               ),
-
               GestureDetector(
                 onTap: () {
                   setState(() {
                     _photoEdit = false;
-
                   });
-                }, 
-                child:                 
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  child: Text('CREATE', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700))
-                ),                     
-              ),                    
+                },
+                child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: Text('CREATE',
+                        style: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.w700))),
+              ),
             ],
           ))
     ]);
@@ -326,20 +298,17 @@ class CreatePhotoState extends State<CreatePhoto> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-        child: _currentScreen()
-    );
+    return Expanded(child: _currentScreen());
   }
 
-
+  // Render current screen conditionally
   _currentScreen() {
-    if(_croppedFile == null) {
+    if (_croppedFile == null) {
       return _photoTypeTemplate();
     } else if (_croppedFile != null && _photoEdit) {
       return _buildImageEdit();
     } else if (_croppedFile != null && _photoEdit != true) {
       return _buildImageCaption();
     }
-  }  
+  }
 }
-
