@@ -15,7 +15,19 @@ class CreateShortformState extends State<CreateShortform> {
   var gradientTwo = Colors.white;
   var fontColor = JuntoPalette.juntoGrey;
 
-  Map _shortformExpression = {};
+  Map _shortformExpression = {
+      'expression': {
+        'expression_type': 'longform',
+        'expression_data': {
+          'shortform': {
+            'background': 'none',
+            'body': 'This is a shortform expression'
+          }
+        }                        
+      },
+      'tags': ['holochain', 'junto', 'social'],
+      'context': ['dna']         
+  };
 
   @override
   Widget build(BuildContext context) {

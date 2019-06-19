@@ -130,7 +130,6 @@ class JuntoCreateState extends State<JuntoCreate> {
 
           _buildTemplate(),
 
-          // _expressionType != 'photo' ? CreateActions() : SizedBox()
         ],
       ),
       bottomNavigationBar: CreateBottomNav(switchTemplate, _bottomNavVisible),

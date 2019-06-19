@@ -48,7 +48,19 @@ class CreateBulletState extends State<CreateBullet> {
     super.initState();
   }
 
-  Map _bulletExpression = {};
+  Map _bulletExpression = {
+    'expression': {
+      'expression_type': 'BulletForm',
+      'expression_data': {
+        'BulletForm': {
+          'title': 'optional title',
+          'bullets': ['']
+        }
+      }                        
+    },
+    'tags': [],
+    'context': ['collective']    
+  };
 
   @override
   Widget build(BuildContext context) {
