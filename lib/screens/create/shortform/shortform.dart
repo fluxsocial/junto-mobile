@@ -100,7 +100,7 @@ class CreateShortformState extends State<CreateShortform> {
                         width: 36,
                       ),
                     ),
-                    GestureDetector(
+                    GestureDetector( 
                       onTap: () {
                         setState(() {
                           gradientOne = JuntoPalette.juntoPurple;

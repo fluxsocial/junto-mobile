@@ -36,7 +36,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
     _buildExpression() {
       if (widget.expression.expression['expression_type'] == 'longform') {
         return LongformOpen(widget.expression);
-      } else {
+      } else if (widget.expression.expression['expression_type'] == 'shortform') {
         return ShortformOpen(widget.expression);
       }
     }
