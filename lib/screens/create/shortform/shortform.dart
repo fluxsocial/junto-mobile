@@ -14,23 +14,28 @@ class CreateShortformState extends State<CreateShortform> {
   var gradientOne = Colors.white;
   var gradientTwo = Colors.white;
   var fontColor = JuntoPalette.juntoGrey;
+  String _currentBackground = 'none';
+  TextEditingController _bodyController = TextEditingController();
 
-  Map _shortformExpression = {
-      'expression': {
-        'expression_type': 'shortform',
-        'expression_data': {
-          'ShortForm': {
-            'background': 'none',
-            'body': 'This is a shortform expression'
-          }
-        }                        
-      },
-      'tags': ['holochain', 'junto', 'social'],
-      'context': ['dna']         
-  };
 
   @override
   Widget build(BuildContext context) {
+    var _bodyValue = _bodyController.text;
+
+    Map _shortformExpression = {
+        'expression': {
+          'expression_type': 'shortform',
+          'expression_data': {
+            'ShortForm': {
+              'background': _currentBackground,
+              'body': _bodyValue
+            }
+          }                        
+        },
+        'tags': ['holochain', 'junto', 'social'],
+        'context': ['dna']         
+    };    
+    
     return Expanded(
         child: Column(
       children: <Widget>[
@@ -49,6 +54,7 @@ class CreateShortformState extends State<CreateShortform> {
                           gradientOne = Colors.white;
                           gradientTwo = Colors.white;
                           fontColor = JuntoPalette.juntoGrey;
+                          _currentBackground = 'none';
                         });
                       },
                       child: Container(
@@ -72,6 +78,7 @@ class CreateShortformState extends State<CreateShortform> {
                           gradientOne = JuntoPalette.juntoBlue;
                           gradientTwo = JuntoPalette.juntoBlueLight;
                           fontColor = Colors.white;
+                          _currentBackground = 'one';
                         });
                       },
                       child: Container(
@@ -99,6 +106,8 @@ class CreateShortformState extends State<CreateShortform> {
                           gradientOne = JuntoPalette.juntoPurple;
                           gradientTwo = JuntoPalette.juntoPurpleLight;
                           fontColor = Colors.white;
+                          _currentBackground = 'two';
+
                         });
                       },
                       child: Container(
@@ -126,6 +135,8 @@ class CreateShortformState extends State<CreateShortform> {
                           gradientOne = JuntoPalette.juntoPurple;
                           gradientTwo = JuntoPalette.juntoBlue;
                           fontColor = Colors.white;
+                          _currentBackground = 'three';
+
                         });
                       },
                       child: Container(
@@ -153,6 +164,8 @@ class CreateShortformState extends State<CreateShortform> {
                           gradientOne = JuntoPalette.juntoGreen;
                           gradientTwo = JuntoPalette.juntoBlue;
                           fontColor = Colors.white;
+                          _currentBackground = 'four';
+
                         });
                       },
                       child: Container(
@@ -180,6 +193,8 @@ class CreateShortformState extends State<CreateShortform> {
                           gradientOne = JuntoPalette.juntoGreen;
                           gradientTwo = JuntoPalette.juntoPurple;
                           fontColor = Colors.white;
+                          _currentBackground = 'five';
+
                         });
                       },
                       child: Container(
@@ -216,6 +231,7 @@ class CreateShortformState extends State<CreateShortform> {
                         stops: [0.1, 0.9],
                         colors: [gradientOne, gradientTwo])),
                 child: TextField(
+                    controller: _bodyController,
                     buildCounter: (BuildContext context,
                             {int currentLength,
                             int maxLength,

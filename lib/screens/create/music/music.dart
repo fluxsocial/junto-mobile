@@ -36,7 +36,6 @@ class CreateMusicState extends State<CreateMusic> {
           );
 
           fetchedExpressionList.add(expression);
-
         });
       });
   }
