@@ -5,6 +5,9 @@ import '../sign_in/sign_in.dart';
 import '../sign_up/sign_up.dart';
 
 class Welcome extends StatelessWidget {
+  final scopedUser;
+
+  Welcome(this.scopedUser);
   @override
   Widget build(BuildContext context) {
 
@@ -76,7 +79,7 @@ class Welcome extends StatelessWidget {
                 child: GestureDetector(
                   onTap: () {
                     Navigator.pushReplacement(context, MaterialPageRoute(
-                      builder: (context) => SignIn()
+                      builder: (context) => SignIn(scopedUser)
                     ));
                   },
                   child: Text('SIGN IN', style: TextStyle(color: Colors.white, fontSize: 14))

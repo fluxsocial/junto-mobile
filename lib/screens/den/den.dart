@@ -5,6 +5,10 @@ import '../../scoped_models/scoped_user.dart';
 import './../../components/expression_preview/expression_preview.dart';
 
 class JuntoDen extends StatefulWidget {
+  final scopedUser;
+
+  JuntoDen(this.scopedUser);
+
   @override
   State<StatefulWidget> createState() {
 
@@ -15,6 +19,13 @@ class JuntoDen extends StatefulWidget {
 class JuntoDenState extends State<JuntoDen> {
   void noNav() {
     return;
+  }
+
+  @override
+  void initState() {
+    widget.scopedUser.fetchDenExpressions();
+
+    super.initState();
   }
 
   @override
@@ -143,7 +154,7 @@ class JuntoDenState extends State<JuntoDen> {
                     builder: (context, child, model) => ListView(
                           shrinkWrap: true,
                           physics: ClampingScrollPhysics(),
-                          children: model.collectiveExpressions
+                          children: model.denExpressions
                               .map(
                                   (expression) => ExpressionPreview(expression))
                               .toList(),
@@ -152,7 +163,7 @@ class JuntoDenState extends State<JuntoDen> {
             ),
           ],
         ),
-      ),
+      ), 
     ]);
   }
 }

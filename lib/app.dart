@@ -38,10 +38,10 @@ class JuntoAppState extends State<JuntoApp> {
             theme: ThemeData(
               fontFamily: 'Avenir', 
             ),
-            home: Welcome(),
+            home: Welcome(scopedUser),
             routes: {
-              '/welcome': (BuildContext context) => Welcome(),
-              '/template': (BuildContext context) => JuntoTemplate(),
+              '/welcome': (BuildContext context) => Welcome(scopedUser),
+              '/template': (BuildContext context) => JuntoTemplate(scopedUser),
               // '/collective': (BuildContext context) => JuntoCollective(),
               // '/spheres': (BuildContext context) => JuntoSpheres(),
               // '/pack': (BuildContext context) => JuntoPack(),

@@ -40,7 +40,7 @@ class ExpressionPreview extends StatelessWidget {
           ),
           
           // expression preview channels, resonation, and comments
-          PreviewBottom(expression.time, expression.channelOne, expression.channelTwo, expression.channelThree)
+          PreviewBottom('2', expression.channels.first, expression.channels[1], expression.channels[2])
 
         ],
       ),
@@ -48,8 +48,8 @@ class ExpressionPreview extends StatelessWidget {
   }
 
   Widget _returnExpression() { 
-    if (expression.expressionType == 'longform') {
-      return LongformPreview(expression.title, expression.body);
+    if (expression.expression['expression_type'] == 'longform') {
+      return LongformPreview(expression.expression['expression_data']['longform']['title'], expression.expression['expression_data']['longform']['body']);
     } else if(expression.expressionType == 'shortform') {
       return ShortformPreview(expression.shortformText);
     } else if(expression.expressionType == 'bullet') {

@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 
 import '../models/expression.dart';
+import '../models/expressionx.dart';
 import '../models/sphere.dart';
 import '../models/pack.dart';
 import '../models/perspective.dart';
@@ -19,6 +20,7 @@ class ScopedUser extends Model {
   String _bio = '';
   String _profilePicture = '';
   List<Expression> _collectiveExpressions = [];
+  List _denExpressions = [];
   List<Sphere> _spheres = Sphere.fetchAll();
   List<Pack> _packs = Pack.fetchAll();
   List<Perspective> _perspectives = Perspective.fetchAll();
@@ -36,7 +38,7 @@ class ScopedUser extends Model {
       '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "core", "function": "create_user", "args": {"user_data": {"username": "' + username + '", "first_name":"' + firstName + '", "last_name":"' + lastName + '", "profile_picture":"' + profilePicture + '", "bio":"' + bio + '"}}}}';
 
     // Retrieve response from create_user function
-    Response response = await post(_url, headers: _headers, body: body);
+    http.Response response = await http.post(_url, headers: _headers, body: body);
 
     // Generate status code of response
     int createUserStatus = response.statusCode;
@@ -75,14 +77,14 @@ class ScopedUser extends Model {
       '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "core", "function": "get_username_from_address", "args": {"username_address": "' + usernameAddress + '"}}}';
     
     // Retrieve username JSON from Holochain API
-    Response usernameResponse = await post(_url, headers: _headers, body: usernameBody);
+    http.Response usernameResponse = await http.post(_url, headers: _headers, body: usernameBody);
 
     // JSON providing unique username address to retrieve profile
     final profileBody =
       '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "core", "function": "get_user_profile_from_address", "args": {"username_address": "' + usernameAddress + '"}}}';    
 
     // Retrieve profile JSON from Holochain API
-    Response profileResponse = await post(_url, headers: _headers, body: profileBody);
+    http.Response profileResponse = await http.post(_url, headers: _headers, body: profileBody);
 
     // Instantiate setUser classes
     SetUserUsername setUserUsername = SetUserUsername.fromJson(json.decode(usernameResponse.body));
@@ -103,7 +105,7 @@ class ScopedUser extends Model {
     final body =
       '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "core", "function": "user_dens", "function":"user_dens", "args": {"username_address":"hellos"}}}';
 
-    Response response = await post(_url, headers: _headers, body: body);
+    http.Response response = await http.post(_url, headers: _headers, body: body);
     int statusCode = response.statusCode;
     print(statusCode);
   }
@@ -113,7 +115,7 @@ class ScopedUser extends Model {
     final json =
       '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "core", "function": "user_pack", "function":"user_dens", "args": {"username_address":"hellos"}}}';
 
-    Response response = await post(_url, headers: _headers, body: json);
+    http.Response response = await http.post(_url, headers: _headers, body: json);
     int statusCode = response.statusCode;
     print(statusCode);
   }  
@@ -213,6 +215,9 @@ class ScopedUser extends Model {
   List get collectiveExpressions {
     return List.from(_collectiveExpressions);
   }
+  List get denExpressions {
+    return List.from(_denExpressions);
+  }
 
   List get spheres {
     return _spheres;
@@ -225,5 +230,29 @@ class ScopedUser extends Model {
   List get perspectives {
     return _perspectives;
   }  
+
+  fetchDenExpressions() {
+    http.get('https://junto-b48dd.firebaseio.com/expressions.json')
+      .then((http.Response response) {
+        print(json.decode(response.body));
+        final fetchedExpressionList = [];
+        final expressionListData = json.decode(response.body);
+
+        expressionListData.forEach((id, expressionData) {
+          final expression = Expressionx(
+            id: id,
+            expressionType: expressionData['expression_type'],
+            expression: expressionData['expression'],
+            channels: expressionData['tags']            
+          );
+
+          fetchedExpressionList.add(expression);
+        });
+
+        _denExpressions = fetchedExpressionList;
+        notifyListeners();
+      });    
+  }
 }
+
 

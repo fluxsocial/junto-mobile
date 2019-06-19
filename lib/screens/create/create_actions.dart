@@ -41,19 +41,6 @@ class CreateActions extends StatelessWidget {
 
                 GestureDetector(
                   onTap: () {
-                    final Map expression = {
-                        'expression': {
-                          'expression_type': 'longform',
-                          'expression_data': {
-                            'longform': {
-                              'title': 'The Medium is the Message',
-                              'body': 'This is a longform expression'
-                            }
-                          }                        
-                        },
-                        'tags': ['holochain', 'junto', 'social'],
-                        'context': ['dna']
-                    };
 
                     http.post('https://junto-b48dd.firebaseio.com/expressions.json', 
                     body: json.encode(expression)).then((http.Response response) {

@@ -6,7 +6,9 @@ import '../template/template.dart';
 import '../../scoped_models/scoped_user.dart';
 
 class SignIn extends StatelessWidget {
+  final scopedUser;
 
+  SignIn(this.scopedUser);
   @override
   Widget build(BuildContext context) {
 
@@ -80,7 +82,7 @@ class SignIn extends StatelessWidget {
                 ScopedModelDescendant<ScopedUser>(
                   builder: (context, child, model) =>
                     Container(
-                      child: 
+                      child:  
                           RaisedButton(                      
                           onPressed: () async {
                             // await model.setUser('QmZnYuSUwRQ6v2vWNnVxApBJQLCBsTRKAd5v2KzpLKHSbQ');
@@ -89,7 +91,7 @@ class SignIn extends StatelessWidget {
                             model.setCollectiveExpressions();
 
                             Navigator.pushReplacement(context, MaterialPageRoute(
-                              builder: (context) => JuntoTemplate()
+                              builder: (context) => JuntoTemplate(scopedUser)
                             ));
                           },  
 
