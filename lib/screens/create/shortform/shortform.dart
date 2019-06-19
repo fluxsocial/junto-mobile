@@ -17,9 +17,9 @@ class CreateShortformState extends State<CreateShortform> {
 
   Map _shortformExpression = {
       'expression': {
-        'expression_type': 'longform',
+        'expression_type': 'shortform',
         'expression_data': {
-          'shortform': {
+          'ShortForm': {
             'background': 'none',
             'body': 'This is a shortform expression'
           }

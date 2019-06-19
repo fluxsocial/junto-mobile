@@ -8,7 +8,7 @@ import '../create_actions.dart';
 class CreateEvent extends StatelessWidget {
   Map _eventExpression = {
     'expression': {
-      'expression_type': 'EventForm',
+      'expression_type': 'eventform',
       'expression_data': {
         'EventForm': {
           'title': 'required title',

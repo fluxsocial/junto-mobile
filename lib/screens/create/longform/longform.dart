@@ -25,7 +25,7 @@ class CreateLongformState extends State<CreateLongform> {
       'expression': {
         'expression_type': 'longform',
         'expression_data': {
-          'longform': {
+          'LongForm': {
             'title': _titleValue,
             'body': _bodyValue
           }

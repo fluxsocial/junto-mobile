@@ -50,7 +50,7 @@ class CreateBulletState extends State<CreateBullet> {
 
   Map _bulletExpression = {
     'expression': {
-      'expression_type': 'BulletForm',
+      'expression_type': 'bulletform',
       'expression_data': {
         'BulletForm': {
           'title': 'optional title',

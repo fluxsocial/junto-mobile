@@ -49,16 +49,16 @@ class ExpressionPreview extends StatelessWidget {
 
   Widget _returnExpression() { 
     if (expression.expression['expression_type'] == 'longform') {
-      return LongformPreview(expression.expression['expression_data']['longform']['title'], expression.expression['expression_data']['longform']['body']);
-    } else if(expression.expressionType == 'shortform') {
+      return LongformPreview(expression.expression['expression_data']['LongForm']['title'], expression.expression['expression_data']['LongForm']['body']);
+    } else if(expression.expression['expression_type'] == 'shortform') {
       return ShortformPreview(expression.shortformText);
-    } else if(expression.expressionType == 'bullet') {
+    } else if(expression.expression['expression_type'] == 'bulletform') {
       return BulletPreview();
-    } else if(expression.expressionType == 'photo') {
+    } else if(expression.expression['expression_type'] == 'photoform') {
       return PhotoPreview(expression.image, expression.imageCaption);
-    } else if(expression.expressionType == 'event') {
+    } else if(expression.expression['expression_type'] == 'eventform') {
       return EventPreview(expression.title, expression.location, expression.image);
-    } else if(expression.expressionType == 'music') {
+    } else if(expression.expression['expression_type'] == 'musicform') {
       return MusicPreview();
     } else {
       return Container(width: 0, height: 0,);
