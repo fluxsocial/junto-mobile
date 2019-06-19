@@ -5,6 +5,10 @@ import '../../typography/style.dart';
 import 'package:http/http.dart' as http;
 
 class CreateActions extends StatelessWidget {
+  final expression;
+
+  CreateActions(this.expression);
+
   @override
   Widget build(BuildContext context) {
     return 
@@ -23,10 +27,16 @@ class CreateActions extends StatelessWidget {
           width: MediaQuery.of(context).size.width,
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-                Container(
-                  width: MediaQuery.of(context).size.width * .5 - 10,
-                  child: Text('# CHANNELS', style: TextStyle(fontWeight: FontWeight.w700, color: Color(0xff333333))),
-                  alignment: Alignment.center,
+                GestureDetector(
+                  onTap: () {
+                    print(expression);
+                  },                  
+                  child: 
+                    Container(
+                      width: MediaQuery.of(context).size.width * .5 - 10,
+                      child: Text('# CHANNELS', style: TextStyle(fontWeight: FontWeight.w700, color: Color(0xff333333))),
+                      alignment: Alignment.center,
+                    )                  
                 ),
 
                 GestureDetector(
@@ -43,8 +53,8 @@ class CreateActions extends StatelessWidget {
                         },
                         'tags': ['holochain', 'junto', 'social'],
                         'context': ['dna']
-
                     };
+
                     http.post('https://junto-b48dd.firebaseio.com/expressions.json', 
                     body: json.encode(expression)).then((http.Response response) {
                       final Map<String, dynamic> responseData = json.decode(response.body);

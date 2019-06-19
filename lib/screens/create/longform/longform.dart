@@ -12,11 +12,28 @@ class CreateLongform extends StatefulWidget {
 }
 
 class CreateLongformState extends State<CreateLongform> {
+    TextEditingController _titleController = TextEditingController();
+    TextEditingController _bodyController = TextEditingController();
+
+
   @override
   Widget build(BuildContext context) {
-    TextEditingController _titleController = TextEditingController();
-    final _bodyController = TextEditingController();
     var _titleValue = _titleController.text;
+    var _bodyValue = _bodyController.text;
+
+    Map _longformExpression = {
+      'expression': {
+        'expression_type': 'longform',
+        'expression_data': {
+          'longform': {
+            'title': _titleValue,
+            'body': _bodyValue
+          }
+        }                        
+      },
+      'tags': ['holochain', 'junto', 'social'],
+      'context': ['dna']      
+    };
 
     return Expanded(
       child: Column(
@@ -65,7 +82,7 @@ class CreateLongformState extends State<CreateLongform> {
                 ]),
           ),
 
-          CreateActions()
+          CreateActions(_longformExpression)
         ],
       ),
     );
