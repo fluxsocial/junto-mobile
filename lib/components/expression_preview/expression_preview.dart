@@ -51,7 +51,7 @@ class ExpressionPreview extends StatelessWidget {
     if (expression.expression['expression_type'] == 'longform') {
       return LongformPreview(expression.expression['expression_data']['LongForm']['title'], expression.expression['expression_data']['LongForm']['body']);
     } else if(expression.expression['expression_type'] == 'shortform') {
-      return ShortformPreview(expression.shortformText);
+      return ShortformPreview(expression.expression['expression_data']['ShortForm']['body']);
     } else if(expression.expression['expression_type'] == 'bulletform') {
       return BulletPreview();
     } else if(expression.expression['expression_type'] == 'photoform') {
