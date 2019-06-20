@@ -46,7 +46,7 @@ class PreviewBottom extends StatelessWidget {
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              _buildChannels(),
+              // _buildChannels(),
 
               Container(
                   child: Text(

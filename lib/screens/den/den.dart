@@ -138,17 +138,17 @@ class JuntoDenState extends State<JuntoDen> {
                                       fontWeight: FontWeight.w700,
                                       color: Color(0xff333333)))),
 
-                          Container(
-                            child: Text('JOURNAL', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Color(0xff777777)))
-                          ),
+                          // Container(
+                          //   child: Text('JOURNAL', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Color(0xff777777)))
+                          // ),
 
-                          Container(
-                            child: Text('FAVORITES', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Color(0xff777777)))
-                          ),
+                          // Container(
+                          //   child: Text('FAVORITES', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Color(0xff777777)))
+                          // ),
 
-                          Container(
-                            child: Text('DRAFTS', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Color(0xff777777)))
-                          ),
+                          // Container(
+                          //   child: Text('DRAFTS', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Color(0xff777777)))
+                          // ),
                         ])),
                 ScopedModelDescendant<ScopedUser>(
                     builder: (context, child, model) => ListView(

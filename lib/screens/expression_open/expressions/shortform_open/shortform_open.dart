@@ -62,7 +62,6 @@ class ShortformOpenState extends State<ShortformOpen> {
   }
 
 
-
   @override
   Widget build(BuildContext context) {
     return 
