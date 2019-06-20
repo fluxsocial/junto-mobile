@@ -31,7 +31,7 @@ class CreateLongformState extends State<CreateLongform> {
           }
         }                        
       },
-      'tags': ['holochainjjjjjjjjjjj', 'holochainjjjjjjjjjjj', 'holochainjjjjjjjjjjj'],
+      'tags': [],
       'context': ['dna']      
     };
 
