@@ -22,6 +22,9 @@ class CreateActionsState extends State<CreateActions> {
   String _channelTwo;
   String _channelThree;
 
+  TextEditingController _channelController = TextEditingController();
+
+
   @override
   void initState() {
     print(widget.expression['tags']);
@@ -31,6 +34,8 @@ class CreateActionsState extends State<CreateActions> {
 
   @override
   Widget build(BuildContext context) {
+    String _channelValue = _channelController.text;
+
     return GestureDetector(
       onVerticalDragDown: (details) {
         FocusScope.of(context).requestFocus(new FocusNode());
@@ -81,6 +86,7 @@ class CreateActionsState extends State<CreateActions> {
   }
 
   _buildChannelsModal(context) {
+    
     showModalBottomSheet(
         context: context,
         builder: (context) {
@@ -89,7 +95,7 @@ class CreateActionsState extends State<CreateActions> {
             builder: (context, state) { 
               return Container(
               padding: EdgeInsets.symmetric(horizontal: 10),
-              height: MediaQuery.of(context).size.height * .4,
+              height: MediaQuery.of(context).size.height * .5,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                       topRight: Radius.circular(100),
@@ -103,6 +109,7 @@ class CreateActionsState extends State<CreateActions> {
                       color: Colors.blue,
                       width: MediaQuery.of(context).size.width * .75,
                       child: TextField(
+                        controller: _channelController,
                         buildCounter: (BuildContext context,
                                 {int currentLength,
                                 int maxLength,
@@ -127,7 +134,7 @@ class CreateActionsState extends State<CreateActions> {
                             EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                         child: GestureDetector(
                             onTap: () {
-                              updated(state, 'yeo');
+                              _channels.length < 3 ? _updateChannels(state, 'aerospace engineering') : _nullChannels();
                               // print(_channels);
                             },
                             child: Text('add',
@@ -141,14 +148,35 @@ class CreateActionsState extends State<CreateActions> {
                             borderRadius: BorderRadius.circular(5)))
                   ],
                 ),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  padding: _channels.length == 0 ? EdgeInsets.all(0) : EdgeInsets.symmetric(vertical: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[ 
+                      _channels.length == 0 ? SizedBox() : Container(padding: EdgeInsets.only(bottom: 5), child: Text('Double tap to remove')),
+                      Wrap(   
+                        runSpacing: 10,      
+                        alignment: WrapAlignment.start,
+                        direction: Axis.horizontal,
+                        children: _channels.map((channel) => Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(color: Color(0xff333333), width: 1)
+                          ),
+                          margin: EdgeInsets.only(right: 10),
+                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),                    
+                          child: Text(channel, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700))
+                        )).toList())
+                    ],
+                  )
+                  
+
+                ),
                 Expanded(
                     child: ListView(
                   children: <Widget>[
 
-                    ListView(
-                      shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
-                      children: _channels.map((channel) => Text(channel)).toList()),
                     Container(height: 50, color: Colors.purple),
                     Container(height: 50, color: Colors.blue),
                     Container(height: 50, color: Colors.yellow),
@@ -159,12 +187,15 @@ class CreateActionsState extends State<CreateActions> {
         });
   }
 
-  updated(StateSetter updateState, channel) async {
+  _updateChannels(StateSetter updateState, channel) async {
     updateState(() {
       _channels.add(channel);
     });
   }
 
+  _nullChannels() {
+    return ;
+  }
 
   
 }
