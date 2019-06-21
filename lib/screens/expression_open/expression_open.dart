@@ -82,9 +82,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                 ExpressionOpenTop(),
                 _buildExpression(),
                 ExpressionOpenBottom(
-                    channelOne: widget.expression.channels[0],
-                    channelTwo: widget.expression.channels[1],
-                    channelThree: widget.expression.channels[2],
+                    channels: widget.expression.channels,
                     time: '2'),
                 ExpressionOpenShowReplies(_toggleReplies, _showRepliesText),
                 _showReplies == true
