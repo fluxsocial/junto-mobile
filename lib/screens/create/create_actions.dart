@@ -18,30 +18,22 @@ class CreateActions extends StatefulWidget {
 
 class CreateActionsState extends State<CreateActions> {
   final _channels = [];
-  String _channelOne;
-  String _channelTwo;
-  String _channelThree;
 
   TextEditingController _channelController = TextEditingController();
 
   @override
-  void initState() {
-    print(widget.expression['tags']);
-
+  void initState() {    
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    String _channelValue = _channelController.text;
-
     return GestureDetector(
       onVerticalDragDown: (details) {
         FocusScope.of(context).requestFocus(new FocusNode());
       },
       child: Container(
         decoration: BoxDecoration(
-            // color: Colors.blue,
             border:
                 Border(top: BorderSide(color: Color(0xffeeeeee), width: 1))),
         padding: EdgeInsets.symmetric(horizontal: 10),
@@ -61,8 +53,8 @@ class CreateActionsState extends State<CreateActions> {
               )),
           GestureDetector(
               onTap: () {
-                http
-                    .post('https://junto-b48dd.firebaseio.com/expressions.json',
+                  widget.expression['tags'] = _channels;                  
+                  http.post('https://junto-b48dd.firebaseio.com/expressions.json',
                         body: json.encode(widget.expression))
                     .then((http.Response response) {
                   final Map<String, dynamic> responseData =
@@ -204,12 +196,16 @@ class CreateActionsState extends State<CreateActions> {
     updateState(() {
       if (channel != '') {
         _channels.add(channel);
+        print(widget.expression['tags']);
+        widget.expression['tags'] = _channels;
+        print(widget.expression);
+        _channelController.text = '';
       }
     });
   }
 
   _removeChannel(StateSetter updateState, channel) async {
-    updateState(() {
+    updateState(() {      
       _channels.remove(channel);
     });
   }
