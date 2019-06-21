@@ -134,7 +134,7 @@ class CreateActionsState extends State<CreateActions> {
                             EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                         child: GestureDetector(
                             onTap: () {
-                              _channels.length < 3 ? _updateChannels(state, 'aerospace engineering') : _nullChannels();
+                              _channels.length < 3 ? _updateChannels(state, _channelController.text) : _nullChannels();
                               // print(_channels);
                             },
                             child: Text('add',
@@ -156,7 +156,7 @@ class CreateActionsState extends State<CreateActions> {
                     children: <Widget>[ 
                       _channels.length == 0 ? SizedBox() : Container(padding: EdgeInsets.only(bottom: 5), child: Text('Double tap to remove')),
                       Wrap(   
-                        runSpacing: 10,      
+                        runSpacing: 5,      
                         alignment: WrapAlignment.start,
                         direction: Axis.horizontal,
                         children: _channels.map((channel) => Container(
@@ -189,7 +189,10 @@ class CreateActionsState extends State<CreateActions> {
 
   _updateChannels(StateSetter updateState, channel) async {
     updateState(() {
-      _channels.add(channel);
+      if(channel != '') {
+        _channels.add(channel);
+
+      }
     });
   }
 
