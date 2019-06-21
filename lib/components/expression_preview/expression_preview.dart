@@ -40,7 +40,7 @@ class ExpressionPreview extends StatelessWidget {
           ),
           
           // expression preview channels, resonation, and comments
-          PreviewBottom('2', expression.channels.first, expression.channels[1], expression.channels[2])
+          PreviewBottom('2', expression.channels)
 
         ],
       ),
