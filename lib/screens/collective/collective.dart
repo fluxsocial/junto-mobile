@@ -23,6 +23,8 @@ class JuntoCollective extends StatefulWidget {
 }
 
 class JuntoCollectiveState extends State<JuntoCollective> {  
+
+
   @override
   Widget build(BuildContext context) {
     return 
@@ -36,15 +38,15 @@ class JuntoCollectiveState extends State<JuntoCollective> {
             _threeDegreesColor, _fourDegreesColor, _fiveDegreesColor, _sixDegreesColor),
 
             // expressions
-            ScopedModelDescendant<ScopedUser>(
-              builder: (context, child, model) => ListView(
-                    shrinkWrap: true,
-                    physics: ClampingScrollPhysics(),
-                    children: model.collectiveExpressions
-                        .map((expression) => ExpressionPreview(expression))
-                        .toList(),
-                  ),
-            ),
+                ScopedModelDescendant<ScopedUser>(
+                    builder: (context, child, model) => ListView(
+                          shrinkWrap: true,
+                          physics: ClampingScrollPhysics(),
+                          children: model.denExpressions
+                              .map(
+                                  (expression) => ExpressionPreview(expression))
+                              .toList(),
+                        ))
           ],
         ),
       ); 

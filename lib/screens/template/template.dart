@@ -17,10 +17,14 @@ import '../../typography/palette.dart';
 // This class is a template screen that contains the navbar, bottom bar,
 // and screen (collective, spheres, pack, etc) depending on condition.
 class JuntoTemplate extends StatefulWidget {
+  final scopedUser;
+
+  JuntoTemplate(this.scopedUser);
+
   @override
   State<StatefulWidget> createState() {
     return JuntoTemplateState();
-  }
+  } 
 }
 
 class JuntoTemplateState extends State<JuntoTemplate> {
@@ -105,7 +109,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                     JuntoCollective(_hideFABController),
                     JuntoSpheres(),
                     JuntoPacks(),
-                    JuntoDen()
+                    JuntoDen(widget.scopedUser)
                   ],
                 ),                      
                 bottomNavigationBar: BottomNav(_bottomNavIndex, _setBottomIndex))),

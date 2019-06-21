@@ -34,9 +34,9 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   @override
   Widget build(BuildContext context) {
     _buildExpression() {
-      if (widget.expression.expressionType == 'longform') {
+      if (widget.expression.expression['expression_type'] == 'longform') {
         return LongformOpen(widget.expression);
-      } else {
+      } else if (widget.expression.expression['expression_type'] == 'shortform') {
         return ShortformOpen(widget.expression);
       }
     }
@@ -82,10 +82,8 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                 ExpressionOpenTop(),
                 _buildExpression(),
                 ExpressionOpenBottom(
-                    channelOne: widget.expression.channelOne,
-                    channelTwo: widget.expression.channelTwo,
-                    channelThree: widget.expression.channelThree,
-                    time: widget.expression.time),
+                    channels: widget.expression.channels,
+                    time: '2'),
                 ExpressionOpenShowReplies(_toggleReplies, _showRepliesText),
                 _showReplies == true
                     ? ListView(

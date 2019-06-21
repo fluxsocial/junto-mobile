@@ -8,28 +8,22 @@ import '../../typography/palette.dart';
 
 class PreviewBottom extends StatelessWidget {
   final String time;
-  final String channelOne;
-  final String channelTwo;
-  final String channelThree;
+  final List channels;
 
-  PreviewBottom(this.time, this.channelOne, this.channelTwo, this.channelThree);
+  PreviewBottom(this.time, this.channels);
 
   _buildChannels() {
-    if (channelOne == '' && channelTwo == '' && channelThree == '') {
-      return Container(
-        height: 0,
-        width: 0,
-      );
+    if (channels == []) {
+      return Container(height: 0, width: 0);
     } else {
       return 
         Container(
           margin: EdgeInsets.only(bottom: 2.5),
           child:
-              Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-            ChannelPreview(channelOne),
-            ChannelPreview(channelTwo),
-            ChannelPreview(channelThree),
-          ]),
+              Row(mainAxisAlignment: MainAxisAlignment.start, children: 
+                channels.map((channel) => ChannelPreview(channel)).toList()
+
+          ),
         );
     }
   }
@@ -46,7 +40,7 @@ class PreviewBottom extends StatelessWidget {
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              _buildChannels(),
+              // _buildChannels(),
 
               Container(
                   child: Text(

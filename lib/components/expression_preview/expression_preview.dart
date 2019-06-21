@@ -40,7 +40,7 @@ class ExpressionPreview extends StatelessWidget {
           ),
           
           // expression preview channels, resonation, and comments
-          PreviewBottom(expression.time, expression.channelOne, expression.channelTwo, expression.channelThree)
+          PreviewBottom('2', expression.channels)
 
         ],
       ),
@@ -48,17 +48,17 @@ class ExpressionPreview extends StatelessWidget {
   }
 
   Widget _returnExpression() { 
-    if (expression.expressionType == 'longform') {
-      return LongformPreview(expression.title, expression.body);
-    } else if(expression.expressionType == 'shortform') {
-      return ShortformPreview(expression.shortformText);
-    } else if(expression.expressionType == 'bullet') {
+    if (expression.expression['expression_type'] == 'longform') {
+      return LongformPreview(expression.expression['expression_data']['LongForm']['title'], expression.expression['expression_data']['LongForm']['body']);
+    } else if(expression.expression['expression_type'] == 'shortform') {
+      return ShortformPreview(expression.expression['expression_data']['ShortForm']['background'], expression.expression['expression_data']['ShortForm']['body']);
+    } else if(expression.expression['expression_type'] == 'bulletform') {
       return BulletPreview();
-    } else if(expression.expressionType == 'photo') {
+    } else if(expression.expression['expression_type'] == 'photoform') {
       return PhotoPreview(expression.image, expression.imageCaption);
-    } else if(expression.expressionType == 'event') {
+    } else if(expression.expression['expression_type'] == 'eventform') {
       return EventPreview(expression.title, expression.location, expression.image);
-    } else if(expression.expressionType == 'music') {
+    } else if(expression.expression['expression_type'] == 'musicform') {
       return MusicPreview();
     } else {
       return Container(width: 0, height: 0,);

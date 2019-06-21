@@ -137,7 +137,7 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
                             RaisedButton(                                        
                               onPressed: () {
                                 Navigator.push(context, MaterialPageRoute(
-                                  builder: (context) => JuntoTemplate()
+                                  builder: (context) => JuntoTemplate('')
                                 ));
                               },        
                               padding: EdgeInsets.symmetric(
