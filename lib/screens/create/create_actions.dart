@@ -2,12 +2,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import '../../typography/palette.dart';
-import '../../typography/style.dart';
 import 'package:http/http.dart' as http;
 
+// This widget is enables the user to add channels and create an expression.
+// Rendered within each expression type.
 class CreateActions extends StatefulWidget {
-  final expression;
-
+  // receive data schema from expression type
+  final Map expression;
   CreateActions(this.expression);
 
   @override
@@ -16,85 +17,80 @@ class CreateActions extends StatefulWidget {
   }
 }
 
+// State class for CreateActions
 class CreateActionsState extends State<CreateActions> {
-  final _channels = [];
-
+  final List _channels = [];
+  // instantiate TextEditingController to pass to TextField widget
   TextEditingController _channelController = TextEditingController();
 
   @override
-  void initState() {    
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onVerticalDragDown: (details) {
-        FocusScope.of(context).requestFocus(new FocusNode());
-      },
-      child: Container(
-        decoration: BoxDecoration(
-            border:
-                Border(top: BorderSide(color: Color(0xffeeeeee), width: 1))),
-        padding: EdgeInsets.symmetric(horizontal: 10),
-        height: 50,
-        width: MediaQuery.of(context).size.width,
-        child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-          GestureDetector(
-              onTap: () {
-                _buildChannelsModal(context);
-              },
-              child: Container(
-                width: MediaQuery.of(context).size.width * .5 - 10,
-                child: Text('# CHANNELS',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w700, color: Color(0xff333333))),
-                alignment: Alignment.center,
-              )),
-          GestureDetector(
-              onTap: () {
-                  widget.expression['tags'] = _channels;                  
-                  http.post('https://junto-b48dd.firebaseio.com/expressions.json',
-                        body: json.encode(widget.expression))
-                    .then((http.Response response) {
-                  final Map<String, dynamic> responseData =
-                      json.decode(response.body);
-                  print(responseData);
-                  // return ;
-                });
-                print('successfully created post');
-              },
-              child: Container(
-                width: MediaQuery.of(context).size.width * .5 - 10,
-                child: Text('CREATE',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w700, color: Color(0xff333333))),
-                alignment: Alignment.center,
-              )),
-        ]),
+    return Container(
+      decoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(color: Color(0xffeeeeee), width: 1),
+        ),
       ),
+      padding: EdgeInsets.symmetric(horizontal: 10),
+      height: 50,
+      width: MediaQuery.of(context).size.width,
+      child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+        GestureDetector(
+            onTap: () {
+              // open showBottomModalSheet widget
+              _buildChannelsModal(context);
+            },
+            child: Container(
+              width: MediaQuery.of(context).size.width * .5 - 10,
+              child: Text('# CHANNELS',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w700, color: Color(0xff333333))),
+              alignment: Alignment.center,
+            )),
+        GestureDetector(
+            onTap: () {
+              // update expression's channels to the ones the user adds via modal
+              widget.expression['tags'] = _channels;
+              // send http request
+              http
+                  .post('https://junto-b48dd.firebaseio.com/expressions.json',
+                      body: json.encode(widget.expression))
+                  .then((http.Response response) {
+                final Map<String, dynamic> responseData =
+                    json.decode(response.body);
+                print(responseData);
+              });
+              print('successfully created post');
+            },
+            child: Container(
+              width: MediaQuery.of(context).size.width * .5 - 10,
+              child: Text('CREATE',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w700, color: Color(0xff333333))),
+              alignment: Alignment.center,
+            )),
+      ]),
     );
   }
 
+  // Build bottom modal to add channels to expression
   _buildChannelsModal(context) {
     showModalBottomSheet(
         context: context,
         builder: (context) {
+          // Use StatefulBuilder to pass state of CreateActions
           return StatefulBuilder(builder: (context, state) {
             return Container(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                height: MediaQuery.of(context).size.height * .5,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(100),
-                        topLeft: Radius.circular(100))),
-                child: Column(children: <Widget>[
-                  Row(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              height: MediaQuery.of(context).size.height * .4,
+              child: Column(children: <Widget>[
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 5),
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Container(
-                        color: Colors.blue,
                         width: MediaQuery.of(context).size.width * .75,
                         child: TextField(
                           controller: _channelController,
@@ -118,76 +114,91 @@ class CreateActionsState extends State<CreateActions> {
                         ),
                       ),
                       Container(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                          child: GestureDetector(
-                              onTap: () {
-                                _channels.length < 3
-                                    ? _updateChannels(
-                                        state, _channelController.text)
-                                    : _nullChannels();
-                                // print(_channels);
-                              },
-                              child: Text('add',
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w700,
-                                      color: Color(0xff333333)))),
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Color(0xff333333), width: 1),
-                              borderRadius: BorderRadius.circular(5)))
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        child: GestureDetector(
+                          onTap: () {
+                            // Update channels list in state until there are 3
+                            _channels.length < 3
+                                ? _updateChannels(
+                                    state, _channelController.text)
+                                : _nullChannels();
+                          },
+                          child: Text(
+                            'add',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xff333333),
+                            ),
+                          ),
+                        ),
+                        decoration: BoxDecoration(
+                          border:
+                              Border.all(color: Color(0xff333333), width: 1),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
                     ],
                   ),
-                  Container(
-                      alignment: Alignment.centerLeft,
-                      padding: _channels.length == 0
-                          ? EdgeInsets.all(0)
-                          : EdgeInsets.symmetric(vertical: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          _channels.length == 0
-                              ? SizedBox()
-                              : Container(
-                                  padding: EdgeInsets.only(bottom: 5),
-                                  child: Text('Double tap to remove')),
-                          Wrap(
-                              runSpacing: 5,
-                              alignment: WrapAlignment.start,
-                              direction: Axis.horizontal,
-                              children: _channels
-                                  .map((channel) => GestureDetector(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
+                    ),
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  padding: _channels.length == 0
+                      ? EdgeInsets.all(0)
+                      : EdgeInsets.symmetric(vertical: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      _channels.length == 0
+                          ? SizedBox()
+                          : Container(
+                              margin: EdgeInsets.only(bottom: 10),
+                              child: Text(
+                                'DOUBLE TAP TO REMOVE CHANNEL',
+                                style: TextStyle(fontSize: 12),
+                              ),
+                            ),
+                      Wrap(
+                          runSpacing: 5,
+                          alignment: WrapAlignment.start,
+                          direction: Axis.horizontal,
+                          children: _channels
+                              .map(
+                                (channel) => GestureDetector(
                                       onDoubleTap: () {
                                         _removeChannel(state, channel);
                                       },
                                       child: Container(
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(5),
-                                              border: Border.all(
-                                                  color: Color(0xff333333),
-                                                  width: 1)),
-                                          margin: EdgeInsets.only(right: 10),
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 10, vertical: 5),
-                                          child: Text(channel,
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight:
-                                                      FontWeight.w700)))))
-                                  .toList())
-                        ],
-                      )),
-                  Expanded(
-                      child: ListView(
-                    children: <Widget>[
-                      Container(height: 50, color: Colors.purple),
-                      Container(height: 50, color: Colors.blue),
-                      Container(height: 50, color: Colors.yellow),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            border: Border.all(
+                                                color: Color(0xff333333),
+                                                width: 1)),
+                                        margin: EdgeInsets.only(right: 10),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 5),
+                                        child: Text(
+                                          channel,
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w700),
+                                        ),
+                                      ),
+                                    ),
+                              )
+                              .toList()),
                     ],
-                  ))
-                ]));
+                  ),
+                ),
+              ]),
+            );
           });
         });
   }
@@ -205,7 +216,7 @@ class CreateActionsState extends State<CreateActions> {
   }
 
   _removeChannel(StateSetter updateState, channel) async {
-    updateState(() {      
+    updateState(() {
       _channels.remove(channel);
     });
   }
