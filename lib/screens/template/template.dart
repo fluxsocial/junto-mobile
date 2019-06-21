@@ -48,7 +48,6 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   ScrollController _hideFABController = ScrollController();
   bool _isVisible = true;
 
-  bool _filterOn = false;
   @override
   void initState() {
     _hideFABController.addListener(() {
@@ -116,11 +115,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                     JuntoDen(widget.scopedUser)
                   ],
                 ),                      
-                bottomNavigationBar: BottomNav(_bottomNavIndex, _setBottomIndex))),
-
-                // Render Filter Channels Screen conditionally
-                // _filterOn ? CollectiveFilterScreen(_isVisible, _toggleFilter) : SizedBox(),  
-                // _filterOn ? _buildFilterChannelModal(context) : SizedBox(),            
+                bottomNavigationBar: BottomNav(_bottomNavIndex, _setBottomIndex))),     
 
             ]);
   }
@@ -190,19 +185,6 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   // Navigate to Notifications screen
   _navNotifications() {
     Navigator.pushNamed(context, '/notifications');
-  }
-
-  // Toggle filter FAB
-  _toggleFilter() {
-    if(_filterOn) {
-      setState(() {
-        _filterOn = false;
-      });      
-    } else if(_filterOn == false) {
-      setState(() {
-        _filterOn = true;
-      });         
-    }
   }
 
   // Build bottom modal to filter by channel
