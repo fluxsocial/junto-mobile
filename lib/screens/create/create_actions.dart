@@ -203,6 +203,7 @@ class CreateActionsState extends State<CreateActions> {
         });
   }
 
+  // Update the list of channels in state
   _updateChannels(StateSetter updateState, channel) async {
     updateState(() {
       if (channel != '') {
@@ -215,12 +216,14 @@ class CreateActionsState extends State<CreateActions> {
     });
   }
 
+  // Remove a channel from the list of channels in state
   _removeChannel(StateSetter updateState, channel) async {
     updateState(() {
       _channels.remove(channel);
     });
   }
 
+  // Called when channels.length > x
   _nullChannels() {
     return;
   }

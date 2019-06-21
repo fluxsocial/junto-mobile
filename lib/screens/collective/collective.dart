@@ -23,8 +23,6 @@ class JuntoCollective extends StatefulWidget {
 }
 
 class JuntoCollectiveState extends State<JuntoCollective> {  
-
-
   @override
   Widget build(BuildContext context) {
     return 

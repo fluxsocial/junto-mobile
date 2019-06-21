@@ -16,7 +16,7 @@ class CollectiveFilterFAB extends StatelessWidget {
         opacity: isVisible ? 1 : 0,
         child: GestureDetector(
           onTap: () {
-            toggleFilter();                        
+            toggleFilter(context);                        
           },
           child: 
           Container(
