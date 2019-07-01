@@ -26,31 +26,10 @@ class PackOpen extends StatefulWidget {
 class PackOpenState extends State<PackOpen> {
   // Controller for PageView
   final controller = PageController(initialPage: 0);
-
-  // Controller for scroll
-  ScrollController _hideFABController = ScrollController();
-  bool _isVisible = true;
-
-  bool _filterOn = false;
+  
   @override
   void initState() {
-    _hideFABController.addListener(() {
-      if (_hideFABController.position.userScrollDirection == ScrollDirection.idle) {
-        setState(() {
-          _isVisible = true;
-        });
-      }           
-      else if (_hideFABController.position.userScrollDirection == ScrollDirection.reverse) {
-        setState(() {
-          _isVisible = false;
-        });
-      }       
-      else if (_hideFABController.position.userScrollDirection == ScrollDirection.forward) {
-        setState(() {
-          _isVisible = true;
-        });
-      } 
-    });
+
     super.initState();
   }
 
@@ -68,42 +47,44 @@ class PackOpenState extends State<PackOpen> {
         child: PackOpenAppbar(widget.packTitle, widget.packUser, widget.packImage),
       ),
     
-      floatingActionButton: PackOpenFAB(_isVisible),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-
       body:   
         Column(children: <Widget>[  
           Container(
-            // height: 60,
-            color: Colors.white,
+            padding: EdgeInsets.symmetric(vertical: 20),
+
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                // Container(
-                //   width: MediaQuery.of(context).size.width * .5,
-                //   child: Icon(CustomIcons.half_lotus, size: 17)
-                // ),
-                // Container(
-                //   width: MediaQuery.of(context).size.width * .5,
-                //   child: RotatedBox(
-                //     quarterTurns: 2,
-                //     child: Icon(CustomIcons.triangle, size: 17)
-                //   )
-                // )
+                Container(
+                  padding: EdgeInsets.only(bottom: 20),
+                  width: MediaQuery.of(context).size.width * .5,
+                  child: Icon(CustomIcons.half_lotus, size: 17),
+                  
+                  decoration: BoxDecoration(
+                    border: Border(bottom: BorderSide(color: Color(0xffeeeeee), width: 1))
+                  ),                  
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width * .5,
+                  child: RotatedBox(
+                    quarterTurns: 2,
+                    child: Icon(CustomIcons.triangle, size: 17)
+                  )
+                )
             ],)
           ),
 
-          Expanded(
-            child: 
-              ScopedModelDescendant<ScopedUser>(
-                builder: (context, child, model) => ListView(
-                      controller: _hideFABController,
-                      children: model.collectiveExpressions
-                          .map((expression) => ExpressionPreview(expression))
-                          .toList(),
-                    ),
-              ),            
-          )
+          // Expanded(
+          //   child: 
+          //     ScopedModelDescendant<ScopedUser>(
+          //       builder: (context, child, model) => ListView(
+          //             controller: _hideFABController,
+          //             children: model.collectiveExpressions
+          //                 .map((expression) => ExpressionPreview(expression))
+          //                 .toList(),
+          //           ),
+          //     ),            
+          // )
         ],)    
       ) 
     );

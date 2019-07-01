@@ -1,24 +1,20 @@
-
 import 'package:flutter/material.dart';
 
 import 'package:scoped_model/scoped_model.dart';
 import 'scoped_models/scoped_user.dart';
 import './screens/welcome/welcome.dart';
 import './screens/template/template.dart';
-// import './screens/collective/collective.dart';
 import './screens/create/create.dart';
 import './screens/notifications/notifications.dart';
 
 class JuntoApp extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-
-  return JuntoAppState();
+    return JuntoAppState();
   }
 }
 
 class JuntoAppState extends State<JuntoApp> {
-
   ScopedUser scopedUser;
 
   @override
@@ -29,14 +25,11 @@ class JuntoAppState extends State<JuntoApp> {
 
   @override
   Widget build(BuildContext context) {
-
-    return 
-      ScopedModel<ScopedUser>(
+    return ScopedModel<ScopedUser>(
         model: scopedUser,
-        child:       
-          MaterialApp(
+        child: MaterialApp(
             theme: ThemeData(
-              fontFamily: 'Avenir', 
+              fontFamily: 'Avenir',
             ),
             home: Welcome(scopedUser),
             routes: {
@@ -48,8 +41,6 @@ class JuntoAppState extends State<JuntoApp> {
               // '/den': (BuildContext context) => JuntoDen(),
               '/create': (BuildContext context) => JuntoCreate(),
               '/notifications': (BuildContext context) => JuntoNotifications(),
-          } 
-      )
-    );
+            }));
   }
 }
