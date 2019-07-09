@@ -6,17 +6,11 @@ import '../../typography/style.dart';
 
 // Junto app bar used throughout the main screens. Rendered in JuntoTemplate Widget.
 class JuntoAppBar extends StatelessWidget {
-  final juntoAppBarLogo;
   final juntoAppBarTitle;
-  final juntoAppBarBorderRight;
-  final juntoAppBarBorderLeft;
   final navNotifications;
 
   JuntoAppBar(
-      this.juntoAppBarLogo,
       this.juntoAppBarTitle,
-      this.juntoAppBarBorderRight,
-      this.juntoAppBarBorderLeft,
       this.navNotifications);
 
   @override
@@ -26,13 +20,17 @@ class JuntoAppBar extends StatelessWidget {
       bottom: PreferredSize(
           preferredSize: Size.fromHeight(1),
           child: Container(
-            height: 1,
+            height: .75,
             decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    stops: [0.1, 0.9],
-                    colors: [juntoAppBarBorderLeft, juntoAppBarBorderRight])),
+              gradient: LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                stops: [0.1, 0.9],
+                colors: [JuntoPalette.juntoBlue, JuntoPalette.juntoPurple]
+              )
+            )
+            // decoration: BoxDecoration(
+            //   border: Border(bottom: BorderSide(color: Color(0xffeeeeee), width: 1)))
           )),
       backgroundColor: JuntoPalette.juntoWhite,
       brightness: Brightness.light,
@@ -49,7 +47,7 @@ class JuntoAppBar extends StatelessWidget {
               },
               child: Row(
                 children: <Widget>[
-                  Image.asset(juntoAppBarLogo, height: 20.0, width: 20.0),
+                  Image.asset('assets/images/junto-mobile__logo.png', height: 20.0, width: 20.0),
                   Container(
                     margin: EdgeInsets.only(left: 7.5),
                     child: Text(juntoAppBarTitle,

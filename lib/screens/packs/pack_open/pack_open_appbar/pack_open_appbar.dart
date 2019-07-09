@@ -66,8 +66,8 @@ class PackOpenAppbar extends StatelessWidget {
                     0.9
                   ],
                   colors: [
-                    JuntoPalette.juntoPurple,
-                    JuntoPalette.juntoPurpleLight
+                    JuntoPalette.juntoBlue,
+                    JuntoPalette.juntoPurple
                   ]),
             ),
           )),

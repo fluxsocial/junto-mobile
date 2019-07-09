@@ -31,10 +31,8 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   // Default values for collective screen / JUNTO perspective - change dynamically.
   var _currentScreen = 'collective';
   String _currentPerspective = 'JUNTO';
-  String _appbarLogo = 'assets/images/junto-mobile__logo--collective.png';
   String _appbarTitle = 'JUNTO';
-  Color _appbarBorderLeft = JuntoPalette.juntoBlue;
-  Color _appbarBorderRight = JuntoPalette.juntoBlueLight;
+
   int _bottomNavIndex = 0;
 
   // 
@@ -77,8 +75,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
         ScopedModelDescendant<ScopedUser>(
         builder: (context, child, model) => Scaffold(
             backgroundColor: Colors.white,
-            appBar: PreferredSize(preferredSize: Size.fromHeight(45), child: JuntoAppBar(_appbarLogo, _appbarTitle,
-                _appbarBorderRight,_appbarBorderLeft, _navNotifications)),
+            appBar: PreferredSize(preferredSize: Size.fromHeight(45), child: JuntoAppBar( _appbarTitle,_navNotifications)),
             floatingActionButton: _currentScreen == 'collective'
                 ? CollectiveFilterFAB(_isVisible, _buildFilterChannelModal)
                 : null,
@@ -144,39 +141,24 @@ class JuntoTemplateState extends State<JuntoTemplate> {
       setState(() {
         _currentScreen = 'collective';
         _appbarTitle = 'JUNTO';
-        _appbarLogo =
-            'assets/images/junto-mobile__logo--collective.png';
-        _appbarBorderLeft = JuntoPalette.juntoBlue;
-        _appbarBorderRight = JuntoPalette.juntoBlueLight;
         _bottomNavIndex = 0;
       });      
     } else if (screen == 'spheres') {
       setState(() {
         _currentScreen = 'spheres';
         _appbarTitle = 'SPHERES';
-        _appbarLogo =
-            'assets/images/junto-mobile__logo--spheres.png';
-        _appbarBorderLeft = JuntoPalette.juntoGreen;
-        _appbarBorderRight = JuntoPalette.juntoGreenLight;
-
         _bottomNavIndex = 1;
       });      
     } else if (screen == 'packs') {
         setState(() {
           _currentScreen = 'packs';
           _appbarTitle = 'PACKS';
-          _appbarLogo = 'assets/images/junto-mobile__logo--pack.png';
-          _appbarBorderLeft = JuntoPalette.juntoPurple;
-          _appbarBorderRight = JuntoPalette.juntoPurpleLight;
           _bottomNavIndex = 2;
         });     
     } else if (screen == 'den') {
       setState(() {
         _currentScreen = 'den';
         _appbarTitle = 'DEN';
-        _appbarLogo = 'assets/images/junto-mobile__logo--den.png';
-        _appbarBorderLeft = JuntoPalette.juntoGrey;
-        _appbarBorderRight = JuntoPalette.juntoSleek;
         _bottomNavIndex = 3;      
       });
     }

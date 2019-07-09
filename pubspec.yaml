@@ -140,6 +140,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - assets/images/junto-mobile__logo.png
     - assets/images/junto-mobile__logo--collective.png
     - assets/images/junto-mobile__logo--pack.png
     - assets/images/junto-mobile__logo--den.png
