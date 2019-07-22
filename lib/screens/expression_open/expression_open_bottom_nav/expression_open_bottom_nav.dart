@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import '../../../custom_icons.dart';
 
 class ExpressionOpenBottomNav extends StatelessWidget {
+  Function openComment;
+
+  ExpressionOpenBottomNav(this.openComment);
   @override
   Widget build(BuildContext context) {
 
@@ -21,7 +24,12 @@ class ExpressionOpenBottomNav extends StatelessWidget {
             // Icon(Icons.bookmark_border, size: 20),
             Icon(Icons.face, size: 20),
             Icon(CustomIcons.resonate, size: 20),
-            Icon(CustomIcons.comment, size: 20)
+            GestureDetector(
+              onTap:() {
+                openComment();
+              },
+              child: Icon(CustomIcons.comment, size: 20)
+            )
           ],
         ),
       );    

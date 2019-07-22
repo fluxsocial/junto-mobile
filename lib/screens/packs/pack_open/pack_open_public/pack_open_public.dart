@@ -13,15 +13,15 @@ class PackOpenPublic extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return
-            // expressions
-                ScopedModelDescendant<ScopedUser>(
-                    builder: (context, child, model) => ListView(
-                          shrinkWrap: true,
-                          physics: ClampingScrollPhysics(),
-                          children: model.denExpressions
-                              .map(
-                                  (expression) => ExpressionPreview(expression))
-                              .toList(),
-                        ));
+      // expressions
+      ScopedModelDescendant<ScopedUser>(
+          builder: (context, child, model) => ListView(
+                shrinkWrap: true,
+                physics: ClampingScrollPhysics(),
+                children: model.denExpressions
+                    .map(
+                        (expression) => ExpressionPreview(expression))
+                    .toList(),
+              ));
   }
 }

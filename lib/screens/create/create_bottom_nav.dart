@@ -40,14 +40,14 @@ class CreateBottomNav extends StatelessWidget {
                       margin: EdgeInsets.symmetric(horizontal: 25.0),
                       child: Icon(CustomIcons.feather, size: 20,
                           color: JuntoPalette.juntoGrey))),
-              GestureDetector(
-                  onTap: () {
-                    switchTemplate('bullet');
-                  },
-                  child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 25.0),
-                      child: Icon(CustomIcons.book, size: 20,
-                          color: JuntoPalette.juntoGrey))),
+              // GestureDetector(
+              //     onTap: () {
+              //       switchTemplate('bullet');
+              //     },
+              //     child: Container(
+              //         margin: EdgeInsets.symmetric(horizontal: 25.0),
+              //         child: Icon(CustomIcons.book, size: 20,
+              //             color: JuntoPalette.juntoGrey))),
               GestureDetector(
                   onTap: () {
                     switchTemplate('photo');
