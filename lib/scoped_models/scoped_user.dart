@@ -243,7 +243,8 @@ class ScopedUser extends Model {
             id: id,
             expressionType: expressionData['expression_type'],
             expression: expressionData['expression'],
-            channels: expressionData['tags']            
+            channels: expressionData['tags'],
+            comments: expressionData['comments']   
           );
 
           fetchedExpressionList.add(expression);

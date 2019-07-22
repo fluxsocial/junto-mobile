@@ -23,6 +23,7 @@ class ExpressionOpen extends StatefulWidget {
 }
 
 class ExpressionOpenState extends State<ExpressionOpen> {
+  List comments;
   bool _showCommentTextField = false;
   bool _showReplies = false;
   Widget _showRepliesText = Row(
@@ -33,9 +34,22 @@ class ExpressionOpenState extends State<ExpressionOpen> {
       Icon(Icons.keyboard_arrow_down, size: 17, color: Color(0xff555555))
     ],
   );
+   
+
+  @override
+  void initState() {
+    setState(() {
+      comments = widget.expression.comments;
+    });
+    
+    super.initState();
+  }   
+
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController commentController = TextEditingController();
+ 
     _buildExpression() {
       if (widget.expression.expression['expression_type'] == 'longform') {
         return LongformOpen(widget.expression);
@@ -45,13 +59,6 @@ class ExpressionOpenState extends State<ExpressionOpen> {
       }
     }
 
-    void _openComment() {
-      if (_showCommentTextField == false) {
-        setState(() {
-          _showCommentTextField = true;
-        });
-      }
-    }
 
     void _toggleReplies() {
       if (_showReplies == false) {
@@ -81,6 +88,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
         });
       }
     }
+    
 
     return Scaffold(
       appBar: PreferredSize(
@@ -91,27 +99,23 @@ class ExpressionOpenState extends State<ExpressionOpen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Expanded(
-              child: ListView(children: [
+              child: 
+              ListView(children: [
                 ExpressionOpenTop(),
                 _buildExpression(),
                 ExpressionOpenBottom(
                     channels: widget.expression.channels, time: '2'),
-                ExpressionOpenShowReplies(_toggleReplies, _showRepliesText),
-                _showReplies == true
-                    ? ListView(
-                        shrinkWrap: true,
-                        physics: ClampingScrollPhysics(),
-                        children: [
-                            CommentPreview(),
-                            CommentPreview(),
-                            CommentPreview(),
-                            CommentPreview(),
-                            CommentPreview(),
-                            CommentPreview(),
-                            CommentPreview(),
-                            CommentPreview()
-                          ])
-                    : SizedBox(),
+
+                // ExpressionOpenShowReplies(_toggleReplies, _showRepliesText),
+
+                    ListView(
+                      shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
+                      children: comments
+                          .map(
+                              (comment) => CommentPreview(comment))
+                          .toList(),
+                    )                                                    
               ]),
             ),
             Container(
@@ -137,12 +141,16 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                           ),
                         ),
                         Container(
+                            decoration: BoxDecoration(
+                              color: Color(0xfff9f9f9),
+                              borderRadius: BorderRadius.circular(10)
+                            ),
                             width: MediaQuery.of(context).size.width - 135,
                             constraints: BoxConstraints(
                               maxHeight: 180
-                            ),
-                            color: Colors.white,
+                            ),                          
                             child: TextField(
+                              controller: commentController,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                                 // hintText: 'reply',
@@ -157,18 +165,27 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                       ],)
                     ),
 
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(25),
-                        gradient: LinearGradient(
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                          stops: [0.1, 0.9],
-                          colors: [JuntoPalette.juntoBlue, JuntoPalette.juntoPurple]
-                        )
-                      ),
-                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                      child: Text('REPLY', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 12))
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          if(commentController.text != '') {
+                            comments.add(commentController.text);
+                          }
+                        });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(25),
+                          gradient: LinearGradient(
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            stops: [0.1, 0.9],
+                            colors: [JuntoPalette.juntoBlue, JuntoPalette.juntoPurple]
+                          )
+                        ),
+                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        child: Text('REPLY', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 12))
+                      )
                     )
                   ],  
                 ))

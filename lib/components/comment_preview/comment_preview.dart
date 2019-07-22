@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import '../../custom_icons.dart';
 
 class CommentPreview extends StatelessWidget {
+  final commentText;
+
+  CommentPreview(this.commentText);
+
   @override
   Widget build(BuildContext context) {
 
@@ -15,7 +19,7 @@ class CommentPreview extends StatelessWidget {
             children: <Widget>[
               ClipOval(
                 child: Image.asset(
-                  'assets/images/junto-mobile__riley.png',
+                  'assets/images/junto-mobile__eric.png',
                   height: 36.0,
                   width: 36.0,
                   fit: BoxFit.cover,
@@ -38,9 +42,9 @@ class CommentPreview extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Row(children: <Widget>[
-                                Text('Riley Wagner', style: TextStyle(fontWeight: FontWeight.w700)),
+                                Text('Eric Yang', style: TextStyle(fontWeight: FontWeight.w700)),
                                 SizedBox(width: 5),
-                                Text('ryewags'),
+                                Text('sunyata'),
                               ],),
 
                               Icon(CustomIcons.more, size: 20)
@@ -53,7 +57,7 @@ class CommentPreview extends StatelessWidget {
                         margin: EdgeInsets.only(top: 5, bottom: 5),
                         width: MediaQuery.of(context).size.width - 66,
                         child: Text(
-                            'Hi Urk',
+                            commentText,
                             style: TextStyle(fontSize: 15)),
                       ),
 

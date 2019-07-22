@@ -32,7 +32,8 @@ class CreateLongformState extends State<CreateLongform> {
         }                        
       },
       'tags': [],
-      'context': ['dna']      
+      'context': ['dna'],
+      'comments': ['Hello my name is Urk']
     };
 
     return Expanded(

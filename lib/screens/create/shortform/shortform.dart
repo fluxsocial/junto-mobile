@@ -33,7 +33,9 @@ class CreateShortformState extends State<CreateShortform> {
           }                        
         },
         'tags': ['holochain', 'junto', 'social'],
-        'context': ['dna']         
+        'context': ['dna'],
+        'comments': ['Hello my name is Urk']
+
     };    
     
     return Expanded(

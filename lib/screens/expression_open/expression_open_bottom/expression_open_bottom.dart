@@ -54,7 +54,15 @@ class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [        
-                _buildChannels(),
+                // _buildChannels(),
+                Row(children: <Widget>[
+                  // Container(
+                  //   margin: EdgeInsets.only(right: 15),
+                  //   child: Icon(Icons.face, size: 21),
+                  // ),
+                  // Container(child: Icon(CustomIcons.resonate, size: 21))
+
+                ],),
 
                 Container(
                   margin: EdgeInsets.only(right: 10),
