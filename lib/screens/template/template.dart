@@ -73,7 +73,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
     return 
       Stack(children: [
         ScopedModelDescendant<ScopedUser>(
-        builder: (context, child, model) => Scaffold(
+        builder: (context, child, model) => Scaffold( 
             backgroundColor: Colors.white,
             appBar: PreferredSize(preferredSize: Size.fromHeight(45), child: JuntoAppBar( _appbarTitle,_navNotifications)),
             floatingActionButton: _currentScreen == 'collective'

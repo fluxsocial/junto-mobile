@@ -247,6 +247,7 @@ class CreatePhotoState extends State<CreatePhoto> {
                 style: TextStyle(fontSize: 15, color: Color(0xff333333)),
                 maxLines: null,
                 maxLength: 2200,
+                textInputAction: TextInputAction.done,
               ),
             ),
             Container(height: 50, width: 50, child: Image.file(_croppedFile))
