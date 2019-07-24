@@ -23,7 +23,7 @@ class ScopedUser extends Model {
   List _denExpressions = [];
   List<Sphere> _spheres = Sphere.fetchAll();
   List<Pack> _packs = Pack.fetchAll();
-  List<Perspective> _perspectives = Perspective.fetchAll();
+  List<Perspective> _perspectives = Perspective.fetchAll(); 
 
   // Holochain API address
   String _url = 'http://127.0.0.1:8888';
@@ -35,7 +35,9 @@ class ScopedUser extends Model {
   void createUser(username, firstName, lastName, profilePicture, bio) async {
     // JSON body
     final body =
-      '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "core", "function": "create_user", "args": {"user_data": {"username": "' + username + '", "first_name":"' + firstName + '", "last_name":"' + lastName + '", "profile_picture":"' + profilePicture + '", "bio":"' + bio + '"}}}}';
+      '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "user", "function": "create_user", "args": {"user_data": {"username": "' + username + '", "first_name":"' + firstName + '", "last_name":"' + lastName + '", "profile_picture":"' + profilePicture + '", "bio":"' + bio + '"}}}}';
+
+      '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "user", "function": "create_user", "args": {"user_data": {"username": "sunyatax", "first_name":"urk", "last_name":"yang", "profile_picture":"profpic", "bio":"love"}}}}';
 
     // Retrieve response from create_user function
     http.Response response = await http.post(_url, headers: _headers, body: body);
@@ -46,14 +48,18 @@ class ScopedUser extends Model {
     // Decode and store JSON from reponse.body
     final createUserResponse = json.decode(response.body);
 
+    print(createUserResponse);
+
     // Generate unique user address and store address, username, first name, last name,
     // profile picture, and bio into state if status code succeeds
-    if (createUserStatus == 200) {
+    if (createUserStatus == 200) {  
       CreateUser user = CreateUser.fromJson(createUserResponse);
+      print(user);
       _userAddress = user.result.ok.privateDen.entry.parent;
       setUsername(user.result.ok.username.usernameEntry.username);
       setFirstName(user.result.ok.profile.profileEntry.firstName);
       setLastName(user.result.ok.profile.profileEntry.lastName);
+
       setProfilePicture(user.result.ok.profile.profileEntry.profilePicture);      
       setBio(user.result.ok.profile.profileEntry.bio);
 

@@ -22,13 +22,6 @@ class JuntoDenState extends State<JuntoDen> {
   }
 
   @override
-  void initState() {
-    widget.scopedUser.fetchDenExpressions();
-
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return ListView(children: [
       Container(
@@ -150,15 +143,8 @@ class JuntoDenState extends State<JuntoDen> {
                           //   child: Text('DRAFTS', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Color(0xff777777)))
                           // ),
                         ])),
-                ScopedModelDescendant<ScopedUser>(
-                    builder: (context, child, model) => ListView(
-                          shrinkWrap: true,
-                          physics: ClampingScrollPhysics(),
-                          children: model.denExpressions
-                              .map(
-                                  (expression) => ExpressionPreview(expression))
-                              .toList(),
-                        ))
+                        
+
               ]),
             ),
           ],

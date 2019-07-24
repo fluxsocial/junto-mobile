@@ -123,7 +123,7 @@ class SignUpFourState extends State<SignUpFour> {
 
                           await model.createUser(widget.username, widget.firstName, widget.lastName, profilePicture, bio);
                           
-                          model.setCollectiveExpressions();
+                          model.fetchDenExpressions();
 
                           Navigator.pushReplacement(context, MaterialPageRoute(
                             builder: (context) => SignUpWelcome(widget.firstName, 
@@ -132,11 +132,11 @@ class SignUpFourState extends State<SignUpFour> {
                         }
                       },
                       child: Icon(Icons.arrow_right, color: Colors.white, size: 22),
-                    ),                ],
-                )
+                    ),                
+                    ])
               ),  
           )                          
-        ])    
+        ])     
     );      
   }
   
