@@ -48,19 +48,34 @@ class CreateActionsState extends State<CreateActions> {
               alignment: Alignment.center,
             )),
         GestureDetector(
-            onTap: () {
-              // update expression's channels to the ones the user adds via modal
-              widget.expression['tags'] = _channels;
-              // send http request
-              http
-                  .post('https://junto-b48dd.firebaseio.com/expressions.json',
-                      body: json.encode(widget.expression))
-                  .then((http.Response response) {
-                final Map<String, dynamic> responseData =
-                    json.decode(response.body);
-                print(responseData);
-              });
-              print('successfully created post');
+            onTap: () async {
+              // Holochain API address
+              String _url = 'http://127.0.0.1:8888';
+
+              // Headers
+              Map<String, String> _headers = {
+                "Content-type": "application/json"
+              };
+
+              // JSON body
+              final body =
+                  '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "expression", "function": "post_expression", "args": {"expression": {"expression_type": "LongForm", "expression": {"LongForm": {"title": "The Medium is the Message", "body": "Hellos"}}}, "attributes": [], "context": ["Qmf42ZrmheTZugJsTXsCb7miRPGQjSReFrHNUQRzm9E7Y3"]}}}';
+                  // '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "config", "function": "update_bit_prefix", "args": {"bit_prefix": 1}}}';
+                  // '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "expression", "function": "get_expression", "args": {"expression": "QmNQpXckvU3w49B35xxxikcGzXamQM6FVj8BXgjsA9V4FM"}}}';
+
+              // Retrieve response from create_user function
+              http.Response response =  
+                  await http.post(_url, headers: _headers, body: body);
+
+              // Generate status code of response
+              int createUserStatus = response.statusCode;
+
+              print(createUserStatus);
+
+              // Decode and store JSON from reponse.body
+              final createUserResponse = json.decode(response.body);
+
+              print(createUserResponse);
             },
             child: Container(
               width: MediaQuery.of(context).size.width * .5 - 10,
@@ -228,3 +243,20 @@ class CreateActionsState extends State<CreateActions> {
     return;
   }
 }
+
+            // Firebase 
+          
+            // onTap: () {
+            //   // update expression's channels to the ones the user adds via modal
+            //   widget.expression['tags'] = _channels;
+            //   // send http request
+            //   http
+            //       .post('https://junto-b48dd.firebaseio.com/expressions.json',
+            //           body: json.encode(widget.expression))
+            //       .then((http.Response response) {
+            //     final Map<String, dynamic> responseData =
+            //         json.decode(response.body);
+            //     print(responseData);
+            //   });
+            //   print('successfully created post');
+            // },
