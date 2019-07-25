@@ -15,6 +15,7 @@ class CreateLongformState extends State<CreateLongform> {
     TextEditingController _titleController = TextEditingController();
     TextEditingController _bodyController = TextEditingController();
 
+  
 
   @override
   Widget build(BuildContext context) {
@@ -22,19 +23,10 @@ class CreateLongformState extends State<CreateLongform> {
     var _bodyValue = _bodyController.text;
 
     Map _longformExpression = {
-      'expression': {
-        'expression_type': 'longform',
-        'expression_data': {
-          'LongForm': {
-            'title': _titleValue,
-            'body': _bodyValue
-          }
-        }                        
-      },
-      'tags': [],
-      'context': ['dna'],
-      'comments': ['Hello my name is Urk']
-    };
+          'expression_type': 'LongForm',            
+          'title': _titleValue,
+          'body': _bodyValue                                          
+        }; 
 
     return Expanded(
       child: Column(

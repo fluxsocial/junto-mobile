@@ -20,6 +20,8 @@ class CreateActions extends StatefulWidget {
 // State class for CreateActions
 class CreateActionsState extends State<CreateActions> {
   final List _channels = [];
+  String expressionContext;
+  String jsonBody;
   // instantiate TextEditingController to pass to TextField widget
   TextEditingController _channelController = TextEditingController();
 
@@ -55,13 +57,22 @@ class CreateActionsState extends State<CreateActions> {
               // Headers
               Map<String, String> _headers = {
                 "Content-type": "application/json"
-              };
+              }; 
 
-              // JSON body
-              final body =
-                  '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "expression", "function": "post_expression", "args": {"expression": {"expression_type": "LongForm", "expression": {"LongForm": {"title": "The Medium is the Message", "body": "Hellosx"}}}, "attributes": ["' + _channels.toString() + '"], "context": ["Qmf42ZrmheTZugJsTXsCb7miRPGQjSReFrHNUQRzm9E7Y3"]}}}';
+              // // Set expression context (where post is going to be sent)
+              // setState(() {
+              //   expressionContext = 'Qmf42ZrmheTZugJsTXsCb7miRPGQjSReFrHNUQRzm9E7Y3';
+              // });
+
+              // // Generate proper JSON for expression
+              // if(widget.expression['expression_type'] == 'LongForm') {
+              //   setState(() {
+              //     jsonBody = '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "expression", "function": "post_expression", "args": {"expression": {"expression_type": "LongForm", "expression": {"LongForm": {"title": "' + widget.expression['title'] + '", "body": "' + widget.expression['body'] + '"}}}, "attributes": ["' + _channels.toString() + '"], "context": ["' + expressionContext + '"]}}}';                
+              //   });                
+              // }            
+
                   // '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "config", "function": "update_bit_prefix", "args": {"bit_prefix": 1}}}';
-                  // '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "expression", "function": "get_expression", "args": {"expression": "QmNQpXckvU3w49B35xxxikcGzXamQM6FVj8BXgjsA9V4FM"}}}';
+                  final body = '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "expression", "function": "get_expression", "args": {"expression": "QmQVHujoCjR3bpErTBQUdRDfAi1fmMEt5aMZbrUfFYMwNy"}}}';
 
               // Retrieve response from create_user function
               http.Response response =  
