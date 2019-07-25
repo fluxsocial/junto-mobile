@@ -59,7 +59,7 @@ class CreateActionsState extends State<CreateActions> {
 
               // JSON body
               final body =
-                  '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "expression", "function": "post_expression", "args": {"expression": {"expression_type": "LongForm", "expression": {"LongForm": {"title": "The Medium is the Message", "body": "Hellos"}}}, "attributes": [], "context": ["Qmf42ZrmheTZugJsTXsCb7miRPGQjSReFrHNUQRzm9E7Y3"]}}}';
+                  '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "expression", "function": "post_expression", "args": {"expression": {"expression_type": "LongForm", "expression": {"LongForm": {"title": "The Medium is the Message", "body": "Hellosx"}}}, "attributes": ["' + _channels.toString() + '"], "context": ["Qmf42ZrmheTZugJsTXsCb7miRPGQjSReFrHNUQRzm9E7Y3"]}}}';
                   // '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "config", "function": "update_bit_prefix", "args": {"bit_prefix": 1}}}';
                   // '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "expression", "function": "get_expression", "args": {"expression": "QmNQpXckvU3w49B35xxxikcGzXamQM6FVj8BXgjsA9V4FM"}}}';
 
