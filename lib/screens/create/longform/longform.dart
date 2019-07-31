@@ -15,8 +15,6 @@ class CreateLongformState extends State<CreateLongform> {
     TextEditingController _titleController = TextEditingController();
     TextEditingController _bodyController = TextEditingController();
 
-  
-
   @override
   Widget build(BuildContext context) {
     var _titleValue = _titleController.text;

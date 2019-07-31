@@ -23,20 +23,10 @@ class CreateShortformState extends State<CreateShortform> {
     var _bodyValue = _bodyController.text;
 
     Map _shortformExpression = {
-        'expression': {
-          'expression_type': 'shortform',
-          'expression_data': {
-            'ShortForm': {
-              'background': _currentBackground,
-              'body': _bodyValue
-            }
-          }                        
-        },
-        'tags': ['holochain', 'junto', 'social'],
-        'context': ['dna'],
-        'comments': ['Hello my name is Urk']
-
-    };    
+          'expression_type': 'ShortForm',            
+          'background': _currentBackground,
+          'body': _bodyValue                                          
+        };     
     
     return Expanded(
         child: Column(

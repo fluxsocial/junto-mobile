@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 import './degrees/degrees.dart';
 import './../../components/expression_preview/expression_preview.dart';
@@ -22,7 +24,9 @@ class JuntoCollective extends StatefulWidget {
   }
 }
 
+
 class JuntoCollectiveState extends State<JuntoCollective> {  
+
   @override
   Widget build(BuildContext context) {
     return 
@@ -36,15 +40,16 @@ class JuntoCollectiveState extends State<JuntoCollective> {
             _threeDegreesColor, _fourDegreesColor, _fiveDegreesColor, _sixDegreesColor),
 
             // expressions
-                ScopedModelDescendant<ScopedUser>(
-                    builder: (context, child, model) => ListView(
-                          shrinkWrap: true,
-                          physics: ClampingScrollPhysics(),
-                          children: model.denExpressions
-                              .map(
-                                  (expression) => ExpressionPreview(expression))
-                              .toList(),
-                        ))
+            ScopedModelDescendant<ScopedUser>(
+                builder: (context, child, model) => ListView(
+                      shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
+                      children: model.denExpressions
+                          .map(
+                              (expression) => ExpressionPreview(expression))
+                          .toList(),
+                    ))
+
           ],
         ),
       ); 

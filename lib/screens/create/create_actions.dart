@@ -19,14 +19,20 @@ class CreateActions extends StatefulWidget {
 
 // State class for CreateActions
 class CreateActionsState extends State<CreateActions> {
+  String _expressionLayer;
+
   final List _channels = [];
+  bool showLayers = false;
   String expressionContext;
   String jsonBody;
   // instantiate TextEditingController to pass to TextField widget
   TextEditingController _channelController = TextEditingController();
 
+
+
   @override
   Widget build(BuildContext context) {
+
     return Container(
       decoration: BoxDecoration(
         border: Border(
@@ -50,43 +56,8 @@ class CreateActionsState extends State<CreateActions> {
               alignment: Alignment.center,
             )),
         GestureDetector(
-            onTap: () async {
-              // Holochain API address
-              String _url = 'http://127.0.0.1:8888';
-
-              // Headers
-              Map<String, String> _headers = {
-                "Content-type": "application/json"
-              }; 
-
-              // // Set expression context (where post is going to be sent)
-              // setState(() {
-              //   expressionContext = 'Qmf42ZrmheTZugJsTXsCb7miRPGQjSReFrHNUQRzm9E7Y3';
-              // });
-
-              // // Generate proper JSON for expression
-              // if(widget.expression['expression_type'] == 'LongForm') {
-              //   setState(() {
-              //     jsonBody = '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "expression", "function": "post_expression", "args": {"expression": {"expression_type": "LongForm", "expression": {"LongForm": {"title": "' + widget.expression['title'] + '", "body": "' + widget.expression['body'] + '"}}}, "attributes": ["' + _channels.toString() + '"], "context": ["' + expressionContext + '"]}}}';                
-              //   });                
-              // }            
-
-                  // '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "config", "function": "update_bit_prefix", "args": {"bit_prefix": 1}}}';
-                  final body = '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "expression", "function": "get_expression", "args": {"expression": "QmQVHujoCjR3bpErTBQUdRDfAi1fmMEt5aMZbrUfFYMwNy"}}}';
-
-              // Retrieve response from create_user function
-              http.Response response =  
-                  await http.post(_url, headers: _headers, body: body);
-
-              // Generate status code of response
-              int createUserStatus = response.statusCode;
-
-              print(createUserStatus);
-
-              // Decode and store JSON from reponse.body
-              final createUserResponse = json.decode(response.body);
-
-              print(createUserResponse);
+            onTap: () {
+              _buildLayersModal(context);
             },
             child: Container(
               width: MediaQuery.of(context).size.width * .5 - 10,
@@ -253,21 +224,232 @@ class CreateActionsState extends State<CreateActions> {
   _nullChannels() {
     return;
   }
-}
 
-            // Firebase 
-          
-            // onTap: () {
-            //   // update expression's channels to the ones the user adds via modal
-            //   widget.expression['tags'] = _channels;
-            //   // send http request
-            //   http
-            //       .post('https://junto-b48dd.firebaseio.com/expressions.json',
-            //           body: json.encode(widget.expression))
-            //       .then((http.Response response) {
-            //     final Map<String, dynamic> responseData =
-            //         json.decode(response.body);
-            //     print(responseData);
+  _buildLayersModal(context) {
+  showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        // Use StatefulBuilder to pass state of CreateActions
+        return StatefulBuilder(builder: (context, state) {
+          return Container(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            height: MediaQuery.of(context).size.height * .5,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[   
+                Column(children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(bottom: 5),
+                    child: Text('Choose where to send your expression', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600))
+                  ),
+
+                  GestureDetector(
+                    onTap: () {
+                      _selectLayer(state, 'collective');
+                    },                    
+                    child: 
+                      Container(
+                        color: Colors.orange,
+                        padding: EdgeInsets.symmetric(vertical: 25),
+                        child: Row(children: <Widget>[
+                            Container(
+                              margin: EdgeInsets.only(right: 10),
+                              height: 17,
+                              width: 17,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.blue, width: 2),
+                                borderRadius: BorderRadius.circular(100)
+                              ),
+                            ),
+                            Text('COLLECTIVE')                
+                        ],)
+                      ),                    
+                  ),
+
+                  GestureDetector(
+                    onTap: () {
+                      _selectLayer(state, 'pack');
+                    },
+                    child: 
+                      Container(
+                        color: Colors.purple,
+                        padding: EdgeInsets.symmetric(vertical: 25),
+                        child: Row(children: <Widget>[
+                            Container(
+                              margin: EdgeInsets.only(right: 10),
+                              height: 17,
+                              width: 17,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.blue, width: 2),
+                                borderRadius: BorderRadius.circular(100)
+                              ),
+                            ),
+                            Text('PACK')                    
+
+                        ],)
+                      ),                    
+                  ),        
+
+                  GestureDetector(
+                    onTap: () {
+                      _selectLayer(state, 'den');
+                    },                    
+                    child: 
+                      Container(
+                        color: Colors.green,
+                        padding: EdgeInsets.symmetric(vertical: 25),
+                        child: Row(children: <Widget>[
+                            Container(
+                              margin: EdgeInsets.only(right: 10),
+                              height: 17,
+                              width: 17,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.blue, width: 2),
+                                borderRadius: BorderRadius.circular(100)
+                              ),
+                            ),
+                            Text('DEN')                    
+                        ],)
+                      ),                    
+                  ),                                    
+                ],),
+       
+                        Container(
+                          width: 200,                           
+                          decoration: 
+                              BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    stops: [0.1, 0.9],
+                                    colors: [
+                                      Color(0xff5E54D0),
+                                      Color(0xff307FAB)
+                                    ]
+                                  ),
+                                  borderRadius: BorderRadius.circular(100)
+                                ),                          
+                          child:                            
+                            RaisedButton(                                        
+                              onPressed: () {
+                                _createExpression();
+                              },        
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 20
+                              ),    
+                              color: Colors.transparent,
+                              elevation: 0,
+                              // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
+                              child: 
+                                Text('CREATE', 
+                                  style: TextStyle(
+                                    // color: JuntoPalette.juntoBlue, 
+                                    color: Colors.white, 
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 14)),
+                              )                                                                                        
+                                
+                      )                                             
+            ],)
+          );
+        });
+      });            
+  }
+
+    _selectLayer(updateState, layer) {
+      
+      if(layer == 'collective') {
+        setState(() {
+          _expressionLayer = 'collective';    
+          print(_expressionLayer);
+        });
+      } else if(layer == 'pack') {
+        setState(() {
+          _expressionLayer = 'pack';  
+          print(_expressionLayer);
+
+        });        
+
+      } else if(layer == 'den') {
+        setState(() {
+          _expressionLayer = 'den';   
+          print(_expressionLayer);
+        });        
+      }    
+  }      
+
+    _createExpression() async {
+      // Holochain API address
+      String _url = 'http://127.0.0.1:8888';
+
+      // Headers
+      Map<String, String> _headers = {
+        "Content-type": "application/json"
+      }; 
+
+      // Set expression context (where post is going to be sent)
+      setState(() {
+        if(_expressionLayer == 'collective') {
+          expressionContext = 'Qmf42ZrmheTZugJsTXsCb7miRPGQjSReFrHNUQRzm9E7Y3';
+        } else if(_expressionLayer =='pack') {
+          expressionContext = '';
+        }
+      });
+
+      // Generate proper JSON for expression
+      if(widget.expression['expression_type'] == 'LongForm') {
+        setState(() {
+          jsonBody = '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "expression", "function": "post_expression", "args": {"expression": {"expression_type": "LongForm", "expression": {"LongForm": {"title": "' + widget.expression['title'] + '", "body": "' + widget.expression['body'] + '"}}}, "attributes": ["' + _channels.toString() + '"], "context": ["' + expressionContext + '"]}}}';                
+        });                
+      } else if (widget.expression['expression_type'] == 'Shortform') {
+        return ;
+      }
+
+      // Retrieve response from post_expression function
+      http.Response response = await http.post(_url, headers: _headers, body: jsonBody);
+
+      // Decode and store JSON from reponse.body
+      final postExpressionResponse = json.decode(response.body);
+      print(postExpressionResponse);      
+
+
+    }
+  }
+
+    // '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "config", "function": "update_bit_prefix", "args": {"bit_prefix": 1}}}';
+    // final body = '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "expression", "function": "get_expression", "args": {"expression": "QmQVHujoCjR3bpErTBQUdRDfAi1fmMEt5aMZbrUfFYMwNy"}}}';
+
+
+
+
+            // onTap: () async {
+            //   // Holochain API address
+            //   String _url = 'http://127.0.0.1:8888';
+
+            //   // Headers
+            //   Map<String, String> _headers = {
+            //     "Content-type": "application/json"
+            //   }; 
+
+            //   // Set expression context (where post is going to be sent)
+            //   setState(() {
+            //     expressionContext = 'Qmf42ZrmheTZugJsTXsCb7miRPGQjSReFrHNUQRzm9E7Y3';
             //   });
-            //   print('successfully created post');
+
+            //   // Generate proper JSON for expression
+            //   if(widget.expression['expression_type'] == 'LongForm') {
+            //     setState(() {
+            //       jsonBody = '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "expression", "function": "post_expression", "args": {"expression": {"expression_type": "LongForm", "expression": {"LongForm": {"title": "' + widget.expression['title'] + '", "body": "' + widget.expression['body'] + '"}}}, "attributes": ["' + _channels.toString() + '"], "context": ["' + expressionContext + '"]}}}';                
+            //     });                
+            //   } else if (widget.expression['expression_type'] == 'Shortform') {
+            //     return ;
+            //   }
+
+            //   // Retrieve response from post_expression function
+            //   http.Response response = await http.post(_url, headers: _headers, body: jsonBody);
+
+            //   // Decode and store JSON from reponse.body
+            //   final postExpressionResponse = json.decode(response.body);
+            //   print(postExpressionResponse);
             // },
