@@ -40,63 +40,24 @@ class GlobalSearchState extends State<GlobalSearch> {
                       child: Transform.translate(
                         offset: Offset(0, 7),
                         child: TextField(
-                        buildCounter: (BuildContext context,
-                              {int currentLength,
-                              int maxLength,
-                              bool isFocused}) =>
-                          null,                        
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'search..',
+                          buildCounter: (BuildContext context,
+                                  {int currentLength,
+                                  int maxLength,
+                                  bool isFocused}) =>
+                              null,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'search..',
+                          ),
+                          cursorColor: JuntoPalette.juntoGrey,
+                          maxLines: 1,
+                          maxLength: 30,
+                          cursorWidth: 2,
                         ),
-                        cursorColor: JuntoPalette.juntoGrey,
-                        maxLines: 1,
-                        maxLength: 30,
-                        cursorWidth: 2,
-                      ),),
+                      ),
                     ),
                   ],
-                )
-
-                // TextField(
-                //   decoration: InputDecoration(
-                //     border: InputBorder.none,
-                //     hintText: 'search..',
-                //   ),
-                //   cursorColor: JuntoPalette.juntoGrey,
-                //   cursorWidth: 2,
-                // ),
-                // GestureDetector(
-                //   onTap: () => Navigator.pop(context),
-                //   child: Icon(CustomIcons.back_arrow_left,
-                //       color: JuntoPalette.juntoSleek, size: 24),
-                // ),
-
-                // Container(
-                //     padding: EdgeInsets.symmetric(horizontal: 5),
-                //     child:
-                //         Row(
-                //           crossAxisAlignment: CrossAxisAlignment.center,
-                //           children: <Widget>[
-                //             GestureDetector(
-                //               onTap: () => Navigator.pop(context),
-                //               child: Icon(CustomIcons.back_arrow_left,
-                //                   color: JuntoPalette.juntoSleek, size: 24),
-                //             ),
-
-                //                 // TextField(
-                //                 //   decoration: InputDecoration(
-                //                 //     border: InputBorder.none,
-                //                 //     hintText: 'search..',
-                //                 //   ),
-                //                 //   cursorColor: JuntoPalette.juntoGrey,
-                //                 //   cursorWidth: 2,
-
-                //                 // ),
-                //           ],
-                //         ),
-                //     ),
-                )),
+                ))),
         body: Column(
           children: <Widget>[
             Container(
@@ -112,12 +73,13 @@ class GlobalSearchState extends State<GlobalSearch> {
                   Text('Spheres')
                 ],
               ),
+            ),
+            Expanded(
+              child: ListView(
+                children: <Widget>[],
+              ),
             )
           ],
         ));
-
-    // ListView(
-    //   children: <Widget>[],
-    // ));
   }
 }
