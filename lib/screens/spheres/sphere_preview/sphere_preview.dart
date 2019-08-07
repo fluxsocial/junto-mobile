@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 import '../../../typography/palette.dart';
@@ -7,83 +8,57 @@ class SpherePreview extends StatelessWidget {
   final String sphereTitle;
   final String sphereMembers;
   final String sphereImage;
+  final String sphereHandle;
 
-  SpherePreview(this.sphereTitle, this.sphereMembers, this.sphereImage);
+  SpherePreview(this.sphereTitle, this.sphereMembers, this.sphereImage, this.sphereHandle);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(left: 10, right: 10, bottom: 15.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: Color(0xffeeeeee), width: .25),
-        borderRadius: BorderRadius.circular(5),
-        boxShadow: [
-          BoxShadow(
-            color: Color(0xffeeeeee),
-            blurRadius: 3,
-            offset: Offset(1, 3),
-          )
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              image: sphereImage != ''
-                  ? DecorationImage(
-                      image: AssetImage(sphereImage), fit: BoxFit.cover)
-                  : null,
-              gradient: LinearGradient(
-                  begin: Alignment.bottomLeft,
-                  end: Alignment.bottomRight,
-                  stops: [
-                    0.1,
-                    0.9
-                  ],
-                  colors: [
-                    JuntoPalette.juntoGreen,
-                    JuntoPalette.juntoGreenLight
-                  ]),
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(5), topRight: Radius.circular(5)),
-              boxShadow: [
-                BoxShadow(
-                  color: Color(0xffeeeeee),
-                  blurRadius: 2,
-                  offset: Offset(1, 2),
-                )
-              ],
-            ),
-            height: MediaQuery.of(context).size.height * .2,
-          ),
-          Container(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+    return 
+        Container(
+          margin: EdgeInsets.only(left: 10.0),
+          color: Colors.white,
+          child: Row(
+            children: <Widget>[
+              Row(
                 children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(bottom: 5.0),
-                    child: Text(
-                      sphereTitle,
-                      style: TextStyle(
-                          color: Color(0xff333333),
-                          fontSize: 17,
-                          fontWeight: FontWeight.w700),
+                  ClipOval(
+                    child: Image.asset(
+                      sphereImage,
+                      height: 45.0,
+                      width: 45.0,
+                      fit: BoxFit.cover,
                     ),
                   ),
                   Container(
-                      child: Text(sphereMembers + ' MEMBERS',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          )))
+                    width: MediaQuery.of(context).size.width - 65,
+                    padding: EdgeInsets.symmetric(vertical: 20),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(width: .5, color: Color(0xffeeeeee)),
+                      ),
+                    ),
+                    margin: EdgeInsets.only(left: 10.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(sphereTitle,
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Color(0xff333333),
+                                fontWeight: FontWeight.w700)),
+                        Text('/s/' + sphereHandle, 
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.w500))
+                      ],
+                    ),
+                  )
                 ],
-              ))
-        ],
-      ),
-    );
+              ),
+            ],
+          ));
   }
 }

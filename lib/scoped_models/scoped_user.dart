@@ -37,8 +37,6 @@ class ScopedUser extends Model {
     final body =
       '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "user", "function": "create_user", "args": {"user_data": {"username": "' + username + '", "first_name":"' + firstName + '", "last_name":"' + lastName + '", "profile_picture":"' + profilePicture + '", "bio":"' + bio + '"}}}}';
 
-      '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "user", "function": "create_user", "args": {"user_data": {"username": "sunyatax", "first_name":"urk", "last_name":"yang", "profile_picture":"profpic", "bio":"love"}}}}';
-
     // Retrieve response from create_user function
     http.Response response = await http.post(_url, headers: _headers, body: body);
 
@@ -68,6 +66,19 @@ class ScopedUser extends Model {
       print(createUserResponse);
     }
   }  
+
+  createExpression() {
+    // { user_data: {username: "username", first_name: "first_name", last_name: "last_name", profile_picture: "profile picture url", bio: "bio"} }
+    final body = '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "user", "function": "create_user", "args": {"user_data": {"username": "' + username + '", "first_name":"' + firstName + '", "last_name":"' + lastName + '", "profile_picture":"' + profilePicture + '", "bio":"' + bio + '"}}}}';
+
+  }
+
+
+
+
+
+
+
 
   void mockSetUser() {
      _username = 'sunyata';
