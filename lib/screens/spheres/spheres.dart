@@ -25,7 +25,7 @@ class JuntoSpheres extends StatelessWidget {
                   ListView(
                     shrinkWrap: true,
                     physics: ClampingScrollPhysics(),
-                    children: model.spheres.map((sphere) => SpherePreview(sphere.sphereTitle, sphere.sphereMembers, sphere.sphereImage, sphere.sphereHandle)).toList()
+                    children: model.spheres.map((sphere) => SpherePreview(sphere.sphereTitle, sphere.sphereMembers, sphere.sphereImage, sphere.sphereHandle, sphere.sphereDescription)).toList()
                   )
                 )                                
               ],

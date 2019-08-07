@@ -11,8 +11,9 @@ class SpherePreview extends StatelessWidget {
   final String sphereMembers;
   final String sphereImage;
   final String sphereHandle;
+  final String sphereDescription; 
 
-  SpherePreview(this.sphereTitle, this.sphereMembers, this.sphereImage, this.sphereHandle);
+  SpherePreview(this.sphereTitle, this.sphereMembers, this.sphereImage, this.sphereHandle, this.sphereDescription);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class SpherePreview extends StatelessWidget {
     GestureDetector(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(
-         builder: (context) => SphereOpen(sphereTitle, sphereMembers, sphereImage, sphereHandle)
+         builder: (context) => SphereOpen(sphereTitle, sphereMembers, sphereImage, sphereHandle, sphereDescription)
         ));
       },    
        child: Container(

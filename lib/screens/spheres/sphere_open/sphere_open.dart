@@ -8,8 +8,9 @@ class SphereOpen extends StatefulWidget {
   final sphereImage;
   final sphereMembers;
   final sphereHandle;
+  final sphereDescription; 
 
-  SphereOpen(this.sphereTitle, this.sphereMembers, this.sphereImage, this.sphereHandle);
+  SphereOpen(this.sphereTitle, this.sphereMembers, this.sphereImage, this.sphereHandle, this.sphereDescription);
 
   @override
   State<StatefulWidget> createState() {
@@ -22,13 +23,47 @@ class SphereOpenState extends State<SphereOpen> {
   Widget build(BuildContext context) {
 
     return 
-          Scaffold(
-            backgroundColor: Colors.white,
-            appBar: PreferredSize(
-              preferredSize: Size.fromHeight(45),
-              child: SphereOpenAppbar(
-                  widget.sphereHandle),
+      Scaffold(
+        backgroundColor: Colors.white,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(45),
+          child: SphereOpenAppbar(
+              widget.sphereHandle),
+        ),
+        body:
+        ListView(children: <Widget>[
+          Container(
+              constraints: BoxConstraints.expand(
+                height: 200
+              ),            
+            // height: 200,
+            child: Image.asset(widget.sphereImage, fit: BoxFit.cover)
+          ),
+
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+            decoration: BoxDecoration(
+              border: Border(bottom: BorderSide(color: Color(0xffeeeeee), width: 1))
             ),
-            body: Text(widget.sphereHandle));
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[              
+              Row(children: <Widget>[
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                  Container(child: Text(widget.sphereTitle, style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700))),
+                  Container(child: Text(widget.sphereMembers + ' members', style: TextStyle(fontSize: 14))),
+                ],)
+              ],),
+
+              SizedBox(height: 10),
+
+              Container(child: Text(widget.sphereDescription, textAlign: TextAlign.start, style: TextStyle(fontSize: 14)))
+
+            ],)
+          )
+        ],)
+      );
   }
 }
