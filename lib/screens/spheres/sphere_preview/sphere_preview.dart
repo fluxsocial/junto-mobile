@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
 
+import '../sphere_open/sphere_open.dart';
+
 import '../../../typography/palette.dart';
 
 // This class renders a preview of a sphere
@@ -15,7 +17,13 @@ class SpherePreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return 
-        Container(
+    GestureDetector(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(
+         builder: (context) => SphereOpen(sphereTitle, sphereMembers, sphereImage, sphereHandle)
+        ));
+      },    
+       child: Container(
           margin: EdgeInsets.only(left: 10.0),
           color: Colors.white,
           child: Row(
@@ -59,6 +67,7 @@ class SpherePreview extends StatelessWidget {
                 ],
               ),
             ],
-          ));
+          ))
+    );
   }
 }
