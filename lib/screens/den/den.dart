@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import '../../scoped_models/scoped_user.dart';
+import '../member/member.dart';
 import './../../components/expression_preview/expression_preview.dart';
 
 class JuntoDen extends StatefulWidget {
@@ -143,6 +144,11 @@ class JuntoDenState extends State<JuntoDen> {
                           //   child: Text('DRAFTS', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Color(0xff777777)))
                           // ),
                         ])),
+
+                        RaisedButton(onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => JuntoMember()));
+                          }
+                        )
                         
 
               ]),

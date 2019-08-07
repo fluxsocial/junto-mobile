@@ -1,48 +1,16 @@
 import 'package:flutter/material.dart';
 
-import 'package:scoped_model/scoped_model.dart';
-import '../../scoped_models/scoped_user.dart';
-
-// typography + icons
-import './../../typography/palette.dart';
-import './../../custom_icons.dart';
-
-import './../../components/expression_preview/expression_preview.dart';
+import './member_appbar/member_appbar.dart';
 
 class JuntoMember extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: 
-        PreferredSize(
-          preferredSize: Size.fromHeight(45.0),
-          child: AppBar(
-            bottom: PreferredSize(
-              preferredSize: Size.fromHeight(1.5),
-              child: Container(
-                height: 1.5,
-                color: JuntoPalette.juntoGrey
-              )
-            ),
-            automaticallyImplyLeading: false,
-            brightness: Brightness.light,
-            iconTheme: IconThemeData(color: JuntoPalette.juntoSleek),
-            backgroundColor: Colors.white,
-            elevation: 0,
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: Icon(CustomIcons.back_arrow_left,
-                      color: JuntoPalette.juntoSleek, size: 24),
-                ),
-                Icon(CustomIcons.more,
-                    color: JuntoPalette.juntoSleek, size: 24)
-              ],
-            ),
-          ),
-        ),      
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(45),
+          child: MemberAppbar(
+              'sunyata'),
+        ),  
 
       body: ListView(children: [
         Container(
@@ -179,14 +147,7 @@ class JuntoMember extends StatelessWidget {
                         // ),
                       ])),
 
-                      ScopedModelDescendant<ScopedUser>(
-                          builder: (context, child, model) => ListView(
-                                shrinkWrap: true,
-                                physics: ClampingScrollPhysics(),
-                                children: model.collectiveExpressions
-                                    .map((expression) => ExpressionPreview(expression))
-                                    .toList(),
-                              ))
+
 
 
 
