@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 import './sphere_open_appbar/sphere_open_appbar.dart';
+import './sphere_open_fab/sphere_open_fab.dart';
 
 class SphereOpen extends StatefulWidget {
   final sphereTitle;
@@ -22,7 +23,7 @@ class SphereOpenState extends State<SphereOpen> {
   @override
   Widget build(BuildContext context) {
 
-    return 
+    return  
       Scaffold(
         backgroundColor: Colors.white,
         appBar: PreferredSize(
@@ -30,6 +31,8 @@ class SphereOpenState extends State<SphereOpen> {
           child: SphereOpenAppbar(
               widget.sphereHandle),
         ),
+        floatingActionButton: SphereOpenFAB(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body:
         ListView(children: <Widget>[
           Container(
