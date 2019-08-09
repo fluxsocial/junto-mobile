@@ -10,6 +10,7 @@ import '../../../typography/palette.dart';
 
 import './pack_open_public/pack_open_public.dart';
 import './pack_open_private/pack_open_private.dart';
+import '../../../components/create_fab/create_fab.dart';
 
 class PackOpen extends StatefulWidget {
   final packTitle;
@@ -34,9 +35,7 @@ class PackOpenState extends State<PackOpen> {
     super.initState();
   }
 
-  _switchScreen() {
-
-  }
+  _switchScreen() {}
 
   @override
   Widget build(BuildContext context) {
@@ -49,13 +48,16 @@ class PackOpenState extends State<PackOpen> {
               child: PackOpenAppbar(
                   widget.packTitle, widget.packUser, widget.packImage),
             ),
+            floatingActionButton: CreateFAB(widget.packTitle),
+            floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,            
             body: Column(
               children: <Widget>[
                 Container(
                     padding: EdgeInsets.only(top: 20),
                     decoration: BoxDecoration(
-                      border: Border(bottom: BorderSide(color: Color(0xffeeeeee), width: .75))
-                    ),
+                        border: Border(
+                            bottom: BorderSide(
+                                color: Color(0xffeeeeee), width: .75))),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -63,39 +65,39 @@ class PackOpenState extends State<PackOpen> {
                           onTap: () {
                             controller.jumpToPage(0);
                           },
-                          child:    
-                            Container(
-                              padding: EdgeInsets.only(bottom: 20),
-                              width: MediaQuery.of(context).size.width * .5,
-                              child: 
-                              
-                              Icon(CustomIcons.half_lotus,
-                                  size: 17, color: publicActive ? Color(0xff333333) : Color(0xff999999)),
-
-                            ),
+                          child: Container(
+                            padding: EdgeInsets.only(bottom: 20),
+                            width: MediaQuery.of(context).size.width * .5,
+                            child: Icon(CustomIcons.half_lotus,
+                                size: 17,
+                                color: publicActive
+                                    ? Color(0xff333333)
+                                    : Color(0xff999999)),
+                          ),
                         ),
                         GestureDetector(
                           onTap: () {
                             controller.jumpToPage(1);
                           },
-                          child: 
-                            Container(
-                              padding: EdgeInsets.only(bottom: 20),
-                                width: MediaQuery.of(context).size.width * .5,
-                                child: RotatedBox(
-                                    quarterTurns: 2,
-                                    child: Icon(CustomIcons.triangle,
-                                        size: 17, color: publicActive ? Color(0xff999999) : Color(0xff333333))),                             
-                            ),
+                          child: Container(
+                            padding: EdgeInsets.only(bottom: 20),
+                            width: MediaQuery.of(context).size.width * .5,
+                            child: RotatedBox(
+                                quarterTurns: 2,
+                                child: Icon(CustomIcons.triangle,
+                                    size: 17,
+                                    color: publicActive
+                                        ? Color(0xff999999)
+                                        : Color(0xff333333))),
+                          ),
                         )
-                                    
                       ],
                     )),
                 Expanded(
                   child: PageView(
                     controller: controller,
                     onPageChanged: (int) {
-                      if(int == 0) {
+                      if (int == 0) {
                         setState(() {
                           publicActive = true;
                         });

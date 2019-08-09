@@ -1,13 +1,13 @@
 
 import 'package:flutter/material.dart';
-import '../../../../typography/palette.dart';
-import '../../../../custom_icons.dart';
-import '../../../create/create.dart';
+import '../../typography/palette.dart';
+import '../../custom_icons.dart';
+import '../../screens/create/create.dart';
 
-class SphereOpenFAB extends StatelessWidget {
+class CreateFAB extends StatelessWidget {
   final sphereHandle;
 
-  SphereOpenFAB(this.sphereHandle);
+  CreateFAB(this.sphereHandle);
 
   @override
   Widget build(BuildContext context) {

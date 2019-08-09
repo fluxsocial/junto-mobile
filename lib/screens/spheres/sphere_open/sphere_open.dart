@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 import './sphere_open_appbar/sphere_open_appbar.dart';
-import './sphere_open_fab/sphere_open_fab.dart';
+import './../../../components/create_fab/create_fab.dart';
 
 class SphereOpen extends StatefulWidget {
   final sphereTitle;
@@ -31,7 +31,7 @@ class SphereOpenState extends State<SphereOpen> {
           child: SphereOpenAppbar(
               widget.sphereHandle),
         ),
-        floatingActionButton: SphereOpenFAB(widget.sphereHandle),
+        floatingActionButton: CreateFAB(widget.sphereHandle),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body:
         ListView(children: <Widget>[
