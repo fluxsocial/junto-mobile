@@ -29,7 +29,7 @@ class NotificationsAppbar extends StatelessWidget {
               children: <Widget>[
                 Container(
                   margin: EdgeInsets.only(right: 10),
-                  child: Text('Notifications',
+                  child: Text('JUNTO',
                       style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
@@ -41,25 +41,6 @@ class NotificationsAppbar extends StatelessWidget {
           ],
         ),
       ),
-      bottom: 
-      PreferredSize(
-          preferredSize: Size.fromHeight(1),
-          child: Container(
-            height: 1,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                  stops: [
-                    0.1,
-                    0.9
-                  ],
-                  colors: [
-                    JuntoPalette.juntoBlue,
-                    JuntoPalette.juntoPurple
-                  ]),
-            ),
-          )),
     );
   }
 }
