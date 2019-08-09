@@ -5,7 +5,9 @@ import '../../../../custom_icons.dart';
 import '../../../create/create.dart';
 
 class SphereOpenFAB extends StatelessWidget {
+  final sphereHandle;
 
+  SphereOpenFAB(this.sphereHandle);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,7 @@ class SphereOpenFAB extends StatelessWidget {
               Navigator.of(context).push(
                 PageRouteBuilder(
                   pageBuilder:(context, animation, secondaryAnimation) {
-                    return JuntoCreate();
+                    return JuntoCreate(sphereHandle);
                   },
                   transitionsBuilder: (context, animation, secondaryAnimation, child) {
                     return FadeTransition(opacity: animation, child: child);

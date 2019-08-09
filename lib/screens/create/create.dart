@@ -12,6 +12,10 @@ import './../../typography/palette.dart';
 import './create_actions/create_actions.dart';
 
 class JuntoCreate extends StatefulWidget {
+  final expressionLayer;
+
+  JuntoCreate(this.expressionLayer);
+
   @override
   State<StatefulWidget> createState() {
     return JuntoCreateState();
@@ -136,7 +140,7 @@ class JuntoCreateState extends State<JuntoCreate> {
                 GestureDetector(
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => CreateActions()
+                      builder: (context) => CreateActions(widget.expressionLayer)
                     ));
                   },
                   child: Text('next', style: TextStyle(fontSize: 17))                  

@@ -7,6 +7,10 @@ import '../../../custom_icons.dart';
 import './create_actions_appbar/create_actions_appbar.dart';
 
 class CreateActions extends StatefulWidget {
+  final expressionLayer;
+
+  CreateActions(this.expressionLayer);
+
   @override
   State<StatefulWidget> createState() {
     return CreateActionsState();
@@ -51,7 +55,7 @@ class CreateActionsState extends State<CreateActions> {
                           bottom:
                               BorderSide(color: Color(0xffeeeeee), width: 1))),
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                  child: Text("sharing to collective")),
+                  child: Text("sharing to " + widget.expressionLayer)),
             ),
           ],
         ));

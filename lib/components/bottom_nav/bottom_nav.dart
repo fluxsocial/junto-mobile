@@ -52,7 +52,7 @@ class BottomNavState extends State<BottomNav> {
               Navigator.of(context).push(
                 PageRouteBuilder(
                   pageBuilder:(context, animation, secondaryAnimation) {
-                    return JuntoCreate();
+                    return JuntoCreate('collective');
                   },
                   transitionsBuilder: (context, animation, secondaryAnimation, child) {
                     return FadeTransition(opacity: animation, child: child);

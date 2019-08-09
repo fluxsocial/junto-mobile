@@ -35,7 +35,7 @@ class JuntoAppState extends State<JuntoApp> {
             routes: {
               '/welcome': (BuildContext context) => Welcome(scopedUser),
               '/template': (BuildContext context) => JuntoTemplate(scopedUser),
-              '/create': (BuildContext context) => JuntoCreate(),
+              '/create': (BuildContext context) => JuntoCreate('collective'),
               '/notifications': (BuildContext context) => JuntoNotifications(),
             }));
   }
