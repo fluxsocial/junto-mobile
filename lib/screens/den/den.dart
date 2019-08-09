@@ -40,7 +40,7 @@ class JuntoDenState extends State<JuntoDen> {
               decoration: BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage(
-                          'assets/images/junto-mobile__den--photo.png'),
+                          'assets/images/junto-mobile__stillmind.png'),
                       fit: BoxFit.cover)),
               child: Transform.translate(
                 offset: Offset(0, 120),
@@ -105,9 +105,9 @@ class JuntoDenState extends State<JuntoDen> {
                 ),
                 ScopedModelDescendant<ScopedUser>(
                   builder: (context, child, model) => Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
                       margin: EdgeInsets.only(top: 10, bottom: 10),
-                      // color: Colors.blue,
+                      decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Color(0xffeeeeee), width: 1))),
                       width: MediaQuery.of(context).size.width,
                       child: Text(model.bio,
                           style: TextStyle(
@@ -115,35 +115,7 @@ class JuntoDenState extends State<JuntoDen> {
                             fontWeight: FontWeight.w500,
                           ))),
                 ),
-                Container(
-                    decoration: BoxDecoration(
-                        border: Border(
-                            bottom: BorderSide(
-                                color: Color(0xffeeeeee), width: 1))),
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                    margin: EdgeInsets.only(bottom: 10),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                              child: Text('EXPRESSIONS',
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w700,
-                                      color: Color(0xff333333)))),
 
-                          // Container(
-                          //   child: Text('JOURNAL', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Color(0xff777777)))
-                          // ),
-
-                          // Container(
-                          //   child: Text('FAVORITES', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Color(0xff777777)))
-                          // ),
-
-                          // Container(
-                          //   child: Text('DRAFTS', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Color(0xff777777)))
-                          // ),
-                        ])),
 
                         RaisedButton(onPressed: () {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => JuntoMember()));

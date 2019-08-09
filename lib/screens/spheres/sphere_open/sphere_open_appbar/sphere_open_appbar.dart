@@ -6,7 +6,7 @@ import '../../../../custom_icons.dart';
 class SphereOpenAppbar extends StatelessWidget {
   final sphereHandle;
 
-  SphereOpenAppbar(this.sphereHandle);
+  SphereOpenAppbar(this.sphereHandle); 
   @override
   Widget build(BuildContext context) {
     return AppBar(

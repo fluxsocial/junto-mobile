@@ -61,8 +61,6 @@ class BottomNavState extends State<BottomNav> {
                   transitionDuration: Duration(milliseconds: 200)        
                 )                       
               );
-
-              // Navigator.pushNamed(context, '/create');
             },
             child: Icon(CustomIcons.lotus, color: Color(0xff999999))
           ),

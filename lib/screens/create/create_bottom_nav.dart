@@ -17,8 +17,11 @@ class CreateBottomNav extends StatelessWidget {
       child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
 
         bottomNavVisible ? Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border(top: BorderSide(color: Color(0xffeeeeee), width: .75))
+          ),
           alignment: Alignment.center,
-          color: Colors.white,
           height: 45,
           child: ListView(
             scrollDirection: Axis.horizontal,
@@ -66,7 +69,7 @@ class CreateBottomNav extends StatelessWidget {
                           color: JuntoPalette.juntoGrey))),
               // GestureDetector(
               //     onTap: () {
-              //       switchTemplate('music');
+              //       switchTemplate('Music');
               //     },
               //     child: Container(
               //         margin: EdgeInsets.symmetric(horizontal: 25.0),

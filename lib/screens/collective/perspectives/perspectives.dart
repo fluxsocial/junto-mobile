@@ -55,6 +55,20 @@ class Perspectives extends StatelessWidget {
                           children: [Text('JUNTO')]),
                       ),
                     ),
+
+                    Container(
+                      child: ListTile(
+                        contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                        onTap: () {
+                          _changePerspective('Degrees of Separation');
+
+                          Navigator.pop(context);
+                        },
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [Text('Degrees of Separation')]),
+                      ),
+                    ),                             
  
                     Container(
                       child: ListTile(
@@ -69,6 +83,7 @@ class Perspectives extends StatelessWidget {
                           children: [Text('Following')]),
                       ),
                     ),
+           
 
                       ScopedModelDescendant<ScopedUser>(
                         builder: (context, child, model) => ListView(

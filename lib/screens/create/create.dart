@@ -8,8 +8,8 @@ import './photo/photo.dart';
 import './bullet/bullet.dart';
 import './event/event.dart';
 import './music/music.dart';
-import './create_actions.dart';
 import './../../typography/palette.dart';
+import './create_actions/create_actions.dart';
 
 class JuntoCreate extends StatefulWidget {
   @override
@@ -19,7 +19,7 @@ class JuntoCreate extends StatefulWidget {
 }
 
 class JuntoCreateState extends State<JuntoCreate> {
-  String _expressionType = 'LONGFORM';
+  String _expressionType = 'Longform';
   bool _longform = true;
   bool _shortform = false;
   bool _bullet = false;
@@ -120,12 +120,29 @@ class JuntoCreateState extends State<JuntoCreate> {
       body: Column(
         children: <Widget>[
           Container(
-            margin: EdgeInsets.only(top: 20, bottom: 20),
-            padding: EdgeInsets.only(left: 10, right: 10, top: 30),
-            width: MediaQuery.of(context).size.width,
-            child: Text(_expressionType.toUpperCase(),
-                textAlign: TextAlign.start,
-                style: JuntoStyles.lotusExpressionType),
+            margin: EdgeInsets.only(top: 20, bottom: 10),
+            padding: EdgeInsets.only(left: 10, right: 10, top: 30),            
+            child: 
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center, 
+                children: <Widget>[
+
+                  Text(_expressionType,
+                      textAlign: TextAlign.start,
+                      style: JuntoStyles.lotusExpressionType
+                  ),
+                
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => CreateActions()
+                    ));
+                  },
+                  child: Text('next', style: TextStyle(fontSize: 17))                  
+                )
+
+              ],),            
           ),
 
           _buildTemplate(),
