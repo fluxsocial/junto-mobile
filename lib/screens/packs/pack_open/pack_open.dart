@@ -67,11 +67,11 @@ class PackOpenState extends State<PackOpen> {
                             Container(
                               padding: EdgeInsets.only(bottom: 20),
                               width: MediaQuery.of(context).size.width * .5,
-                              child: Icon(CustomIcons.half_lotus,
+                              child: 
+                              
+                              Icon(CustomIcons.half_lotus,
                                   size: 17, color: publicActive ? Color(0xff333333) : Color(0xff999999)),
-                              // decoration: BoxDecoration(border: Border(
-                              //   bottom: publicActive ? BorderSide(color: Color(0xff333333), width: 1.5) : BorderSide(width: 0)
-                              // ))
+
                             ),
                         ),
                         GestureDetector(
@@ -85,10 +85,7 @@ class PackOpenState extends State<PackOpen> {
                                 child: RotatedBox(
                                     quarterTurns: 2,
                                     child: Icon(CustomIcons.triangle,
-                                        size: 17, color: publicActive ? Color(0xff999999) : Color(0xff333333))),
-                              // decoration: BoxDecoration(border: Border(
-                              //   bottom: publicActive == false ? BorderSide(color: Color(0xff333333), width: 1.5) : BorderSide(width: 0)
-                              // ))                                    
+                                        size: 17, color: publicActive ? Color(0xff999999) : Color(0xff333333))),                             
                             ),
                         )
                                     

@@ -52,25 +52,6 @@ class PackOpenAppbar extends StatelessWidget {
           ],
         ),
       ),
-      bottom: 
-      PreferredSize(
-          preferredSize: Size.fromHeight(1),
-          child: Container(
-            height: 1,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                  stops: [
-                    0.1,
-                    0.9
-                  ],
-                  colors: [
-                    JuntoPalette.juntoBlue,
-                    JuntoPalette.juntoPurple
-                  ]),
-            ),
-          )),
     );
   }
 }
