@@ -30,10 +30,10 @@ class JuntoNotifications extends StatelessWidget {
                         Text('Updates')
                       ],
                     )),
-                Expanded(
-                    child: ListView(
-                  children: <Widget>[Text('yeo')],
-                ))
+                // Expanded(
+                //     child: ListView(
+                //   children: <Widget>[Text('yeo')],
+                // ))
               ],
             )));
   }

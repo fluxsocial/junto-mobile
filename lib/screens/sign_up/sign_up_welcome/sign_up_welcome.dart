@@ -27,15 +27,6 @@ class SignUpWelcome extends StatefulWidget {
 
 class SignUpWelcomeState extends State<SignUpWelcome> {
 
-  // var model = ScopedUser();
-
-  @override
-  void initState() {
-    init();
-    
-    super.initState();
-  }
-
   init() async {
     var address = await createUser(widget.firstName, widget.lastName, widget.username, widget.password, widget.bio, widget.profilePicture);
     
@@ -136,7 +127,7 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
                             RaisedButton(                                        
                               onPressed: () {
                                 Navigator.push(context, MaterialPageRoute(
-                                  builder: (context) => JuntoTemplate('')
+                                  builder: (context) => JuntoTemplate()
                                 ));
                               },        
                               padding: EdgeInsets.symmetric(

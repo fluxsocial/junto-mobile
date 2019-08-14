@@ -48,7 +48,7 @@ class DegreesOfSeparation extends StatelessWidget {
             //             letterSpacing: 1),),),
             Container(
               margin: EdgeInsets.only(bottom: 5),
-              padding: EdgeInsets.symmetric(vertical: 7.5),
+              padding: EdgeInsets.symmetric(vertical: 7.5), 
               child: 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

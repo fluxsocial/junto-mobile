@@ -26,6 +26,7 @@ class JuntoCollective extends StatefulWidget {
 
 
 class JuntoCollectiveState extends State<JuntoCollective> {  
+  bool _degreesOfSeparation = false;
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +37,8 @@ class JuntoCollectiveState extends State<JuntoCollective> {
           controller: widget.controller,
           children: <Widget>[   
             // Degrees of Separation Widget rendered only when on the 'JUNTO' perspective
-            DegreesOfSeparation(_changeDegree, _infinityColor, _oneDegreeColor, _twoDegreesColor,
-            _threeDegreesColor, _fourDegreesColor, _fiveDegreesColor, _sixDegreesColor),
+            _degreesOfSeparation ? DegreesOfSeparation(_changeDegree, _infinityColor, _oneDegreeColor, _twoDegreesColor,
+            _threeDegreesColor, _fourDegreesColor, _fiveDegreesColor, _sixDegreesColor) : SizedBox(),
 
             // expressions
             ScopedModelDescendant<ScopedUser>(

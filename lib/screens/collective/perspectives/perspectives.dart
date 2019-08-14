@@ -5,6 +5,7 @@ import 'package:scoped_model/scoped_model.dart';
 import '../../../scoped_models/scoped_user.dart';
 
 import './perspective_preview.dart';
+import './create_perspective/create_perspective.dart';
 
 class Perspectives extends StatelessWidget {
   Function _changePerspective;
@@ -36,7 +37,12 @@ class Perspectives extends StatelessWidget {
                                   style: TextStyle(
                                       fontWeight: FontWeight.w700,
                                       color: Color(0xff333333))),
-                              Icon(Icons.add_circle_outline, size: 14)
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => CreatePerspective())); 
+                                },
+                                child: Icon(Icons.add_circle_outline, size: 14)
+                              )
                             ]),
                         height: 45,
                         margin: EdgeInsets.only(top: statusBarHeight)),
