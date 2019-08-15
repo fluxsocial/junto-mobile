@@ -98,7 +98,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
         body: Column(children: <Widget>[
           Expanded(
             child: ListView(children: <Widget>[
-                ExpressionOpenTop(),
+                ExpressionOpenTop(widget.expression),
                 _buildExpression(),
                 ExpressionOpenBottom(widget.expression)
 
