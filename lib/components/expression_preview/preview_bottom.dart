@@ -7,14 +7,15 @@ import '../../typography/style.dart';
 import '../../typography/palette.dart';
 
 class PreviewBottom extends StatelessWidget {
-  final String time;
-  final List channels;
+  final expression;
 
-  PreviewBottom(this.time, this.channels);
+  PreviewBottom(this.expression);
 
   _buildChannels() {
+    List channels = expression.channels; 
+    
     if (channels == []) {
-      return Container(height: 0, width: 0);
+      return SizedBox();
     } else {
       return 
         Container(
@@ -29,6 +30,7 @@ class PreviewBottom extends StatelessWidget {
   }
   @override
   Widget build(BuildContext context) {
+    String expressionTime = expression.timestamp; 
     return Container(
       margin: EdgeInsets.only(top: 7.5),
       padding: EdgeInsets.symmetric(horizontal: 10.0),
@@ -44,7 +46,7 @@ class PreviewBottom extends StatelessWidget {
 
               Container(
                   child: Text(
-                time + ' MINUTES AGO',
+                expressionTime + ' MINUTES AGO',
                 style: JuntoStyles.expressionPreviewTime,
                 textAlign: TextAlign.start,
               ))
