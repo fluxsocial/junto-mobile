@@ -97,7 +97,7 @@ class Expression {
           }
         },
         resonations: [],
-        timestamp: '2',
+        timestamp: '7',
         channels: [
           {
             'address': 'channel-address',
@@ -114,7 +114,59 @@ class Expression {
             }
           }          
         ]
-      )      
+      ),
+
+      Expression(
+        expression: {
+          'address': '0xfee32zokie8',
+          'entry': {
+            'expression_type': 'shortform',
+            'expression': {
+              'body': 'Hello cats!',
+              'background': 'four'
+            }
+          }
+        },
+        subExpressions: {
+
+        },
+
+        username: {
+          'address': '02efredffdfvdbnrtg',
+          'entry': {
+            'username': 'yaz'
+          }
+        },
+        profile: {
+          'address': '0vefoiwiafjvkbr32r243r5',
+          'entry': {
+            'parent': 'parent-address',
+            'first_name': 'Yaz',
+            'last_name': 'Owainati',
+            'bio': 'hellooo',
+            'profile_picture': 'assets/images/junto-mobile__yaz.png',      
+            'verified': true
+          }
+        },
+        resonations: [],
+        timestamp: '22',
+        channels: [
+          {
+            'address': 'channel-address',
+            'entry': {
+              'value': 'design',
+              'attribute_type': 'Channel'
+            }
+          },
+          {
+            'address': 'channel-address',
+            'entry': {
+              'value': 'tech',
+              'attribute_type': 'Channel'
+            }
+          }          
+        ]
+      )            
     ];
   }
 }

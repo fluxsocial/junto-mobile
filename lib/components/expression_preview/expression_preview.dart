@@ -24,7 +24,7 @@ class ExpressionPreview extends StatelessWidget {
         children: <Widget>[
           
           // expression preview profile 
-          PreviewProfile(expression.username['entry']['username']),
+          PreviewProfile(expression),
 
           // open expression
           GestureDetector(
@@ -38,7 +38,7 @@ class ExpressionPreview extends StatelessWidget {
           ),
           
           // expression preview channels, resonation, and comments
-          PreviewBottom('2', ['hello'])
+          PreviewBottom(expression)
 
         ],
       ),

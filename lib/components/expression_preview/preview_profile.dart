@@ -5,11 +5,16 @@ import '../../custom_icons.dart';
 import '../../screens/member/member.dart';
 
 class PreviewProfile extends StatelessWidget {
-  final String handle;
+  final expression;
 
-  PreviewProfile(this.handle);
+  PreviewProfile(this.expression);
   @override
   Widget build(BuildContext context) {
+    String firstName = expression.profile['entry']['first_name'];
+    String lastName = expression.profile['entry']['last_name'];
+    String username = expression.username['entry']['username']; 
+    String profilePicture = expression.profile['entry']['profile_picture'];
+
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
       child: Row(
@@ -22,7 +27,7 @@ class PreviewProfile extends StatelessWidget {
             // profile picture
             ClipOval(
               child: Image.asset(
-                'assets/images/junto-mobile__eric.png',
+                profilePicture,
                 height: 36.0,
                 width: 36.0,
                 fit: BoxFit.cover,
@@ -42,19 +47,17 @@ class PreviewProfile extends StatelessWidget {
                       ))
                     },
                     child: Text(
-                      'Eric Yang',
+                      firstName + ' ' + lastName,
                       style: JuntoStyles.expressionPreviewName,
                     ),
                   ),
                   
-                  Text(handle, style: JuntoStyles.expressionPreviewHandle)
+                  Text(username, style: JuntoStyles.expressionPreviewHandle)
                 ],
               ),
             ),
           ]),
-          Row(children: [
-            // Text(time, style: TextStyle(fontSize: 12)),
-            // more option on expression preview
+          Row(children: [          
             Container(child: Icon(CustomIcons.more, size: 17))
           ])
         ],
