@@ -1,25 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter/rendering.dart';
 
 import '../collective/perspectives/perspectives.dart';
 import '../collective/collective.dart';
-import '../collective/filter_screen/filter_screen.dart';
 import '../collective/filter_fab/filter_fab.dart';
 import '../spheres/spheres.dart';
 import '../packs/packs.dart';
 import '../den/den.dart';
 import '../../components/appbar/appbar.dart';
 import './../../components/bottom_nav/bottom_nav.dart';
-import '../../scoped_models/scoped_user.dart';
 import '../../typography/palette.dart';
 
 // This class is a template screen that contains the navbar, bottom bar,
 // and screen (collective, spheres, pack, etc) depending on condition.
 class JuntoTemplate extends StatefulWidget {
-  final scopedUser;
-
-  JuntoTemplate(this.scopedUser);
 
   @override
   State<StatefulWidget> createState() {
@@ -72,8 +66,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   Widget build(BuildContext context) {
     return 
       Stack(children: [
-        ScopedModelDescendant<ScopedUser>(
-        builder: (context, child, model) => Scaffold( 
+          Scaffold( 
             backgroundColor: Colors.white,
             appBar: PreferredSize(preferredSize: Size.fromHeight(45), child: JuntoAppBar( _appbarTitle,_navNotifications)),
             floatingActionButton: _currentScreen == 'collective'
@@ -109,12 +102,12 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                     JuntoCollective(_hideFABController),
                     JuntoSpheres(),
                     JuntoPacks(),
-                    JuntoDen(widget.scopedUser)
+                    JuntoDen()
                   ],
                 ),                      
-                bottomNavigationBar: BottomNav(_bottomNavIndex, _setBottomIndex))),     
+                bottomNavigationBar: BottomNav(_bottomNavIndex, _setBottomIndex))]); 
 
-            ]);
+            
   }
 
   // Set the bottom navbar index; used when bottom nav icon is pressed.

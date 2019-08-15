@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 import './degrees/degrees.dart';
 import './../../components/expression_preview/expression_preview.dart';
-import '../../scoped_models/scoped_user.dart';
 import '../../typography/palette.dart';
 
 // This screen shows a list of public expressions that can be filtered
@@ -24,9 +21,8 @@ class JuntoCollective extends StatefulWidget {
   }
 }
 
-
 class JuntoCollectiveState extends State<JuntoCollective> {  
-  bool _degreesOfSeparation = false;
+  bool _degreesOfSeparation = true;
 
   @override
   Widget build(BuildContext context) {
@@ -40,16 +36,14 @@ class JuntoCollectiveState extends State<JuntoCollective> {
             _degreesOfSeparation ? DegreesOfSeparation(_changeDegree, _infinityColor, _oneDegreeColor, _twoDegreesColor,
             _threeDegreesColor, _fourDegreesColor, _fiveDegreesColor, _sixDegreesColor) : SizedBox(),
 
-            // expressions
-            ScopedModelDescendant<ScopedUser>(
-                builder: (context, child, model) => ListView(
-                      shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
-                      children: model.denExpressions
-                          .map(
-                              (expression) => ExpressionPreview(expression))
-                          .toList(),
-                    ))
+                // ListView(
+                //   shrinkWrap: true,
+                //   physics: ClampingScrollPhysics(),
+                //   children: model.denExpressions
+                //       .map(
+                //           (expression) => ExpressionPreview(expression))
+                //       .toList(),
+                // )
 
           ],
         ),

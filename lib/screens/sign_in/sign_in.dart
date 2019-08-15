@@ -1,14 +1,10 @@
 
 import 'package:flutter/material.dart';
-import 'package:scoped_model/scoped_model.dart';
 
 import '../template/template.dart';
-import '../../scoped_models/scoped_user.dart';
 
 class SignIn extends StatelessWidget {
-  final scopedUser;
 
-  SignIn(this.scopedUser);
   @override
   Widget build(BuildContext context) {
 
@@ -79,19 +75,15 @@ class SignIn extends StatelessWidget {
                     )
                 ),       
 
-                ScopedModelDescendant<ScopedUser>(
-                  builder: (context, child, model) =>
+
                     Container(
                       child:  
                           RaisedButton(                      
                           onPressed: () async {
-                            // await model.setUser('QmZnYuSUwRQ6v2vWNnVxApBJQLCBsTRKAd5v2KzpLKHSbQ');
 
-                            await model.mockSetUser();
-                            model.setCollectiveExpressions();
 
                             Navigator.pushReplacement(context, MaterialPageRoute(
-                              builder: (context) => JuntoTemplate(scopedUser)
+                              builder: (context) => JuntoTemplate()
                             ));
                           },  
 
@@ -110,7 +102,6 @@ class SignIn extends StatelessWidget {
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100))
                         )      
                       )            
-                )                                         
             ],)
           ),
 

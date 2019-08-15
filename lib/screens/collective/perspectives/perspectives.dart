@@ -2,8 +2,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:scoped_model/scoped_model.dart';
-import '../../../scoped_models/scoped_user.dart';
-
 import './perspective_preview.dart';
 import './create_perspective/create_perspective.dart';
 
@@ -91,17 +89,15 @@ class Perspectives extends StatelessWidget {
                     ),
            
 
-                      ScopedModelDescendant<ScopedUser>(
-                        builder: (context, child, model) => ListView(
-                              padding: EdgeInsets.all(0),
-                              shrinkWrap: true,
-                              physics: ClampingScrollPhysics(),
-                              children: model.perspectives
-                                  .map((perspective) => PerspectivePreview(
-                                      perspective.perspectiveTitle, _changePerspective))
-                                  .toList(),
-                            ),
-                      ),
+                    // ListView(
+                    //     padding: EdgeInsets.all(0),
+                    //     shrinkWrap: true,
+                    //     physics: ClampingScrollPhysics(),
+                    //     children: model.perspectives
+                    //         .map((perspective) => PerspectivePreview(
+                    //             perspective.perspectiveTitle, _changePerspective))
+                    //         .toList(),
+                    //   ),
                     ]))
                   ],
                 )),

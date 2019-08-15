@@ -7,7 +7,6 @@ import './shortform/shortform.dart';
 import './photo/photo.dart';
 import './bullet/bullet.dart';
 import './event/event.dart';
-import './music/music.dart';
 import './../../typography/palette.dart';
 import './create_actions/create_actions.dart';
 
@@ -29,7 +28,6 @@ class JuntoCreateState extends State<JuntoCreate> {
   bool _bullet = false;
   bool _photo = false;
   bool _events = false;
-  bool _music = false;
 
   bool _bottomNavVisible = true;
 
@@ -57,9 +55,7 @@ class JuntoCreateState extends State<JuntoCreate> {
       return CreatePhoto(_toggleBottomNavVisibility);
     } else if (_events) {
       return CreateEvent();
-    } else if (_music) {
-      return CreateMusic();
-    }
+    } 
   }
 
   // Reset all values in state to false
@@ -70,7 +66,6 @@ class JuntoCreateState extends State<JuntoCreate> {
       _bullet = false;
       _photo = false;
       _events = false;
-      _music = false;
     });
   }
 
@@ -105,10 +100,6 @@ class JuntoCreateState extends State<JuntoCreate> {
     } else if (templateType == 'events') {
       setState(() {
         _events = true;
-      });
-    } else if (templateType == 'music') {
-      setState(() {
-        _music = true;
       });
     } else {
       print('not an expresion type');

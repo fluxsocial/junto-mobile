@@ -14,14 +14,12 @@ class JuntoPacks extends StatelessWidget {
         PackPreview('The Gnarly Nomads', 'Eric Yang', 'assets/images/junto-mobile__eric.png'),
         
         // Other Packs user belongs to
-        ScopedModelDescendant<ScopedUser>(
-            builder: (context, child, model) => ListView(
-                physics: ClampingScrollPhysics(),
-                shrinkWrap: true,
-                children: model.packs
-                    .map((pack) => PackPreview(pack.packTitle, pack.packUser, pack.packImage))
-                    .toList()))
-      ],
-    );
+            // ListView(
+            //     physics: ClampingScrollPhysics(),
+            //     shrinkWrap: true,
+            //     children: model.packs
+            //         .map((pack) => PackPreview(pack.packTitle, pack.packUser, pack.packImage))
+            //         .toList())
+      ]);
   }
 }

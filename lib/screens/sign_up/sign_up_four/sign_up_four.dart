@@ -5,7 +5,6 @@ import 'package:scoped_model/scoped_model.dart';
 
 import './../sign_up_logo/sign_up_logo.dart';
 import './../sign_up_welcome/sign_up_welcome.dart';
-import './../../../scoped_models/scoped_user.dart';
 
 class SignUpFour extends StatefulWidget {
   final firstName;
@@ -97,8 +96,7 @@ class SignUpFourState extends State<SignUpFour> {
           SignUpLogo(),
 
 
-          ScopedModelDescendant<ScopedUser> (
-            builder: (context, child, model) =>
+
               Positioned(
                 bottom: MediaQuery.of(context).size.height * .05,
                 right: 20,
@@ -121,9 +119,7 @@ class SignUpFourState extends State<SignUpFour> {
                         if(widget.firstName != '' && widget.lastName != '' && 
                         widget.username != '' && widget.password != '') {    
 
-                          await model.createUser(widget.username, widget.firstName, widget.lastName, profilePicture, bio);
-                          
-                          model.fetchDenExpressions();
+
 
                           Navigator.pushReplacement(context, MaterialPageRoute(
                             builder: (context) => SignUpWelcome(widget.firstName, 
@@ -135,9 +131,9 @@ class SignUpFourState extends State<SignUpFour> {
                     ),                
                     ])
               ),  
-          )                          
-        ])     
-    );      
+        ]));                    
+      
+       
   }
   
 }

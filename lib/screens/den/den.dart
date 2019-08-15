@@ -1,15 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:scoped_model/scoped_model.dart';
 
-import '../../scoped_models/scoped_user.dart';
 import '../member/member.dart';
-import './../../components/expression_preview/expression_preview.dart';
 
 class JuntoDen extends StatefulWidget {
-  final scopedUser;
-
-  JuntoDen(this.scopedUser);
-
   @override
   State<StatefulWidget> createState() {
 
@@ -84,37 +77,32 @@ class JuntoDenState extends State<JuntoDen> {
                         Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              ScopedModelDescendant<ScopedUser>(
-                                  builder: (context, child, model) {
-                                return Text(
-                                    model.firstName + ' ' + model.lastName,
+                                    Text(
+                                    'Eric Yang',
                                     style: TextStyle(
                                         fontSize: 17,
-                                        fontWeight: FontWeight.w700));
-                              }),
-                              ScopedModelDescendant<ScopedUser>(
-                                  builder: (context, child, model) =>
-                                      Text(model.username,
+                                        fontWeight: FontWeight.w700)
+                              ),
+                                
+                                    Text('sunyata',
                                           style: TextStyle(
                                             fontSize: 14,
                                             fontWeight: FontWeight.w500,
-                                          )))
+                                          ))
                             ]),
                         Icon(Icons.edit, size: 14)
                       ]),
                 ),
-                ScopedModelDescendant<ScopedUser>(
-                  builder: (context, child, model) => Container(
+                  Container(
                       padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
                       margin: EdgeInsets.only(top: 10, bottom: 10),
                       decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Color(0xffeeeeee), width: 1))),
                       width: MediaQuery.of(context).size.width,
-                      child: Text(model.bio,
+                      child: Text('to a mind that is still, the whole universe surrenders',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                           ))),
-                ),
 
 
                         RaisedButton(onPressed: () {
