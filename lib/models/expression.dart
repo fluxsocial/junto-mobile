@@ -62,7 +62,59 @@ class Expression {
             }
           }          
         ]
-      )
+      ),
+
+      Expression(
+        expression: {
+          'address': '0xfee32zokie8',
+          'entry': {
+            'expression_type': 'shortform',
+            'expression': {
+              'body': 'Junto is releasing September 28th. Mark your calendars!',
+              'background': 'three'
+            }
+          }
+        },
+        subExpressions: {
+
+        },
+
+        username: {
+          'address': '02efredffdfvdbnrtg',
+          'entry': {
+            'username': 'sunyata'
+          }
+        },
+        profile: {
+          'address': '0vefoiwiafjvkbr32r243r5',
+          'entry': {
+            'parent': 'parent-address',
+            'first_name': 'Eric',
+            'last_name': 'Yang',
+            'bio': 'hellooo',
+            'profile_picture': 'assets/images/junto-mobile__eric.png',      
+            'verified': true
+          }
+        },
+        resonations: [],
+        timestamp: '2',
+        channels: [
+          {
+            'address': 'channel-address',
+            'entry': {
+              'value': 'design',
+              'attribute_type': 'Channel'
+            }
+          },
+          {
+            'address': 'channel-address',
+            'entry': {
+              'value': 'tech',
+              'attribute_type': 'Channel'
+            }
+          }          
+        ]
+      )      
     ];
   }
 }

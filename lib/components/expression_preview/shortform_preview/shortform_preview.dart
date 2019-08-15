@@ -4,10 +4,9 @@ import './../../../typography/palette.dart';
 import '../../../screens/expression_open/expression_open.dart';
 
 class ShortformPreview extends StatefulWidget {
-  final String _shortformBackground;
-  final String _shortformText;
+  final expression;
 
-  ShortformPreview(this._shortformBackground, this._shortformText);
+  ShortformPreview(this.expression);
 
   @override
   State<StatefulWidget> createState() {
@@ -20,32 +19,35 @@ class ShortformPreviewState extends State<ShortformPreview> {
   Color _gradientTwo;
 
   _buildBackground() {
-    if (widget._shortformBackground == 'zero') {
+    String shortformBackground =
+        widget.expression.expression['entry']['expression']['background'];
+
+    if (shortformBackground == 'zero') {
       setState(() {
         _gradientOne = Color(0xffffffff);
         _gradientTwo = Color(0xffffffff);
       });
-    } else if (widget._shortformBackground == 'one') {
+    } else if (shortformBackground == 'one') {
       setState(() {
         _gradientOne = JuntoPalette.juntoBlue;
         _gradientTwo = JuntoPalette.juntoBlueLight;
       });
-    } else if (widget._shortformBackground == 'two') {
+    } else if (shortformBackground == 'two') {
       setState(() {
         _gradientOne = JuntoPalette.juntoPurple;
         _gradientTwo = JuntoPalette.juntoPurpleLight;
       });
-    } else if (widget._shortformBackground == 'three') {
+    } else if (shortformBackground == 'three') {
       setState(() {
         _gradientOne = JuntoPalette.juntoPurple;
         _gradientTwo = JuntoPalette.juntoBlue;
       });
-    } else if (widget._shortformBackground == 'four') {
+    } else if (shortformBackground == 'four') {
       setState(() {
         _gradientOne = JuntoPalette.juntoGreen;
         _gradientTwo = JuntoPalette.juntoBlue;
       });
-    } else if (widget._shortformBackground == 'five') {
+    } else if (shortformBackground == 'five') {
       setState(() {
         _gradientOne = JuntoPalette.juntoGreen;
         _gradientTwo = JuntoPalette.juntoPurple;
@@ -62,35 +64,36 @@ class ShortformPreviewState extends State<ShortformPreview> {
 
   @override
   Widget build(BuildContext context) {
-    return 
-      Container(
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.bottomLeft,
-                end: Alignment.topRight,
-                stops: [0.1, 0.9],
-                colors: [_gradientOne, _gradientTwo])),
+    String shortformBody =
+        widget.expression.expression['entry']['expression']['body'];
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+            begin: Alignment.bottomLeft,
+            end: Alignment.topRight,
+            stops: [0.1, 0.9],
+            colors: [_gradientOne, _gradientTwo]),
+      ),
 
-        constraints: BoxConstraints(
-          minHeight: 240,
-        ),
-        width: 1000,
-        // color: Colors.lightBlue,
-        alignment: Alignment.center,
-        padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 50.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              widget._shortformText,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 17.0,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white),
-            ),
-          ],
-        ),
+      constraints: BoxConstraints(
+        minHeight: 240,
+      ),
+      width: MediaQuery.of(context).size.width,
+      alignment: Alignment.center,
+      padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 50.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            shortformBody,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 17.0,
+                fontWeight: FontWeight.w700,
+                color: Colors.white),
+          ),
+        ],
+      ),
     );
   }
 }

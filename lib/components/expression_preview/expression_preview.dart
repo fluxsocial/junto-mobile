@@ -48,11 +48,10 @@ class ExpressionPreview extends StatelessWidget {
   Widget _returnExpression() { 
     if (expression.expression['entry']['expression_type'] == 'longform') {
       return LongformPreview(expression);
+    } else if(expression.expression['entry']['expression_type'] == 'shortform') {
+      return ShortformPreview(expression);
     } 
-    
-    // else if(expression.expression['entry']['expression_type'] == 'shortform') {
-    //   return ShortformPreview(expression);
-    // } else if(expression.expression['entry']['expression_type'] == 'photoform') {
+    // else if(expression.expression['entry']['expression_type'] == 'photoform') {
     //   return PhotoPreview(expression);
     // } else if(expression.expression['entry']['expression_type'] == 'eventform') {
     //   return EventPreview(expression);
