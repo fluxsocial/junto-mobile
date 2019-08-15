@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../custom_icons.dart';
-import '../../typography/palette.dart';
-import '../../typography/style.dart';
-import '../../screens/global_search/global_search.dart';
+import 'package:junto_beta_mobile/custom_icons.dart';
+import 'package:junto_beta_mobile/typography/palette.dart';
+import 'package:junto_beta_mobile/typography/style.dart';
+import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
+
 // Junto app bar used throughout the main screens. Rendered in JuntoTemplate Widget.
 class JuntoAppBar extends StatelessWidget {
   final juntoAppBarTitle;
@@ -16,24 +17,18 @@ class JuntoAppBar extends StatelessWidget {
     return AppBar(
       automaticallyImplyLeading: false,
       bottom: PreferredSize(
-          preferredSize: Size.fromHeight(1),
-          child: Container(
-              height: .75,
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                      stops: [
-                    0.1,
-                    0.9
-                  ],
-                      colors: [
-                    JuntoPalette.juntoBlue,
-                    JuntoPalette.juntoPurple
-                  ]))
-              // decoration: BoxDecoration(
-              //   border: Border(bottom: BorderSide(color: Color(0xffeeeeee), width: 1)))
-              )),
+        preferredSize: Size.fromHeight(1),
+        child: Container(
+          height: .75,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                stops: [0.1, 0.9],
+                colors: [JuntoPalette.juntoBlue, JuntoPalette.juntoPurple]),
+          ),
+        ),
+      ),
       backgroundColor: JuntoPalette.juntoWhite,
       brightness: Brightness.light,
       elevation: 0,
@@ -64,8 +59,13 @@ class JuntoAppBar extends StatelessWidget {
           Row(
             children: <Widget>[
               GestureDetector(
-                onTap:() {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => GlobalSearch() ));
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => GlobalSearch(),
+                    ),
+                  );
                 },
                 child: Container(
                   child: Icon(Icons.search,
@@ -73,14 +73,15 @@ class JuntoAppBar extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                  onTap: () {
-                    navNotifications();
-                  },
-                  child: Container(
-                    margin: EdgeInsets.only(left: 7.5),
-                    child: Icon(CustomIcons.moon,
-                        color: JuntoPalette.juntoSleek, size: 20),
-                  ))
+                onTap: () {
+                  navNotifications();
+                },
+                child: Container(
+                  margin: EdgeInsets.only(left: 7.5),
+                  child: Icon(CustomIcons.moon,
+                      color: JuntoPalette.juntoSleek, size: 20),
+                ),
+              )
             ],
           )
         ]),
