@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:scoped_model/scoped_model.dart';
 
 import './degrees/degrees.dart';
 import './../../components/expression_preview/expression_preview.dart';

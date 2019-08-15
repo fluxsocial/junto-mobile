@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:scoped_model/scoped_model.dart';
 
 import './pack_preview/pack_preview.dart';
-import '../../scoped_models/scoped_user.dart';
 
 // This class renders the screen of packs a user belongs to
 class JuntoPacks extends StatelessWidget {

@@ -1,8 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:scoped_model/scoped_model.dart';
-
-
 import './../sign_up_logo/sign_up_logo.dart';
 import './../sign_up_welcome/sign_up_welcome.dart';
 

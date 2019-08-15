@@ -7,7 +7,6 @@ class Expression {
   final comments;
 
   Expression({this.id, this.expressionType, this.expression, this.channels, this.comments});
-
 }
  
 
