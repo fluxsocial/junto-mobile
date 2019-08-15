@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/providers/collective_provider/collective_provider.dart';
 
 import './degrees/degrees.dart';
 import './../../components/expression_preview/expression_preview.dart';
@@ -35,14 +37,20 @@ class JuntoCollectiveState extends State<JuntoCollective> {
             _degreesOfSeparation ? DegreesOfSeparation(_changeDegree, _infinityColor, _oneDegreeColor, _twoDegreesColor,
             _threeDegreesColor, _fourDegreesColor, _fiveDegreesColor, _sixDegreesColor) : SizedBox(),
 
-                // ListView(
-                //   shrinkWrap: true,
-                //   physics: ClampingScrollPhysics(),
-                //   children: model.denExpressions
-                //       .map(
-                //           (expression) => ExpressionPreview(expression))
-                //       .toList(),
-                // )
+            Consumer<CollectiveProvider>(
+              builder: (context, collective, child) {
+                return 
+                ListView(
+                  shrinkWrap: true,
+                  physics: ClampingScrollPhysics(),
+                  children: collective.collectiveExpressions
+                      .map(
+                          (expression) => ExpressionPreview(expression))
+                      .toList(),
+                );                
+              }
+            )
+
 
           ],
         ),

@@ -26,7 +26,7 @@ class ExpressionPreview extends StatelessWidget {
         children: <Widget>[
           
           // expression preview profile 
-          PreviewProfile('sunyata'),
+          PreviewProfile(expression.username['entry']['username']),
 
           // open expression
           GestureDetector(
@@ -40,7 +40,7 @@ class ExpressionPreview extends StatelessWidget {
           ),
           
           // expression preview channels, resonation, and comments
-          PreviewBottom('2', expression.channels)
+          PreviewBottom('2', ['hello'])
 
         ],
       ),
@@ -48,21 +48,24 @@ class ExpressionPreview extends StatelessWidget {
   }
 
   Widget _returnExpression() { 
-    if (expression.expression['expression_type'] == 'longform') {
-      return LongformPreview(expression.expression['expression_data']['LongForm']['title'], expression.expression['expression_data']['LongForm']['body']);
-    } else if(expression.expression['expression_type'] == 'shortform') {
-      return ShortformPreview(expression.expression['expression_data']['ShortForm']['background'], expression.expression['expression_data']['ShortForm']['body']);
-    } else if(expression.expression['expression_type'] == 'bulletform') {
-      return BulletPreview();
-    } else if(expression.expression['expression_type'] == 'photoform') {
-      return PhotoPreview(expression.image, expression.imageCaption);
-    } else if(expression.expression['expression_type'] == 'eventform') {
-      return EventPreview(expression.title, expression.location, expression.image);
-    } else if(expression.expression['expression_type'] == 'musicform') {
-      return MusicPreview();
-    } else {
-      return Container(width: 0, height: 0,);
-    }
+    // return Container(child: Text(expression.expression['entry']['expression']['title']));
+    if (expression.expression['entry']['expression_type'] == 'longform') {
+      return LongformPreview(expression);
+    } 
+    
+    // else if(expression.expression['expression_type'] == 'shortform') {
+    //   return ShortformPreview(expression.expression['expression_data']['ShortForm']['background'], expression.expression['expression_data']['ShortForm']['body']);
+    // } else if(expression.expression['expression_type'] == 'bulletform') {
+    //   return BulletPreview();
+    // } else if(expression.expression['expression_type'] == 'photoform') {
+    //   return PhotoPreview(expression.image, expression.imageCaption);
+    // } else if(expression.expression['expression_type'] == 'eventform') {
+    //   return EventPreview(expression.title, expression.location, expression.image);
+    // } else if(expression.expression['expression_type'] == 'musicform') {
+    //   return MusicPreview();
+    // } else {
+    //   return Container(width: 0, height: 0,);
+    // }
   }
    
 }

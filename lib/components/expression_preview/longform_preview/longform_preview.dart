@@ -4,26 +4,24 @@ import 'package:flutter/material.dart';
 import './../../../typography/style.dart';
 
 class LongformPreview extends StatelessWidget {
-  final title;
-  final body;
+  final expression;
 
-  LongformPreview(this.title, this.body);
+  LongformPreview(this.expression);
 
-  _buildTitle() {
-    if(title != '') {
+  _buildTitle() {    
+    String expressionTitle = expression.expression['entry']['expression']['title'];
+
+    if(expressionTitle != '') {
       return 
           Container(
             child: Text(
-              title,
+              expressionTitle,
               textAlign: TextAlign.left,
               style: JuntoStyles.longformTitle,
             ),
           );     
     } else {
-      return Container(
-        height: 0,
-        width: 0
-      );
+      return SizedBox();
     }
   }
 
@@ -39,7 +37,7 @@ class LongformPreview extends StatelessWidget {
           _buildTitle(),
     
           Text(
-            body,
+          'hello',
             textAlign: TextAlign.left,
             maxLines: 4,
             overflow: TextOverflow.ellipsis,
