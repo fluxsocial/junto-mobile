@@ -46,7 +46,7 @@ class JuntoCollectiveState extends State<JuntoCollective> {
                   children: collective.collectiveExpressions
                       .map(
                           (expression) => ExpressionPreview(expression))
-                      .toList(),
+                      .toList(), 
                 );                
               }
             )

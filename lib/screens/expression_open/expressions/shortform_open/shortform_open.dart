@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../typography/palette.dart';
+
 class ShortformOpen extends StatefulWidget {
   final shortformExpression;
 
@@ -8,7 +9,6 @@ class ShortformOpen extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-
     return ShortformOpenState();
   }
 }
@@ -55,46 +55,43 @@ class ShortformOpenState extends State<ShortformOpen> {
 
   @override
   void initState() {
-    _shortformBackground = widget.shortformExpression.expression['expression_data']['ShortForm']['background'];
+    _shortformBody =
+        widget.shortformExpression.expression['entry']['expression']['body'];
+    _shortformBackground = widget.shortformExpression.expression['entry']
+        ['expression']['background'];
     _buildBackground();
 
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return 
-     
-        Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
+    return Container(
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
               begin: Alignment.bottomLeft,
               end: Alignment.topRight,
               stops: [0.1, 0.9],
-              colors: [
-                _gradientOne,
-                _gradientTwo
-              ]
-            )
+              colors: [_gradientOne, _gradientTwo])),
+      constraints: BoxConstraints(
+        minHeight: MediaQuery.of(context).size.height * .3,
+      ),
+      width: MediaQuery.of(context).size.width,
+      alignment: Alignment.center,
+      padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 50.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            _shortformBody,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 17.0,
+                fontWeight: FontWeight.w700,
+                color: Colors.white),
           ),
-
-          constraints: BoxConstraints(
-              minHeight: MediaQuery.of(context).size.height * .3,
-          ),
-          width: 1000,
-          alignment: Alignment.center,
-          padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 50.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[                
-              Text(
-                widget.shortformExpression.expression['expression_data']['ShortForm']['body'],
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.w700, color: Colors.white),
-              ),
-            ],
-          ),
-        ); 
+        ],
+      ),
+    );
   }
 }
