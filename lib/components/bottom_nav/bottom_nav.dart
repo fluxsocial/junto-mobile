@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart'; 
 
-import 'package:junto_beta_mobile/custom_icons.dart';
-import 'package:junto_beta_mobile/screens/create/create.dart';
+import 'package:junto_beta_mobile/custom_icons.dart'; 
+import 'package:junto_beta_mobile/screens/create/create.dart'; 
 
 // This widget is the bottom navigation on all of the main screens. Members can
 // navigate to the home, spheres, create, packs, and den screens.

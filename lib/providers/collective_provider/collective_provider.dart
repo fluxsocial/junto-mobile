@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 
 
-class Collective with ChangeNotifier {
+class CollectiveProvider with ChangeNotifier {
   List<Expression> _collectiveExpressions = []; 
   List _perspectives = [];
 
