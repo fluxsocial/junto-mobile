@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import './channel_preview.dart';
@@ -11,26 +10,9 @@ class PreviewBottom extends StatelessWidget {
 
   PreviewBottom(this.expression);
 
-  _buildChannels() {
-    List channels = expression.channels; 
-    
-    if (channels == []) {
-      return SizedBox();
-    } else {
-      return 
-        Container(
-          margin: EdgeInsets.only(bottom: 2.5),
-          child:
-              Row(mainAxisAlignment: MainAxisAlignment.start, children: 
-                channels.map((channel) => ChannelPreview(channel)).toList()
-
-          ),
-        );
-    }
-  }
   @override
   Widget build(BuildContext context) {
-    String expressionTime = expression.timestamp; 
+    String expressionTime = expression.timestamp;
     return Container(
       margin: EdgeInsets.only(top: 7.5),
       padding: EdgeInsets.symmetric(horizontal: 10.0),
@@ -42,8 +24,6 @@ class PreviewBottom extends StatelessWidget {
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              // _buildChannels(),
-
               Container(
                   child: Text(
                 expressionTime + ' MINUTES AGO',
@@ -52,11 +32,10 @@ class PreviewBottom extends StatelessWidget {
               ))
             ],
           )),
-
           Container(
-            margin: EdgeInsets.only(right: 10),
-            child: Icon(CustomIcons.half_lotus, size: 15, color: JuntoPalette.juntoBlue)
-          )      
+              margin: EdgeInsets.only(right: 10),
+              child: Icon(CustomIcons.half_lotus,
+                  size: 15, color: JuntoPalette.juntoBlue))
         ],
       ),
     );
