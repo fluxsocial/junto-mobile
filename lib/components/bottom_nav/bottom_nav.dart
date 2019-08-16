@@ -6,8 +6,8 @@ import 'package:junto_beta_mobile/screens/create/create.dart';
 // This widget is the bottom navigation on all of the main screens. Members can
 // navigate to the home, spheres, create, packs, and den screens.
 class BottomNav extends StatefulWidget {
-  final currentIndex;
-  final setIndex;
+  final int currentIndex;
+  final ValueChanged<int> setIndex;
   BottomNav(this.currentIndex, this.setIndex);
 
   @override
