@@ -1,31 +1,26 @@
 import 'package:flutter/material.dart';
-
-import '../../../typography/style.dart';
+import 'package:junto_beta_mobile/typography/style.dart';
 
 class PhotoPreview extends StatelessWidget {
   final image;
-  final imageCaption; 
+  final imageCaption;
 
   PhotoPreview(this.image, this.imageCaption);
 
   _generateCaption() {
-    if(imageCaption == '' || imageCaption == null) {
-      return Container(
-        height: 0,
-        width: 0
-      );
+    if (imageCaption == '' || imageCaption == null) {
+      return Container(height: 0, width: 0);
     } else {
-      return 
-        Container(
-          margin: EdgeInsets.only(top: 10, left: 10),
-          child: Text(
-              imageCaption,
-              maxLines: 2,
-              textAlign: TextAlign.start,
-              style: JuntoStyles.photoCaption),
-        );
+      return Container(
+        margin: EdgeInsets.only(top: 10, left: 10),
+        child: Text(
+          imageCaption,
+          maxLines: 2,
+          textAlign: TextAlign.start,
+          style: JuntoStyles.photoCaption,
+        ),
+      );
     }
-
   }
 
   @override
@@ -33,7 +28,9 @@ class PhotoPreview extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Container(child: Image.asset(image)),
+        Container(
+          child: Image.asset(image),
+        ),
         _generateCaption()
       ],
     );

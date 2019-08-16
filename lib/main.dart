@@ -1,7 +1,4 @@
-
 import 'package:flutter/material.dart';
-
-import './app.dart';
+import 'package:junto_beta_mobile/app.dart';
 
 void main() => runApp(JuntoApp());
-
