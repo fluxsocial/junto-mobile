@@ -1,9 +1,6 @@
 
 import 'package:flutter/material.dart';
-
-import '../sphere_open/sphere_open.dart';
-
-import '../../../typography/palette.dart';
+import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open.dart';
 
 // This class renders a preview of a sphere
 class SpherePreview extends StatelessWidget {

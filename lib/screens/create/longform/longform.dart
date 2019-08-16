@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/typography/palette.dart';
+import 'package:junto_beta_mobile/typography/style.dart';
 
-import '../../../typography/palette.dart';
-import '../../../typography/style.dart';
-import '../create_actions.dart';
 
 class CreateLongform extends StatefulWidget {
   @override

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/typography/palette.dart';
 
-import './../../../typography/palette.dart';
-import '../../../screens/expression_open/expression_open.dart';
 
 class ShortformPreview extends StatefulWidget {
   final expression;

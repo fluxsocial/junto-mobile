@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open.dart';
 
-import '../pack_open/pack_open.dart';
 
 // This class renders a pack preview (usually shown in a list of packs)
 class PackPreview extends StatelessWidget {

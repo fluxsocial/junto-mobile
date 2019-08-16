@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/screens/spheres/sphere_preview/sphere_preview.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/providers/spheres_provider/spheres_provider.dart';
-import './sphere_preview/sphere_preview.dart';
 
 // This class renders the main screen for Spheres. It includes a widget to create
 // a screen as well as a ListView of all the sphere previews

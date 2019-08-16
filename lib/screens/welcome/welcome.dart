@@ -1,8 +1,8 @@
 
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/screens/sign_in/sign_in.dart';
+import 'package:junto_beta_mobile/screens/sign_up/sign_up.dart';
 
-import '../sign_in/sign_in.dart';
-import '../sign_up/sign_up.dart';
 
 class Welcome extends StatelessWidget {
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/screens/notifications/notifications_appbar/notifications_appbar.dart';
 
-import './notifications_appbar/notifications_appbar.dart';
 
 class JuntoNotifications extends StatelessWidget {
   @override

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import './palette.dart';
+import 'package:junto_beta_mobile/typography/palette.dart';
 
 // Misc notes
 

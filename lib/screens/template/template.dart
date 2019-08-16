@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:junto_beta_mobile/components/appbar/appbar.dart';
+import 'package:junto_beta_mobile/components/bottom_nav/bottom_nav.dart';
+import 'package:junto_beta_mobile/screens/collective/collective.dart';
+import 'package:junto_beta_mobile/screens/collective/filter_fab/filter_fab.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/perspectives.dart';
+import 'package:junto_beta_mobile/screens/den/den.dart';
+import 'package:junto_beta_mobile/screens/packs/packs.dart';
+import 'package:junto_beta_mobile/screens/spheres/spheres.dart';
+import 'package:junto_beta_mobile/typography/palette.dart';
 
-import '../collective/perspectives/perspectives.dart';
-import '../collective/collective.dart';
-import '../collective/filter_fab/filter_fab.dart';
-import '../spheres/spheres.dart';
-import '../packs/packs.dart';
-import '../den/den.dart';
-import '../../components/appbar/appbar.dart';
-import './../../components/bottom_nav/bottom_nav.dart';
-import '../../typography/palette.dart';
 
 // This class is a template screen that contains the navbar, bottom bar,
 // and screen (collective, spheres, pack, etc) depending on condition.

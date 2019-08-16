@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-
-import './channel_preview.dart';
-import '../../custom_icons.dart';
-import '../../typography/style.dart';
-import '../../typography/palette.dart';
+import 'package:junto_beta_mobile/custom_icons.dart';
+import 'package:junto_beta_mobile/typography/palette.dart';
+import 'package:junto_beta_mobile/typography/style.dart';
 
 class PreviewBottom extends StatelessWidget {
   final expression;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/typography/palette.dart';
 
-import '../../../typography/palette.dart';
 
 // This class renders a widget that enables the user to create a sphere
 class SpheresCreate extends StatelessWidget {

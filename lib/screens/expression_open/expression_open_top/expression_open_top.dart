@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/typography/palette.dart';
 
-import '../../../typography/palette.dart';
-import '../../../custom_icons.dart';
 
 class ExpressionOpenTop extends StatelessWidget {
   final expression;

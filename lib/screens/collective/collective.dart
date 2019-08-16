@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/components/expression_preview/expression_preview.dart';
+import 'package:junto_beta_mobile/screens/collective/degrees/degrees.dart';
+import 'package:junto_beta_mobile/typography/palette.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/providers/collective_provider/collective_provider.dart';
 
-import './degrees/degrees.dart';
-import './../../components/expression_preview/expression_preview.dart';
-import '../../typography/palette.dart';
 
 // This screen shows a list of public expressions that can be filtered
 // by channel or perspective

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
+import 'package:junto_beta_mobile/screens/template/template.dart';
+import 'package:junto_beta_mobile/typography/palette.dart';
 
-import '../../template/template.dart';
-import '../../../typography/palette.dart';
 
 class SignUpWelcome extends StatefulWidget {
   final firstName;

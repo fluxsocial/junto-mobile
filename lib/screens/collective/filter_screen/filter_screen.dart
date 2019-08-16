@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/screens/collective/filter_fab/filter_fab.dart';
+import 'package:junto_beta_mobile/typography/palette.dart';
 
-import '../filter_fab/filter_fab.dart';
-import '../../../typography/palette.dart';
 
 class CollectiveFilterScreen extends StatelessWidget {
   final isVisible;

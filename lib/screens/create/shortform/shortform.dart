@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../../../typography/palette.dart';
-import '../create_actions.dart';
+import 'package:junto_beta_mobile/typography/palette.dart';
 
 class CreateShortform extends StatefulWidget {
   @override

@@ -2,11 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
-
-import './../create_actions.dart';
-import './../../../typography/palette.dart';
-import './../../../typography/style.dart';
-import './../../../custom_icons.dart';
+import 'package:junto_beta_mobile/custom_icons.dart';
+import 'package:junto_beta_mobile/typography/palette.dart';
 
 // Create using photo form
 class CreatePhoto extends StatefulWidget {

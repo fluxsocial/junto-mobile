@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../member/member.dart';
+import 'package:junto_beta_mobile/screens/member/member.dart';
 
 class JuntoDen extends StatefulWidget {
   @override

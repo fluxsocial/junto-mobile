@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/custom_icons.dart';
 
-import '../../../custom_icons.dart';
 
 class ExpressionOpenBottomNav extends StatelessWidget {
   Function openComment;

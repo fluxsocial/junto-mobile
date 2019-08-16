@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import '../../../typography/palette.dart';
+import 'package:junto_beta_mobile/typography/palette.dart';
 
 class CollectiveFilterFAB extends StatelessWidget {
   final isVisible;

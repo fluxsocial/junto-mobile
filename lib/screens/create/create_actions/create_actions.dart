@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/typography/palette.dart';
 
-import '../../../typography/palette.dart';
-import '../../../typography/style.dart';
-import '../../../custom_icons.dart';
 
 import './create_actions_appbar/create_actions_appbar.dart';
 

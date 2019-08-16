@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/screens/member/member_appbar/member_appbar.dart';
 
-import './member_appbar/member_appbar.dart';
 
 class JuntoMember extends StatelessWidget {
   @override

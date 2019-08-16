@@ -1,8 +1,8 @@
 
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/components/create_fab/create_fab.dart';
 
 import './sphere_open_appbar/sphere_open_appbar.dart';
-import './../../../components/create_fab/create_fab.dart';
 
 class SphereOpen extends StatefulWidget {
   final sphereTitle;

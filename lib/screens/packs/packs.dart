@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/screens/packs/pack_preview/pack_preview.dart';
 import 'package:provider/provider.dart';
 
 import 'package:junto_beta_mobile/providers/packs_provider/packs_provider.dart';
-import './pack_preview/pack_preview.dart';
 
 // This class renders the screen of packs a user belongs to
 class JuntoPacks extends StatelessWidget {

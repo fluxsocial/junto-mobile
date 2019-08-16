@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:junto_beta_mobile/components/create_fab/create_fab.dart';
+import 'package:junto_beta_mobile/custom_icons.dart';
 
-import './pack_open_appbar/pack_open_appbar.dart';
-import '../../../components/expression_preview/expression_preview.dart';
-import '../../../custom_icons.dart';
-import '../../../typography/palette.dart';
-
-import './pack_open_public/pack_open_public.dart';
-import './pack_open_private/pack_open_private.dart';
-import '../../../components/create_fab/create_fab.dart';
+import 'pack_open_appbar/pack_open_appbar.dart';
+import 'pack_open_private/pack_open_private.dart';
+import 'pack_open_public/pack_open_public.dart';
 
 class PackOpen extends StatefulWidget {
   final packTitle;
@@ -32,8 +29,6 @@ class PackOpenState extends State<PackOpen> {
   void initState() {
     super.initState();
   }
-
-  _switchScreen() {}
 
   @override
   Widget build(BuildContext context) {

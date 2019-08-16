@@ -1,8 +1,8 @@
 
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/screens/sign_up/sign_up_logo/sign_up_logo.dart';
+import 'package:junto_beta_mobile/screens/sign_up/sign_up_three/sign_up_three.dart';
 
-import '../sign_up_three/sign_up_three.dart';
-import './../sign_up_logo/sign_up_logo.dart';
 
 class SignUpTwo extends StatefulWidget {
   final firstName;

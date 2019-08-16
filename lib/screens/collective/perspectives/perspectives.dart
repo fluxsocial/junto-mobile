@@ -1,8 +1,8 @@
 
 import 'package:flutter/material.dart';
 
-import './perspective_preview.dart';
-import './create_perspective/create_perspective.dart';
+import 'create_perspective/create_perspective.dart';
+
 
 class Perspectives extends StatelessWidget {
   Function _changePerspective;

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../../../custom_icons.dart';
-import './../expression_open_channel/expression_open_channel.dart';
+import 'package:junto_beta_mobile/custom_icons.dart';
 
 class ExpressionOpenBottom extends StatefulWidget {
   final expression;

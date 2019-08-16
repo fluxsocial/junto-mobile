@@ -1,13 +1,11 @@
 
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/components/expression_preview/longform_preview/longform_preview.dart';
+import 'package:junto_beta_mobile/components/expression_preview/preview_bottom.dart';
+import 'package:junto_beta_mobile/components/expression_preview/preview_profile.dart';
+import 'package:junto_beta_mobile/components/expression_preview/shortform_preview/shortform_preview.dart';
+import 'package:junto_beta_mobile/screens/expression_open/expression_open.dart';
 
-import './preview_profile.dart';
-import './preview_bottom.dart'; 
-import './longform_preview/longform_preview.dart';
-import './shortform_preview/shortform_preview.dart';
-import './photo_preview/photo_preview.dart';
-import './event_preview/event_preview.dart';
-import '../../screens/expression_open/expression_open.dart';
 
 /// Renders a concise overview of one given [Expression]. 
 class ExpressionPreview extends StatelessWidget {

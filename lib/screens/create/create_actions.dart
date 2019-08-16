@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-
-import '../../typography/palette.dart';
 import 'package:http/http.dart' as http;
+import 'package:junto_beta_mobile/typography/palette.dart';
 
 // This widget is enables the user to add channels and create an expression.
 // Rendered within each expression type.

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../../custom_icons.dart';
+import 'package:junto_beta_mobile/custom_icons.dart';
 
 class CommentPreview extends StatelessWidget {
   final commentText;

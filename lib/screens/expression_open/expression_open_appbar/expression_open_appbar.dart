@@ -1,8 +1,8 @@
 
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/custom_icons.dart';
+import 'package:junto_beta_mobile/typography/palette.dart';
 
-import '../../../typography/palette.dart';
-import '../../../custom_icons.dart';
 
 class ExpressionOpenAppbar extends StatelessWidget {
   @override

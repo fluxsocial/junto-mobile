@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/screens/create/bullet/bullet.dart';
+import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
+import 'package:junto_beta_mobile/screens/create/create_bottom_nav.dart';
+import 'package:junto_beta_mobile/screens/create/event/event.dart';
+import 'package:junto_beta_mobile/screens/create/longform/longform.dart';
+import 'package:junto_beta_mobile/screens/create/photo/photo.dart';
+import 'package:junto_beta_mobile/screens/create/shortform/shortform.dart';
+import 'package:junto_beta_mobile/typography/style.dart';
 
-import './create_bottom_nav.dart';
-import '../../typography/style.dart';
-import './longform/longform.dart';
-import './shortform/shortform.dart';
-import './photo/photo.dart';
-import './bullet/bullet.dart';
-import './event/event.dart';
-import './../../typography/palette.dart';
-import './create_actions/create_actions.dart';
 
 class JuntoCreate extends StatefulWidget {
   final expressionLayer;
