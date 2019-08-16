@@ -1,8 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/screens/sign_up/sign_up_logo/sign_up_logo.dart';
 import 'package:junto_beta_mobile/screens/sign_up/sign_up_three/sign_up_three.dart';
-
 
 class SignUpTwo extends StatefulWidget {
   final firstName;
@@ -12,7 +10,6 @@ class SignUpTwo extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-
     return SignUpTwoState();
   }
 }
@@ -24,7 +21,6 @@ class SignUpTwoState extends State<SignUpTwo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: Stack(
         children: [
           Container(
@@ -36,59 +32,72 @@ class SignUpTwoState extends State<SignUpTwo> {
                 stops: [0.1, 0.9],
                 colors: [
                   Color(0xff5E54D0),
-                  Color(0xff307FAB)
-                ]
-              )
+                  Color(0xff307FAB),
+                ],
+              ),
             ),
-
-            child: 
-              Container(
-                margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * .10 + 18),
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: 
-                  Column(      
-                    crossAxisAlignment: CrossAxisAlignment.start,        
-                    children: <Widget> [
-                      Container(                
-                        margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * .17),
-                        child: Text('What username would you like to reserve?',
-                          style: TextStyle(color: Colors.white, fontSize: 27)
-                        )
-                      ),   
-
-                      Container(
-                        child: Column(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(bottom: 36),
-                              child: 
-                                TextField(
-                                  controller: usernameController,
-                                  onChanged: (text) {
-                                    setState(() {
-                                      username = text; 
-                                    });
-                                  },
-                                  decoration: InputDecoration(
-                                      enabledBorder: InputBorder.none,
-                                      focusedBorder: InputBorder.none,                 
-                                      labelStyle: TextStyle(color: Colors.green),
-                                      hintText: 'USERNAME',
-                                      hintStyle: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w400),
-                                      fillColor: Colors.white,
-                                  ),
-                                  style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w500)
-                                )
+            child: Container(
+              margin: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * .10 + 18),
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).size.height * .17,
+                    ),
+                    child: Text(
+                      'What username would you like to reserve?',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 27,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(bottom: 36),
+                          child: TextField(
+                            controller: usernameController,
+                            onChanged: (text) {
+                              setState(
+                                () {
+                                  username = text;
+                                },
+                              );
+                            },
+                            decoration: InputDecoration(
+                              enabledBorder: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              labelStyle: TextStyle(
+                                color: Colors.green,
+                              ),
+                              hintText: 'USERNAME',
+                              hintStyle: TextStyle(
+                                color: Colors.white,
+                                fontSize: 17,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              fillColor: Colors.white,
                             ),
-                          ]
-                        )
-                      ),                               
-                  ],)
-              )
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
-
           SignUpLogo(),
-
           Positioned(
             bottom: MediaQuery.of(context).size.height * .05,
             right: 20,
@@ -97,30 +106,45 @@ class SignUpTwoState extends State<SignUpTwo> {
                 Container(
                   margin: EdgeInsets.only(right: 17),
                   child: GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(Icons.arrow_left, color: Colors.white, size: 27),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Icon(
+                      Icons.arrow_left,
+                      color: Colors.white,
+                      size: 27,
                     ),
+                  ),
                 ),
-              
                 GestureDetector(
                   onTap: () {
                     usernameController.text = '';
-
-                    if(widget.firstName != '' && widget.lastName != '' && username != '') {
-                      Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => SignUpThree(widget.firstName, widget.lastName, username)
-                      ));
+                    if (widget.firstName != '' &&
+                        widget.lastName != '' &&
+                        username != '') {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SignUpThree(
+                                widget.firstName,
+                                widget.lastName,
+                                username,
+                              ),
+                        ),
+                      );
                     }
                   },
-                  
-                  child: Icon(Icons.arrow_right, color: Colors.white, size: 22),
-                ),              
-            ],)
-          ),                            
-        ])
-    
-    );      
+                  child: Icon(
+                    Icons.arrow_right,
+                    color: Colors.white,
+                    size: 22,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

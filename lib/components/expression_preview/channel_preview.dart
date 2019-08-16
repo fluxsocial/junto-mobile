@@ -1,7 +1,5 @@
-
 import 'package:flutter/material.dart';
-
-import './../../typography/style.dart';
+import 'package:junto_beta_mobile/typography/style.dart';
 
 class ChannelPreview extends StatelessWidget {
   final String channel;
@@ -10,25 +8,19 @@ class ChannelPreview extends StatelessWidget {
 
   _buildChannel() {
     if (channel == '') {
-      return Container(
-        height: 0,
-        width: 0
-      );
+      return Container(height: 0, width: 0);
     } else {
-      return 
-      Container(
-        margin: EdgeInsets.only(right: 5.0),
-        child: Text(
-          '#' + channel,
-          style: JuntoStyles.expressionPreviewChannel,
-        )
-      ); 
+      return Container(
+          margin: EdgeInsets.only(right: 5.0),
+          child: Text(
+            '#' + channel,
+            style: JuntoStyles.expressionPreviewChannel,
+          ));
     }
   }
+
   @override
   Widget build(BuildContext context) {
-
-    return 
-        _buildChannel();
+    return _buildChannel();
   }
 }

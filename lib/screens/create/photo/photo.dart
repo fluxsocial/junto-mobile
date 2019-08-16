@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -100,163 +101,212 @@ class CreatePhotoState extends State<CreatePhoto> {
   // Component shown to prompt user to retrieve image
   _photoTypeTemplate() {
     return Container(
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
           _libraryActive ? _buildUploadImage() : _buildUseCamera(),
           Container(
-              // padding: EdgeInsets.only(top: 5),
-              height: 50,
-              decoration: BoxDecoration(
-                  border: Border(
+            // padding: EdgeInsets.only(top: 5),
+            height: 50,
+            decoration: BoxDecoration(
+              border: Border(
                 top: BorderSide(color: Color(0xffeeeeee), width: 1),
-              )),
-              child: Row(
-                children: <Widget>[
-                  Container(
-                      padding: EdgeInsets.symmetric(vertical: 10),
-                      width: MediaQuery.of(context).size.width * .5,
-                      child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _libraryActive = true;
-                              _cameraActive = false;
-                            });
-                          },
-                          child: Text('LIBRARY',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  color: _libraryActive
-                                      ? Color(0xff333333)
-                                      : Color(0xff999999))))),
-                  Container(
-                      padding: EdgeInsets.symmetric(vertical: 10),
-                      width: MediaQuery.of(context).size.width * .5,
-                      child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _libraryActive = false;
-                              _cameraActive = true;
-                            });
-                            _getImage(context, ImageSource.camera);
-                          },
-                          child: Text('CAMERA',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  color: _cameraActive
-                                      ? Color(0xff333333)
-                                      : Color(0xff999999)))))
-                ],
-              ))
-        ]));
+              ),
+            ),
+            child: Row(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  width: MediaQuery.of(context).size.width * .5,
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(
+                        () {
+                          _libraryActive = true;
+                          _cameraActive = false;
+                        },
+                      );
+                    },
+                    child: Text(
+                      'LIBRARY',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        color: _libraryActive
+                            ? Color(0xff333333)
+                            : Color(0xff999999),
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  width: MediaQuery.of(context).size.width * .5,
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _libraryActive = false;
+                        _cameraActive = true;
+                      });
+                      _getImage(context, ImageSource.camera);
+                    },
+                    child: Text(
+                      'CAMERA',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        color: _cameraActive
+                            ? Color(0xff333333)
+                            : Color(0xff999999),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   // Component once image is retrieved
   _buildImageEdit() {
-    return Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-      Column(
-        children: <Widget>[
-          Container(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          children: <Widget>[
+            Container(
               width: MediaQuery.of(context).size.width,
-              child: Image.file(_croppedFile, fit: BoxFit.fitWidth)),
-        ],
-      ),
-      Container(
-          padding: EdgeInsets.only(top: 5),
-          decoration: BoxDecoration(
+              child: Image.file(
+                _croppedFile,
+                fit: BoxFit.fitWidth,
+              ),
+            ),
+          ],
+        ),
+        Container(
+            padding: EdgeInsets.only(top: 5),
+            decoration: BoxDecoration(
               border: Border(
-            top: BorderSide(color: Color(0xffeeeeee), width: 1),
-          )),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _imageFile = null;
-                    _croppedFile = null;
-                  });
-                  widget.toggleBottomNavVisibility();
-                  setState(() {
-                    _onFirstScreen = true;
-                  });
-                },
-                child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    child: Icon(Icons.arrow_back_ios, size: 17)),
+                top: BorderSide(color: Color(0xffeeeeee), width: 1),
               ),
-              GestureDetector(
-                onTap: () {
-                  _getImage(context, ImageSource.gallery);
-                },
-                child: Container(
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () {
+                    setState(
+                      () {
+                        _imageFile = null;
+                        _croppedFile = null;
+                      },
+                    );
+                    widget.toggleBottomNavVisibility();
+                    setState(
+                      () {
+                        _onFirstScreen = true;
+                      },
+                    );
+                  },
+                  child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Icon(Icons.arrow_back_ios, size: 17)),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    _getImage(context, ImageSource.gallery);
+                  },
+                  child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Icon(CustomIcons.camera, size: 17)),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    _cropImage(_imageFile);
+                  },
+                  child: Container(
                     padding: EdgeInsets.symmetric(vertical: 10),
-                    child: Icon(CustomIcons.camera, size: 17)),
-              ),
-              GestureDetector(
-                onTap: () {
-                  _cropImage(_imageFile);
-                },
-                child: Container(
+                    child: Icon(
+                      Icons.crop,
+                      size: 17,
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    setState(
+                      () {
+                        _photoEdit = false;
+                      },
+                    );
+                  },
+                  child: Container(
                     padding: EdgeInsets.symmetric(vertical: 10),
-                    child: Icon(Icons.crop, size: 17)),
-              ),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _photoEdit = false;
-                  });
-                },
-                child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    child: Icon(Icons.arrow_forward_ios, size: 17)),
-              ),
-            ],
-          ))
-    ]);
+                    child: Icon(Icons.arrow_forward_ios, size: 17),
+                  ),
+                ),
+              ],
+            ))
+      ],
+    );
   }
 
   // Component once image is retrieved
   _buildImageCaption() {
-    return Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-      Container(
-        padding: EdgeInsets.symmetric(horizontal: 10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              // color: Colors.blue,
-              padding: EdgeInsets.only(right: 10),
-              width: MediaQuery.of(context).size.width - 70,
-              child: TextField(
-                buildCounter: (BuildContext context,
-                        {int currentLength, int maxLength, bool isFocused}) =>
-                    null,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'Write a caption (optional)',
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                // color: Colors.blue,
+                padding: EdgeInsets.only(right: 10),
+                width: MediaQuery.of(context).size.width - 70,
+                child: TextField(
+                  buildCounter: (
+                    BuildContext context, {
+                    int currentLength,
+                    int maxLength,
+                    bool isFocused,
+                  }) =>
+                      null,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'Write a caption (optional)',
+                  ),
+                  cursorColor: JuntoPalette.juntoGrey,
+                  cursorWidth: 2,
+                  style: TextStyle(fontSize: 15, color: Color(0xff333333)),
+                  maxLines: null,
+                  maxLength: 2200,
+                  textInputAction: TextInputAction.done,
                 ),
-                cursorColor: JuntoPalette.juntoGrey,
-                cursorWidth: 2,
-                style: TextStyle(fontSize: 15, color: Color(0xff333333)),
-                maxLines: null,
-                maxLength: 2200,
-                textInputAction: TextInputAction.done,
               ),
-            ),
-            Container(height: 50, width: 50, child: Image.file(_croppedFile))
-          ],
+              Container(
+                height: 50,
+                width: 50,
+                child: Image.file(_croppedFile),
+              )
+            ],
+          ),
         ),
-      ),
-      Container(
+        Container(
           padding: EdgeInsets.only(top: 5),
           decoration: BoxDecoration(
-              border: Border(
-            top: BorderSide(color: Color(0xffeeeeee), width: 1),
-          )),
+            border: Border(
+              top: BorderSide(
+                color: Color(0xffeeeeee),
+                width: 1,
+              ),
+            ),
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
@@ -267,37 +317,54 @@ class CreatePhotoState extends State<CreatePhoto> {
                   });
                 },
                 child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    child: Icon(Icons.arrow_back_ios, size: 17)),
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: Icon(
+                    Icons.arrow_back_ios,
+                    size: 17,
+                  ),
+                ),
               ),
               GestureDetector(
                 onTap: () {},
                 child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    child: Text('# CHANNELS',
-                        style: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w700))),
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: Text(
+                    '# CHANNELS',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
               ),
               GestureDetector(
                 onTap: () {
-                  setState(() {
-                    _photoEdit = false;
-                  });
+                  setState(
+                    () {
+                      _photoEdit = false;
+                    },
+                  );
                 },
                 child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    child: Text('CREATE',
-                        style: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w700))),
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: Text(
+                    'CREATE',
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+                  ),
+                ),
               ),
             ],
-          ))
-    ]);
+          ),
+        )
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(child: _currentScreen());
+    return Expanded(
+      child: _currentScreen(),
+    );
   }
 
   // Render current screen conditionally

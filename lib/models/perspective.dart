@@ -9,7 +9,7 @@ class Perspective {
       Perspective('Design'),
       Perspective('Meditation'),
       Perspective('Hoops 🏀'),
-      Perspective('Austrian Economics📈'),      
+      Perspective('Austrian Economics📈'),
       Perspective('Holochain ♓'),
     ];
   }

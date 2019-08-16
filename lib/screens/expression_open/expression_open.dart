@@ -6,7 +6,6 @@ import 'package:junto_beta_mobile/screens/expression_open/expressions/longform_o
 import 'package:junto_beta_mobile/screens/expression_open/expressions/shortform_open/shortform_open.dart';
 import 'package:junto_beta_mobile/typography/palette.dart';
 
-
 class ExpressionOpen extends StatefulWidget {
   final expression;
   ExpressionOpen(this.expression);
@@ -36,91 +35,106 @@ class ExpressionOpenState extends State<ExpressionOpen> {
     }
 
     return Scaffold(
-        appBar: PreferredSize(
-            preferredSize: Size.fromHeight(45.0),
-            child: ExpressionOpenAppbar()),
-        backgroundColor: Colors.white,
-        body: Column(
-          children: <Widget>[
-            Expanded(
-                child: ListView(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(45.0),
+        child: ExpressionOpenAppbar(),
+      ),
+      backgroundColor: Colors.white,
+      body: Column(
+        children: <Widget>[
+          Expanded(
+              child: ListView(
+            children: <Widget>[
+              ExpressionOpenTop(widget.expression),
+              _buildExpression(),
+              ExpressionOpenBottom(widget.expression),
+            ],
+          )),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border(
+                top: BorderSide(
+                  width: 1,
+                  color: Color(0xffeeeeee),
+                ),
+              ),
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                ExpressionOpenTop(widget.expression),
-                _buildExpression(),
-                ExpressionOpenBottom(widget.expression),
+                Container(
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.only(right: 10),
+                        child: ClipOval(
+                          child: Image.asset(
+                            'assets/images/junto-mobile__eric.png',
+                            height: 36.0,
+                            width: 36.0,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Color(0xfff9f9f9),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        width: MediaQuery.of(context).size.width - 135,
+                        constraints: BoxConstraints(maxHeight: 180),
+                        child: TextField(
+                          controller: commentController,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            // hintText: 'reply',
+                          ),
+                          maxLines: null,
+                          cursorColor: JuntoPalette.juntoGrey,
+                          cursorWidth: 2,
+                          style: TextStyle(
+                            fontSize: 17,
+                            color: Color(0xff333333),
+                          ),
+                          textInputAction: TextInputAction.newline,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(25),
+                      gradient: LinearGradient(
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        stops: [0.1, 0.9],
+                        colors: [
+                          JuntoPalette.juntoBlue,
+                          JuntoPalette.juntoPurple
+                        ],
+                      ),
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: Text(
+                      'REPLY',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                ),
               ],
-            )),
-            Container(
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border(
-                        top: BorderSide(width: 1, color: Color(0xffeeeeee)))),
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Container(
-                        child: Row(
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.only(right: 10),
-                          child: ClipOval(
-                            child: Image.asset(
-                              'assets/images/junto-mobile__eric.png',
-                              height: 36.0,
-                              width: 36.0,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                              color: Color(0xfff9f9f9),
-                              borderRadius: BorderRadius.circular(10)),
-                          width: MediaQuery.of(context).size.width - 135,
-                          constraints: BoxConstraints(maxHeight: 180),
-                          child: TextField(
-                            controller: commentController,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              // hintText: 'reply',
-                            ),
-                            maxLines: null,
-                            cursorColor: JuntoPalette.juntoGrey,
-                            cursorWidth: 2,
-                            style: TextStyle(
-                                fontSize: 17, color: Color(0xff333333)),
-                            textInputAction: TextInputAction.newline,
-                          ),
-                        ),
-                      ],
-                    )),
-                    GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(25),
-                                gradient: LinearGradient(
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                    stops: [
-                                      0.1,
-                                      0.9
-                                    ],
-                                    colors: [
-                                      JuntoPalette.juntoBlue,
-                                      JuntoPalette.juntoPurple
-                                    ])),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: Text('REPLY',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 12))))
-                  ],
-                ))
-          ],
-        ));
+            ),
+          )
+        ],
+      ),
+    );
   }
 }

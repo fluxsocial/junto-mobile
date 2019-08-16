@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/typography/palette.dart';
 
-
 class ShortformPreview extends StatefulWidget {
   final expression;
 
@@ -68,12 +67,15 @@ class ShortformPreviewState extends State<ShortformPreview> {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-            begin: Alignment.bottomLeft,
-            end: Alignment.topRight,
-            stops: [0.1, 0.9],
-            colors: [_gradientOne, _gradientTwo]),
+          begin: Alignment.bottomLeft,
+          end: Alignment.topRight,
+          stops: [0.1, 0.9],
+          colors: [
+            _gradientOne,
+            _gradientTwo,
+          ],
+        ),
       ),
-
       constraints: BoxConstraints(
         minHeight: 240,
       ),
@@ -87,9 +89,10 @@ class ShortformPreviewState extends State<ShortformPreview> {
             shortformBody,
             textAlign: TextAlign.center,
             style: TextStyle(
-                fontSize: 17.0,
-                fontWeight: FontWeight.w700,
-                color: Colors.white),
+              fontSize: 17.0,
+              fontWeight: FontWeight.w700,
+              color: Colors.white,
+            ),
           ),
         ],
       ),

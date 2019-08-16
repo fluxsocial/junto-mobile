@@ -15,19 +15,25 @@ class JuntoSpheres extends StatelessWidget {
           // SpheresCreate(),
 
           // List of spheres member belongs to
-          Consumer<SpheresProvider>(builder: (context, spheres, child) {
-            return ListView(
+          Consumer<SpheresProvider>(
+            builder: (context, spheres, child) {
+              return ListView(
                 shrinkWrap: true,
                 physics: ClampingScrollPhysics(),
                 children: spheres.spheres
-                    .map((sphere) => SpherePreview(
-                        sphere.sphereTitle,
-                        sphere.sphereMembers,
-                        sphere.sphereImage,
-                        sphere.sphereHandle,
-                        sphere.sphereDescription))
-                    .toList());
-          })
+                    .map(
+                      (sphere) => SpherePreview(
+                            sphere.sphereTitle,
+                            sphere.sphereMembers,
+                            sphere.sphereImage,
+                            sphere.sphereHandle,
+                            sphere.sphereDescription,
+                          ),
+                    )
+                    .toList(),
+              );
+            },
+          )
         ],
       ),
     );

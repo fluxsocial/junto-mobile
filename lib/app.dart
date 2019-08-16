@@ -9,8 +9,6 @@ import 'package:provider/provider.dart';
 
 import 'providers/collective_provider/collective_provider.dart';
 
-
-
 class JuntoApp extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -22,27 +20,23 @@ class JuntoAppState extends State<JuntoApp> {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-        providers: [
-          ChangeNotifierProvider(
-            builder: (context) => CollectiveProvider(),
-          ),
-          ChangeNotifierProvider(
-            builder: (context) => SpheresProvider(),
-          ),           
-          ChangeNotifierProvider(
-            builder: (context) => PacksProvider(),
-          )          
-        ],
-        child: MaterialApp(
-            theme: ThemeData(
-              fontFamily: 'Avenir',
-            ),
-            home: Welcome(),
-            routes: {
-              '/welcome': (BuildContext context) => Welcome(),
-              '/template': (BuildContext context) => JuntoTemplate(),
-              '/create': (BuildContext context) => JuntoCreate('collective'),
-              '/notifications': (BuildContext context) => JuntoNotifications(),
-            }));
+      providers: [
+        ChangeNotifierProvider(builder: (context) => CollectiveProvider()),
+        ChangeNotifierProvider(builder: (context) => SpheresProvider()),
+        ChangeNotifierProvider(builder: (context) => PacksProvider())
+      ],
+      child: MaterialApp(
+        theme: ThemeData(
+          fontFamily: 'Avenir',
+        ),
+        home: Welcome(),
+        routes: {
+          '/welcome': (BuildContext context) => Welcome(),
+          '/template': (BuildContext context) => JuntoTemplate(),
+          '/create': (BuildContext context) => JuntoCreate('collective'),
+          '/notifications': (BuildContext context) => JuntoNotifications(),
+        },
+      ),
+    );
   }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import './../../../typography/style.dart';
+import 'package:junto_beta_mobile/typography/style.dart';
 
 class LongformPreview extends StatelessWidget {
   final expression;
@@ -9,7 +8,8 @@ class LongformPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String expressionBody = expression.expression['entry']['expression']['body'];
+    String expressionBody =
+        expression.expression['entry']['expression']['body'];
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
@@ -43,5 +43,5 @@ class LongformPreview extends StatelessWidget {
     } else {
       return SizedBox();
     }
-  }  
+  }
 }

@@ -8,21 +8,31 @@ import 'package:junto_beta_mobile/providers/packs_provider/packs_provider.dart';
 class JuntoPacks extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ListView(children: <Widget>[
-      // My Pack
-      PackPreview('The Gnarly Nomads', 'Eric Yang',
-          'assets/images/junto-mobile__eric.png'),
+    return ListView(
+      children: <Widget>[
+        // My Pack
+        PackPreview('The Gnarly Nomads', 'Eric Yang',
+            'assets/images/junto-mobile__eric.png'),
 
-      // Other Packs user belongs to
-      Consumer<PacksProvider>(builder: (context, packs, child) {
-        return ListView(
-            physics: ClampingScrollPhysics(),
-            shrinkWrap: true,
-            children: packs.packs
-                .map((pack) =>
-                    PackPreview(pack.packTitle, pack.packUser, pack.packImage))
-                .toList());
-      })
-    ]);
+        // Other Packs user belongs to
+        Consumer<PacksProvider>(
+          builder: (context, packs, child) {
+            return ListView(
+              physics: ClampingScrollPhysics(),
+              shrinkWrap: true,
+              children: packs.packs
+                  .map(
+                    (pack) => PackPreview(
+                          pack.packTitle,
+                          pack.packUser,
+                          pack.packImage,
+                        ),
+                  )
+                  .toList(),
+            );
+          },
+        )
+      ],
+    );
   }
 }

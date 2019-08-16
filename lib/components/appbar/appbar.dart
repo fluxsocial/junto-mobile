@@ -35,56 +35,60 @@ class JuntoAppBar extends StatelessWidget {
       titleSpacing: 0.0,
       title: Container(
         padding: EdgeInsets.symmetric(horizontal: 10),
-        child:
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Builder(builder: (context) {
-            return GestureDetector(
-              onTap: () {
-                Scaffold.of(context).openDrawer();
-              },
-              child: Row(
-                children: <Widget>[
-                  Image.asset('assets/images/junto-mobile__logo.png',
-                      height: 20.0, width: 20.0),
-                  Container(
-                    margin: EdgeInsets.only(left: 7.5),
-                    child: Text(juntoAppBarTitle,
-                        textAlign: TextAlign.center,
-                        style: JuntoStyles.appbarTitle),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Builder(
+              builder: (context) {
+                return GestureDetector(
+                  onTap: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                  child: Row(
+                    children: <Widget>[
+                      Image.asset('assets/images/junto-mobile__logo.png',
+                          height: 20.0, width: 20.0),
+                      Container(
+                        margin: EdgeInsets.only(left: 7.5),
+                        child: Text(
+                          juntoAppBarTitle,
+                          textAlign: TextAlign.center,
+                          style: JuntoStyles.appbarTitle,
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            );
-          }),
-          Row(
-            children: <Widget>[
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => GlobalSearch(),
-                    ),
-                  );
-                },
-                child: Container(
-                  child: Icon(Icons.search,
-                      color: JuntoPalette.juntoSleek, size: 20),
+                );
+              },
+            ),
+            Row(
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => GlobalSearch(),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    child: Icon(Icons.search,
+                        color: JuntoPalette.juntoSleek, size: 20),
+                  ),
                 ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  navNotifications();
-                },
-                child: Container(
-                  margin: EdgeInsets.only(left: 7.5),
-                  child: Icon(CustomIcons.moon,
-                      color: JuntoPalette.juntoSleek, size: 20),
-                ),
-              )
-            ],
-          )
-        ]),
+                GestureDetector(
+                  onTap: navNotifications,
+                  child: Container(
+                    margin: EdgeInsets.only(left: 7.5),
+                    child: Icon(CustomIcons.moon,
+                        color: JuntoPalette.juntoSleek, size: 20),
+                  ),
+                )
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
