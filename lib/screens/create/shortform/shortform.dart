@@ -9,17 +9,30 @@ class CreateShortform extends StatefulWidget {
 }
 
 class CreateShortformState extends State<CreateShortform> {
-  var gradientOne = Colors.white;
-  var gradientTwo = Colors.white;
-  var fontColor = JuntoPalette.juntoGrey;
+  Color gradientOne = Colors.white;
+  Color gradientTwo = Colors.white;
+  Color fontColor = JuntoPalette.juntoGrey;
   String _currentBackground = 'none';
-  TextEditingController _bodyController = TextEditingController();
+  TextEditingController _bodyController;
+
+  @override
+  void initState() {
+    super.initState();
+    _bodyController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _bodyController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    var _bodyValue = _bodyController.text;
+    final _bodyValue = _bodyController.text;
 
-    Map _shortformExpression = {
+    //ignore:unused_local_variable
+    final Map _shortformExpression = {
       'expression_type': 'ShortForm',
       'background': _currentBackground,
       'body': _bodyValue

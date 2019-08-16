@@ -8,12 +8,13 @@ import 'package:junto_beta_mobile/providers/collective_provider/collective_provi
 // This screen shows a list of public expressions that can be filtered
 // by channel or perspective
 class JuntoCollective extends StatefulWidget {
-  var currentScreen = 'collective';
+  JuntoCollective(this.controller);
+  
+  final currentScreen = 'collective';
 
   // This controller is used to detect the scroll of the ListView
   // to render the FAB dynamically
   final controller;
-  JuntoCollective(this.controller);
 
   @override
   State<StatefulWidget> createState() {

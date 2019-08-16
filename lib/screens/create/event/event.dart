@@ -3,6 +3,7 @@ import 'package:junto_beta_mobile/typography/palette.dart';
 import 'package:junto_beta_mobile/typography/style.dart';
 
 class CreateEvent extends StatelessWidget {
+  //ignore:unused_field
   final Map _eventExpression = {
     'expression': {
       'expression_type': 'eventform',

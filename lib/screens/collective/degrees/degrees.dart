@@ -3,7 +3,7 @@ import 'package:junto_beta_mobile/screens/collective/degrees/degree/degree.dart'
 
 // Degrees of Separation widget rendered in Collective screen under 'JUNTO' perspective
 class DegreesOfSeparation extends StatelessWidget {
-  Function changeDegree;
+  final Function changeDegree;
   final colorInfinity;
   final colorOne;
   final colorTwo;

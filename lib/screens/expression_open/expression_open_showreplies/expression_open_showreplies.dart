@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class ExpressionOpenShowReplies extends StatelessWidget {
-  Function toggleReplies;
-  Widget showRepliesText;
-
   ExpressionOpenShowReplies(this.toggleReplies, this.showRepliesText);
+  
+  final VoidCallback toggleReplies;
+  final Widget showRepliesText;
 
   @override
   Widget build(BuildContext context) {

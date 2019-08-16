@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class PerspectivePreview extends StatelessWidget {
-  String title;
-  Function changePerspective;
   PerspectivePreview(this.title, this.changePerspective);
+  
+  final String title;
+  final Function changePerspective;
 
   @override
   Widget build(BuildContext context) {

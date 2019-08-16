@@ -8,9 +8,9 @@ import 'package:junto_beta_mobile/typography/palette.dart';
 
 // Create using photo form
 class CreatePhoto extends StatefulWidget {
-  Function toggleBottomNavVisibility;
-
   CreatePhoto(this.toggleBottomNavVisibility);
+  
+  final Function toggleBottomNavVisibility;
 
   @override
   State<StatefulWidget> createState() {

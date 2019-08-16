@@ -3,8 +3,8 @@ import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/typography/palette.dart';
 
 class CreateBottomNav extends StatelessWidget {
-  Function switchTemplate;
-  bool bottomNavVisible;
+  final Function switchTemplate;
+  final bool bottomNavVisible;
   CreateBottomNav(this.switchTemplate, this.bottomNavVisible);
 
   @override

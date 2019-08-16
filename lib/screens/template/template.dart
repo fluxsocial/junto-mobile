@@ -22,6 +22,7 @@ class JuntoTemplate extends StatefulWidget {
 class JuntoTemplateState extends State<JuntoTemplate> {
   // Default values for collective screen / JUNTO perspective - change dynamically.
   var _currentScreen = 'collective';
+  //ignore:unused_field
   String _currentPerspective = 'JUNTO';
   String _appbarTitle = 'JUNTO';
 
@@ -290,32 +291,31 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                           children: _channels
                               .map(
                                 (channel) => GestureDetector(
-                                      onDoubleTap: () {
-                                        _removeChannel(state, channel);
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          border: Border.all(
-                                            color: Color(0xff333333),
-                                            width: 1,
-                                          ),
-                                        ),
-                                        margin: EdgeInsets.only(right: 10),
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 10,
-                                          vertical: 5,
-                                        ),
-                                        child: Text(
-                                          channel,
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                        ),
+                                  onDoubleTap: () {
+                                    _removeChannel(state, channel);
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      border: Border.all(
+                                        color: Color(0xff333333),
+                                        width: 1,
                                       ),
                                     ),
+                                    margin: EdgeInsets.only(right: 10),
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                      vertical: 5,
+                                    ),
+                                    child: Text(
+                                      channel,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               )
                               .toList(),
                         ),

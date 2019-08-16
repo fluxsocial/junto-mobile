@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'create_perspective/create_perspective.dart';
 
 class Perspectives extends StatelessWidget {
-  Function _changePerspective;
   Perspectives(this._changePerspective);
+  final Function _changePerspective;
 
   @override
   Widget build(BuildContext context) {

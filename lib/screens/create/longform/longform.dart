@@ -15,9 +15,10 @@ class CreateLongformState extends State<CreateLongform> {
 
   @override
   Widget build(BuildContext context) {
-    var _titleValue = _titleController.text;
-    var _bodyValue = _bodyController.text;
+    final _titleValue = _titleController.text;
+    final _bodyValue = _bodyController.text;
 
+    //ignore:unused_local_variable
     Map _longformExpression = {
       'expression_type': 'LongForm',
       'title': _titleValue,
