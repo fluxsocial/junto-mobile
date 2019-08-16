@@ -46,16 +46,15 @@ class ExpressionOpenTop extends StatelessWidget {
                           fontSize: 14,
                           fontWeight: FontWeight.w700),
                     ),
-                    Text(username,
+                    Text('@' + username,
                         style: TextStyle(
                             color: JuntoPalette.juntoGrey,
-                            fontSize: 14,
+                            fontSize: 12,
                             fontWeight: FontWeight.w500))
                   ],
                 ),
               ),
             ]),
-            Text(timestamp + 'm', style: TextStyle(fontSize: 12))
           ]),
     );
   }

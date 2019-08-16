@@ -25,7 +25,9 @@ AppBar(
               child: Icon(CustomIcons.back_arrow_left,
                   color: JuntoPalette.juntoSleek, size: 24,),
             ),
-            Icon(CustomIcons.more)
+            Container(
+              child: Icon(CustomIcons.more, size: 20)
+            )
           ],
         ),
       ),
