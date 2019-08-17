@@ -53,8 +53,12 @@ class ExpressionOpenTop extends StatelessWidget {
                             fontWeight: FontWeight.w500))
                   ],
                 ),
-              ),
+              ),          
             ]),
+
+            Container(
+              child: Icon(CustomIcons.more, size: 20)
+            )                
           ]),
     );
   }
