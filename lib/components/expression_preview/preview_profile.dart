@@ -12,7 +12,7 @@ class PreviewProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     String firstName = expression.profile['entry']['first_name'];
     String lastName = expression.profile['entry']['last_name'];
-    String username = expression.username['entry']['username']; 
+    String username = expression.username['entry']['username'];
     String profilePicture = expression.profile['entry']['profile_picture'];
 
     return Container(
@@ -20,10 +20,7 @@ class PreviewProfile extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-            
+          Row(crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
             // profile picture
             ClipOval(
               child: Image.asset(
@@ -41,25 +38,23 @@ class PreviewProfile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   GestureDetector(
-                    onTap: () => {
-                      Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => JuntoMember()
-                      ))
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => JuntoMember()),
+                      );
                     },
                     child: Text(
                       firstName + ' ' + lastName,
                       style: JuntoStyles.expressionPreviewName,
                     ),
                   ),
-                  
                   Text(username, style: JuntoStyles.expressionPreviewHandle)
                 ],
               ),
             ),
           ]),
-          Row(children: [          
-            Container(child: Icon(CustomIcons.more, size: 17))
-          ])
+          Row(children: [Container(child: Icon(CustomIcons.more, size: 17))])
         ],
       ),
     );

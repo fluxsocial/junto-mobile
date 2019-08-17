@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 class ExpressionOpenShortreply extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return Container(
       constraints: BoxConstraints(
         maxHeight: 250,
@@ -17,7 +16,6 @@ class ExpressionOpenShortreply extends StatelessWidget {
           ),
         ),
       ),
-
       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       child: Container(
         decoration: BoxDecoration(
@@ -32,7 +30,9 @@ class ExpressionOpenShortreply extends StatelessWidget {
           maxLines: null,
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
-              border: InputBorder.none, hintText: 'Reply to Eric'),
+            border: InputBorder.none,
+            hintText: 'Reply to Eric',
+          ),
         ),
       ),
     );

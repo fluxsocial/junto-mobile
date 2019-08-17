@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../../../typography/palette.dart';
-import '../../../custom_icons.dart';
+import 'package:junto_beta_mobile/typography/palette.dart';
 
 class ExpressionOpenTop extends StatelessWidget {
   final expression;
@@ -19,10 +17,11 @@ class ExpressionOpenTop extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
       child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Row(children: [
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Row(
+            children: [
               // profile picture
               ClipOval(
                 child: Image.asset(
@@ -42,10 +41,12 @@ class ExpressionOpenTop extends StatelessWidget {
                     Text(
                       firstName + ' ' + lastName,
                       style: TextStyle(
-                          color: JuntoPalette.juntoGrey,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700),
+                        color: JuntoPalette.juntoGrey,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
+ExpressionOpen
                     Text('@' + username,
                         style: TextStyle(
                             color: JuntoPalette.juntoGrey,
@@ -60,6 +61,24 @@ class ExpressionOpenTop extends StatelessWidget {
               child: Icon(CustomIcons.more, size: 20)
             )                
           ]),
+
+                    Text(
+                      username,
+                      style: TextStyle(
+                        color: JuntoPalette.juntoGrey,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+          Text(timestamp + 'm', style: TextStyle(fontSize: 12))
+        ],
+      ),
+
     );
   }
 }

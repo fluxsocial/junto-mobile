@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import './member_appbar/member_appbar.dart';
+import 'package:junto_beta_mobile/screens/member/member_appbar/member_appbar.dart';
 
 class JuntoMember extends StatelessWidget {
   @override
@@ -72,23 +71,27 @@ class JuntoMember extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                              child:
-                                Text('Eric Yang',
-                                    style: TextStyle(
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w700)),
-                            ),
-
-                            Row(children: <Widget>[
+                            child: Text('Eric Yang',
+                                style: TextStyle(
+                                    fontSize: 17, fontWeight: FontWeight.w700)),
+                          ),
+                          Row(
+                            children: <Widget>[
                               Container(
                                 decoration: BoxDecoration(
-                                  border: Border.all(color: Color(0xff333333), width: 1.5),
+                                  border: Border.all(
+                                      color: Color(0xff333333), width: 1.5),
                                   borderRadius: BorderRadius.circular(25),
                                 ),
-                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                                child: Text('connect', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),                                
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                child: Text('connect',
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w700)),
                               )
-                            ],)
+                            ],
+                          )
                         ]),
                   ),
                   Container(

@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-
-import './create_bottom_nav.dart';
-import '../../typography/style.dart';
-import './longform/longform.dart';
-import './shortform/shortform.dart';
-import './photo/photo.dart';
-import './bullet/bullet.dart';
-import './event/event.dart';
-import './../../typography/palette.dart';
-import './create_actions/create_actions.dart';
+import 'package:junto_beta_mobile/screens/create/bullet/bullet.dart';
+import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
+import 'package:junto_beta_mobile/screens/create/create_bottom_nav.dart';
+import 'package:junto_beta_mobile/screens/create/event/event.dart';
+import 'package:junto_beta_mobile/screens/create/longform/longform.dart';
+import 'package:junto_beta_mobile/screens/create/photo/photo.dart';
+import 'package:junto_beta_mobile/screens/create/shortform/shortform.dart';
+import 'package:junto_beta_mobile/typography/style.dart';
 
 class JuntoCreate extends StatefulWidget {
   final expressionLayer;
@@ -55,7 +53,7 @@ class JuntoCreateState extends State<JuntoCreate> {
       return CreatePhoto(_toggleBottomNavVisibility);
     } else if (_events) {
       return CreateEvent();
-    } 
+    }
   }
 
   // Reset all values in state to false
@@ -116,32 +114,35 @@ class JuntoCreateState extends State<JuntoCreate> {
         children: <Widget>[
           Container(
             margin: EdgeInsets.only(top: 20, bottom: 10),
-            padding: EdgeInsets.only(left: 10, right: 10, top: 30),            
-            child: 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center, 
-                children: <Widget>[
-
-                  Text(_expressionType,
-                      textAlign: TextAlign.start,
-                      style: JuntoStyles.lotusExpressionType
-                  ),
-                
+            padding: EdgeInsets.only(left: 10, right: 10, top: 30),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(_expressionType,
+                    textAlign: TextAlign.start,
+                    style: JuntoStyles.lotusExpressionType),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => CreateActions(widget.expressionLayer)
-                    ));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            CreateActions(widget.expressionLayer),
+                      ),
+                    );
                   },
-                  child: Text('next', style: TextStyle(fontSize: 17))                  
+                  child: Text(
+                    'next',
+                    style: TextStyle(
+                      fontSize: 17,
+                    ),
+                  ),
                 )
-
-              ],),            
+              ],
+            ),
           ),
-
           _buildTemplate(),
-
         ],
       ),
       bottomNavigationBar: CreateBottomNav(switchTemplate, _bottomNavVisible),
