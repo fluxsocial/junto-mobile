@@ -46,6 +46,22 @@ class ExpressionOpenTop extends StatelessWidget {
                         fontWeight: FontWeight.w700,
                       ),
                     ),
+ExpressionOpen
+                    Text('@' + username,
+                        style: TextStyle(
+                            color: JuntoPalette.juntoGrey,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500))
+                  ],
+                ),
+              ),          
+            ]),
+
+            Container(
+              child: Icon(CustomIcons.more, size: 20)
+            )                
+          ]),
+
                     Text(
                       username,
                       style: TextStyle(
@@ -62,6 +78,7 @@ class ExpressionOpenTop extends StatelessWidget {
           Text(timestamp + 'm', style: TextStyle(fontSize: 12))
         ],
       ),
+
     );
   }
 }

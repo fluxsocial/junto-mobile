@@ -25,7 +25,7 @@ class ExpressionOpenAppbar extends StatelessWidget {
                 size: 24,
               ),
             ),
-            Icon(CustomIcons.more)
+
           ],
         ),
       ),
