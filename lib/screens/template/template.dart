@@ -41,11 +41,12 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   @override
   void initState() {
     super.initState();
-    _hideFABController.addListener(_scrollListener);
+    _hideFABController = ScrollController();
+    if (_hideFABController.hasClients)
+      _hideFABController.addListener(_scrollListener);
     _bottomNavIndex = ValueNotifier<int>(0);
     _channelController = TextEditingController();
     controller = PageController(initialPage: 0);
-    _hideFABController = ScrollController();
     _isVisible = ValueNotifier<bool>(true);
   }
 
