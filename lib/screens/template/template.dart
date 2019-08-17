@@ -26,7 +26,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   String _currentPerspective = 'JUNTO';
   String _appbarTitle = 'JUNTO';
 
-  int _bottomNavIndex = 0;
+  ValueNotifier<int> _bottomNavIndex = ValueNotifier(0);
 
   //
   List _channels = [];
@@ -39,37 +39,32 @@ class JuntoTemplateState extends State<JuntoTemplate> {
 
   // Controller for scroll
   ScrollController _hideFABController = ScrollController();
-  bool _isVisible = true;
+  ValueNotifier<bool> _isVisible = ValueNotifier(true);
 
   @override
   void initState() {
-    _hideFABController.addListener(
-      () {
-        if (_hideFABController.position.userScrollDirection ==
-            ScrollDirection.idle) {
-          setState(
-            () {
-              _isVisible = true;
-            },
-          );
-        } else if (_hideFABController.position.userScrollDirection ==
-            ScrollDirection.reverse) {
-          setState(
-            () {
-              _isVisible = false;
-            },
-          );
-        } else if (_hideFABController.position.userScrollDirection ==
-            ScrollDirection.forward) {
-          setState(
-            () {
-              _isVisible = true;
-            },
-          );
-        }
-      },
-    );
     super.initState();
+    _hideFABController.addListener(_scrollListener);
+  }
+
+  @override
+  void dispose() {
+    _hideFABController.removeListener(_scrollListener);
+    _hideFABController.dispose();
+    super.dispose();
+  }
+
+  void _scrollListener() {
+    if (_hideFABController.position.userScrollDirection ==
+        ScrollDirection.idle) {
+      _isVisible.value = true;
+    } else if (_hideFABController.position.userScrollDirection ==
+        ScrollDirection.reverse) {
+      _isVisible.value = false;
+    } else if (_hideFABController.position.userScrollDirection ==
+        ScrollDirection.forward) {
+      _isVisible.value = true;
+    }
   }
 
   @override
@@ -123,9 +118,14 @@ class JuntoTemplateState extends State<JuntoTemplate> {
               JuntoDen()
             ],
           ),
-          bottomNavigationBar: BottomNav(
-            _bottomNavIndex,
-            _setBottomIndex,
+          bottomNavigationBar: ValueListenableBuilder(
+            valueListenable: _bottomNavIndex,
+            builder: (context, index, _) {
+              return BottomNav(
+                index,
+                _setBottomIndex,
+              );
+            },
           ),
         ),
       ],
@@ -134,10 +134,8 @@ class JuntoTemplateState extends State<JuntoTemplate> {
 
   // Set the bottom navbar index; used when bottom nav icon is pressed.
   _setBottomIndex(x) {
-    setState(() {
-      _bottomNavIndex = x;
-      controller.jumpToPage(x);
-    });
+    _bottomNavIndex.value = x;
+    controller.jumpToPage(x);
   }
 
   // Switch between perspectives; used in perspectives side drawer.
@@ -153,30 +151,30 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   }
 
   // Switch between screens within PageView
-  _switchScreen(screen) {
+  _switchScreen(String screen) {
     if (screen == 'collective') {
       setState(() {
         _currentScreen = 'collective';
         _appbarTitle = 'JUNTO';
-        _bottomNavIndex = 0;
+        _bottomNavIndex.value = 0;
       });
     } else if (screen == 'spheres') {
       setState(() {
         _currentScreen = 'spheres';
         _appbarTitle = 'SPHERES';
-        _bottomNavIndex = 1;
+        _bottomNavIndex.value = 1;
       });
     } else if (screen == 'packs') {
       setState(() {
         _currentScreen = 'packs';
         _appbarTitle = 'PACKS';
-        _bottomNavIndex = 2;
+        _bottomNavIndex.value = 2;
       });
     } else if (screen == 'den') {
       setState(() {
         _currentScreen = 'den';
         _appbarTitle = 'DEN';
-        _bottomNavIndex = 3;
+        _bottomNavIndex.value = 3;
       });
     }
   }
