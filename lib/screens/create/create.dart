@@ -9,9 +9,9 @@ import 'package:junto_beta_mobile/screens/create/shortform/shortform.dart';
 import 'package:junto_beta_mobile/typography/style.dart';
 
 class JuntoCreate extends StatefulWidget {
-  final expressionLayer;
+  const JuntoCreate(this.expressionLayer);
 
-  JuntoCreate(this.expressionLayer);
+  final String expressionLayer;
 
   @override
   State<StatefulWidget> createState() {
@@ -29,7 +29,7 @@ class JuntoCreateState extends State<JuntoCreate> {
 
   bool _bottomNavVisible = true;
 
-  _toggleBottomNavVisibility() {
+  void _toggleBottomNavVisibility() {
     if (_bottomNavVisible) {
       setState(() {
         _bottomNavVisible = false;
@@ -42,7 +42,7 @@ class JuntoCreateState extends State<JuntoCreate> {
   }
 
   // Build expression template based off state
-  _buildTemplate() {
+  Widget _buildTemplate() {
     if (_longform) {
       return CreateLongform();
     } else if (_shortform) {
@@ -53,6 +53,8 @@ class JuntoCreateState extends State<JuntoCreate> {
       return CreatePhoto(_toggleBottomNavVisibility);
     } else if (_events) {
       return CreateEvent();
+    } else {
+      return Container();
     }
   }
 
@@ -67,11 +69,12 @@ class JuntoCreateState extends State<JuntoCreate> {
     });
   }
 
-  // Ask for user confirmation to switch between expressions if field is not empty
-  confirmSwitch() {}
+  /// Ask for user confirmation to switch between expressions if field is no
+  /// empty
+  void confirmSwitch() {}
 
   // Switch between different expression templates
-  switchTemplate(templateType) {
+  void switchTemplate(String templateType) {
     // Reset State
     _resetState();
 
@@ -113,8 +116,8 @@ class JuntoCreateState extends State<JuntoCreate> {
       body: Column(
         children: <Widget>[
           Container(
-            margin: EdgeInsets.only(top: 20, bottom: 10),
-            padding: EdgeInsets.only(left: 10, right: 10, top: 30),
+            margin: const EdgeInsets.only(top: 20, bottom: 10),
+            padding: const EdgeInsets.only(left: 10, right: 10, top: 30),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -126,13 +129,13 @@ class JuntoCreateState extends State<JuntoCreate> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) =>
+                      MaterialPageRoute<dynamic>(
+                        builder: (BuildContext context) =>
                             CreateActions(widget.expressionLayer),
                       ),
                     );
                   },
-                  child: Text(
+                  child: const Text(
                     'next',
                     style: TextStyle(
                       fontSize: 17,

@@ -13,7 +13,7 @@ class ExpressionOpenAppbar extends StatelessWidget {
       elevation: 0,
       titleSpacing: 0,
       title: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
@@ -25,20 +25,19 @@ class ExpressionOpenAppbar extends StatelessWidget {
                 size: 24,
               ),
             ),
-
           ],
         ),
       ),
       bottom: PreferredSize(
-        preferredSize: Size.fromHeight(1),
+        preferredSize: const Size.fromHeight(1),
         child: Container(
           height: 1,
           decoration: BoxDecoration(
-            gradient: LinearGradient(
+            gradient: const LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
-              stops: [0.1, 0.9],
-              colors: [
+              stops: <double>[0.1, 0.9],
+              colors: <Color>[
                 Color(0xffeeeeee),
                 Color(0xffeeeeee),
               ],

@@ -10,28 +10,46 @@ class CreateLongform extends StatefulWidget {
 }
 
 class CreateLongformState extends State<CreateLongform> {
-  TextEditingController _titleController = TextEditingController();
-  TextEditingController _bodyController = TextEditingController();
+  TextEditingController _titleController;
+  TextEditingController _bodyController;
+  String _titleValue;
+  String _bodyValue;
+
+  // ignore: unused_field
+  Map<String, String> _longformExpression = <String, String>{};
 
   @override
-  Widget build(BuildContext context) {
-    final _titleValue = _titleController.text;
-    final _bodyValue = _bodyController.text;
-
-    //ignore:unused_local_variable
-    Map _longformExpression = {
+  void initState() {
+    super.initState();
+    _titleController = TextEditingController();
+    _bodyController = TextEditingController();
+    _titleValue = _titleController.text;
+    _bodyValue = _bodyController.text;
+    _longformExpression = <String, String>{
       'expression_type': 'LongForm',
       'title': _titleValue,
       'body': _bodyValue
     };
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _titleController.dispose();
+    _bodyController.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    //ignore:unused_local_variable
 
     return Expanded(
       child: Column(
         children: <Widget>[
           Expanded(
             child: ListView(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              children: [
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              children: <Widget>[
                 // Container(
                 //   width: MediaQuery.of(context).size.width,
                 //   child: TextField(

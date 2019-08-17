@@ -3,11 +3,12 @@ import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/typography/palette.dart';
 
 class PackOpenAppbar extends StatelessWidget {
-  final packTitle;
-  final packUser;
-  final packImage;
+  const PackOpenAppbar(this.packTitle, this.packUser, this.packImage);
 
-  PackOpenAppbar(this.packTitle, this.packUser, this.packImage);
+  final dynamic packTitle;
+  final dynamic packUser;
+  final dynamic packImage;
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -18,7 +19,7 @@ class PackOpenAppbar extends StatelessWidget {
       elevation: 0,
       titleSpacing: 0,
       title: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
@@ -34,7 +35,7 @@ class PackOpenAppbar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Container(
-                  margin: EdgeInsets.only(right: 10),
+                  margin: const EdgeInsets.only(right: 10),
                   child: Text(
                     packTitle,
                     style: TextStyle(

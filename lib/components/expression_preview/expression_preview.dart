@@ -3,17 +3,19 @@ import 'package:junto_beta_mobile/components/expression_preview/longform_preview
 import 'package:junto_beta_mobile/components/expression_preview/preview_bottom.dart';
 import 'package:junto_beta_mobile/components/expression_preview/preview_profile.dart';
 import 'package:junto_beta_mobile/components/expression_preview/shortform_preview/shortform_preview.dart';
+import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open.dart';
 
 /// Renders a concise overview of one given [Expression].
 class ExpressionPreview extends StatelessWidget {
-  final expression;
-  ExpressionPreview(this.expression);
+  const ExpressionPreview(this.expression);
+
+  final Expression expression;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 10.0),
+      margin: const EdgeInsets.only(bottom: 10.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -25,8 +27,8 @@ class ExpressionPreview extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => ExpressionOpen(expression),
+                MaterialPageRoute<dynamic>(
+                  builder: (BuildContext context) => ExpressionOpen(expression),
                 ),
               );
             },
@@ -49,12 +51,5 @@ class ExpressionPreview extends StatelessWidget {
     } else {
       return Container();
     }
-    // else if(expression.expression['entry']['expression_type'] == 'photoform') {
-    //   return PhotoPreview(expression);
-    // } else if(expression.expression['entry']['expression_type'] == 'eventform') {
-    //   return EventPreview(expression);
-    // } else {
-    //   return Container(width: 0, height: 0,);
-    // }
   }
 }

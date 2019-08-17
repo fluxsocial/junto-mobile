@@ -3,34 +3,38 @@ import 'package:junto_beta_mobile/screens/sign_up/sign_up_logo/sign_up_logo.dart
 import 'package:junto_beta_mobile/screens/sign_up/sign_up_three/sign_up_three.dart';
 
 class SignUpTwo extends StatefulWidget {
-  final firstName;
-  final lastName;
+  const SignUpTwo(this.firstName, this.lastName);
 
-  SignUpTwo(this.firstName, this.lastName);
+  final String firstName;
+  final String lastName;
 
   @override
-  State<StatefulWidget> createState() {
-    return SignUpTwoState();
-  }
+  State<StatefulWidget> createState() => SignUpTwoState();
 }
 
 class SignUpTwoState extends State<SignUpTwo> {
-  static TextEditingController usernameController = TextEditingController();
-  var username = '';
+  TextEditingController usernameController;
+  String username = '';
+
+  @override
+  void initState() {
+    super.initState();
+    usernameController = TextEditingController();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
-        children: [
+        children: <Widget>[
           Container(
             width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.bottomLeft,
                 end: Alignment.topRight,
-                stops: [0.1, 0.9],
-                colors: [
+                stops: <double>[0.1, 0.9],
+                colors: <Color>[
                   Color(0xff5E54D0),
                   Color(0xff307FAB),
                 ],
@@ -39,7 +43,7 @@ class SignUpTwoState extends State<SignUpTwo> {
             child: Container(
               margin: EdgeInsets.only(
                   top: MediaQuery.of(context).size.height * .10 + 18),
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -47,7 +51,7 @@ class SignUpTwoState extends State<SignUpTwo> {
                     margin: EdgeInsets.only(
                       bottom: MediaQuery.of(context).size.height * .17,
                     ),
-                    child: Text(
+                    child: const Text(
                       'What username would you like to reserve?',
                       style: TextStyle(
                         color: Colors.white,
@@ -57,12 +61,12 @@ class SignUpTwoState extends State<SignUpTwo> {
                   ),
                   Container(
                     child: Column(
-                      children: [
+                      children: <Widget>[
                         Container(
-                          margin: EdgeInsets.only(bottom: 36),
+                          margin: const EdgeInsets.only(bottom: 36),
                           child: TextField(
                             controller: usernameController,
-                            onChanged: (text) {
+                            onChanged: (String text) {
                               setState(
                                 () {
                                   username = text;
@@ -83,7 +87,7 @@ class SignUpTwoState extends State<SignUpTwo> {
                               ),
                               fillColor: Colors.white,
                             ),
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 17,
                               fontWeight: FontWeight.w500,
@@ -104,7 +108,7 @@ class SignUpTwoState extends State<SignUpTwo> {
             child: Row(
               children: <Widget>[
                 Container(
-                  margin: EdgeInsets.only(right: 17),
+                  margin: const EdgeInsets.only(right: 17),
                   child: GestureDetector(
                     onTap: () {
                       Navigator.pop(context);
@@ -124,12 +128,12 @@ class SignUpTwoState extends State<SignUpTwo> {
                         username != '') {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => SignUpThree(
-                                widget.firstName,
-                                widget.lastName,
-                                username,
-                              ),
+                        MaterialPageRoute<dynamic>(
+                          builder: (BuildContext context) => SignUpThree(
+                            widget.firstName,
+                            widget.lastName,
+                            username,
+                          ),
                         ),
                       );
                     }

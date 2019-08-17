@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/typography/style.dart';
 
+/// Displays the given [image] and [imageCaption]
 class PhotoPreview extends StatelessWidget {
-  final image;
-  final imageCaption;
+  const PhotoPreview(this.image, this.imageCaption);
 
-  PhotoPreview(this.image, this.imageCaption);
+  /// Url of the image to be displayed
+  final String image;
 
-  _generateCaption() {
+  /// Image caption
+  final String imageCaption;
+
+  Widget _generateCaption() {
     if (imageCaption == '' || imageCaption == null) {
       return Container(height: 0, width: 0);
     } else {
       return Container(
-        margin: EdgeInsets.only(top: 10, left: 10),
+        margin: const EdgeInsets.only(top: 10, left: 10),
         child: Text(
           imageCaption,
           maxLines: 2,

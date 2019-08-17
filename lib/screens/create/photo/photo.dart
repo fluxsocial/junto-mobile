@@ -1,15 +1,16 @@
-import 'dart:io';
 import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/typography/palette.dart';
 
-// Create using photo form
+/// Create using photo form
 class CreatePhoto extends StatefulWidget {
-  CreatePhoto(this.toggleBottomNavVisibility);
-  
+  const CreatePhoto(this.toggleBottomNavVisibility);
+
   final Function toggleBottomNavVisibility;
 
   @override
@@ -28,7 +29,7 @@ class CreatePhotoState extends State<CreatePhoto> {
   bool _cameraActive = false;
 
   // Function to retrieve image from source (i.e. library or camera)
-  void _getImage(context, source) {
+  void _getImage(BuildContext context, ImageSource source) {
     print('hellos');
 
     ImagePicker.pickImage(source: source, maxWidth: 512).then((File image) {
@@ -47,8 +48,8 @@ class CreatePhotoState extends State<CreatePhoto> {
   }
 
   // Function to crop an image
-  Future<Null> _cropImage(File imageFile) async {
-    File croppedFile = await ImageCropper.cropImage(
+  Future<void> _cropImage(File imageFile) async {
+    final File croppedFile = await ImageCropper.cropImage(
       sourcePath: imageFile.path,
       ratioX: 1,
       ratioY: 1,
@@ -62,7 +63,7 @@ class CreatePhotoState extends State<CreatePhoto> {
   }
 
   // Upload Image component - rendered in _photoTypeTemplate()
-  _buildUploadImage() {
+  Widget _buildUploadImage() {
     return Expanded(
       // color: Colors.blue,
       child: Column(
@@ -70,19 +71,28 @@ class CreatePhotoState extends State<CreatePhoto> {
         children: <Widget>[
           GestureDetector(
             onTap: () {
-              _getImage(context, ImageSource.gallery);
+              _getImage(
+                context,
+                ImageSource.gallery,
+              );
             },
-            child: Icon(CustomIcons.add, size: 100, color: Color(0xff555555)),
+            child: const Icon(
+              CustomIcons.add,
+              size: 100,
+              color: Color(
+                0xff555555,
+              ),
+            ),
           ),
-          SizedBox(height: 20),
-          Text('UPLOAD AN IMAGE'),
+          const SizedBox(height: 20),
+          const Text('UPLOAD AN IMAGE'),
         ],
       ),
     );
   }
 
   // Use camera component - rendered in _photoTypeTemplate()
-  _buildUseCamera() {
+  Widget _buildUseCamera() {
     return Expanded(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -91,7 +101,7 @@ class CreatePhotoState extends State<CreatePhoto> {
             onTap: () {
               _getImage(context, ImageSource.camera);
             },
-            child: Text('USE CAMERA'),
+            child: const Text('USE CAMERA'),
           ),
         ],
       ),
@@ -99,16 +109,16 @@ class CreatePhotoState extends State<CreatePhoto> {
   }
 
   // Component shown to prompt user to retrieve image
-  _photoTypeTemplate() {
+  Widget _photoTypeTemplate() {
     return Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
+        children: <Widget>[
           _libraryActive ? _buildUploadImage() : _buildUseCamera(),
           Container(
             // padding: EdgeInsets.only(top: 5),
             height: 50,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               border: Border(
                 top: BorderSide(color: Color(0xffeeeeee), width: 1),
               ),
@@ -116,7 +126,7 @@ class CreatePhotoState extends State<CreatePhoto> {
             child: Row(
               children: <Widget>[
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: 10),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                   width: MediaQuery.of(context).size.width * .5,
                   child: GestureDetector(
                     onTap: () {
@@ -133,14 +143,14 @@ class CreatePhotoState extends State<CreatePhoto> {
                       style: TextStyle(
                         fontWeight: FontWeight.w700,
                         color: _libraryActive
-                            ? Color(0xff333333)
-                            : Color(0xff999999),
+                            ? const Color(0xff333333)
+                            : const Color(0xff999999),
                       ),
                     ),
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: 10),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                   width: MediaQuery.of(context).size.width * .5,
                   child: GestureDetector(
                     onTap: () {
@@ -156,8 +166,8 @@ class CreatePhotoState extends State<CreatePhoto> {
                       style: TextStyle(
                         fontWeight: FontWeight.w700,
                         color: _cameraActive
-                            ? Color(0xff333333)
-                            : Color(0xff999999),
+                            ? const Color(0xff333333)
+                            : const Color(0xff999999),
                       ),
                     ),
                   ),
@@ -171,10 +181,10 @@ class CreatePhotoState extends State<CreatePhoto> {
   }
 
   // Component once image is retrieved
-  _buildImageEdit() {
+  Widget _buildImageEdit() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
+      children: <Widget>[
         Column(
           children: <Widget>[
             Container(
@@ -187,8 +197,8 @@ class CreatePhotoState extends State<CreatePhoto> {
           ],
         ),
         Container(
-            padding: EdgeInsets.only(top: 5),
-            decoration: BoxDecoration(
+            padding: const EdgeInsets.only(top: 5),
+            decoration: const BoxDecoration(
               border: Border(
                 top: BorderSide(color: Color(0xffeeeeee), width: 1),
               ),
@@ -212,7 +222,7 @@ class CreatePhotoState extends State<CreatePhoto> {
                     );
                   },
                   child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 10),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
                       child: Icon(Icons.arrow_back_ios, size: 17)),
                 ),
                 GestureDetector(
@@ -220,15 +230,15 @@ class CreatePhotoState extends State<CreatePhoto> {
                     _getImage(context, ImageSource.gallery);
                   },
                   child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 10),
-                      child: Icon(CustomIcons.camera, size: 17)),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: const Icon(CustomIcons.camera, size: 17)),
                 ),
                 GestureDetector(
                   onTap: () {
                     _cropImage(_imageFile);
                   },
                   child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
                     child: Icon(
                       Icons.crop,
                       size: 17,
@@ -244,7 +254,7 @@ class CreatePhotoState extends State<CreatePhoto> {
                     );
                   },
                   child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
                     child: Icon(Icons.arrow_forward_ios, size: 17),
                   ),
                 ),
@@ -255,19 +265,19 @@ class CreatePhotoState extends State<CreatePhoto> {
   }
 
   // Component once image is retrieved
-  _buildImageCaption() {
+  Widget _buildImageCaption() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
+      children: <Widget>[
         Container(
-          padding: EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
                 // color: Colors.blue,
-                padding: EdgeInsets.only(right: 10),
+                padding: const EdgeInsets.only(right: 10),
                 width: MediaQuery.of(context).size.width - 70,
                 child: TextField(
                   buildCounter: (
@@ -283,7 +293,12 @@ class CreatePhotoState extends State<CreatePhoto> {
                   ),
                   cursorColor: JuntoPalette.juntoGrey,
                   cursorWidth: 2,
-                  style: TextStyle(fontSize: 15, color: Color(0xff333333)),
+                  style: const TextStyle(
+                    fontSize: 15,
+                    color: Color(
+                      0xff333333,
+                    ),
+                  ),
                   maxLines: null,
                   maxLength: 2200,
                   textInputAction: TextInputAction.done,
@@ -298,8 +313,8 @@ class CreatePhotoState extends State<CreatePhoto> {
           ),
         ),
         Container(
-          padding: EdgeInsets.only(top: 5),
-          decoration: BoxDecoration(
+          padding: const EdgeInsets.only(top: 5),
+          decoration: const BoxDecoration(
             border: Border(
               top: BorderSide(
                 color: Color(0xffeeeeee),
@@ -317,7 +332,7 @@ class CreatePhotoState extends State<CreatePhoto> {
                   });
                 },
                 child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 10),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                   child: Icon(
                     Icons.arrow_back_ios,
                     size: 17,
@@ -327,8 +342,8 @@ class CreatePhotoState extends State<CreatePhoto> {
               GestureDetector(
                 onTap: () {},
                 child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  child: Text(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: const Text(
                     '# CHANNELS',
                     style: TextStyle(
                       fontSize: 14,
@@ -346,8 +361,8 @@ class CreatePhotoState extends State<CreatePhoto> {
                   );
                 },
                 child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  child: Text(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: const Text(
                     'CREATE',
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
                   ),
@@ -368,13 +383,15 @@ class CreatePhotoState extends State<CreatePhoto> {
   }
 
   // Render current screen conditionally
-  _currentScreen() {
+  Widget _currentScreen() {
     if (_croppedFile == null) {
       return _photoTypeTemplate();
     } else if (_croppedFile != null && _photoEdit) {
       return _buildImageEdit();
     } else if (_croppedFile != null && _photoEdit != true) {
       return _buildImageCaption();
+    } else {
+      return Container();
     }
   }
 }

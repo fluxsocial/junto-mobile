@@ -3,9 +3,9 @@ import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/typography/palette.dart';
 
 class PackOpenFAB extends StatelessWidget {
-  final isVisible;
+  const PackOpenFAB(this.isVisible);
 
-  PackOpenFAB(this.isVisible);
+  final bool isVisible;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class PackOpenFAB extends StatelessWidget {
           color: Colors.white,
           // border: Border.all(color: Color(0xffeeeeee), width: .5),
           borderRadius: BorderRadius.circular(25),
-          boxShadow: [
+          boxShadow: const <BoxShadow>[
             BoxShadow(
               color: Color(0xff999999),
               blurRadius: 3,
@@ -25,7 +25,7 @@ class PackOpenFAB extends StatelessWidget {
             )
           ],
         ),
-        margin: EdgeInsets.only(left: 15, right: 15, bottom: 10),
+        margin: const EdgeInsets.only(left: 15, right: 15, bottom: 10),
         // padding: EdgeInsets.symmetric(vertical: 15),
         height: 50,
         width: MediaQuery.of(context).size.width * .5,

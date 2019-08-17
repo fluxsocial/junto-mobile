@@ -7,8 +7,9 @@ import 'package:junto_beta_mobile/screens/expression_open/expressions/shortform_
 import 'package:junto_beta_mobile/typography/palette.dart';
 
 class ExpressionOpen extends StatefulWidget {
-  final expression;
-  ExpressionOpen(this.expression);
+  const ExpressionOpen(this.expression);
+
+  final dynamic expression;
 
   @override
   State<StatefulWidget> createState() {
@@ -17,26 +18,38 @@ class ExpressionOpen extends StatefulWidget {
 }
 
 class ExpressionOpenState extends State<ExpressionOpen> {
+  TextEditingController commentController;
+
+  @override
+  void initState() {
+    super.initState();
+    commentController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    commentController.dispose();
+  }
+
+  /// Builds an expression for the given type. IE: Longform or shortform
+  Widget _buildExpression() {
+    final String expressionType =
+        widget.expression.expression['entry']['expression_type'];
+    if (expressionType == 'longform') {
+      return LongformOpen(widget.expression);
+    } else if (expressionType == 'shortform') {
+      return ShortformOpen(widget.expression);
+    } else {
+      return const SizedBox();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    TextEditingController commentController = TextEditingController();
-
-    _buildExpression() {
-      String expressionType =
-          widget.expression.expression['entry']['expression_type'];
-
-      if (expressionType == 'longform') {
-        return LongformOpen(widget.expression);
-      } else if (expressionType == 'shortform') {
-        return ShortformOpen(widget.expression);
-      } else {
-        return SizedBox();
-      }
-    }
-
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(45.0),
+        preferredSize: const Size.fromHeight(45.0),
         child: ExpressionOpenAppbar(),
       ),
       backgroundColor: Colors.white,
@@ -56,11 +69,11 @@ class ExpressionOpenState extends State<ExpressionOpen> {
               border: Border(
                 top: BorderSide(
                   width: 1,
-                  color: Color(0xffeeeeee),
+                  color: const Color(0xffeeeeee),
                 ),
               ),
             ),
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -68,7 +81,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                   child: Row(
                     children: <Widget>[
                       Container(
-                        margin: EdgeInsets.only(right: 10),
+                        margin: const EdgeInsets.only(right: 10),
                         child: ClipOval(
                           child: Image.asset(
                             'assets/images/junto-mobile__eric.png',
@@ -80,11 +93,11 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                       ),
                       Container(
                         decoration: BoxDecoration(
-                          color: Color(0xfff9f9f9),
+                          color: const Color(0xfff9f9f9),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         width: MediaQuery.of(context).size.width - 135,
-                        constraints: BoxConstraints(maxHeight: 180),
+                        constraints: const BoxConstraints(maxHeight: 180),
                         child: TextField(
                           controller: commentController,
                           decoration: InputDecoration(
@@ -94,7 +107,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                           maxLines: null,
                           cursorColor: JuntoPalette.juntoGrey,
                           cursorWidth: 2,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 17,
                             color: Color(0xff333333),
                           ),
@@ -109,17 +122,20 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(25),
-                      gradient: LinearGradient(
+                      gradient: const LinearGradient(
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight,
-                        stops: [0.1, 0.9],
-                        colors: [
+                        stops: <double>[0.1, 0.9],
+                        colors: <Color>[
                           JuntoPalette.juntoBlue,
                           JuntoPalette.juntoPurple
                         ],
                       ),
                     ),
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 5,
+                    ),
                     child: Text(
                       'REPLY',
                       style: TextStyle(

@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:junto_beta_mobile/typography/palette.dart';
@@ -6,9 +7,10 @@ import 'package:junto_beta_mobile/typography/palette.dart';
 // This widget is enables the user to add channels and create an expression.
 // Rendered within each expression type.
 class CreateActions extends StatefulWidget {
+  const CreateActions(this.expression);
+
   // receive data schema from expression type
-  final Map expression;
-  CreateActions(this.expression);
+  final Map<String, dynamic> expression;
 
   @override
   State<StatefulWidget> createState() {
@@ -20,27 +22,40 @@ class CreateActions extends StatefulWidget {
 class CreateActionsState extends State<CreateActions> {
   String _expressionLayer;
 
-  final List _channels = [];
+  final List<String> _channels = <String>[];
   bool showLayers = false;
   String expressionContext;
   String jsonBody;
+
   // instantiate TextEditingController to pass to TextField widget
-  TextEditingController _channelController = TextEditingController();
+  TextEditingController _channelController;
+
+  @override
+  void initState() {
+    super.initState();
+    _channelController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _channelController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         border: Border(
           top: BorderSide(color: Color(0xffeeeeee), width: 1),
         ),
       ),
-      padding: EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       height: 50,
       width: MediaQuery.of(context).size.width,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
+        children: <Widget>[
           GestureDetector(
               onTap: () {
                 // open showBottomModalSheet widget
@@ -48,7 +63,7 @@ class CreateActionsState extends State<CreateActions> {
               },
               child: Container(
                 width: MediaQuery.of(context).size.width * .5 - 10,
-                child: Text(
+                child: const Text(
                   '# CHANNELS',
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
@@ -65,7 +80,7 @@ class CreateActionsState extends State<CreateActions> {
             },
             child: Container(
               width: MediaQuery.of(context).size.width * .5 - 10,
-              child: Text(
+              child: const Text(
                 'CREATE',
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
@@ -83,18 +98,21 @@ class CreateActionsState extends State<CreateActions> {
   }
 
   // Build bottom modal to add channels to expression
-  _buildChannelsModal(context) {
+  void _buildChannelsModal(BuildContext context) {
     showModalBottomSheet(
         context: context,
-        builder: (context) {
+        builder: (BuildContext context) {
           // Use StatefulBuilder to pass state of CreateActions
-          return StatefulBuilder(builder: (context, state) {
+          return StatefulBuilder(builder: (
+            BuildContext context,
+            StateSetter state,
+          ) {
             return Container(
-              padding: EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               height: MediaQuery.of(context).size.height * .4,
               child: Column(children: <Widget>[
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: 5),
+                  padding: const EdgeInsets.symmetric(vertical: 5),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -103,10 +121,12 @@ class CreateActionsState extends State<CreateActions> {
                         width: MediaQuery.of(context).size.width * .75,
                         child: TextField(
                           controller: _channelController,
-                          buildCounter: (BuildContext context,
-                                  {int currentLength,
-                                  int maxLength,
-                                  bool isFocused}) =>
+                          buildCounter: (
+                            BuildContext context, {
+                            int currentLength,
+                            int maxLength,
+                            bool isFocused,
+                          }) =>
                               null,
                           decoration: InputDecoration(
                             border: InputBorder.none,
@@ -114,7 +134,7 @@ class CreateActionsState extends State<CreateActions> {
                           ),
                           cursorColor: JuntoPalette.juntoGrey,
                           cursorWidth: 2,
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: Color(0xff333333),
                               fontSize: 14,
                               fontWeight: FontWeight.w700),
@@ -123,8 +143,8 @@ class CreateActionsState extends State<CreateActions> {
                         ),
                       ),
                       Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 5),
                         child: GestureDetector(
                           onTap: () {
                             // Update channels list in state until there are 3
@@ -133,7 +153,7 @@ class CreateActionsState extends State<CreateActions> {
                                     state, _channelController.text)
                                 : _nullChannels();
                           },
-                          child: Text(
+                          child: const Text(
                             'add',
                             style: TextStyle(
                               fontSize: 12,
@@ -143,32 +163,37 @@ class CreateActionsState extends State<CreateActions> {
                           ),
                         ),
                         decoration: BoxDecoration(
-                          border:
-                              Border.all(color: Color(0xff333333), width: 1),
+                          border: Border.all(
+                            color: const Color(0xff333333),
+                            width: 1,
+                          ),
                           borderRadius: BorderRadius.circular(5),
                         ),
                       ),
                     ],
                   ),
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     border: Border(
-                      bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
+                      bottom: BorderSide(
+                        color: Color(0xffeeeeee),
+                        width: 1,
+                      ),
                     ),
                   ),
                 ),
                 Container(
                   alignment: Alignment.centerLeft,
-                  padding: _channels.length == 0
-                      ? EdgeInsets.all(0)
-                      : EdgeInsets.symmetric(vertical: 10),
+                  padding: _channels.isEmpty
+                      ? const EdgeInsets.all(0)
+                      : const EdgeInsets.symmetric(vertical: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      _channels.length == 0
-                          ? SizedBox()
+                      _channels.isEmpty
+                          ? const SizedBox()
                           : Container(
-                              margin: EdgeInsets.only(bottom: 10),
-                              child: Text(
+                              margin: const EdgeInsets.only(bottom: 10),
+                              child: const Text(
                                 'DOUBLE TAP TO REMOVE CHANNEL',
                                 style: TextStyle(fontSize: 12),
                               ),
@@ -179,30 +204,34 @@ class CreateActionsState extends State<CreateActions> {
                         direction: Axis.horizontal,
                         children: _channels
                             .map(
-                              (channel) => GestureDetector(
-                                    onDoubleTap: () {
-                                      _removeChannel(state, channel);
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                        border: Border.all(
-                                            color: Color(0xff333333), width: 1),
+                              (String channel) => GestureDetector(
+                                onDoubleTap: () {
+                                  _removeChannel(state, channel);
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    border: Border.all(
+                                      color: const Color(
+                                        0xff333333,
                                       ),
-                                      margin: EdgeInsets.only(right: 10),
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: 10,
-                                        vertical: 5,
-                                      ),
-                                      child: Text(
-                                        channel,
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
+                                      width: 1,
                                     ),
                                   ),
+                                  margin: const EdgeInsets.only(right: 10),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                    vertical: 5,
+                                  ),
+                                  child: Text(
+                                    channel,
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ),
+                              ),
                             )
                             .toList(),
                       ),
@@ -216,9 +245,9 @@ class CreateActionsState extends State<CreateActions> {
   }
 
   // Update the list of channels in state
-  _updateChannels(StateSetter updateState, channel) async {
+  void _updateChannels(StateSetter updateState, String channel) {
     updateState(() {
-      if (channel != '') {
+      if (channel.isNotEmpty) {
         _channels.add(channel);
         print(widget.expression['tags']);
         widget.expression['tags'] = _channels;
@@ -229,26 +258,26 @@ class CreateActionsState extends State<CreateActions> {
   }
 
   // Remove a channel from the list of channels in state
-  _removeChannel(StateSetter updateState, channel) async {
+  void _removeChannel(StateSetter updateState, String channel) {
     updateState(() {
       _channels.remove(channel);
     });
   }
 
   // Called when channels.length > x
-  _nullChannels() {
+  void _nullChannels() {
     return;
   }
 
-  _buildLayersModal(context) {
+  void _buildLayersModal(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      builder: (context) {
+      builder: (BuildContext context) {
         // Use StatefulBuilder to pass state of CreateActions
         return StatefulBuilder(
-          builder: (context, state) {
+          builder: (BuildContext context, StateSetter state) {
             return Container(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               height: MediaQuery.of(context).size.height * .5,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -256,7 +285,7 @@ class CreateActionsState extends State<CreateActions> {
                   Column(
                     children: <Widget>[
                       Container(
-                        margin: EdgeInsets.only(bottom: 5),
+                        margin: const EdgeInsets.only(bottom: 5),
                         child: Text(
                           'Choose where to send your expression',
                           style: TextStyle(
@@ -269,11 +298,11 @@ class CreateActionsState extends State<CreateActions> {
                         },
                         child: Container(
                           color: Colors.orange,
-                          padding: EdgeInsets.symmetric(vertical: 25),
+                          padding: const EdgeInsets.symmetric(vertical: 25),
                           child: Row(
                             children: <Widget>[
                               Container(
-                                margin: EdgeInsets.only(right: 10),
+                                margin: const EdgeInsets.only(right: 10),
                                 height: 17,
                                 width: 17,
                                 decoration: BoxDecoration(
@@ -284,7 +313,7 @@ class CreateActionsState extends State<CreateActions> {
                                   ),
                                 ),
                               ),
-                              Text('COLLECTIVE')
+                              const Text('COLLECTIVE')
                             ],
                           ),
                         ),
@@ -294,61 +323,63 @@ class CreateActionsState extends State<CreateActions> {
                           _selectLayer(state, 'pack');
                         },
                         child: Container(
-                            color: Colors.purple,
-                            padding: EdgeInsets.symmetric(vertical: 25),
-                            child: Row(
-                              children: <Widget>[
-                                Container(
-                                  margin: EdgeInsets.only(right: 10),
-                                  height: 17,
-                                  width: 17,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.blue, width: 2),
-                                    borderRadius: BorderRadius.circular(
-                                      100,
-                                    ),
+                          color: Colors.purple,
+                          padding: const EdgeInsets.symmetric(vertical: 25),
+                          child: Row(
+                            children: <Widget>[
+                              Container(
+                                margin: const EdgeInsets.only(right: 10),
+                                height: 17,
+                                width: 17,
+                                decoration: BoxDecoration(
+                                  border:
+                                      Border.all(color: Colors.blue, width: 2),
+                                  borderRadius: BorderRadius.circular(
+                                    100,
                                   ),
                                 ),
-                                Text('PACK')
-                              ],
-                            )),
+                              ),
+                              const Text('PACK')
+                            ],
+                          ),
+                        ),
                       ),
                       GestureDetector(
                         onTap: () {
                           _selectLayer(state, 'den');
                         },
                         child: Container(
-                            color: Colors.green,
-                            padding: EdgeInsets.symmetric(vertical: 25),
-                            child: Row(
-                              children: <Widget>[
-                                Container(
-                                  margin: EdgeInsets.only(right: 10),
-                                  height: 17,
-                                  width: 17,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.blue, width: 2),
-                                    borderRadius: BorderRadius.circular(
-                                      100,
-                                    ),
+                          color: Colors.green,
+                          padding: const EdgeInsets.symmetric(vertical: 25),
+                          child: Row(
+                            children: <Widget>[
+                              Container(
+                                margin: const EdgeInsets.only(right: 10),
+                                height: 17,
+                                width: 17,
+                                decoration: BoxDecoration(
+                                  border:
+                                      Border.all(color: Colors.blue, width: 2),
+                                  borderRadius: BorderRadius.circular(
+                                    100,
                                   ),
                                 ),
-                                Text('DEN')
-                              ],
-                            )),
+                              ),
+                              const Text('DEN')
+                            ],
+                          ),
+                        ),
                       ),
                     ],
                   ),
                   Container(
                       width: 200,
                       decoration: BoxDecoration(
-                        gradient: LinearGradient(
+                        gradient: const LinearGradient(
                           begin: Alignment.centerLeft,
                           end: Alignment.centerRight,
-                          stops: [0.1, 0.9],
-                          colors: [
+                          stops: <double>[0.1, 0.9],
+                          colors: <Color>[
                             Color(0xff5E54D0),
                             Color(
                               0xff307FAB,
@@ -363,12 +394,13 @@ class CreateActionsState extends State<CreateActions> {
                         onPressed: () {
                           _createExpression();
                         },
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 20),
                         color: Colors.transparent,
                         elevation: 0,
-                        // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
-                        child: Text(
+                        // shape: RoundedRectangleBorder(borderRadius:
+                        // BorderRadius.circular(100,),),
+                        child: const Text(
                           'CREATE',
                           style: TextStyle(
                               // color: JuntoPalette.juntoBlue,
@@ -386,7 +418,7 @@ class CreateActionsState extends State<CreateActions> {
     );
   }
 
-  _selectLayer(updateState, layer) {
+  void _selectLayer(dynamic updateState, String layer) {
     if (layer == 'collective') {
       setState(() {
         _expressionLayer = 'collective';
@@ -405,12 +437,14 @@ class CreateActionsState extends State<CreateActions> {
     }
   }
 
-  _createExpression() async {
+  Future<void> _createExpression() async {
     // Holochain API address
-    String _url = 'http://127.0.0.1:8888';
+    const String _url = 'http://127.0.0.1:8888';
 
     // Headers
-    Map<String, String> _headers = {"Content-type": "application/json"};
+    final Map<String, String> _headers = <String, String>{
+      'Content-type': 'application/json'
+    };
 
     // Set expression context (where post is going to be sent)
     setState(() {
@@ -424,33 +458,42 @@ class CreateActionsState extends State<CreateActions> {
     // Generate proper JSON for expression
     if (widget.expression['expression_type'] == 'LongForm') {
       setState(() {
-        jsonBody =
-            '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "expression", "function": "post_expression", "args": {"expression": {"expression_type": "LongForm", "expression": {"LongForm": {"title": "' +
-                widget.expression['title'] +
-                '", "body": "' +
-                widget.expression['body'] +
-                '"}}}, "attributes": ["' +
-                _channels.toString() +
-                '"], "context": ["' +
-                expressionContext +
-                '"]}}}';
+        jsonBody = '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": '
+                '{"instance_id":"test-instance", "zome": "expression",'
+                ' "function": "post_expression", "args": {"expression":'
+                ' {"expression_type": "LongForm", '
+                '"expression": {"LongForm": {"title": "' +
+            widget.expression['title'] +
+            '", "body": "' +
+            widget.expression['body'] +
+            '"}}}, "attributes": ["' +
+            _channels.toString() +
+            '"], "context": ["' +
+            expressionContext +
+            '"]}}}';
       });
     } else if (widget.expression['expression_type'] == 'Shortform') {
       return;
     }
 
     // Retrieve response from post_expression function
-    http.Response response =
+    final http.Response response =
         await http.post(_url, headers: _headers, body: jsonBody);
 
     // Decode and store JSON from reponse.body
-    final postExpressionResponse = json.decode(response.body);
+    final Map<String, dynamic> postExpressionResponse =
+        json.decode(response.body);
     print(postExpressionResponse);
   }
 }
 
-// '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "config", "function": "update_bit_prefix", "args": {"bit_prefix": 1}}}';
-// final body = '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "expression", "function": "get_expression", "args": {"expression": "QmQVHujoCjR3bpErTBQUdRDfAi1fmMEt5aMZbrUfFYMwNy"}}}';
+// '{"jsonrpc":"2.0", "id": "0", "method": "call", "params":
+// {"instance_id":"test-instance", "zome": "config",
+// "function": "update_bit_prefix", "args": {"bit_prefix": 1}}}';
+// final body = '{"jsonrpc":"2.0", "id": "0", "method": "call",
+// "params": {"instance_id":"test-instance", "zome": "expression",
+// "function": "get_expression",
+// "args": {"expression": "QmQVHujoCjR3bpErTBQUdRDfAi1fmMEt5aMZbrUfFYMwNy"}}}';
 
 // onTap: () async {
 //   // Holochain API address
@@ -469,16 +512,24 @@ class CreateActionsState extends State<CreateActions> {
 //   // Generate proper JSON for expression
 //   if(widget.expression['expression_type'] == 'LongForm') {
 //     setState(() {
-//       jsonBody = '{"jsonrpc":"2.0", "id": "0", "method": "call", "params": {"instance_id":"test-instance", "zome": "expression", "function": "post_expression", "args": {"expression": {"expression_type": "LongForm", "expression": {"LongForm": {"title": "' + widget.expression['title'] + '", "body": "' + widget.expression['body'] + '"}}}, "attributes": ["' + _channels.toString() + '"], "context": ["' + expressionContext + '"]}}}';
+//       jsonBody = '{"jsonrpc":"2.0", "id": "0", "method": "call",
+//       "params": {"instance_id":"test-instance", "zome": "expression",
+//       "function": "post_expression", "args": {"expression":
+//       {"expression_type": "LongForm", "expression":
+//       {"LongForm": {"title": "' + widget.expression['title'] + '", "body": "'
+//       + widget.expression['body'] + '"}}}, "attributes": ["' + _
+//       channels.toString() + '"],
+//       "context": ["' + expressionContext + '"]}}}';
 //     });
 //   } else if (widget.expression['expression_type'] == 'Shortform') {
 //     return ;
 //   }
 
 //   // Retrieve response from post_expression function
-//   http.Response response = await http.post(_url, headers: _headers, body: jsonBody);
+//   http.Response response = await http.post(_url,
+//   headers: _headers, body: jsonBody);
 
-//   // Decode and store JSON from reponse.body
+//   // Decode and store JSON from response.body
 //   final postExpressionResponse = json.decode(response.body);
 //   print(postExpressionResponse);
 // },

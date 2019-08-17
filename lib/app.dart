@@ -20,20 +20,26 @@ class JuntoAppState extends State<JuntoApp> {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(builder: (context) => CollectiveProvider()),
-        ChangeNotifierProvider(builder: (context) => SpheresProvider()),
-        ChangeNotifierProvider(builder: (context) => PacksProvider())
+      providers: <SingleChildCloneableWidget>[
+        ChangeNotifierProvider<CollectiveProvider>(
+          builder: (BuildContext context) => CollectiveProvider(),
+        ),
+        ChangeNotifierProvider<SpheresProvider>(
+          builder: (BuildContext context) => SpheresProvider(),
+        ),
+        ChangeNotifierProvider<PacksProvider>(
+          builder: (BuildContext context) => PacksProvider(),
+        )
       ],
       child: MaterialApp(
         theme: ThemeData(
           fontFamily: 'Avenir',
         ),
         home: Welcome(),
-        routes: {
+        routes: <String, WidgetBuilder>{
           '/welcome': (BuildContext context) => Welcome(),
           '/template': (BuildContext context) => JuntoTemplate(),
-          '/create': (BuildContext context) => JuntoCreate('collective'),
+          '/create': (BuildContext context) => const JuntoCreate('collective'),
           '/notifications': (BuildContext context) => JuntoNotifications(),
         },
       ),

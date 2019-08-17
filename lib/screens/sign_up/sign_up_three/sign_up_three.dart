@@ -3,11 +3,12 @@ import 'package:junto_beta_mobile/screens/sign_up/sign_up_four/sign_up_four.dart
 import 'package:junto_beta_mobile/screens/sign_up/sign_up_logo/sign_up_logo.dart';
 
 class SignUpThree extends StatefulWidget {
-  final firstName;
-  final lastName;
-  final username;
+  const SignUpThree(this.firstName, this.lastName, this.username);
 
-  SignUpThree(this.firstName, this.lastName, this.username);
+  final String firstName;
+  final String lastName;
+  final String username;
+
   @override
   State<StatefulWidget> createState() {
     return SignUpThreeState();
@@ -16,21 +17,21 @@ class SignUpThree extends StatefulWidget {
 
 class SignUpThreeState extends State<SignUpThree> {
   static TextEditingController passwordController = TextEditingController();
-  var password = '';
+  String password = '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
-        children: [
+        children: <Widget>[
           Container(
             width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.bottomLeft,
                 end: Alignment.topRight,
-                stops: [0.1, 0.9],
-                colors: [
+                stops: <double>[0.1, 0.9],
+                colors: <Color>[
                   Color(0xff5E54D0),
                   Color(0xff307FAB),
                 ],
@@ -39,7 +40,7 @@ class SignUpThreeState extends State<SignUpThree> {
             child: Container(
               margin: EdgeInsets.only(
                   top: MediaQuery.of(context).size.height * .10 + 18),
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -47,7 +48,7 @@ class SignUpThreeState extends State<SignUpThree> {
                     margin: EdgeInsets.only(
                       bottom: MediaQuery.of(context).size.height * .17,
                     ),
-                    child: Text(
+                    child: const Text(
                       'Create a password. Make sure it is secure!',
                       style: TextStyle(
                         color: Colors.white,
@@ -57,12 +58,12 @@ class SignUpThreeState extends State<SignUpThree> {
                   ),
                   Container(
                     child: Column(
-                      children: [
+                      children: <Widget>[
                         Container(
-                          margin: EdgeInsets.only(bottom: 36),
+                          margin: const EdgeInsets.only(bottom: 36),
                           child: TextField(
                             controller: passwordController,
-                            onChanged: (text) {
+                            onChanged: (String text) {
                               setState(
                                 () {
                                   password = text;
@@ -82,7 +83,7 @@ class SignUpThreeState extends State<SignUpThree> {
                                   fontWeight: FontWeight.w400),
                               fillColor: Colors.white,
                             ),
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 17,
                               fontWeight: FontWeight.w500,
@@ -103,7 +104,7 @@ class SignUpThreeState extends State<SignUpThree> {
             child: Row(
               children: <Widget>[
                 Container(
-                  margin: EdgeInsets.only(right: 17),
+                  margin: const EdgeInsets.only(right: 17),
                   child: GestureDetector(
                     onTap: () {
                       Navigator.pop(context);
@@ -125,13 +126,13 @@ class SignUpThreeState extends State<SignUpThree> {
                         password.length > 4) {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => SignUpFour(
-                                widget.firstName,
-                                widget.lastName,
-                                widget.username,
-                                password,
-                              ),
+                        MaterialPageRoute<dynamic>(
+                          builder: (BuildContext context) => SignUpFour(
+                            widget.firstName,
+                            widget.lastName,
+                            widget.username,
+                            password,
+                          ),
                         ),
                       );
                     }

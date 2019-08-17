@@ -1,16 +1,16 @@
 class Pack {
-  final String packTitle;
-  final String packUser;
-  final String packImage;
-
   Pack(
     this.packTitle,
     this.packUser,
     this.packImage,
   );
 
+  final String packTitle;
+  final String packUser;
+  final String packImage;
+
   static List<Pack> fetchAll() {
-    return [
+    return <Pack>[
       Pack(
         'Wags',
         'Riley Wagner',

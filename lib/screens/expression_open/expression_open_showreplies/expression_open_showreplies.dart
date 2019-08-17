@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ExpressionOpenShowReplies extends StatelessWidget {
-  ExpressionOpenShowReplies(this.toggleReplies, this.showRepliesText);
-  
+  const ExpressionOpenShowReplies(this.toggleReplies, this.showRepliesText);
+
   final VoidCallback toggleReplies;
   final Widget showRepliesText;
 
@@ -13,10 +13,13 @@ class ExpressionOpenShowReplies extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-            decoration: BoxDecoration(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            decoration: const BoxDecoration(
               border: Border(
-                bottom: BorderSide(color: Color(0xffeeeeee), width: .5),
+                bottom: BorderSide(
+                  color: Color(0xffeeeeee),
+                  width: .5,
+                ),
               ),
             ),
             child: GestureDetector(

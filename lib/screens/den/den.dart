@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
 
+/// Displays the user's DEN or "profile screen"
 class JuntoDen extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    return JuntoDenState();
-  }
+  State<StatefulWidget> createState() => JuntoDenState();
 }
 
 class JuntoDenState extends State<JuntoDen> {
@@ -16,7 +15,7 @@ class JuntoDenState extends State<JuntoDen> {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      children: [
+      children: <Widget>[
         Container(
           constraints: BoxConstraints(
             minHeight: MediaQuery.of(context).size.height,
@@ -26,23 +25,23 @@ class JuntoDenState extends State<JuntoDen> {
             children: <Widget>[
               // Den cover photo
               Container(
-                constraints: BoxConstraints.expand(height: 150),
+                constraints: const BoxConstraints.expand(height: 150),
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image:
-                        AssetImage('assets/images/junto-mobile__stillmind.png'),
+                    image: const AssetImage(
+                        'assets/images/junto-mobile__stillmind.png'),
                     fit: BoxFit.cover,
                   ),
                 ),
                 child: Transform.translate(
-                  offset: Offset(0, 120),
+                  offset: const Offset(0, 120),
                   child: Container(
                     child: Column(
                       children: <Widget>[
                         Container(
-                          padding: EdgeInsets.only(left: 10),
+                          padding: const EdgeInsets.only(left: 10),
                           child: Row(
-                            children: [
+                            children: <Widget>[
                               ClipOval(
                                 child: Image.asset(
                                   'assets/images/junto-mobile__eric.png',
@@ -64,25 +63,25 @@ class JuntoDenState extends State<JuntoDen> {
                   height: 30,
                   width: MediaQuery.of(context).size.width),
               Container(
-                padding: EdgeInsets.only(top: 10),
+                padding: const EdgeInsets.only(top: 10),
                 color: Colors.white,
                 width: MediaQuery.of(context).size.width,
                 child: Column(
-                  children: [
+                  children: <Widget>[
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                        children: <Widget>[
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
+                            children: <Widget>[
                               Text(
                                 'Eric Yang',
                                 style: TextStyle(
                                     fontSize: 17, fontWeight: FontWeight.w700),
                               ),
-                              Text(
+                              const Text(
                                 'sunyata',
                                 style: TextStyle(
                                   fontSize: 14,
@@ -96,19 +95,21 @@ class JuntoDenState extends State<JuntoDen> {
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-                      margin: EdgeInsets.only(top: 10, bottom: 10),
+                      padding: const EdgeInsets.only(
+                          left: 10, right: 10, bottom: 10),
+                      margin: const EdgeInsets.only(top: 10, bottom: 10),
                       decoration: BoxDecoration(
                         border: Border(
                           bottom: BorderSide(
-                            color: Color(0xffeeeeee),
+                            color: const Color(0xffeeeeee),
                             width: 1,
                           ),
                         ),
                       ),
                       width: MediaQuery.of(context).size.width,
-                      child: Text(
-                        'to a mind that is still, the whole universe surrenders',
+                      child: const Text(
+                        'to a mind that is still, the whole universe '
+                        'surrenders',
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
@@ -119,8 +120,8 @@ class JuntoDenState extends State<JuntoDen> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) => JuntoMember(),
+                          MaterialPageRoute<dynamic>(
+                            builder: (BuildContext context) => JuntoMember(),
                           ),
                         );
                       },

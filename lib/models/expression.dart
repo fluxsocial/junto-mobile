@@ -1,12 +1,4 @@
 class Expression {
-  final expression;
-  final subExpressions;
-  final username;
-  final profile;
-  final resonations;
-  final timestamp;
-  final channels;
-
   Expression({
     this.expression,
     this.subExpressions,
@@ -17,27 +9,35 @@ class Expression {
     this.channels,
   });
 
+  final Map<String, dynamic> expression;
+  final Map<String, dynamic> subExpressions;
+  final Map<String, dynamic> username;
+  final Map<String, dynamic> profile;
+  final List<dynamic> resonations;
+  final String timestamp;
+  final List<Map<String, dynamic>> channels;
+
   static List<Expression> fetchAll() {
-    return [
+    return <Expression>[
       Expression(
-          expression: {
+          expression: <String, dynamic>{
             'address': '0xfee32zokie8',
-            'entry': {
+            'entry': <String, dynamic>{
               'expression_type': 'longform',
-              'expression': {
+              'expression': <String, String>{
                 'title': 'The Medium is the Message',
                 'body': 'Hellos my name is Urk'
               }
             }
           },
-          subExpressions: {},
-          username: {
+          subExpressions: <String, dynamic>{},
+          username: <String, dynamic>{
             'address': '02efredffdfvdbnrtg',
-            'entry': {'username': 'sunyata'}
+            'entry': <String, dynamic>{'username': 'sunyata'}
           },
-          profile: {
+          profile: <String, dynamic>{
             'address': '0vefoiwiafjvkbr32r243r5',
-            'entry': {
+            'entry': <String, dynamic>{
               'parent': 'parent-address',
               'first_name': 'Eric',
               'last_name': 'Yang',
@@ -46,38 +46,45 @@ class Expression {
               'verified': true
             }
           },
-          resonations: [],
+          resonations: <dynamic>[],
           timestamp: '2',
-          channels: [
-            {
+          channels: <Map<String, dynamic>>[
+            <String, dynamic>{
               'address': 'channel-address',
-              'entry': {'value': 'design', 'attribute_type': 'Channel'}
+              'entry': <String, String>{
+                'value': 'design',
+                'attribute_type': 'Channel'
+              }
             },
-            {
+            <String, dynamic>{
               'address': 'channel-address',
-              'entry': {'value': 'tech', 'attribute_type': 'Channel'}
+              'entry': <String, String>{
+                'value': 'tech',
+                'attribute_type': 'Chann'
+                    'el'
+              }
             }
           ]),
       Expression(
-          expression: {
+          expression: <String, dynamic>{
             'address': '0xfee32zokie8',
-            'entry': {
+            'entry': <String, dynamic>{
               'expression_type': 'shortform',
-              'expression': {
+              'expression': <String, dynamic>{
                 'body':
                     'Junto is releasing September 28th. Mark your calendars!',
                 'background': 'three'
               }
             }
           },
-          subExpressions: {},
-          username: {
+          subExpressions: <String, dynamic>{},
+          username: <String, dynamic>{
             'address': '02efredffdfvdbnrtg',
-            'entry': {'username': 'sunyata'}
+            'entry': <String, dynamic>{'username': 'sunyata'}
           },
-          profile: {
+          profile: <String, dynamic>{
             'address': '0vefoiwiafjvkbr32r243r5',
-            'entry': {
+            'entry': <String, dynamic>{
               'parent': 'parent-address',
               'first_name': 'Eric',
               'last_name': 'Yang',
@@ -86,34 +93,45 @@ class Expression {
               'verified': true
             }
           },
-          resonations: [],
+          resonations: <dynamic>[],
           timestamp: '7',
-          channels: [
-            {
+          channels: <Map<String, dynamic>>[
+            <String, dynamic>{
               'address': 'channel-address',
-              'entry': {'value': 'design', 'attribute_type': 'Channel'}
+              'entry': <String, String>{
+                'value': 'design',
+                'attribute_type': 'Channel'
+              }
             },
-            {
+            <String, dynamic>{
               'address': 'channel-address',
-              'entry': {'value': 'tech', 'attribute_type': 'Channel'}
+              'entry': <String, String>{
+                'value': 'tech',
+                'attribute_type': 'Chann'
+                    'el'
+              }
             }
           ]),
       Expression(
-          expression: {
+          expression: <String, dynamic>{
             'address': '0xfee32zokie8',
-            'entry': {
+            'entry': <String, dynamic>{
               'expression_type': 'shortform',
-              'expression': {'body': 'Hello cats!', 'background': 'four'}
+              'expression': <String, String>{
+                'body': 'Hello cats!',
+                'backgrou'
+                    'nd': 'four'
+              }
             }
           },
-          subExpressions: {},
-          username: {
+          subExpressions: <String, dynamic>{},
+          username: <String, dynamic>{
             'address': '02efredffdfvdbnrtg',
-            'entry': {'username': 'yaz'}
+            'entry': <String, String>{'username': 'yaz'}
           },
-          profile: {
+          profile: <String, dynamic>{
             'address': '0vefoiwiafjvkbr32r243r5',
-            'entry': {
+            'entry': <String, dynamic>{
               'parent': 'parent-address',
               'first_name': 'Yaz',
               'last_name': 'Owainati',
@@ -122,57 +140,72 @@ class Expression {
               'verified': true
             }
           },
-          resonations: [],
+          resonations: <dynamic>[],
           timestamp: '22',
-          channels: [
-            {
+          channels: <Map<String, dynamic>>[
+            <String, dynamic>{
               'address': 'channel-address',
-              'entry': {'value': 'design', 'attribute_type': 'Channel'}
+              'entry': <String, String>{
+                'value': 'design',
+                'attribute_type': 'Channel'
+              }
             },
-            {
+            <String, dynamic>{
               'address': 'channel-address',
-              'entry': {'value': 'tech', 'attribute_type': 'Channel'}
+              'entry': <String, String>{
+                'value': 'tech',
+                'attribute_type': 'Ch'
+                    'annel'
+              }
             }
           ]),
       Expression(
-          expression: {
-            'address': '0xfee32zokie8',
-            'entry': {
-              'expression_type': 'longform',
-              'expression': {
-                'title': 'Coming from the UK!',
-                'body': 'Hellos my name is josh'
-              }
+        expression: <String, dynamic>{
+          'address': '0xfee32zokie8',
+          'entry': <String, dynamic>{
+            'expression_type': 'longform',
+            'expression': <String, String>{
+              'title': 'Coming from the UK!',
+              'body': 'Hellos my name is josh'
+            }
+          }
+        },
+        subExpressions: <String, dynamic>{},
+        username: <String, dynamic>{
+          'address': '02efredffdfvdbnrtg',
+          'entry': <String, String>{'username': 'jdeepee'}
+        },
+        profile: <String, dynamic>{
+          'address': '0vefoiwiafjvkbr32r243r5',
+          'entry': <String, dynamic>{
+            'parent': 'parent-address',
+            'first_name': 'Josh',
+            'last_name': 'Parkin',
+            'bio': 'hellooo',
+            'profile_picture': 'assets/images/junto-mobile__josh.png',
+            'verified': true
+          }
+        },
+        resonations: <dynamic>[],
+        timestamp: '4',
+        channels: <Map<String, dynamic>>[
+          <String, dynamic>{
+            'address': 'channel-address',
+            'entry': <String, String>{
+              'value': 'design',
+              'attribute_type': 'Channel'
             }
           },
-          subExpressions: {},
-          username: {
-            'address': '02efredffdfvdbnrtg',
-            'entry': {'username': 'jdeepee'}
-          },
-          profile: {
-            'address': '0vefoiwiafjvkbr32r243r5',
-            'entry': {
-              'parent': 'parent-address',
-              'first_name': 'Josh',
-              'last_name': 'Parkin',
-              'bio': 'hellooo',
-              'profile_picture': 'assets/images/junto-mobile__josh.png',
-              'verified': true
+          <String, dynamic>{
+            'address': 'channel-address',
+            'entry': <String, String>{
+              'value': 'tech',
+              'attribute_type': 'Ch'
+                  'annel'
             }
-          },
-          resonations: [],
-          timestamp: '4',
-          channels: [
-            {
-              'address': 'channel-address',
-              'entry': {'value': 'design', 'attribute_type': 'Channel'}
-            },
-            {
-              'address': 'channel-address',
-              'entry': {'value': 'tech', 'attribute_type': 'Channel'}
-            }
-          ]),
+          }
+        ],
+      ),
     ];
   }
 }

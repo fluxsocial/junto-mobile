@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/models/expression.dart';
 
 import '../../../../typography/palette.dart';
 
 class ShortformOpen extends StatefulWidget {
-  final shortformExpression;
-
-  ShortformOpen(this.shortformExpression);
+  const ShortformOpen(this.shortformExpression);
+  final Expression shortformExpression;
 
   @override
   State<StatefulWidget> createState() {
@@ -19,11 +19,11 @@ class ShortformOpenState extends State<ShortformOpen> {
   Color _gradientOne;
   Color _gradientTwo;
 
-  _buildBackground() {
+  void _buildBackground() {
     if (_shortformBackground == 'zero') {
       setState(() {
-        _gradientOne = Color(0xffffffff);
-        _gradientTwo = Color(0xffffffff);
+        _gradientOne = const Color(0xffffffff);
+        _gradientTwo = const Color(0xffffffff);
       });
     } else if (_shortformBackground == 'one') {
       setState(() {
@@ -68,17 +68,22 @@ class ShortformOpenState extends State<ShortformOpen> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.bottomLeft,
-              end: Alignment.topRight,
-              stops: [0.1, 0.9],
-              colors: [_gradientOne, _gradientTwo])),
+        gradient: LinearGradient(
+          begin: Alignment.bottomLeft,
+          end: Alignment.topRight,
+          stops: const <double>[0.1, 0.9],
+          colors: <Color>[_gradientOne, _gradientTwo],
+        ),
+      ),
       constraints: BoxConstraints(
         minHeight: MediaQuery.of(context).size.height * .3,
       ),
       width: MediaQuery.of(context).size.width,
       alignment: Alignment.center,
-      padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 50.0),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 25.0,
+        vertical: 50.0,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -86,9 +91,10 @@ class ShortformOpenState extends State<ShortformOpen> {
             _shortformBody,
             textAlign: TextAlign.center,
             style: TextStyle(
-                fontSize: 17.0,
-                fontWeight: FontWeight.w700,
-                color: Colors.white),
+              fontSize: 17.0,
+              fontWeight: FontWeight.w700,
+              color: Colors.white,
+            ),
           ),
         ],
       ),

@@ -8,12 +8,12 @@ class Welcome extends StatelessWidget {
     return Scaffold(
       body: Container(
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.bottomLeft,
             end: Alignment.topRight,
-            stops: [0.1, 0.9],
-            colors: [
+            stops: <double>[0.1, 0.9],
+            colors: <Color>[
               Color(0xff5E54D0),
               Color(
                 0xff307FAB,
@@ -25,17 +25,17 @@ class Welcome extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           // crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Column(children: [
+            Column(children: <Widget>[
               Container(
-                margin: EdgeInsets.only(top: 120, bottom: 23),
+                margin: const EdgeInsets.only(top: 120, bottom: 23),
                 child: Image.asset(
                   'assets/images/junto-mobile__logo--white.png',
                   height: 69,
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(bottom: 45),
-                child: Text(
+                margin: const EdgeInsets.only(bottom: 45),
+                child: const Text(
                   'JUNTO',
                   style: TextStyle(
                     letterSpacing: 1.7,
@@ -48,29 +48,30 @@ class Welcome extends StatelessWidget {
 
               // Container(
               //   margin: EdgeInsets.only(bottom: 240),
-              //   child: Text('a movement for authenticity', style: TextStyle(color: Colors.white, fontSize: 20))
+              //   child: Text('a movement for authenticity', style:
+              //   TextStyle(color: Colors.white, fontSize: 20,),)
               // ),
             ]),
             Column(
               children: <Widget>[
                 Container(
-                  margin: EdgeInsets.only(bottom: 30),
+                  margin: const EdgeInsets.only(bottom: 30),
                   child: RaisedButton(
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => SignUp(),
+                        MaterialPageRoute<dynamic>(
+                          builder: (BuildContext context) => SignUp(),
                         ),
                       );
                     },
-                    padding: EdgeInsets.symmetric(
+                    padding: const EdgeInsets.symmetric(
                       horizontal: 50,
                       vertical: 20,
                     ),
                     // color: Colors.white,
-                    color: Color(0xff4968BF),
-                    child: Text(
+                    color: const Color(0xff4968BF),
+                    child: const Text(
                       'WELCOME TO THE PACK',
                       style: TextStyle(
                         // color: JuntoPalette.juntoBlue,
@@ -87,17 +88,17 @@ class Welcome extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(bottom: 120),
+                  margin: const EdgeInsets.only(bottom: 120),
                   child: GestureDetector(
                     onTap: () {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => SignIn(),
+                        MaterialPageRoute<dynamic>(
+                          builder: (BuildContext context) => SignIn(),
                         ),
                       );
                     },
-                    child: Text(
+                    child: const Text(
                       'SIGN IN',
                       style: TextStyle(
                         color: Colors.white,

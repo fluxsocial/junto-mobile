@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/typography/palette.dart';
 
+/// Allows the user to create a short form expression.
 class CreateShortform extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    return CreateShortformState();
-  }
+  State<StatefulWidget> createState() => CreateShortformState();
 }
 
 class CreateShortformState extends State<CreateShortform> {
@@ -29,10 +28,10 @@ class CreateShortformState extends State<CreateShortform> {
 
   @override
   Widget build(BuildContext context) {
-    final _bodyValue = _bodyController.text;
+    final String _bodyValue = _bodyController.text;
 
     //ignore:unused_local_variable
-    final Map _shortformExpression = {
+    final Map<String, dynamic> _shortformExpression = <String, dynamic>{
       'expression_type': 'ShortForm',
       'background': _currentBackground,
       'body': _bodyValue
@@ -43,11 +42,11 @@ class CreateShortformState extends State<CreateShortform> {
         children: <Widget>[
           Expanded(
             child: ListView(
-              padding: EdgeInsets.all(0),
+              padding: const EdgeInsets.all(0),
               children: <Widget>[
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  margin: EdgeInsets.only(bottom: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  margin: const EdgeInsets.only(bottom: 20),
                   child: Row(
                     children: <Widget>[
                       GestureDetector(
@@ -61,16 +60,21 @@ class CreateShortformState extends State<CreateShortform> {
                         },
                         child: Container(
                           decoration: BoxDecoration(
-                            border:
-                                Border.all(color: Color(0xffeeeeee), width: 1),
-                            gradient: LinearGradient(
+                            border: Border.all(
+                              color: const Color(0xffeeeeee),
+                              width: 1,
+                            ),
+                            gradient: const LinearGradient(
                               begin: Alignment.bottomLeft,
                               end: Alignment.topRight,
-                              stops: [0.1, 0.9],
-                              colors: [Colors.white, Colors.white],
+                              stops: <double>[0.1, 0.9],
+                              colors: <Color>[
+                                Colors.white,
+                                Colors.white,
+                              ],
                             ),
                           ),
-                          margin: EdgeInsets.only(right: 10),
+                          margin: const EdgeInsets.only(right: 10),
                           height: 36,
                           width: 36,
                         ),
@@ -88,47 +92,47 @@ class CreateShortformState extends State<CreateShortform> {
                         },
                         child: Container(
                           decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                                begin: Alignment.bottomLeft,
-                                end: Alignment.topRight,
-                                stops: [
-                                  0.1,
-                                  0.9
-                                ],
-                                colors: [
-                                  JuntoPalette.juntoBlue,
-                                  JuntoPalette.juntoBlueLight
-                                ]),
+                            gradient: const LinearGradient(
+                              begin: Alignment.bottomLeft,
+                              end: Alignment.topRight,
+                              stops: <double>[0.1, 0.9],
+                              colors: <Color>[
+                                JuntoPalette.juntoBlue,
+                                JuntoPalette.juntoBlueLight
+                              ],
+                            ),
                           ),
-                          margin: EdgeInsets.only(right: 10),
+                          margin: const EdgeInsets.only(
+                            right: 1,
+                          ),
                           height: 36,
                           width: 36,
                         ),
                       ),
                       GestureDetector(
                         onTap: () {
-                          setState(() {
-                            gradientOne = JuntoPalette.juntoPurple;
-                            gradientTwo = JuntoPalette.juntoPurpleLight;
-                            fontColor = Colors.white;
-                            _currentBackground = 'two';
-                          });
+                          setState(
+                            () {
+                              gradientOne = JuntoPalette.juntoPurple;
+                              gradientTwo = JuntoPalette.juntoPurpleLight;
+                              fontColor = Colors.white;
+                              _currentBackground = 'two';
+                            },
+                          );
                         },
                         child: Container(
                           decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                                begin: Alignment.bottomLeft,
-                                end: Alignment.topRight,
-                                stops: [
-                                  0.1,
-                                  0.9
-                                ],
-                                colors: [
-                                  JuntoPalette.juntoPurple,
-                                  JuntoPalette.juntoPurpleLight
-                                ]),
+                            gradient: const LinearGradient(
+                              begin: Alignment.bottomLeft,
+                              end: Alignment.topRight,
+                              stops: <double>[0.1, 0.9],
+                              colors: <Color>[
+                                JuntoPalette.juntoPurple,
+                                JuntoPalette.juntoPurpleLight
+                              ],
+                            ),
                           ),
-                          margin: EdgeInsets.only(right: 10),
+                          margin: const EdgeInsets.only(right: 10),
                           height: 36,
                           width: 36,
                         ),
@@ -144,19 +148,19 @@ class CreateShortformState extends State<CreateShortform> {
                         },
                         child: Container(
                           decoration: BoxDecoration(
-                            gradient: LinearGradient(
+                            gradient: const LinearGradient(
                                 begin: Alignment.bottomLeft,
                                 end: Alignment.topRight,
-                                stops: [
+                                stops: <double>[
                                   0.1,
                                   0.9
                                 ],
-                                colors: [
+                                colors: <Color>[
                                   JuntoPalette.juntoPurple,
                                   JuntoPalette.juntoBlue
                                 ]),
                           ),
-                          margin: EdgeInsets.only(right: 10),
+                          margin: const EdgeInsets.only(right: 10),
                           height: 36,
                           width: 36,
                         ),
@@ -174,19 +178,19 @@ class CreateShortformState extends State<CreateShortform> {
                         },
                         child: Container(
                           decoration: BoxDecoration(
-                            gradient: LinearGradient(
+                            gradient: const LinearGradient(
                                 begin: Alignment.bottomLeft,
                                 end: Alignment.topRight,
-                                stops: [
+                                stops: <double>[
                                   0.1,
                                   0.9
                                 ],
-                                colors: [
+                                colors: <Color>[
                                   JuntoPalette.juntoGreen,
                                   JuntoPalette.juntoBlue
                                 ]),
                           ),
-                          margin: EdgeInsets.only(right: 10),
+                          margin: const EdgeInsets.only(right: 10),
                           height: 36,
                           width: 36,
                         ),
@@ -204,19 +208,21 @@ class CreateShortformState extends State<CreateShortform> {
                         },
                         child: Container(
                           decoration: BoxDecoration(
-                            gradient: LinearGradient(
+                            gradient: const LinearGradient(
                                 begin: Alignment.bottomLeft,
                                 end: Alignment.topRight,
-                                stops: [
+                                stops: <double>[
                                   0.1,
                                   0.9
                                 ],
-                                colors: [
+                                colors: <Color>[
                                   JuntoPalette.juntoGreen,
                                   JuntoPalette.juntoPurple
                                 ]),
                           ),
-                          margin: EdgeInsets.only(right: 10),
+                          margin: const EdgeInsets.only(
+                            right: 10,
+                          ),
                           height: 36,
                           width: 36,
                         ),
@@ -231,36 +237,43 @@ class CreateShortformState extends State<CreateShortform> {
                       top: MediaQuery.of(context).size.height * .1225),
                   height: MediaQuery.of(context).size.height * .40,
                   decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.bottomLeft,
-                          end: Alignment.topRight,
-                          stops: [0.1, 0.9],
-                          colors: [gradientOne, gradientTwo])),
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomLeft,
+                      end: Alignment.topRight,
+                      stops: const <double>[
+                        0.1,
+                        0.9,
+                      ],
+                      colors: <Color>[gradientOne, gradientTwo],
+                    ),
+                  ),
                   child: TextField(
-                      controller: _bodyController,
-                      buildCounter: (BuildContext context,
-                              {int currentLength,
-                              int maxLength,
-                              bool isFocused}) =>
-                          null,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                      ),
-                      cursorColor: fontColor,
-                      cursorWidth: 2,
-                      maxLines: null,
-                      style: TextStyle(
-                          color: fontColor,
-                          fontSize: 24,
-                          fontWeight: FontWeight.w700),
-                      maxLength: 220,
-                      textAlign: TextAlign.center,
-                      textInputAction: TextInputAction.done),
+                    controller: _bodyController,
+                    buildCounter: (
+                      BuildContext context, {
+                      int currentLength,
+                      int maxLength,
+                      bool isFocused,
+                    }) =>
+                        null,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                    ),
+                    cursorColor: fontColor,
+                    cursorWidth: 2,
+                    maxLines: null,
+                    style: TextStyle(
+                        color: fontColor,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w700),
+                    maxLength: 220,
+                    textAlign: TextAlign.center,
+                    textInputAction: TextInputAction.done,
+                  ),
                 )
               ],
             ),
           ),
-          // CreateActions(_shortformExpression)
         ],
       ),
     );

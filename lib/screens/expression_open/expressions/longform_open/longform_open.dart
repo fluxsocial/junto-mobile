@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/models/expression.dart';
 
 class LongformOpen extends StatelessWidget {
-  final longformExpression;
+  const LongformOpen(this.longformExpression);
 
-  LongformOpen(this.longformExpression);
+  final Expression longformExpression;
 
   @override
   Widget build(BuildContext context) {
-    String longformTitle =
+    final String longformTitle =
         longformExpression.expression['entry']['expression']['title'];
-    String longformBody =
+    final String longformBody =
         longformExpression.expression['entry']['expression']['body'];
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
         children: <Widget>[
           Container(
             width: MediaQuery.of(context).size.width,
-            margin: EdgeInsets.only(bottom: 5),
+            margin: const EdgeInsets.only(bottom: 5),
             child: Text(
               longformTitle,
               textAlign: TextAlign.start,
@@ -34,7 +35,7 @@ class LongformOpen extends StatelessWidget {
             child: Text(
               longformBody,
               textAlign: TextAlign.start,
-              style: TextStyle(fontSize: 15, height: 1.2),
+              style: const TextStyle(fontSize: 15, height: 1.2),
             ),
           ),
         ],

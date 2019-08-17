@@ -3,13 +3,7 @@ import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open.dart';
 
 // This class renders a preview of a sphere
 class SpherePreview extends StatelessWidget {
-  final String sphereTitle;
-  final String sphereMembers;
-  final String sphereImage;
-  final String sphereHandle;
-  final String sphereDescription;
-
-  SpherePreview(
+  const SpherePreview(
     this.sphereTitle,
     this.sphereMembers,
     this.sphereImage,
@@ -17,25 +11,31 @@ class SpherePreview extends StatelessWidget {
     this.sphereDescription,
   );
 
+  final String sphereTitle;
+  final String sphereMembers;
+  final String sphereImage;
+  final String sphereHandle;
+  final String sphereDescription;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(
-            builder: (context) => SphereOpen(
-                  sphereTitle,
-                  sphereMembers,
-                  sphereImage,
-                  sphereHandle,
-                  sphereDescription,
-                ),
+          MaterialPageRoute<dynamic>(
+            builder: (BuildContext context) => SphereOpen(
+              sphereTitle,
+              sphereMembers,
+              sphereImage,
+              sphereHandle,
+              sphereDescription,
+            ),
           ),
         );
       },
       child: Container(
-        margin: EdgeInsets.only(left: 10.0),
+        margin: const EdgeInsets.only(left: 10.0),
         color: Colors.white,
         child: Row(
           children: <Widget>[
@@ -51,10 +51,10 @@ class SpherePreview extends StatelessWidget {
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width - 65,
-                  padding: EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                     vertical: 20,
                   ),
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     border: Border(
                       bottom: BorderSide(
                         width: .5,
@@ -64,7 +64,7 @@ class SpherePreview extends StatelessWidget {
                       ),
                     ),
                   ),
-                  margin: EdgeInsets.only(left: 10.0),
+                  margin: const EdgeInsets.only(left: 10.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,7 +72,7 @@ class SpherePreview extends StatelessWidget {
                       Text(
                         sphereTitle,
                         textAlign: TextAlign.start,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 14,
                           color: Color(0xff333333),
                           fontWeight: FontWeight.w700,
@@ -81,7 +81,7 @@ class SpherePreview extends StatelessWidget {
                       Text(
                         '/s/' + sphereHandle,
                         textAlign: TextAlign.start,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                         ),

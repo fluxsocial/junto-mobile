@@ -3,28 +3,38 @@ import 'package:junto_beta_mobile/screens/create/create_actions/create_actions_a
 import 'package:junto_beta_mobile/typography/palette.dart';
 
 class CreateActions extends StatefulWidget {
-  final expressionLayer;
+  const CreateActions(this.expressionLayer);
 
-  CreateActions(this.expressionLayer);
+  final String expressionLayer;
 
   @override
-  State<StatefulWidget> createState() {
-    return CreateActionsState();
-  }
+  State<StatefulWidget> createState() => CreateActionsState();
 }
 
 class CreateActionsState extends State<CreateActions> {
-  final List _channels = [];
+  final List<String> _channels = <String>[];
 
   // instantiate TextEditingController to pass to TextField widget
-  TextEditingController _channelController = TextEditingController();
+  TextEditingController _channelController;
+
+  @override
+  void initState() {
+    super.initState();
+    _channelController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _channelController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(45),
+        preferredSize: const Size.fromHeight(45),
         child: CreateActionsAppbar(),
       ),
       body: ListView(
@@ -33,7 +43,7 @@ class CreateActionsState extends State<CreateActions> {
             onTap: () => _buildChannelsModal(context),
             child: Container(
               width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
                     color: Color(0xffeeeeee),
@@ -41,8 +51,8 @@ class CreateActionsState extends State<CreateActions> {
                   ),
                 ),
               ),
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-              child: Text(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+              child: const Text(
                 'add channels',
               ),
             ),
@@ -53,7 +63,7 @@ class CreateActionsState extends State<CreateActions> {
             },
             child: Container(
               width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
                     color: Color(0xffeeeeee),
@@ -61,12 +71,12 @@ class CreateActionsState extends State<CreateActions> {
                   ),
                 ),
               ),
-              padding: EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 horizontal: 10,
                 vertical: 20,
               ),
               child: Text(
-                "sharing to " + widget.expressionLayer,
+                'sharing to ' + widget.expressionLayer,
               ),
             ),
           ),
@@ -76,19 +86,19 @@ class CreateActionsState extends State<CreateActions> {
   }
 
   // Build bottom modal to add channels to expression
-  _buildChannelsModal(context) {
+  void _buildChannelsModal(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      builder: (context) {
+      builder: (BuildContext context) {
         // Use StatefulBuilder to pass state of CreateActions
         return StatefulBuilder(
-          builder: (context, state) {
+          builder: (BuildContext context, StateSetter state) {
             return Container(
-              padding: EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Column(
                 children: <Widget>[
                   Container(
-                    padding: EdgeInsets.symmetric(vertical: 5),
+                    padding: const EdgeInsets.symmetric(vertical: 5),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -108,17 +118,20 @@ class CreateActionsState extends State<CreateActions> {
                             ),
                             cursorColor: JuntoPalette.juntoGrey,
                             cursorWidth: 2,
-                            style: TextStyle(
-                                color: Color(0xff333333),
-                                fontSize: 14,
-                                fontWeight: FontWeight.w700),
+                            style: const TextStyle(
+                              color: Color(
+                                0xff333333,
+                              ),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                            ),
                             maxLines: 1,
                             maxLength: 80,
                           ),
                         ),
                         Container(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
                           child: GestureDetector(
                             onTap: () {
                               // Update channels list in state until there are 3
@@ -129,7 +142,7 @@ class CreateActionsState extends State<CreateActions> {
                                     )
                                   : _nullChannels();
                             },
-                            child: Text(
+                            child: const Text(
                               'add',
                               style: TextStyle(
                                 fontSize: 12,
@@ -139,32 +152,35 @@ class CreateActionsState extends State<CreateActions> {
                             ),
                           ),
                           decoration: BoxDecoration(
-                            border:
-                                Border.all(color: Color(0xff333333), width: 1),
+                            border: Border.all(
+                                color: const Color(0xff333333), width: 1),
                             borderRadius: BorderRadius.circular(5),
                           ),
                         ),
                       ],
                     ),
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       border: Border(
-                        bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
+                        bottom: BorderSide(
+                          color: Color(0xffeeeeee),
+                          width: 1,
+                        ),
                       ),
                     ),
                   ),
                   Container(
                     alignment: Alignment.centerLeft,
-                    padding: _channels.length == 0
-                        ? EdgeInsets.all(0)
-                        : EdgeInsets.symmetric(vertical: 10),
+                    padding: _channels.isEmpty
+                        ? const EdgeInsets.all(0)
+                        : const EdgeInsets.symmetric(vertical: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        _channels.length == 0
-                            ? SizedBox()
+                        _channels.isEmpty
+                            ? const SizedBox()
                             : Container(
-                                margin: EdgeInsets.only(bottom: 10),
-                                child: Text(
+                                margin: const EdgeInsets.only(bottom: 10),
+                                child: const Text(
                                   'DOUBLE TAP TO REMOVE CHANNEL',
                                   style: TextStyle(fontSize: 12),
                                 ),
@@ -175,33 +191,33 @@ class CreateActionsState extends State<CreateActions> {
                           direction: Axis.horizontal,
                           children: _channels
                               .map(
-                                (channel) => GestureDetector(
-                                      onDoubleTap: () =>
-                                          _removeChannel(state, channel),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          border: Border.all(
-                                            color: Color(0xff333333),
-                                            width: 1,
-                                          ),
-                                        ),
-                                        margin: EdgeInsets.only(
-                                          right: 10,
-                                        ),
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 10,
-                                          vertical: 5,
-                                        ),
-                                        child: Text(
-                                          channel,
-                                          style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w700),
-                                        ),
+                                (String channel) => GestureDetector(
+                                  onDoubleTap: () =>
+                                      _removeChannel(state, channel),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      border: Border.all(
+                                        color: const Color(0xff333333),
+                                        width: 1,
                                       ),
                                     ),
+                                    margin: const EdgeInsets.only(
+                                      right: 10,
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                      vertical: 5,
+                                    ),
+                                    child: Text(
+                                      channel,
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               )
                               .toList(),
                         ),
@@ -218,7 +234,7 @@ class CreateActionsState extends State<CreateActions> {
   }
 
   // Update the list of channels in state
-  _updateChannels(StateSetter updateState, channel) async {
+  void _updateChannels(StateSetter updateState, String channel) {
     updateState(() {
       if (channel != '') {
         _channels.add(channel);
@@ -229,32 +245,32 @@ class CreateActionsState extends State<CreateActions> {
   }
 
   // Remove a channel from the list of channels in state
-  _removeChannel(StateSetter updateState, channel) async {
+  void _removeChannel(StateSetter updateState, String channel) {
     updateState(() {
       _channels.remove(channel);
     });
   }
 
   // Called when channels.length > x
-  _nullChannels() {
+  void _nullChannels() {
     return;
   }
 
   // Build bottom modal to add channels to expression
-  _buildLayersModal(context) {
+  void _buildLayersModal(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      builder: (context) {
+      builder: (BuildContext context) {
         // Use StatefulBuilder to pass state of CreateActions
         return StatefulBuilder(
-          builder: (context, state) {
+          builder: (BuildContext context, StateSetter state) {
             return Container(
               color: Colors.white,
-              padding: EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Column(
                 children: <Widget>[
                   Container(
-                    padding: EdgeInsets.symmetric(vertical: 5),
+                    padding: const EdgeInsets.symmetric(vertical: 5),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
@@ -276,7 +292,7 @@ class CreateActionsState extends State<CreateActions> {
                             ),
                             cursorColor: JuntoPalette.juntoGrey,
                             cursorWidth: 2,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Color(0xff333333),
                               fontSize: 14,
                               fontWeight: FontWeight.w700,
@@ -287,7 +303,7 @@ class CreateActionsState extends State<CreateActions> {
                         ),
                       ],
                     ),
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       border: Border(
                         bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
                       ),

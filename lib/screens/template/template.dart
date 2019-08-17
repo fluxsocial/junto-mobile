@@ -14,43 +14,47 @@ import 'package:junto_beta_mobile/typography/palette.dart';
 // and screen (collective, spheres, pack, etc) depending on condition.
 class JuntoTemplate extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    return JuntoTemplateState();
-  }
+  State<StatefulWidget> createState() => JuntoTemplateState();
 }
 
 class JuntoTemplateState extends State<JuntoTemplate> {
   // Default values for collective screen / JUNTO perspective - change dynamically.
-  var _currentScreen = 'collective';
+  String _currentScreen = 'collective';
+
   //ignore:unused_field
   String _currentPerspective = 'JUNTO';
   String _appbarTitle = 'JUNTO';
 
-  ValueNotifier<int> _bottomNavIndex = ValueNotifier(0);
+  ValueNotifier<int> _bottomNavIndex;
 
   //
-  List _channels = [];
-  TextEditingController _channelController = TextEditingController();
+  final List<String> _channels = <String>[];
+  TextEditingController _channelController;
 
   // Controller for PageView
-  final controller = PageController(
-    initialPage: 0,
-  );
+  PageController controller;
 
   // Controller for scroll
-  ScrollController _hideFABController = ScrollController();
-  ValueNotifier<bool> _isVisible = ValueNotifier(true);
+  ScrollController _hideFABController;
+  ValueNotifier<bool> _isVisible;
 
   @override
   void initState() {
     super.initState();
     _hideFABController.addListener(_scrollListener);
+    _bottomNavIndex = ValueNotifier<int>(0);
+    _channelController = TextEditingController();
+    controller = PageController(initialPage: 0);
+    _hideFABController = ScrollController();
+    _isVisible = ValueNotifier<bool>(true);
   }
 
   @override
   void dispose() {
     _hideFABController.removeListener(_scrollListener);
     _hideFABController.dispose();
+    controller.dispose();
+    _channelController.dispose();
     super.dispose();
   }
 
@@ -70,11 +74,11 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   @override
   Widget build(BuildContext context) {
     return Stack(
-      children: [
+      children: <Widget>[
         Scaffold(
           backgroundColor: Colors.white,
           appBar: PreferredSize(
-            preferredSize: Size.fromHeight(45),
+            preferredSize: const Size.fromHeight(45),
             child: JuntoAppBar(
               _appbarTitle,
               _navNotifications,
@@ -100,14 +104,14 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                   : null,
           body: PageView(
             controller: controller,
-            onPageChanged: (int) {
-              if (int == 0) {
+            onPageChanged: (int index) {
+              if (index == 0) {
                 _switchScreen('collective');
-              } else if (int == 1) {
+              } else if (index == 1) {
                 _switchScreen('spheres');
-              } else if (int == 2) {
+              } else if (index == 2) {
                 _switchScreen('packs');
-              } else if (int == 3) {
+              } else if (index == 3) {
                 _switchScreen('den');
               }
             },
@@ -118,9 +122,9 @@ class JuntoTemplateState extends State<JuntoTemplate> {
               JuntoDen()
             ],
           ),
-          bottomNavigationBar: ValueListenableBuilder(
+          bottomNavigationBar: ValueListenableBuilder<int>(
             valueListenable: _bottomNavIndex,
-            builder: (context, index, _) {
+            builder: (BuildContext context, int index, _) {
               return BottomNav(
                 index,
                 _setBottomIndex,
@@ -133,13 +137,13 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   }
 
   // Set the bottom navbar index; used when bottom nav icon is pressed.
-  _setBottomIndex(x) {
+  void _setBottomIndex(int x) {
     _bottomNavIndex.value = x;
     controller.jumpToPage(x);
   }
 
   // Switch between perspectives; used in perspectives side drawer.
-  void _changePerspective(perspective) {
+  void _changePerspective(String perspective) {
     setState(
       () {
         _currentPerspective = perspective;
@@ -151,7 +155,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   }
 
   // Switch between screens within PageView
-  _switchScreen(String screen) {
+  void _switchScreen(String screen) {
     if (screen == 'collective') {
       setState(() {
         _currentScreen = 'collective';
@@ -180,25 +184,25 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   }
 
   // Navigate to Notifications screen
-  _navNotifications() {
+  void _navNotifications() {
     Navigator.pushNamed(context, '/notifications');
   }
 
   // Build bottom modal to filter by channel
-  _buildFilterChannelModal(context) {
+  void _buildFilterChannelModal(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      builder: (context) {
+      builder: (BuildContext context) {
         // Use StatefulBuilder to pass state of CreateActions
         return StatefulBuilder(
-          builder: (context, state) {
+          builder: (BuildContext context, StateSetter state) {
             return Container(
-              padding: EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               height: MediaQuery.of(context).size.height * .4,
               child: Column(
                 children: <Widget>[
                   Container(
-                    padding: EdgeInsets.symmetric(vertical: 5),
+                    padding: const EdgeInsets.symmetric(vertical: 5),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -220,7 +224,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                             ),
                             cursorColor: JuntoPalette.juntoGrey,
                             cursorWidth: 2,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Color(0xff333333),
                               fontSize: 14,
                               fontWeight: FontWeight.w700,
@@ -230,8 +234,8 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                           ),
                         ),
                         Container(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
                           child: GestureDetector(
                             onTap: () {
                               // Update channels list in state until there are 3
@@ -242,7 +246,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                                     )
                                   : _nullChannels();
                             },
-                            child: Text(
+                            child: const Text(
                               'add',
                               style: TextStyle(
                                 fontSize: 12,
@@ -252,14 +256,16 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                             ),
                           ),
                           decoration: BoxDecoration(
-                            border:
-                                Border.all(color: Color(0xff333333), width: 1),
+                            border: Border.all(
+                              color: const Color(0xff333333),
+                              width: 1,
+                            ),
                             borderRadius: BorderRadius.circular(5),
                           ),
                         ),
                       ],
                     ),
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       border: Border(
                         bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
                       ),
@@ -267,17 +273,17 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                   ),
                   Container(
                     alignment: Alignment.centerLeft,
-                    padding: _channels.length == 0
-                        ? EdgeInsets.all(0)
-                        : EdgeInsets.symmetric(vertical: 10),
+                    padding: _channels.isEmpty
+                        ? const EdgeInsets.all(0)
+                        : const EdgeInsets.symmetric(vertical: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        _channels.length == 0
-                            ? SizedBox()
+                        _channels.isEmpty
+                            ? const SizedBox()
                             : Container(
-                                margin: EdgeInsets.only(bottom: 10),
-                                child: Text(
+                                margin: const EdgeInsets.only(bottom: 10),
+                                child: const Text(
                                   'DOUBLE TAP TO REMOVE CHANNEL',
                                   style: TextStyle(fontSize: 12),
                                 ),
@@ -288,7 +294,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                           direction: Axis.horizontal,
                           children: _channels
                               .map(
-                                (channel) => GestureDetector(
+                                (String channel) => GestureDetector(
                                   onDoubleTap: () {
                                     _removeChannel(state, channel);
                                   },
@@ -296,18 +302,18 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(5),
                                       border: Border.all(
-                                        color: Color(0xff333333),
+                                        color: const Color(0xff333333),
                                         width: 1,
                                       ),
                                     ),
-                                    margin: EdgeInsets.only(right: 10),
-                                    padding: EdgeInsets.symmetric(
+                                    margin: const EdgeInsets.only(right: 10),
+                                    padding: const EdgeInsets.symmetric(
                                       horizontal: 10,
                                       vertical: 5,
                                     ),
                                     child: Text(
                                       channel,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w700,
                                       ),
@@ -330,7 +336,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   }
 
   // Update the list of channels in state
-  _updateChannels(StateSetter updateState, channel) async {
+  void _updateChannels(StateSetter updateState, String channel) {
     updateState(
       () {
         if (channel != '') {
@@ -343,7 +349,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   }
 
   // Remove a channel from the list of channels in state
-  _removeChannel(StateSetter updateState, channel) async {
+  void _removeChannel(StateSetter updateState, String channel) {
     updateState(
       () {
         _channels.remove(channel);
@@ -352,7 +358,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   }
 
   // Called when channels.length > x
-  _nullChannels() {
+  void _nullChannels() {
     return;
   }
 }

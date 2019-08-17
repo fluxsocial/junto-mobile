@@ -8,11 +8,11 @@ class CreatePerspective extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(45),
+        preferredSize: const Size.fromHeight(45),
         child: AppBar(
           automaticallyImplyLeading: false,
           brightness: Brightness.light,
-          iconTheme: IconThemeData(
+          iconTheme: const IconThemeData(
             color: JuntoPalette.juntoSleek,
           ),
           backgroundColor: Colors.white,
@@ -23,7 +23,7 @@ class CreatePerspective extends StatelessWidget {
             children: <Widget>[
               GestureDetector(
                 onTap: () => Navigator.pop(context),
-                child: Icon(
+                child: const Icon(
                   CustomIcons.back_arrow_left,
                   color: JuntoPalette.juntoSleek,
                   size: 24,
@@ -32,17 +32,17 @@ class CreatePerspective extends StatelessWidget {
             ],
           ),
           bottom: PreferredSize(
-            preferredSize: Size.fromHeight(1),
+            preferredSize: const Size.fromHeight(1),
             child: Container(
               height: 1,
               width: MediaQuery.of(context).size.width,
-              color: Color(0xffeeeeee),
+              color: const Color(0xffeeeeee),
             ),
           ),
         ),
       ),
       body: Column(
-        children: <Widget>[],
+        children: const <Widget>[],
       ),
     );
   }

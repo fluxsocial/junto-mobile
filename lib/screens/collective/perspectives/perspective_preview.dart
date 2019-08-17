@@ -1,26 +1,32 @@
 import 'package:flutter/material.dart';
 
+/// Shows a preview of a `Perspective`. The params [title] and
+/// [changePerspective] must be supplied.
 class PerspectivePreview extends StatelessWidget {
-  PerspectivePreview(this.title, this.changePerspective);
-  
+  const PerspectivePreview(this.title, this.changePerspective);
+
+  /// The name of given perspective
   final String title;
-  final Function changePerspective;
+
+  /// Callback for changing perspectives. Exposes the title of the perspective
+  /// tapped by the user.
+  final ValueChanged<String> changePerspective;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: ListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: 0),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 0),
         onTap: () {
           changePerspective(title);
           Navigator.pop(context);
         },
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
+          children: <Widget>[
             Text(
               title,
-              style: TextStyle(fontWeight: FontWeight.w500),
+              style: const TextStyle(fontWeight: FontWeight.w500),
             ),
             Icon(
               Icons.edit,

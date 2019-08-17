@@ -1,7 +1,7 @@
 # Dart linter rules. Copied from https://github.com/flutter/flutter/blob/master/analysis_options.yaml
 analyzer:
   strong-mode:
-    implicit-dynamic: false
+    implicit-dynamic: true
   errors:
     # treat missing required parameters as a warning (not a hint)
     missing_required_param: warning
@@ -54,7 +54,6 @@ linter:
     - empty_catches
     - empty_constructor_bodies
     - empty_statements
-    - flutter_style_todos
     - hash_and_equals
     - implementation_imports
     - iterable_contains_unrelated_type

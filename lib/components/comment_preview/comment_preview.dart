@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 
+/// Shows a preview of the comments. Takes a un-named [String] as a param.
 class CommentPreview extends StatelessWidget {
-  final commentText;
+  const CommentPreview(this.commentText);
 
-  CommentPreview(this.commentText);
+  /// String to be displayed as comment
+  final String commentText;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(left: 10, right: 10, top: 10),
+      padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -22,13 +24,16 @@ class CommentPreview extends StatelessWidget {
             ),
           ),
           Container(
-            padding: EdgeInsets.only(bottom: 15),
+            padding: const EdgeInsets.only(bottom: 15),
             decoration: BoxDecoration(
               border: Border(
-                bottom: BorderSide(color: Color(0xffeeeeee), width: .5),
+                bottom: BorderSide(
+                  color: const Color(0xffeeeeee),
+                  width: .5,
+                ),
               ),
             ),
-            margin: EdgeInsets.only(left: 10),
+            margin: const EdgeInsets.only(left: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -42,10 +47,12 @@ class CommentPreview extends StatelessWidget {
                         children: <Widget>[
                           Text(
                             'Eric Yang',
-                            style: TextStyle(fontWeight: FontWeight.w700),
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
-                          SizedBox(width: 5),
-                          Text('sunyata'),
+                          const SizedBox(width: 5),
+                          const Text('sunyata'),
                         ],
                       ),
                       Icon(CustomIcons.more, size: 20)
@@ -53,7 +60,10 @@ class CommentPreview extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 5, bottom: 5),
+                  margin: const EdgeInsets.only(
+                    top: 5,
+                    bottom: 5,
+                  ),
                   width: MediaQuery.of(context).size.width - 66,
                   child: Text(
                     commentText,
@@ -65,7 +75,9 @@ class CommentPreview extends StatelessWidget {
                     '5 MINUTES AGO',
                     style: TextStyle(
                       fontSize: 10,
-                      color: Color(0xff555555),
+                      color: const Color(
+                        0xff555555,
+                      ),
                     ),
                   ),
                 ),

@@ -3,26 +3,28 @@ import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/typography/palette.dart';
 
 class SphereOpenAppbar extends StatelessWidget {
-  final sphereHandle;
+  const SphereOpenAppbar(this.sphereHandle);
 
-  SphereOpenAppbar(this.sphereHandle);
+  /// The handle of the given sphere
+  final String sphereHandle;
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
       brightness: Brightness.light,
-      iconTheme: IconThemeData(color: JuntoPalette.juntoSleek),
+      iconTheme: const IconThemeData(color: JuntoPalette.juntoSleek),
       backgroundColor: Colors.white,
       elevation: 0,
       titleSpacing: 0,
       title: Container(
-        padding: EdgeInsets.symmetric(horizontal: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 5),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             GestureDetector(
               onTap: () => Navigator.pop(context),
-              child: Icon(
+              child: const Icon(
                 CustomIcons.back_arrow_left,
                 color: JuntoPalette.juntoSleek,
                 size: 24,
@@ -32,7 +34,7 @@ class SphereOpenAppbar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Container(
-                  margin: EdgeInsets.only(right: 10),
+                  margin: const EdgeInsets.only(right: 10),
                   child: Text(
                     '/s/' + sphereHandle,
                     style: TextStyle(
@@ -47,10 +49,10 @@ class SphereOpenAppbar extends StatelessWidget {
         ),
       ),
       bottom: PreferredSize(
-        preferredSize: Size.fromHeight(1),
+        preferredSize: const Size.fromHeight(1),
         child: Container(
           height: 1,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(
                 width: 1,
