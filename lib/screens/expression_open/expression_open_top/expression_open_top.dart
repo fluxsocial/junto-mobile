@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/typography/palette.dart';
+import 'package:junto_beta_mobile/custom_icons.dart';
 
 class ExpressionOpenTop extends StatelessWidget {
   final expression;
@@ -17,11 +18,10 @@ class ExpressionOpenTop extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Row(
-            children: [
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Row(children: [
               // profile picture
               ClipOval(
                 child: Image.asset(
@@ -41,12 +41,10 @@ class ExpressionOpenTop extends StatelessWidget {
                     Text(
                       firstName + ' ' + lastName,
                       style: TextStyle(
-                        color: JuntoPalette.juntoGrey,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                      ),
+                          color: JuntoPalette.juntoGrey,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700),
                     ),
-ExpressionOpen
                     Text('@' + username,
                         style: TextStyle(
                             color: JuntoPalette.juntoGrey,
@@ -54,31 +52,13 @@ ExpressionOpen
                             fontWeight: FontWeight.w500))
                   ],
                 ),
-              ),          
+              ),
             ]),
 
             Container(
               child: Icon(CustomIcons.more, size: 20)
-            )                
+            )
           ]),
-
-                    Text(
-                      username,
-                      style: TextStyle(
-                        color: JuntoPalette.juntoGrey,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ],
-          ),
-          Text(timestamp + 'm', style: TextStyle(fontSize: 12))
-        ],
-      ),
-
     );
   }
 }
