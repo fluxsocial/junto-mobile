@@ -6,14 +6,14 @@ class SpheresCreate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 5),
-      margin: EdgeInsets.only(left: 10, right: 10, bottom: 15.0, top: 15),
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      margin: const EdgeInsets.only(left: 10, right: 10, bottom: 15.0, top: 15),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
+        children: <Widget>[
           Text(
             'Create a Sphere'.toUpperCase(),
-            style: TextStyle(
+            style: const TextStyle(
               color: JuntoPalette.juntoGrey,
               fontSize: 12,
               fontWeight: FontWeight.w700,

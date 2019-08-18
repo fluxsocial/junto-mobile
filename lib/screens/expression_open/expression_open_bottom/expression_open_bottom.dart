@@ -1,39 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
+import 'package:junto_beta_mobile/models/expression.dart';
 
 class ExpressionOpenBottom extends StatefulWidget {
-  final expression;
+  const ExpressionOpenBottom(this.expression);
 
-  ExpressionOpenBottom(this.expression);
+  final Expression expression;
 
   @override
-  State<StatefulWidget> createState() {
-    return ExpressionOpenBottomState();
-  }
+  State<StatefulWidget> createState() => ExpressionOpenBottomState();
 }
 
 class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
+  String timestamp;
+
+  @override
+  void initState() {
+    super.initState();
+    timestamp = widget.expression.timestamp;
+  }
 
   @override
   Widget build(BuildContext context) {
-    String timestamp = widget.expression.timestamp; 
-
     return Container(
-        margin: EdgeInsets.only(top: 7.5),
-        padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(color: Color(0xffeeeeee), width: .5),
-          ),
+      margin: const EdgeInsets.only(top: 7.5),
+      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: const Color(0xffeeeeee), width: .5),
         ),
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(timestamp + ' MINUTES AGO', style: TextStyle(fontSize: 10, color: Color(0xff555555))),
-              Container(
-                  margin: EdgeInsets.only(right: 10),
-                  child: Icon(CustomIcons.half_lotus, size: 14))
-            ]),);
+      ),
+      child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              timestamp + ' MINUTES AGO',
+              style: const TextStyle(
+                fontSize: 10,
+                color: Color(
+                  0xff555555,
+                ),
+              ),
+            ),
+            Container(
+                margin: const EdgeInsets.only(right: 10),
+                child: Icon(CustomIcons.half_lotus, size: 14))
+          ]),
+    );
   }
 }

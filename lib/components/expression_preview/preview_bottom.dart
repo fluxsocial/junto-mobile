@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
+import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/typography/palette.dart';
 import 'package:junto_beta_mobile/typography/style.dart';
 
 class PreviewBottom extends StatelessWidget {
-  final expression;
+  const PreviewBottom(this.expression);
 
-  PreviewBottom(this.expression);
+  final Expression expression;
 
   @override
   Widget build(BuildContext context) {
-    String expressionTime = expression.timestamp;
+    final String expressionTime = expression.timestamp;
     return Container(
-      margin: EdgeInsets.only(top: 7.5),
-      padding: EdgeInsets.symmetric(horizontal: 10.0),
+      margin: const EdgeInsets.only(top: 7.5),
+      padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -33,8 +34,8 @@ class PreviewBottom extends StatelessWidget {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(right: 10),
-            child: Icon(
+            margin: const EdgeInsets.only(right: 10),
+            child: const Icon(
               CustomIcons.half_lotus,
               size: 15,
               color: JuntoPalette.juntoBlue,

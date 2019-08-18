@@ -4,7 +4,7 @@ import 'package:junto_beta_mobile/typography/palette.dart';
 /// Gradient [FloatingActionButton] used for filtering
 /// Collectives.
 class CollectiveFilterFAB extends StatelessWidget {
-  CollectiveFilterFAB(this.isVisible, this.toggleFilter);
+  const CollectiveFilterFAB(this.isVisible, this.toggleFilter);
 
   /// Passed via the constructor, used to show and hide the FAB
   final ValueNotifier<bool> isVisible;
@@ -14,9 +14,9 @@ class CollectiveFilterFAB extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
+    return ValueListenableBuilder<bool>(
       valueListenable: isVisible,
-      builder: (context, value, _) => AnimatedOpacity(
+      builder: (BuildContext context, bool value, _) => AnimatedOpacity(
         duration: Duration(milliseconds: 200),
         opacity: value ? 1.0 : 0.0,
         child: GestureDetector(
@@ -25,11 +25,11 @@ class CollectiveFilterFAB extends StatelessWidget {
             height: 45,
             width: 45,
             decoration: BoxDecoration(
-              gradient: LinearGradient(
+              gradient: const LinearGradient(
                 begin: Alignment.bottomLeft,
                 end: Alignment.topRight,
-                stops: [0.1, 0.9],
-                colors: [
+                stops: <double>[0.1, 0.9],
+                colors: <Color>[
                   JuntoPalette.juntoPurple,
                   JuntoPalette.juntoBlue,
                 ],
@@ -42,7 +42,7 @@ class CollectiveFilterFAB extends StatelessWidget {
               borderRadius: BorderRadius.circular(25),
             ),
             alignment: Alignment.center,
-            child: Text(
+            child: const Text(
               '#',
               style: TextStyle(
                 color: Color(0xffffffff),

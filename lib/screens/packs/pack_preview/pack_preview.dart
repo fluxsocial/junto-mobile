@@ -3,11 +3,11 @@ import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open.dart';
 
 // This class renders a pack preview (usually shown in a list of packs)
 class PackPreview extends StatelessWidget {
+  const PackPreview(this.packTitle, this.packUser, this.packImage);
+
   final String packTitle;
   final String packUser;
   final String packImage;
-
-  PackPreview(this.packTitle, this.packUser, this.packImage);
 
   @override
   Widget build(BuildContext context) {
@@ -15,13 +15,17 @@ class PackPreview extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(
-            builder: (context) => PackOpen(packTitle, packUser, packImage),
+          MaterialPageRoute<dynamic>(
+            builder: (BuildContext context) => PackOpen(
+              packTitle,
+              packUser,
+              packImage,
+            ),
           ),
         );
       },
       child: Container(
-        margin: EdgeInsets.only(left: 10.0),
+        margin: const EdgeInsets.only(left: 10.0),
         color: Colors.white,
         child: Row(
           children: <Widget>[
@@ -37,18 +41,18 @@ class PackPreview extends StatelessWidget {
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width - 65,
-                  padding: EdgeInsets.symmetric(vertical: 20),
+                  padding: const EdgeInsets.symmetric(vertical: 20),
                   decoration: BoxDecoration(
                     border: Border(
                       bottom: BorderSide(
                         width: .5,
-                        color: Color(
+                        color: const Color(
                           0xffeeeeee,
                         ),
                       ),
                     ),
                   ),
-                  margin: EdgeInsets.only(left: 10.0),
+                  margin: const EdgeInsets.only(left: 10.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,14 +62,14 @@ class PackPreview extends StatelessWidget {
                         textAlign: TextAlign.start,
                         style: TextStyle(
                           fontSize: 14,
-                          color: Color(0xff333333),
+                          color: const Color(0xff333333),
                           fontWeight: FontWeight.w700,
                         ),
                       ),
                       Text(
                         packUser,
                         textAlign: TextAlign.start,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                         ),

@@ -3,14 +3,19 @@ import 'package:junto_beta_mobile/components/create_fab/create_fab.dart';
 import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open_appbar/sphere_open_appbar.dart';
 
 class SphereOpen extends StatefulWidget {
-  final sphereTitle;
-  final sphereImage;
-  final sphereMembers;
-  final sphereHandle;
-  final sphereDescription;
+  const SphereOpen(
+    this.sphereTitle,
+    this.sphereMembers,
+    this.sphereImage,
+    this.sphereHandle,
+    this.sphereDescription,
+  );
 
-  SphereOpen(this.sphereTitle, this.sphereMembers, this.sphereImage,
-      this.sphereHandle, this.sphereDescription);
+  final String sphereTitle;
+  final String sphereImage;
+  final String sphereMembers;
+  final String sphereHandle;
+  final String sphereDescription;
 
   @override
   State<StatefulWidget> createState() {
@@ -24,7 +29,7 @@ class SphereOpenState extends State<SphereOpen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(45),
+        preferredSize: const Size.fromHeight(45),
         child: SphereOpenAppbar(
           widget.sphereHandle,
         ),
@@ -34,18 +39,18 @@ class SphereOpenState extends State<SphereOpen> {
       body: ListView(
         children: <Widget>[
           Container(
-            constraints: BoxConstraints.expand(height: 200),
+            constraints: const BoxConstraints.expand(height: 200),
             child: Image.asset(
               widget.sphereImage,
               fit: BoxFit.cover,
             ),
           ),
           Container(
-              padding: EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 horizontal: 10,
                 vertical: 15,
               ),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
                     color: Color(0xffeeeeee),
@@ -64,7 +69,7 @@ class SphereOpenState extends State<SphereOpen> {
                           Container(
                             child: Text(
                               widget.sphereTitle,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 17,
                                 fontWeight: FontWeight.w700,
                               ),
@@ -73,7 +78,7 @@ class SphereOpenState extends State<SphereOpen> {
                           Container(
                             child: Text(
                               widget.sphereMembers + ' members',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 14,
                               ),
                             ),
@@ -82,12 +87,12 @@ class SphereOpenState extends State<SphereOpen> {
                       )
                     ],
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Container(
                     child: Text(
                       widget.sphereDescription,
                       textAlign: TextAlign.start,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 14,
                       ),
                     ),

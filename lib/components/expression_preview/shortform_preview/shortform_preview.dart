@@ -1,29 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/typography/palette.dart';
 
+/// Takes an un-named [Expression] to be displayed
 class ShortformPreview extends StatefulWidget {
-  final expression;
+  const ShortformPreview(this.expression);
 
-  ShortformPreview(this.expression);
+  /// [Expression] to be displayed
+  final Expression expression;
 
   @override
-  State<StatefulWidget> createState() {
-    return ShortformPreviewState();
-  }
+  State<StatefulWidget> createState() => ShortformPreviewState();
 }
 
 class ShortformPreviewState extends State<ShortformPreview> {
   Color _gradientOne;
   Color _gradientTwo;
+  String shortformBody = '';
 
-  _buildBackground() {
-    String shortformBackground =
+  @override
+  void initState() {
+    super.initState();
+    _buildBackground();
+    shortformBody = widget.expression.expression['entry']['expression']['body'];
+  }
+
+  void _buildBackground() {
+    final String shortformBackground =
         widget.expression.expression['entry']['expression']['background'];
 
     if (shortformBackground == 'zero') {
       setState(() {
-        _gradientOne = Color(0xffffffff);
-        _gradientTwo = Color(0xffffffff);
+        _gradientOne = const Color(0xffffffff);
+        _gradientTwo = const Color(0xffffffff);
       });
     } else if (shortformBackground == 'one') {
       setState(() {
@@ -54,41 +63,32 @@ class ShortformPreviewState extends State<ShortformPreview> {
   }
 
   @override
-  void initState() {
-    _buildBackground();
-
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    String shortformBody =
-        widget.expression.expression['entry']['expression']['body'];
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.bottomLeft,
           end: Alignment.topRight,
-          stops: [0.1, 0.9],
-          colors: [
+          stops: const <double>[0.1, 0.9],
+          colors: <Color>[
             _gradientOne,
             _gradientTwo,
           ],
         ),
       ),
-      constraints: BoxConstraints(
+      constraints: const BoxConstraints(
         minHeight: 240,
       ),
       width: MediaQuery.of(context).size.width,
       alignment: Alignment.center,
-      padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 50.0),
+      padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 50.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
             shortformBody,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 17.0,
               fontWeight: FontWeight.w700,
               color: Colors.white,

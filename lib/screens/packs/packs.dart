@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/models/pack.dart';
+import 'package:junto_beta_mobile/providers/packs_provider/packs_provider.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_preview/pack_preview.dart';
 import 'package:provider/provider.dart';
-
-import 'package:junto_beta_mobile/providers/packs_provider/packs_provider.dart';
 
 // This class renders the screen of packs a user belongs to
 class JuntoPacks extends StatelessWidget {
@@ -11,22 +11,25 @@ class JuntoPacks extends StatelessWidget {
     return ListView(
       children: <Widget>[
         // My Pack
-        PackPreview('The Gnarly Nomads', 'Eric Yang',
-            'assets/images/junto-mobile__eric.png'),
+        const PackPreview(
+          'The Gnarly Nomads',
+          'Eric Yang',
+          'assets/images/junto-mobile__eric.png',
+        ),
 
         // Other Packs user belongs to
         Consumer<PacksProvider>(
-          builder: (context, packs, child) {
+          builder: (BuildContext context, PacksProvider packs, Widget child) {
             return ListView(
-              physics: ClampingScrollPhysics(),
+              physics: const ClampingScrollPhysics(),
               shrinkWrap: true,
               children: packs.packs
                   .map(
-                    (pack) => PackPreview(
-                          pack.packTitle,
-                          pack.packUser,
-                          pack.packImage,
-                        ),
+                    (Pack pack) => PackPreview(
+                      pack.packTitle,
+                      pack.packUser,
+                      pack.packImage,
+                    ),
                   )
                   .toList(),
             );

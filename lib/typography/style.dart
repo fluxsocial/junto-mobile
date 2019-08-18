@@ -8,45 +8,47 @@ import 'package:junto_beta_mobile/typography/palette.dart';
 
 class JuntoStyles {
   // Global Stles
-  static const horizontalPadding = EdgeInsets.symmetric(horizontal: 10);
+  static const EdgeInsets horizontalPadding = EdgeInsets.symmetric(
+    horizontal: 10,
+  );
 
   // Styles for app bar
-  static const appbarTitle = TextStyle(
+  static const TextStyle appbarTitle = TextStyle(
     color: JuntoPalette.juntoSleek,
     fontSize: 17,
     letterSpacing: .5,
     fontWeight: FontWeight.w700,
   );
 
-  static const perspectiveTitle = TextStyle(
+  static const TextStyle perspectiveTitle = TextStyle(
     color: JuntoPalette.juntoGrey,
     fontWeight: FontWeight.w700,
   );
 
   // Styles for creation templates
-  static const lotusExpressionType = TextStyle(
+  static const TextStyle lotusExpressionType = TextStyle(
     fontSize: 17,
     color: JuntoPalette.juntoGrey,
     fontWeight: FontWeight.w700,
     letterSpacing: 1.1,
   );
 
-  static const lotusAddChannels = TextStyle(
+  static const TextStyle lotusAddChannels = TextStyle(
     fontWeight: FontWeight.w700,
   );
 
-  static const lotusCreate = TextStyle(
+  static const TextStyle lotusCreate = TextStyle(
     fontWeight: FontWeight.w700,
   );
 
   // Longform styles
-  static const lotusLongformTitle = TextStyle(
+  static const TextStyle lotusLongformTitle = TextStyle(
     fontSize: 17.0,
     fontWeight: FontWeight.w700,
     color: JuntoPalette.juntoGrey,
   );
 
-  static const lotusLongformBody = TextStyle(
+  static const TextStyle lotusLongformBody = TextStyle(
     height: 1.25,
     fontSize: 17.0,
     fontWeight: FontWeight.w600,
@@ -55,45 +57,45 @@ class JuntoStyles {
 
   // Styles for expression preview
 
-  static const expressionPreviewName = TextStyle(
+  static const TextStyle expressionPreviewName = TextStyle(
     fontSize: 14.0,
     fontWeight: FontWeight.w700,
     color: JuntoPalette.juntoGrey,
   );
 
-  static const expressionPreviewHandle = TextStyle(
+  static const TextStyle expressionPreviewHandle = TextStyle(
     fontSize: 12.0,
     fontWeight: FontWeight.w500,
     color: JuntoPalette.juntoGrey,
   );
 
-  static const expressionPreviewTime = TextStyle(
+  static const TextStyle expressionPreviewTime = TextStyle(
     fontSize: 10,
     color: Colors.grey,
     fontWeight: FontWeight.w600,
   );
 
-  static const expressionPreviewChannel = TextStyle(
+  static const TextStyle expressionPreviewChannel = TextStyle(
     fontSize: 12,
     fontWeight: FontWeight.w700,
     color: JuntoPalette.juntoSleek,
   );
 
   // // longform preview
-  static const longformTitle = TextStyle(
+  static const TextStyle longformTitle = TextStyle(
     fontSize: 17.0,
     fontWeight: FontWeight.w700,
     color: JuntoPalette.juntoGrey,
   );
 
-  static const longformBody = TextStyle(
+  static const TextStyle longformBody = TextStyle(
     fontSize: 14.0,
     fontWeight: FontWeight.w500,
     color: JuntoPalette.juntoGrey,
   );
 
   // // photo preview
-  static const photoCaption = TextStyle(
+  static const TextStyle photoCaption = TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w500,
   );

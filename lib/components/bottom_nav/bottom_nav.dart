@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
 
 // This widget is the bottom navigation on all of the main screens. Members can
 // navigate to the home, spheres, create, packs, and den screens.
 class BottomNav extends StatefulWidget {
+  const BottomNav(this.currentIndex, this.setIndex);
+
   final int currentIndex;
   final ValueChanged<int> setIndex;
-  BottomNav(this.currentIndex, this.setIndex);
 
   @override
   State<StatefulWidget> createState() {
@@ -23,7 +23,10 @@ class BottomNavState extends State<BottomNav> {
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border(
-          top: BorderSide(color: Color(0xffeeeeee), width: .75),
+          top: BorderSide(
+            color: const Color(0xffeeeeee),
+            width: .75,
+          ),
         ),
       ),
       height: 45,
@@ -38,8 +41,8 @@ class BottomNavState extends State<BottomNav> {
               CustomIcons.home,
               size: 20,
               color: widget.currentIndex == 0
-                  ? Color(0xff333333)
-                  : Color(0xff999999),
+                  ? const Color(0xff333333)
+                  : const Color(0xff999999),
             ),
           ),
           GestureDetector(
@@ -48,28 +51,43 @@ class BottomNavState extends State<BottomNav> {
               CustomIcons.circle,
               size: 20,
               color: widget.currentIndex == 1
-                  ? Color(0xff333333)
-                  : Color(0xff999999),
+                  ? const Color(0xff333333)
+                  : const Color(0xff999999),
             ),
           ),
           GestureDetector(
             onTap: () {
               Navigator.of(context).push(
-                PageRouteBuilder(
-                  pageBuilder: (context, animation, secondaryAnimation) {
-                    return JuntoCreate('collective');
+                PageRouteBuilder<dynamic>(
+                  pageBuilder: (
+                    BuildContext context,
+                    Animation<double> animation,
+                    Animation<double> secondaryAnimation,
+                  ) {
+                    return const JuntoCreate(
+                      'collective',
+                    );
                   },
-                  transitionsBuilder:
-                      (context, animation, secondaryAnimation, child) {
-                    return FadeTransition(opacity: animation, child: child);
+                  transitionsBuilder: (
+                    BuildContext context,
+                    Animation<double> animation,
+                    Animation<double> secondaryAnimation,
+                    Widget child,
+                  ) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
                   },
-                  transitionDuration: Duration(milliseconds: 200),
+                  transitionDuration: Duration(
+                    milliseconds: 200,
+                  ),
                 ),
               );
             },
             child: Icon(
               CustomIcons.lotus,
-              color: Color(0xff999999),
+              color: const Color(0xff999999),
             ),
           ),
           GestureDetector(
@@ -82,8 +100,8 @@ class BottomNavState extends State<BottomNav> {
                 CustomIcons.triangle,
                 size: 20,
                 color: widget.currentIndex == 2
-                    ? Color(0xff333333)
-                    : Color(0xff999999),
+                    ? const Color(0xff333333)
+                    : const Color(0xff999999),
               ),
             ),
           ),
@@ -95,8 +113,8 @@ class BottomNavState extends State<BottomNav> {
               CustomIcons.profile,
               size: 20,
               color: widget.currentIndex == 3
-                  ? Color(0xff333333)
-                  : Color(0xff999999),
+                  ? const Color(0xff333333)
+                  : const Color(0xff999999),
             ),
           )
         ],

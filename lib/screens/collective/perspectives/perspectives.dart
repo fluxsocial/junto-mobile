@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'create_perspective/create_perspective.dart';
 
 class Perspectives extends StatelessWidget {
-  Perspectives(this._changePerspective);
-  final Function _changePerspective;
+  const Perspectives(this._changePerspective);
+
+  final ValueChanged<String> _changePerspective;
 
   @override
   Widget build(BuildContext context) {
@@ -14,14 +15,14 @@ class Perspectives extends StatelessWidget {
       child: Drawer(
         elevation: 0,
         child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Column(
               children: <Widget>[
                 Container(
                   decoration: BoxDecoration(
                     border: Border(
                       bottom: BorderSide(
-                        color: Color(0xffeeeeee),
+                        color: const Color(0xffeeeeee),
                         width: 1,
                       ),
                     ),
@@ -29,8 +30,8 @@ class Perspectives extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
+                    children: <Widget>[
+                      const Text(
                         'PERSPECTIVES',
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
@@ -43,8 +44,9 @@ class Perspectives extends StatelessWidget {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) => CreatePerspective(),
+                            MaterialPageRoute<dynamic>(
+                              builder: (BuildContext context) =>
+                                  CreatePerspective(),
                             ),
                           );
                         },
@@ -59,63 +61,71 @@ class Perspectives extends StatelessWidget {
                   margin: EdgeInsets.only(top: statusBarHeight),
                 ),
                 Expanded(
-                    child: ListView(padding: EdgeInsets.all(0), children: [
-                  Container(
-                    child: ListTile(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 0),
-                      onTap: () {
-                        _changePerspective('JUNTO');
+                    child: ListView(
+                        padding: const EdgeInsets.all(
+                          0,
+                        ),
+                        children: <Widget>[
+                      Container(
+                        child: ListTile(
+                          contentPadding:
+                              const EdgeInsets.symmetric(horizontal: 0),
+                          onTap: () {
+                            _changePerspective('JUNTO');
 
-                        Navigator.pop(context);
-                      },
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('JUNTO'),
-                        ],
+                            Navigator.pop(context);
+                          },
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: const <Widget>[
+                              Text('JUNTO'),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  Container(
-                    child: ListTile(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 0),
-                      onTap: () {
-                        _changePerspective('Degrees of Separation');
-                        Navigator.pop(context);
-                      },
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Degrees of Separation'),
-                        ],
+                      Container(
+                        child: ListTile(
+                          contentPadding:
+                              const EdgeInsets.symmetric(horizontal: 0),
+                          onTap: () {
+                            _changePerspective('Degrees of Separation');
+                            Navigator.pop(context);
+                          },
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: const <Widget>[
+                              Text('Degrees of Separation'),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  Container(
-                    child: ListTile(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 0),
-                      onTap: () {
-                        _changePerspective('Following');
-                        Navigator.pop(context);
-                      },
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Following'),
-                        ],
+                      Container(
+                        child: ListTile(
+                          contentPadding:
+                              const EdgeInsets.symmetric(horizontal: 0),
+                          onTap: () {
+                            _changePerspective('Following');
+                            Navigator.pop(context);
+                          },
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: const <Widget>[
+                              Text('Following'),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  // ListView(
-                  //     padding: EdgeInsets.all(0),
-                  //     shrinkWrap: true,
-                  //     physics: ClampingScrollPhysics(),
-                  //     children: model.perspectives
-                  //         .map((perspective) => PerspectivePreview(
-                  //             perspective.perspectiveTitle, _changePerspective))
-                  //         .toList(),
-                  //   ),
-                ]))
+                      // ListView(
+                      //     padding: EdgeInsets.all(0),
+                      //     shrinkWrap: true,
+                      //     physics: ClampingScrollPhysics(),
+                      //     children: model.perspectives
+                      //         .map((perspective) => PerspectivePreview(
+                      //             perspective.perspectiveTitle,
+                      //             _changePerspective,))
+                      //         .toList(),
+                      //   ),
+                    ]))
               ],
             )),
       ),

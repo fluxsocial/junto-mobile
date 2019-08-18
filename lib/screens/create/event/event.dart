@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/typography/palette.dart';
 import 'package:junto_beta_mobile/typography/style.dart';
 
+/// Allows the user to create an event
 class CreateEvent extends StatelessWidget {
   //ignore:unused_field
-  final Map _eventExpression = {
-    'expression': {
+
+  // ignore: unused_field
+  final Map<String, dynamic> _eventExpression = <String, dynamic>{
+    'expression': <String, dynamic>{
       'expression_type': 'eventform',
-      'expression_data': {
-        'EventForm': {
+      'expression_data': <String, dynamic>{
+        'EventForm': <String, String>{
           'title': 'required title',
           'date': 'required date',
           'location': 'required location',
@@ -16,8 +19,8 @@ class CreateEvent extends StatelessWidget {
         }
       }
     },
-    'tags': [],
-    'context': ['collective']
+    'tags': <String>[],
+    'context': <String>['collective']
   };
 
   @override
@@ -27,7 +30,7 @@ class CreateEvent extends StatelessWidget {
         children: <Widget>[
           Expanded(
               child: ListView(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
             children: <Widget>[
               Container(
                 child: TextField(
@@ -92,11 +95,16 @@ class CreateEvent extends StatelessWidget {
               ),
 
               Container(
-                constraints: BoxConstraints(minHeight: 100, maxHeight: 240),
-                padding: EdgeInsets.only(bottom: 40),
+                constraints:
+                    const BoxConstraints(minHeight: 100, maxHeight: 240),
+                padding: const EdgeInsets.only(bottom: 40),
                 child: TextField(
-                  buildCounter: (BuildContext context,
-                          {int currentLength, int maxLength, bool isFocused}) =>
+                  buildCounter: (
+                    BuildContext context, {
+                    int currentLength,
+                    int maxLength,
+                    bool isFocused,
+                  }) =>
                       null,
                   decoration: InputDecoration(
                     border: InputBorder.none,

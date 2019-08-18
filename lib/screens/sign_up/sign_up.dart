@@ -9,25 +9,40 @@ class SignUp extends StatefulWidget {
   }
 }
 
-class SignUpState extends State {
-  static TextEditingController firstNameController = TextEditingController();
-  static TextEditingController lastNameController = TextEditingController();
-  var firstName = '';
-  var lastName = '';
+class SignUpState extends State<SignUp> {
+  TextEditingController firstNameController;
+  TextEditingController lastNameController;
+
+  String firstName = '';
+  String lastName = '';
+
+  @override
+  void initState() {
+    super.initState();
+    firstNameController = TextEditingController();
+    lastNameController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    firstNameController.dispose();
+    lastNameController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
-        children: [
+        children: <Widget>[
           Container(
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
-              gradient: LinearGradient(
+              gradient: const LinearGradient(
                 begin: Alignment.bottomLeft,
                 end: Alignment.topRight,
-                stops: [0.1, 0.9],
-                colors: [
+                stops: <double>[0.1, 0.9],
+                colors: <Color>[
                   Color(0xff5E54D0),
                   Color(0xff307FAB),
                 ],
@@ -36,7 +51,7 @@ class SignUpState extends State {
             child: Container(
               margin: EdgeInsets.only(
                   top: MediaQuery.of(context).size.height * .10 + 18),
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -44,7 +59,7 @@ class SignUpState extends State {
                     margin: EdgeInsets.only(
                       bottom: MediaQuery.of(context).size.height * .17,
                     ),
-                    child: Text(
+                    child: const Text(
                       'Hey, great to have you here. What is your name?',
                       style: TextStyle(
                         color: Colors.white,
@@ -54,12 +69,12 @@ class SignUpState extends State {
                   ),
                   Container(
                     child: Column(
-                      children: [
+                      children: <Widget>[
                         Container(
-                          margin: EdgeInsets.only(bottom: 36),
+                          margin: const EdgeInsets.only(bottom: 36),
                           child: TextField(
                             controller: firstNameController,
-                            onChanged: (text) {
+                            onChanged: (String text) {
                               setState(
                                 () {
                                   firstName = text;
@@ -78,7 +93,7 @@ class SignUpState extends State {
                               ),
                               fillColor: Colors.white,
                             ),
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 17,
                               fontWeight: FontWeight.w500,
@@ -88,7 +103,7 @@ class SignUpState extends State {
                         Container(
                           child: TextField(
                             controller: lastNameController,
-                            onChanged: (text) {
+                            onChanged: (String text) {
                               setState(
                                 () {
                                   lastName = text;
@@ -107,7 +122,7 @@ class SignUpState extends State {
                               ),
                               fillColor: Colors.white,
                             ),
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 17,
                               fontWeight: FontWeight.w500,
@@ -128,7 +143,7 @@ class SignUpState extends State {
             child: Row(
               children: <Widget>[
                 Container(
-                  margin: EdgeInsets.only(right: 17),
+                  margin: const EdgeInsets.only(right: 17),
                   child: GestureDetector(
                     onTap: () {
                       Navigator.pop(context);
@@ -147,11 +162,11 @@ class SignUpState extends State {
                     if (firstName != '' && lastName != '') {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => SignUpTwo(
-                                firstName,
-                                lastName,
-                              ),
+                        MaterialPageRoute<dynamic>(
+                          builder: (BuildContext context) => SignUpTwo(
+                            firstName,
+                            lastName,
+                          ),
                         ),
                       );
                     }

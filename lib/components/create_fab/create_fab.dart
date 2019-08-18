@@ -4,9 +4,9 @@ import 'package:junto_beta_mobile/screens/create/create.dart';
 
 // This widget is a Floating Action Button
 class CreateFAB extends StatelessWidget {
-  final sphereHandle;
+  const CreateFAB(this.sphereHandle);
 
-  CreateFAB(this.sphereHandle);
+  final String sphereHandle;
 
   @override
   Widget build(BuildContext context) {
@@ -16,12 +16,20 @@ class CreateFAB extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           Navigator.of(context).push(
-            PageRouteBuilder(
-              pageBuilder: (context, animation, secondaryAnimation) {
+            PageRouteBuilder<dynamic>(
+              pageBuilder: (
+                BuildContext context,
+                Animation<double> animation,
+                Animation<double> secondaryAnimation,
+              ) {
                 return JuntoCreate(sphereHandle);
               },
-              transitionsBuilder:
-                  (context, animation, secondaryAnimation, child) {
+              transitionsBuilder: (
+                BuildContext context,
+                Animation<double> animation,
+                Animation<double> secondaryAnimation,
+                Widget child,
+              ) {
                 return FadeTransition(opacity: animation, child: child);
               },
               transitionDuration: Duration(milliseconds: 200),

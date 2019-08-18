@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/typography/palette.dart';
 
+/// Takes the member's handle as an un-named param.
 class MemberAppbar extends StatelessWidget {
-  final memberHandle;
+  const MemberAppbar(this.memberHandle);
 
-  MemberAppbar(this.memberHandle);
+  /// User's handle to be displayed
+  final String memberHandle;
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -16,7 +19,7 @@ class MemberAppbar extends StatelessWidget {
         elevation: 0,
         titleSpacing: 0,
         title: Container(
-          padding: EdgeInsets.symmetric(horizontal: 5),
+          padding: const EdgeInsets.symmetric(horizontal: 5),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -32,7 +35,7 @@ class MemberAppbar extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.only(right: 10),
+                    margin: const EdgeInsets.only(right: 10),
                     child: Text(
                       '@' + memberHandle,
                       style: TextStyle(
@@ -48,14 +51,14 @@ class MemberAppbar extends StatelessWidget {
           ),
         ),
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(1),
+          preferredSize: const Size.fromHeight(1),
           child: Container(
             height: 1,
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
                   width: 1,
-                  color: Color(0xffeeeeee),
+                  color: const Color(0xffeeeeee),
                 ),
               ),
             ),

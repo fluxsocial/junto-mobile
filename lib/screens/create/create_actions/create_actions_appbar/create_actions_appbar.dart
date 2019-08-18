@@ -8,24 +8,24 @@ class CreateActionsAppbar extends StatelessWidget {
     return AppBar(
       automaticallyImplyLeading: false,
       brightness: Brightness.light,
-      iconTheme: IconThemeData(color: JuntoPalette.juntoSleek),
+      iconTheme: const IconThemeData(color: JuntoPalette.juntoSleek),
       backgroundColor: Colors.white,
       elevation: 0,
       titleSpacing: 0,
       title: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             GestureDetector(
               onTap: () => Navigator.pop(context),
-              child: Icon(
+              child: const Icon(
                 CustomIcons.back_arrow_left,
                 color: JuntoPalette.juntoSleek,
                 size: 24,
               ),
             ),
-            Text(
+            const Text(
               'create',
               style: TextStyle(
                 fontSize: 15,
@@ -36,10 +36,10 @@ class CreateActionsAppbar extends StatelessWidget {
         ),
       ),
       bottom: PreferredSize(
-        preferredSize: Size.fromHeight(1),
+        preferredSize: const Size.fromHeight(1),
         child: Container(
           height: 1,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(
                 color: Color(0xffeeeeee),

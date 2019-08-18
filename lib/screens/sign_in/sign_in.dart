@@ -6,15 +6,15 @@ class SignIn extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
-        children: [
+        children: <Widget>[
           Container(
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
-              gradient: LinearGradient(
+              gradient: const LinearGradient(
                 begin: Alignment.bottomLeft,
                 end: Alignment.topRight,
-                stops: [0.1, 0.9],
-                colors: [
+                stops: <double>[0.1, 0.9],
+                colors: <Color>[
                   Color(0xff5E54D0),
                   Color(0xff307FAB),
                 ],
@@ -25,8 +25,8 @@ class SignIn extends StatelessWidget {
               // crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Container(
-                  margin: EdgeInsets.only(bottom: 20),
-                  padding: EdgeInsets.symmetric(horizontal: 45),
+                  margin: const EdgeInsets.only(bottom: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 45),
                   child: TextField(
                     decoration: InputDecoration(
                       enabledBorder: UnderlineInputBorder(
@@ -48,7 +48,7 @@ class SignIn extends StatelessWidget {
                       ),
                       fillColor: Colors.white,
                     ),
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 17,
                       fontWeight: FontWeight.w500,
@@ -56,8 +56,8 @@ class SignIn extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(bottom: 40),
-                  padding: EdgeInsets.symmetric(horizontal: 45),
+                  margin: const EdgeInsets.only(bottom: 40),
+                  padding: const EdgeInsets.symmetric(horizontal: 45),
                   child: TextField(
                     obscureText: true,
                     decoration: InputDecoration(
@@ -81,7 +81,7 @@ class SignIn extends StatelessWidget {
                           fontWeight: FontWeight.w400),
                       fillColor: Colors.white,
                     ),
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 17,
                       fontWeight: FontWeight.w500,
@@ -93,15 +93,15 @@ class SignIn extends StatelessWidget {
                     onPressed: () async {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => JuntoTemplate(),
+                        MaterialPageRoute<dynamic>(
+                          builder: (BuildContext context) => JuntoTemplate(),
                         ),
                       );
                     },
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 100, vertical: 20),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 100, vertical: 20),
                     // color: Colors.white,
-                    color: Color(0xff4968BF),
+                    color: const Color(0xff4968BF),
                     child: Text('SIGN IN',
                         style: TextStyle(
                             // color: JuntoPalette.juntoBlue,

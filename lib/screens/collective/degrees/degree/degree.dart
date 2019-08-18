@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 // Degree of Separation widget
 class Degree extends StatelessWidget {
-  final degree;
-  final changeDegree;
-  final degreeColor;
+  const Degree(this.degree, this.changeDegree, this.degreeColor);
 
-  Degree(this.degree, this.changeDegree, this.degreeColor);
+  final String degree;
+  final Function changeDegree;
+  final Color degreeColor;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class Degree extends StatelessWidget {
   }
 
   // Transform degree (i.e. 'one', 'two', 'three') to Roman numerals
-  _generateRoman() {
+  String _generateRoman() {
     if (degree == 'infinity') {
       return 'oo';
     } else if (degree == 'one') {
@@ -44,6 +44,8 @@ class Degree extends StatelessWidget {
       return 'v';
     } else if (degree == 'six') {
       return 'vi';
+    } else {
+      return '';
     }
   }
 }

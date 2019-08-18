@@ -6,18 +6,18 @@ class JuntoNotifications extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(45),
+        preferredSize: const Size.fromHeight(45),
         child: NotificationsAppbar(),
       ),
       backgroundColor: Colors.white,
       body: Column(
         children: <Widget>[
           Container(
-              padding: EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
-                    color: Color(0xffeeeeee),
+                    color: const Color(0xffeeeeee),
                     width: 1,
                   ),
                 ),
@@ -25,7 +25,7 @@ class JuntoNotifications extends StatelessWidget {
               height: 45,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
+                children: const <Widget>[
                   Text('Notifications'),
                   Text('Whiteboard'),
                   Text('Updates')

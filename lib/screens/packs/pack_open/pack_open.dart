@@ -8,11 +8,12 @@ import 'pack_open_private/pack_open_private.dart';
 import 'pack_open_public/pack_open_public.dart';
 
 class PackOpen extends StatefulWidget {
-  final packTitle;
-  final packUser;
-  final packImage;
+  const PackOpen(this.packTitle, this.packUser, this.packImage);
 
-  PackOpen(this.packTitle, this.packUser, this.packImage);
+  //TODO(Nash): Speak to Eric regard the types for these params.
+  final dynamic packTitle;
+  final dynamic packUser;
+  final dynamic packImage;
 
   @override
   State<StatefulWidget> createState() {
@@ -22,12 +23,19 @@ class PackOpen extends StatefulWidget {
 
 class PackOpenState extends State<PackOpen> {
   // Controller for PageView
-  final controller = PageController(initialPage: 0);
+  PageController controller;
   bool publicActive = true;
 
   @override
   void initState() {
     super.initState();
+    controller = PageController(initialPage: 0);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    controller.dispose();
   }
 
   @override
@@ -37,20 +45,23 @@ class PackOpenState extends State<PackOpen> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(45),
+          preferredSize: const Size.fromHeight(45),
           child: PackOpenAppbar(
-              widget.packTitle, widget.packUser, widget.packImage),
+            widget.packTitle,
+            widget.packUser,
+            widget.packImage,
+          ),
         ),
         floatingActionButton: CreateFAB(widget.packTitle),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body: Column(
           children: <Widget>[
             Container(
-                padding: EdgeInsets.only(top: 20),
+                padding: const EdgeInsets.only(top: 20),
                 decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
-                      color: Color(0xffeeeeee),
+                      color: const Color(0xffeeeeee),
                       width: .75,
                     ),
                   ),
@@ -63,14 +74,14 @@ class PackOpenState extends State<PackOpen> {
                         controller.jumpToPage(0);
                       },
                       child: Container(
-                        padding: EdgeInsets.only(bottom: 20),
+                        padding: const EdgeInsets.only(bottom: 20),
                         width: MediaQuery.of(context).size.width * .5,
                         child: Icon(
                           CustomIcons.half_lotus,
                           size: 17,
                           color: publicActive
-                              ? Color(0xff333333)
-                              : Color(0xff999999),
+                              ? const Color(0xff333333)
+                              : const Color(0xff999999),
                         ),
                       ),
                     ),
@@ -79,7 +90,7 @@ class PackOpenState extends State<PackOpen> {
                         controller.jumpToPage(1);
                       },
                       child: Container(
-                        padding: EdgeInsets.only(bottom: 20),
+                        padding: const EdgeInsets.only(bottom: 20),
                         width: MediaQuery.of(context).size.width * .5,
                         child: RotatedBox(
                           quarterTurns: 2,
@@ -87,8 +98,8 @@ class PackOpenState extends State<PackOpen> {
                             CustomIcons.triangle,
                             size: 17,
                             color: publicActive
-                                ? Color(0xff999999)
-                                : Color(0xff333333),
+                                ? const Color(0xff999999)
+                                : const Color(0xff333333),
                           ),
                         ),
                       ),
@@ -98,12 +109,12 @@ class PackOpenState extends State<PackOpen> {
             Expanded(
               child: PageView(
                 controller: controller,
-                onPageChanged: (int) {
-                  if (int == 0) {
+                onPageChanged: (int index) {
+                  if (index == 0) {
                     setState(() {
                       publicActive = true;
                     });
-                  } else if (int == 1) {
+                  } else if (index == 1) {
                     setState(() {
                       publicActive = false;
                     });

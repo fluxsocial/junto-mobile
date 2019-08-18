@@ -1,16 +1,16 @@
 class Perspective {
+  const Perspective(this.perspectiveTitle);
+
   final String perspectiveTitle;
 
-  Perspective(this.perspectiveTitle);
-
   static List<Perspective> fetchAll() {
-    return [
-      Perspective('NYC 🗽🏙️  '),
-      Perspective('Design'),
-      Perspective('Meditation'),
-      Perspective('Hoops 🏀'),
-      Perspective('Austrian Economics📈'),
-      Perspective('Holochain ♓'),
+    return <Perspective>[
+      const Perspective('NYC 🗽🏙️  '),
+      const Perspective('Design'),
+      const Perspective('Meditation'),
+      const Perspective('Hoops 🏀'),
+      const Perspective('Austrian Economics📈'),
+      const Perspective('Holochain ♓'),
     ];
   }
 }

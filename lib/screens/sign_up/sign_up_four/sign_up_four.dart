@@ -3,12 +3,12 @@ import 'package:junto_beta_mobile/screens/sign_up/sign_up_logo/sign_up_logo.dart
 import 'package:junto_beta_mobile/screens/sign_up/sign_up_welcome/sign_up_welcome.dart';
 
 class SignUpFour extends StatefulWidget {
-  final firstName;
-  final lastName;
-  final username;
-  final password;
+  const SignUpFour(this.firstName, this.lastName, this.username, this.password);
 
-  SignUpFour(this.firstName, this.lastName, this.username, this.password);
+  final String firstName;
+  final String lastName;
+  final String username;
+  final String password;
 
   @override
   State<StatefulWidget> createState() {
@@ -18,22 +18,22 @@ class SignUpFour extends StatefulWidget {
 
 class SignUpFourState extends State<SignUpFour> {
   static TextEditingController bioController = TextEditingController();
-  var bio = '';
-  var profilePicture = '';
+  String bio = '';
+  String profilePicture = '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
-        children: [
+        children: <Widget>[
           Container(
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
-              gradient: LinearGradient(
+              gradient: const LinearGradient(
                 begin: Alignment.bottomLeft,
                 end: Alignment.topRight,
-                stops: [0.1, 0.9],
-                colors: [
+                stops: <double>[0.1, 0.9],
+                colors: <Color>[
                   Color(0xff5E54D0),
                   Color(0xff307FAB),
                 ],
@@ -43,16 +43,16 @@ class SignUpFourState extends State<SignUpFour> {
               margin: EdgeInsets.only(
                 top: MediaQuery.of(context).size.height * .10 + 18,
               ),
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
                     margin: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).size.height * .17,
-                    ),
-                    child: Text(
-                      'We are almost done! Feel free to upload a photo and write a brief bio of who you are',
+                        bottom: MediaQuery.of(context).size.height * .17),
+                    child: const Text(
+                      'We are almost done! Feel free to upload a photo and '
+                      'write a brief bio of who you are',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 27,
@@ -61,12 +61,12 @@ class SignUpFourState extends State<SignUpFour> {
                   ),
                   Container(
                     child: Column(
-                      children: [
+                      children: <Widget>[
                         Container(
-                          margin: EdgeInsets.only(bottom: 36),
+                          margin: const EdgeInsets.only(bottom: 36),
                           child: TextField(
                             controller: bioController,
-                            onChanged: (text) {
+                            onChanged: (String text) {
                               setState(
                                 () {
                                   bio = text;
@@ -85,7 +85,7 @@ class SignUpFourState extends State<SignUpFour> {
                               ),
                               fillColor: Colors.white,
                             ),
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 17,
                               fontWeight: FontWeight.w500,
@@ -106,7 +106,7 @@ class SignUpFourState extends State<SignUpFour> {
             child: Row(
               children: <Widget>[
                 Container(
-                  margin: EdgeInsets.only(right: 17),
+                  margin: const EdgeInsets.only(right: 17),
                   child: GestureDetector(
                     onTap: () {
                       Navigator.pop(context);
@@ -127,15 +127,15 @@ class SignUpFourState extends State<SignUpFour> {
                         widget.password != '') {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => SignUpWelcome(
-                                widget.firstName,
-                                widget.lastName,
-                                widget.username,
-                                widget.password,
-                                bio,
-                                profilePicture,
-                              ),
+                        MaterialPageRoute<dynamic>(
+                          builder: (BuildContext context) => SignUpWelcome(
+                            widget.firstName,
+                            widget.lastName,
+                            widget.username,
+                            widget.password,
+                            bio,
+                            profilePicture,
+                          ),
                         ),
                       );
                     }
