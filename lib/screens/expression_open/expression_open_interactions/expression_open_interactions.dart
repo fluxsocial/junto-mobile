@@ -29,7 +29,7 @@ class ExpressionOpenInteractions extends StatelessWidget {
   // Build bottom modal to add channels to expression
   void _buildRespondModal(BuildContext context) {
     showModalBottomSheet(
-      context: context,
+      context: context, 
       builder: (BuildContext context) {
         // Use StatefulBuilder to pass state of CreateActions
         return StatefulBuilder(
