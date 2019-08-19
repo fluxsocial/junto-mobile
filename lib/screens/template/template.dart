@@ -116,7 +116,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
               }
             },
             children: <Widget>[
-              JuntoCollective(_hideFABController),
+              JuntoCollective(_hideFABController, _currentPerspective),
               JuntoSpheres(),
               JuntoPacks(),
               JuntoDen()
@@ -160,6 +160,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
       setState(() {
         _currentScreen = 'collective';
         _appbarTitle = 'JUNTO';
+        _currentPerspective = 'JUNTO';
         _bottomNavIndex.value = 0;
       });
     } else if (screen == 'spheres') {

@@ -5,7 +5,8 @@ import 'package:junto_beta_mobile/screens/collective/degrees/degree/degree.dart'
 /// perspective
 class DegreesOfSeparation extends StatelessWidget {
   const DegreesOfSeparation(
-    this.changeDegree,    this.colorOne,
+    this.changeDegree,    
+    this.colorOne,
     this.colorTwo,
     this.colorThree,
     this.colorFour,
