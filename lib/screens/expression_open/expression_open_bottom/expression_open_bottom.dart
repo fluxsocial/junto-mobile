@@ -30,23 +30,28 @@ class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
           bottom: BorderSide(color: const Color(0xffeeeeee), width: .5),
         ),
       ),
-      child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              timestamp + ' MINUTES AGO',
-              style: const TextStyle(
-                fontSize: 10,
-                color: Color(
-                  0xff555555,
+      child: 
+        Column(children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                timestamp + ' MINUTES AGO',
+                style: const TextStyle(
+                  fontSize: 10,
+                  color: Color(
+                    0xff555555,
+                  ),
                 ),
               ),
-            ),
-            Container(
-                margin: const EdgeInsets.only(right: 10),
-                child: Icon(CustomIcons.half_lotus, size: 14))
-          ]),
+              Container(
+                  margin: const EdgeInsets.only(right: 10),
+                  child: Icon(CustomIcons.half_lotus, size: 14))
+            ]),          
+
+             
+        ],)       
     );
   }
 }

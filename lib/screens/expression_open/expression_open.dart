@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_appbar/expression_open_appbar.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_bottom/expression_open_bottom.dart';
+import 'package:junto_beta_mobile/screens/expression_open/expression_open_interactions/expression_open_interactions.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_top/expression_open_top.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/longform_open/longform_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/shortform_open/shortform_open.dart';
@@ -61,6 +62,8 @@ class ExpressionOpenState extends State<ExpressionOpen> {
               ExpressionOpenTop(widget.expression),
               _buildExpression(),
               ExpressionOpenBottom(widget.expression),
+              ExpressionOpenInteractions()
+              
             ],
           )),
           Container(
