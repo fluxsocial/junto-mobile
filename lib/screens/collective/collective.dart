@@ -9,18 +9,20 @@ import 'package:provider/provider.dart';
 /// This screen shows a list of public expressions that can be filtered
 /// by channel or perspective
 class JuntoCollective extends StatefulWidget {
-  const JuntoCollective(this.controller);
+  const JuntoCollective(this.controller, this._currentPerspective);
+  final _currentPerspective;
 
   /// This controller is used to detect the scroll of the ListView
   /// to render the FAB dynamically
   final ScrollController controller;
+
+  
 
   @override
   State<StatefulWidget> createState() => JuntoCollectiveState();
 }
 
 class JuntoCollectiveState extends State<JuntoCollective> {
-  final bool _degreesOfSeparation = true;
   String currentScreen = 'collective';
 
   @override
@@ -32,10 +34,9 @@ class JuntoCollectiveState extends State<JuntoCollective> {
         children: <Widget>[
           /// Degrees of Separation Widget rendered only when on the 'JUNTO'
           /// perspective
-          _degreesOfSeparation
+          widget._currentPerspective == 'degrees of separation'
               ? DegreesOfSeparation(
                   _changeDegree,
-                  _infinityColor,
                   _oneDegreeColor,
                   _twoDegreesColor,
                   _threeDegreesColor,
@@ -67,7 +68,6 @@ class JuntoCollectiveState extends State<JuntoCollective> {
   }
 
   /// Default colors for degrees
-  Color _infinityColor = const Color(0xff333333);
   Color _oneDegreeColor = const Color(0xff999999);
   Color _twoDegreesColor = const Color(0xff999999);
   Color _threeDegreesColor = const Color(0xff999999);
@@ -78,7 +78,6 @@ class JuntoCollectiveState extends State<JuntoCollective> {
   /// Reset all degree colors to inactive
   void _resetDegrees() {
     setState(() {
-      _infinityColor = const Color(0xff999999);
       _oneDegreeColor = const Color(0xff999999);
       _twoDegreesColor = const Color(0xff999999);
       _threeDegreesColor = const Color(0xff999999);
@@ -92,9 +91,7 @@ class JuntoCollectiveState extends State<JuntoCollective> {
   void _changeDegree(String degree) {
     setState(() {
       _resetDegrees();
-      if (degree == 'infinity') {
-        _infinityColor = const Color(0xff333333);
-      } else if (degree == 'one') {
+      if (degree == 'one') {
         _oneDegreeColor = const Color(0xff333333);
       } else if (degree == 'two') {
         _twoDegreesColor = const Color(0xff333333);

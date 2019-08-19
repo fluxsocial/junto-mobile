@@ -88,7 +88,7 @@ class Perspectives extends StatelessWidget {
                           contentPadding:
                               const EdgeInsets.symmetric(horizontal: 0),
                           onTap: () {
-                            _changePerspective('Degrees of Separation');
+                            _changePerspective('degrees of separation');
                             Navigator.pop(context);
                           },
                           title: Row(
