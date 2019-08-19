@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:junto_beta_mobile/screens/template/template.dart';
 import 'package:junto_beta_mobile/typography/palette.dart';
 
@@ -36,6 +37,21 @@ class SignUpWelcome extends StatefulWidget {
 }
 
 class SignUpWelcomeState extends State<SignUpWelcome> {
+  /// Stores the user state as `loggedIn` then navigates them
+  /// to [JuntoTemplate]
+  Future<void> _handleSignUp() async {
+    await FlutterSecureStorage().write(
+      key: 'isLoggedIn',
+      value: 'true',
+    );
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute<dynamic>(
+        builder: (BuildContext context) => JuntoTemplate(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -129,14 +145,7 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
                   ),
                 ),
                 child: RaisedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute<dynamic>(
-                        builder: (BuildContext context) => JuntoTemplate(),
-                      ),
-                    );
-                  },
+                  onPressed: _handleSignUp,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 20,
                     vertical: 20,

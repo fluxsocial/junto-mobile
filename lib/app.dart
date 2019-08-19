@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/providers/packs_provider/packs_provider.dart';
 import 'package:junto_beta_mobile/providers/spheres_provider/spheres_provider.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
+import 'package:junto_beta_mobile/screens/loading_screen/junto_loading_screen.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications.dart';
 import 'package:junto_beta_mobile/screens/template/template.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
@@ -35,7 +36,7 @@ class JuntoAppState extends State<JuntoApp> {
         theme: ThemeData(
           fontFamily: 'Avenir',
         ),
-        home: Welcome(),
+        home: JuntoLoading(),
         routes: <String, WidgetBuilder>{
           '/welcome': (BuildContext context) => Welcome(),
           '/template': (BuildContext context) => JuntoTemplate(),

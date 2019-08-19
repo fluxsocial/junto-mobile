@@ -1,7 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:junto_beta_mobile/screens/template/template.dart';
 
 class SignIn extends StatelessWidget {
+  /// Called when the user hits the `Sign In` button.
+  /// Makes a call to [FlutterSecureStorage] then replaces the current route
+  /// with [JuntoTemplate].
+  Future<void> _handleSignIn(BuildContext context) async {
+    await FlutterSecureStorage().write(key: 'isLoggedIn', value: 'true');
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute<dynamic>(
+        builder: (BuildContext context) => JuntoTemplate(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -9,8 +23,8 @@ class SignIn extends StatelessWidget {
         children: <Widget>[
           Container(
             width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
                 begin: Alignment.bottomLeft,
                 end: Alignment.topRight,
                 stops: <double>[0.1, 0.9],
@@ -90,19 +104,12 @@ class SignIn extends StatelessWidget {
                 ),
                 Container(
                   child: RaisedButton(
-                    onPressed: () async {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute<dynamic>(
-                          builder: (BuildContext context) => JuntoTemplate(),
-                        ),
-                      );
-                    },
+                    onPressed: () => _handleSignIn(context),
                     padding: const EdgeInsets.symmetric(
                         horizontal: 100, vertical: 20),
                     // color: Colors.white,
                     color: const Color(0xff4968BF),
-                    child: Text('SIGN IN',
+                    child: const Text('SIGN IN',
                         style: TextStyle(
                             // color: JuntoPalette.juntoBlue,
                             color: Colors.white,

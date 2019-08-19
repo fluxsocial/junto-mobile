@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
+import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 
 /// Displays the user's DEN or "profile screen"
 class JuntoDen extends StatefulWidget {
@@ -75,13 +77,13 @@ class JuntoDenState extends State<JuntoDen> {
                         children: <Widget>[
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
+                            children: const <Widget>[
                               Text(
                                 'Eric Yang',
                                 style: TextStyle(
                                     fontSize: 17, fontWeight: FontWeight.w700),
                               ),
-                              const Text(
+                              Text(
                                 'sunyata',
                                 style: TextStyle(
                                   fontSize: 14,
@@ -116,15 +118,51 @@ class JuntoDenState extends State<JuntoDen> {
                         ),
                       ),
                     ),
-                    RaisedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute<dynamic>(
-                            builder: (BuildContext context) => JuntoMember(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        RaisedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute<dynamic>(
+                                builder: (BuildContext context) =>
+                                    JuntoMember(),
+                              ),
+                            );
+                          },
+                        ),
+                        RaisedButton(
+                          onPressed: () async {
+                            await FlutterSecureStorage().write(
+                              key: 'isLogged'
+                                  'In',
+                              value: 'false',
+                            );
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute<dynamic>(
+                                builder: (BuildContext context) => Welcome(),
+                              ),
+                            );
+                          },
+                          color: const Color(0xff4968BF),
+                          child: const Text(
+                            'LOG OUT',
+                            style: TextStyle(
+                              // color: JuntoPalette.juntoBlue,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 14,
+                            ),
                           ),
-                        );
-                      },
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              100,
+                            ),
+                          ),
+                        ),
+                      ],
                     )
                   ],
                 ),

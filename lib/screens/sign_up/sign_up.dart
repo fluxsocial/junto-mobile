@@ -37,8 +37,8 @@ class SignUpState extends State<SignUp> {
         children: <Widget>[
           Container(
             width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
                 begin: Alignment.bottomLeft,
                 end: Alignment.topRight,
                 stops: <double>[0.1, 0.9],
