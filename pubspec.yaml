@@ -24,6 +24,7 @@ dependencies:
   provider: ^3.0.0+1  
   http: ^0.12.0+2 
   webview_flutter: ^0.3.9+1
+  flutter_emoji: "2.0.0"
   image_cropper: ^1.0.2  
   
 dev_dependencies:
@@ -141,6 +142,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - assets/emoji.json
     - assets/images/junto-mobile__logo.png
     - assets/images/junto-mobile__logo--collective.png
     - assets/images/junto-mobile__logo--pack.png
