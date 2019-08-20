@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/sphere.dart';
+import 'package:junto_beta_mobile/screens/spheres/spheres_create/spheres_create.dart';
 import 'package:junto_beta_mobile/providers/spheres_provider/spheres_provider.dart';
 import 'package:junto_beta_mobile/screens/spheres/sphere_preview/sphere_preview.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +15,7 @@ class JuntoSpheres extends StatelessWidget {
       child: ListView(
         children: <Widget>[
           // Create sphere
-          // SpheresCreate(),
+          SpheresCreate(),
 
           // List of spheres member belongs to
           Consumer<SpheresProvider>(
