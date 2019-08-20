@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 /// by channel or perspective
 class JuntoCollective extends StatefulWidget {
   const JuntoCollective(this.controller, this._currentPerspective);
-  final _currentPerspective;
+  final String _currentPerspective;
 
   /// This controller is used to detect the scroll of the ListView
   /// to render the FAB dynamically

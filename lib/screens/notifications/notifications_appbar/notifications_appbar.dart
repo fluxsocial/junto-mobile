@@ -43,7 +43,7 @@ class NotificationsAppbar extends StatelessWidget {
               ),
             ],
           ),
-        ),
+        ),  
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(1),
           child: Container(
