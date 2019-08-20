@@ -102,25 +102,27 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                       ),
                     )
                   : null,
-          body: PageView(
-            controller: controller,
-            onPageChanged: (int index) {
-              if (index == 0) {
-                _switchScreen('collective');
-              } else if (index == 1) {
-                _switchScreen('spheres');
-              } else if (index == 2) {
-                _switchScreen('packs');
-              } else if (index == 3) {
-                _switchScreen('den');
-              }
-            },
-            children: <Widget>[
-              JuntoCollective(_hideFABController, _currentPerspective),
-              JuntoSpheres(),
-              JuntoPacks(),
-              JuntoDen()
-            ],
+          body: SafeArea(
+            child: PageView(
+              controller: controller,
+              onPageChanged: (int index) {
+                if (index == 0) {
+                  _switchScreen('collective');
+                } else if (index == 1) {
+                  _switchScreen('spheres');
+                } else if (index == 2) {
+                  _switchScreen('packs');
+                } else if (index == 3) {
+                  _switchScreen('den');
+                }
+              },
+              children: <Widget>[
+                JuntoCollective(_hideFABController, _currentPerspective),
+                JuntoSpheres(),
+                JuntoPacks(),
+                JuntoDen()
+              ],
+            ),
           ),
           bottomNavigationBar: ValueListenableBuilder<int>(
             valueListenable: _bottomNavIndex,

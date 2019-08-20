@@ -20,15 +20,15 @@ class JuntoAppBar extends StatelessWidget {
         preferredSize: const Size.fromHeight(1),
         child: Container(
           height: .75,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
-                stops: const <double>[
+                stops: <double>[
                   0.1,
                   0.9
                 ],
-                colors: const <Color>[
+                colors: <Color>[
                   JuntoPalette.juntoBlue,
                   JuntoPalette.juntoPurple
                 ]),
