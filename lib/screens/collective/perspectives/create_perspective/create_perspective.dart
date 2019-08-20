@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/typography/palette.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/create_perspective/perspective_member_preview/perspective_member_preview.dart';
 
 class CreatePerspective extends StatelessWidget {
   @override
@@ -56,7 +57,7 @@ class CreatePerspective extends StatelessWidget {
             children: <Widget>[
               Container(
                 width: MediaQuery.of(context).size.width,
-                padding: const EdgeInsets.symmetric(vertical: 5),
+                // padding: const EdgeInsets.symmetric(vertical: 5),
                 decoration: BoxDecoration(
                     border: Border(
                   bottom: BorderSide(color: const Color(0xffeeeeee), width: 1),
@@ -69,6 +70,7 @@ class CreatePerspective extends StatelessWidget {
                     border: InputBorder.none,
                     hintText: 'Name your perspective',
                   ),
+                  style: TextStyle(fontSize: 17),
                   cursorColor: JuntoPalette.juntoGrey,
                   cursorWidth: 2,
                   maxLines: 1,
@@ -100,6 +102,7 @@ class CreatePerspective extends StatelessWidget {
                             hintText: 'Add members to your perspective',
                           ),
                           cursorColor: JuntoPalette.juntoGrey,
+                          style: TextStyle(fontSize: 14),
                           cursorWidth: 2,
                           maxLines: 1,
                           maxLength: 80,
@@ -109,7 +112,14 @@ class CreatePerspective extends StatelessWidget {
                   )),
               Expanded(
                   child: ListView(
-                children: <Widget>[Text('hello')],
+                children: <Widget>[
+
+                  PerspectiveMemberPreview(),
+                  PerspectiveMemberPreview(),
+                  PerspectiveMemberPreview(),
+
+
+                ],
               ))
             ],
           ),
