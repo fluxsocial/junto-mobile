@@ -15,7 +15,33 @@ class JuntoSpheres extends StatelessWidget {
       child: ListView(
         children: <Widget>[
           // Create sphere
-          SpheresCreate(),
+          Container(
+                decoration: const BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(color: Color(0xffeeeeee), width: .5),
+                  ),
+                ),
+                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    const Text(
+                      'Create a sphere',
+                      style: TextStyle(
+                        color: Color(0xff333333),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Container(
+                      child: const Text(
+                        '+',
+                        style: TextStyle(fontSize: 17),
+                      ),
+                    )
+                  ],
+                ),
+              ),          
 
           // List of spheres member belongs to
           Consumer<SpheresProvider>(
