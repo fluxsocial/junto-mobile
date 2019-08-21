@@ -6,17 +6,17 @@ import 'package:junto_beta_mobile/typography/palette.dart';
 class ExpressionOpenTop extends StatelessWidget {
   const ExpressionOpenTop(this.expression);
 
-  final Expression expression;
+  final ExpressionResult expression;
 
   @override
   Widget build(BuildContext context) {
-    final String username = expression.username['entry']['username'];
-    final String firstName = expression.profile['entry']['first_name'];
-    final String lastName = expression.profile['entry']['last_name'];
+    final String username = expression.result[0].authorUsername.username;
+    final String firstName = expression.result[0].authorProfile.firstName;
+    final String lastName = expression.result[0].authorProfile.lastName;
     final String profilePicture =
-        expression.profile['entry']['profile_picture'];
+        expression.result[0].authorProfile.profilePicture;
     // ignore: unused_local_variable
-    final String timestamp = expression.timestamp;
+    final String timestamp = expression.result[0].timestamp;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),

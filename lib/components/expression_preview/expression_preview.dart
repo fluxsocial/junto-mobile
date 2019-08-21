@@ -6,11 +6,11 @@ import 'package:junto_beta_mobile/components/expression_preview/shortform_previe
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open.dart';
 
-/// Renders a concise overview of one given [Expression].
+/// Renders a concise overview of one given [ExpressionResult].
 class ExpressionPreview extends StatelessWidget {
   const ExpressionPreview(this.expression);
 
-  final Expression expression;
+  final ExpressionResult expression;
 
   @override
   Widget build(BuildContext context) {
@@ -43,10 +43,9 @@ class ExpressionPreview extends StatelessWidget {
   }
 
   Widget _returnExpression() {
-    if (expression.expression['entry']['expression_type'] == 'longform') {
+    if (expression.result[0].expression.expressionType == 'longform') {
       return LongformPreview(expression);
-    } else if (expression.expression['entry']['expression_type'] ==
-        'shortform') {
+    } else if (expression.result[0].expression.expressionType == 'shortform') {
       return ShortformPreview(expression);
     } else {
       return Container();

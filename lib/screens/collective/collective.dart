@@ -16,8 +16,6 @@ class JuntoCollective extends StatefulWidget {
   /// to render the FAB dynamically
   final ScrollController controller;
 
-  
-
   @override
   State<StatefulWidget> createState() => JuntoCollectiveState();
 }
@@ -55,7 +53,7 @@ class JuntoCollectiveState extends State<JuntoCollective> {
               physics: const ClampingScrollPhysics(),
               children: collective.collectiveExpressions
                   .map(
-                    (Expression expression) => ExpressionPreview(
+                    (ExpressionResult expression) => ExpressionPreview(
                       expression,
                     ),
                   )

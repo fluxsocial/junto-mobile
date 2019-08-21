@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-
-import '../../../../typography/palette.dart';
+import 'package:junto_beta_mobile/typography/palette.dart';
 
 class ShortformOpen extends StatefulWidget {
   const ShortformOpen(this.shortformExpression);
-  final Expression shortformExpression;
+
+  final ExpressionResult shortformExpression;
 
   @override
   State<StatefulWidget> createState() {
@@ -55,10 +55,10 @@ class ShortformOpenState extends State<ShortformOpen> {
 
   @override
   void initState() {
-    _shortformBody =
-        widget.shortformExpression.expression['entry']['expression']['body'];
-    _shortformBackground = widget.shortformExpression.expression['entry']
-        ['expression']['background'];
+    _shortformBody = widget
+        .shortformExpression.result[0].expression.expressionContent['body'];
+    _shortformBackground = widget.shortformExpression.result[0].expression
+        .expressionContent['background'];
     _buildBackground();
 
     super.initState();

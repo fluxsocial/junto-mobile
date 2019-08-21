@@ -8,15 +8,15 @@ import '../../typography/style.dart';
 class PreviewProfile extends StatelessWidget {
   const PreviewProfile(this.expression);
 
-  final Expression expression;
+  final ExpressionResult expression;
 
   @override
   Widget build(BuildContext context) {
-    final String firstName = expression.profile['entry']['first_name'];
-    final String lastName = expression.profile['entry']['last_name'];
-    final String username = expression.username['entry']['username'];
+    final String firstName = expression.result[0].authorProfile.firstName;
+    final String lastName = expression.result[0].authorProfile.lastName;
+    final String username = expression.result[0].authorUsername.username;
     final String profilePicture =
-        expression.profile['entry']['profile_picture'];
+        expression.result[0].authorProfile.profilePicture;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),

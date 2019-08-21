@@ -7,11 +7,11 @@ import 'package:junto_beta_mobile/typography/style.dart';
 class PreviewBottom extends StatelessWidget {
   const PreviewBottom(this.expression);
 
-  final Expression expression;
+  final ExpressionResult expression;
 
   @override
   Widget build(BuildContext context) {
-    final String expressionTime = expression.timestamp;
+    final String expressionTime = expression.result[0].timestamp;
     return Container(
       margin: const EdgeInsets.only(top: 7.5),
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
