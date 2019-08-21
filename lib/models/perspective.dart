@@ -1,7 +1,13 @@
 class Perspective {
-  const Perspective(this.perspectiveTitle);
+  const Perspective(this.name);
 
-  final String perspectiveTitle;
+  factory Perspective.fromMap(Map<String, dynamic> map) {
+    return Perspective(
+      map['name'],
+    );
+  }
+
+  final String name;
 
   static List<Perspective> fetchAll() {
     return <Perspective>[
@@ -12,5 +18,11 @@ class Perspective {
       const Perspective('Austrian Economics📈'),
       const Perspective('Holochain ♓'),
     ];
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, String>{
+      'name': name,
+    };
   }
 }
