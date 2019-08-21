@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
 
 class CollectiveProvider with ChangeNotifier {
   final List<Expression> _collectiveExpressions = <Expression>[
@@ -14,11 +15,11 @@ class CollectiveProvider with ChangeNotifier {
         },
       ),
       subExpressions: <Expression>[],
-      authorUsername: AuthorUsername(
+      authorUsername: Username(
         address: '02efredffdfvdbnrtg',
         username: 'sunyata',
       ),
-      authorProfile: AuthorProfile(
+      authorProfile: UserProfile(
         address: '0vefoiwiafjvkbr32r243r5',
         parent: 'parent-address',
         bio: 'hellooo',
@@ -51,7 +52,7 @@ class CollectiveProvider with ChangeNotifier {
           'background': 'three'
         },
       ),
-      authorProfile: AuthorProfile(
+      authorProfile: UserProfile(
         address: '0vefoiwiafjvkbr32r243r5',
         parent: 'parent-address',
         bio: 'hellooo',
@@ -60,7 +61,7 @@ class CollectiveProvider with ChangeNotifier {
         profilePicture: 'assets/images/junto-mobile__eric.png',
         verified: true,
       ),
-      authorUsername: AuthorUsername(
+      authorUsername: Username(
         address: '02efredffdfvdbnrtg',
         username: 'sunyata',
       ),
@@ -89,11 +90,11 @@ class CollectiveProvider with ChangeNotifier {
           'background': 'four'
         },
       ),
-      authorUsername: AuthorUsername(
+      authorUsername: Username(
         address: '02efredffdfvdbnrtg',
         username: 'yaz',
       ),
-      authorProfile: AuthorProfile(
+      authorProfile: UserProfile(
         address: '0vefoiwiafjvkbr32r243r5',
         firstName: 'Yaz',
         lastName: 'Owainati',
@@ -129,7 +130,7 @@ class CollectiveProvider with ChangeNotifier {
       ),
       subExpressions: <Expression>[],
       timestamp: '4',
-      authorProfile: AuthorProfile(
+      authorProfile: UserProfile(
         address: '0vefoiwiafjvkbr32r243r5',
         parent: 'parent-address',
         firstName: 'Josh',
@@ -138,7 +139,7 @@ class CollectiveProvider with ChangeNotifier {
         verified: true,
         bio: 'hellooo',
       ),
-      authorUsername: AuthorUsername(
+      authorUsername: Username(
         address: '02efredffdfvdbnrtg',
         username: 'jdeepee',
       ),

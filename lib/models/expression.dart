@@ -1,3 +1,5 @@
+import 'package:junto_beta_mobile/models/user_model.dart';
+
 /// Expressions are at the center of Junto. Users can choose form Longform,
 /// shortform and media.
 class Expression {
@@ -19,13 +21,13 @@ class Expression {
       ),
       subExpressions: List<Expression>.from(
         json['sub_expressions'].map(
-          (Map<String, dynamic> expression) => Expression.fromMap(expression),
+              (Map<String, dynamic> expression) => Expression.fromMap(expression),
         ),
       ),
-      authorUsername: AuthorUsername.fromMap(
+      authorUsername: Username.fromMap(
         json['author_username'],
       ),
-      authorProfile: AuthorProfile.fromMap(
+      authorProfile: UserProfile.fromMap(
         json['author_profile'],
       ),
       resonations: List<dynamic>.from(
@@ -34,7 +36,7 @@ class Expression {
       timestamp: json['timestamp'],
       channels: List<Channel>.from(
         json['channels'].map(
-          (dynamic channel) => Channel.fromMap(channel),
+              (dynamic channel) => Channel.fromMap(channel),
         ),
       ),
     );
@@ -46,10 +48,10 @@ class Expression {
   final List<Expression> subExpressions;
 
   /// This field contains the author's address and entry (username)
-  final AuthorUsername authorUsername;
+  final Username authorUsername;
 
   /// Contains the address and profile information associated with the author.
-  final AuthorProfile authorProfile;
+  final UserProfile authorProfile;
 
   //TODO(Nash):  Speak to Eric regarding the content of resonations
   final List<dynamic> resonations;
@@ -62,114 +64,24 @@ class Expression {
 
   /// Converts the given expression to Map
   Map<String, dynamic> toMap() => <String, dynamic>{
-        'expression': expression.toMap(),
-        'sub_expressions': List<dynamic>.from(
-          subExpressions.map(
+    'expression': expression.toMap(),
+    'sub_expressions': List<dynamic>.from(
+      subExpressions.map(
             (Expression subExpression) => subExpression.toMap(),
-          ),
-        ),
-        'author_username': authorUsername.toMap(),
-        'author_profile': authorProfile.toMap(),
-        'resonations': List<dynamic>.from(
-          resonations.map((dynamic resonations) => resonations),
-        ),
-        'timestamp': timestamp,
-        'channels': List<dynamic>.from(
-          channels.map(
+      ),
+    ),
+    'author_username': authorUsername.toMap(),
+    'author_profile': authorProfile.toMap(),
+    'resonations': List<dynamic>.from(
+      resonations.map((dynamic resonations) => resonations),
+    ),
+    'timestamp': timestamp,
+    'channels': List<dynamic>.from(
+      channels.map(
             (Channel channel) => channel.toMap(),
-          ),
-        ),
-      };
-}
-
-/// Class used to store the profile information of an [Expression]'s author.
-/// Contains the [address], [parent], [firstName], [lastName], [bio],
-/// [profilePicture], [verified].
-class AuthorProfile {
-  AuthorProfile({
-    this.address,
-    this.parent,
-    this.firstName,
-    this.lastName,
-    this.bio,
-    this.profilePicture,
-    this.verified,
-  });
-
-  /// Converts the information contained in this class to a map
-  factory AuthorProfile.fromMap(Map<String, dynamic> json) {
-    return AuthorProfile(
-      address: json['entry']['address'],
-      parent: json['entry']['parent'],
-      firstName: json['entry']['first_name'],
-      lastName: json['entry']['last_name'],
-      bio: json['entry']['bio'],
-      profilePicture: json['entry']['profile_picture'],
-      verified: json['entry']['verified'],
-    );
-  }
-
-  /// Location
-  final String address;
-
-  /// Parent's address
-  final String parent;
-
-  /// First Name of the author
-  final String firstName;
-
-  /// Last Name of the author
-  final String lastName;
-
-  /// Author's biography
-  final String bio;
-
-  /// Url of the author's profile image
-  final String profilePicture;
-
-  /// Whether the given user account has been verified
-  final bool verified;
-
-  /// Converts the class to a map
-  Map<String, dynamic> toMap() => <String, dynamic>{
-        'address': address,
-        'entry': <String, dynamic>{
-          'parent': parent,
-          'first_name': firstName,
-          'last_name': lastName,
-          'bio': bio,
-          'profile_picture': profilePicture,
-          'verified': verified,
-        },
-      };
-}
-
-/// The username of the author.
-class AuthorUsername {
-  AuthorUsername({
-    this.address,
-    this.username,
-  });
-
-  /// Creates an [AuthorUsername] from the map data.
-  factory AuthorUsername.fromMap(Map<String, dynamic> json) => AuthorUsername(
-        address: json['address'],
-        username: json['entry']['username'],
-      );
-
-  /// Location
-  final String address;
-
-  /// Username of the user
-  final String username;
-
-  /// Converts the object to a map
-  Map<String, dynamic> toMap() => <String, dynamic>{
-        'address': address,
-        'entry': <String, String>{
-          'username': username,
-        },
-      };
+      ),
+    ),
+  };
 }
 
 class Channel {
@@ -180,10 +92,10 @@ class Channel {
   });
 
   factory Channel.fromMap(Map<String, dynamic> json) => Channel(
-        address: json['address'],
-        attributeType: json['entry']['attribute_type'],
-        value: json['entry']['value'],
-      );
+    address: json['address'],
+    attributeType: json['entry']['attribute_type'],
+    value: json['entry']['value'],
+  );
 
   /// Location
   final String address;
@@ -195,12 +107,12 @@ class Channel {
 
   /// Converts the object to a map
   Map<String, dynamic> toMap() => <String, dynamic>{
-        'address': address,
-        'entry': <String, String>{
-          'value': value,
-          'attribute_type': attributeType,
-        },
-      };
+    'address': address,
+    'entry': <String, String>{
+      'value': value,
+      'attribute_type': attributeType,
+    },
+  };
 }
 
 /// Contains the type of expression along with the content of the expression.
