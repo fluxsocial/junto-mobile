@@ -5,7 +5,7 @@ import 'package:junto_beta_mobile/models/expression.dart';
 class ExpressionOpenBottom extends StatefulWidget {
   const ExpressionOpenBottom(this.expression);
 
-  final ExpressionResult expression;
+  final Expression expression;
 
   @override
   State<StatefulWidget> createState() => ExpressionOpenBottomState();
@@ -17,7 +17,7 @@ class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
   @override
   void initState() {
     super.initState();
-    timestamp = widget.expression.result[0].timestamp;
+    timestamp = widget.expression.timestamp;
   }
 
   @override

@@ -10,7 +10,7 @@ import 'package:junto_beta_mobile/screens/expression_open/expression_open.dart';
 class ExpressionPreview extends StatelessWidget {
   const ExpressionPreview(this.expression);
 
-  final ExpressionResult expression;
+  final Expression expression;
 
   @override
   Widget build(BuildContext context) {
@@ -43,9 +43,9 @@ class ExpressionPreview extends StatelessWidget {
   }
 
   Widget _returnExpression() {
-    if (expression.result[0].expression.expressionType == 'longform') {
+    if (expression.expression.expressionType == 'longform') {
       return LongformPreview(expression);
-    } else if (expression.result[0].expression.expressionType == 'shortform') {
+    } else if (expression.expression.expressionType == 'shortform') {
       return ShortformPreview(expression);
     } else {
       return Container();

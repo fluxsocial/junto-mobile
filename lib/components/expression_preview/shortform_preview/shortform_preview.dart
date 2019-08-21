@@ -7,7 +7,7 @@ class ShortformPreview extends StatefulWidget {
   const ShortformPreview(this.expression);
 
   /// [ExpressionResult] to be displayed
-  final ExpressionResult expression;
+  final Expression expression;
 
   @override
   State<StatefulWidget> createState() => ShortformPreviewState();
@@ -22,13 +22,12 @@ class ShortformPreviewState extends State<ShortformPreview> {
   void initState() {
     super.initState();
     _buildBackground();
-    shortformBody =
-        widget.expression.result[0].expression.expressionContent['body'];
+    shortformBody = widget.expression.expression.expressionContent['body'];
   }
 
   void _buildBackground() {
     final String shortformBackground =
-        widget.expression.result[0].expression.expressionContent['background'];
+        widget.expression.expression.expressionContent['background'];
 
     if (shortformBackground == 'zero') {
       setState(() {

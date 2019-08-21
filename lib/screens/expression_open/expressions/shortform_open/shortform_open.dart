@@ -5,7 +5,7 @@ import 'package:junto_beta_mobile/typography/palette.dart';
 class ShortformOpen extends StatefulWidget {
   const ShortformOpen(this.shortformExpression);
 
-  final ExpressionResult shortformExpression;
+  final Expression shortformExpression;
 
   @override
   State<StatefulWidget> createState() {
@@ -55,10 +55,10 @@ class ShortformOpenState extends State<ShortformOpen> {
 
   @override
   void initState() {
-    _shortformBody = widget
-        .shortformExpression.result[0].expression.expressionContent['body'];
-    _shortformBackground = widget.shortformExpression.result[0].expression
-        .expressionContent['background'];
+    _shortformBody =
+        widget.shortformExpression.expression.expressionContent['body'];
+    _shortformBackground =
+        widget.shortformExpression.expression.expressionContent['background'];
     _buildBackground();
 
     super.initState();

@@ -1,34 +1,3 @@
-/// This class parses the raw json returned from the HOLOCHAIN endpoint.
-/// It looks for the `OK` key from the response then parses the list of
-/// [Expression].
-class ExpressionResult {
-  const ExpressionResult({
-    this.result,
-  });
-
-  /// Creates an [ExpressionResult] from the given `Map`
-  factory ExpressionResult.fromMap(Map<String, dynamic> json) =>
-      ExpressionResult(
-        result: List<Expression>.from(
-          json['Ok'].map(
-            (Map<String, dynamic> x) => Expression.fromMap(x),
-          ),
-        ),
-      );
-
-  /// List of [Expression]s returned from the HOLOCHAIN endpoint.
-  final List<Expression> result;
-
-  /// Converts the current class back to a map.
-  Map<String, dynamic> toMap() => <String, dynamic>{
-        'Ok': List<Expression>.from(
-          result.map(
-            (Expression expression) => expression.toMap(),
-          ),
-        ),
-      };
-}
-
 /// Expressions are at the center of Junto. Users can choose form Longform,
 /// shortform and media.
 class Expression {

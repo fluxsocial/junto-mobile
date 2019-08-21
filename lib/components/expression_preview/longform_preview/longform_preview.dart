@@ -5,12 +5,12 @@ import 'package:junto_beta_mobile/typography/style.dart';
 class LongformPreview extends StatelessWidget {
   const LongformPreview(this.expression);
 
-  final ExpressionResult expression;
+  final Expression expression;
 
   @override
   Widget build(BuildContext context) {
     final String expressionBody =
-        expression.result[0].expression.expressionContent['body'];
+        expression.expression.expressionContent['body'];
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: 10.0,
@@ -34,7 +34,7 @@ class LongformPreview extends StatelessWidget {
 
   Widget _buildTitle() {
     final String expressionTitle =
-        expression.result[0].expression.expressionContent['title'];
+        expression.expression.expressionContent['title'];
     if (expressionTitle != '') {
       return Container(
         child: Text(

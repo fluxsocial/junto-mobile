@@ -53,7 +53,7 @@ class JuntoCollectiveState extends State<JuntoCollective> {
               physics: const ClampingScrollPhysics(),
               children: collective.collectiveExpressions
                   .map(
-                    (ExpressionResult expression) => ExpressionPreview(
+                    (Expression expression) => ExpressionPreview(
                       expression,
                     ),
                   )
