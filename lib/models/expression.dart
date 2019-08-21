@@ -21,7 +21,7 @@ class Expression {
       ),
       subExpressions: List<Expression>.from(
         json['sub_expressions'].map(
-              (Map<String, dynamic> expression) => Expression.fromMap(expression),
+          (Map<String, dynamic> expression) => Expression.fromMap(expression),
         ),
       ),
       authorUsername: Username.fromMap(
@@ -36,7 +36,7 @@ class Expression {
       timestamp: json['timestamp'],
       channels: List<Channel>.from(
         json['channels'].map(
-              (dynamic channel) => Channel.fromMap(channel),
+          (dynamic channel) => Channel.fromMap(channel),
         ),
       ),
     );
@@ -64,24 +64,24 @@ class Expression {
 
   /// Converts the given expression to Map
   Map<String, dynamic> toMap() => <String, dynamic>{
-    'expression': expression.toMap(),
-    'sub_expressions': List<dynamic>.from(
-      subExpressions.map(
+        'expression': expression.toMap(),
+        'sub_expressions': List<dynamic>.from(
+          subExpressions.map(
             (Expression subExpression) => subExpression.toMap(),
-      ),
-    ),
-    'author_username': authorUsername.toMap(),
-    'author_profile': authorProfile.toMap(),
-    'resonations': List<dynamic>.from(
-      resonations.map((dynamic resonations) => resonations),
-    ),
-    'timestamp': timestamp,
-    'channels': List<dynamic>.from(
-      channels.map(
+          ),
+        ),
+        'author_username': authorUsername.toMap(),
+        'author_profile': authorProfile.toMap(),
+        'resonations': List<dynamic>.from(
+          resonations.map((dynamic resonations) => resonations),
+        ),
+        'timestamp': timestamp,
+        'channels': List<dynamic>.from(
+          channels.map(
             (Channel channel) => channel.toMap(),
-      ),
-    ),
-  };
+          ),
+        ),
+      };
 }
 
 class Channel {
@@ -92,10 +92,10 @@ class Channel {
   });
 
   factory Channel.fromMap(Map<String, dynamic> json) => Channel(
-    address: json['address'],
-    attributeType: json['entry']['attribute_type'],
-    value: json['entry']['value'],
-  );
+        address: json['address'],
+        attributeType: json['entry']['attribute_type'],
+        value: json['entry']['value'],
+      );
 
   /// Location
   final String address;
@@ -107,12 +107,12 @@ class Channel {
 
   /// Converts the object to a map
   Map<String, dynamic> toMap() => <String, dynamic>{
-    'address': address,
-    'entry': <String, String>{
-      'value': value,
-      'attribute_type': attributeType,
-    },
-  };
+        'address': address,
+        'entry': <String, String>{
+          'value': value,
+          'attribute_type': attributeType,
+        },
+      };
 }
 
 /// Contains the type of expression along with the content of the expression.
