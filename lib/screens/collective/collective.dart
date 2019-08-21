@@ -16,8 +16,6 @@ class JuntoCollective extends StatefulWidget {
   /// to render the FAB dynamically
   final ScrollController controller;
 
-  
-
   @override
   State<StatefulWidget> createState() => JuntoCollectiveState();
 }

@@ -10,11 +10,10 @@ class ExpressionOpenTop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String username = expression.username['entry']['username'];
-    final String firstName = expression.profile['entry']['first_name'];
-    final String lastName = expression.profile['entry']['last_name'];
-    final String profilePicture =
-        expression.profile['entry']['profile_picture'];
+    final String username = expression.authorUsername.username;
+    final String firstName = expression.authorProfile.firstName;
+    final String lastName = expression.authorProfile.lastName;
+    final String profilePicture = expression.authorProfile.profilePicture;
     // ignore: unused_local_variable
     final String timestamp = expression.timestamp;
 

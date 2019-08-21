@@ -9,9 +9,9 @@ class LongformOpen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String longformTitle =
-        longformExpression.expression['entry']['expression']['title'];
+        longformExpression.expression.expressionContent['title'];
     final String longformBody =
-        longformExpression.expression['entry']['expression']['body'];
+        longformExpression.expression.expressionContent['body'];
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),

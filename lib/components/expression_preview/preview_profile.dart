@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-
-import '../../custom_icons.dart';
-import '../../screens/member/member.dart';
-import '../../typography/style.dart';
+import 'package:junto_beta_mobile/screens/member/member.dart';
+import 'package:junto_beta_mobile/typography/style.dart';
 
 class PreviewProfile extends StatelessWidget {
   const PreviewProfile(this.expression);
@@ -12,11 +11,10 @@ class PreviewProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String firstName = expression.profile['entry']['first_name'];
-    final String lastName = expression.profile['entry']['last_name'];
-    final String username = expression.username['entry']['username'];
-    final String profilePicture =
-        expression.profile['entry']['profile_picture'];
+    final String firstName = expression.authorProfile.firstName;
+    final String lastName = expression.authorProfile.lastName;
+    final String username = expression.authorUsername.username;
+    final String profilePicture = expression.authorProfile.profilePicture;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),

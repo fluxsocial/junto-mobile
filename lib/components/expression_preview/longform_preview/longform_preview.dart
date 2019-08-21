@@ -10,7 +10,7 @@ class LongformPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String expressionBody =
-        expression.expression['entry']['expression']['body'];
+        expression.expression.expressionContent['body'];
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: 10.0,
@@ -34,7 +34,7 @@ class LongformPreview extends StatelessWidget {
 
   Widget _buildTitle() {
     final String expressionTitle =
-        expression.expression['entry']['expression']['title'];
+        expression.expression.expressionContent['title'];
     if (expressionTitle != '') {
       return Container(
         child: Text(

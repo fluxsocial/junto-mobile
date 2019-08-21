@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/typography/palette.dart';
 
-/// Takes an un-named [Expression] to be displayed
+/// Takes an un-named [ExpressionResult] to be displayed
 class ShortformPreview extends StatefulWidget {
   const ShortformPreview(this.expression);
 
-  /// [Expression] to be displayed
+  /// [ExpressionResult] to be displayed
   final Expression expression;
 
   @override
@@ -22,12 +22,12 @@ class ShortformPreviewState extends State<ShortformPreview> {
   void initState() {
     super.initState();
     _buildBackground();
-    shortformBody = widget.expression.expression['entry']['expression']['body'];
+    shortformBody = widget.expression.expression.expressionContent['body'];
   }
 
   void _buildBackground() {
     final String shortformBackground =
-        widget.expression.expression['entry']['expression']['background'];
+        widget.expression.expression.expressionContent['background'];
 
     if (shortformBackground == 'zero') {
       setState(() {

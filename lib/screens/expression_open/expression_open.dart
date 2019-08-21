@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_appbar/expression_open_appbar.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_bottom/expression_open_bottom.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_interactions/expression_open_interactions.dart';
@@ -10,7 +11,7 @@ import 'package:junto_beta_mobile/typography/palette.dart';
 class ExpressionOpen extends StatefulWidget {
   const ExpressionOpen(this.expression);
 
-  final dynamic expression;
+  final Expression expression;
 
   @override
   State<StatefulWidget> createState() {
@@ -35,8 +36,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
 
   /// Builds an expression for the given type. IE: Longform or shortform
   Widget _buildExpression() {
-    final String expressionType =
-        widget.expression.expression['entry']['expression_type'];
+    final String expressionType = widget.expression.expression.expressionType;
     if (expressionType == 'longform') {
       return LongformOpen(widget.expression);
     } else if (expressionType == 'shortform') {
@@ -63,7 +63,6 @@ class ExpressionOpenState extends State<ExpressionOpen> {
               _buildExpression(),
               ExpressionOpenBottom(widget.expression),
               ExpressionOpenInteractions()
-              
             ],
           )),
           Container(
