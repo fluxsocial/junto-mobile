@@ -21,17 +21,32 @@ class ExpressionOpen extends StatefulWidget {
 
 class ExpressionOpenState extends State<ExpressionOpen> {
   TextEditingController commentController;
+  FocusNode _focusNode;
 
   @override
   void initState() {
     super.initState();
     commentController = TextEditingController();
+    _focusNode = FocusNode();
   }
 
   @override
   void dispose() {
-    super.dispose();
     commentController.dispose();
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  /// When the user swipes down, the keyboard is dismissed.
+  void _onDragDown(DragDownDetails details) {
+    FocusScope.of(context).unfocus();
+  }
+
+  /// When the user swipes up, the textfield is focused
+  /// and the system keyboard is shown.
+  void _onDragStart(DragUpdateDetails details) {
+    if (details.delta.direction < -1.3)
+      FocusScope.of(context).autofocus(_focusNode);
   }
 
   /// Builds an expression for the given type. IE: Longform or shortform
@@ -93,27 +108,32 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                           ),
                         ),
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: const Color(0xfff9f9f9),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        width: MediaQuery.of(context).size.width - 135,
-                        constraints: const BoxConstraints(maxHeight: 180),
-                        child: TextField(
-                          controller: commentController,
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            // hintText: 'reply',
+                      GestureDetector(
+                        onVerticalDragDown: _onDragDown,
+                        onVerticalDragUpdate: _onDragStart,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: const Color(0xfff9f9f9),
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          maxLines: null,
-                          cursorColor: JuntoPalette.juntoGrey,
-                          cursorWidth: 2,
-                          style: const TextStyle(
-                            fontSize: 17,
-                            color: Color(0xff333333),
+                          width: MediaQuery.of(context).size.width - 135,
+                          constraints: const BoxConstraints(maxHeight: 180),
+                          child: TextField(
+                            focusNode: _focusNode,
+                            controller: commentController,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              // hintText: 'reply',
+                            ),
+                            maxLines: null,
+                            cursorColor: JuntoPalette.juntoGrey,
+                            cursorWidth: 2,
+                            style: const TextStyle(
+                              fontSize: 17,
+                              color: Color(0xff333333),
+                            ),
+                            textInputAction: TextInputAction.newline,
                           ),
-                          textInputAction: TextInputAction.newline,
                         ),
                       ),
                     ],
