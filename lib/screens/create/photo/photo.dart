@@ -9,8 +9,13 @@ import 'package:junto_beta_mobile/typography/palette.dart';
 
 /// Create using photo form
 class CreatePhoto extends StatefulWidget {
-  const CreatePhoto(this.toggleBottomNavVisibility);
+  const CreatePhoto ({
+    Key key,
+    @required this.toggleBottomNavVisibility,
+    @required this.isEditing,
+  }) : super(key: key);
 
+  final ValueNotifier<bool> isEditing;
   final Function toggleBottomNavVisibility;
 
   @override
@@ -56,7 +61,7 @@ class CreatePhotoState extends State<CreatePhoto> {
       maxWidth: 512,
       maxHeight: 512,
     );
-
+    widget.isEditing.value = true;
     setState(() {
       _croppedFile = croppedFile;
     });
