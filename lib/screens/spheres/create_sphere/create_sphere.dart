@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/screens/spheres/create_sphere/create_sphere_next/create_sphere_next.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/typography/palette.dart';
 
@@ -33,11 +34,20 @@ class CreateSphere extends StatelessWidget {
                       size: 24,
                     ),
                   ),
-                  Text(
-                    'next',
-                    style:
-                        TextStyle(color: const Color(0xff333333), fontSize: 14),
-                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  CreateSphereNext()));
+                    },
+                    child: Text(
+                      'next',
+                      style: TextStyle(
+                          color: const Color(0xff333333), fontSize: 14),
+                    ),
+                  )
                 ],
               ),
             ),
@@ -57,7 +67,6 @@ class CreateSphere extends StatelessWidget {
             children: <Widget>[
               Container(
                 width: MediaQuery.of(context).size.width,
-                // padding: const EdgeInsets.symmetric(vertical: 5),
                 decoration: BoxDecoration(
                     border: Border(
                   bottom: BorderSide(color: const Color(0xffeeeeee), width: 1),
@@ -112,7 +121,9 @@ class CreateSphere extends StatelessWidget {
                   )),
               Expanded(
                   child: ListView(
-                children: <Widget>[],
+                children: <Widget>[
+
+                ],
               ))
             ],
           ),
