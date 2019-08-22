@@ -42,33 +42,27 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   void initState() {
     super.initState();
     _hideFABController = ScrollController();
-    _hideFABController.addListener(_scrollListener);
     _bottomNavIndex = ValueNotifier<int>(0);
     _channelController = TextEditingController();
     controller = PageController(initialPage: 0);
     _isVisible = ValueNotifier<bool>(true);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _hideFABController.position.isScrollingNotifier.addListener(
+        _onScrollingHasChanged,
+      );
+    });
+  }
+
+  void _onScrollingHasChanged() {
+    _isVisible.value = !_hideFABController.position.isScrollingNotifier.value;
   }
 
   @override
   void dispose() {
-    _hideFABController.removeListener(_scrollListener);
     _hideFABController.dispose();
     controller.dispose();
     _channelController.dispose();
     super.dispose();
-  }
-
-  void _scrollListener() {
-    if (_hideFABController.position.userScrollDirection ==
-        ScrollDirection.idle) {
-      _isVisible.value = true;
-    } else if (_hideFABController.position.userScrollDirection ==
-        ScrollDirection.reverse) {
-      _isVisible.value = false;
-    } else if (_hideFABController.position.userScrollDirection ==
-        ScrollDirection.forward) {
-      _isVisible.value = true;
-    }
   }
 
   @override

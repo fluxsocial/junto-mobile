@@ -25,6 +25,7 @@ class PackOpenState extends State<PackOpen> {
   // Controller for PageView
   PageController controller;
   bool publicActive = true;
+  final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
 
   @override
   void initState() {
@@ -52,7 +53,20 @@ class PackOpenState extends State<PackOpen> {
             widget.packImage,
           ),
         ),
-        floatingActionButton: CreateFAB(widget.packTitle),
+        floatingActionButton: ValueListenableBuilder<bool>(
+          valueListenable: _isVisible,
+          builder: (BuildContext context, bool visible, Widget child) {
+            return AnimatedOpacity(
+              duration: const Duration(milliseconds: 300),
+              opacity: visible ? 1.0 : 0.0,
+              child: child,
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CreateFAB(widget.packTitle),
+          ),
+        ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body: Column(
           children: <Widget>[
@@ -120,7 +134,14 @@ class PackOpenState extends State<PackOpen> {
                     });
                   }
                 },
-                children: <Widget>[PackOpenPublic(), PackOpenPrivate()],
+                children: <Widget>[
+                  PackOpenPublic(
+                    onScrollChanged: (bool value) => _isVisible.value = value,
+                  ),
+                  PackOpenPrivate(
+                    onScrollChanged: (bool value) => _isVisible.value = value,
+                  ),
+                ],
               ),
             )
           ],
