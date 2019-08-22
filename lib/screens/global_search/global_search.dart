@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/screens/global_search/member_preview/member_preview.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/typography/palette.dart';
 
@@ -81,7 +82,9 @@ class GlobalSearchState extends State<GlobalSearch> {
           ),
           Expanded(
             child: ListView(
-              children: const <Widget>[],
+              children: <Widget>[
+                SearchMemberPreview(),
+              ],
             ),
           )
         ],
