@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/components/expression_action_items/expression_action_items.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/typography/palette.dart';
@@ -59,7 +60,10 @@ class ExpressionOpenTop extends StatelessWidget {
               ),
             ),
           ]),
-          Container(
+          GestureDetector(
+            onTap: () {
+              ExpressionActionItems().buildExpressionActionItems(context);
+            },
             child: const Icon(
               CustomIcons.more,
               size: 20,
