@@ -130,10 +130,10 @@ class SignUpTwoState extends State<SignUpTwo> {
                         context,
                         MaterialPageRoute<dynamic>(
                           builder: (BuildContext context) => SignUpThree(
-                            widget.firstName,
-                            widget.lastName,
-                            username,
-                          ),
+                                widget.firstName,
+                                widget.lastName,
+                                username,
+                              ),
                         ),
                       );
                     }

@@ -33,10 +33,12 @@ class CreatePerspective extends StatelessWidget {
                       size: 24,
                     ),
                   ),
-                  Text(
+                  const Text(
                     'create',
-                    style:
-                        TextStyle(color: const Color(0xff333333), fontSize: 14),
+                    style: TextStyle(
+                      color: Color(0xff333333),
+                      fontSize: 14,
+                    ),
                   ),
                 ],
               ),
@@ -58,19 +60,24 @@ class CreatePerspective extends StatelessWidget {
               Container(
                 width: MediaQuery.of(context).size.width,
                 // padding: const EdgeInsets.symmetric(vertical: 5),
-                decoration: BoxDecoration(
-                    border: Border(
-                  bottom: BorderSide(color: const Color(0xffeeeeee), width: 1),
-                )),
+                decoration: const BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
+                  ),
+                ),
                 child: TextField(
-                  buildCounter: (BuildContext context,
-                          {int currentLength, int maxLength, bool isFocused}) =>
+                  buildCounter: (
+                    BuildContext context, {
+                    int currentLength,
+                    int maxLength,
+                    bool isFocused,
+                  }) =>
                       null,
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: 'Name your perspective',
                   ),
-                  style: TextStyle(fontSize: 17),
+                  style: const TextStyle(fontSize: 17),
                   cursorColor: JuntoPalette.juntoGrey,
                   cursorWidth: 2,
                   maxLines: 1,
@@ -79,16 +86,16 @@ class CreatePerspective extends StatelessWidget {
               ),
               Container(
                   width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                      border: Border(
-                    bottom:
-                        BorderSide(color: const Color(0xffeeeeee), width: 1),
-                  )),
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
+                    ),
+                  ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Icon(Icons.search, size: 17),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       Container(
                         width: MediaQuery.of(context).size.width * .75,
                         child: TextField(
@@ -102,7 +109,7 @@ class CreatePerspective extends StatelessWidget {
                             hintText: 'Add members to your perspective',
                           ),
                           cursorColor: JuntoPalette.juntoGrey,
-                          style: TextStyle(fontSize: 14),
+                          style: const TextStyle(fontSize: 14),
                           cursorWidth: 2,
                           maxLines: 1,
                           maxLength: 80,

@@ -128,11 +128,11 @@ class SignUpThreeState extends State<SignUpThree> {
                         context,
                         MaterialPageRoute<dynamic>(
                           builder: (BuildContext context) => SignUpFour(
-                            widget.firstName,
-                            widget.lastName,
-                            widget.username,
-                            password,
-                          ),
+                                widget.firstName,
+                                widget.lastName,
+                                widget.username,
+                                password,
+                              ),
                         ),
                       );
                     }

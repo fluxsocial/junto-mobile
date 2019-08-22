@@ -25,11 +25,11 @@ class SearchMemberPreview extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width - 65,
                     padding: const EdgeInsets.symmetric(vertical: 20),
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       border: Border(
                         bottom: BorderSide(
                           width: .5,
-                          color: const Color(
+                          color: Color(
                             0xffeeeeee,
                           ),
                         ),
@@ -39,20 +39,20 @@ class SearchMemberPreview extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
+                      children: const <Widget>[
                         Text(
                           'Eric Yang',
                           textAlign: TextAlign.start,
                           style: TextStyle(
                             fontSize: 14,
-                            color: const Color(0xff333333),
+                            color: Color(0xff333333),
                             fontWeight: FontWeight.w700,
                           ),
                         ),
                         Text(
                           'sunyata',
                           textAlign: TextAlign.start,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                           ),

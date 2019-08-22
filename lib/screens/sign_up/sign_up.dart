@@ -164,9 +164,9 @@ class SignUpState extends State<SignUp> {
                         context,
                         MaterialPageRoute<dynamic>(
                           builder: (BuildContext context) => SignUpTwo(
-                            firstName,
-                            lastName,
-                          ),
+                                firstName,
+                                lastName,
+                              ),
                         ),
                       );
                     }

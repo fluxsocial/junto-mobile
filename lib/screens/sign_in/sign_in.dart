@@ -43,12 +43,12 @@ class SignIn extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 45),
                   child: TextField(
                     decoration: InputDecoration(
-                      enabledBorder: UnderlineInputBorder(
+                      enabledBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(
                           color: Colors.white,
                         ),
                       ),
-                      focusedBorder: UnderlineInputBorder(
+                      focusedBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(
                           color: Colors.white,
                         ),
@@ -75,12 +75,12 @@ class SignIn extends StatelessWidget {
                   child: TextField(
                     obscureText: true,
                     decoration: InputDecoration(
-                      enabledBorder: UnderlineInputBorder(
+                      enabledBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(
                           color: Colors.white,
                         ),
                       ),
-                      focusedBorder: UnderlineInputBorder(
+                      focusedBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(
                           color: Colors.white,
                         ),

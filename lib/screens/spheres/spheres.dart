@@ -19,8 +19,8 @@ class JuntoSpheres extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => CreateSphere(),
+                MaterialPageRoute<dynamic>(
+                  builder: (BuildContext context) => CreateSphere(),
                 ),
               );
             },
@@ -33,8 +33,8 @@ class JuntoSpheres extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  const Text(
+                children: const <Widget>[
+                  Text(
                     'Create a sphere',
                     style: TextStyle(
                       color: Color(0xff333333),
@@ -42,7 +42,7 @@ class JuntoSpheres extends StatelessWidget {
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  const Text(
+                  Text(
                     '+',
                     style: TextStyle(fontSize: 17),
                   ),

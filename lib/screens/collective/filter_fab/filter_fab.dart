@@ -17,40 +17,40 @@ class CollectiveFilterFAB extends StatelessWidget {
     return ValueListenableBuilder<bool>(
       valueListenable: isVisible,
       builder: (BuildContext context, bool value, _) => AnimatedOpacity(
-        duration: Duration(milliseconds: 200),
-        opacity: value ? 1.0 : 0.0,
-        child: GestureDetector(
-          onTap: () => toggleFilter(context),
-          child: Container(
-            height: 45,
-            width: 45,
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                begin: Alignment.bottomLeft,
-                end: Alignment.topRight,
-                stops: <double>[0.1, 0.9],
-                colors: <Color>[
-                  JuntoPalette.juntoPurple,
-                  JuntoPalette.juntoBlue,
-                ],
-              ),
-              color: Colors.white.withOpacity(.7),
-              border: Border.all(
-                color: Colors.white,
-                width: 1.5,
-              ),
-              borderRadius: BorderRadius.circular(25),
-            ),
-            alignment: Alignment.center,
-            child: const Text(
-              '#',
-              style: TextStyle(
-                color: Color(0xffffffff),
+            duration: Duration(milliseconds: 200),
+            opacity: value ? 1.0 : 0.0,
+            child: GestureDetector(
+              onTap: () => toggleFilter(context),
+              child: Container(
+                height: 45,
+                width: 45,
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
+                    stops: <double>[0.1, 0.9],
+                    colors: <Color>[
+                      JuntoPalette.juntoPurple,
+                      JuntoPalette.juntoBlue,
+                    ],
+                  ),
+                  color: Colors.white.withOpacity(.7),
+                  border: Border.all(
+                    color: Colors.white,
+                    width: 1.5,
+                  ),
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                alignment: Alignment.center,
+                child: const Text(
+                  '#',
+                  style: TextStyle(
+                    color: Color(0xffffffff),
+                  ),
+                ),
               ),
             ),
           ),
-        ),
-      ),
     );
   }
 }

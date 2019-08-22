@@ -65,10 +65,10 @@ class JuntoMember extends StatelessWidget {
 
                 Container(
                   padding: const EdgeInsets.only(top: 10, bottom: 10),
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     border: Border(
                       bottom: BorderSide(
-                        color: const Color(0xffeeeeee),
+                        color: Color(0xffeeeeee),
                         width: 1,
                       ),
                     ),
@@ -82,7 +82,7 @@ class JuntoMember extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Container(
-                                child: Text(
+                                child: const Text(
                                   'Eric Yang',
                                   style: TextStyle(
                                     fontSize: 17,
@@ -102,7 +102,7 @@ class JuntoMember extends StatelessWidget {
                                     ),
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 10, vertical: 5),
-                                    child: Text(
+                                    child: const Text(
                                       'connect',
                                       style: TextStyle(
                                         fontSize: 12,

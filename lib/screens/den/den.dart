@@ -100,10 +100,10 @@ class JuntoDenState extends State<JuntoDen> {
                       padding: const EdgeInsets.only(
                           left: 10, right: 10, bottom: 10),
                       margin: const EdgeInsets.only(top: 10, bottom: 10),
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         border: Border(
                           bottom: BorderSide(
-                            color: const Color(0xffeeeeee),
+                            color: Color(0xffeeeeee),
                             width: 1,
                           ),
                         ),

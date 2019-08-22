@@ -37,15 +37,18 @@ class CreateSphere extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  CreateSphereNext()));
+                        context,
+                        MaterialPageRoute<dynamic>(
+                          builder: (BuildContext context) => CreateSphereNext(),
+                        ),
+                      );
                     },
-                    child: Text(
+                    child: const Text(
                       'next',
                       style: TextStyle(
-                          color: const Color(0xff333333), fontSize: 14),
+                        color: Color(0xff333333),
+                        fontSize: 14,
+                      ),
                     ),
                   )
                 ],
@@ -79,7 +82,7 @@ class CreateSphere extends StatelessWidget {
                     border: InputBorder.none,
                     hintText: 'Name your sphere',
                   ),
-                  style: TextStyle(fontSize: 17),
+                  style: const TextStyle(fontSize: 17),
                   cursorColor: JuntoPalette.juntoGrey,
                   cursorWidth: 2,
                   maxLines: 1,
@@ -97,7 +100,7 @@ class CreateSphere extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Icon(Icons.search, size: 17),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       Container(
                         width: MediaQuery.of(context).size.width * .75,
                         child: TextField(
@@ -111,7 +114,7 @@ class CreateSphere extends StatelessWidget {
                             hintText: 'Add members to your sphere',
                           ),
                           cursorColor: JuntoPalette.juntoGrey,
-                          style: TextStyle(fontSize: 14),
+                          style: const TextStyle(fontSize: 14),
                           cursorWidth: 2,
                           maxLines: 1,
                           maxLength: 80,
@@ -121,9 +124,7 @@ class CreateSphere extends StatelessWidget {
                   )),
               Expanded(
                   child: ListView(
-                children: <Widget>[
-
-                ],
+                children: const <Widget>[],
               ))
             ],
           ),

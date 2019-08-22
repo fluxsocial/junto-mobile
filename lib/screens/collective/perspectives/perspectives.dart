@@ -19,10 +19,10 @@ class Perspectives extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     border: Border(
                       bottom: BorderSide(
-                        color: const Color(0xffeeeeee),
+                        color: Color(0xffeeeeee),
                         width: 1,
                       ),
                     ),
