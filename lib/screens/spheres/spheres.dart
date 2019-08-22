@@ -15,39 +15,39 @@ class JuntoSpheres extends StatelessWidget {
       child: ListView(
         children: <Widget>[
           // Create sphere
-          Container(
-            decoration: const BoxDecoration(
-              border: Border(
-                bottom: BorderSide(color: Color(0xffeeeeee), width: .5),
-              ),
-            ),
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                const Text(
-                  'Create a sphere',
-                  style: TextStyle(
-                    color: Color(0xff333333),
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
-                  ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CreateSphere(),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CreateSphere(),
-                      ),
-                    );
-                  },
-                  child: const Text(
+              );
+            },
+            child: Container(
+              decoration: const BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(color: Color(0xffeeeeee), width: .5),
+                ),
+              ),
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  const Text(
+                    'Create a sphere',
+                    style: TextStyle(
+                      color: Color(0xff333333),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const Text(
                     '+',
                     style: TextStyle(fontSize: 17),
                   ),
-                )
-              ],
+                ],
+              ),
             ),
           ),
 
