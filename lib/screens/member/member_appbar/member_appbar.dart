@@ -32,11 +32,16 @@ class MemberAppbar extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap:() {
-
-                },
-                child: Icon(CustomIcons.more)
-              )
+                onTap: () {},
+                child: Text(
+                  'sunyata',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xff333333),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -53,26 +58,6 @@ class MemberAppbar extends StatelessWidget {
               ),
             ),
           ),
-        )
-        // bottom:
-        // PreferredSize(
-        //     preferredSize: Size.fromHeight(1),
-        //     child: Container(
-        //       height: 1,
-        //       decoration: BoxDecoration(
-        //         gradient: LinearGradient(
-        //             begin: Alignment.centerLeft,
-        //             end: Alignment.centerRight,
-        //             stops: [
-        //               0.1,
-        //               0.9
-        //             ],
-        //             colors: [
-        //               JuntoPalette.juntoBlue,
-        //               JuntoPalette.juntoPurple
-        //             ]),
-        //       ),
-        //     )),
-        );
+        ));
   }
 }

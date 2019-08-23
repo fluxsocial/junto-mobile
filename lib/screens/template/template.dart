@@ -180,7 +180,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
     } else if (screen == 'den') {
       setState(() {
         _currentScreen = 'den';
-        _appbarTitle = 'DEN';
+        _appbarTitle = 'sunyata';
         _bottomNavIndex.value = 3;
       });
     }

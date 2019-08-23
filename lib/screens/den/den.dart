@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
+import 'package:junto_beta_mobile/typography/palette.dart';
+import 'package:junto_beta_mobile/custom_icons.dart';
+import 'package:junto_beta_mobile/screens/member/member_appbar/member_appbar.dart';
 
 /// Displays the user's DEN or "profile screen"
 class JuntoDen extends StatefulWidget {
@@ -25,146 +28,239 @@ class JuntoDenState extends State<JuntoDen> {
           color: Colors.white,
           child: Column(
             children: <Widget>[
-              // Den cover photo
               Container(
-                constraints: const BoxConstraints.expand(height: 150),
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: const AssetImage(
-                        'assets/images/junto-mobile__stillmind.png'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                child: Transform.translate(
-                  offset: const Offset(0, 120),
-                  child: Container(
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Row(
-                            children: <Widget>[
-                              ClipOval(
-                                child: Image.asset(
-                                  'assets/images/junto-mobile__eric.png',
-                                  height: 60.0,
-                                  width: 60.0,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ],
-                          ),
+                width: MediaQuery.of(context).size.width,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 55),
+                decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.bottomLeft,
+                        end: Alignment.topRight,
+                        stops: <double>[0.1, 0.9],
+                        colors: <Color>[Color(0xff5E54D0), Color(0xff307FAB)])),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.blue,
+                        border: Border.all(
+                          width: 3.0,
+                          color: Colors.white,
                         ),
-                      ],
+                      ),
+                      child: ClipOval(
+                        child: Image.asset(
+                          'assets/images/junto-mobile__eric.png',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
-                  ),
+                    const SizedBox(width: 10),
+                    Text(
+                      'Eric Yang',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w700),
+                    ),
+                  ],
                 ),
               ),
               Container(
-                  color: Colors.transparent,
-                  height: 30,
-                  width: MediaQuery.of(context).size.width),
-              Container(
-                padding: const EdgeInsets.only(top: 10),
-                color: Colors.white,
-                width: MediaQuery.of(context).size.width,
-                child: Column(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                decoration: const BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
+                  ),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const <Widget>[
-                              Text(
-                                'Eric Yang',
-                                style: TextStyle(
-                                    fontSize: 17, fontWeight: FontWeight.w700),
-                              ),
-                              Text(
-                                'sunyata',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              )
-                            ],
+                          Image.asset(
+                            'assets/images/junto-mobile__outlinelogo--gradient.png',
+                            height: 17,
+                            color: const Color(0xff555555),
                           ),
-                          Icon(Icons.edit, size: 14)
+                          const SizedBox(height: 5),
+                          const Text(
+                            'Follow',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Color(0xff555555),
+                            ),
+                          ),
                         ],
                       ),
                     ),
                     Container(
-                      padding: const EdgeInsets.only(
-                          left: 10, right: 10, bottom: 10),
-                      margin: const EdgeInsets.only(top: 10, bottom: 10),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: const Color(0xffeeeeee),
-                            width: 1,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Image.asset(
+                            'assets/images/junto-mobile__infinity.png',
+                            height: 17,
+                            color: const Color(0xff555555),
                           ),
-                        ),
-                      ),
-                      width: MediaQuery.of(context).size.width,
-                      child: const Text(
-                        'to a mind that is still, the whole universe '
-                        'surrenders',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
+                          const SizedBox(height: 5),
+                          const Text(
+                            'Connect',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Color(0xff555555),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        RaisedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute<dynamic>(
-                                builder: (BuildContext context) =>
-                                    JuntoMember(),
-                              ),
-                            );
-                          },
-                        ),
-                        RaisedButton(
-                          onPressed: () async {
-                            await FlutterSecureStorage().write(
-                              key: 'isLogged'
-                                  'In',
-                              value: 'false',
-                            );
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute<dynamic>(
-                                builder: (BuildContext context) => Welcome(),
-                              ),
-                            );
-                          },
-                          color: const Color(0xff4968BF),
-                          child: const Text(
-                            'LOG OUT',
+                    Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Image.asset(
+                            'assets/images/junto-mobile__join-pack.png',
+                            height: 17,
+                            color: const Color(0xff555555),
+                          ),
+                          const SizedBox(height: 5),
+                          const Text(
+                            'Join Pack',
                             style: TextStyle(
-                              // color: JuntoPalette.juntoBlue,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 14,
+                              fontSize: 12,
+                              color: Color(0xff555555),
                             ),
                           ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                              100,
+                        ],
+                      ),
+                    ),
+                    Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(CustomIcons.more, size: 17),
+                          const SizedBox(height: 5),
+                          const Text(
+                            'More',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Color(0xff555555),
                             ),
                           ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                alignment: Alignment.centerLeft,
+                padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
+                child: const Text(
+                  'To a mind that is still, the whole universe surrenders',
+                  textAlign: TextAlign.start,
+                  style: TextStyle(fontSize: 15),
+                ),
+              ),
+              Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        margin: const EdgeInsets.only(right: 15),
+                        child: Row(
+                          children: <Widget>[
+                            Image.asset(
+                              'assets/images/junto-mobile__location.png',
+                              height: 17,
+                              color: const Color(0xff555555),
+                            ),
+                            const SizedBox(width: 5),
+                            Text(
+                              'Spirit',
+                              style: const TextStyle(
+                                color: Color(0xff555555),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
+                      Container(
+                        child: Row(
+                          children: <Widget>[
+                            Image.asset(
+                              'assets/images/junto-mobile__link.png',
+                              height: 17,
+                              color: const Color(0xff555555),
+                            ),
+                            const SizedBox(width: 5),
+                            Text(
+                              'junto.foundation',
+                              style: TextStyle(color: JuntoPalette.juntoBlue),
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  )),
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      child: Text(
+                        'EXPRESSIONS',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 12),
+                      ),
                     )
                   ],
+                ),
+              ),
+              RaisedButton(onPressed: () async {
+                Navigator.push(
+                    context,
+                     MaterialPageRoute(
+                        builder: (BuildContext context) => JuntoMember()));
+              }),
+              RaisedButton(
+                onPressed: () async {
+                  await FlutterSecureStorage().write(
+                    key: 'isLogged'
+                        'In',
+                    value: 'false',
+                  );
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute<dynamic>(
+                      builder: (BuildContext context) => Welcome(),
+                    ),
+                  );
+                },
+                color: const Color(0xff4968BF),
+                child: const Text(
+                  'LOG OUT',
+                  style: TextStyle(
+                    // color: JuntoPalette.juntoBlue,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 14,
+                  ),
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                    100,
+                  ),
                 ),
               ),
             ],

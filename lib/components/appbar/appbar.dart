@@ -29,8 +29,8 @@ class JuntoAppBar extends StatelessWidget {
                   0.9
                 ],
                 colors: <Color>[
-                  JuntoPalette.juntoBlue,
-                  JuntoPalette.juntoPurple
+                  JuntoPalette.juntoPurple,
+                  JuntoPalette.juntoBlue
                 ]),
           ),
         ),

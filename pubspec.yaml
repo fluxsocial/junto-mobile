@@ -165,6 +165,9 @@ flutter:
     - assets/images/junto-mobile__stillmind.png    
     - assets/images/junto-mobile__junto.png    
     - assets/images/junto-mobile__infinity.png    
+    - assets/images/junto-mobile__location.png    
+    - assets/images/junto-mobile__link.png    
+    - assets/images/junto-mobile__join-pack.png    
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
