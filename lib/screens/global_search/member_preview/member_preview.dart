@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 
 class SearchMemberPreview extends StatelessWidget {
+  const SearchMemberPreview({
+    Key key,
+    @required this.member,
+  }) : super(key: key);
+
+  final MemberPreviewModel member;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -16,7 +23,7 @@ class SearchMemberPreview extends StatelessWidget {
                 children: <Widget>[
                   ClipOval(
                     child: Image.asset(
-                      'assets/images/junto-mobile__eric.png',
+                      member.prewviewImage,
                       height: 45.0,
                       width: 45.0,
                       fit: BoxFit.cover,
@@ -39,18 +46,18 @@ class SearchMemberPreview extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const <Widget>[
+                      children: <Widget>[
                         Text(
-                          'Eric Yang',
+                          member.name,
                           textAlign: TextAlign.start,
                           style: TextStyle(
                             fontSize: 14,
-                            color: Color(0xff333333),
+                            color: const Color(0xff333333),
                             fontWeight: FontWeight.w700,
                           ),
                         ),
                         Text(
-                          'sunyata',
+                          member.userName,
                           textAlign: TextAlign.start,
                           style: TextStyle(
                             fontSize: 14,
@@ -65,5 +72,22 @@ class SearchMemberPreview extends StatelessWidget {
             ],
           ),
         ));
+  }
+}
+
+class MemberPreviewModel {
+  MemberPreviewModel({
+    @required this.prewviewImage,
+    @required this.name,
+    @required this.userName,
+  });
+
+  final String prewviewImage;
+  final String name;
+  final String userName;
+
+  @override
+  String toString() {
+    return 'name $name username $userName  previewImage $prewviewImage';
   }
 }

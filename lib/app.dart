@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/providers/packs_provider/packs_provider.dart';
+import 'package:junto_beta_mobile/providers/search_provider/search_provider.dart';
 import 'package:junto_beta_mobile/providers/spheres_provider/spheres_provider.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
 import 'package:junto_beta_mobile/screens/loading_screen/junto_loading_screen.dart';
@@ -22,6 +23,9 @@ class JuntoAppState extends State<JuntoApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: <SingleChildCloneableWidget>[
+        Provider<SearchProvider>(
+          builder: (BuildContext context) => SearchProvider(),
+        ),
         ChangeNotifierProvider<CollectiveProvider>(
           builder: (BuildContext context) => CollectiveProvider(),
         ),
