@@ -31,22 +31,12 @@ class MemberAppbar extends StatelessWidget {
                   size: 24,
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    margin: const EdgeInsets.only(right: 10),
-                    child: Text(
-                      '@' + memberHandle,
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              GestureDetector(
+                onTap:() {
+
+                },
+                child: Icon(CustomIcons.more)
+              )
             ],
           ),
         ),
