@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:junto_beta_mobile/components/appbar/appbar.dart';
 import 'package:junto_beta_mobile/components/bottom_nav/bottom_nav.dart';
+import 'package:junto_beta_mobile/components/utils/custom_scroll_behaviour.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/collective/filter_fab/filter_fab.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspectives.dart';
@@ -18,6 +19,8 @@ class JuntoTemplate extends StatefulWidget {
 }
 
 class JuntoTemplateState extends State<JuntoTemplate> {
+  final GlobalKey<ScaffoldState> _juntoTemplateKey = GlobalKey<ScaffoldState>();
+
   // Default values for collective screen / JUNTO perspective - change dynamically.
   String _currentScreen = 'collective';
 
@@ -32,7 +35,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   TextEditingController _channelController;
 
   // Controller for PageView
-  PageController controller;
+  PageController _controller;
 
   // Controller for scroll
   ScrollController _hideFABController;
@@ -44,7 +47,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
     _hideFABController = ScrollController();
     _bottomNavIndex = ValueNotifier<int>(0);
     _channelController = TextEditingController();
-    controller = PageController(initialPage: 0);
+    _controller = PageController(initialPage: 0);
     _isVisible = ValueNotifier<bool>(true);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _hideFABController.position.isScrollingNotifier.addListener(
@@ -60,9 +63,22 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   @override
   void dispose() {
     _hideFABController.dispose();
-    controller.dispose();
+    _controller.dispose();
     _channelController.dispose();
     super.dispose();
+  }
+
+  /// Opens the `Perspective` screen if the user swipes right.
+  /// Animates the PageView to the next page if the user swipes left.
+  void _onDragUpdate(DragUpdateDetails details) {
+    if (!details.primaryDelta.isNegative) {
+      _juntoTemplateKey.currentState.openDrawer();
+    } else {
+      _controller.nextPage(
+        duration: kTabScrollDuration,
+        curve: Curves.decelerate,
+      );
+    }
   }
 
   @override
@@ -70,6 +86,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
     return Stack(
       children: <Widget>[
         Scaffold(
+          key: _juntoTemplateKey,
           backgroundColor: Colors.white,
           appBar: PreferredSize(
             preferredSize: const Size.fromHeight(45),
@@ -97,25 +114,34 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                     )
                   : null,
           body: SafeArea(
-            child: PageView(
-              controller: controller,
-              onPageChanged: (int index) {
-                if (index == 0) {
-                  _switchScreen('collective');
-                } else if (index == 1) {
-                  _switchScreen('spheres');
-                } else if (index == 2) {
-                  _switchScreen('packs');
-                } else if (index == 3) {
-                  _switchScreen('den');
-                }
-              },
-              children: <Widget>[
-                JuntoCollective(_hideFABController, _currentPerspective),
-                JuntoSpheres(),
-                JuntoPacks(),
-                JuntoDen()
-              ],
+            child: ScrollConfiguration(
+              behavior: PlainScrollBehaviour(),
+              child: PageView(
+                controller: _controller,
+                onPageChanged: (int index) {
+                  if (index == 0) {
+                    _switchScreen('collective');
+                  } else if (index == 1) {
+                    _switchScreen('spheres');
+                  } else if (index == 2) {
+                    _switchScreen('packs');
+                  } else if (index == 3) {
+                    _switchScreen('den');
+                  }
+                },
+                children: <Widget>[
+                  GestureDetector(
+                    onHorizontalDragUpdate: _onDragUpdate,
+                    child: JuntoCollective(
+                      _hideFABController,
+                      _currentPerspective,
+                    ),
+                  ),
+                  JuntoSpheres(),
+                  JuntoPacks(),
+                  JuntoDen()
+                ],
+              ),
             ),
           ),
           bottomNavigationBar: ValueListenableBuilder<int>(
@@ -135,7 +161,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   // Set the bottom navbar index; used when bottom nav icon is pressed.
   void _setBottomIndex(int x) {
     _bottomNavIndex.value = x;
-    controller.jumpToPage(x);
+    _controller.jumpToPage(x);
   }
 
   // Switch between perspectives; used in perspectives side drawer.
@@ -292,33 +318,31 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                           children: _channels
                               .map(
                                 (String channel) => GestureDetector(
-                                      onDoubleTap: () {
-                                        _removeChannel(state, channel);
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          border: Border.all(
-                                            color: const Color(0xff333333),
-                                            width: 1,
-                                          ),
-                                        ),
-                                        margin:
-                                            const EdgeInsets.only(right: 10),
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 10,
-                                          vertical: 5,
-                                        ),
-                                        child: Text(
-                                          channel,
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                        ),
+                                  onDoubleTap: () {
+                                    _removeChannel(state, channel);
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      border: Border.all(
+                                        color: const Color(0xff333333),
+                                        width: 1,
                                       ),
                                     ),
+                                    margin: const EdgeInsets.only(right: 10),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                      vertical: 5,
+                                    ),
+                                    child: Text(
+                                      channel,
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               )
                               .toList(),
                         ),
