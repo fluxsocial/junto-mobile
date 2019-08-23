@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class JuntoPalette {
   static const Color juntoBlue = Color(0xFF307FAB);
   static const Color juntoBlueLight = Color(0xFF5EB6D5);
-  static const Color juntoPurple = Color(0xFFA46BCC);
+  // static const Color juntoPurple = Color(0xFFA46BCC);
+  static const Color juntoPurple = Color(0xff5E54D0);
   static const Color juntoPurpleLight = Color(0xFFCD9FED);
   static const Color juntoGreen = Color(0xFF46976C);
   static const Color juntoGreenLight = Color(0xFF68B48C);

@@ -31,21 +31,16 @@ class MemberAppbar extends StatelessWidget {
                   size: 24,
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    margin: const EdgeInsets.only(right: 10),
-                    child: Text(
-                      '@' + memberHandle,
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black,
-                      ),
-                    ),
+              GestureDetector(
+                onTap: () {},
+                child: Text(
+                  'sunyata',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xff333333),
                   ),
-                ],
+                ),
               ),
             ],
           ),
@@ -63,26 +58,6 @@ class MemberAppbar extends StatelessWidget {
               ),
             ),
           ),
-        )
-        // bottom:
-        // PreferredSize(
-        //     preferredSize: Size.fromHeight(1),
-        //     child: Container(
-        //       height: 1,
-        //       decoration: BoxDecoration(
-        //         gradient: LinearGradient(
-        //             begin: Alignment.centerLeft,
-        //             end: Alignment.centerRight,
-        //             stops: [
-        //               0.1,
-        //               0.9
-        //             ],
-        //             colors: [
-        //               JuntoPalette.juntoBlue,
-        //               JuntoPalette.juntoPurple
-        //             ]),
-        //       ),
-        //     )),
-        );
+        ));
   }
 }
