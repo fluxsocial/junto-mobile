@@ -10,7 +10,7 @@ class PackOpenFAB extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedOpacity(
-      duration: Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 200),
       opacity: isVisible ? 1 : 0,
       child: Container(
         decoration: BoxDecoration(

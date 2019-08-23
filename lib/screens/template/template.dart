@@ -42,33 +42,27 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   void initState() {
     super.initState();
     _hideFABController = ScrollController();
-    _hideFABController.addListener(_scrollListener);
     _bottomNavIndex = ValueNotifier<int>(0);
     _channelController = TextEditingController();
     controller = PageController(initialPage: 0);
     _isVisible = ValueNotifier<bool>(true);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _hideFABController.position.isScrollingNotifier.addListener(
+        _onScrollingHasChanged,
+      );
+    });
+  }
+
+  void _onScrollingHasChanged() {
+    _isVisible.value = !_hideFABController.position.isScrollingNotifier.value;
   }
 
   @override
   void dispose() {
-    _hideFABController.removeListener(_scrollListener);
     _hideFABController.dispose();
     controller.dispose();
     _channelController.dispose();
     super.dispose();
-  }
-
-  void _scrollListener() {
-    if (_hideFABController.position.userScrollDirection ==
-        ScrollDirection.idle) {
-      _isVisible.value = true;
-    } else if (_hideFABController.position.userScrollDirection ==
-        ScrollDirection.reverse) {
-      _isVisible.value = false;
-    } else if (_hideFABController.position.userScrollDirection ==
-        ScrollDirection.forward) {
-      _isVisible.value = true;
-    }
   }
 
   @override
@@ -298,31 +292,33 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                           children: _channels
                               .map(
                                 (String channel) => GestureDetector(
-                                  onDoubleTap: () {
-                                    _removeChannel(state, channel);
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      border: Border.all(
-                                        color: const Color(0xff333333),
-                                        width: 1,
+                                      onDoubleTap: () {
+                                        _removeChannel(state, channel);
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          border: Border.all(
+                                            color: const Color(0xff333333),
+                                            width: 1,
+                                          ),
+                                        ),
+                                        margin:
+                                            const EdgeInsets.only(right: 10),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 10,
+                                          vertical: 5,
+                                        ),
+                                        child: Text(
+                                          channel,
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                    margin: const EdgeInsets.only(right: 10),
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 10,
-                                      vertical: 5,
-                                    ),
-                                    child: Text(
-                                      channel,
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                  ),
-                                ),
                               )
                               .toList(),
                         ),

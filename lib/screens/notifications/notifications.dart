@@ -14,7 +14,7 @@ class JuntoNotifications extends StatelessWidget {
         children: <Widget>[
           Expanded(
               child: ListView(
-            children: <Widget>[SizedBox()],
+            children: const <Widget>[SizedBox()],
           ))
         ],
       ),

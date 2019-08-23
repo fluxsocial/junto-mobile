@@ -103,6 +103,7 @@ class JuntoDenState extends State<JuntoDen> {
                       ),
                     ),
                     Container(
+
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
@@ -110,6 +111,7 @@ class JuntoDenState extends State<JuntoDen> {
                             'assets/images/junto-mobile__infinity.png',
                             height: 17,
                             color: const Color(0xff555555),
+
                           ),
                           const SizedBox(height: 5),
                           const Text(

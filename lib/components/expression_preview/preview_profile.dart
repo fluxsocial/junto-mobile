@@ -10,7 +10,6 @@ class PreviewProfile extends StatelessWidget {
 
   final Expression expression;
 
-
   @override
   Widget build(BuildContext context) {
     final String firstName = expression.authorProfile.firstName;

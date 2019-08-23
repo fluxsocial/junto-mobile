@@ -34,10 +34,9 @@ class CreateSphereNext extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {},
-                    child: Text(
+                    child: const Text(
                       'Create',
-                      style: TextStyle(
-                          color: const Color(0xff333333), fontSize: 14),
+                      style: TextStyle(color: Color(0xff333333), fontSize: 14),
                     ),
                   )
                 ],
@@ -59,76 +58,91 @@ class CreateSphereNext extends StatelessWidget {
                 child: ListView(
               children: <Widget>[
                 Container(
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
-                      ),
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
                     ),
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 15, horizontal: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Container(
-                          width: MediaQuery.of(context).size.width * .75,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text('Public',
-                                  style: TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w700)),
-                              Text(
-                                  'Anyone can join this sphere, read its expressions, and share to it')
-                            ],
-                          ),
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        width: MediaQuery.of(context).size.width * .75,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: const <Widget>[
+                            Text(
+                              'Public',
+                              style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            Text(
+                              'Anyone can join this sphere, read its ,'
+                              'expressions and share to it',
+                            )
+                          ],
                         ),
-                        Container(
-                          height: 24,
-                          width: 24,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Color(0xffeeeeee), width: 2),
-                              borderRadius: BorderRadius.circular(25)),
-                        )
-                      ],
-                    ),),
-
+                      ),
+                      Container(
+                        height: 24,
+                        width: 24,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                              color: const Color(0xffeeeeee), width: 2),
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
                 Container(
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
-                      ),
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
                     ),
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 15, horizontal: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Container(
-                          width: MediaQuery.of(context).size.width * .75,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text('Private',
-                                  style: TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w700)),
-                              Text(
-                                  'Members must be invited into this sphere in order to read its expressions and share to it')
-                            ],
-                          ),
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        width: MediaQuery.of(context).size.width * .75,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: const <Widget>[
+                            Text(
+                              'Private',
+                              style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            Text(
+                              'Members must be invited into this sphere in '
+                              'order to read its expressions and share to it',
+                            )
+                          ],
                         ),
-                        Container(
-                          height: 24,
-                          width: 24,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Color(0xffeeeeee), width: 2),
-                              borderRadius: BorderRadius.circular(25)),
-                        )
-                      ],
-                    ),),                    
+                      ),
+                      Container(
+                        height: 24,
+                        width: 24,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: const Color(0xffeeeeee),
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               ],
             ))
           ],

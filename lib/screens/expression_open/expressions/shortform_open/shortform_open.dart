@@ -90,7 +90,7 @@ class ShortformOpenState extends State<ShortformOpen> {
           Text(
             _shortformBody,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 17.0,
               fontWeight: FontWeight.w700,
               color: Colors.white,

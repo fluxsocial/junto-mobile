@@ -14,7 +14,7 @@ class MemberAppbar extends StatelessWidget {
     return AppBar(
         automaticallyImplyLeading: false,
         brightness: Brightness.light,
-        iconTheme: IconThemeData(color: JuntoPalette.juntoSleek),
+        iconTheme: const IconThemeData(color: JuntoPalette.juntoSleek),
         backgroundColor: Colors.white,
         elevation: 0,
         titleSpacing: 0,
@@ -25,7 +25,7 @@ class MemberAppbar extends StatelessWidget {
             children: <Widget>[
               GestureDetector(
                 onTap: () => Navigator.pop(context),
-                child: Icon(
+                child: const Icon(
                   CustomIcons.back_arrow_left,
                   color: JuntoPalette.juntoSleek,
                   size: 24,
@@ -49,11 +49,11 @@ class MemberAppbar extends StatelessWidget {
           preferredSize: const Size.fromHeight(1),
           child: Container(
             height: 1,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               border: Border(
                 bottom: BorderSide(
                   width: 1,
-                  color: const Color(0xffeeeeee),
+                  color: Color(0xffeeeeee),
                 ),
               ),
             ),

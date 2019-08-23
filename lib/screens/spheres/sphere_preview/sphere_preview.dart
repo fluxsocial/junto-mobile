@@ -25,12 +25,12 @@ class SpherePreview extends StatelessWidget {
           context,
           MaterialPageRoute<dynamic>(
             builder: (BuildContext context) => SphereOpen(
-              sphereTitle,
-              sphereMembers,
-              sphereImage,
-              sphereHandle,
-              sphereDescription,
-            ),
+                  sphereTitle,
+                  sphereMembers,
+                  sphereImage,
+                  sphereHandle,
+                  sphereDescription,
+                ),
           ),
         );
       },

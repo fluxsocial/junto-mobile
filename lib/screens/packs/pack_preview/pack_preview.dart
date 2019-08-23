@@ -17,10 +17,10 @@ class PackPreview extends StatelessWidget {
           context,
           MaterialPageRoute<dynamic>(
             builder: (BuildContext context) => PackOpen(
-              packTitle,
-              packUser,
-              packImage,
-            ),
+                  packTitle,
+                  packUser,
+                  packImage,
+                ),
           ),
         );
       },

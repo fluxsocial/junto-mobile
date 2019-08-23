@@ -8,7 +8,7 @@ class ExpressionOpenAppbar extends StatelessWidget {
     return AppBar(
       automaticallyImplyLeading: false,
       brightness: Brightness.light,
-      iconTheme: IconThemeData(color: JuntoPalette.juntoSleek),
+      iconTheme: const IconThemeData(color: JuntoPalette.juntoSleek),
       backgroundColor: Colors.white,
       elevation: 0,
       titleSpacing: 0,
@@ -19,7 +19,7 @@ class ExpressionOpenAppbar extends StatelessWidget {
           children: <Widget>[
             GestureDetector(
               onTap: () => Navigator.pop(context),
-              child: Icon(
+              child: const Icon(
                 CustomIcons.back_arrow_left,
                 color: JuntoPalette.juntoSleek,
                 size: 24,
@@ -32,8 +32,8 @@ class ExpressionOpenAppbar extends StatelessWidget {
         preferredSize: const Size.fromHeight(1),
         child: Container(
           height: 1,
-          decoration: BoxDecoration(
-            gradient: const LinearGradient(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
               stops: <double>[0.1, 0.9],

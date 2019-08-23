@@ -91,8 +91,8 @@ class CreateShortformState extends State<CreateShortform> {
                           );
                         },
                         child: Container(
-                          decoration: BoxDecoration(
-                            gradient: const LinearGradient(
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
                               begin: Alignment.bottomLeft,
                               end: Alignment.topRight,
                               stops: <double>[0.1, 0.9],
@@ -121,8 +121,8 @@ class CreateShortformState extends State<CreateShortform> {
                           );
                         },
                         child: Container(
-                          decoration: BoxDecoration(
-                            gradient: const LinearGradient(
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
                               begin: Alignment.bottomLeft,
                               end: Alignment.topRight,
                               stops: <double>[0.1, 0.9],
@@ -147,8 +147,8 @@ class CreateShortformState extends State<CreateShortform> {
                           });
                         },
                         child: Container(
-                          decoration: BoxDecoration(
-                            gradient: const LinearGradient(
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
                                 begin: Alignment.bottomLeft,
                                 end: Alignment.topRight,
                                 stops: <double>[
@@ -177,8 +177,8 @@ class CreateShortformState extends State<CreateShortform> {
                           );
                         },
                         child: Container(
-                          decoration: BoxDecoration(
-                            gradient: const LinearGradient(
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
                                 begin: Alignment.bottomLeft,
                                 end: Alignment.topRight,
                                 stops: <double>[
@@ -207,8 +207,8 @@ class CreateShortformState extends State<CreateShortform> {
                           );
                         },
                         child: Container(
-                          decoration: BoxDecoration(
-                            gradient: const LinearGradient(
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
                                 begin: Alignment.bottomLeft,
                                 end: Alignment.topRight,
                                 stops: <double>[

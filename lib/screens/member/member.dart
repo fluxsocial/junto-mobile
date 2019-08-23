@@ -76,6 +76,7 @@ class JuntoMember extends StatelessWidget {
                   ),
                 ),
                 Container(
+
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                   decoration: const BoxDecoration(
@@ -184,6 +185,7 @@ class JuntoMember extends StatelessWidget {
                           margin: const EdgeInsets.only(right: 15),
                           child: Row(
                             children: <Widget>[
+
                               Image.asset(
                                 'assets/images/junto-mobile__location.png',
                                 height: 17,
@@ -194,6 +196,7 @@ class JuntoMember extends StatelessWidget {
                                 _memberLocation,
                                 style: const TextStyle(
                                   color: Color(0xff555555),
+
                                 ),
                               ),
                             ],
@@ -208,6 +211,7 @@ class JuntoMember extends StatelessWidget {
                                       height: 17,
                                       color: const Color(0xff555555),
                                     ),
+
                                     const SizedBox(width: 5),
                                     Text(
                                       _memberWebsite,

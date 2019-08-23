@@ -81,12 +81,12 @@ class ExpressionOpenState extends State<ExpressionOpen> {
             ],
           )),
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.white,
               border: Border(
                 top: BorderSide(
                   width: 1,
-                  color: const Color(0xffeeeeee),
+                  color: Color(0xffeeeeee),
                 ),
               ),
             ),
@@ -158,7 +158,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                       horizontal: 10,
                       vertical: 5,
                     ),
-                    child: Text(
+                    child: const Text(
                       'REPLY',
                       style: TextStyle(
                         color: Colors.white,
