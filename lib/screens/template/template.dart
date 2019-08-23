@@ -117,6 +117,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
             child: ScrollConfiguration(
               behavior: PlainScrollBehaviour(),
               child: PageView(
+                physics: ClampingScrollPhysics(),
                 controller: _controller,
                 onPageChanged: (int index) {
                   if (index == 0) {
