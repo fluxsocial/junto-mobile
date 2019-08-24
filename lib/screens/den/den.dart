@@ -4,6 +4,7 @@ import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/typography/palette.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
+import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open.dart';
 import 'package:junto_beta_mobile/screens/member/member_appbar/member_appbar.dart';
 
 /// Displays the user's DEN or "profile screen"
@@ -103,7 +104,6 @@ class JuntoDenState extends State<JuntoDen> {
                       ),
                     ),
                     Container(
-
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
@@ -111,7 +111,6 @@ class JuntoDenState extends State<JuntoDen> {
                             'assets/images/junto-mobile__infinity.png',
                             height: 17,
                             color: const Color(0xff555555),
-
                           ),
                           const SizedBox(height: 5),
                           const Text(
@@ -125,23 +124,36 @@ class JuntoDenState extends State<JuntoDen> {
                       ),
                     ),
                     Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Image.asset(
-                            'assets/images/junto-mobile__join-pack.png',
-                            height: 17,
-                            color: const Color(0xff555555),
-                          ),
-                          const SizedBox(height: 5),
-                          const Text(
-                            'My Pack',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Color(0xff555555),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute<dynamic>(
+                              builder: (BuildContext context) => const PackOpen(
+                                  'The Gnarly Nomads',
+                                  'sunyata',
+                                  'assets/images/junto-mobile__eric.png'),
                             ),
-                          ),
-                        ],
+                          );
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Image.asset(
+                              'assets/images/junto-mobile__join-pack.png',
+                              height: 17,
+                              color: const Color(0xff555555),
+                            ),
+                            const SizedBox(height: 5),
+                            const Text(
+                              'My Pack',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Color(0xff555555),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     Container(
@@ -232,7 +244,7 @@ class JuntoDenState extends State<JuntoDen> {
               RaisedButton(onPressed: () async {
                 Navigator.push(
                     context,
-                     MaterialPageRoute(
+                    MaterialPageRoute(
                         builder: (BuildContext context) => JuntoMember()));
               }),
               RaisedButton(
