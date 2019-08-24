@@ -93,7 +93,7 @@ class JuntoDenState extends State<JuntoDen> {
                           ),
                           const SizedBox(height: 5),
                           const Text(
-                            'Follow',
+                            'Followers',
                             style: TextStyle(
                               fontSize: 12,
                               color: Color(0xff555555),
@@ -115,7 +115,7 @@ class JuntoDenState extends State<JuntoDen> {
                           ),
                           const SizedBox(height: 5),
                           const Text(
-                            'Connect',
+                            'Connections',
                             style: TextStyle(
                               fontSize: 12,
                               color: Color(0xff555555),
@@ -135,7 +135,7 @@ class JuntoDenState extends State<JuntoDen> {
                           ),
                           const SizedBox(height: 5),
                           const Text(
-                            'Join Pack',
+                            'My Pack',
                             style: TextStyle(
                               fontSize: 12,
                               color: Color(0xff555555),
@@ -151,7 +151,7 @@ class JuntoDenState extends State<JuntoDen> {
                           Icon(CustomIcons.more, size: 17),
                           const SizedBox(height: 5),
                           const Text(
-                            'More',
+                            'Settings',
                             style: TextStyle(
                               fontSize: 12,
                               color: Color(0xff555555),
