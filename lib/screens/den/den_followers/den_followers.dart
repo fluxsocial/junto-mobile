@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/typography/palette.dart';
 
-class DenSettings extends StatelessWidget {
+class DenFollowers extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +34,7 @@ class DenSettings extends StatelessWidget {
                     Container(
                       margin: const EdgeInsets.only(right: 10),
                       child: Text(
-                        'Settings',
+                        'Followers',
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
