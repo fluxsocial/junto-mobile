@@ -26,8 +26,24 @@ class JuntoCreateState extends State<JuntoCreate> {
   bool _bullet = false;
   bool _photo = false;
   bool _events = false;
-
   bool _bottomNavVisible = true;
+  ValueNotifier<bool> isEditing;
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  @override
+  void initState () {
+    super.initState();
+    isEditing = ValueNotifier<bool>(false);
+    isEditing.addListener(() {
+      print('user is editing');
+    });
+  }
+
+  @override
+  void dispose () {
+    isEditing.dispose();
+    super.dispose();
+  }
 
   void _toggleBottomNavVisibility() {
     if (_bottomNavVisible) {
@@ -44,15 +60,24 @@ class JuntoCreateState extends State<JuntoCreate> {
   // Build expression template based off state
   Widget _buildTemplate() {
     if (_longform) {
-      return CreateLongform();
+      return CreateLongform(
+        isEditing: isEditing,
+      );
     } else if (_shortform) {
-      return CreateShortform();
+      return CreateShortform(
+        isEditing: isEditing,
+      );
     } else if (_bullet) {
       return CreateBullet();
     } else if (_photo) {
-      return CreatePhoto(_toggleBottomNavVisibility);
+      return CreatePhoto(
+        toggleBottomNavVisibility: _toggleBottomNavVisibility,
+        isEditing: isEditing,
+      );
     } else if (_events) {
-      return CreateEvent();
+      return CreateEvent(
+        formKey: formKey,
+      );
     } else {
       return Container();
     }
@@ -71,9 +96,53 @@ class JuntoCreateState extends State<JuntoCreate> {
 
   /// Ask for user confirmation to switch between expressions if field is no
   /// empty
-  void confirmSwitch() {}
+  void confirmSwitch (String templateType) {
+    if (isEditing.value == true || formKey.currentState?.validate() == true) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Padding(
+              padding: const EdgeInsets.only(bottom: 10.0),
+              child: Row(
+                children: const <Widget>[
+                  CircleAvatar(
+                    backgroundImage: AssetImage(
+                      'assets/images/junto-mobile__logo.png',
+                    ),
+                    radius: 20.0,
+                    backgroundColor: Colors.white,
+                  ),
+                  SizedBox(width: 12.0),
+                  Text('Junto', style: JuntoStyles.perspectiveTitle),
+                ],
+              ),
+            ),
+            content: Text('Are you sure you would like to switch Expression?',
+                style: JuntoStyles.lotusLongformBody),
+            actions: <Widget>[
+              FlatButton(
+                child: const Text('Yes'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  switchTemplate(templateType);
+                },
+              ),
+              FlatButton(
+                child: const Text('No'),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      switchTemplate(templateType);
+    }
+  }
 
-  // Switch between different expression templates
+// Switch between different expression templates
   void switchTemplate(String templateType) {
     // Reset State
     _resetState();
@@ -148,7 +217,7 @@ class JuntoCreateState extends State<JuntoCreate> {
           _buildTemplate(),
         ],
       ),
-      bottomNavigationBar: CreateBottomNav(switchTemplate, _bottomNavVisible),
+      bottomNavigationBar: CreateBottomNav(confirmSwitch, _bottomNavVisible),
     );
   }
 }

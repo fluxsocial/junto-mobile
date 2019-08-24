@@ -3,6 +3,9 @@ import 'package:junto_beta_mobile/typography/palette.dart';
 import 'package:junto_beta_mobile/typography/style.dart';
 
 class CreateLongform extends StatefulWidget {
+  const CreateLongform ({Key key, @required this.isEditing}) : super(key: key);
+  final ValueNotifier<bool> isEditing;
+
   @override
   State<StatefulWidget> createState() {
     return CreateLongformState();
@@ -30,11 +33,33 @@ class CreateLongformState extends State<CreateLongform> {
       'title': _titleValue,
       'body': _bodyValue
     };
+    _titleController.addListener(titleListener);
+    _bodyController.addListener(bodyListener);
+  }
+
+  void titleListener () {
+    if (_titleController.value.text.isNotEmpty) {
+      widget.isEditing.value = true;
+    }
+    if (_titleController.value.text.isEmpty) {
+      widget.isEditing.value = false;
+    }
+  }
+
+  void bodyListener () {
+    if (_bodyController.value.text.isNotEmpty) {
+      widget.isEditing.value = true;
+    }
+    if (_bodyController.value.text.isEmpty) {
+      widget.isEditing.value = false;
+    }
   }
 
   @override
   void dispose() {
     super.dispose();
+    _titleController.removeListener(titleListener);
+    _bodyController.removeListener(bodyListener);
     _titleController.dispose();
     _bodyController.dispose();
   }

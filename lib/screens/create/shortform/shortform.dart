@@ -3,6 +3,13 @@ import 'package:junto_beta_mobile/typography/palette.dart';
 
 /// Allows the user to create a short form expression.
 class CreateShortform extends StatefulWidget {
+  const CreateShortform ({
+    Key key,
+    @required this.isEditing,
+  }) : super(key: key);
+
+  final ValueNotifier<bool> isEditing;
+
   @override
   State<StatefulWidget> createState() => CreateShortformState();
 }
@@ -18,11 +25,22 @@ class CreateShortformState extends State<CreateShortform> {
   void initState() {
     super.initState();
     _bodyController = TextEditingController();
+    _bodyController.addListener(bodyListener);
+  }
+
+  void bodyListener () {
+    if (_bodyController.value.text.isEmpty) {
+      widget.isEditing.value = false;
+    }
+    if (_bodyController.value.text.isNotEmpty) {
+      widget.isEditing.value = true;
+    }
   }
 
   @override
   void dispose() {
     _bodyController.dispose();
+    _bodyController.removeListener(bodyListener);
     super.dispose();
   }
 
