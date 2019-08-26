@@ -35,8 +35,6 @@ class CreatePhotoState extends State<CreatePhoto> {
 
   // Function to retrieve image from source (i.e. library or camera)
   void _getImage(BuildContext context, ImageSource source) {
-    print('hellos');
-
     ImagePicker.pickImage(source: source, maxWidth: 512).then((File image) {
       setState(() {
         _imageFile = image;
@@ -56,8 +54,6 @@ class CreatePhotoState extends State<CreatePhoto> {
   Future<void> _cropImage(File imageFile) async {
     final File croppedFile = await ImageCropper.cropImage(
       sourcePath: imageFile.path,
-      ratioX: 1,
-      ratioY: 1,
       maxWidth: 512,
       maxHeight: 512,
     );
