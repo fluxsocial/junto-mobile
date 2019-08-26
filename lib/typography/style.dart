@@ -15,6 +15,7 @@ class JuntoStyles {
   // Styles for app bar
   static const TextStyle appbarTitle = TextStyle(
     color: JuntoPalette.juntoSleek,
+    fontFamily: 'Avenir',
     fontSize: 17,
     letterSpacing: .5,
     fontWeight: FontWeight.w700,
@@ -23,6 +24,7 @@ class JuntoStyles {
   static const TextStyle perspectiveTitle = TextStyle(
     color: JuntoPalette.juntoGrey,
     fontWeight: FontWeight.w700,
+    fontFamily: 'Avenir',
   );
 
   // Styles for creation templates
@@ -31,6 +33,7 @@ class JuntoStyles {
     color: JuntoPalette.juntoGrey,
     fontWeight: FontWeight.w700,
     letterSpacing: 1.1,
+    fontFamily: 'Avenir',
   );
 
   static const TextStyle lotusAddChannels = TextStyle(
@@ -52,6 +55,7 @@ class JuntoStyles {
     height: 1.25,
     fontSize: 17.0,
     fontWeight: FontWeight.w600,
+    fontFamily: 'Avenir Heavy',
     color: JuntoPalette.juntoGrey,
   );
 
@@ -60,24 +64,28 @@ class JuntoStyles {
   static const TextStyle expressionPreviewName = TextStyle(
     fontSize: 14.0,
     fontWeight: FontWeight.w700,
+    fontFamily: 'Avenir',
     color: JuntoPalette.juntoGrey,
   );
 
   static const TextStyle expressionPreviewHandle = TextStyle(
     fontSize: 12.0,
     fontWeight: FontWeight.w500,
+    fontFamily: 'Avenir Medium',
     color: JuntoPalette.juntoGrey,
   );
 
   static const TextStyle expressionPreviewTime = TextStyle(
     fontSize: 10,
     color: Colors.grey,
+    fontFamily: 'Avenir Heavy',
     fontWeight: FontWeight.w600,
   );
 
   static const TextStyle expressionPreviewChannel = TextStyle(
     fontSize: 12,
     fontWeight: FontWeight.w700,
+    fontFamily: 'Avenir',
     color: JuntoPalette.juntoSleek,
   );
 
@@ -85,12 +93,14 @@ class JuntoStyles {
   static const TextStyle longformTitle = TextStyle(
     fontSize: 17.0,
     fontWeight: FontWeight.w700,
+    fontFamily: 'Avenir',
     color: JuntoPalette.juntoGrey,
   );
 
   static const TextStyle longformBody = TextStyle(
     fontSize: 14.0,
     fontWeight: FontWeight.w500,
+    fontFamily: 'Avenir Medium',
     color: JuntoPalette.juntoGrey,
   );
 
@@ -98,5 +108,6 @@ class JuntoStyles {
   static const TextStyle photoCaption = TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w500,
+    fontFamily: 'Avenir Medium',
   );
 }
