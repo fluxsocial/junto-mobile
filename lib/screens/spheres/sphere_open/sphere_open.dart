@@ -34,7 +34,10 @@ class SphereOpenState extends State<SphereOpen> {
           widget.sphereHandle,
         ),
       ),
-      floatingActionButton: CreateFAB(widget.sphereHandle),
+      floatingActionButton: CreateFAB(
+        sphereHandle: widget.sphereHandle,
+        isVisible: ValueNotifier<bool>(false),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: ListView(
         children: <Widget>[

@@ -64,7 +64,8 @@ class PackOpenState extends State<PackOpen> {
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: CreateFAB(widget.packTitle),
+            child: CreateFAB(
+                sphereHandle: widget.packTitle, isVisible: _isVisible),
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
