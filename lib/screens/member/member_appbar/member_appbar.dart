@@ -19,7 +19,7 @@ class MemberAppbar extends StatelessWidget {
         elevation: 0,
         titleSpacing: 0,
         title: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 5),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[

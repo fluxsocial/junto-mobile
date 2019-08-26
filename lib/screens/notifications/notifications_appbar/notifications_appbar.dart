@@ -16,20 +16,24 @@ class NotificationsAppbar extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             GestureDetector(
-              onTap: () => Navigator.pop(context),
-              child: const Icon(
-                CustomIcons.back_arrow_left,
-                color: JuntoPalette.juntoSleek,
-                size: 24,
-              ),
-            ),
+                onTap: () => Navigator.pop(context),
+                child: Container(
+                  alignment: Alignment.centerLeft,
+                  color: Colors.orange, 
+                  child: Icon(      
+                    CustomIcons.back_arrow_left,                    
+                    textDirection: TextDirection.ltr,     
+                    color: JuntoPalette.juntoSleek,
+                    size: 20,
+                  ),
+                )),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Container(
-                  margin: const EdgeInsets.only(right: 10),
                   child: Text(
                     'Notifications',
                     style: TextStyle(
