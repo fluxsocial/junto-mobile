@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/components/utils/hide_fab.dart';
 
 class PackOpenPrivate extends StatefulWidget {
   const PackOpenPrivate({
     Key key,
-    @required this.onScrollChanged,
+    @required this.fabVisible,
   }) : super(key: key);
-  final ValueChanged<bool> onScrollChanged;
+  final ValueNotifier<bool> fabVisible;
 
   @override
   _PackOpenPrivateState createState() => _PackOpenPrivateState();
 }
 
-class _PackOpenPrivateState extends State<PackOpenPrivate> {
+class _PackOpenPrivateState extends State<PackOpenPrivate> with HideFab {
   ScrollController _packOpenClosedController;
 
   @override
@@ -20,6 +21,7 @@ class _PackOpenPrivateState extends State<PackOpenPrivate> {
     _packOpenClosedController = ScrollController();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      _packOpenClosedController.addListener(_onScrollingHasChanged);
       _packOpenClosedController.position.isScrollingNotifier.addListener(
         _onScrollingHasChanged,
       );
@@ -27,9 +29,14 @@ class _PackOpenPrivateState extends State<PackOpenPrivate> {
   }
 
   void _onScrollingHasChanged() {
-    widget.onScrollChanged(
-      !_packOpenClosedController.position.isScrollingNotifier.value,
-    );
+    super.hideFabOnScroll(_packOpenClosedController, widget.fabVisible);
+  }
+
+  @override
+  void dispose () {
+    _packOpenClosedController.removeListener(_onScrollingHasChanged);
+    _packOpenClosedController.dispose();
+    super.dispose();
   }
 
   @override

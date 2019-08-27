@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:junto_beta_mobile/components/appbar/appbar.dart';
 import 'package:junto_beta_mobile/components/bottom_nav/bottom_nav.dart';
-import 'package:junto_beta_mobile/components/create_fab/create_fab.dart';
 import 'package:junto_beta_mobile/components/utils/custom_scroll_behaviour.dart';
+import 'package:junto_beta_mobile/components/utils/hide_fab.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/collective/filter_fab/filter_fab.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspectives.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
-import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open_fab/pack_open_fab.dart';
 import 'package:junto_beta_mobile/screens/packs/packs.dart';
 import 'package:junto_beta_mobile/screens/spheres/spheres.dart';
 import 'package:junto_beta_mobile/typography/palette.dart';
@@ -21,7 +20,7 @@ class JuntoTemplate extends StatefulWidget {
   State<StatefulWidget> createState() => JuntoTemplateState();
 }
 
-class JuntoTemplateState extends State<JuntoTemplate> {
+class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
   final GlobalKey<ScaffoldState> _juntoTemplateKey = GlobalKey<ScaffoldState>();
 
   // Default values for collective screen / JUNTO perspective - change dynamically.
@@ -53,6 +52,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
     _controller = PageController(initialPage: 0);
     _isVisible = ValueNotifier<bool>(true);
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      _hideFABController.addListener(_onScrollingHasChanged);
       _hideFABController.position.isScrollingNotifier.addListener(
         _onScrollingHasChanged,
       );
@@ -60,12 +60,13 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   }
 
   void _onScrollingHasChanged() {
-    _isVisible.value = !_hideFABController.position.isScrollingNotifier.value;
+    super.hideFabOnScroll(_hideFABController, _isVisible);
   }
 
   @override
   void dispose() {
     _hideFABController.dispose();
+    _hideFABController.removeListener(_onScrollingHasChanged);
     _controller.dispose();
     _channelController.dispose();
     super.dispose();
@@ -84,32 +85,6 @@ class JuntoTemplateState extends State<JuntoTemplate> {
     }
   }
 
-  Widget _buildFAB (String currentScreen) {
-    switch (currentScreen) {
-      case 'collective':
-        return CollectiveFilterFAB(
-          key: UniqueKey(),
-          isVisible: _isVisible,
-          toggleFilter: _buildFilterChannelModal,
-        );
-        break;
-      case 'spheres':
-        return CreateFAB(
-          key: UniqueKey(),
-          sphereHandle: '@Eric',
-          isVisible: _isVisible,
-        );
-        break;
-      case 'packs':
-        return PackOpenFAB(
-          key: UniqueKey(),
-          isVisible: _isVisible,
-        );
-        break;
-    }
-    return Container();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -124,21 +99,12 @@ class JuntoTemplateState extends State<JuntoTemplate> {
               _navNotifications,
             ),
           ),
-          floatingActionButton: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 400),
-            child: _buildFAB(_currentScreen),
-            switchOutCurve: Curves.ease,
-            switchInCurve: Curves.easeIn,
-            transitionBuilder: (Widget child, Animation<double> animation) {
-              return SizeTransition(
-                sizeFactor: animation,
-                child: FadeTransition(
-                  opacity: animation,
-                  child: Align(alignment: Alignment.bottomRight, child: child),
-                ),
-              );
-            },
-          ),
+          floatingActionButton: _currentScreen == 'collective'
+              ? CollectiveFilterFAB(
+            isVisible: _isVisible,
+            toggleFilter: _buildFilterChannelModal,
+          )
+              : null,
           // only enable drawer if current screen is collective
           drawer: _currentScreen == 'collective'
               ? WillPopScope(

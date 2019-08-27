@@ -137,10 +137,10 @@ class PackOpenState extends State<PackOpen> {
                 },
                 children: <Widget>[
                   PackOpenPublic(
-                    onScrollChanged: (bool value) => _isVisible.value = value,
+                    fabVisible: _isVisible,
                   ),
                   PackOpenPrivate(
-                    onScrollChanged: (bool value) => _isVisible.value = value,
+                    fabVisible: _isVisible,
                   ),
                 ],
               ),
