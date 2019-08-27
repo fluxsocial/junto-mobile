@@ -64,7 +64,8 @@ class PackOpenState extends State<PackOpen> {
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: CreateFAB(widget.packTitle),
+            child: CreateFAB(
+                sphereHandle: widget.packTitle, isVisible: _isVisible),
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -136,10 +137,10 @@ class PackOpenState extends State<PackOpen> {
                 },
                 children: <Widget>[
                   PackOpenPublic(
-                    onScrollChanged: (bool value) => _isVisible.value = value,
+                    fabVisible: _isVisible,
                   ),
                   PackOpenPrivate(
-                    onScrollChanged: (bool value) => _isVisible.value = value,
+                    fabVisible: _isVisible,
                   ),
                 ],
               ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/components/create_fab/create_fab.dart';
+import 'package:junto_beta_mobile/components/utils/hide_fab.dart';
 import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open_appbar/sphere_open_appbar.dart';
 
 class SphereOpen extends StatefulWidget {
@@ -23,7 +24,9 @@ class SphereOpen extends StatefulWidget {
   }
 }
 
-class SphereOpenState extends State<SphereOpen> {
+class SphereOpenState extends State<SphereOpen> with HideFab {
+  ValueNotifier<bool> isVisible = ValueNotifier<bool>(true);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +37,21 @@ class SphereOpenState extends State<SphereOpen> {
           widget.sphereHandle,
         ),
       ),
-      floatingActionButton: CreateFAB(widget.sphereHandle),
+      floatingActionButton: ValueListenableBuilder<bool>(
+          valueListenable: isVisible,
+          builder: (BuildContext context, bool value, _) {
+            return AnimatedOpacity(
+              duration: const Duration(milliseconds: 300),
+              opacity: value ? 1.0 : 0,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CreateFAB(
+                  sphereHandle: widget.sphereHandle,
+                  isVisible: isVisible,
+                ),
+              ),
+            );
+          }),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: ListView(
         children: <Widget>[

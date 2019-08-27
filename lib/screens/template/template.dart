@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:junto_beta_mobile/components/appbar/appbar.dart';
 import 'package:junto_beta_mobile/components/bottom_nav/bottom_nav.dart';
 import 'package:junto_beta_mobile/components/utils/custom_scroll_behaviour.dart';
+import 'package:junto_beta_mobile/components/utils/hide_fab.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/collective/filter_fab/filter_fab.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspectives.dart';
@@ -18,7 +20,7 @@ class JuntoTemplate extends StatefulWidget {
   State<StatefulWidget> createState() => JuntoTemplateState();
 }
 
-class JuntoTemplateState extends State<JuntoTemplate> {
+class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
   final GlobalKey<ScaffoldState> _juntoTemplateKey = GlobalKey<ScaffoldState>();
 
   // Default values for collective screen / JUNTO perspective - change dynamically.
@@ -50,6 +52,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
     _controller = PageController(initialPage: 0);
     _isVisible = ValueNotifier<bool>(true);
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      _hideFABController.addListener(_onScrollingHasChanged);
       _hideFABController.position.isScrollingNotifier.addListener(
         _onScrollingHasChanged,
       );
@@ -57,12 +60,13 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   }
 
   void _onScrollingHasChanged() {
-    _isVisible.value = !_hideFABController.position.isScrollingNotifier.value;
+    super.hideFabOnScroll(_hideFABController, _isVisible);
   }
 
   @override
   void dispose() {
     _hideFABController.dispose();
+    _hideFABController.removeListener(_onScrollingHasChanged);
     _controller.dispose();
     _channelController.dispose();
     super.dispose();
@@ -97,29 +101,29 @@ class JuntoTemplateState extends State<JuntoTemplate> {
           ),
           floatingActionButton: _currentScreen == 'collective'
               ? CollectiveFilterFAB(
-                  _isVisible,
-                  _buildFilterChannelModal,
-                )
+            isVisible: _isVisible,
+            toggleFilter: _buildFilterChannelModal,
+          )
               : null,
-          drawer:
-              // only enable drawer if current screen is collective
-              _currentScreen == 'collective'
-                  ? WillPopScope(
-                      onWillPop: () async {
-                        return false;
-                      },
-                      child: Perspectives(
-                        _changePerspective,
-                      ),
-                    )
-                  : null,
+          // only enable drawer if current screen is collective
+          drawer: _currentScreen == 'collective'
+              ? WillPopScope(
+            onWillPop: () async {
+              return false;
+            },
+            child: Perspectives(
+              _changePerspective,
+            ),
+          )
+              : null,
           body: SafeArea(
             child: ScrollConfiguration(
               behavior: PlainScrollBehaviour(),
               child: PageView(
-                physics: ClampingScrollPhysics(),
+                physics: const ClampingScrollPhysics(),
                 controller: _controller,
                 onPageChanged: (int index) {
+                  _isVisible.value = true;
                   if (index == 0) {
                     _switchScreen('collective');
                   } else if (index == 1) {
@@ -168,7 +172,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   // Switch between perspectives; used in perspectives side drawer.
   void _changePerspective(String perspective) {
     setState(
-      () {
+          () {
         _currentPerspective = perspective;
         _appbarTitle = perspective;
 
@@ -235,13 +239,12 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                           width: MediaQuery.of(context).size.width * .75,
                           child: TextField(
                             controller: _channelController,
-                            buildCounter: (
-                              BuildContext context, {
+                            buildCounter: (BuildContext context, {
                               int currentLength,
                               int maxLength,
                               bool isFocused,
                             }) =>
-                                null,
+                            null,
                             decoration: InputDecoration(
                               border: InputBorder.none,
                               hintText: '# filter by channel',
@@ -265,9 +268,9 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                               // Update channels list in state until there are 3
                               _channels.length < 3
                                   ? _updateChannels(
-                                      state,
-                                      _channelController.text,
-                                    )
+                                state,
+                                _channelController.text,
+                              )
                                   : _nullChannels();
                             },
                             child: const Text(
@@ -306,12 +309,12 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                         _channels.isEmpty
                             ? const SizedBox()
                             : Container(
-                                margin: const EdgeInsets.only(bottom: 10),
-                                child: const Text(
-                                  'DOUBLE TAP TO REMOVE CHANNEL',
-                                  style: TextStyle(fontSize: 12),
-                                ),
-                              ),
+                          margin: const EdgeInsets.only(bottom: 10),
+                          child: const Text(
+                            'DOUBLE TAP TO REMOVE CHANNEL',
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ),
                         Wrap(
                           runSpacing: 5,
                           alignment: WrapAlignment.start,
@@ -319,32 +322,32 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                           children: _channels
                               .map(
                                 (String channel) => GestureDetector(
-                                  onDoubleTap: () {
-                                    _removeChannel(state, channel);
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      border: Border.all(
-                                        color: const Color(0xff333333),
-                                        width: 1,
-                                      ),
-                                    ),
-                                    margin: const EdgeInsets.only(right: 10),
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 10,
-                                      vertical: 5,
-                                    ),
-                                    child: Text(
-                                      channel,
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
+                              onDoubleTap: () {
+                                _removeChannel(state, channel);
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  border: Border.all(
+                                    color: const Color(0xff333333),
+                                    width: 1,
                                   ),
                                 ),
-                              )
+                                margin: const EdgeInsets.only(right: 10),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 5,
+                                ),
+                                child: Text(
+                                  channel,
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
                               .toList(),
                         ),
                       ],
@@ -362,7 +365,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   // Update the list of channels in state
   void _updateChannels(StateSetter updateState, String channel) {
     updateState(
-      () {
+          () {
         if (channel != '') {
           _channels.add(channel);
           print(_channels);
@@ -375,7 +378,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   // Remove a channel from the list of channels in state
   void _removeChannel(StateSetter updateState, String channel) {
     updateState(
-      () {
+          () {
         _channels.remove(channel);
       },
     );
