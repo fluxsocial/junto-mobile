@@ -80,6 +80,8 @@ class SphereOpenState extends State<SphereOpen> {
                               widget.sphereMembers + ' members',
                               style: const TextStyle(
                                 fontSize: 14,
+                                fontWeight: FontWeight.w700
+
                               ),
                             ),
                           ),

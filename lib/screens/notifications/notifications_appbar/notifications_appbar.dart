@@ -19,17 +19,14 @@ class NotificationsAppbar extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: Container(
-                  alignment: Alignment.centerLeft,
-                  color: Colors.orange, 
-                  child: Icon(      
-                    CustomIcons.back_arrow_left,                    
-                    textDirection: TextDirection.ltr,     
-                    color: JuntoPalette.juntoSleek,
-                    size: 20,
-                  ),
-                )),
+              onTap: () => Navigator.pop(context),
+              child: Icon(
+                CustomIcons.back_arrow_left,
+                textDirection: TextDirection.ltr,
+                color: JuntoPalette.juntoSleek,
+                size: 20,
+              ),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
