@@ -24,17 +24,28 @@ class ExpressionOpenInteractions extends StatelessWidget {
                 child: ValueListenableBuilder<String>(
                   valueListenable: responses,
                   builder: (BuildContext context, String value, _) {
-                    return Text(responses.value);
+                    return Text(
+                      responses.value,
+                      style: TextStyle(fontWeight: FontWeight.w500),
+                    );
                   },
                 ),
               ),
             ),
             GestureDetector(
               child: Container(
-                width: MediaQuery.of(context).size.width * .5 - 10,
-                alignment: Alignment.center,
-                child: const Text('Resonate'),
-              ),
+                  width: MediaQuery.of(context).size.width * .5 - 10,
+                  alignment: Alignment.center,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Image.asset('assets/images/junto-mobile__resonation.png',
+                          height: 17, color: Color(0xff333333)),
+                      SizedBox(width: 5),
+                      Text('Resonate',
+                          style: TextStyle(fontWeight: FontWeight.w500))
+                    ],
+                  )),
             ),
           ],
         ));
