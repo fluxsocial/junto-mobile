@@ -66,8 +66,8 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
 
   @override
   void dispose() {
-    _hideFABController.dispose();
     _hideFABController.removeListener(_onScrollingHasChanged);
+    _hideFABController.dispose();
     _controller.dispose();
     _channelController.dispose();
     super.dispose();

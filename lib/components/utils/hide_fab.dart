@@ -5,7 +5,6 @@ mixin HideFab {
   void hideFabOnScroll(
       ScrollController controller, ValueNotifier<bool> isVisible) {
     if (controller.position.isScrollingNotifier.value) {
-      print(controller.position.userScrollDirection);
       if (controller.position.userScrollDirection == ScrollDirection.reverse) {
         isVisible.value = false;
       }
