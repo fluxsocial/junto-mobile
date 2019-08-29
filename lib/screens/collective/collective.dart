@@ -24,11 +24,9 @@ class JuntoCollectiveState extends State<JuntoCollective> {
   String currentScreen = 'collective';
   bool isLoading = false;
   List<Expression> initialData = <Expression>[];
-  ScrollController controller;
   @override
   void initState() {
     super.initState();
-    controller = ScrollController();
     widget.controller.addListener(scollListener);
   }
 
@@ -36,7 +34,6 @@ class JuntoCollectiveState extends State<JuntoCollective> {
   void dispose() {
     super.dispose();
     widget.controller.removeListener(scollListener);
-    controller.dispose();
   }
 
   @override
@@ -47,8 +44,8 @@ class JuntoCollectiveState extends State<JuntoCollective> {
   }
 
   void scollListener() {
-    if (controller.position.pixels ==
-        controller.position.maxScrollExtent * 0.25) {
+    if (widget.controller.position.pixels ==
+        widget.controller.position.maxScrollExtent) {
       _getData();
     }
   }
@@ -58,8 +55,9 @@ class JuntoCollectiveState extends State<JuntoCollective> {
       setState(() => isLoading = true);
     }
     await Future<void>.delayed(const Duration(seconds: 2), () {});
+    isLoading = false;
     setState(() {
-      isLoading = false;
+      isLoading = true;
       initialData.addAll(
           Provider.of<CollectiveProvider>(context).collectiveExpressions);
     });
@@ -97,24 +95,11 @@ class JuntoCollectiveState extends State<JuntoCollective> {
                   _sixDegreesColor,
                 )
               : const SizedBox(),
-          Consumer<CollectiveProvider>(builder: (
-            BuildContext context,
-            CollectiveProvider collective,
-            Widget child,
-          ) {
-            return ListView.builder(
-              controller: controller,
-              shrinkWrap: true,
-              itemCount: initialData.length + 1,
-              itemBuilder: (BuildContext context, int index) {
-                if (index == initialData.length) {
-                  return _buildProgressIndicator();
-                } else {
-                  return ExpressionPreview(initialData[index]);
-                }
-              },
-            );
-          })
+          for (int index = 0; index < initialData.length + 1; index++)
+            if (index == initialData.length)
+              _buildProgressIndicator()
+            else
+              ExpressionPreview(initialData[index])
         ],
       ),
     );
