@@ -61,12 +61,13 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
 
   void _onScrollingHasChanged() {
     super.hideFabOnScroll(_hideFABController, _isVisible);
+
   }
 
   @override
   void dispose() {
-    _hideFABController.dispose();
     _hideFABController.removeListener(_onScrollingHasChanged);
+    _hideFABController.dispose();
     _controller.dispose();
     _channelController.dispose();
     super.dispose();
@@ -101,20 +102,20 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
           ),
           floatingActionButton: _currentScreen == 'collective'
               ? CollectiveFilterFAB(
-            isVisible: _isVisible,
-            toggleFilter: _buildFilterChannelModal,
-          )
+                  isVisible: _isVisible,
+                  toggleFilter: _buildFilterChannelModal,
+                )
               : null,
           // only enable drawer if current screen is collective
           drawer: _currentScreen == 'collective'
               ? WillPopScope(
-            onWillPop: () async {
-              return false;
-            },
-            child: Perspectives(
-              _changePerspective,
-            ),
-          )
+                  onWillPop: () async {
+                    return false;
+                  },
+                  child: Perspectives(
+                    _changePerspective,
+                  ),
+                )
               : null,
           body: SafeArea(
             child: ScrollConfiguration(
@@ -167,12 +168,19 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
   void _setBottomIndex(int x) {
     _bottomNavIndex.value = x;
     _controller.jumpToPage(x);
+    if (x == 0) {
+      _hideFABController.animateTo(
+        0.0,
+        curve: Curves.decelerate,
+        duration: const Duration(milliseconds: 300),
+      );
+    }
   }
 
   // Switch between perspectives; used in perspectives side drawer.
   void _changePerspective(String perspective) {
     setState(
-          () {
+      () {
         _currentPerspective = perspective;
         _appbarTitle = perspective;
 
@@ -239,12 +247,13 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
                           width: MediaQuery.of(context).size.width * .75,
                           child: TextField(
                             controller: _channelController,
-                            buildCounter: (BuildContext context, {
+                            buildCounter: (
+                              BuildContext context, {
                               int currentLength,
                               int maxLength,
                               bool isFocused,
                             }) =>
-                            null,
+                                null,
                             decoration: InputDecoration(
                               border: InputBorder.none,
                               hintText: '# filter by channel',
@@ -268,9 +277,9 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
                               // Update channels list in state until there are 3
                               _channels.length < 3
                                   ? _updateChannels(
-                                state,
-                                _channelController.text,
-                              )
+                                      state,
+                                      _channelController.text,
+                                    )
                                   : _nullChannels();
                             },
                             child: const Text(
@@ -309,12 +318,12 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
                         _channels.isEmpty
                             ? const SizedBox()
                             : Container(
-                          margin: const EdgeInsets.only(bottom: 10),
-                          child: const Text(
-                            'DOUBLE TAP TO REMOVE CHANNEL',
-                            style: TextStyle(fontSize: 12),
-                          ),
-                        ),
+                                margin: const EdgeInsets.only(bottom: 10),
+                                child: const Text(
+                                  'DOUBLE TAP TO REMOVE CHANNEL',
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                              ),
                         Wrap(
                           runSpacing: 5,
                           alignment: WrapAlignment.start,
@@ -322,32 +331,32 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
                           children: _channels
                               .map(
                                 (String channel) => GestureDetector(
-                              onDoubleTap: () {
-                                _removeChannel(state, channel);
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  border: Border.all(
-                                    color: const Color(0xff333333),
-                                    width: 1,
+                                  onDoubleTap: () {
+                                    _removeChannel(state, channel);
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      border: Border.all(
+                                        color: const Color(0xff333333),
+                                        width: 1,
+                                      ),
+                                    ),
+                                    margin: const EdgeInsets.only(right: 10),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                      vertical: 5,
+                                    ),
+                                    child: Text(
+                                      channel,
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                                margin: const EdgeInsets.only(right: 10),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 5,
-                                ),
-                                child: Text(
-                                  channel,
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
+                              )
                               .toList(),
                         ),
                       ],
@@ -365,7 +374,7 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
   // Update the list of channels in state
   void _updateChannels(StateSetter updateState, String channel) {
     updateState(
-          () {
+      () {
         if (channel != '') {
           _channels.add(channel);
           print(_channels);
@@ -378,7 +387,7 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
   // Remove a channel from the list of channels in state
   void _removeChannel(StateSetter updateState, String channel) {
     updateState(
-          () {
+      () {
         _channels.remove(channel);
       },
     );

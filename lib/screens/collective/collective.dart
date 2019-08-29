@@ -22,6 +22,58 @@ class JuntoCollective extends StatefulWidget {
 
 class JuntoCollectiveState extends State<JuntoCollective> {
   String currentScreen = 'collective';
+  bool isLoading = false;
+  List<Expression> initialData = <Expression>[];
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.addListener(scollListener);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    widget.controller.removeListener(scollListener);
+  }
+
+  @override
+  void didChangeDependencies() {
+    initialData
+        .addAll(Provider.of<CollectiveProvider>(context).collectiveExpressions);
+    super.didChangeDependencies();
+  }
+
+  void scollListener() {
+    if (widget.controller.position.pixels ==
+        widget.controller.position.maxScrollExtent) {
+      _getData();
+    }
+  }
+
+  Future<void> _getData() async {
+    if (!isLoading) {
+      setState(() => isLoading = true);
+    }
+    await Future<void>.delayed(const Duration(seconds: 2), () {});
+    isLoading = false;
+    setState(() {
+      isLoading = true;
+      initialData.addAll(
+          Provider.of<CollectiveProvider>(context).collectiveExpressions);
+    });
+  }
+
+  Widget _buildProgressIndicator() {
+    return const Padding(
+      padding: EdgeInsets.all(8.0),
+      child: Center(
+        child: Opacity(
+          opacity: 1.0,
+          child: CircularProgressIndicator(),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,23 +95,11 @@ class JuntoCollectiveState extends State<JuntoCollective> {
                   _sixDegreesColor,
                 )
               : const SizedBox(),
-          Consumer<CollectiveProvider>(builder: (
-            BuildContext context,
-            CollectiveProvider collective,
-            Widget child,
-          ) {
-            return ListView(
-              shrinkWrap: true,
-              physics: const ClampingScrollPhysics(),
-              children: collective.collectiveExpressions
-                  .map(
-                    (Expression expression) => ExpressionPreview(
-                          expression,
-                        ),
-                  )
-                  .toList(),
-            );
-          })
+          for (int index = 0; index < initialData.length + 1; index++)
+            if (index == initialData.length)
+              _buildProgressIndicator()
+            else
+              ExpressionPreview(initialData[index])
         ],
       ),
     );
