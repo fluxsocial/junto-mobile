@@ -3,7 +3,10 @@ import 'package:junto_beta_mobile/screens/create/create_actions/create_actions_a
 import 'package:junto_beta_mobile/typography/palette.dart';
 
 class CreateActions extends StatefulWidget {
-  const CreateActions(this.expressionLayer);
+  const CreateActions({
+    Key key,
+    @required this.expressionLayer,
+  }) : super(key: key);
 
   final String expressionLayer;
 
@@ -192,33 +195,32 @@ class CreateActionsState extends State<CreateActions> {
                           children: _channels
                               .map(
                                 (String channel) => GestureDetector(
-                                      onDoubleTap: () =>
-                                          _removeChannel(state, channel),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          border: Border.all(
-                                            color: const Color(0xff333333),
-                                            width: 1,
-                                          ),
-                                        ),
-                                        margin: const EdgeInsets.only(
-                                          right: 10,
-                                        ),
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 10,
-                                          vertical: 5,
-                                        ),
-                                        child: Text(
-                                          channel,
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                        ),
+                                  onDoubleTap: () =>
+                                      _removeChannel(state, channel),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      border: Border.all(
+                                        color: const Color(0xff333333),
+                                        width: 1,
                                       ),
                                     ),
+                                    margin: const EdgeInsets.only(
+                                      right: 10,
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                      vertical: 5,
+                                    ),
+                                    child: Text(
+                                      channel,
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               )
                               .toList(),
                         ),

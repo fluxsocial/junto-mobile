@@ -61,7 +61,6 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
 
   void _onScrollingHasChanged() {
     super.hideFabOnScroll(_hideFABController, _isVisible);
-
   }
 
   @override
@@ -96,8 +95,8 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
           appBar: PreferredSize(
             preferredSize: const Size.fromHeight(45),
             child: JuntoAppBar(
-              _appbarTitle,
-              _navNotifications,
+              juntoAppBarTitle: _appbarTitle,
+              navNotifications: _navNotifications,
             ),
           ),
           floatingActionButton: _currentScreen == 'collective'
@@ -113,7 +112,7 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
                     return false;
                   },
                   child: Perspectives(
-                    _changePerspective,
+                    changePerspective: _changePerspective,
                   ),
                 )
               : null,
@@ -139,8 +138,8 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
                   GestureDetector(
                     onHorizontalDragUpdate: _onDragUpdate,
                     child: JuntoCollective(
-                      _hideFABController,
-                      _currentPerspective,
+                      controller: _hideFABController,
+                      currentPerspective: _currentPerspective,
                     ),
                   ),
                   JuntoSpheres(),
@@ -154,8 +153,8 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
             valueListenable: _bottomNavIndex,
             builder: (BuildContext context, int index, _) {
               return BottomNav(
-                index,
-                _setBottomIndex,
+                currentIndex: index,
+                setIndex: _setBottomIndex,
               );
             },
           ),

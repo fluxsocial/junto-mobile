@@ -3,7 +3,10 @@ import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/typography/style.dart';
 
 class LongformPreview extends StatelessWidget {
-  const LongformPreview(this.expression);
+  const LongformPreview({
+    Key key,
+    @required this.expression,
+  }) : super(key: key);
 
   final Expression expression;
 

@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 /// Shows a preview of a `Perspective`. The params [title] and
 /// [changePerspective] must be supplied.
 class PerspectivePreview extends StatelessWidget {
-  const PerspectivePreview(this.title, this.changePerspective);
+  const PerspectivePreview({
+    Key key,
+    @required this.title,
+    @required this.changePerspective,
+  }) : super(key: key);
 
   /// The name of given perspective
   final String title;

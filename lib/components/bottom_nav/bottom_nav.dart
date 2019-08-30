@@ -5,7 +5,11 @@ import 'package:junto_beta_mobile/screens/create/create.dart';
 // This widget is the bottom navigation on all of the main screens. Members can
 // navigate to the home, spheres, create, packs, and den screens.
 class BottomNav extends StatefulWidget {
-  const BottomNav(this.currentIndex, this.setIndex);
+  const BottomNav({
+    Key key,
+    @required this.currentIndex,
+    @required this.setIndex,
+  }) : super(key: key);
 
   final int currentIndex;
   final ValueChanged<int> setIndex;
@@ -20,11 +24,11 @@ class BottomNavState extends State<BottomNav> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.white,
         border: Border(
           top: BorderSide(
-            color: const Color(0xffeeeeee),
+            color: Color(0xffeeeeee),
             width: .75,
           ),
         ),
@@ -79,7 +83,7 @@ class BottomNavState extends State<BottomNav> {
                       child: child,
                     );
                   },
-                  transitionDuration: Duration(
+                  transitionDuration: const Duration(
                     milliseconds: 200,
                   ),
                 ),

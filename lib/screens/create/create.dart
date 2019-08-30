@@ -31,7 +31,7 @@ class JuntoCreateState extends State<JuntoCreate> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
-  void initState () {
+  void initState() {
     super.initState();
     isEditing = ValueNotifier<bool>(false);
     isEditing.addListener(() {
@@ -40,7 +40,7 @@ class JuntoCreateState extends State<JuntoCreate> {
   }
 
   @override
-  void dispose () {
+  void dispose() {
     isEditing.dispose();
     super.dispose();
   }
@@ -96,7 +96,7 @@ class JuntoCreateState extends State<JuntoCreate> {
 
   /// Ask for user confirmation to switch between expressions if field is no
   /// empty
-  void confirmSwitch (String templateType) {
+  void confirmSwitch(String templateType) {
     if (isEditing.value == true || formKey.currentState?.validate() == true) {
       showDialog(
         context: context,
@@ -199,8 +199,9 @@ class JuntoCreateState extends State<JuntoCreate> {
                     Navigator.push(
                       context,
                       MaterialPageRoute<dynamic>(
-                        builder: (BuildContext context) =>
-                            CreateActions(widget.expressionLayer),
+                        builder: (BuildContext context) => CreateActions(
+                          expressionLayer: widget.expressionLayer,
+                        ),
                       ),
                     );
                   },

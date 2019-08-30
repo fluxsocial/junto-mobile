@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 class Perspective {
-  const Perspective(this.name);
+  const Perspective({@required this.name});
 
   factory Perspective.fromMap(Map<String, dynamic> map) {
     return Perspective(
-      map['name'],
+      name: map['name'],
     );
   }
 
@@ -13,12 +13,12 @@ class Perspective {
 
   static List<Perspective> fetchAll() {
     return <Perspective>[
-      const Perspective('NYC 🗽🏙️  '),
-      const Perspective('Design'),
-      const Perspective('Meditation'),
-      const Perspective('Hoops 🏀'),
-      const Perspective('Austrian Economics📈'),
-      const Perspective('Holochain ♓'),
+      const Perspective(name: 'NYC 🗽🏙️  '),
+      const Perspective(name: 'Design'),
+      const Perspective(name: 'Meditation'),
+      const Perspective(name: 'Hoops 🏀'),
+      const Perspective(name: 'Austrian Economics📈'),
+      const Perspective(name: 'Holochain ♓'),
     ];
   }
 

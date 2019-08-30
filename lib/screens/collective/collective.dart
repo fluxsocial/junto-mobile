@@ -9,8 +9,13 @@ import 'package:provider/provider.dart';
 /// This screen shows a list of public expressions that can be filtered
 /// by channel or perspective
 class JuntoCollective extends StatefulWidget {
-  const JuntoCollective(this.controller, this._currentPerspective);
-  final String _currentPerspective;
+  const JuntoCollective({
+    Key key,
+    this.currentPerspective,
+    this.controller,
+  }) : super(key: key);
+  
+  final String currentPerspective;
 
   /// This controller is used to detect the scroll of the ListView
   /// to render the FAB dynamically
@@ -84,7 +89,7 @@ class JuntoCollectiveState extends State<JuntoCollective> {
         children: <Widget>[
           /// Degrees of Separation Widget rendered only when on the 'JUNTO'
           /// perspective
-          widget._currentPerspective == 'degrees of separation'
+          widget.currentPerspective == 'degrees of separation'
               ? DegreesOfSeparation(
                   _changeDegree,
                   _oneDegreeColor,

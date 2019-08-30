@@ -118,7 +118,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
               Expanded(
                 child: ListView(
                   children: <Widget>[
-                    ExpressionOpenTop(widget.expression),
+                    ExpressionOpenTop(expression: widget.expression),
                     _buildExpression(),
                     ExpressionOpenBottom(widget.expression),
                     ExpressionOpenInteractions(),
