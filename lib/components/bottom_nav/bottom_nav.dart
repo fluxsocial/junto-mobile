@@ -29,7 +29,7 @@ class BottomNavState extends State<BottomNav> {
         color: Colors.white,
         shape: Border(
           top: BorderSide(
-            color: Color(0xffeeeeee),
+            color: const Color(0xffeeeeee),
             width: .75,
           ),
         ),
@@ -129,7 +129,9 @@ class _BottomNavButton extends StatelessWidget {
             icon,
             key: Key('index-$index-$selectedIndex'),
             size: 20,
-            color: selectedIndex == index ? const Color(0xff333333) : const Color(0xff999999),
+            color: selectedIndex == index
+                ? const Color(0xff333333)
+                : const Color(0xff999999),
           ),
         ),
       ),

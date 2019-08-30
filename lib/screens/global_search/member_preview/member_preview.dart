@@ -50,16 +50,16 @@ class SearchMemberPreview extends StatelessWidget {
                         Text(
                           member.name,
                           textAlign: TextAlign.start,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 14,
-                            color: const Color(0xff333333),
+                            color: Color(0xff333333),
                             fontWeight: FontWeight.w700,
                           ),
                         ),
                         Text(
                           member.userName,
                           textAlign: TextAlign.start,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                           ),
