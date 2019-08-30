@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/typography/style.dart';
 
 class ChannelPreview extends StatelessWidget {
-  const ChannelPreview(this.channel);
+  const ChannelPreview({
+    Key key,
+    this.channel,
+  }) : super(key: key);
 
   final String channel;
 

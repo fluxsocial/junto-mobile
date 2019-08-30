@@ -4,8 +4,11 @@ import 'package:junto_beta_mobile/typography/palette.dart';
 /// Gradient [FloatingActionButton] used for filtering
 /// Collectives.
 class CollectiveFilterFAB extends StatelessWidget {
-  const CollectiveFilterFAB ({Key key, this.isVisible, this.toggleFilter})
-      : super(key: key);
+  const CollectiveFilterFAB({
+    Key key,
+    @required this.isVisible,
+    @required this.toggleFilter,
+  }) : super(key: key);
 
   /// Passed via the constructor, used to show and hide the FAB
   final ValueNotifier<bool> isVisible;
@@ -18,7 +21,7 @@ class CollectiveFilterFAB extends StatelessWidget {
     return ValueListenableBuilder<bool>(
       valueListenable: isVisible,
       builder: (BuildContext context, bool value, _) => AnimatedOpacity(
-        duration: Duration(milliseconds: 200),
+        duration: const Duration(milliseconds: 200),
         opacity: value ? 1.0 : 0.0,
         child: GestureDetector(
           onTap: () => toggleFilter(context),

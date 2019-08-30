@@ -39,9 +39,12 @@ class ExpressionOpenInteractions extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Image.asset('assets/images/junto-mobile__resonation.png',
-                          height: 17, color: Color(0xff333333)),
-                      SizedBox(width: 5),
+                      Image.asset(
+                        'assets/images/junto-mobile__resonation.png',
+                        height: 17,
+                        color: const Color(0xff333333),
+                      ),
+                      const SizedBox(width: 5),
                       Text('Resonate',
                           style: TextStyle(fontWeight: FontWeight.w500))
                     ],

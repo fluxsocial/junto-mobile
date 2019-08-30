@@ -8,7 +8,6 @@ import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open.dart';
 import 'package:junto_beta_mobile/screens/den/den_settings/den_settings.dart';
 import 'package:junto_beta_mobile/screens/den/den_connections/den_connections.dart';
 import 'package:junto_beta_mobile/screens/den/den_followers/den_followers.dart';
-import 'package:junto_beta_mobile/screens/member/member_appbar/member_appbar.dart';
 
 /// Displays the user's DEN or "profile screen"
 class JuntoDen extends StatefulWidget {
@@ -64,12 +63,13 @@ class JuntoDenState extends State<JuntoDen> {
                       ),
                     ),
                     const SizedBox(width: 10),
-                    Text(
+                    const Text(
                       'Eric Yang',
                       style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 17,
-                          fontWeight: FontWeight.w700),
+                        color: Colors.white,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ],
                 ),
@@ -195,10 +195,10 @@ class JuntoDenState extends State<JuntoDen> {
                         color: Colors.white,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
+                          children: const <Widget>[
                             Icon(CustomIcons.more, size: 17),
-                            const SizedBox(height: 5),
-                            const Text(
+                            SizedBox(height: 5),
+                            Text(
                               'Settings',
                               style: TextStyle(
                                 fontSize: 12,
@@ -236,9 +236,9 @@ class JuntoDenState extends State<JuntoDen> {
                               color: const Color(0xff555555),
                             ),
                             const SizedBox(width: 5),
-                            Text(
+                            const Text(
                               'Spirit',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: Color(0xff555555),
                               ),
                             ),
@@ -254,7 +254,7 @@ class JuntoDenState extends State<JuntoDen> {
                               color: const Color(0xff555555),
                             ),
                             const SizedBox(width: 5),
-                            Text(
+                            const Text(
                               'junto.foundation',
                               style: TextStyle(color: JuntoPalette.juntoBlue),
                             )

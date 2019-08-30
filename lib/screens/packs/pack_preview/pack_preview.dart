@@ -17,10 +17,10 @@ class PackPreview extends StatelessWidget {
           context,
           MaterialPageRoute<dynamic>(
             builder: (BuildContext context) => PackOpen(
-                  packTitle,
-                  packUser,
-                  packImage,
-                ),
+              packTitle,
+              packUser,
+              packImage,
+            ),
           ),
         );
       },
@@ -42,11 +42,11 @@ class PackPreview extends StatelessWidget {
                 Container(
                   width: MediaQuery.of(context).size.width - 65,
                   padding: const EdgeInsets.symmetric(vertical: 20),
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     border: Border(
                       bottom: BorderSide(
                         width: .5,
-                        color: const Color(
+                        color: Color(
                           0xffeeeeee,
                         ),
                       ),
@@ -60,9 +60,9 @@ class PackPreview extends StatelessWidget {
                       Text(
                         packTitle,
                         textAlign: TextAlign.start,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 14,
-                          color: const Color(0xff333333),
+                          color: Color(0xff333333),
                           fontWeight: FontWeight.w700,
                         ),
                       ),

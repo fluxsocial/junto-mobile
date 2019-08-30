@@ -35,13 +35,13 @@ class PerspectiveMemberPreview extends StatelessWidget {
                   children: <Widget>[
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
+                      children: const <Widget>[
                         Text(
                           'Eric Yang',
                           style: TextStyle(
                               fontWeight: FontWeight.w700, fontSize: 14),
                         ),
-                        const Text('sunyata'),
+                        Text('sunyata'),
                       ],
                     ),
                     Container(

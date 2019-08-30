@@ -70,9 +70,12 @@ class CreateSphere extends StatelessWidget {
             children: <Widget>[
               Container(
                 width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     border: Border(
-                  bottom: BorderSide(color: const Color(0xffeeeeee), width: 1),
+                  bottom: BorderSide(
+                    color: Color(0xffeeeeee),
+                    width: 1,
+                  ),
                 )),
                 child: TextField(
                   buildCounter: (BuildContext context,
@@ -91,11 +94,11 @@ class CreateSphere extends StatelessWidget {
               ),
               Container(
                   width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                      border: Border(
-                    bottom:
-                        BorderSide(color: const Color(0xffeeeeee), width: 1),
-                  )),
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
+                    ),
+                  ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[

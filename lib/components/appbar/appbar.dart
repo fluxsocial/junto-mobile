@@ -7,7 +7,11 @@ import 'package:junto_beta_mobile/typography/style.dart';
 // Junto app bar used throughout the main screens. Rendered in JuntoTemplate
 // Widget.
 class JuntoAppBar extends StatelessWidget {
-  const JuntoAppBar(this.juntoAppBarTitle, this.navNotifications);
+  const JuntoAppBar({
+    Key key,
+    @required this.juntoAppBarTitle,
+    @required this.navNotifications,
+  }) : super(key: key);
 
   final String juntoAppBarTitle;
   final VoidCallback navNotifications;

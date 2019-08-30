@@ -3,7 +3,11 @@ import 'package:junto_beta_mobile/screens/collective/filter_fab/filter_fab.dart'
 import 'package:junto_beta_mobile/typography/palette.dart';
 
 class CollectiveFilterScreen extends StatelessWidget {
-  const CollectiveFilterScreen(this.isVisible, this.toggleFilter);
+  const CollectiveFilterScreen({
+    Key key,
+    @required this.isVisible,
+    @required this.toggleFilter,
+  }) : super(key: key);
 
   /// ValueNotifier which controls whether the Filter screen is shown or not.
   final ValueNotifier<bool> isVisible;
@@ -17,7 +21,7 @@ class CollectiveFilterScreen extends StatelessWidget {
       appBar: null,
       bottomNavigationBar: Container(color: Colors.white, height: 45),
       floatingActionButton:
-      CollectiveFilterFAB(isVisible: isVisible, toggleFilter: toggleFilter),
+          CollectiveFilterFAB(isVisible: isVisible, toggleFilter: toggleFilter),
       body: Stack(
         children: <Widget>[
           Positioned(

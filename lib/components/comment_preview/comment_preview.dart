@@ -3,7 +3,10 @@ import 'package:junto_beta_mobile/custom_icons.dart';
 
 /// Shows a preview of the comments. Takes a un-named [String] as a param.
 class CommentPreview extends StatelessWidget {
-  const CommentPreview(this.commentText);
+  const CommentPreview({
+    Key key,
+    @required this.commentText,
+  }) : super(key: key);
 
   /// String to be displayed as comment
   final String commentText;
@@ -25,10 +28,10 @@ class CommentPreview extends StatelessWidget {
           ),
           Container(
             padding: const EdgeInsets.only(bottom: 15),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color: const Color(0xffeeeeee),
+                  color: Color(0xffeeeeee),
                   width: .5,
                 ),
               ),
@@ -44,18 +47,18 @@ class CommentPreview extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Row(
-                        children: <Widget>[
+                        children: const <Widget>[
                           Text(
                             'Eric Yang',
                             style: TextStyle(
                               fontWeight: FontWeight.w700,
                             ),
                           ),
-                          const SizedBox(width: 5),
-                          const Text('sunyata'),
+                          SizedBox(width: 5),
+                          Text('sunyata'),
                         ],
                       ),
-                      Icon(CustomIcons.more, size: 20)
+                      const Icon(CustomIcons.more, size: 20)
                     ],
                   ),
                 ),
@@ -67,15 +70,15 @@ class CommentPreview extends StatelessWidget {
                   width: MediaQuery.of(context).size.width - 66,
                   child: Text(
                     commentText,
-                    style: TextStyle(fontSize: 15),
+                    style: const TextStyle(fontSize: 15),
                   ),
                 ),
                 Container(
-                  child: Text(
+                  child: const Text(
                     '5 MINUTES AGO',
                     style: TextStyle(
                       fontSize: 10,
-                      color: const Color(
+                      color: Color(
                         0xff555555,
                       ),
                     ),
