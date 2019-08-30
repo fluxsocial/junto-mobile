@@ -8,7 +8,10 @@ import 'package:junto_beta_mobile/screens/expression_open/expression_open.dart';
 
 /// Renders a concise overview of one given [ExpressionResult].
 class ExpressionPreview extends StatelessWidget {
-  const ExpressionPreview(this.expression);
+  const ExpressionPreview({
+    Key key,
+    @required this.expression,
+  }) : super(key: key);
 
   final Expression expression;
 

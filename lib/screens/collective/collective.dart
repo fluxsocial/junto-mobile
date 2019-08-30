@@ -99,7 +99,7 @@ class JuntoCollectiveState extends State<JuntoCollective> {
             if (index == initialData.length)
               _buildProgressIndicator()
             else
-              ExpressionPreview(initialData[index])
+              ExpressionPreview(expression: initialData[index])
         ],
       ),
     );
