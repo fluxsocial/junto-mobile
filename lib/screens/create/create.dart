@@ -20,7 +20,7 @@ class JuntoCreate extends StatefulWidget {
 }
 
 class JuntoCreateState extends State<JuntoCreate> {
-  String _expressionType = 'Longform';
+  String _expressionType = 'Storyform';
   bool _longform = true;
   bool _shortform = false;
   bool _bullet = false;
