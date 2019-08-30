@@ -92,12 +92,9 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
         Scaffold(
           key: _juntoTemplateKey,
           backgroundColor: Colors.white,
-          appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(45),
-            child: JuntoAppBar(
-              juntoAppBarTitle: _appbarTitle,
-              navNotifications: _navNotifications,
-            ),
+          appBar: JuntoAppBar(
+            juntoAppBarTitle: _appbarTitle,
+            navNotifications: _navNotifications,
           ),
           floatingActionButton: _currentScreen == 'collective'
               ? CollectiveFilterFAB(
@@ -269,8 +266,7 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
                           ),
                         ),
                         Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 5),
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                           child: GestureDetector(
                             onTap: () {
                               // Update channels list in state until there are 3
@@ -308,9 +304,7 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
                   ),
                   Container(
                     alignment: Alignment.centerLeft,
-                    padding: _channels.isEmpty
-                        ? const EdgeInsets.all(0)
-                        : const EdgeInsets.symmetric(vertical: 10),
+                    padding: _channels.isEmpty ? const EdgeInsets.all(0) : const EdgeInsets.symmetric(vertical: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
