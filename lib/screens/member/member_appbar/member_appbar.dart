@@ -33,7 +33,7 @@ class MemberAppbar extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {},
-                child: Text(
+                child: const Text(
                   'sunyata',
                   style: TextStyle(
                     fontSize: 14,

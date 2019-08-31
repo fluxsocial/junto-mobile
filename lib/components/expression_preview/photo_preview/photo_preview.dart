@@ -3,7 +3,11 @@ import 'package:junto_beta_mobile/typography/style.dart';
 
 /// Displays the given [image] and [imageCaption]
 class PhotoPreview extends StatelessWidget {
-  const PhotoPreview(this.image, this.imageCaption);
+  const PhotoPreview({
+    Key key,
+    this.image,
+    this.imageCaption,
+  }) : super(key: key);
 
   /// Url of the image to be displayed
   final String image;

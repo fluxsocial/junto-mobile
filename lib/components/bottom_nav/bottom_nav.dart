@@ -5,7 +5,11 @@ import 'package:junto_beta_mobile/screens/create/create.dart';
 // This widget is the bottom navigation on all of the main screens. Members can
 // navigate to the home, spheres, create, packs, and den screens.
 class BottomNav extends StatefulWidget {
-  const BottomNav(this.currentIndex, this.setIndex);
+  const BottomNav({
+    Key key,
+    @required this.currentIndex,
+    @required this.setIndex,
+  }) : super(key: key);
 
   final int currentIndex;
   final ValueChanged<int> setIndex;
@@ -19,105 +23,115 @@ class BottomNav extends StatefulWidget {
 class BottomNavState extends State<BottomNav> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
+    return SizedBox(
+      height: 48.0,
+      child: Material(
         color: Colors.white,
-        border: Border(
+        shape: Border(
           top: BorderSide(
-            color: const Color(0xffeeeeee),
+            color: Color(0xffeeeeee),
             width: .75,
           ),
         ),
-      ),
-      height: 45,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          GestureDetector(
-            onTap: () {
-              widget.setIndex(0);
-            },
-            child: Icon(
-              CustomIcons.home,
-              size: 20,
-              color: widget.currentIndex == 0
-                  ? const Color(0xff333333)
-                  : const Color(0xff999999),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            _BottomNavButton(
+              index: 0,
+              selectedIndex: widget.currentIndex,
+              icon: CustomIcons.home,
+              onTap: widget.setIndex,
             ),
-          ),
-          GestureDetector(
-            onTap: () => widget.setIndex(1),
-            child: Icon(
-              CustomIcons.circle,
-              size: 20,
-              color: widget.currentIndex == 1
-                  ? const Color(0xff333333)
-                  : const Color(0xff999999),
+            _BottomNavButton(
+              index: 1,
+              selectedIndex: widget.currentIndex,
+              icon: CustomIcons.circle,
+              onTap: widget.setIndex,
             ),
-          ),
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(
-                PageRouteBuilder<dynamic>(
-                  pageBuilder: (
-                    BuildContext context,
-                    Animation<double> animation,
-                    Animation<double> secondaryAnimation,
-                  ) {
-                    return const JuntoCreate(
-                      'collective',
-                    );
-                  },
-                  transitionsBuilder: (
-                    BuildContext context,
-                    Animation<double> animation,
-                    Animation<double> secondaryAnimation,
-                    Widget child,
-                  ) {
-                    return FadeTransition(
-                      opacity: animation,
-                      child: child,
-                    );
-                  },
-                  transitionDuration: Duration(
-                    milliseconds: 200,
-                  ),
+            Expanded(
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).push(
+                    PageRouteBuilder<dynamic>(
+                      pageBuilder: (
+                        BuildContext context,
+                        Animation<double> animation,
+                        Animation<double> secondaryAnimation,
+                      ) {
+                        return const JuntoCreate(
+                          'collective',
+                        );
+                      },
+                      transitionsBuilder: (
+                        BuildContext context,
+                        Animation<double> animation,
+                        Animation<double> secondaryAnimation,
+                        Widget child,
+                      ) {
+                        return FadeTransition(
+                          opacity: animation,
+                          child: child,
+                        );
+                      },
+                      transitionDuration: const Duration(
+                        milliseconds: 200,
+                      ),
+                    ),
+                  );
+                },
+                child: Icon(
+                  CustomIcons.lotus,
+                  color: const Color(0xff999999),
                 ),
-              );
-            },
-            child: Icon(
-              CustomIcons.lotus,
-              color: const Color(0xff999999),
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              widget.setIndex(2);
-            },
-            child: RotatedBox(
-              quarterTurns: 2,
-              child: Icon(
-                CustomIcons.triangle,
-                size: 20,
-                color: widget.currentIndex == 2
-                    ? const Color(0xff333333)
-                    : const Color(0xff999999),
               ),
             ),
-          ),
-          GestureDetector(
-            onTap: () {
-              widget.setIndex(3);
-            },
-            child: Icon(
-              CustomIcons.profile,
-              size: 20,
-              color: widget.currentIndex == 3
-                  ? const Color(0xff333333)
-                  : const Color(0xff999999),
+            _BottomNavButton(
+              index: 2,
+              selectedIndex: widget.currentIndex,
+              icon: CustomIcons.triangle,
+              onTap: widget.setIndex,
             ),
-          )
-        ],
+            _BottomNavButton(
+              index: 3,
+              selectedIndex: widget.currentIndex,
+              icon: CustomIcons.profile,
+              onTap: widget.setIndex,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _BottomNavButton extends StatelessWidget {
+  const _BottomNavButton({
+    Key key,
+    @required this.index,
+    @required this.selectedIndex,
+    @required this.icon,
+    @required this.onTap,
+  }) : super(key: key);
+
+  final int index;
+  final int selectedIndex;
+  final IconData icon;
+  final ValueChanged<int> onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: InkWell(
+        onTap: () => onTap(index),
+        child: AnimatedSwitcher(
+          duration: kThemeChangeDuration,
+          child: Icon(
+            icon,
+            key: Key('index-$index-$selectedIndex'),
+            size: 20,
+            color: selectedIndex == index ? const Color(0xff333333) : const Color(0xff999999),
+          ),
+        ),
       ),
     );
   }

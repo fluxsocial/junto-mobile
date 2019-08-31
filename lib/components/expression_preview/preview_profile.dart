@@ -6,7 +6,10 @@ import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/typography/style.dart';
 
 class PreviewProfile extends StatelessWidget {
-  const PreviewProfile(this.expression);
+  const PreviewProfile({
+    Key key,
+    this.expression,
+  }) : super(key: key);
 
   final Expression expression;
 

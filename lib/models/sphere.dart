@@ -1,11 +1,13 @@
+import 'package:meta/meta.dart';
+
 class Sphere {
-  const Sphere(
-    this.sphereTitle,
-    this.sphereMembers,
-    this.sphereImage,
-    this.sphereHandle,
-    this.sphereDescription,
-  );
+  const Sphere({
+    @required this.sphereTitle,
+    @required this.sphereMembers,
+    @required this.sphereImage,
+    @required this.sphereHandle,
+    @required this.sphereDescription,
+  });
 
   final String sphereTitle;
   final String sphereMembers;
@@ -16,40 +18,44 @@ class Sphere {
   static List<Sphere> fetchAll() {
     return <Sphere>[
       const Sphere(
-        'Ecstatic Dance',
-        '12000',
-        'assets/images/junto-mobile__ecstatic.png',
-        'ecstaticdance',
-        'Ecstatic dance is a space for movement, rhythm, non-judgment, and '
+        sphereTitle: 'Ecstatic Dance',
+        sphereMembers: '12000',
+        sphereImage: 'assets/images/junto-mobile__ecstatic.png',
+        sphereHandle: 'ecstaticdance',
+        sphereDescription:
+            'Ecstatic dance is a space for movement, rhythm, non-judgment, and '
             'expression in its purest form. Come groove out with us!',
       ),
       const Sphere(
-        'Flutter NYC',
-        '690',
-        'assets/images/junto-mobile__flutter.png',
-        'flutternyc',
-        'Connect with other members in the Flutter NYC community and learn'
+        sphereTitle: 'Flutter NYC',
+        sphereMembers: '690',
+        sphereImage: 'assets/images/junto-mobile__flutter.png',
+        sphereHandle: 'flutternyc',
+        sphereDescription:
+            'Connect with other members in the Flutter NYC community and learn'
             ' about this amazing technology!',
       ),
       const Sphere(
-        'Zen',
-        '77',
-        'assets/images/junto-mobile__stillmind.png',
-        'zen',
-        '"To a mind that is still, the whole universe surrenders"',
+        sphereTitle: 'Zen',
+        sphereMembers: '77',
+        sphereImage: 'assets/images/junto-mobile__stillmind.png',
+        sphereHandle: 'zen',
+        sphereDescription:
+            '"To a mind that is still, the whole universe surrenders"',
       ),
       const Sphere(
-        'JUNTO Core',
-        '5',
-        'assets/images/junto-mobile__junto.png',
-        'juntocore',
-        'Junto Core team happenings',
+        sphereTitle: 'JUNTO Core',
+        sphereMembers: '5',
+        sphereImage: 'assets/images/junto-mobile__junto.png',
+        sphereHandle: 'juntocore',
+        sphereDescription: 'Junto Core team happenings',
       ),
       const Sphere(
-        'Holochain',
-        '22',
-        'assets/images/junto-mobile__expression--photo.png',
-        'holochain',
+        sphereTitle: 'Holochain',
+        sphereMembers: '22',
+        sphereImage: 'assets/images/junto-mobile__expression--photo.png',
+        sphereHandle: 'holochain',
+        sphereDescription:
         'Holochain is a framework to build scalable, distributed applications.',
       ),
     ];

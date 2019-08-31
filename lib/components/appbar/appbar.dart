@@ -6,11 +6,18 @@ import 'package:junto_beta_mobile/typography/style.dart';
 
 // Junto app bar used throughout the main screens. Rendered in JuntoTemplate
 // Widget.
-class JuntoAppBar extends StatelessWidget {
-  const JuntoAppBar(this.juntoAppBarTitle, this.navNotifications);
+class JuntoAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const JuntoAppBar({
+    Key key,
+    @required this.juntoAppBarTitle,
+    @required this.navNotifications,
+  }) : super(key: key);
 
   final String juntoAppBarTitle;
   final VoidCallback navNotifications;
+
+  @override
+  Size get preferredSize => const Size.fromHeight(48.0);
 
   @override
   Widget build(BuildContext context) {
@@ -24,14 +31,8 @@ class JuntoAppBar extends StatelessWidget {
             gradient: LinearGradient(
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
-                stops: <double>[
-                  0.1,
-                  0.9
-                ],
-                colors: <Color>[
-                  JuntoPalette.juntoPurple,
-                  JuntoPalette.juntoBlue
-                ]),
+                stops: <double>[0.1, 0.9],
+                colors: <Color>[JuntoPalette.juntoPurple, JuntoPalette.juntoBlue]),
           ),
         ),
       ),
@@ -52,8 +53,7 @@ class JuntoAppBar extends StatelessWidget {
                   },
                   child: Row(
                     children: <Widget>[
-                      Image.asset('assets/images/junto-mobile__logo.png',
-                          height: 20.0, width: 20.0),
+                      Image.asset('assets/images/junto-mobile__logo.png', height: 20.0, width: 20.0),
                       Container(
                         margin: const EdgeInsets.only(left: 7.5),
                         child: Text(
@@ -79,16 +79,14 @@ class JuntoAppBar extends StatelessWidget {
                     );
                   },
                   child: Container(
-                    child: Icon(Icons.search,
-                        color: JuntoPalette.juntoSleek, size: 20),
+                    child: Icon(Icons.search, color: JuntoPalette.juntoSleek, size: 20),
                   ),
                 ),
                 GestureDetector(
                   onTap: navNotifications,
                   child: Container(
                     margin: const EdgeInsets.only(left: 7.5),
-                    child: Icon(CustomIcons.moon,
-                        color: JuntoPalette.juntoSleek, size: 20),
+                    child: Icon(CustomIcons.moon, color: JuntoPalette.juntoSleek, size: 20),
                   ),
                 )
               ],

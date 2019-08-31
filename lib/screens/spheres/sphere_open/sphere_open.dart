@@ -4,13 +4,14 @@ import 'package:junto_beta_mobile/components/utils/hide_fab.dart';
 import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open_appbar/sphere_open_appbar.dart';
 
 class SphereOpen extends StatefulWidget {
-  const SphereOpen(
-    this.sphereTitle,
-    this.sphereMembers,
-    this.sphereImage,
-    this.sphereHandle,
-    this.sphereDescription,
-  );
+  const SphereOpen({
+    Key key,
+    @required this.sphereTitle,
+    @required this.sphereImage,
+    @required this.sphereMembers,
+    @required this.sphereHandle,
+    @required this.sphereDescription,
+  }) : super(key: key);
 
   final String sphereTitle;
   final String sphereImage;
@@ -96,10 +97,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                             child: Text(
                               widget.sphereMembers + ' members',
                               style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w700
-
-                              ),
+                                  fontSize: 14, fontWeight: FontWeight.w700),
                             ),
                           ),
                         ],

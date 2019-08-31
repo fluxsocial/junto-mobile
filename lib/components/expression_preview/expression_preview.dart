@@ -8,7 +8,10 @@ import 'package:junto_beta_mobile/screens/expression_open/expression_open.dart';
 
 /// Renders a concise overview of one given [ExpressionResult].
 class ExpressionPreview extends StatelessWidget {
-  const ExpressionPreview(this.expression);
+  const ExpressionPreview({
+    Key key,
+    @required this.expression,
+  }) : super(key: key);
 
   final Expression expression;
 
@@ -20,7 +23,7 @@ class ExpressionPreview extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           // expression preview profile
-          PreviewProfile(expression),
+          PreviewProfile(expression: expression),
 
           // open expression
           GestureDetector(
@@ -36,7 +39,7 @@ class ExpressionPreview extends StatelessWidget {
             child: _returnExpression(),
           ),
           // expression preview channels, resonation, and comments
-          PreviewBottom(expression)
+          PreviewBottom(expression: expression)
         ],
       ),
     );
@@ -44,7 +47,7 @@ class ExpressionPreview extends StatelessWidget {
 
   Widget _returnExpression() {
     if (expression.expression.expressionType == 'longform') {
-      return LongformPreview(expression);
+      return LongformPreview(expression: expression);
     } else if (expression.expression.expressionType == 'shortform') {
       return ShortformPreview(expression);
     } else {

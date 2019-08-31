@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'create_perspective/create_perspective.dart';
 
 class Perspectives extends StatelessWidget {
-  const Perspectives(this._changePerspective);
+  const Perspectives({
+    Key key,
+    @required this.changePerspective,
+  }) : super(key: key);
 
-  final ValueChanged<String> _changePerspective;
+  final ValueChanged<String> changePerspective;
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +74,7 @@ class Perspectives extends StatelessWidget {
                           contentPadding:
                               const EdgeInsets.symmetric(horizontal: 0),
                           onTap: () {
-                            _changePerspective('JUNTO');
+                            changePerspective('JUNTO');
 
                             Navigator.pop(context);
                           },
@@ -88,7 +91,7 @@ class Perspectives extends StatelessWidget {
                           contentPadding:
                               const EdgeInsets.symmetric(horizontal: 0),
                           onTap: () {
-                            _changePerspective('degrees of separation');
+                            changePerspective('degrees of separation');
                             Navigator.pop(context);
                           },
                           title: Row(
@@ -104,7 +107,7 @@ class Perspectives extends StatelessWidget {
                           contentPadding:
                               const EdgeInsets.symmetric(horizontal: 0),
                           onTap: () {
-                            _changePerspective('Following');
+                            changePerspective('Following');
                             Navigator.pop(context);
                           },
                           title: Row(

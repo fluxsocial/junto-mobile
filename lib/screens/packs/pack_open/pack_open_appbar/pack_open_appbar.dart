@@ -3,7 +3,12 @@ import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/typography/palette.dart';
 
 class PackOpenAppbar extends StatelessWidget {
-  const PackOpenAppbar(this.packTitle, this.packUser, this.packImage);
+  const PackOpenAppbar({
+    Key key,
+    @required this.packTitle,
+    @required this.packUser,
+    @required this.packImage,
+  }) : super(key: key);
 
   final dynamic packTitle;
   final dynamic packUser;

@@ -48,9 +48,9 @@ class PackOpenState extends State<PackOpen> {
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(45),
           child: PackOpenAppbar(
-            widget.packTitle,
-            widget.packUser,
-            widget.packImage,
+            packTitle: widget.packTitle,
+            packUser: widget.packUser,
+            packImage: widget.packImage,
           ),
         ),
         floatingActionButton: ValueListenableBuilder<bool>(
@@ -65,7 +65,9 @@ class PackOpenState extends State<PackOpen> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: CreateFAB(
-                sphereHandle: widget.packTitle, isVisible: _isVisible),
+              sphereHandle: widget.packTitle,
+              isVisible: _isVisible,
+            ),
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -73,10 +75,10 @@ class PackOpenState extends State<PackOpen> {
           children: <Widget>[
             Container(
                 padding: const EdgeInsets.only(top: 20),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
-                      color: const Color(0xffeeeeee),
+                      color: Color(0xffeeeeee),
                       width: .75,
                     ),
                   ),

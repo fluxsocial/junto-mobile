@@ -5,9 +5,10 @@ import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/typography/palette.dart';
 
 class ExpressionOpenTop extends StatelessWidget {
-  const ExpressionOpenTop(this.expression);
+  const ExpressionOpenTop({Key key, this.expression}) : super(key: key);
 
   final Expression expression;
+
 
   @override
   Widget build(BuildContext context) {

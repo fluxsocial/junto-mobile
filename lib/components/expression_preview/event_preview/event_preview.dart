@@ -4,7 +4,12 @@ import 'package:junto_beta_mobile/typography/palette.dart';
 /// Shows a preview for the given event.
 /// Widget takes [eventTitle], [eventLocation] and [eventPhoto]
 class EventPreview extends StatelessWidget {
-  const EventPreview(this.eventTitle, this.eventLocation, this.eventPhoto);
+  const EventPreview({
+    Key key,
+    @required this.eventTitle,
+    @required this.eventLocation,
+    @required this.eventPhoto,
+  }) : super(key: key);
 
   /// Name of the event
   final String eventTitle;

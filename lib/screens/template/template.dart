@@ -61,7 +61,6 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
 
   void _onScrollingHasChanged() {
     super.hideFabOnScroll(_hideFABController, _isVisible);
-
   }
 
   @override
@@ -93,12 +92,9 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
         Scaffold(
           key: _juntoTemplateKey,
           backgroundColor: Colors.white,
-          appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(45),
-            child: JuntoAppBar(
-              _appbarTitle,
-              _navNotifications,
-            ),
+          appBar: JuntoAppBar(
+            juntoAppBarTitle: _appbarTitle,
+            navNotifications: _navNotifications,
           ),
           floatingActionButton: _currentScreen == 'collective'
               ? CollectiveFilterFAB(
@@ -113,7 +109,7 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
                     return false;
                   },
                   child: Perspectives(
-                    _changePerspective,
+                    changePerspective: _changePerspective,
                   ),
                 )
               : null,
@@ -139,8 +135,8 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
                   GestureDetector(
                     onHorizontalDragUpdate: _onDragUpdate,
                     child: JuntoCollective(
-                      _hideFABController,
-                      _currentPerspective,
+                      controller: _hideFABController,
+                      currentPerspective: _currentPerspective,
                     ),
                   ),
                   JuntoSpheres(),
@@ -154,8 +150,8 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
             valueListenable: _bottomNavIndex,
             builder: (BuildContext context, int index, _) {
               return BottomNav(
-                index,
-                _setBottomIndex,
+                currentIndex: index,
+                setIndex: _setBottomIndex,
               );
             },
           ),
@@ -270,8 +266,7 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
                           ),
                         ),
                         Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 5),
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                           child: GestureDetector(
                             onTap: () {
                               // Update channels list in state until there are 3
@@ -309,9 +304,7 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
                   ),
                   Container(
                     alignment: Alignment.centerLeft,
-                    padding: _channels.isEmpty
-                        ? const EdgeInsets.all(0)
-                        : const EdgeInsets.symmetric(vertical: 10),
+                    padding: _channels.isEmpty ? const EdgeInsets.all(0) : const EdgeInsets.symmetric(vertical: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
