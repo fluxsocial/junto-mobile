@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/providers/auth_provider/auth_provider.dart';
 import 'package:junto_beta_mobile/providers/packs_provider/packs_provider.dart';
 import 'package:junto_beta_mobile/providers/search_provider/search_provider.dart';
 import 'package:junto_beta_mobile/providers/spheres_provider/spheres_provider.dart';
@@ -26,6 +27,9 @@ class JuntoAppState extends State<JuntoApp> {
         Provider<SearchProvider>(
           builder: (BuildContext context) => SearchProvider(),
         ),
+        Provider<AuthenticationProvider>(
+          builder: (BuildContext context) => AuthenticationImp(),
+        ),
         ChangeNotifierProvider<CollectiveProvider>(
           builder: (BuildContext context) => CollectiveProvider(),
         ),
@@ -34,7 +38,7 @@ class JuntoAppState extends State<JuntoApp> {
         ),
         ChangeNotifierProvider<PacksProvider>(
           builder: (BuildContext context) => PacksProvider(),
-        )
+        ),
       ],
       child: MaterialApp(
         theme: ThemeData(
