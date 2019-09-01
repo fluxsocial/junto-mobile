@@ -33,7 +33,7 @@ class _PackOpenPrivateState extends State<PackOpenPrivate> with HideFab {
   }
 
   @override
-  void dispose () {
+  void dispose() {
     _packOpenClosedController.removeListener(_onScrollingHasChanged);
     _packOpenClosedController.dispose();
     super.dispose();

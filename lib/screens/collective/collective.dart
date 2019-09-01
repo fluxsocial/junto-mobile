@@ -14,7 +14,7 @@ class JuntoCollective extends StatefulWidget {
     this.currentPerspective,
     this.controller,
   }) : super(key: key);
-  
+
   final String currentPerspective;
 
   /// This controller is used to detect the scroll of the ListView

@@ -31,8 +31,14 @@ class JuntoAppBar extends StatelessWidget implements PreferredSizeWidget {
             gradient: LinearGradient(
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
-                stops: <double>[0.1, 0.9],
-                colors: <Color>[JuntoPalette.juntoPurple, JuntoPalette.juntoBlue]),
+                stops: <double>[
+                  0.1,
+                  0.9
+                ],
+                colors: <Color>[
+                  JuntoPalette.juntoPurple,
+                  JuntoPalette.juntoBlue
+                ]),
           ),
         ),
       ),
@@ -53,7 +59,8 @@ class JuntoAppBar extends StatelessWidget implements PreferredSizeWidget {
                   },
                   child: Row(
                     children: <Widget>[
-                      Image.asset('assets/images/junto-mobile__logo.png', height: 20.0, width: 20.0),
+                      Image.asset('assets/images/junto-mobile__logo.png',
+                          height: 20.0, width: 20.0),
                       Container(
                         margin: const EdgeInsets.only(left: 7.5),
                         child: Text(
@@ -79,14 +86,16 @@ class JuntoAppBar extends StatelessWidget implements PreferredSizeWidget {
                     );
                   },
                   child: Container(
-                    child: Icon(Icons.search, color: JuntoPalette.juntoSleek, size: 20),
+                    child: Icon(Icons.search,
+                        color: JuntoPalette.juntoSleek, size: 20),
                   ),
                 ),
                 GestureDetector(
                   onTap: navNotifications,
                   child: Container(
                     margin: const EdgeInsets.only(left: 7.5),
-                    child: Icon(CustomIcons.moon, color: JuntoPalette.juntoSleek, size: 20),
+                    child: Icon(CustomIcons.moon,
+                        color: JuntoPalette.juntoSleek, size: 20),
                   ),
                 )
               ],

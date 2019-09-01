@@ -9,7 +9,7 @@ import 'package:junto_beta_mobile/typography/palette.dart';
 
 /// Create using photo form
 class CreatePhoto extends StatefulWidget {
-  const CreatePhoto ({
+  const CreatePhoto({
     Key key,
     @required this.toggleBottomNavVisibility,
     @required this.isEditing,

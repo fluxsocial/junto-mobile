@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:junto_beta_mobile/route_animations/route_main_screens/route_main_screens.dart';
 import 'package:junto_beta_mobile/screens/template/template.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// This page checks the authentication state of the user then directs them to
 /// the appropriate screen.
@@ -20,7 +20,6 @@ class _JuntoLoadingState extends State<JuntoLoading>
     with SingleTickerProviderStateMixin {
   // Controller used to drive both animations
   AnimationController controller;
-  FlutterSecureStorage storage;
 
   @override
   void initState() {
@@ -32,7 +31,6 @@ class _JuntoLoadingState extends State<JuntoLoading>
       ),
     );
     controller.forward();
-    storage = FlutterSecureStorage();
   }
 
   @override
@@ -48,9 +46,10 @@ class _JuntoLoadingState extends State<JuntoLoading>
   /// This function does the heavy lifting of calling secure storage and
   /// checking for the appropriate key/value.
   Future<void> _checkAuthStatus() async {
-    final String state = await storage.read(key: 'isLoggedIn');
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    final bool isLoggedIn = preferences.getBool('isLoggedIn');
     await Future<void>.delayed(const Duration(milliseconds: 1500));
-    if (state != null && state == 'true') {
+    if (isLoggedIn != null && isLoggedIn == true) {
       Navigator.of(context).pushReplacement(
         CustomRoute<dynamic>(
           builder: (BuildContext context) => JuntoTemplate(),

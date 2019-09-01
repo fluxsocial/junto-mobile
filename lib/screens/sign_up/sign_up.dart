@@ -12,15 +12,18 @@ class SignUp extends StatefulWidget {
 class SignUpState extends State<SignUp> {
   TextEditingController firstNameController;
   TextEditingController lastNameController;
+  TextEditingController emailController;
 
   String firstName = '';
   String lastName = '';
+  String email = '';
 
   @override
   void initState() {
     super.initState();
     firstNameController = TextEditingController();
     lastNameController = TextEditingController();
+    emailController = TextEditingController();
   }
 
   @override
@@ -28,6 +31,7 @@ class SignUpState extends State<SignUp> {
     super.dispose();
     firstNameController.dispose();
     lastNameController.dispose();
+    emailController.dispose();
   }
 
   @override
@@ -129,6 +133,36 @@ class SignUpState extends State<SignUp> {
                             ),
                           ),
                         ),
+                        Container(
+                          margin: const EdgeInsets.only(top: 24.0),
+                          child: TextField(
+                            controller: emailController,
+                            onChanged: (String text) {
+                              setState(
+                                () {
+                                  email = text;
+                                },
+                              );
+                            },
+                            decoration: InputDecoration(
+                              enabledBorder: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              labelStyle: TextStyle(color: Colors.green),
+                              hintText: 'EMAIL',
+                              hintStyle: TextStyle(
+                                color: Colors.white,
+                                fontSize: 17,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              fillColor: Colors.white,
+                            ),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -164,9 +198,9 @@ class SignUpState extends State<SignUp> {
                         context,
                         MaterialPageRoute<dynamic>(
                           builder: (BuildContext context) => SignUpTwo(
-                                firstName,
-                                lastName,
-                              ),
+                              firstName: firstName,
+                              lastName: lastName,
+                              email: email),
                         ),
                       );
                     }

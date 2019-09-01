@@ -9,7 +9,6 @@ class ExpressionOpenTop extends StatelessWidget {
 
   final Expression expression;
 
-
   @override
   Widget build(BuildContext context) {
     final String username = expression.authorUsername.username;

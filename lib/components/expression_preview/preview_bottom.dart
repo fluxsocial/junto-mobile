@@ -7,9 +7,7 @@ import 'package:junto_beta_mobile/typography/style.dart';
 class PreviewBottom extends StatelessWidget {
   const PreviewBottom({Key key, this.expression}) : super(key: key);
 
-
   final Expression expression;
-
 
   @override
   Widget build(BuildContext context) {

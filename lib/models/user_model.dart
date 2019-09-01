@@ -1,3 +1,5 @@
+import 'package:meta/meta.dart';
+
 /// Class used to store the profile information of a user.
 /// Contains the [address], [parent], [firstName], [lastName], [bio],
 /// [profilePicture], [verified].
@@ -86,4 +88,54 @@ class Username {
           'username': username,
         },
       };
+}
+
+/// Detials used during user authentication.
+abstract class UserAuthDetails {
+  String get email;
+  String get password;
+
+  bool get isComplete;
+}
+
+/// User auth details used during login. Email and Password must
+/// not be null or empty.
+class UserAuthLoginDetails implements UserAuthDetails {
+  UserAuthLoginDetails({
+    @required this.email,
+    @required this.password,
+  });
+
+  @override
+  final String email;
+  @override
+  final String password;
+
+  @override
+  bool get isComplete => email != null && password != null;
+}
+
+/// Implementation of UserAuthDetails for registering a new user.
+/// All fields must not null or blank.
+class UserAuthRegistrationDetails implements UserAuthDetails {
+  UserAuthRegistrationDetails({
+    @required this.email,
+    @required this.password,
+    @required this.firstName,
+    @required this.lastName,
+  });
+
+  @override
+  final String email;
+  @override
+  final String password;
+  final String firstName;
+  final String lastName;
+
+  @override
+  bool get isComplete =>
+      email != null &&
+      password != null &&
+      firstName != null &&
+      lastName != null;
 }
