@@ -3,12 +3,20 @@ import 'package:junto_beta_mobile/screens/sign_up/sign_up_logo/sign_up_logo.dart
 import 'package:junto_beta_mobile/screens/sign_up/sign_up_welcome/sign_up_welcome.dart';
 
 class SignUpFour extends StatefulWidget {
-  const SignUpFour(this.firstName, this.lastName, this.username, this.password);
+  const SignUpFour({
+    Key key,
+    this.firstName,
+    this.lastName,
+    this.username,
+    this.password,
+    this.email,
+  }) : super(key: key);
 
   final String firstName;
   final String lastName;
   final String username;
   final String password;
+  final String email;
 
   @override
   State<StatefulWidget> createState() {
@@ -48,8 +56,7 @@ class SignUpFourState extends State<SignUpFour> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).size.height * .17),
+                    margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * .17),
                     child: const Text(
                       'We are almost done! Feel free to upload a photo and '
                       'write a brief bio of who you are',
@@ -129,13 +136,14 @@ class SignUpFourState extends State<SignUpFour> {
                         context,
                         MaterialPageRoute<dynamic>(
                           builder: (BuildContext context) => SignUpWelcome(
-                                widget.firstName,
-                                widget.lastName,
-                                widget.username,
-                                widget.password,
-                                bio,
-                                profilePicture,
-                              ),
+                            firstName: widget.firstName,
+                            lastName: widget.lastName,
+                            username: widget.username,
+                            password: widget.password,
+                            bio: bio,
+                            profilePicture: profilePicture,
+                            email: widget.email,
+                          ),
                         ),
                       );
                     }

@@ -3,11 +3,12 @@ import 'package:junto_beta_mobile/screens/sign_up/sign_up_four/sign_up_four.dart
 import 'package:junto_beta_mobile/screens/sign_up/sign_up_logo/sign_up_logo.dart';
 
 class SignUpThree extends StatefulWidget {
-  const SignUpThree(this.firstName, this.lastName, this.username);
+  const SignUpThree({Key key, this.firstName, this.lastName, this.username, this.email}) : super(key: key);
 
   final String firstName;
   final String lastName;
   final String username;
+  final String email;
 
   @override
   State<StatefulWidget> createState() {
@@ -38,8 +39,7 @@ class SignUpThreeState extends State<SignUpThree> {
               ),
             ),
             child: Container(
-              margin: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * .10 + 18),
+              margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * .10 + 18),
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,10 +77,7 @@ class SignUpThreeState extends State<SignUpThree> {
                                 color: Colors.green,
                               ),
                               hintText: 'PASSWORD',
-                              hintStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w400),
+                              hintStyle: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w400),
                               fillColor: Colors.white,
                             ),
                             style: const TextStyle(
@@ -128,11 +125,11 @@ class SignUpThreeState extends State<SignUpThree> {
                         context,
                         MaterialPageRoute<dynamic>(
                           builder: (BuildContext context) => SignUpFour(
-                                widget.firstName,
-                                widget.lastName,
-                                widget.username,
-                                password,
-                              ),
+                              firstName: widget.firstName,
+                              lastName: widget.lastName,
+                              username: widget.username,
+                              password: password,
+                              email: widget.email),
                         ),
                       );
                     }

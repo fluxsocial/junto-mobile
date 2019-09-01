@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/providers/auth_provider/auth_provider.dart';
 import 'package:junto_beta_mobile/screens/template/template.dart';
 import 'package:junto_beta_mobile/typography/palette.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Welcome screen shown to the user following registration
 class SignUpWelcome extends StatefulWidget {
-  const SignUpWelcome(
-    this.firstName,
-    this.lastName,
-    this.username,
-    this.password,
-    this.bio,
-    this.profilePicture,
-  );
+  const SignUpWelcome({
+    Key key,
+    @required this.firstName,
+    @required this.lastName,
+    @required this.username,
+    @required this.password,
+    @required this.bio,
+    @required this.profilePicture,
+    @required this.email,
+  }) : super(key: key);
 
   /// First Name of the user
   final String firstName;
@@ -32,6 +37,9 @@ class SignUpWelcome extends StatefulWidget {
   /// Url for the user's profile picture
   final String profilePicture;
 
+  /// User's email
+  final String email;
+
   @override
   State<StatefulWidget> createState() => SignUpWelcomeState();
 }
@@ -40,16 +48,30 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
   /// Stores the user state as `loggedIn` then navigates them
   /// to [JuntoTemplate]
   Future<void> _handleSignUp() async {
-    await FlutterSecureStorage().write(
-      key: 'isLoggedIn',
-      value: 'true',
+    final UserAuthRegistrationDetails details = UserAuthRegistrationDetails(
+      email: widget.email,
+      firstName: widget.firstName,
+      lastName: widget.lastName,
+      password: widget.password,
     );
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute<dynamic>(
-        builder: (BuildContext context) => JuntoTemplate(),
-      ),
-    );
+    try {
+      final String results = await Provider.of<AuthenticationProvider>(context).registerUser(details);
+      print(results);
+      await SharedPreferences.getInstance()
+        ..setBool(
+          'isLoggedIn',
+          true,
+        )
+        ..setString('user_token', results);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute<dynamic>(
+          builder: (BuildContext context) => JuntoTemplate(),
+        ),
+      );
+    } catch (error) {
+      print('Error: $error');
+    }
   }
 
   @override
@@ -88,17 +110,11 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: MediaQuery.of(context).size.width * .10),
+                    padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * .10),
                     margin: const EdgeInsets.only(bottom: 40),
                     child: Text(
-                      'Hey ' +
-                          widget.firstName +
-                          '! We are stoked to have you here.',
-                      style: const TextStyle(
-                          color: JuntoPalette.juntoGrey,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 22),
+                      'Hey ' + widget.firstName + '! We are stoked to have you here.',
+                      style: const TextStyle(color: JuntoPalette.juntoGrey, fontWeight: FontWeight.w700, fontSize: 22),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -114,8 +130,7 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: MediaQuery.of(context).size.width * .10),
+                    padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * .10),
                     child: const Text(
                       'Junto is a community of individuals working together to'
                       ' inspire authenticity and meaningful collaboration.',

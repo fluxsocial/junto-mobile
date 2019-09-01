@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:junto_beta_mobile/screens/template/template.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignIn extends StatelessWidget {
   /// Called when the user hits the `Sign In` button.
   /// Makes a call to [FlutterSecureStorage] then replaces the current route
   /// with [JuntoTemplate].
   Future<void> _handleSignIn(BuildContext context) async {
-    await FlutterSecureStorage().write(key: 'isLoggedIn', value: 'true');
+    await SharedPreferences.getInstance()
+      ..setBool('isLoggedIn', true);
     Navigator.pushReplacement(
       context,
       MaterialPageRoute<dynamic>(
@@ -89,10 +90,7 @@ class SignIn extends StatelessWidget {
                         color: Colors.green,
                       ),
                       hintText: 'PASSWORD',
-                      hintStyle: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400),
+                      hintStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w400),
                       fillColor: Colors.white,
                     ),
                     style: const TextStyle(
@@ -105,8 +103,7 @@ class SignIn extends StatelessWidget {
                 Container(
                   child: RaisedButton(
                     onPressed: () => _handleSignIn(context),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 100, vertical: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 20),
                     // color: Colors.white,
                     color: const Color(0xff4968BF),
                     child: const Text('SIGN IN',
