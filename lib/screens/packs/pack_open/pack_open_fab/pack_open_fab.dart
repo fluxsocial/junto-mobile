@@ -3,7 +3,7 @@ import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/typography/palette.dart';
 
 class PackOpenFAB extends StatelessWidget {
-  const PackOpenFAB ({Key key, this.isVisible}) : super(key: key);
+  const PackOpenFAB({Key key, this.isVisible}) : super(key: key);
 
   final ValueNotifier<bool> isVisible;
 
@@ -31,18 +31,12 @@ class PackOpenFAB extends StatelessWidget {
               margin: const EdgeInsets.only(left: 15, right: 15, bottom: 10),
               // padding: EdgeInsets.symmetric(vertical: 15),
               height: 50,
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width * .5,
+              width: MediaQuery.of(context).size.width * .5,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width * .25,
+                    width: MediaQuery.of(context).size.width * .25,
                     child: Icon(
                       CustomIcons.half_lotus,
                       size: 17,
@@ -50,10 +44,7 @@ class PackOpenFAB extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width * .25,
+                    width: MediaQuery.of(context).size.width * .25,
                     child: RotatedBox(
                       quarterTurns: 2,
                       child: Icon(

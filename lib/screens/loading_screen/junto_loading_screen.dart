@@ -16,7 +16,8 @@ class JuntoLoading extends StatefulWidget {
   _JuntoLoadingState createState() => _JuntoLoadingState();
 }
 
-class _JuntoLoadingState extends State<JuntoLoading> with SingleTickerProviderStateMixin {
+class _JuntoLoadingState extends State<JuntoLoading>
+    with SingleTickerProviderStateMixin {
   // Controller used to drive both animations
   AnimationController controller;
 
@@ -48,7 +49,7 @@ class _JuntoLoadingState extends State<JuntoLoading> with SingleTickerProviderSt
     final SharedPreferences preferences = await SharedPreferences.getInstance();
     final bool isLoggedIn = preferences.getBool('isLoggedIn');
     await Future<void>.delayed(const Duration(milliseconds: 1500));
-    if (isLoggedIn != null && isLoggedIn == true ) {
+    if (isLoggedIn != null && isLoggedIn == true) {
       Navigator.of(context).pushReplacement(
         CustomRoute<dynamic>(
           builder: (BuildContext context) => JuntoTemplate(),

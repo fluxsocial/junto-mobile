@@ -263,7 +263,8 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
                           ),
                         ),
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
                           child: GestureDetector(
                             onTap: () {
                               // Update channels list in state until there are 3
@@ -301,7 +302,9 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
                   ),
                   Container(
                     alignment: Alignment.centerLeft,
-                    padding: _channels.isEmpty ? const EdgeInsets.all(0) : const EdgeInsets.symmetric(vertical: 10),
+                    padding: _channels.isEmpty
+                        ? const EdgeInsets.all(0)
+                        : const EdgeInsets.symmetric(vertical: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -321,31 +324,33 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
                           children: _channels
                               .map(
                                 (String channel) => GestureDetector(
-                                  onDoubleTap: () {
-                                    _removeChannel(state, channel);
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      border: Border.all(
-                                        color: const Color(0xff333333),
-                                        width: 1,
+                                      onDoubleTap: () {
+                                        _removeChannel(state, channel);
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          border: Border.all(
+                                            color: const Color(0xff333333),
+                                            width: 1,
+                                          ),
+                                        ),
+                                        margin:
+                                            const EdgeInsets.only(right: 10),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 10,
+                                          vertical: 5,
+                                        ),
+                                        child: Text(
+                                          channel,
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                    margin: const EdgeInsets.only(right: 10),
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 10,
-                                      vertical: 5,
-                                    ),
-                                    child: Text(
-                                      channel,
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                  ),
-                                ),
                               )
                               .toList(),
                         ),

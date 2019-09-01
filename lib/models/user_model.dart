@@ -133,5 +133,9 @@ class UserAuthRegistrationDetails implements UserAuthDetails {
   final String lastName;
 
   @override
-  bool get isComplete => email != null && password != null && firstName != null && lastName != null;
+  bool get isComplete =>
+      email != null &&
+      password != null &&
+      firstName != null &&
+      lastName != null;
 }

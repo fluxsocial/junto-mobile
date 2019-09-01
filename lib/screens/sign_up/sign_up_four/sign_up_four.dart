@@ -56,7 +56,8 @@ class SignUpFourState extends State<SignUpFour> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * .17),
+                    margin: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).size.height * .17),
                     child: const Text(
                       'We are almost done! Feel free to upload a photo and '
                       'write a brief bio of who you are',
@@ -136,14 +137,14 @@ class SignUpFourState extends State<SignUpFour> {
                         context,
                         MaterialPageRoute<dynamic>(
                           builder: (BuildContext context) => SignUpWelcome(
-                            firstName: widget.firstName,
-                            lastName: widget.lastName,
-                            username: widget.username,
-                            password: widget.password,
-                            bio: bio,
-                            profilePicture: profilePicture,
-                            email: widget.email,
-                          ),
+                                firstName: widget.firstName,
+                                lastName: widget.lastName,
+                                username: widget.username,
+                                password: widget.password,
+                                bio: bio,
+                                profilePicture: profilePicture,
+                                email: widget.email,
+                              ),
                         ),
                       );
                     }

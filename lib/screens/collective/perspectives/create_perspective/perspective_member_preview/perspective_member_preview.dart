@@ -38,7 +38,8 @@ class PerspectiveMemberPreview extends StatelessWidget {
                   children: const <Widget>[
                     Text(
                       'Eric Yang',
-                      style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
+                      style:
+                          TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
                     ),
                     Text('sunyata'),
                   ],
@@ -47,7 +48,8 @@ class PerspectiveMemberPreview extends StatelessWidget {
                   height: 17,
                   width: 17,
                   decoration: BoxDecoration(
-                    border: Border.all(color: const Color(0xffeeeeee), width: 1.5),
+                    border:
+                        Border.all(color: const Color(0xffeeeeee), width: 1.5),
                     borderRadius: BorderRadius.circular(100),
                   ),
                 )

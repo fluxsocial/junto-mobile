@@ -90,7 +90,10 @@ class SignIn extends StatelessWidget {
                         color: Colors.green,
                       ),
                       hintText: 'PASSWORD',
-                      hintStyle: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w400),
+                      hintStyle: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400),
                       fillColor: Colors.white,
                     ),
                     style: const TextStyle(
@@ -103,7 +106,8 @@ class SignIn extends StatelessWidget {
                 Container(
                   child: RaisedButton(
                     onPressed: () => _handleSignIn(context),
-                    padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 20),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 100, vertical: 20),
                     // color: Colors.white,
                     color: const Color(0xff4968BF),
                     child: const Text('SIGN IN',

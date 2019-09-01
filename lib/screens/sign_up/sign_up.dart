@@ -53,7 +53,8 @@ class SignUpState extends State<SignUp> {
               ),
             ),
             child: Container(
-              margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * .10 + 18),
+              margin: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * .10 + 18),
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -196,8 +197,10 @@ class SignUpState extends State<SignUp> {
                       Navigator.push(
                         context,
                         MaterialPageRoute<dynamic>(
-                          builder: (BuildContext context) =>
-                              SignUpTwo(firstName: firstName, lastName: lastName, email: email),
+                          builder: (BuildContext context) => SignUpTwo(
+                              firstName: firstName,
+                              lastName: lastName,
+                              email: email),
                         ),
                       );
                     }

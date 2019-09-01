@@ -3,7 +3,8 @@ import 'package:junto_beta_mobile/screens/sign_up/sign_up_logo/sign_up_logo.dart
 import 'package:junto_beta_mobile/screens/sign_up/sign_up_three/sign_up_three.dart';
 
 class SignUpTwo extends StatefulWidget {
-  const SignUpTwo({Key key, this.firstName, this.lastName, this.email}) : super(key: key);
+  const SignUpTwo({Key key, this.firstName, this.lastName, this.email})
+      : super(key: key);
 
   final String firstName;
   final String lastName;
@@ -42,7 +43,8 @@ class SignUpTwoState extends State<SignUpTwo> {
               ),
             ),
             child: Container(
-              margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * .10 + 18),
+              margin: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * .10 + 18),
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -123,16 +125,18 @@ class SignUpTwoState extends State<SignUpTwo> {
                 GestureDetector(
                   onTap: () {
                     usernameController.text = '';
-                    if (widget.firstName != '' && widget.lastName != '' && username != '') {
+                    if (widget.firstName != '' &&
+                        widget.lastName != '' &&
+                        username != '') {
                       Navigator.push(
                         context,
                         MaterialPageRoute<dynamic>(
                           builder: (BuildContext context) => SignUpThree(
-                            firstName: widget.firstName,
-                            lastName: widget.lastName,
-                            email: widget.email,
-                            username: username,
-                          ),
+                                firstName: widget.firstName,
+                                lastName: widget.lastName,
+                                email: widget.email,
+                                username: username,
+                              ),
                         ),
                       );
                     }

@@ -56,7 +56,7 @@ class Sphere {
         sphereImage: 'assets/images/junto-mobile__expression--photo.png',
         sphereHandle: 'holochain',
         sphereDescription:
-        'Holochain is a framework to build scalable, distributed applications.',
+            'Holochain is a framework to build scalable, distributed applications.',
       ),
     ];
   }
