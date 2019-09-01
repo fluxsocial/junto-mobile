@@ -26,7 +26,7 @@ class ExpressionOpenInteractions extends StatelessWidget {
                   builder: (BuildContext context, String value, _) {
                     return Text(
                       responses.value,
-                      style: TextStyle(fontWeight: FontWeight.w500),
+                      style: const TextStyle(fontWeight: FontWeight.w500),
                     );
                   },
                 ),
@@ -45,7 +45,7 @@ class ExpressionOpenInteractions extends StatelessWidget {
                         color: const Color(0xff333333),
                       ),
                       const SizedBox(width: 5),
-                      Text('Resonate',
+                      const Text('Resonate',
                           style: TextStyle(fontWeight: FontWeight.w500))
                     ],
                   )),

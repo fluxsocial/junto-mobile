@@ -78,7 +78,8 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
     if (!details.primaryDelta.isNegative) {
       _juntoTemplateKey.currentState.openDrawer();
     } else {
-      _controller.nextPage(
+      _controller.animateToPage(
+        1,
         duration: kTabScrollDuration,
         curve: Curves.decelerate,
       );
@@ -87,76 +88,72 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Scaffold(
-          key: _juntoTemplateKey,
-          backgroundColor: Colors.white,
-          appBar: JuntoAppBar(
-            juntoAppBarTitle: _appbarTitle,
-            navNotifications: _navNotifications,
-          ),
-          floatingActionButton: _currentScreen == 'collective'
-              ? CollectiveFilterFAB(
-                  isVisible: _isVisible,
-                  toggleFilter: _buildFilterChannelModal,
-                )
-              : null,
-          // only enable drawer if current screen is collective
-          drawer: _currentScreen == 'collective'
-              ? WillPopScope(
-                  onWillPop: () async {
-                    return false;
-                  },
-                  child: Perspectives(
-                    changePerspective: _changePerspective,
-                  ),
-                )
-              : null,
-          body: SafeArea(
-            child: ScrollConfiguration(
-              behavior: PlainScrollBehaviour(),
-              child: PageView(
-                physics: const ClampingScrollPhysics(),
-                controller: _controller,
-                onPageChanged: (int index) {
-                  _isVisible.value = true;
-                  if (index == 0) {
-                    _switchScreen('collective');
-                  } else if (index == 1) {
-                    _switchScreen('spheres');
-                  } else if (index == 2) {
-                    _switchScreen('packs');
-                  } else if (index == 3) {
-                    _switchScreen('den');
-                  }
-                },
-                children: <Widget>[
-                  GestureDetector(
-                    onHorizontalDragUpdate: _onDragUpdate,
-                    child: JuntoCollective(
-                      controller: _hideFABController,
-                      currentPerspective: _currentPerspective,
-                    ),
-                  ),
-                  JuntoSpheres(),
-                  JuntoPacks(),
-                  JuntoDen()
-                ],
+    return Scaffold(
+      key: _juntoTemplateKey,
+      backgroundColor: Colors.white,
+      appBar: JuntoAppBar(
+        juntoAppBarTitle: _appbarTitle,
+        navNotifications: _navNotifications,
+      ),
+      floatingActionButton: _currentScreen == 'collective'
+          ? CollectiveFilterFAB(
+              isVisible: _isVisible,
+              toggleFilter: _buildFilterChannelModal,
+            )
+          : null,
+      // only enable drawer if current screen is collective
+      drawer: _currentScreen == 'collective'
+          ? WillPopScope(
+              onWillPop: () async {
+                return false;
+              },
+              child: Perspectives(
+                changePerspective: _changePerspective,
               ),
-            ),
-          ),
-          bottomNavigationBar: ValueListenableBuilder<int>(
-            valueListenable: _bottomNavIndex,
-            builder: (BuildContext context, int index, _) {
-              return BottomNav(
-                currentIndex: index,
-                setIndex: _setBottomIndex,
-              );
+            )
+          : null,
+      body: SafeArea(
+        child: ScrollConfiguration(
+          behavior: PlainScrollBehaviour(),
+          child: PageView(
+            physics: const ClampingScrollPhysics(),
+            controller: _controller,
+            onPageChanged: (int index) {
+              _isVisible.value = true;
+              if (index == 0) {
+                _switchScreen('collective');
+              } else if (index == 1) {
+                _switchScreen('spheres');
+              } else if (index == 2) {
+                _switchScreen('packs');
+              } else if (index == 3) {
+                _switchScreen('den');
+              }
             },
+            children: <Widget>[
+              GestureDetector(
+                onHorizontalDragUpdate: _onDragUpdate,
+                child: JuntoCollective(
+                  controller: _hideFABController,
+                  currentPerspective: _currentPerspective,
+                ),
+              ),
+              JuntoSpheres(),
+              JuntoPacks(),
+              JuntoDen()
+            ],
           ),
         ),
-      ],
+      ),
+      bottomNavigationBar: ValueListenableBuilder<int>(
+        valueListenable: _bottomNavIndex,
+        builder: (BuildContext context, int index, _) {
+          return BottomNav(
+            currentIndex: index,
+            setIndex: _setBottomIndex,
+          );
+        },
+      ),
     );
   }
 
