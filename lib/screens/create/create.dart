@@ -227,10 +227,9 @@ class JuntoCreateState extends State<JuntoCreate> {
                   child: const Text(
                     'next',
                     style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xff333333)
-                    ),
+                        fontSize: 17,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xff333333)),
                   ),
                 )
               ],
