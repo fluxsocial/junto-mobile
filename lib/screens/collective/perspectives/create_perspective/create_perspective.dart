@@ -1,9 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
+import 'package:junto_beta_mobile/models/perspective.dart';
+import 'package:junto_beta_mobile/providers/user_provider.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/create_perspective/perspective_member_preview/perspective_member_preview.dart';
 import 'package:junto_beta_mobile/typography/palette.dart';
+import 'package:provider/provider.dart';
 
-class CreatePerspective extends StatelessWidget {
+class CreatePerspective extends StatefulWidget {
+  @override
+  _CreatePerspectiveState createState() => _CreatePerspectiveState();
+}
+
+class _CreatePerspectiveState extends State<CreatePerspective> {
+  TextEditingController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  Future<void> createPerspective() async {
+    final String name = controller.value.text;
+    await Provider.of<UserProvider>(context).createPerspective(Perspective(name: name));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,11 +60,15 @@ class CreatePerspective extends StatelessWidget {
                       size: 24,
                     ),
                   ),
-                  const Text(
-                    'create',
-                    style: TextStyle(
-                      color: Color(0xff333333),
-                      fontSize: 14,
+                  InkWell(
+                    onTap: () {},
+                    enableFeedback: false,
+                    child: const Text(
+                      'create',
+                      style: TextStyle(
+                        color: Color(0xff333333),
+                        fontSize: 14,
+                      ),
                     ),
                   ),
                 ],
@@ -66,6 +97,7 @@ class CreatePerspective extends StatelessWidget {
                   ),
                 ),
                 child: TextField(
+                  controller: controller,
                   buildCounter: (
                     BuildContext context, {
                     int currentLength,
@@ -99,10 +131,7 @@ class CreatePerspective extends StatelessWidget {
                       Container(
                         width: MediaQuery.of(context).size.width * .75,
                         child: TextField(
-                          buildCounter: (BuildContext context,
-                                  {int currentLength,
-                                  int maxLength,
-                                  bool isFocused}) =>
+                          buildCounter: (BuildContext context, {int currentLength, int maxLength, bool isFocused}) =>
                               null,
                           decoration: InputDecoration(
                             border: InputBorder.none,
