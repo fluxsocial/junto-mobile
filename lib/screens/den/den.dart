@@ -9,7 +9,6 @@ import 'package:junto_beta_mobile/screens/den/den_settings/den_settings.dart';
 import 'package:junto_beta_mobile/screens/den/den_connections/den_connections.dart';
 import 'package:junto_beta_mobile/screens/den/den_followers/den_followers.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 /// Displays the user's DEN or "profile screen"
 class JuntoDen extends StatefulWidget {

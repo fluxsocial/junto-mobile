@@ -15,7 +15,9 @@ class CreateLongform extends StatefulWidget {
 class CreateLongformState extends State<CreateLongform> {
   TextEditingController _titleController;
   TextEditingController _bodyController;
+  //ignore:unused_field
   String _titleValue;
+  //ignore:unused_field
   String _bodyValue;
 
   @override
@@ -66,7 +68,6 @@ class CreateLongformState extends State<CreateLongform> {
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               children: <Widget>[
-
                 Container(
                   constraints: BoxConstraints(
                     minHeight: MediaQuery.of(context).size.height * .7,
