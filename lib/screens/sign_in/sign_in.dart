@@ -1,12 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/providers/auth_provider/auth_provider.dart';
 import 'package:junto_beta_mobile/screens/template/template.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SignIn extends StatelessWidget {
+class SignIn extends StatefulWidget {
+  @override
+  _SignInState createState() => _SignInState();
+}
+
+class _SignInState extends State<SignIn> {
+  TextEditingController _emailController;
+  TextEditingController _passwordController;
+
+  @override
+  void initState() {
+    super.initState();
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
   /// Called when the user hits the `Sign In` button.
   /// Makes a call to [FlutterSecureStorage] then replaces the current route
   /// with [JuntoTemplate].
   Future<void> _handleSignIn(BuildContext context) async {
+    final String email = _emailController.value.text;
+    final String password = _passwordController.value.text;
+    final UserAuthLoginDetails loginDetails =
+        UserAuthLoginDetails(email: email, password: password);
+    await Provider.of<AuthenticationProvider>(context).loginUser(loginDetails);
     await SharedPreferences.getInstance()
       ..setBool('isLoggedIn', true);
     Navigator.pushReplacement(
@@ -43,6 +73,7 @@ class SignIn extends StatelessWidget {
                   margin: const EdgeInsets.only(bottom: 20),
                   padding: const EdgeInsets.symmetric(horizontal: 45),
                   child: TextField(
+                    controller: _emailController,
                     decoration: InputDecoration(
                       enabledBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(
@@ -55,7 +86,7 @@ class SignIn extends StatelessWidget {
                         ),
                       ),
                       labelStyle: TextStyle(color: Colors.green),
-                      hintText: 'USERNAME',
+                      hintText: 'EMAIL',
                       hintStyle: TextStyle(
                         color: Colors.white,
                         fontSize: 14,
@@ -74,6 +105,7 @@ class SignIn extends StatelessWidget {
                   margin: const EdgeInsets.only(bottom: 40),
                   padding: const EdgeInsets.symmetric(horizontal: 45),
                   child: TextField(
+                    controller: _passwordController,
                     obscureText: true,
                     decoration: InputDecoration(
                       enabledBorder: const UnderlineInputBorder(
