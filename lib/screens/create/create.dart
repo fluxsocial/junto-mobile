@@ -182,26 +182,45 @@ class JuntoCreateState extends State<JuntoCreate> {
       resizeToAvoidBottomPadding: false,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       backgroundColor: Colors.white,
-      body: Column(
-        children: <Widget>[
-          Container(
-            margin: const EdgeInsets.only(top: 20, bottom: 10),
-            padding: const EdgeInsets.only(left: 10, right: 10, top: 30),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(45),
+        child: AppBar(
+          automaticallyImplyLeading: false,
+          brightness: Brightness.light,
+          iconTheme: const IconThemeData(color: Color(0xff333333)),
+          backgroundColor: Colors.white,
+          elevation: 0,
+          titleSpacing: 0,
+          title: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Text(_expressionType,
-                    textAlign: TextAlign.start,
-                    style: JuntoStyles.lotusExpressionType),
+                Row(
+                  children: <Widget>[
+                    ClipOval(
+                      child: Image.asset(
+                        'assets/images/junto-mobile__eric.png',
+                        height: 30.0,
+                        width: 30.0,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Text(_expressionType.toLowerCase(),
+                        textAlign: TextAlign.start,
+                        style: JuntoStyles.lotusExpressionType),
+                  ],
+                ),
                 GestureDetector(
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute<dynamic>(
                         builder: (BuildContext context) => CreateActions(
-                          expressionLayer: widget.expressionLayer,
-                        ),
+                              expressionLayer: widget.expressionLayer,
+                            ),
                       ),
                     );
                   },
@@ -209,12 +228,18 @@ class JuntoCreateState extends State<JuntoCreate> {
                     'next',
                     style: TextStyle(
                       fontSize: 17,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xff333333)
                     ),
                   ),
                 )
               ],
             ),
           ),
+        ),
+      ),
+      body: Column(
+        children: <Widget>[
           _buildTemplate(),
         ],
       ),

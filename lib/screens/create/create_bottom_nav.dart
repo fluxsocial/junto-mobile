@@ -11,22 +11,12 @@ class CreateBottomNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.blue,
       height: bottomNavVisible ? 90 : 45,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           bottomNavVisible
               ? Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    border: Border(
-                      top: BorderSide(
-                        color: Color(0xffeeeeee),
-                        width: .75,
-                      ),
-                    ),
-                  ),
                   alignment: Alignment.center,
                   height: 45.0,
                   child: ListView(
@@ -37,7 +27,8 @@ class CreateBottomNav extends StatelessWidget {
                           switchTemplate('longform');
                         },
                         child: Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 25.0),
+                          color: Colors.white,
+                          width: MediaQuery.of(context).size.width * .25,
                           child: const Icon(
                             CustomIcons.longform,
                             size: 20,
@@ -50,33 +41,26 @@ class CreateBottomNav extends StatelessWidget {
                           switchTemplate('shortform');
                         },
                         child: Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 25.0),
+                          color: Colors.white,
+                          width: MediaQuery.of(context).size.width * .25,
                           child: const Icon(
                             CustomIcons.feather,
                             size: 20,
-                            color: JuntoPalette.juntoGrey,
+                            color: Color(0xff000000),
                           ),
                         ),
                       ),
-                      //  GestureDetector(
-                      //     onTap: () {
-                      //       switchTemplate('bullet');
-                      //     },
-                      //     child: Container(
-                      //         margin: const  EdgeInsets.symmetric
-                      //         (horizontal: 25.0),
-                      //         child: Icon(CustomIcons.book, size: 20,
-                      //             color: JuntoPalette.juntoGrey))),
                       GestureDetector(
                         onTap: () {
                           switchTemplate('photo');
                         },
                         child: Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 25.0),
+                          color: Colors.white,
+                          width: MediaQuery.of(context).size.width * .25,
                           child: const Icon(
                             CustomIcons.camera,
                             size: 20,
-                            color: JuntoPalette.juntoGrey,
+                            color: Color(0xff000000),
                           ),
                         ),
                       ),
@@ -85,22 +69,15 @@ class CreateBottomNav extends StatelessWidget {
                           switchTemplate('events');
                         },
                         child: Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 25.0),
+                          color: Colors.white,
+                          width: MediaQuery.of(context).size.width * .25,
                           child: const Icon(
                             CustomIcons.event,
                             size: 20,
-                            color: JuntoPalette.juntoGrey,
+                            color: Color(0xff000000),
                           ),
                         ),
                       ),
-                      // GestureDetector(
-                      //     onTap: () {
-                      //       switchTemplate('Music');
-                      //     },
-                      //     child: Container(
-                      //         margin: EdgeInsets.symmetric(horizontal: 25.0),
-                      //         child: Icon(CustomIcons.moon, size: 20,
-                      //             color: JuntoPalette.juntoGrey))),
                     ],
                   ),
                 )
@@ -123,3 +100,15 @@ class CreateBottomNav extends StatelessWidget {
     );
   }
 }
+
+// GestureDetector(
+//   onTap: () {
+//     switchTemplate('bullet');
+//   },
+//   child: Container(
+//     // color: Colors.orange,
+//     width: MediaQuery.of(context).size.width * .25,
+//     child: Icon(CustomIcons.book,
+//         size: 20, color: JuntoPalette.juntoGrey),
+//   ),
+// ),
