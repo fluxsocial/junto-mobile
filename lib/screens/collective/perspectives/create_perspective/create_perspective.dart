@@ -28,7 +28,8 @@ class _CreatePerspectiveState extends State<CreatePerspective> {
 
   Future<void> createPerspective() async {
     final String name = controller.value.text;
-    await Provider.of<UserProvider>(context).createPerspective(Perspective(name: name));
+    await Provider.of<UserProvider>(context)
+        .createPerspective(Perspective(name: name));
   }
 
   @override
@@ -61,7 +62,7 @@ class _CreatePerspectiveState extends State<CreatePerspective> {
                     ),
                   ),
                   InkWell(
-                    onTap: () {},
+                    onTap: createPerspective,
                     enableFeedback: false,
                     child: const Text(
                       'create',
@@ -131,7 +132,10 @@ class _CreatePerspectiveState extends State<CreatePerspective> {
                       Container(
                         width: MediaQuery.of(context).size.width * .75,
                         child: TextField(
-                          buildCounter: (BuildContext context, {int currentLength, int maxLength, bool isFocused}) =>
+                          buildCounter: (BuildContext context,
+                                  {int currentLength,
+                                  int maxLength,
+                                  bool isFocused}) =>
                               null,
                           decoration: InputDecoration(
                             border: InputBorder.none,

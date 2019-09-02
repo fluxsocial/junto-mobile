@@ -3,6 +3,7 @@ import 'package:junto_beta_mobile/providers/auth_provider/auth_provider.dart';
 import 'package:junto_beta_mobile/providers/packs_provider/packs_provider.dart';
 import 'package:junto_beta_mobile/providers/search_provider/search_provider.dart';
 import 'package:junto_beta_mobile/providers/spheres_provider/spheres_provider.dart';
+import 'package:junto_beta_mobile/providers/user_provider.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
 import 'package:junto_beta_mobile/screens/loading_screen/junto_loading_screen.dart';
 import 'package:junto_beta_mobile/screens/notifications/notifications.dart';
@@ -29,6 +30,9 @@ class JuntoAppState extends State<JuntoApp> {
         ),
         Provider<AuthenticationProvider>(
           builder: (BuildContext context) => AuthenticationImp(),
+        ),
+        Provider<UserProvider>(
+          builder: (BuildContext context) => UserProviderImpl(),
         ),
         ChangeNotifierProvider<CollectiveProvider>(
           builder: (BuildContext context) => CollectiveProvider(),

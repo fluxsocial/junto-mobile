@@ -1,9 +1,7 @@
-import 'dart:convert';
-
-import 'package:junto_beta_mobile/API.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:junto_beta_mobile/utils/junto_http.dart';
+import 'package:junto_beta_mobile/utils/utils.dart';
 
 abstract class UserProvider {
   Future<PerspectiveResponse> createPerspective(Perspective perspective);
@@ -13,28 +11,33 @@ class UserProviderImpl implements UserProvider {
   /// Creates a [Perspective] on the server. Function takes a single argument.
   @override
   Future<PerspectiveResponse> createPerspective(Perspective perspective) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    const String url = '$END_POINT/holochain';
+    const String resource = '/holochain';
 
-    final http.Response serverResponse = await http.post(
-      Uri.encodeFull(url),
-      headers: <String, String>{
-        'auth': prefs.getString('auth'),
+    final Map<String, dynamic> body = <String, dynamic>{
+      'zome': 'perspective',
+      'function': 'create_perspective',
+      'args': <String, String>{
+        'name': perspective.name,
       },
-      body: '{"args": {"name": ${perspective.name}}, "zome": "perspective", "function": "create_perspective"}',
-    );
+    };
 
-    final Map<String, dynamic> responseMap = json.decode(serverResponse.body);
+    final http.Response serverResponse =
+        await JuntoHttp().post(resource, body: body);
+    // print('RESPONSE BODY: ${serverResponse.body}');
 
+    final Map<String, dynamic> responseMap =
+        deserializeJsonRecursively(serverResponse.body);
+    print(responseMap);
     if (responseMap['Ok'] != null) {
-      final PerspectiveResponse perspectiveDetails = PerspectiveResponse.fromMap(
+      final PerspectiveResponse perspectiveDetails =
+          PerspectiveResponse.fromMap(
         responseMap['Ok'],
       );
       return perspectiveDetails;
     }
 
-    if (responseMap['Err'] != null) {
-      throw Exception(responseMap['Err']['Error Type']);
+    if (responseMap['result']['Err'] != null) {
+      throw Exception(responseMap['result']['Err']);
     }
 
     // Should not get here.

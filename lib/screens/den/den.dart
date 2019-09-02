@@ -34,7 +34,8 @@ class JuntoDenState extends State<JuntoDen> {
             children: <Widget>[
               Container(
                 width: MediaQuery.of(context).size.width,
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 55),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 55),
                 decoration: const BoxDecoration(
                     gradient: LinearGradient(
                         begin: Alignment.bottomLeft,
@@ -75,7 +76,8 @@ class JuntoDenState extends State<JuntoDen> {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 decoration: const BoxDecoration(
                   border: Border(
                     bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
@@ -152,8 +154,10 @@ class JuntoDenState extends State<JuntoDen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute<dynamic>(
-                            builder: (BuildContext context) =>
-                                const PackOpen('The Gnarly Nomads', 'sunyata', 'assets/images/junto-mobile__eric.png'),
+                            builder: (BuildContext context) => const PackOpen(
+                                'The Gnarly Nomads',
+                                'sunyata',
+                                'assets/images/junto-mobile__eric.png'),
                           ),
                         );
                       },
@@ -219,7 +223,8 @@ class JuntoDenState extends State<JuntoDen> {
                 ),
               ),
               Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   child: Row(
                     children: <Widget>[
                       Container(
@@ -260,13 +265,15 @@ class JuntoDenState extends State<JuntoDen> {
                     ],
                   )),
               Container(
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                 child: Row(
                   children: <Widget>[
                     Container(
                       child: const Text(
                         'EXPRESSIONS',
-                        style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 12),
                       ),
                     )
                   ],
@@ -282,7 +289,8 @@ class JuntoDenState extends State<JuntoDen> {
               }),
               RaisedButton(
                 onPressed: () async {
-                  await Provider.of<AuthenticationProvider>(context).logouUser();
+                  await Provider.of<AuthenticationProvider>(context)
+                      .logouUser();
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute<dynamic>(
