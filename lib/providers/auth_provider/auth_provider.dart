@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:junto_beta_mobile/API.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/utils/junto_http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Abstract class which defines the functionality of the Authentication Provider
@@ -34,7 +35,13 @@ class AuthenticationImp implements AuthenticationProvider {
         body: jsonData,
       );
       if (response.statusCode == 200) {
+        // The response sent back from the server is decoded
         final Map<String, dynamic> results = json.decode(response.body);
+        // The user account needs to be created on holochain
+        await _createHoloUser(details);
+        // Once the user is created, we need to log them in to obtain a auth token.
+        await loginUser(UserAuthLoginDetails(email: details.email, password: details.password));
+        // The results ID is returned to the user
         return results['user_id'];
       } else {
         throw HttpException('Recieved Status code ${response.statusCode}');
@@ -61,8 +68,7 @@ class AuthenticationImp implements AuthenticationProvider {
         body: jsonData,
       );
       if (response.statusCode == 200) {
-        final Cookie responseCookie =
-            Cookie.fromSetCookieValue(response.headers['set-cookie']);
+        final Cookie responseCookie = Cookie.fromSetCookieValue(response.headers['set-cookie']);
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString('auth', responseCookie.value);
         return responseCookie.value;
@@ -83,5 +89,17 @@ class AuthenticationImp implements AuthenticationProvider {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('isLoggedIn', false);
     await prefs.remove('auth');
+  }
+
+  /// After the user is created on the server, their account is then created on
+  /// Holochain.
+  Future<void> _createHoloUser(UserAuthRegistrationDetails profile) async {
+    final Map<String, dynamic> body = <String, dynamic>{
+      'zome': 'user',
+      'function': 'create_user',
+      'args': <String, dynamic>{'user_data': profile.toMap()},
+    };
+    final http.Response holoResponse = await JuntoHttp().post('/holochain', body: body);
+    print(holoResponse.body);
   }
 }

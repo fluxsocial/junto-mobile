@@ -37,7 +37,7 @@ class UserProviderImpl implements UserProvider {
     }
 
     if (responseMap['result']['Err'] != null) {
-      throw Exception(responseMap['result']['Err']);
+       print(responseMap['result']['Err']);
     }
 
     // Should not get here.

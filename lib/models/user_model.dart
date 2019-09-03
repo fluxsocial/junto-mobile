@@ -123,6 +123,9 @@ class UserAuthRegistrationDetails implements UserAuthDetails {
     @required this.password,
     @required this.firstName,
     @required this.lastName,
+    this.bio,
+    this.profileImage,
+    this.username,
   });
 
   @override
@@ -131,11 +134,20 @@ class UserAuthRegistrationDetails implements UserAuthDetails {
   final String password;
   final String firstName;
   final String lastName;
+  final String profileImage;
+  final String bio;
+  final String username;
 
   @override
-  bool get isComplete =>
-      email != null &&
-      password != null &&
-      firstName != null &&
-      lastName != null;
+  bool get isComplete => email != null && password != null && firstName != null && lastName != null;
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'username': username,
+      'first_name': firstName,
+      'last_name': lastName,
+      'profile_picture': profileImage,
+      'bio': bio
+    };
+  }
 }
