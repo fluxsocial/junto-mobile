@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
 import 'package:junto_beta_mobile/palette.dart';
@@ -77,7 +78,7 @@ class JuntoAppBar extends StatelessWidget implements PreferredSizeWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute<dynamic>(
+                      CupertinoPageRoute<dynamic>(
                         builder: (BuildContext context) => GlobalSearch(),
                       ),
                     );

@@ -9,6 +9,7 @@ import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/collective/filter_fab/filter_fab.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspectives.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
+import 'package:junto_beta_mobile/screens/notifications/notifications.dart';
 import 'package:junto_beta_mobile/screens/packs/packs.dart';
 import 'package:junto_beta_mobile/screens/spheres/spheres.dart';
 import 'package:junto_beta_mobile/palette.dart';
@@ -215,7 +216,9 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
 
   // Navigate to Notifications screen
   void _navNotifications() {
-    Navigator.pushNamed(context, '/notifications');
+    Navigator.of(context).push(CupertinoPageRoute(
+      builder: (context) => JuntoNotifications()
+    ));
   }
 
   // Build bottom modal to filter by channel
