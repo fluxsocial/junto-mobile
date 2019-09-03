@@ -4,7 +4,7 @@ import 'package:junto_beta_mobile/screens/notifications/notifications_appbar/not
 
 class JuntoNotifications extends StatelessWidget {
   static Route<dynamic> route() {
-    return CupertinoPageRoute(
+    return CupertinoPageRoute<dynamic>(
       builder: (BuildContext context) {
         return JuntoNotifications();
       },
