@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
-import 'package:junto_beta_mobile/typography/palette.dart';
+import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/styles.dart';
 
 class PackOpenAppbar extends StatelessWidget {
   const PackOpenAppbar({
@@ -24,7 +25,8 @@ class PackOpenAppbar extends StatelessWidget {
       elevation: 0,
       titleSpacing: 0,
       title: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(
+            horizontal: JuntoStyles.horizontalPadding),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
@@ -41,14 +43,7 @@ class PackOpenAppbar extends StatelessWidget {
               children: <Widget>[
                 Container(
                   margin: const EdgeInsets.only(right: 10),
-                  child: Text(
-                    packTitle,
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black,
-                    ),
-                  ),
+                  child: Text(packTitle, style: JuntoStyles.title),
                 ),
                 ClipOval(
                   child: Image.asset(

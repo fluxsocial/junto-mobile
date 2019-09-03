@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open.dart';
+import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/styles.dart';
+
 
 // This class renders a preview of a sphere
 class SpherePreview extends StatelessWidget {
@@ -58,9 +61,7 @@ class SpherePreview extends StatelessWidget {
                     border: Border(
                       bottom: BorderSide(
                         width: .5,
-                        color: Color(
-                          0xffeeeeee,
-                        ),
+                        color: JuntoPalette.juntoFade,
                       ),
                     ),
                   ),
@@ -72,19 +73,12 @@ class SpherePreview extends StatelessWidget {
                       Text(
                         sphereTitle,
                         textAlign: TextAlign.start,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: Color(0xff333333),
-                          fontWeight: FontWeight.w700,
-                        ),
+                        style: JuntoStyles.title
                       ),
                       Text(
                         '/s/' + sphereHandle,
                         textAlign: TextAlign.start,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
+                        style: JuntoStyles.body
                       )
                     ],
                   ),

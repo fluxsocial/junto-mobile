@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/providers/auth_provider/auth_provider.dart';
 import 'package:junto_beta_mobile/screens/template/template.dart';
-import 'package:junto_beta_mobile/typography/palette.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -119,7 +118,7 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
                           widget.firstName +
                           '! We are stoked to have you here.',
                       style: const TextStyle(
-                          color: JuntoPalette.juntoGrey,
+                          color: Color(0xff333333),
                           fontWeight: FontWeight.w700,
                           fontSize: 22),
                       textAlign: TextAlign.center,
@@ -143,7 +142,7 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
                       'Junto is a community of individuals working together to'
                       ' inspire authenticity and meaningful collaboration.',
                       style: TextStyle(
-                        color: JuntoPalette.juntoGrey,
+                        color: Color(0xff333333),
                         fontSize: 17,
                       ),
                       textAlign: TextAlign.center,

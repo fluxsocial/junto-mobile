@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
-import 'package:junto_beta_mobile/typography/palette.dart';
+import 'package:junto_beta_mobile/palette.dart';
 
 class ExpressionOpenAppbar extends StatelessWidget {
   @override
@@ -38,8 +38,8 @@ class ExpressionOpenAppbar extends StatelessWidget {
               end: Alignment.centerRight,
               stops: <double>[0.1, 0.9],
               colors: <Color>[
-                Color(0xffeeeeee),
-                Color(0xffeeeeee),
+                JuntoPalette.juntoFade,
+                JuntoPalette.juntoFade,
               ],
             ),
           ),

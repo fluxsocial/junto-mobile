@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/typography/palette.dart';
-import 'package:junto_beta_mobile/typography/style.dart';
+import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/utils/form-validation.dart';
 
 /// Allows the user to create an event
@@ -84,7 +83,6 @@ class _CreateEventState extends State<CreateEvent> {
                       ),
                       cursorColor: JuntoPalette.juntoGrey,
                       cursorWidth: 2,
-                      style: JuntoStyles.lotusLongformTitle,
                       maxLines: 1,
                       maxLength: 80,
                     ),
@@ -116,7 +114,6 @@ class _CreateEventState extends State<CreateEvent> {
                       ),
                       cursorColor: JuntoPalette.juntoGrey,
                       cursorWidth: 2,
-                      style: JuntoStyles.lotusLongformTitle,
                       maxLines: 1,
                       maxLength: 80,
                     ),
@@ -138,7 +135,6 @@ class _CreateEventState extends State<CreateEvent> {
                       ),
                       cursorColor: JuntoPalette.juntoGrey,
                       cursorWidth: 2,
-                      style: JuntoStyles.lotusLongformTitle,
                       maxLines: 1,
                       maxLength: 80,
                     ),
@@ -164,7 +160,6 @@ class _CreateEventState extends State<CreateEvent> {
                       ),
                       cursorColor: JuntoPalette.juntoGrey,
                       cursorWidth: 2,
-                      style: JuntoStyles.lotusLongformTitle,
                       maxLines: null,
                       textInputAction: TextInputAction.newline,
                     ),

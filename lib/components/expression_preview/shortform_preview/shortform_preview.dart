@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/typography/palette.dart';
+import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/styles.dart';
 
 /// Takes an un-named [ExpressionResult] to be displayed
 class ShortformPreview extends StatefulWidget {
@@ -31,33 +32,33 @@ class ShortformPreviewState extends State<ShortformPreview> {
 
     if (shortformBackground == 'zero') {
       setState(() {
-        _gradientOne = const Color(0xffffffff);
-        _gradientTwo = const Color(0xffffffff);
+        _gradientOne = JuntoPalette.juntoWhite;
+        _gradientTwo = JuntoPalette.juntoWhite;
       });
     } else if (shortformBackground == 'one') {
       setState(() {
-        _gradientOne = JuntoPalette.juntoBlue;
-        _gradientTwo = JuntoPalette.juntoBlueLight;
+        _gradientOne = JuntoPalette.juntoPrimary;
+        _gradientTwo = JuntoPalette.juntoPrimaryLight;
       });
     } else if (shortformBackground == 'two') {
       setState(() {
-        _gradientOne = JuntoPalette.juntoPurple;
-        _gradientTwo = JuntoPalette.juntoPurpleLight;
+        _gradientOne = JuntoPalette.juntoSecondary;
+        _gradientTwo = JuntoPalette.juntoSecondaryLight;
       });
     } else if (shortformBackground == 'three') {
       setState(() {
-        _gradientOne = JuntoPalette.juntoPurple;
-        _gradientTwo = JuntoPalette.juntoBlue;
+        _gradientOne = JuntoPalette.juntoSecondary;
+        _gradientTwo = JuntoPalette.juntoPrimary;
       });
     } else if (shortformBackground == 'four') {
       setState(() {
         _gradientOne = JuntoPalette.juntoGreen;
-        _gradientTwo = JuntoPalette.juntoBlue;
+        _gradientTwo = JuntoPalette.juntoPrimary;
       });
     } else if (shortformBackground == 'five') {
       setState(() {
         _gradientOne = JuntoPalette.juntoGreen;
-        _gradientTwo = JuntoPalette.juntoPurple;
+        _gradientTwo = JuntoPalette.juntoSecondary;
       });
     }
   }
@@ -85,15 +86,9 @@ class ShortformPreviewState extends State<ShortformPreview> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            shortformBody,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 17.0,
-              fontWeight: FontWeight.w700,
-              color: Colors.white,
-            ),
-          ),
+          Text(shortformBody,
+              textAlign: TextAlign.center,
+              style: JuntoStyles.shortformPreviewTitle),
         ],
       ),
     );

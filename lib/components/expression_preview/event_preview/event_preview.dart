@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/typography/palette.dart';
+import 'package:junto_beta_mobile/palette.dart';
 
 /// Shows a preview for the given event.
 /// Widget takes [eventTitle], [eventLocation] and [eventPhoto]
@@ -67,7 +67,7 @@ class EventPreview extends StatelessWidget {
                   child: const Text(
                     'WED, JUN 19, 6:00PM',
                     style: TextStyle(
-                      color: JuntoPalette.juntoBlue,
+                      color: JuntoPalette.juntoPrimary,
                       fontSize: 12,
                       fontWeight: FontWeight.w700,
                     ),

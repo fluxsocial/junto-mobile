@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/typography/style.dart';
 
 /// Displays the given [image] and [imageCaption]
 class PhotoPreview extends StatelessWidget {
@@ -25,7 +24,6 @@ class PhotoPreview extends StatelessWidget {
           imageCaption,
           maxLines: 2,
           textAlign: TextAlign.start,
-          style: JuntoStyles.photoCaption,
         ),
       );
     }

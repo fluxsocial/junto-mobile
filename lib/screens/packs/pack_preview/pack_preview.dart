@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open.dart';
+import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/styles.dart';
 
 // This class renders a pack preview (usually shown in a list of packs)
 class PackPreview extends StatelessWidget {
@@ -44,12 +46,8 @@ class PackPreview extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 20),
                   decoration: const BoxDecoration(
                     border: Border(
-                      bottom: BorderSide(
-                        width: .5,
-                        color: Color(
-                          0xffeeeeee,
-                        ),
-                      ),
+                      bottom:
+                          BorderSide(width: .5, color: JuntoPalette.juntoFade),
                     ),
                   ),
                   margin: const EdgeInsets.only(left: 10.0),
@@ -57,23 +55,10 @@ class PackPreview extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
-                        packTitle,
-                        textAlign: TextAlign.start,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: Color(0xff333333),
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      Text(
-                        packUser,
-                        textAlign: TextAlign.start,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
+                      Text(packTitle,
+                          textAlign: TextAlign.start, style: JuntoStyles.title),
+                      Text(packUser,
+                          textAlign: TextAlign.start, style: JuntoStyles.body),
                     ],
                   ),
                 )

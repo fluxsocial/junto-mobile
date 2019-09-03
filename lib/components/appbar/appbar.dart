@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
-import 'package:junto_beta_mobile/typography/palette.dart';
-import 'package:junto_beta_mobile/typography/style.dart';
+import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/styles.dart';
 
-// Junto app bar used throughout the main screens. Rendered in JuntoTemplate
-// Widget.
+// Junto app bar used throughout the main screens. Rendered in JuntoTemplate.
 class JuntoAppBar extends StatelessWidget implements PreferredSizeWidget {
   const JuntoAppBar({
     Key key,
@@ -22,12 +21,13 @@ class JuntoAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      backgroundColor: Colors.white,
       automaticallyImplyLeading: false,
       bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(1),
+        preferredSize: const Size.fromHeight(.75),
         child: Container(
           height: .75,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
@@ -36,18 +36,18 @@ class JuntoAppBar extends StatelessWidget implements PreferredSizeWidget {
                   0.9
                 ],
                 colors: <Color>[
-                  JuntoPalette.juntoPurple,
-                  JuntoPalette.juntoBlue
+                  JuntoPalette.juntoSecondary,
+                  JuntoPalette.juntoPrimary
                 ]),
           ),
         ),
       ),
-      backgroundColor: JuntoPalette.juntoWhite,
       brightness: Brightness.light,
       elevation: 0,
       titleSpacing: 0.0,
       title: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(
+            horizontal: JuntoStyles.horizontalPadding),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
@@ -63,11 +63,8 @@ class JuntoAppBar extends StatelessWidget implements PreferredSizeWidget {
                           height: 20.0, width: 20.0),
                       Container(
                         margin: const EdgeInsets.only(left: 7.5),
-                        child: Text(
-                          juntoAppBarTitle,
-                          textAlign: TextAlign.center,
-                          style: JuntoStyles.appbarTitle,
-                        ),
+                        child: Text(juntoAppBarTitle,
+                            style: JuntoStyles.appbarTitle),
                       ),
                     ],
                   ),
@@ -87,7 +84,8 @@ class JuntoAppBar extends StatelessWidget implements PreferredSizeWidget {
                   },
                   child: Container(
                     child: Icon(Icons.search,
-                        color: JuntoPalette.juntoSleek, size: 20),
+                        color: JuntoPalette.juntoSleek,
+                        size: JuntoStyles.appbarIcon),
                   ),
                 ),
                 GestureDetector(
@@ -95,7 +93,8 @@ class JuntoAppBar extends StatelessWidget implements PreferredSizeWidget {
                   child: Container(
                     margin: const EdgeInsets.only(left: 7.5),
                     child: Icon(CustomIcons.moon,
-                        color: JuntoPalette.juntoSleek, size: 20),
+                        color: JuntoPalette.juntoSleek,
+                        size: JuntoStyles.appbarIcon),
                   ),
                 )
               ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
-import 'package:junto_beta_mobile/typography/palette.dart';
+import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/styles.dart';
 
 class SphereOpenAppbar extends StatelessWidget {
   const SphereOpenAppbar(this.sphereHandle);
@@ -35,13 +36,7 @@ class SphereOpenAppbar extends StatelessWidget {
               children: <Widget>[
                 Container(
                   margin: const EdgeInsets.only(right: 10),
-                  child: Text(
-                    '/s/' + sphereHandle,
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black),
-                  ),
+                  child: Text('/s/' + sphereHandle, style: JuntoStyles.title),
                 ),
               ],
             ),
@@ -56,31 +51,12 @@ class SphereOpenAppbar extends StatelessWidget {
             border: Border(
               bottom: BorderSide(
                 width: 1,
-                color: Color(0xffeeeeee),
+                color: JuntoPalette.juntoFade,
               ),
             ),
           ),
         ),
       ),
-      // bottom:
-      // PreferredSize(
-      //     preferredSize: Size.fromHeight(1),
-      //     child: Container(
-      //       height: 1,
-      //       decoration: BoxDecoration(
-      //         gradient: LinearGradient(
-      //             begin: Alignment.centerLeft,
-      //             end: Alignment.centerRight,
-      //             stops: [
-      //               0.1,
-      //               0.9
-      //             ],
-      //             colors: [
-      //               JuntoPalette.juntoBlue,
-      //               JuntoPalette.juntoPurple
-      //             ]),
-      //       ),
-      //     )),
     );
   }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/components/expression_action_items/expression_action_items.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/typography/palette.dart';
+import 'package:junto_beta_mobile/styles.dart';
 
 class ExpressionOpenTop extends StatelessWidget {
   const ExpressionOpenTop({Key key, this.expression}) : super(key: key);
@@ -41,21 +41,8 @@ class ExpressionOpenTop extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    firstName + ' ' + lastName,
-                    style: const TextStyle(
-                        color: JuntoPalette.juntoGrey,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700),
-                  ),
-                  Text(
-                    '@' + username,
-                    style: const TextStyle(
-                      color: JuntoPalette.juntoGrey,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
+                  Text(firstName + ' ' + lastName, style: JuntoStyles.title),
+                  Text('@' + username, style: JuntoStyles.body),
                 ],
               ),
             ),

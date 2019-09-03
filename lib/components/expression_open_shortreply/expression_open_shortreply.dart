@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/styles.dart';
 
 class ExpressionOpenShortReply extends StatelessWidget {
   @override
@@ -12,19 +14,21 @@ class ExpressionOpenShortReply extends StatelessWidget {
         border: Border(
           top: BorderSide(
             width: 1,
-            color: Color(0xffeeeeee),
+            color: JuntoPalette.juntoFade,
           ),
         ),
       ),
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      padding: const EdgeInsets.symmetric(
+          vertical: 10, horizontal: JuntoStyles.horizontalPadding),
       child: Container(
         decoration: const BoxDecoration(
-          color: Color(0xffeeeeee),
+          color: JuntoPalette.juntoFade,
           borderRadius: BorderRadius.all(
             Radius.circular(10),
           ),
         ),
-        padding: const EdgeInsets.only(left: 10, right: 10),
+        padding: const EdgeInsets.symmetric(
+            horizontal: JuntoStyles.horizontalPadding),
         child: TextField(
           style: const TextStyle(fontSize: 17),
           maxLines: null,

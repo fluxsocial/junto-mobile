@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
-import 'package:junto_beta_mobile/typography/palette.dart';
+import 'package:junto_beta_mobile/palette.dart';
 
 class CreateBottomNav extends StatelessWidget {
   const CreateBottomNav(this.switchTemplate, this.bottomNavVisible);
@@ -32,7 +32,7 @@ class CreateBottomNav extends StatelessWidget {
                           child: const Icon(
                             CustomIcons.longform,
                             size: 20,
-                            color: Color(0xff000000),
+                            color: JuntoPalette.juntoBlack,
                           ),
                         ),
                       ),
@@ -46,7 +46,7 @@ class CreateBottomNav extends StatelessWidget {
                           child: const Icon(
                             CustomIcons.feather,
                             size: 20,
-                            color: Color(0xff000000),
+                            color: JuntoPalette.juntoBlack,
                           ),
                         ),
                       ),
@@ -60,7 +60,7 @@ class CreateBottomNav extends StatelessWidget {
                           child: const Icon(
                             CustomIcons.camera,
                             size: 20,
-                            color: Color(0xff000000),
+                            color: JuntoPalette.juntoBlack,
                           ),
                         ),
                       ),
@@ -74,7 +74,7 @@ class CreateBottomNav extends StatelessWidget {
                           child: const Icon(
                             CustomIcons.event,
                             size: 20,
-                            color: Color(0xff000000),
+                            color: JuntoPalette.juntoBlack,
                           ),
                         ),
                       ),
@@ -90,7 +90,7 @@ class CreateBottomNav extends StatelessWidget {
               onPressed: () => Navigator.pop(context),
               icon: const Icon(
                 CustomIcons.lotus,
-                color: JuntoPalette.juntoBlue,
+                color: JuntoPalette.juntoPrimary,
                 size: 30,
               ),
             ),
