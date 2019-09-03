@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/providers/auth_provider/auth_provider.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
-import 'package:junto_beta_mobile/typography/palette.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open.dart';
 import 'package:junto_beta_mobile/screens/den/den_settings/den_settings.dart';
 import 'package:junto_beta_mobile/screens/den/den_connections/den_connections.dart';
 import 'package:junto_beta_mobile/screens/den/den_followers/den_followers.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/styles.dart';
 
 /// Displays the user's DEN or "profile screen"
 class JuntoDen extends StatefulWidget {
@@ -34,13 +35,21 @@ class JuntoDenState extends State<JuntoDen> {
             children: <Widget>[
               Container(
                 width: MediaQuery.of(context).size.width,
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 55),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: JuntoStyles.horizontalPadding, vertical: 55),
                 decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                        begin: Alignment.bottomLeft,
-                        end: Alignment.topRight,
-                        stops: <double>[0.1, 0.9],
-                        colors: <Color>[Color(0xff5E54D0), Color(0xff307FAB)])),
+                  gradient: LinearGradient(
+                      begin: Alignment.bottomLeft,
+                      end: Alignment.topRight,
+                      stops: <double>[
+                        0.1,
+                        0.9
+                      ],
+                      colors: <Color>[
+                        JuntoPalette.juntoSecondary,
+                        JuntoPalette.juntoPrimary
+                      ]),
+                ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
@@ -75,10 +84,11 @@ class JuntoDenState extends State<JuntoDen> {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: JuntoStyles.horizontalPadding, vertical: 15),
                 decoration: const BoxDecoration(
                   border: Border(
-                    bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
+                    bottom: BorderSide(color: JuntoPalette.juntoFade, width: 1),
                   ),
                 ),
                 child: Row(
@@ -102,14 +112,14 @@ class JuntoDenState extends State<JuntoDen> {
                             Image.asset(
                               'assets/images/junto-mobile__outlinelogo--gradient.png',
                               height: 17,
-                              color: const Color(0xff555555),
+                              color: JuntoPalette.juntoSleek,
                             ),
                             const SizedBox(height: 5),
                             const Text(
                               'Followers',
                               style: TextStyle(
                                 fontSize: 12,
-                                color: Color(0xff555555),
+                                color: JuntoPalette.juntoSleek,
                               ),
                             ),
                           ],
@@ -133,14 +143,14 @@ class JuntoDenState extends State<JuntoDen> {
                             Image.asset(
                               'assets/images/junto-mobile__infinity.png',
                               height: 17,
-                              color: const Color(0xff555555),
+                              color: JuntoPalette.juntoSleek,
                             ),
                             const SizedBox(height: 5),
                             const Text(
                               'Connections',
                               style: TextStyle(
                                 fontSize: 12,
-                                color: Color(0xff555555),
+                                color: JuntoPalette.juntoSleek,
                               ),
                             ),
                           ],
@@ -152,8 +162,10 @@ class JuntoDenState extends State<JuntoDen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute<dynamic>(
-                            builder: (BuildContext context) =>
-                                const PackOpen('The Gnarly Nomads', 'sunyata', 'assets/images/junto-mobile__eric.png'),
+                            builder: (BuildContext context) => const PackOpen(
+                                'The Gnarly Nomads',
+                                'sunyata',
+                                'assets/images/junto-mobile__eric.png'),
                           ),
                         );
                       },
@@ -165,14 +177,14 @@ class JuntoDenState extends State<JuntoDen> {
                             Image.asset(
                               'assets/images/junto-mobile__join-pack.png',
                               height: 17,
-                              color: const Color(0xff555555),
+                              color: JuntoPalette.juntoSleek,
                             ),
                             const SizedBox(height: 5),
                             const Text(
                               'My Pack',
                               style: TextStyle(
                                 fontSize: 12,
-                                color: Color(0xff555555),
+                                color: JuntoPalette.juntoSleek,
                               ),
                             ),
                           ],
@@ -199,7 +211,7 @@ class JuntoDenState extends State<JuntoDen> {
                               'Settings',
                               style: TextStyle(
                                 fontSize: 12,
-                                color: Color(0xff555555),
+                                color: JuntoPalette.juntoSleek,
                               ),
                             ),
                           ],
@@ -219,7 +231,8 @@ class JuntoDenState extends State<JuntoDen> {
                 ),
               ),
               Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: JuntoStyles.horizontalPadding, vertical: 10),
                   child: Row(
                     children: <Widget>[
                       Container(
@@ -229,13 +242,13 @@ class JuntoDenState extends State<JuntoDen> {
                             Image.asset(
                               'assets/images/junto-mobile__location.png',
                               height: 17,
-                              color: const Color(0xff555555),
+                              color: JuntoPalette.juntoSleek,
                             ),
                             const SizedBox(width: 5),
                             const Text(
                               'Spirit',
                               style: TextStyle(
-                                color: Color(0xff555555),
+                                color: JuntoPalette.juntoSleek,
                               ),
                             ),
                           ],
@@ -247,12 +260,13 @@ class JuntoDenState extends State<JuntoDen> {
                             Image.asset(
                               'assets/images/junto-mobile__link.png',
                               height: 17,
-                              color: const Color(0xff555555),
+                              color: JuntoPalette.juntoSleek,
                             ),
                             const SizedBox(width: 5),
                             const Text(
                               'junto.foundation',
-                              style: TextStyle(color: JuntoPalette.juntoBlue),
+                              style:
+                                  TextStyle(color: JuntoPalette.juntoPrimary),
                             )
                           ],
                         ),
@@ -260,13 +274,15 @@ class JuntoDenState extends State<JuntoDen> {
                     ],
                   )),
               Container(
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                padding: const EdgeInsets.symmetric(
+                    vertical: 10, horizontal: JuntoStyles.horizontalPadding),
                 child: Row(
                   children: <Widget>[
                     Container(
                       child: const Text(
                         'EXPRESSIONS',
-                        style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 12),
                       ),
                     )
                   ],
@@ -282,7 +298,8 @@ class JuntoDenState extends State<JuntoDen> {
               }),
               RaisedButton(
                 onPressed: () async {
-                  await Provider.of<AuthenticationProvider>(context).logouUser();
+                  await Provider.of<AuthenticationProvider>(context)
+                      .logouUser();
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute<dynamic>(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/screens/collective/degrees/degree/degree.dart';
+import 'package:junto_beta_mobile/palette.dart';
 
 /// Degrees of Separation widget rendered in Collective screen under 'JUNTO'
 /// perspective
@@ -31,22 +32,13 @@ class DegreesOfSeparation extends StatelessWidget {
         border: Border(
           bottom: BorderSide(
             width: .5,
-            color: Color(0xffeeeeee),
+            color: JuntoPalette.juntoFade,
           ),
         ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          // Container(
-          //   padding: EdgeInsets.symmetric(horizontal: 10, ),
-          //     margin: EdgeInsets.only(top: 15),
-          //     child: Text('Degrees of Separation'.toUpperCase(),
-          //         style: TextStyle(
-          //             color: Color(0xff333333),
-          //             fontWeight: FontWeight.w700,
-          //             fontSize: 12,
-          //             letterSpacing: 1),),),
           Container(
             margin: const EdgeInsets.only(bottom: 5),
             padding: const EdgeInsets.symmetric(vertical: 7.5),

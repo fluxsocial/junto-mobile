@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
-import 'package:junto_beta_mobile/typography/palette.dart';
+import 'package:junto_beta_mobile/palette.dart';
 
 class PackOpenFAB extends StatelessWidget {
   const PackOpenFAB({Key key, this.isVisible}) : super(key: key);
@@ -22,7 +22,7 @@ class PackOpenFAB extends StatelessWidget {
                 borderRadius: BorderRadius.circular(25),
                 boxShadow: const <BoxShadow>[
                   BoxShadow(
-                    color: Color(0xff999999),
+                    color: JuntoPalette.juntoGreyLight,
                     blurRadius: 3,
                     offset: Offset(1, 2),
                   )

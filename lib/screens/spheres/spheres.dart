@@ -4,6 +4,8 @@ import 'package:junto_beta_mobile/screens/spheres/create_sphere/create_sphere.da
 import 'package:junto_beta_mobile/providers/spheres_provider/spheres_provider.dart';
 import 'package:junto_beta_mobile/screens/spheres/sphere_preview/sphere_preview.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/styles.dart';
 
 /// This class renders the main screen for Spheres. It includes a widget to
 /// create
@@ -27,21 +29,15 @@ class JuntoSpheres extends StatelessWidget {
             child: Container(
               decoration: const BoxDecoration(
                 border: Border(
-                  bottom: BorderSide(color: Color(0xffeeeeee), width: .5),
+                  bottom: BorderSide(color: JuntoPalette.juntoFade, width: .5),
                 ),
               ),
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+              padding: const EdgeInsets.symmetric(
+                  vertical: 20, horizontal: JuntoStyles.horizontalPadding),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: const <Widget>[
-                  Text(
-                    'Create a sphere',
-                    style: TextStyle(
-                      color: Color(0xff333333),
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
+                  Text('Create a sphere', style: JuntoStyles.title),
                   Text(
                     '+',
                     style: TextStyle(fontSize: 17),

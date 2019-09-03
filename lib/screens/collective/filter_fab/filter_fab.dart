@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/typography/palette.dart';
+import 'package:junto_beta_mobile/palette.dart';
 
 /// Gradient [FloatingActionButton] used for filtering
 /// Collectives.
@@ -34,13 +34,13 @@ class CollectiveFilterFAB extends StatelessWidget {
                     end: Alignment.topRight,
                     stops: <double>[0.1, 0.9],
                     colors: <Color>[
-                      JuntoPalette.juntoPurple,
-                      JuntoPalette.juntoBlue,
+                      JuntoPalette.juntoSecondary,
+                      JuntoPalette.juntoPrimary,
                     ],
                   ),
-                  color: Colors.white.withOpacity(.7),
+                  color: JuntoPalette.juntoWhite.withOpacity(.7),
                   border: Border.all(
-                    color: Colors.white,
+                    color: JuntoPalette.juntoWhite,
                     width: 1.5,
                   ),
                   borderRadius: BorderRadius.circular(25),
@@ -49,7 +49,7 @@ class CollectiveFilterFAB extends StatelessWidget {
                 child: const Text(
                   '#',
                   style: TextStyle(
-                    color: Color(0xffffffff),
+                    color: JuntoPalette.juntoWhite,
                   ),
                 ),
               ),

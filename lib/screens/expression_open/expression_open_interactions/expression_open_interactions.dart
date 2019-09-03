@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:junto_beta_mobile/components/emoji_selector/emoji_selector.dart';
 import 'package:junto_beta_mobile/models/emoji_model.dart';
+import 'package:junto_beta_mobile/palette.dart';
 
 class ExpressionOpenInteractions extends StatelessWidget {
   final ValueNotifier<String> responses = ValueNotifier<String>('Respond');
@@ -42,11 +43,13 @@ class ExpressionOpenInteractions extends StatelessWidget {
                       Image.asset(
                         'assets/images/junto-mobile__resonation.png',
                         height: 17,
-                        color: const Color(0xff333333),
+                        color: JuntoPalette.juntoGrey,
                       ),
                       const SizedBox(width: 5),
-                      const Text('Resonate',
-                          style: TextStyle(fontWeight: FontWeight.w500))
+                      const Text(
+                        'Resonate',
+                        style: TextStyle(fontWeight: FontWeight.w500),
+                      )
                     ],
                   )),
             ),

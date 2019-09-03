@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/styles.dart';
 
 class ExpressionOpenBottom extends StatefulWidget {
   const ExpressionOpenBottom(this.expression);
@@ -27,7 +29,7 @@ class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
       padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
       decoration: const BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: Color(0xffeeeeee), width: .5),
+          bottom: BorderSide(color: JuntoPalette.juntoFade, width: .5),
         ),
       ),
       child: Column(
@@ -39,11 +41,7 @@ class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
                 Text(
                   timestamp + ' MINUTES AGO',
                   style: const TextStyle(
-                    fontSize: 10,
-                    color: Color(
-                      0xff555555,
-                    ),
-                  ),
+                      fontSize: 10, color: JuntoPalette.juntoSleek),
                 ),
                 Container(
                     margin: const EdgeInsets.only(right: 10),

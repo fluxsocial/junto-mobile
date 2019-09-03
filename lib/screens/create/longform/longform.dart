@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/typography/palette.dart';
-import 'package:junto_beta_mobile/typography/style.dart';
+import 'package:junto_beta_mobile/palette.dart';
+
 
 class CreateLongform extends StatefulWidget {
   const CreateLongform({Key key, @required this.isEditing}) : super(key: key);
@@ -82,7 +82,6 @@ class CreateLongformState extends State<CreateLongform> {
                     cursorColor: JuntoPalette.juntoGrey,
                     cursorWidth: 2,
                     maxLines: null,
-                    style: JuntoStyles.lotusLongformBody,
                   ),
                 ),
               ],

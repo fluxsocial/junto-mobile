@@ -6,7 +6,8 @@ import 'package:junto_beta_mobile/screens/expression_open/expression_open_intera
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_top/expression_open_top.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/longform_open/longform_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/shortform_open/shortform_open.dart';
-import 'package:junto_beta_mobile/typography/palette.dart';
+import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/styles.dart';
 
 class ExpressionOpen extends StatefulWidget {
   const ExpressionOpen(this.expression);
@@ -131,12 +132,12 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                   border: Border(
                     top: BorderSide(
                       width: 1,
-                      color: Color(0xffeeeeee),
+                      color: JuntoPalette.juntoFade,
                     ),
                   ),
                 ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: JuntoStyles.horizontalPadding, vertical: 5),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -176,7 +177,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                                 cursorWidth: 2,
                                 style: const TextStyle(
                                   fontSize: 17,
-                                  color: Color(0xff333333),
+                                  color: JuntoPalette.juntoGrey,
                                 ),
                                 textInputAction: TextInputAction.newline,
                               ),
@@ -195,13 +196,13 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                             end: Alignment.centerRight,
                             stops: <double>[0.1, 0.9],
                             colors: <Color>[
-                              JuntoPalette.juntoBlue,
-                              JuntoPalette.juntoPurple
+                              JuntoPalette.juntoPrimary,
+                              JuntoPalette.juntoSecondary
                             ],
                           ),
                         ),
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
+                          horizontal: JuntoStyles.horizontalPadding,
                           vertical: 5,
                         ),
                         child: const Text(

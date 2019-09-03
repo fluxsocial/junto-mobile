@@ -3,7 +3,7 @@ import 'package:junto_beta_mobile/components/expression_action_items/expression_
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
-import 'package:junto_beta_mobile/typography/style.dart';
+import 'package:junto_beta_mobile/styles.dart';
 
 class PreviewProfile extends StatelessWidget {
   const PreviewProfile({
@@ -21,7 +21,8 @@ class PreviewProfile extends StatelessWidget {
     final String profilePicture = expression.authorProfile.profilePicture;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+      padding: const EdgeInsets.symmetric(
+          horizontal: JuntoStyles.horizontalPadding, vertical: 10.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -56,12 +57,10 @@ class PreviewProfile extends StatelessWidget {
                           ),
                         );
                       },
-                      child: Text(
-                        firstName + ' ' + lastName,
-                        style: JuntoStyles.expressionPreviewName,
-                      ),
+                      child: Text(firstName + ' ' + lastName,
+                          style: JuntoStyles.title),
                     ),
-                    Text(username, style: JuntoStyles.expressionPreviewHandle)
+                    Text(username, style: JuntoStyles.body)
                   ],
                 ),
               ),
@@ -75,7 +74,7 @@ class PreviewProfile extends StatelessWidget {
                 },
                 child: const Icon(
                   CustomIcons.more,
-                  size: 17,
+                  size: 20,
                 ),
               )
             ],

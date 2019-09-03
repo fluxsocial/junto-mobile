@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/typography/palette.dart';
+import 'package:junto_beta_mobile/palette.dart';
 
 /// Allows the user to create a short form expression.
 class CreateShortform extends StatefulWidget {
@@ -101,8 +101,8 @@ class CreateShortformState extends State<CreateShortform> {
                         onTap: () {
                           setState(
                             () {
-                              gradientOne = JuntoPalette.juntoBlue;
-                              gradientTwo = JuntoPalette.juntoBlueLight;
+                              gradientOne = JuntoPalette.juntoPrimary;
+                              gradientTwo = JuntoPalette.juntoPrimaryLight;
                               fontColor = Colors.white;
                               _currentBackground = 'one';
                             },
@@ -115,8 +115,8 @@ class CreateShortformState extends State<CreateShortform> {
                               end: Alignment.topRight,
                               stops: <double>[0.1, 0.9],
                               colors: <Color>[
-                                JuntoPalette.juntoBlue,
-                                JuntoPalette.juntoBlueLight
+                                JuntoPalette.juntoPrimary,
+                                JuntoPalette.juntoPrimaryLight
                               ],
                             ),
                           ),
@@ -131,8 +131,8 @@ class CreateShortformState extends State<CreateShortform> {
                         onTap: () {
                           setState(
                             () {
-                              gradientOne = JuntoPalette.juntoPurple;
-                              gradientTwo = JuntoPalette.juntoPurpleLight;
+                              gradientOne = JuntoPalette.juntoSecondary;
+                              gradientTwo = JuntoPalette.juntoSecondaryLight;
                               fontColor = Colors.white;
                               _currentBackground = 'two';
                             },
@@ -145,8 +145,8 @@ class CreateShortformState extends State<CreateShortform> {
                               end: Alignment.topRight,
                               stops: <double>[0.1, 0.9],
                               colors: <Color>[
-                                JuntoPalette.juntoPurple,
-                                JuntoPalette.juntoPurpleLight
+                                JuntoPalette.juntoSecondary,
+                                JuntoPalette.juntoSecondaryLight
                               ],
                             ),
                           ),
@@ -158,8 +158,8 @@ class CreateShortformState extends State<CreateShortform> {
                       GestureDetector(
                         onTap: () {
                           setState(() {
-                            gradientOne = JuntoPalette.juntoPurple;
-                            gradientTwo = JuntoPalette.juntoBlue;
+                            gradientOne = JuntoPalette.juntoSecondary;
+                            gradientTwo = JuntoPalette.juntoPrimary;
                             fontColor = Colors.white;
                             _currentBackground = 'three';
                           });
@@ -174,8 +174,8 @@ class CreateShortformState extends State<CreateShortform> {
                                   0.9
                                 ],
                                 colors: <Color>[
-                                  JuntoPalette.juntoPurple,
-                                  JuntoPalette.juntoBlue
+                                  JuntoPalette.juntoSecondary,
+                                  JuntoPalette.juntoPrimary
                                 ]),
                           ),
                           margin: const EdgeInsets.only(right: 10),
@@ -188,7 +188,7 @@ class CreateShortformState extends State<CreateShortform> {
                           setState(
                             () {
                               gradientOne = JuntoPalette.juntoGreen;
-                              gradientTwo = JuntoPalette.juntoBlue;
+                              gradientTwo = JuntoPalette.juntoPrimary;
                               fontColor = Colors.white;
                               _currentBackground = 'four';
                             },
@@ -205,7 +205,7 @@ class CreateShortformState extends State<CreateShortform> {
                                 ],
                                 colors: <Color>[
                                   JuntoPalette.juntoGreen,
-                                  JuntoPalette.juntoBlue
+                                  JuntoPalette.juntoPrimary
                                 ]),
                           ),
                           margin: const EdgeInsets.only(right: 10),
@@ -218,7 +218,7 @@ class CreateShortformState extends State<CreateShortform> {
                           setState(
                             () {
                               gradientOne = JuntoPalette.juntoGreen;
-                              gradientTwo = JuntoPalette.juntoPurple;
+                              gradientTwo = JuntoPalette.juntoSecondary;
                               fontColor = Colors.white;
                               _currentBackground = 'five';
                             },
@@ -235,7 +235,7 @@ class CreateShortformState extends State<CreateShortform> {
                                 ],
                                 colors: <Color>[
                                   JuntoPalette.juntoGreen,
-                                  JuntoPalette.juntoPurple
+                                  JuntoPalette.juntoSecondary
                                 ]),
                           ),
                           margin: const EdgeInsets.only(

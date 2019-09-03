@@ -45,8 +45,8 @@ class CreateFAB extends StatelessWidget {
                 );
               },
               child: Container(
-                height: 45,
-                width: 45,
+                height: 48,
+                width: 48,
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(.7),
                   border: Border.all(

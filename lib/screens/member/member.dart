@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/typography/palette.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/member/member_appbar/member_appbar.dart';
+import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/styles.dart';
 
 class JuntoMember extends StatelessWidget {
   // placeholder location
@@ -29,8 +30,8 @@ class JuntoMember extends StatelessWidget {
               children: <Widget>[
                 Container(
                   width: MediaQuery.of(context).size.width,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 55),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: JuntoStyles.horizontalPadding, vertical: 55),
                   decoration: const BoxDecoration(
                       gradient: LinearGradient(
                           begin: Alignment.bottomLeft,
@@ -40,8 +41,8 @@ class JuntoMember extends StatelessWidget {
                         0.9
                       ],
                           colors: <Color>[
-                        Color(0xff5E54D0),
-                        Color(0xff307FAB)
+                        JuntoPalette.juntoSecondary,
+                        JuntoPalette.juntoPrimary
                       ])),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -76,11 +77,12 @@ class JuntoMember extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: JuntoStyles.horizontalPadding, vertical: 15),
                   decoration: const BoxDecoration(
                     border: Border(
-                      bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
+                      bottom:
+                          BorderSide(color: JuntoPalette.juntoFade, width: 1),
                     ),
                   ),
                   child: Row(
@@ -94,14 +96,14 @@ class JuntoMember extends StatelessWidget {
                             Image.asset(
                               'assets/images/junto-mobile__outlinelogo--gradient.png',
                               height: 17,
-                              color: const Color(0xff555555),
+                              color: JuntoPalette.juntoSleek,
                             ),
                             const SizedBox(height: 5),
                             const Text(
                               'Follow',
                               style: TextStyle(
                                 fontSize: 12,
-                                color: Color(0xff555555),
+                                color: JuntoPalette.juntoSleek,
                               ),
                             ),
                           ],
@@ -114,14 +116,14 @@ class JuntoMember extends StatelessWidget {
                             Image.asset(
                               'assets/images/junto-mobile__infinity.png',
                               height: 17,
-                              color: const Color(0xff555555),
+                              color: JuntoPalette.juntoSleek,
                             ),
                             const SizedBox(height: 5),
                             const Text(
                               'Connect',
                               style: TextStyle(
                                 fontSize: 12,
-                                color: Color(0xff555555),
+                                color: JuntoPalette.juntoSleek,
                               ),
                             ),
                           ],
@@ -134,14 +136,14 @@ class JuntoMember extends StatelessWidget {
                             Image.asset(
                               'assets/images/junto-mobile__join-pack.png',
                               height: 17,
-                              color: const Color(0xff555555),
+                              color: JuntoPalette.juntoSleek,
                             ),
                             const SizedBox(height: 5),
                             const Text(
                               'Join Pack',
                               style: TextStyle(
                                 fontSize: 12,
-                                color: Color(0xff555555),
+                                color: JuntoPalette.juntoSleek,
                               ),
                             ),
                           ],
@@ -157,7 +159,7 @@ class JuntoMember extends StatelessWidget {
                               'More',
                               style: TextStyle(
                                 fontSize: 12,
-                                color: Color(0xff555555),
+                                color: JuntoPalette.juntoSleek,
                               ),
                             ),
                           ],
@@ -177,7 +179,8 @@ class JuntoMember extends StatelessWidget {
                 ),
                 Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 10),
+                        horizontal: JuntoStyles.horizontalPadding,
+                        vertical: 10),
                     child: Row(
                       children: <Widget>[
                         Container(
@@ -187,13 +190,13 @@ class JuntoMember extends StatelessWidget {
                               Image.asset(
                                 'assets/images/junto-mobile__location.png',
                                 height: 17,
-                                color: const Color(0xff555555),
+                                color: JuntoPalette.juntoSleek,
                               ),
                               const SizedBox(width: 5),
                               Text(
                                 _memberLocation,
                                 style: const TextStyle(
-                                  color: Color(0xff555555),
+                                  color: JuntoPalette.juntoSleek,
                                 ),
                               ),
                             ],
@@ -206,13 +209,14 @@ class JuntoMember extends StatelessWidget {
                                     Image.asset(
                                       'assets/images/junto-mobile__link.png',
                                       height: 17,
-                                      color: const Color(0xff555555),
+                                      color: JuntoPalette.juntoSleek,
                                     ),
                                     const SizedBox(width: 5),
                                     Text(
                                       _memberWebsite,
-                                      style: const TextStyle(
-                                          color: JuntoPalette.juntoBlue),
+                                      style: TextStyle(
+                                          color:
+                                              Theme.of(context).primaryColor),
                                     )
                                   ],
                                 ),
@@ -221,8 +225,8 @@ class JuntoMember extends StatelessWidget {
                       ],
                     )),
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 10, horizontal: JuntoStyles.horizontalPadding),
                   child: Row(
                     children: <Widget>[
                       Container(

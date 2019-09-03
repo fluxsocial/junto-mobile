@@ -11,7 +11,8 @@ import 'package:junto_beta_mobile/screens/collective/perspectives/perspectives.d
 import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/packs/packs.dart';
 import 'package:junto_beta_mobile/screens/spheres/spheres.dart';
-import 'package:junto_beta_mobile/typography/palette.dart';
+import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/styles.dart';
 
 // This class is a template screen that contains the navbar, bottom bar,
 // and screen (collective, spheres, pack, etc) depending on condition.
@@ -226,7 +227,8 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter state) {
             return Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: JuntoStyles.horizontalPadding),
               height: MediaQuery.of(context).size.height * .4,
               child: Column(
                 children: <Widget>[
@@ -254,7 +256,7 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
                             cursorColor: JuntoPalette.juntoGrey,
                             cursorWidth: 2,
                             style: const TextStyle(
-                              color: Color(0xff333333),
+                              color: JuntoPalette.juntoGrey,
                               fontSize: 14,
                               fontWeight: FontWeight.w700,
                             ),
@@ -280,13 +282,13 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w700,
-                                color: Color(0xff333333),
+                                color: JuntoPalette.juntoGrey,
                               ),
                             ),
                           ),
                           decoration: BoxDecoration(
                             border: Border.all(
-                              color: const Color(0xff333333),
+                              color: JuntoPalette.juntoGrey,
                               width: 1,
                             ),
                             borderRadius: BorderRadius.circular(5),
@@ -296,7 +298,8 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
                     ),
                     decoration: const BoxDecoration(
                       border: Border(
-                        bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
+                        bottom:
+                            BorderSide(color: JuntoPalette.juntoFade, width: 1),
                       ),
                     ),
                   ),
@@ -332,14 +335,15 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
                                           borderRadius:
                                               BorderRadius.circular(5),
                                           border: Border.all(
-                                            color: const Color(0xff333333),
+                                            color: JuntoPalette.juntoGrey,
                                             width: 1,
                                           ),
                                         ),
                                         margin:
                                             const EdgeInsets.only(right: 10),
                                         padding: const EdgeInsets.symmetric(
-                                          horizontal: 10,
+                                          horizontal:
+                                              JuntoStyles.horizontalPadding,
                                           vertical: 5,
                                         ),
                                         child: Text(

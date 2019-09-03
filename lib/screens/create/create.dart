@@ -6,7 +6,8 @@ import 'package:junto_beta_mobile/screens/create/event/event.dart';
 import 'package:junto_beta_mobile/screens/create/longform/longform.dart';
 import 'package:junto_beta_mobile/screens/create/photo/photo.dart';
 import 'package:junto_beta_mobile/screens/create/shortform/shortform.dart';
-import 'package:junto_beta_mobile/typography/style.dart';
+import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/styles.dart';
 
 class JuntoCreate extends StatefulWidget {
   const JuntoCreate(this.expressionLayer);
@@ -115,12 +116,13 @@ class JuntoCreateState extends State<JuntoCreate> {
                     backgroundColor: Colors.white,
                   ),
                   SizedBox(width: 12.0),
-                  Text('Junto', style: JuntoStyles.perspectiveTitle),
+                  Text('Junto'),
                 ],
               ),
             ),
-            content: Text('Are you sure you would like to switch Expression?',
-                style: JuntoStyles.lotusLongformBody),
+            content: Text(
+              'Are you sure you would like to switch Expression?',
+            ),
             actions: <Widget>[
               FlatButton(
                 child: const Text('Yes'),
@@ -187,12 +189,13 @@ class JuntoCreateState extends State<JuntoCreate> {
         child: AppBar(
           automaticallyImplyLeading: false,
           brightness: Brightness.light,
-          iconTheme: const IconThemeData(color: Color(0xff333333)),
+          iconTheme: const IconThemeData(color: JuntoPalette.juntoGrey),
           backgroundColor: Colors.white,
           elevation: 0,
           titleSpacing: 0,
           title: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.symmetric(
+                horizontal: JuntoStyles.horizontalPadding),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -208,9 +211,10 @@ class JuntoCreateState extends State<JuntoCreate> {
                       ),
                     ),
                     const SizedBox(width: 10),
-                    Text(_expressionType.toLowerCase(),
-                        textAlign: TextAlign.start,
-                        style: JuntoStyles.lotusExpressionType),
+                    Text(
+                      _expressionType.toLowerCase(),
+                      textAlign: TextAlign.start,
+                    ),
                   ],
                 ),
                 GestureDetector(
@@ -227,9 +231,10 @@ class JuntoCreateState extends State<JuntoCreate> {
                   child: const Text(
                     'next',
                     style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xff333333)),
+                      fontSize: 17,
+                      fontWeight: FontWeight.w600,
+                      color: JuntoPalette.juntoGrey,
+                    ),
                   ),
                 )
               ],
