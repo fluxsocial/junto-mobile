@@ -5,7 +5,6 @@ import 'package:junto_beta_mobile/components/utils/hide_fab.dart';
 import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open_appbar/sphere_open_appbar.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/styles.dart';
-import 'package:swipedetector/swipedetector.dart';
 
 class SphereOpen extends StatefulWidget {
   const SphereOpen({
