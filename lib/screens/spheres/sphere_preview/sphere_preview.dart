@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/styles.dart';
-
 
 // This class renders a preview of a sphere
 class SpherePreview extends StatelessWidget {
@@ -26,7 +26,7 @@ class SpherePreview extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute<dynamic>(
+          CupertinoPageRoute<dynamic>(
             builder: (BuildContext context) => SphereOpen(
                   sphereTitle: sphereTitle,
                   sphereMembers: sphereMembers,
@@ -70,16 +70,10 @@ class SpherePreview extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
-                        sphereTitle,
-                        textAlign: TextAlign.start,
-                        style: JuntoStyles.title
-                      ),
-                      Text(
-                        '/s/' + sphereHandle,
-                        textAlign: TextAlign.start,
-                        style: JuntoStyles.body
-                      )
+                      Text(sphereTitle,
+                          textAlign: TextAlign.start, style: JuntoStyles.title),
+                      Text('/s/' + sphereHandle,
+                          textAlign: TextAlign.start, style: JuntoStyles.body)
                     ],
                   ),
                 )
