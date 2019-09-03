@@ -325,12 +325,6 @@ class JuntoDenState extends State<JuntoDen> {
                   ),
                 ),
               ),
-              RaisedButton(
-                child: Text('testing nav'),
-                onPressed: () {
-                  Navigator.push(context, JuntoNotifications.route());
-                },
-              )
             ],
           ),
         ),

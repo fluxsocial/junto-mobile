@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/styles.dart';
@@ -17,7 +18,7 @@ class PackPreview extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute<dynamic>(
+          CupertinoPageRoute<dynamic>(
             builder: (BuildContext context) => PackOpen(
                   packTitle,
                   packUser,

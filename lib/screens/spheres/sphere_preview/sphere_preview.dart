@@ -24,18 +24,14 @@ class SpherePreview extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          CupertinoPageRoute<dynamic>(
+        Navigator.of(context).push(CupertinoPageRoute(
             builder: (BuildContext context) => SphereOpen(
                   sphereTitle: sphereTitle,
                   sphereMembers: sphereMembers,
                   sphereImage: sphereImage,
                   sphereHandle: sphereHandle,
                   sphereDescription: sphereDescription,
-                ),
-          ),
-        );
+                )));
       },
       child: Container(
         margin: const EdgeInsets.only(left: 10.0),
