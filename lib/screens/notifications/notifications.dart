@@ -13,11 +13,12 @@ class JuntoNotifications extends StatelessWidget {
       body: Column(
         children: <Widget>[
           Expanded(
-              child: ListView(
-            children: const <Widget>[
-              SizedBox(),
-            ],
-          ))
+            child: ListView(
+              children: const <Widget>[
+                SizedBox(),
+              ],
+            ),
+          )
         ],
       ),
     );

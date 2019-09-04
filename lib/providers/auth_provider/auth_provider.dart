@@ -35,12 +35,13 @@ class AuthenticationImp implements AuthenticationProvider {
         body: jsonData,
       );
       if (response.statusCode == 200) {
+        // Once the user is created, we need to log them in to obtain a auth token.
+        await loginUser(UserAuthLoginDetails(email: details.email, password: details.password));
+
         // The response sent back from the server is decoded
         final Map<String, dynamic> results = json.decode(response.body);
         // The user account needs to be created on holochain
         await _createHoloUser(details);
-        // Once the user is created, we need to log them in to obtain a auth token.
-        await loginUser(UserAuthLoginDetails(email: details.email, password: details.password));
         // The results ID is returned to the user
         return results['user_id'];
       } else {
