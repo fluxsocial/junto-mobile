@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'create_perspective/create_perspective.dart';
+import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/styles.dart';
 
 class Perspectives extends StatelessWidget {
   const Perspectives({
@@ -18,28 +20,37 @@ class Perspectives extends StatelessWidget {
       child: Drawer(
         elevation: 0,
         child: Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
+                    colors: [
+                  JuntoPalette.juntoSecondary,
+                  JuntoPalette.juntoPrimary
+                ])),
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Column(
               children: <Widget>[
                 Container(
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: Color(0xffeeeeee),
-                        width: 1,
-                      ),
-                    ),
-                  ),
+                  // decoration: const BoxDecoration(
+                  //   border: Border(
+                  //     bottom: BorderSide(
+                  //       color: Color(0xffeeeeee),
+                  //       width: 1,
+                  //     ),
+                  //   ),
+                  // ),
                   alignment: Alignment.centerLeft,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       const Text(
-                        'PERSPECTIVES',
+                        'Perspectives',
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
+                          fontSize: 17,
                           color: Color(
-                            0xff333333,
+                            0xffffffff,
                           ),
                         ),
                       ),
@@ -53,9 +64,14 @@ class Perspectives extends StatelessWidget {
                             ),
                           );
                         },
-                        child: Icon(
-                          Icons.add_circle_outline,
-                          size: 14,
+                        child: Container(
+                          width: 20,
+                          height: 38,
+                          alignment: Alignment.centerRight,
+                          child: Text(
+                            '+',
+                            style: TextStyle(fontSize: 20),
+                          ),
                         ),
                       )
                     ],
@@ -81,7 +97,11 @@ class Perspectives extends StatelessWidget {
                           title: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: const <Widget>[
-                              Text('JUNTO'),
+                              Text('JUNTO',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700)),
                             ],
                           ),
                         ),
@@ -97,7 +117,11 @@ class Perspectives extends StatelessWidget {
                           title: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: const <Widget>[
-                              Text('Degrees of Separation'),
+                              Text('Degrees of separation',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700)),
                             ],
                           ),
                         ),
@@ -113,7 +137,11 @@ class Perspectives extends StatelessWidget {
                           title: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: const <Widget>[
-                              Text('Following'),
+                              Text('Following',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700)),
                             ],
                           ),
                         ),
