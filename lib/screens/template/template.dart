@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:junto_beta_mobile/components/appbar/appbar.dart';
 import 'package:junto_beta_mobile/components/bottom_nav/bottom_nav.dart';
-import 'package:junto_beta_mobile/components/utils/custom_scroll_behaviour.dart';
 import 'package:junto_beta_mobile/components/utils/hide_fab.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/collective/filter_fab/filter_fab.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspectives.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
-import 'package:junto_beta_mobile/screens/notifications/notifications.dart';
 import 'package:junto_beta_mobile/screens/packs/packs.dart';
 import 'package:junto_beta_mobile/screens/spheres/spheres.dart';
 import 'package:junto_beta_mobile/palette.dart';
@@ -22,7 +20,8 @@ class JuntoTemplate extends StatefulWidget {
   State<StatefulWidget> createState() => JuntoTemplateState();
 }
 
-class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
+class JuntoTemplateState extends State<JuntoTemplate>
+    with HideFab {
   final GlobalKey<ScaffoldState> _juntoTemplateKey = GlobalKey<ScaffoldState>();
 
   // Default values for collective screen / JUNTO perspective - change dynamically.
@@ -39,7 +38,6 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
   // Controller for scroll
   ScrollController _hideFABController;
   ValueNotifier<bool> _isVisible;
-
   @override
   void initState() {
     super.initState();
@@ -69,41 +67,48 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _juntoTemplateKey,
-      backgroundColor: Colors.white,
-      appBar: JuntoAppBar(
-        juntoAppBarTitle: _appbarTitle,
+    return Stack(children: [
+      Positioned(
+        child: Scaffold(
+          body: Container(color: Colors.blue),
+        ),
       ),
-      floatingActionButton: _currentScreen == 'collective'
-          ? CollectiveFilterFAB(
-              isVisible: _isVisible,
-              toggleFilter: _buildFilterChannelModal,
-            )
-          : null,
-      // only enable drawer if current screen is collective
-      // drawer: _currentScreen == 'collective'
-      //     ? WillPopScope(
-      //         onWillPop: () async {
-      //           return false;
-      //         },
-      //         child: Perspectives(
-      //           changePerspective: _changePerspective,
-      //         ),
-      //       )
-      //     : null,
-      body: _renderBody(),
+      Scaffold(
+        key: _juntoTemplateKey,
+        backgroundColor: Colors.white,
+        appBar: JuntoAppBar(
+          juntoAppBarTitle: _appbarTitle,
+        ),
+        floatingActionButton: _currentScreen == 'collective'
+            ? CollectiveFilterFAB(
+                isVisible: _isVisible,
+                toggleFilter: _buildFilterChannelModal,
+              )
+            : null,
+        // only enable drawer if current screen is collective
+        drawer: _currentScreen == 'collective'
+            ? WillPopScope(
+                onWillPop: () async {
+                  return false;
+                },
+                child: Perspectives(
+                  changePerspective: _changePerspective,
+                ),
+              )
+            : null,
+        body: _renderBody(),
 
-      bottomNavigationBar: ValueListenableBuilder<int>(
-        valueListenable: _bottomNavIndex,
-        builder: (BuildContext context, int index, _) {
-          return BottomNav(
-            currentIndex: index,
-            setIndex: _switchScreen,
-          );
-        },
+        bottomNavigationBar: ValueListenableBuilder<int>(
+          valueListenable: _bottomNavIndex,
+          builder: (BuildContext context, int index, _) {
+            return BottomNav(
+              currentIndex: index,
+              setIndex: _switchScreen,
+            );
+          },
+        ),
       ),
-    );
+    ]);
   }
 
   // render main body of template; i.e. collective, spheres, packs, or den
