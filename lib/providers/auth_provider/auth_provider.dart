@@ -27,12 +27,10 @@ class AuthenticationImp implements AuthenticationProvider {
       'first_name': details.firstName,
       'last_name': details.lastName,
     };
-    final String jsonData = json.encode(payload);
     try {
-      final http.Response response = await http.post(
-        Uri.encodeFull('$END_POINT/register'),
-        headers: <String, String>{'Content-Type': 'application/json'},
-        body: jsonData,
+      final http.Response response = await JuntoHttp().post(
+        '/register',
+        body: payload,
       );
       if (response.statusCode == 200) {
         // Once the user is created, we need to log them in to obtain a auth token.
@@ -40,8 +38,10 @@ class AuthenticationImp implements AuthenticationProvider {
 
         // The response sent back from the server is decoded
         final Map<String, dynamic> results = json.decode(response.body);
+
         // The user account needs to be created on holochain
         await _createHoloUser(details);
+        
         // The results ID is returned to the user
         return results['user_id'];
       } else {
