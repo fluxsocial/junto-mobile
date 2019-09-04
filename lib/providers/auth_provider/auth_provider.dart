@@ -11,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 abstract class AuthenticationProvider {
   Future<String> registerUser(UserAuthRegistrationDetails details);
   Future<String> loginUser(UserAuthLoginDetails details);
-  Future<void> logouUser();
+  Future<void> logoutUser();
 }
 
 /// Concrete implementation of [AuthenticationProvider].
@@ -86,7 +86,7 @@ class AuthenticationImp implements AuthenticationProvider {
   /// Removes the user's auth token from the device and sets login flag to
   /// false.
   @override
-  Future<void> logouUser() async {
+  Future<void> logoutUser() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('isLoggedIn', false);
     await prefs.remove('auth');
