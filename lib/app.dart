@@ -35,7 +35,7 @@ class JuntoAppState extends State<JuntoApp> {
           builder: (BuildContext context) => UserProviderImpl(),
         ),
         ChangeNotifierProvider<CollectiveProvider>(
-          builder: (BuildContext context) => CollectiveProvider(),
+          builder: (BuildContext context) => CollectiveProviderImpl(),
         ),
         ChangeNotifierProvider<SpheresProvider>(
           builder: (BuildContext context) => SpheresProvider(),
