@@ -30,7 +30,8 @@ class PerspectivePreview extends StatelessWidget {
           children: <Widget>[
             Text(
               title,
-              style: const TextStyle(fontWeight: FontWeight.w500),
+              style: const TextStyle(
+                  fontWeight: FontWeight.w500, color: Colors.white),
             ),
             Icon(
               Icons.edit,

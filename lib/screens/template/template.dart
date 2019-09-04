@@ -27,8 +27,6 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
 
   // Default values for collective screen / JUNTO perspective - change dynamically.
   String _currentScreen = 'collective';
-
-  //ignore:unused_field
   String _currentPerspective = 'JUNTO';
   String _appbarTitle = 'JUNTO';
 
@@ -37,9 +35,6 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
   //
   final List<String> _channels = <String>[];
   TextEditingController _channelController;
-
-  // Controller for PageView
-  PageController _controller;
 
   // Controller for scroll
   ScrollController _hideFABController;
@@ -51,7 +46,6 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
     _hideFABController = ScrollController();
     _bottomNavIndex = ValueNotifier<int>(0);
     _channelController = TextEditingController();
-    _controller = PageController(initialPage: 0);
     _isVisible = ValueNotifier<bool>(true);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _hideFABController.addListener(_onScrollingHasChanged);
@@ -69,23 +63,8 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
   void dispose() {
     _hideFABController.removeListener(_onScrollingHasChanged);
     _hideFABController.dispose();
-    _controller.dispose();
     _channelController.dispose();
     super.dispose();
-  }
-
-  /// Opens the `Perspective` screen if the user swipes right.
-  /// Animates the PageView to the next page if the user swipes left.
-  void _onDragUpdate(DragUpdateDetails details) {
-    if (!details.primaryDelta.isNegative) {
-      _juntoTemplateKey.currentState.openDrawer();
-    } else {
-      _controller.animateToPage(
-        1,
-        duration: kTabScrollDuration,
-        curve: Curves.decelerate,
-      );
-    }
   }
 
   @override
@@ -95,7 +74,6 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
       backgroundColor: Colors.white,
       appBar: JuntoAppBar(
         juntoAppBarTitle: _appbarTitle,
-        navNotifications: _navNotifications,
       ),
       floatingActionButton: _currentScreen == 'collective'
           ? CollectiveFilterFAB(
@@ -104,71 +82,75 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
             )
           : null,
       // only enable drawer if current screen is collective
-      drawer: _currentScreen == 'collective'
-          ? WillPopScope(
-              onWillPop: () async {
-                return false;
-              },
-              child: Perspectives(
-                changePerspective: _changePerspective,
-              ),
-            )
-          : null,
-      body: SafeArea(
-        child: ScrollConfiguration(
-          behavior: PlainScrollBehaviour(),
-          child: PageView(
-            physics: const ClampingScrollPhysics(),
-            controller: _controller,
-            onPageChanged: (int index) {
-              _isVisible.value = true;
-              if (index == 0) {
-                _switchScreen('collective');
-              } else if (index == 1) {
-                _switchScreen('spheres');
-              } else if (index == 2) {
-                _switchScreen('packs');
-              } else if (index == 3) {
-                _switchScreen('den');
-              }
-            },
-            children: <Widget>[
-              GestureDetector(
-                onHorizontalDragUpdate: _onDragUpdate,
-                child: JuntoCollective(
-                  controller: _hideFABController,
-                  currentPerspective: _currentPerspective,
-                ),
-              ),
-              JuntoSpheres(),
-              JuntoPacks(),
-              JuntoDen()
-            ],
-          ),
-        ),
-      ),
+      // drawer: _currentScreen == 'collective'
+      //     ? WillPopScope(
+      //         onWillPop: () async {
+      //           return false;
+      //         },
+      //         child: Perspectives(
+      //           changePerspective: _changePerspective,
+      //         ),
+      //       )
+      //     : null,
+      body: _renderBody(),
+
       bottomNavigationBar: ValueListenableBuilder<int>(
         valueListenable: _bottomNavIndex,
         builder: (BuildContext context, int index, _) {
           return BottomNav(
             currentIndex: index,
-            setIndex: _setBottomIndex,
+            setIndex: _switchScreen,
           );
         },
       ),
     );
   }
 
-  // Set the bottom navbar index; used when bottom nav icon is pressed.
-  void _setBottomIndex(int x) {
+  // render main body of template; i.e. collective, spheres, packs, or den
+  _renderBody() {
+    switch (_currentScreen) {
+      case 'collective':
+        return JuntoCollective(
+            controller: _hideFABController,
+            currentPerspective: _currentPerspective);
+      case 'spheres':
+        return JuntoSpheres();
+      case 'packs':
+        return JuntoPacks();
+      case 'den':
+        return JuntoDen();
+    }
+  }
+
+  // switch screen and update appbar title
+  void _switchScreen(int x) {
     _bottomNavIndex.value = x;
-    _controller.jumpToPage(x);
-    if (x == 0) {
-      _hideFABController.animateTo(
-        0.0,
-        curve: Curves.decelerate,
-        duration: const Duration(milliseconds: 300),
-      );
+
+    switch (x) {
+      case 0:
+        setState(() {
+          _currentScreen = 'collective';
+          _appbarTitle = 'JUNTO';
+        });
+        break;
+      case 1:
+        setState(() {
+          _currentScreen = 'spheres';
+          _appbarTitle = 'SPHERES';
+        });
+        break;
+      case 2:
+        setState(() {
+          _currentScreen = 'packs';
+          _appbarTitle = 'PACKS';
+        });
+        break;
+      case 3:
+        setState(() {
+          _currentScreen = 'den';
+          _appbarTitle = 'sunyata';
+        });
+        break;
     }
   }
 
@@ -178,47 +160,8 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
       () {
         _currentPerspective = perspective;
         _appbarTitle = perspective;
-
-        // re render feed
       },
     );
-  }
-
-  // Switch between screens within PageView
-  void _switchScreen(String screen) {
-    if (screen == 'collective') {
-      setState(() {
-        _currentScreen = 'collective';
-        _appbarTitle = 'JUNTO';
-        _currentPerspective = 'JUNTO';
-        _bottomNavIndex.value = 0;
-      });
-    } else if (screen == 'spheres') {
-      setState(() {
-        _currentScreen = 'spheres';
-        _appbarTitle = 'SPHERES';
-        _bottomNavIndex.value = 1;
-      });
-    } else if (screen == 'packs') {
-      setState(() {
-        _currentScreen = 'packs';
-        _appbarTitle = 'PACKS';
-        _bottomNavIndex.value = 2;
-      });
-    } else if (screen == 'den') {
-      setState(() {
-        _currentScreen = 'den';
-        _appbarTitle = 'sunyata';
-        _bottomNavIndex.value = 3;
-      });
-    }
-  }
-
-  // Navigate to Notifications screen
-  void _navNotifications() {
-    Navigator.of(context).push(CupertinoPageRoute(
-      builder: (context) => JuntoNotifications()
-    ));
   }
 
   // Build bottom modal to filter by channel

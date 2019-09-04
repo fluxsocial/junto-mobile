@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:junto_beta_mobile/screens/notifications/notifications.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
 import 'package:junto_beta_mobile/palette.dart';
@@ -10,11 +11,9 @@ class JuntoAppBar extends StatelessWidget implements PreferredSizeWidget {
   const JuntoAppBar({
     Key key,
     @required this.juntoAppBarTitle,
-    @required this.navNotifications,
   }) : super(key: key);
 
   final String juntoAppBarTitle;
-  final VoidCallback navNotifications;
 
   @override
   Size get preferredSize => const Size.fromHeight(48.0);
@@ -90,7 +89,14 @@ class JuntoAppBar extends StatelessWidget implements PreferredSizeWidget {
                   ),
                 ),
                 GestureDetector(
-                  onTap: navNotifications,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute<dynamic>(
+                        builder: (BuildContext context) => JuntoNotifications(),
+                      ),
+                    );
+                  },
                   child: Container(
                     margin: const EdgeInsets.only(left: 7.5),
                     child: Icon(CustomIcons.moon,
