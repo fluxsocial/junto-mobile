@@ -93,6 +93,35 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
     return null;
   }
 
+  @override
+  Future<void> postResonation(String address) async {
+    final Map<String, dynamic> postBody = <String, dynamic>{
+      'zome': 'expression',
+      'function': 'post_resonation',
+      'args': <String, dynamic>{
+        'collection': <String, dynamic>{},
+        'collection_tag': 'type-of-collection',
+      },
+    };
+    try {
+      final http.Response serverResponse = await JuntoHttp().post(
+        '/holochain',
+        body: postBody,
+      );
+      if (serverResponse.statusCode == 200) {
+        final response = deserializeJsonRecursively(serverResponse.body);
+        print(response);
+      } else {
+        throw const HttpException(
+          'postResonation: Holochain returned an '
+          'status code != 200',
+        );
+      }
+    } on HttpException catch (error) {
+      debugPrint('Error adding resonnation $error');
+    }
+  }
+
   final List<Expression> _collectiveExpressions = <Expression>[
     Expression(
       expression: ExpressionContent(
@@ -256,29 +285,5 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
 
   void addCollectiveExpression() {
     notifyListeners();
-  }
-
-  @override
-  Future<void> postResonation(String address) async {
-    final Map<String, dynamic> postBody = <String, dynamic>{
-      'zome': 'expression',
-      'function': 'post_resonation',
-      'args': <String, dynamic>{
-        'collection': <String, dynamic>{},
-        'collection_tag': 'type-of-collection',
-      },
-    };
-    try {
-      final http.Response serverResponse = await JuntoHttp().post(
-        '/holochain',
-        body: postBody,
-      );
-      if (serverResponse.statusCode == 200) {
-        final response = deserializeJsonRecursively(serverResponse.body);
-        print(response);
-      }
-    } on HttpException catch (error) {
-      debugPrint('Error adding resonnation $error');
-    }
   }
 }

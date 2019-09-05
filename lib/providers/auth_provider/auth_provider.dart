@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:junto_beta_mobile/API.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
@@ -10,14 +11,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// Abstract class which defines the functionality of the Authentication Provider
 abstract class AuthenticationProvider {
   Future<String> registerUser(UserAuthRegistrationDetails details);
+
   Future<String> loginUser(UserAuthLoginDetails details);
+
   Future<void> logoutUser();
 }
 
 /// Concrete implementation of [AuthenticationProvider].
 class AuthenticationImp implements AuthenticationProvider {
   /// Creates a new user on the server. Returns the user's ID if the operation is
-  /// sucessful. Method takes [UserAuthRegistrationDetails] as its only parameter.
+  /// successful. Method takes [UserAuthRegistrationDetails] as its only
+  /// parameter.
   @override
   Future<String> registerUser(UserAuthRegistrationDetails details) async {
     assert(details.isComplete);
@@ -34,14 +38,15 @@ class AuthenticationImp implements AuthenticationProvider {
       );
       if (response.statusCode == 200) {
         // Once the user is created, we need to log them in to obtain a auth token.
-        await loginUser(UserAuthLoginDetails(email: details.email, password: details.password));
+        await loginUser(UserAuthLoginDetails(
+            email: details.email, password: details.password));
 
         // The response sent back from the server is decoded
         final Map<String, dynamic> results = json.decode(response.body);
 
         // The user account needs to be created on holochain
         await _createHoloUser(details);
-        
+
         // The results ID is returned to the user
         return results['user_id'];
       } else {
@@ -68,8 +73,12 @@ class AuthenticationImp implements AuthenticationProvider {
         headers: <String, String>{'Content-Type': 'application/json'},
         body: jsonData,
       );
+
+      // Holochain only sends 200 status code...even for errors. Anything
+      // other than 200 represents an actual server.
       if (response.statusCode == 200) {
-        final Cookie responseCookie = Cookie.fromSetCookieValue(response.headers['set-cookie']);
+        final Cookie responseCookie =
+            Cookie.fromSetCookieValue(response.headers['set-cookie']);
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString('auth', responseCookie.value);
         return responseCookie.value;
@@ -100,7 +109,12 @@ class AuthenticationImp implements AuthenticationProvider {
       'function': 'create_user',
       'args': <String, dynamic>{'user_data': profile.toMap()},
     };
-    final http.Response holoResponse = await JuntoHttp().post('/holochain', body: body);
-    print(holoResponse.body);
+    final http.Response holoResponse =
+        await JuntoHttp().post('/holochain', body: body);
+    if (holoResponse.statusCode == 200) {
+      debugPrint(holoResponse.body);
+    } else {
+      throw const HttpException('Holochain sent a response != 200');
+    }
   }
 }

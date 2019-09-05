@@ -21,11 +21,13 @@ class UserProviderImpl implements UserProvider {
       },
     };
 
-    final http.Response serverResponse = await JuntoHttp().post(resource, body: body);
+    final http.Response serverResponse =
+        await JuntoHttp().post(resource, body: body);
     //ignore: always_specify_types
     final responseMap = deserializeJsonRecursively(serverResponse.body);
     if (responseMap['Ok'] != null) {
-      final PerspectiveResponse perspectiveDetails = PerspectiveResponse.fromMap(
+      final PerspectiveResponse perspectiveDetails =
+          PerspectiveResponse.fromMap(
         responseMap['Ok'],
       );
       return perspectiveDetails;

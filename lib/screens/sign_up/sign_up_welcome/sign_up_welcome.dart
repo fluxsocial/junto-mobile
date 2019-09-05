@@ -57,7 +57,8 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
       profileImage: widget.profilePicture ?? '',
     );
     try {
-      final String results = await Provider.of<AuthenticationProvider>(context).registerUser(details);
+      final String results = await Provider.of<AuthenticationProvider>(context)
+          .registerUser(details);
       print(results);
       await SharedPreferences.getInstance()
         ..setBool(
@@ -112,11 +113,17 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * .10),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: MediaQuery.of(context).size.width * .10),
                     margin: const EdgeInsets.only(bottom: 40),
                     child: Text(
-                      'Hey ' + widget.firstName + '! We are stoked to have you here.',
-                      style: const TextStyle(color: JuntoPalette.juntoGrey, fontWeight: FontWeight.w700, fontSize: 22),
+                      'Hey ' +
+                          widget.firstName +
+                          '! We are stoked to have you here.',
+                      style: const TextStyle(
+                          color: JuntoPalette.juntoGrey,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 22),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -132,7 +139,8 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * .10),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: MediaQuery.of(context).size.width * .10),
                     child: const Text(
                       'Junto is a community of individuals working together to'
                       ' inspire authenticity and meaningful collaboration.',
