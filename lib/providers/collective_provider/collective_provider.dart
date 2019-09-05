@@ -1,10 +1,11 @@
 import 'dart:io';
-
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/utils/junto_http.dart';
+import 'package:junto_beta_mobile/utils/utils.dart';
 
 /// Interface which defines the roles and functionality of the
 /// CollectiveProvider.
@@ -12,7 +13,7 @@ abstract class CollectiveProvider with ChangeNotifier {
   /// Creates an expression on the server.  Method requires the [Expression]
   /// to be created.
   /// Zome: `Expression` function: `post_expression` args: `{ expression: {expression object data}, attributes: [array of attributes (channels)], context: [array of context(s) addresses] }`
-  Future<Map<String, dynamic>> createExpression(Expression expression);
+  Future<void> createExpression(Expression expression);
 
   /// Deletes the given expression from the server.
   Future<void> removeExpression(Expression expression);
@@ -28,6 +29,10 @@ abstract class CollectiveProvider with ChangeNotifier {
     String collectionTag,
   );
 
+  /// Allows a user to resonate with a particular expression.
+  /// Function requires the address of the Expression as the only argument.
+  Future<void> postResonation(String address);
+
   List<Expression> get collectiveExpressions;
 }
 
@@ -35,9 +40,26 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
   /// Like all holo functions, we need to call a `zome` and pass the
   /// parameters as args to create a new expression.
   @override
-  Future<Map<String, dynamic>> createExpression(Expression expression) {
-    // TODO: implement createExpression
-    return null;
+  Future<void> createExpression(Expression expression) async {
+    final Expression sampleExpression = collectiveExpressions.first;
+    final Map<String, dynamic> expressionBody = <String, dynamic>{
+      'zome': 'expression',
+      'function': 'post_expression',
+      'args': <String, dynamic>{
+        'expression': sampleExpression.expression.toMap(),
+        'attributes': sampleExpression.channels,
+        'context': <String>['testing'],
+      },
+    };
+    try {
+      final http.Response response = await JuntoHttp().post(
+        '/holochain',
+        body: expressionBody,
+      );
+      debugPrint('Response from HOLOCHAIN ${response.body}');
+    } on HttpException catch (error) {
+      debugPrint('Error posting expression $error');
+    }
   }
 
   @override
@@ -234,5 +256,29 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
 
   void addCollectiveExpression() {
     notifyListeners();
+  }
+
+  @override
+  Future<void> postResonation(String address) async {
+    final Map<String, dynamic> postBody = <String, dynamic>{
+      'zome': 'expression',
+      'function': 'post_resonation',
+      'args': <String, dynamic>{
+        'collection': <String, dynamic>{},
+        'collection_tag': 'type-of-collection',
+      },
+    };
+    try {
+      final http.Response serverResponse = await JuntoHttp().post(
+        '/holochain',
+        body: postBody,
+      );
+      if (serverResponse.statusCode == 200) {
+        final response = deserializeJsonRecursively(serverResponse.body);
+        print(response);
+      }
+    } on HttpException catch (error) {
+      debugPrint('Error adding resonnation $error');
+    }
   }
 }

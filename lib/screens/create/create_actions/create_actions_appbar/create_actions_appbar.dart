@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
+import 'package:junto_beta_mobile/providers/collective_provider/collective_provider.dart';
 import 'package:junto_beta_mobile/typography/palette.dart';
+import 'package:provider/provider.dart';
 
 class CreateActionsAppbar extends StatelessWidget {
   @override
@@ -25,11 +27,20 @@ class CreateActionsAppbar extends StatelessWidget {
                 size: 24,
               ),
             ),
-            const Text(
-              'create',
-              style: TextStyle(
-                fontSize: 15,
-                color: Color(0xff333333),
+            GestureDetector(
+              onTap: () async {
+                // For now we are using test data until the rich text editor
+                // is up and running.
+                await Provider.of<CollectiveProvider>(context)
+                    .createExpression(null);
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'create',
+                style: TextStyle(
+                  fontSize: 15,
+                  color: Color(0xff333333),
+                ),
               ),
             )
           ],
