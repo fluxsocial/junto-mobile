@@ -23,6 +23,9 @@ class JuntoAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: Colors.white,
       automaticallyImplyLeading: false,
+      actions: <Widget>[
+        Container()
+      ],
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(.75),
         child: Container(

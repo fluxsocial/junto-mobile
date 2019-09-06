@@ -8,6 +8,7 @@ import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/collective/filter_fab/filter_fab.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspectives.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
+import 'package:junto_beta_mobile/screens/den/den_drawer.dart';
 import 'package:junto_beta_mobile/screens/packs/packs.dart';
 import 'package:junto_beta_mobile/screens/spheres/spheres.dart';
 import 'package:junto_beta_mobile/palette.dart';
@@ -20,8 +21,7 @@ class JuntoTemplate extends StatefulWidget {
   State<StatefulWidget> createState() => JuntoTemplateState();
 }
 
-class JuntoTemplateState extends State<JuntoTemplate>
-    with HideFab {
+class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
   final GlobalKey<ScaffoldState> _juntoTemplateKey = GlobalKey<ScaffoldState>();
 
   // Default values for collective screen / JUNTO perspective - change dynamically.
@@ -96,6 +96,16 @@ class JuntoTemplateState extends State<JuntoTemplate>
                 ),
               )
             : null,
+        // only enable end drawer if current screen is den
+        endDrawer: _currentScreen == 'den'
+            ? WillPopScope(
+                onWillPop: () async {
+                  return false;
+                },
+                child: DenDrawer())
+            : null,
+
+        // dynamically render body
         body: _renderBody(),
 
         bottomNavigationBar: ValueListenableBuilder<int>(
