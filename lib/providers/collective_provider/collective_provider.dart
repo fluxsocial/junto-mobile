@@ -33,6 +33,10 @@ abstract class CollectiveProvider with ChangeNotifier {
   /// Function requires the address of the Expression as the only argument.
   Future<void> postResonation(String address);
 
+  ///Allows for the posting of comment expressions. The [ExpressionContent] and address of the
+  ///parent [Expression] must be supplied to the function.
+  Future<String> postCommentExpression(ExpressionContent expression, String parentAddress);
+
   List<Expression> get collectiveExpressions;
 }
 
@@ -75,8 +79,7 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
   }
 
   @override
-  Future<String> createCollection(
-      Map<String, String> collectionData, String collectionTag) {
+  Future<String> createCollection(Map<String, String> collectionData, String collectionTag) {
     final Map<String, dynamic> mapBody = <String, dynamic>{
       'zome': 'collection',
       'function': 'create_collection',
@@ -109,7 +112,7 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
         body: postBody,
       );
       if (serverResponse.statusCode == 200) {
-        final response = deserializeJsonRecursively(serverResponse.body);
+        final dynamic response = deserializeJsonRecursively(serverResponse.body);
         print(response);
       } else {
         throw const HttpException(
@@ -127,10 +130,7 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
       expression: ExpressionContent(
         address: '0xfee32zokie8',
         expressionType: 'longform',
-        expressionContent: <String, String>{
-          'title': 'The Medium is the Message',
-          'body': 'Hellos my name is Urk'
-        },
+        expressionContent: <String, String>{'title': 'The Medium is the Message', 'body': 'Hellos my name is Urk'},
       ),
       subExpressions: <Expression>[],
       authorUsername: Username(
@@ -203,10 +203,7 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
       expression: ExpressionContent(
         address: '0xfee32zokie8',
         expressionType: 'shortform',
-        expressionContent: <String, String>{
-          'body': 'Hello cats!',
-          'background': 'four'
-        },
+        expressionContent: <String, String>{'body': 'Hello cats!', 'background': 'four'},
       ),
       authorUsername: Username(
         address: '02efredffdfvdbnrtg',
@@ -241,10 +238,7 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
       expression: ExpressionContent(
         address: '0xfee32zokie8',
         expressionType: 'longform',
-        expressionContent: <String, String>{
-          'title': 'Coming from the UK!',
-          'body': 'Hellos my name is josh'
-        },
+        expressionContent: <String, String>{'title': 'Coming from the UK!', 'body': 'Hellos my name is josh'},
       ),
       subExpressions: <Expression>[],
       timestamp: '4',
@@ -271,6 +265,36 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
       ],
     ),
   ];
+
+  @override
+  Future<String> postCommentExpression(ExpressionContent expression, String parentAddress) async {
+    final Map<String, dynamic> postBody = <String, dynamic>{
+      'zome': 'expression',
+      'function': 'post_comment_expression',
+      'args': <String, dynamic>{
+        'expression': expression.toMap(),
+        'parent_expression': parentAddress,
+      },
+    };
+    try {
+      final http.Response response = await JuntoHttp().post('/holochain', body: postBody);
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseBody = deserializeJsonRecursively(response.body);
+        if (responseBody['Ok']) {
+          return responseBody['Ok'];
+        }
+        if (responseBody['Err']) {
+          throw Exception('Server returned error ${responseBody['Err']}');
+        }
+      } else {
+        throw Exception('Server returned status code != 200');
+      }
+    } on HttpException catch (error) {
+      debugPrint('HTTP ERROR POSTING COMMENT: $error');
+    }
+    return null;
+  }
 
   final List<Perspective> _perspectives = <Perspective>[];
 
