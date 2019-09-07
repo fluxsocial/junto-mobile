@@ -214,6 +214,7 @@ class JuntoCreateState extends State<JuntoCreate> {
                     Text(
                       _expressionType.toLowerCase(),
                       textAlign: TextAlign.start,
+                      style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700, color: Color(0xff333333))
                     ),
                   ],
                 ),
