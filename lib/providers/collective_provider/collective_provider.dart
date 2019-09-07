@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
@@ -14,9 +16,6 @@ abstract class CollectiveProvider with ChangeNotifier {
   /// to be created.
   /// Zome: `Expression` function: `post_expression` args: `{ expression: {expression object data}, attributes: [array of attributes (channels)], context: [array of context(s) addresses] }`
   Future<void> createExpression(Expression expression);
-
-  /// Deletes the given expression from the server.
-  Future<void> removeExpression(Expression expression);
 
   /// Fetches a list of [Expression]s from the server which matches the params.
   /// Zome: `Expression`, function: `query_expressions`, Args: `{ expression: {expression object data}, attributes: [array of attributes (channels)], context: [array of context(s) addresses] }`
@@ -81,16 +80,10 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
         'target_type': '',
         'query_type': 'ExpressionPost',
         'dos': '6',
-        'seed': 'string-to-randomize-searching',
+        'seed': randomString(),
       },
     );
     JuntoHttp().post('/holochain', body: postBody);
-    return null;
-  }
-
-  @override
-  Future<void> removeExpression(Expression expression) {
-    // TODO: implement removeExpression
     return null;
   }
 
@@ -340,6 +333,17 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
   void addCollectiveExpression() {
     notifyListeners();
   }
+}
+
+/// Generates a random string used as a seed to query expressions.
+String randomString() {
+  final Random _random = Random.secure();
+  final List<int> values = List<int>.generate(
+    25,
+    (int i) => _random.nextInt(256),
+  );
+
+  return base64Url.encode(values);
 }
 
 Map<String, dynamic> holobody(
