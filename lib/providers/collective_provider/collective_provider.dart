@@ -35,7 +35,8 @@ abstract class CollectiveProvider with ChangeNotifier {
 
   ///Allows for the posting of comment expressions. The [ExpressionContent] and address of the
   ///parent [Expression] must be supplied to the function.
-  Future<String> postCommentExpression(ExpressionContent expression, String parentAddress);
+  Future<String> postCommentExpression(
+      ExpressionContent expression, String parentAddress);
 
   List<Expression> get collectiveExpressions;
 }
@@ -46,15 +47,15 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
   @override
   Future<void> createExpression(Expression expression) async {
     final Expression sampleExpression = collectiveExpressions.first;
-    final Map<String, dynamic> expressionBody = <String, dynamic>{
-      'zome': 'expression',
-      'function': 'post_expression',
-      'args': <String, dynamic>{
+    final Map<String, dynamic> expressionBody = holobody(
+      'post_expression',
+      'expression',
+      <String, dynamic>{
         'expression': sampleExpression.expression.toMap(),
         'attributes': sampleExpression.channels,
         'context': <String>['testing'],
       },
-    };
+    );
     try {
       final http.Response response = await JuntoHttp().post(
         '/holochain',
@@ -68,7 +69,22 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
 
   @override
   Future<List<Expression>> filterExpression(String params) {
-    // TODO: implement filterExpression
+    final Map<String, dynamic> postBody = holobody(
+      'query_expressions',
+      'expression',
+      <String, dynamic>{
+        'perspective': 'dos',
+        'attributes': <String>[
+          'default',
+        ],
+        'query_options': 'Or',
+        'target_type': '',
+        'query_type': 'ExpressionPost',
+        'dos': '6',
+        'seed': 'string-to-randomize-searching',
+      },
+    );
+    JuntoHttp().post('/holochain', body: postBody);
     return null;
   }
 
@@ -79,15 +95,16 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
   }
 
   @override
-  Future<String> createCollection(Map<String, String> collectionData, String collectionTag) {
-    final Map<String, dynamic> mapBody = <String, dynamic>{
-      'zome': 'collection',
-      'function': 'create_collection',
-      'args': <String, dynamic>{
+  Future<String> createCollection(
+      Map<String, String> collectionData, String collectionTag) {
+    final Map<String, dynamic> mapBody = holobody(
+      'create_collection',
+      'collection',
+      <String, dynamic>{
         'collection': <String, dynamic>{},
         'collection_tag': 'type-of-collection',
       },
-    };
+    );
     try {
       JuntoHttp().post('/holochain', body: mapBody);
     } on HttpException catch (error) {
@@ -98,21 +115,22 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
 
   @override
   Future<void> postResonation(String address) async {
-    final Map<String, dynamic> postBody = <String, dynamic>{
-      'zome': 'expression',
-      'function': 'post_resonation',
-      'args': <String, dynamic>{
+    final Map<String, dynamic> postBody = holobody(
+      'post_resonation',
+      'expression',
+      <String, dynamic>{
         'collection': <String, dynamic>{},
         'collection_tag': 'type-of-collection',
       },
-    };
+    );
     try {
       final http.Response serverResponse = await JuntoHttp().post(
         '/holochain',
         body: postBody,
       );
       if (serverResponse.statusCode == 200) {
-        final dynamic response = deserializeJsonRecursively(serverResponse.body);
+        final dynamic response =
+            deserializeJsonRecursively(serverResponse.body);
         print(response);
       } else {
         throw const HttpException(
@@ -130,7 +148,10 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
       expression: ExpressionContent(
         address: '0xfee32zokie8',
         expressionType: 'longform',
-        expressionContent: <String, String>{'title': 'The Medium is the Message', 'body': 'Hellos my name is Urk'},
+        expressionContent: <String, String>{
+          'title': 'The Medium is the Message',
+          'body': 'Hellos my name is Urk'
+        },
       ),
       subExpressions: <Expression>[],
       authorUsername: Username(
@@ -203,7 +224,10 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
       expression: ExpressionContent(
         address: '0xfee32zokie8',
         expressionType: 'shortform',
-        expressionContent: <String, String>{'body': 'Hello cats!', 'background': 'four'},
+        expressionContent: <String, String>{
+          'body': 'Hello cats!',
+          'background': 'four'
+        },
       ),
       authorUsername: Username(
         address: '02efredffdfvdbnrtg',
@@ -238,7 +262,10 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
       expression: ExpressionContent(
         address: '0xfee32zokie8',
         expressionType: 'longform',
-        expressionContent: <String, String>{'title': 'Coming from the UK!', 'body': 'Hellos my name is josh'},
+        expressionContent: <String, String>{
+          'title': 'Coming from the UK!',
+          'body': 'Hellos my name is josh'
+        },
       ),
       subExpressions: <Expression>[],
       timestamp: '4',
@@ -267,20 +294,23 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
   ];
 
   @override
-  Future<String> postCommentExpression(ExpressionContent expression, String parentAddress) async {
-    final Map<String, dynamic> postBody = <String, dynamic>{
-      'zome': 'expression',
-      'function': 'post_comment_expression',
-      'args': <String, dynamic>{
+  Future<String> postCommentExpression(
+      ExpressionContent expression, String parentAddress) async {
+    final Map<String, dynamic> postBody = holobody(
+      'post_comment_expression',
+      'expression',
+      <String, dynamic>{
         'expression': expression.toMap(),
         'parent_expression': parentAddress,
       },
-    };
+    );
     try {
-      final http.Response response = await JuntoHttp().post('/holochain', body: postBody);
+      final http.Response response =
+          await JuntoHttp().post('/holochain', body: postBody);
 
       if (response.statusCode == 200) {
-        final Map<String, dynamic> responseBody = deserializeJsonRecursively(response.body);
+        final Map<String, dynamic> responseBody =
+            deserializeJsonRecursively(response.body);
         if (responseBody['Ok']) {
           return responseBody['Ok'];
         }
@@ -310,4 +340,13 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
   void addCollectiveExpression() {
     notifyListeners();
   }
+}
+
+Map<String, dynamic> holobody(
+    String functionName, String zome, Map<String, dynamic> args) {
+  return <String, dynamic>{
+    'zome': zome,
+    'function': functionName,
+    'args': args
+  };
 }

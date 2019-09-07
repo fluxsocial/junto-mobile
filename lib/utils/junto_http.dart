@@ -9,8 +9,7 @@ class JuntoHttp {
   final String _endPoint = END_POINT;
 
   Future<String> _getAuthKey() async {
-    final SharedPreferences sharedPreferences =
-        await SharedPreferences.getInstance();
+    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     return sharedPreferences.getString('auth');
   }
 
@@ -23,17 +22,12 @@ class JuntoHttp {
   }
 
   String _encodeUrl(String resource) {
-    assert(resource.startsWith('/'),
-        'Resources should start with a forward-slash.');
+    assert(resource.startsWith('/'), 'Resources should start with a forward-slash.');
     return Uri.encodeFull('$_endPoint$resource');
   }
 
-  Future<Map<String, String>> _withPersistentHeaders(
-      Map<String, String> headers) async {
-    return <String, String>{
-      ...await _getPersistentHeaders(),
-      ...headers ?? const <String, String>{}
-    };
+  Future<Map<String, String>> _withPersistentHeaders(Map<String, String> headers) async {
+    return <String, String>{...await _getPersistentHeaders(), ...headers ?? const <String, String>{}};
   }
 
   String _encodeBody(Map<String, dynamic> body) {
