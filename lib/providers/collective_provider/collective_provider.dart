@@ -19,7 +19,7 @@ abstract class CollectiveProvider with ChangeNotifier {
 
   /// Fetches a list of [Expression]s from the server which matches the params.
   /// Zome: `Expression`, function: `query_expressions`, Args: `{ expression: {expression object data}, attributes: [array of attributes (channels)], context: [array of context(s) addresses] }`
-  Future<List<Expression>> filterExpression(String params);
+  Future<List<ExpressionContent>> filterExpression(String params);
 
   /// Creates a collection and returns the address of the collection if the
   /// request is successful.
@@ -67,7 +67,8 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
   }
 
   @override
-  Future<List<Expression>> filterExpression(String params) {
+  Future<List<ExpressionContent>> filterExpression(String params) async {
+    // Body to be sent to holochain
     final Map<String, dynamic> postBody = holobody(
       'query_expressions',
       'expression',
@@ -83,7 +84,34 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
         'seed': randomString(),
       },
     );
-    JuntoHttp().post('/holochain', body: postBody);
+    try {
+      final http.Response response =
+          await JuntoHttp().post('/holochain', body: postBody);
+      // Holochain only sends 200 responses...even for errors
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseBody =
+            deserializeJsonRecursively(response.body);
+
+        // Should there be no error, the results will contain an `Ok` key.
+        if (responseBody['Ok']) {
+          final List<ExpressionContent> results = <ExpressionContent>[];
+          for (final Map<String, dynamic> response in responseBody['Ok']) {
+            final ExpressionContent content =
+                ExpressionContent.fromMap(response);
+            results.add(content);
+          }
+          return results;
+        }
+        
+        // Should the response from holochain contain an error, the key `Err`
+        // will exist.
+        if (responseBody['Err']) {
+          throw Exception('Error querying  ${responseBody['Err']}');
+        }
+      }
+    } on HttpException catch (error) {
+      debugPrint('HTTPEXCEPTION has occured $error');
+    }
     return null;
   }
 
@@ -134,6 +162,70 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
     } on HttpException catch (error) {
       debugPrint('Error adding resonnation $error');
     }
+  }
+
+  @override
+  Future<String> postCommentExpression(
+      ExpressionContent expression, String parentAddress) async {
+    final Map<String, dynamic> postBody = holobody(
+      'post_comment_expression',
+      'expression',
+      <String, dynamic>{
+        'expression': expression.toMap(),
+        'parent_expression': parentAddress,
+      },
+    );
+    try {
+      final http.Response response =
+          await JuntoHttp().post('/holochain', body: postBody);
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseBody =
+            deserializeJsonRecursively(response.body);
+        if (responseBody['Ok']) {
+          return responseBody['Ok'];
+        }
+        if (responseBody['Err']) {
+          throw Exception('Server returned error ${responseBody['Err']}');
+        }
+      } else {
+        throw Exception('Server returned status code != 200');
+      }
+    } on HttpException catch (error) {
+      debugPrint('HTTP ERROR POSTING COMMENT: $error');
+    }
+    return null;
+  }
+
+  final List<Perspective> _perspectives = <Perspective>[];
+
+  @override
+  List<Expression> get collectiveExpressions {
+    return _collectiveExpressions;
+  }
+
+  List<Perspective> get perspectives {
+    return _perspectives;
+  }
+
+  /// Generates a random string used as a seed to query expressions.
+  String randomString() {
+    final Random _random = Random.secure();
+    final List<int> values = List<int>.generate(
+      25,
+      (int i) => _random.nextInt(256),
+    );
+
+    return base64Url.encode(values);
+  }
+
+  Map<String, dynamic> holobody(
+      String functionName, String zome, Map<String, dynamic> args) {
+    return <String, dynamic>{
+      'zome': zome,
+      'function': functionName,
+      'args': args
+    };
   }
 
   final List<Expression> _collectiveExpressions = <Expression>[
@@ -285,72 +377,4 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
       ],
     ),
   ];
-
-  @override
-  Future<String> postCommentExpression(
-      ExpressionContent expression, String parentAddress) async {
-    final Map<String, dynamic> postBody = holobody(
-      'post_comment_expression',
-      'expression',
-      <String, dynamic>{
-        'expression': expression.toMap(),
-        'parent_expression': parentAddress,
-      },
-    );
-    try {
-      final http.Response response =
-          await JuntoHttp().post('/holochain', body: postBody);
-
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> responseBody =
-            deserializeJsonRecursively(response.body);
-        if (responseBody['Ok']) {
-          return responseBody['Ok'];
-        }
-        if (responseBody['Err']) {
-          throw Exception('Server returned error ${responseBody['Err']}');
-        }
-      } else {
-        throw Exception('Server returned status code != 200');
-      }
-    } on HttpException catch (error) {
-      debugPrint('HTTP ERROR POSTING COMMENT: $error');
-    }
-    return null;
-  }
-
-  final List<Perspective> _perspectives = <Perspective>[];
-
-  @override
-  List<Expression> get collectiveExpressions {
-    return _collectiveExpressions;
-  }
-
-  List<Perspective> get perspectives {
-    return _perspectives;
-  }
-
-  void addCollectiveExpression() {
-    notifyListeners();
-  }
-}
-
-/// Generates a random string used as a seed to query expressions.
-String randomString() {
-  final Random _random = Random.secure();
-  final List<int> values = List<int>.generate(
-    25,
-    (int i) => _random.nextInt(256),
-  );
-
-  return base64Url.encode(values);
-}
-
-Map<String, dynamic> holobody(
-    String functionName, String zome, Map<String, dynamic> args) {
-  return <String, dynamic>{
-    'zome': zome,
-    'function': functionName,
-    'args': args
-  };
 }
