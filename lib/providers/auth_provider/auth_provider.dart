@@ -10,11 +10,28 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 /// Abstract class which defines the functionality of the Authentication Provider
 abstract class AuthenticationProvider {
+  /// Registers a user on the server and creates their holochain profile.
   Future<String> registerUser(UserAuthRegistrationDetails details);
 
+  /// Authenticates a registered user.
   Future<String> loginUser(UserAuthLoginDetails details);
 
+  /// Logs out a user and removes their auth token from the device.
   Future<void> logoutUser();
+
+  /// Returns a map containing the username of the user with the given address.
+  /// Result Map contains `{ 'address': 'address-of-profile', entry: { parent: 'parent object (user address)',`
+  /// `first_name: 'first_name', 'last_name: 'last_name', bio: 'bio', profile_picture: 'profile_picture',verified: true/false} }`
+  Future<Map<String, dynamic>> retriveUsernameFromAddress(String address);
+
+  /// Retrives the username associated with the current agent.
+  /// Map contains the following `{ 'address': 'address-of-username', 'entry': { 'username': 'username' } }`
+  Future<Map<String, dynamic>> retriveUsernameByAgent();
+
+  /// Retrives the user's profile associated with the given address.
+  /// Resulting map contains `{ 'address': 'address-of-profile', entry: { parent: 'parent object (user address)',`
+  /// `first_name: 'first_name', last_name: 'last_name', bio: 'bio', profile_picture: 'profile_picture',verified: true/false} }`
+  Future<Map<String, dynamic>> retriveProfileByAgent();
 }
 
 /// Concrete implementation of [AuthenticationProvider].
@@ -38,8 +55,7 @@ class AuthenticationImp implements AuthenticationProvider {
       );
       if (response.statusCode == 200) {
         // Once the user is created, we need to log them in to obtain a auth token.
-        await loginUser(UserAuthLoginDetails(
-            email: details.email, password: details.password));
+        await loginUser(UserAuthLoginDetails(email: details.email, password: details.password));
 
         // The response sent back from the server is decoded
         final Map<String, dynamic> results = json.decode(response.body);
@@ -77,8 +93,7 @@ class AuthenticationImp implements AuthenticationProvider {
       // Holochain only sends 200 status code...even for errors. Anything
       // other than 200 represents an actual server.
       if (response.statusCode == 200) {
-        final Cookie responseCookie =
-            Cookie.fromSetCookieValue(response.headers['set-cookie']);
+        final Cookie responseCookie = Cookie.fromSetCookieValue(response.headers['set-cookie']);
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString('auth', responseCookie.value);
         return responseCookie.value;
@@ -109,12 +124,67 @@ class AuthenticationImp implements AuthenticationProvider {
       'function': 'create_user',
       'args': <String, dynamic>{'user_data': profile.toMap()},
     };
-    final http.Response holoResponse =
-        await JuntoHttp().post('/holochain', body: body);
+    final http.Response holoResponse = await JuntoHttp().post('/holochain', body: body);
     if (holoResponse.statusCode == 200) {
       debugPrint(holoResponse.body);
     } else {
       throw const HttpException('Holochain sent a response != 200');
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>> retriveProfileByAgent() async {
+    final Map<String, dynamic> body = JuntoHttp.holobody(
+      'get_user_profile_by_agent_address',
+      'user',
+      <String, String>{},
+    );
+
+    try {
+      final http.Response holoResponse = await JuntoHttp().post('/holochain', body: body);
+      final Map<String, dynamic> juntoResponse = JuntoHttp.handleResponse(holoResponse);
+      return juntoResponse;
+    } on HttpException catch (error) {
+      debugPrint('Error occured in user_provider $error');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>> retriveUsernameByAgent() async {
+    final Map<String, dynamic> body = JuntoHttp.holobody(
+      'get_user_username_by_agent_address',
+      'user',
+      <String, String>{},
+    );
+
+    try {
+      final http.Response holoResponse = await JuntoHttp().post('/holochain', body: body);
+      final Map<String, dynamic> juntoResponse = JuntoHttp.handleResponse(holoResponse);
+      return juntoResponse;
+    } on HttpException catch (error) {
+      debugPrint('Error occured in user_provider $error');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>> retriveUsernameFromAddress(String address) async {
+    final Map<String, dynamic> body = JuntoHttp.holobody(
+      'get_user_profile_from_address',
+      'user',
+      <String, String>{
+        'username_address': address,
+      },
+    );
+
+    try {
+      final http.Response holoResponse = await JuntoHttp().post('/holochain', body: body);
+      final Map<String, dynamic> juntoResponse = JuntoHttp.handleResponse(holoResponse);
+      return juntoResponse;
+    } on HttpException catch (error) {
+      debugPrint('Error occured in user_provider $error');
+      rethrow;
     }
   }
 }
