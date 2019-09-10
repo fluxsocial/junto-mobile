@@ -56,4 +56,29 @@ class JuntoHttp {
       body: _encodeBody(body),
     );
   }
+
+  static Map<String, dynamic> holobody(String functionName, String zome, Map<String, dynamic> args) {
+    return <String, dynamic>{'zome': zome, 'function': functionName, 'args': args};
+  }
+
+  /// Parses the [http.Response] sent back to the client. Function takes the repsonse and verifies the
+  /// status code. Since holochain sends all responses with a `response.statusCode == 200`, we consider all
+  /// other status codes to be errors.
+  /// Should the response body contain the `Ok` key, it returned as a Map. If the response body contains the
+  /// `Err` key, an exception is thrown with the error message.
+  /// Note: Since Holochain is only able to process string, the repsone is parsed using [deserializeJsonRecursively];
+  static dynamic handleResponse(http.Response response) {
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseBody = deserializeJsonRecursively(response.body);
+      if (responseBody['Ok']) {
+        return responseBody['Ok'];
+      }
+      if (responseBody['Err']) {
+        throw Exception('Server returned error ${responseBody['Err']}');
+      }
+    } else {
+      throw Exception('Server returned status code != 200');
+    }
+    throw Exception('Error occured parsing response');
+  }
 }

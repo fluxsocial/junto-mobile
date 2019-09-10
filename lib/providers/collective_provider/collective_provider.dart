@@ -46,7 +46,7 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
   @override
   Future<void> createExpression(Expression expression) async {
     final Expression sampleExpression = collectiveExpressions.first;
-    final Map<String, dynamic> expressionBody = holobody(
+    final Map<String, dynamic> expressionBody = JuntoHttp.holobody(
       'post_expression',
       'expression',
       <String, dynamic>{
@@ -69,7 +69,7 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
   @override
   Future<List<ExpressionContent>> filterExpression(String params) async {
     // Body to be sent to holochain
-    final Map<String, dynamic> postBody = holobody(
+    final Map<String, dynamic> postBody = JuntoHttp.holobody(
       'query_expressions',
       'expression',
       <String, dynamic>{
@@ -102,7 +102,7 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
           }
           return results;
         }
-        
+
         // Should the response from holochain contain an error, the key `Err`
         // will exist.
         if (responseBody['Err']) {
@@ -118,7 +118,7 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
   @override
   Future<String> createCollection(
       Map<String, String> collectionData, String collectionTag) {
-    final Map<String, dynamic> mapBody = holobody(
+    final Map<String, dynamic> mapBody = JuntoHttp.holobody(
       'create_collection',
       'collection',
       <String, dynamic>{
@@ -136,7 +136,7 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
 
   @override
   Future<void> postResonation(String address) async {
-    final Map<String, dynamic> postBody = holobody(
+    final Map<String, dynamic> postBody = JuntoHttp.holobody(
       'post_resonation',
       'expression',
       <String, dynamic>{
@@ -167,7 +167,7 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
   @override
   Future<String> postCommentExpression(
       ExpressionContent expression, String parentAddress) async {
-    final Map<String, dynamic> postBody = holobody(
+    final Map<String, dynamic> postBody = JuntoHttp.holobody(
       'post_comment_expression',
       'expression',
       <String, dynamic>{
@@ -217,15 +217,6 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
     );
 
     return base64Url.encode(values);
-  }
-
-  Map<String, dynamic> holobody(
-      String functionName, String zome, Map<String, dynamic> args) {
-    return <String, dynamic>{
-      'zome': zome,
-      'function': functionName,
-      'args': args
-    };
   }
 
   final List<Expression> _collectiveExpressions = <Expression>[
