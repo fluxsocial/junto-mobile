@@ -18,6 +18,8 @@ class _CreateEventState extends State<CreateEvent> {
   TextEditingController dateController;
   TextEditingController locationController;
   TextEditingController detailsController;
+
+  var _startDate = DateTime.now();
   var startPickerOpen = false;
   var startMinute;
   var startHour;
@@ -27,16 +29,17 @@ class _CreateEventState extends State<CreateEvent> {
   var startPeriod = '';
 
   var endPickerOpen = false;
-  var endMinute;
-  var endHour;
-  var endDay;
-  var endMonth;
-  var endYear;
+  var endMinute = '';
+  var endHour = '';
+  var endDay = '';
+  var endMonth = '';
+  var endYear = '';
   var endPeriod = '';
 
   @override
   void initState() {
     super.initState();
+    print(DateTime.now());
     titleController = TextEditingController();
     dateController = TextEditingController();
     locationController = TextEditingController();
@@ -45,7 +48,7 @@ class _CreateEventState extends State<CreateEvent> {
     startDay = DateTime.now().day.toString();
     startMonth = transformMonth(DateTime.now().month).toString();
     startYear = DateTime.now().year.toString();
-    startHour = transformHour(DateTime.now().hour).toString();
+    startHour = transformHour(DateTime.now().hour, 'start').toString();
     startMinute = transformMinute(DateTime.now().minute);
   }
 
@@ -57,29 +60,51 @@ class _CreateEventState extends State<CreateEvent> {
     detailsController.dispose();
     super.dispose();
   }
-  // transformHour(hour) {
 
-  // }
-  transformHour(hour) {
+  transformHour(hour, period) {
     if (hour < 12 && hour != 0) {
-      setState(() {
-        startPeriod = 'AM';
-      });
+      if (period == 'start') {
+        setState(() {
+          startPeriod = 'AM';
+        });
+      } else if (period == 'end') {
+        setState(() {
+          endPeriod = 'AM';
+        });
+      }
       return hour;
     } else if (hour > 12) {
-      setState(() {
-        startPeriod = 'PM';
-      });
+      if (period == 'start') {
+        setState(() {
+          startPeriod = 'PM';
+        });
+      } else if (period == 'end') {
+        setState(() {
+          endPeriod = 'PM';
+        });
+      }
       return hour - 12;
     } else if (hour == 0) {
-      setState(() {
-        startPeriod = 'AM';
-      });
+      if (period == 'start') {
+        setState(() {
+          startPeriod = 'aM';
+        });
+      } else if (period == 'end') {
+        setState(() {
+          endPeriod = 'AM';
+        });
+      }
       return 12;
     } else if (hour == 12) {
-      setState(() {
-        startPeriod = 'PM';
-      });
+      if (period == 'start') {
+        setState(() {
+          startPeriod = 'PM';
+        });
+      } else if (period == 'end') {
+        setState(() {
+          endPeriod = 'PM';
+        });
+      }
       return hour;
     }
   }
@@ -133,13 +158,22 @@ class _CreateEventState extends State<CreateEvent> {
     }
   }
 
-  _updateDate(date) {
+  _updateDate(date, period) {
+    print(DateTime.now());
     setState(() {
-      startDay = date.day.toString();
-      startMonth = transformMonth(date.month).toString();
-      startYear = date.year.toString();
-      startHour = transformHour(date.hour).toString();
-      startMinute = transformMinute(date.minute);
+      if (period == 'start') {
+        startDay = date.day.toString();
+        startMonth = transformMonth(date.month).toString();
+        startYear = date.year.toString();
+        startHour = transformHour(date.hour, 'start').toString();
+        startMinute = transformMinute(date.minute);
+      } else if (period == 'end') {
+        endDay = date.day.toString();
+        endMonth = transformMonth(date.month).toString();
+        endYear = date.year.toString();
+        endHour = transformHour(date.hour, 'end').toString();
+        endMinute = transformMinute(date.minute);
+      }
     });
 
     print(date);
@@ -155,9 +189,10 @@ class _CreateEventState extends State<CreateEvent> {
             Expanded(
               child: ListView(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 children: <Widget>[
                   Container(
+                    // color: Colors.blue,
                     child: TextFormField(
                       validator: Validator.validateNonEmpty,
                       controller: titleController,
@@ -171,11 +206,32 @@ class _CreateEventState extends State<CreateEvent> {
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Name of event',
+                        hintStyle: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xff333333),
+                        ),
                       ),
                       cursorColor: JuntoPalette.juntoGrey,
                       cursorWidth: 2,
-                      maxLines: 1,
-                      maxLength: 80,
+                      maxLines: null,
+                      maxLength: 140,
+                      style: TextStyle(
+                          fontSize: 17,
+                          color: Color(0xff333333),
+                          fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                  // Container(
+                  //   height: .75,
+                  //   color: Color(0xffeeeeee),
+                  // ),
+                  Container(
+                    color: Color(0xfffbfbfb),
+                    height: 200,
+                    width: MediaQuery.of(context).size.width,
+                    child: Center(
+                      child: Text('Add a cover photo (optional)'),
                     ),
                   ),
                   GestureDetector(
@@ -194,50 +250,49 @@ class _CreateEventState extends State<CreateEvent> {
                       }
                     },
                     child: Container(
-                        color: Colors.white,
-                        padding: EdgeInsets.symmetric(vertical: 15),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              'Start Date',
-                              style: TextStyle(
-                                fontSize: 17,
-                              ),
-                            ),
-                            Row(
-                              children: <Widget>[
-                                Text(
-                                  startMonth +
-                                      ' ' +
-                                      startDay +
-                                      ', ' +
-                                      startYear +
-                                      ', ' +
-                                      startHour +
-                                      ':' +
-                                      startMinute +
-                                      ' ' +
-                                      startPeriod,
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500),
-                                )
-                              ],
-                            )
-                          ],
-                        )),
+                      color: Colors.white,
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            'Start Date',
+                            style: TextStyle(
+                                fontSize: 17, fontWeight: FontWeight.w600),
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Text(
+                                startMonth +
+                                    ' ' +
+                                    startDay +
+                                    ', ' +
+                                    startYear +
+                                    ', ' +
+                                    startHour +
+                                    ':' +
+                                    startMinute +
+                                    ' ' +
+                                    startPeriod,
+                                style: TextStyle(fontSize: 17),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
                   ),
                   startPickerOpen
                       ? Container(
                           height: 200,
                           child: CupertinoDatePicker(
-                            minimumDate: DateTime.now(),
+                            initialDateTime: _startDate,
                             mode: CupertinoDatePickerMode.dateAndTime,
                             onDateTimeChanged: (DateTime date) {
                               // print(date);
-                              _updateDate(date);
+                              _updateDate(date, 'start');
+                              _startDate = date;
                             },
                           ),
                         )
@@ -260,11 +315,38 @@ class _CreateEventState extends State<CreateEvent> {
                     child: Container(
                       color: Colors.white,
                       padding: EdgeInsets.symmetric(vertical: 15),
-                      child: Text(
-                        'End Date',
-                        style: TextStyle(
-                          fontSize: 17,
-                        ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            'End Date',
+                            style: TextStyle(
+                                fontSize: 17, fontWeight: FontWeight.w600),
+                          ),
+                          endDay == ''
+                              ? SizedBox()
+                              : Row(
+                                  children: <Widget>[
+                                    Text(
+                                      endMonth +
+                                          ' ' +
+                                          endDay +
+                                          ', ' +
+                                          endYear +
+                                          ', ' +
+                                          endHour +
+                                          ':' +
+                                          endMinute +
+                                          ' ' +
+                                          endPeriod,
+                                      style: TextStyle(
+                                        fontSize: 17,
+                                      ),
+                                    )
+                                  ],
+                                )
+                        ],
                       ),
                     ),
                   ),
@@ -272,18 +354,38 @@ class _CreateEventState extends State<CreateEvent> {
                       ? Container(
                           height: 200,
                           child: CupertinoDatePicker(
-                            // initialDateTime: DateTime.now(),
-                            minimumDate: DateTime.now(),
+                            initialDateTime: _startDate,
                             mode: CupertinoDatePickerMode.dateAndTime,
                             onDateTimeChanged: (DateTime date) {
-                              print(date);
+                              _updateDate(date, 'end');
                             },
                           ),
                         )
                       : SizedBox(),
                   Container(
+                    padding: EdgeInsets.symmetric(vertical: 15),
+                    child: Text(
+                      'Location',
+                      style: TextStyle(
+                          color: Color(0xff333333),
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 15),
+                    child: Text(
+                      'Details',
+                      style: TextStyle(
+                          color: Color(0xff333333),
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  Container(
+                    color: Color(0xfffbfbfb),
                     constraints:
-                        const BoxConstraints(minHeight: 100, maxHeight: 240),
+                        const BoxConstraints(minHeight: 140, maxHeight: 240),
                     padding: const EdgeInsets.only(bottom: 40),
                     child: TextFormField(
                       validator: Validator.validateNonEmpty,
@@ -297,12 +399,16 @@ class _CreateEventState extends State<CreateEvent> {
                           null,
                       decoration: InputDecoration(
                         border: InputBorder.none,
-                        hintText: 'Details',
                       ),
                       cursorColor: JuntoPalette.juntoGrey,
                       cursorWidth: 2,
                       maxLines: null,
                       textInputAction: TextInputAction.newline,
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xff333333),
+                      ),
                     ),
                   )
                 ],
@@ -314,11 +420,3 @@ class _CreateEventState extends State<CreateEvent> {
     );
   }
 }
-
-// Container(
-//     color: Color(0xfffbfbfb),
-//     height: 200,
-//     width: MediaQuery.of(context).size.width,
-//     child: Center(
-//       child: Text('Add a cover photo (optional)'),
-//     )),
