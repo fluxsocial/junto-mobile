@@ -34,7 +34,7 @@ class UserProviderImpl implements UserProvider {
 
     final http.Response serverResponse = await JuntoHttp().post(resource, body: body);
     //ignore: always_specify_types
-    final responseMap = deserializeJsonRecursively(serverResponse.body);
+    final responseMap = deserializeHoloJson(serverResponse.body);
     if (responseMap['Ok'] != null) {
       final PerspectiveResponse perspectiveDetails = PerspectiveResponse.fromMap(
         responseMap['Ok'],

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/models/den_model.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
@@ -35,7 +36,16 @@ abstract class CollectiveProvider with ChangeNotifier {
   ///Allows for the posting of comment expressions. The [ExpressionContent] and address of the
   ///parent [Expression] must be supplied to the function.
   Future<String> postCommentExpression(
-      ExpressionContent expression, String parentAddress);
+    ExpressionContent expression,
+    String parentAddress,
+  );
+
+  /// Checks whether the given user is the owner of the passed collective.
+  Future<bool> isCollectiveOwner(String collectiveAddress, String userAddress);
+
+  /// Returns a list containing the user's dens. The method returns
+  /// Dens in the order `public`, `private` and `shared`.
+  Future<List<Den>> getUserDen(String usernameAddress);
 
   List<Expression> get collectiveExpressions;
 }
@@ -85,19 +95,16 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
       },
     );
     try {
-      final http.Response response =
-          await JuntoHttp().post('/holochain', body: postBody);
+      final http.Response response = await JuntoHttp().post('/holochain', body: postBody);
       // Holochain only sends 200 responses...even for errors
       if (response.statusCode == 200) {
-        final Map<String, dynamic> responseBody =
-            deserializeJsonRecursively(response.body);
+        final Map<String, dynamic> responseBody = deserializeHoloJson(response.body);
 
         // Should there be no error, the results will contain an `Ok` key.
         if (responseBody['Ok']) {
           final List<ExpressionContent> results = <ExpressionContent>[];
           for (final Map<String, dynamic> response in responseBody['Ok']) {
-            final ExpressionContent content =
-                ExpressionContent.fromMap(response);
+            final ExpressionContent content = ExpressionContent.fromMap(response);
             results.add(content);
           }
           return results;
@@ -116,8 +123,7 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
   }
 
   @override
-  Future<String> createCollection(
-      Map<String, String> collectionData, String collectionTag) {
+  Future<String> createCollection(Map<String, String> collectionData, String collectionTag) {
     final Map<String, dynamic> mapBody = JuntoHttp.holobody(
       'create_collection',
       'collection',
@@ -150,8 +156,7 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
         body: postBody,
       );
       if (serverResponse.statusCode == 200) {
-        final dynamic response =
-            deserializeJsonRecursively(serverResponse.body);
+        final dynamic response = deserializeHoloJson(serverResponse.body);
         print(response);
       } else {
         throw const HttpException(
@@ -165,8 +170,7 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
   }
 
   @override
-  Future<String> postCommentExpression(
-      ExpressionContent expression, String parentAddress) async {
+  Future<String> postCommentExpression(ExpressionContent expression, String parentAddress) async {
     final Map<String, dynamic> postBody = JuntoHttp.holobody(
       'post_comment_expression',
       'expression',
@@ -176,12 +180,10 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
       },
     );
     try {
-      final http.Response response =
-          await JuntoHttp().post('/holochain', body: postBody);
+      final http.Response response = await JuntoHttp().post('/holochain', body: postBody);
 
       if (response.statusCode == 200) {
-        final Map<String, dynamic> responseBody =
-            deserializeJsonRecursively(response.body);
+        final Map<String, dynamic> responseBody = deserializeHoloJson(response.body);
         if (responseBody['Ok']) {
           return responseBody['Ok'];
         }
@@ -195,6 +197,61 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
       debugPrint('HTTP ERROR POSTING COMMENT: $error');
     }
     return null;
+  }
+
+  @override
+  Future<bool> isCollectiveOwner(String collectiveAddress, String userAddress) async {
+    final Map<String, dynamic> _body = JuntoHttp.holobody(
+      'is_collection_owner',
+      'collective',
+      <String, dynamic>{
+        'collection': collectiveAddress,
+        'username_address': userAddress,
+      },
+    );
+    try {
+      final http.Response _serverResponse = await JuntoHttp().post('/holochain', body: _body);
+      final bool isOwner = JuntoHttp.handleResponse(_serverResponse) as String == 'true';
+      return isOwner;
+    } on HttpException catch (error) {
+      debugPrint('Error in isCollectiveOwner $error');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<Den>> getUserDen(String usernameAddress) async {
+    Den privateDen;
+    Den publicDen;
+    Den sharedDen;
+    final Map<String, dynamic> _body = JuntoHttp.holobody(
+      'get_user_dens',
+      'collective',
+      <String, dynamic>{'username_address': usernameAddress},
+    );
+    try {
+      final http.Response _serverResponse = await JuntoHttp().post('/holochain', body: _body);
+
+      // The decoded `Ok` response contains a Map with the keys `private_den`, `shared_den` and `public_den`
+      // Each Den is a map containing `address`, `entry` (Map containing `parent`), `name`, `privacy` and `channel_type`
+      final Map<String, dynamic> decodedResponse = JuntoHttp.handleResponse(_serverResponse);
+
+      // A user user may not be part of all 3 Den types. We check for the presence of the different keys before
+      // assigning the variables.
+      if (decodedResponse['private_den']) {
+        privateDen = Den.fromMap(decodedResponse['private_den']);
+      }
+      if (decodedResponse['public_den']) {
+        publicDen = Den.fromMap(decodedResponse['public_den']);
+      }
+      if (decodedResponse['shared_den']) {
+        sharedDen = Den.fromMap(decodedResponse['shared_den']);
+      }
+      return <Den>[publicDen, privateDen, sharedDen];
+    } on HttpException catch (error) {
+      debugPrint('Error in getUserDen $error');
+      rethrow;
+    }
   }
 
   final List<Perspective> _perspectives = <Perspective>[];
@@ -224,10 +281,7 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
       expression: ExpressionContent(
         address: '0xfee32zokie8',
         expressionType: 'longform',
-        expressionContent: <String, String>{
-          'title': 'The Medium is the Message',
-          'body': 'Hellos my name is Urk'
-        },
+        expressionContent: <String, String>{'title': 'The Medium is the Message', 'body': 'Hellos my name is Urk'},
       ),
       subExpressions: <Expression>[],
       authorUsername: Username(
@@ -300,10 +354,7 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
       expression: ExpressionContent(
         address: '0xfee32zokie8',
         expressionType: 'shortform',
-        expressionContent: <String, String>{
-          'body': 'Hello cats!',
-          'background': 'four'
-        },
+        expressionContent: <String, String>{'body': 'Hello cats!', 'background': 'four'},
       ),
       authorUsername: Username(
         address: '02efredffdfvdbnrtg',
@@ -338,10 +389,7 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
       expression: ExpressionContent(
         address: '0xfee32zokie8',
         expressionType: 'longform',
-        expressionContent: <String, String>{
-          'title': 'Coming from the UK!',
-          'body': 'Hellos my name is josh'
-        },
+        expressionContent: <String, String>{'title': 'Coming from the UK!', 'body': 'Hellos my name is josh'},
       ),
       subExpressions: <Expression>[],
       timestamp: '4',

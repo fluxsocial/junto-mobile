@@ -54,6 +54,7 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
       lastName: widget.lastName,
       password: widget.password,
       bio: widget.bio,
+      username: widget.username,
       profileImage: widget.profilePicture ?? '',
     );
     try {

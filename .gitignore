@@ -71,3 +71,8 @@ build/
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 ios/Flutter/flutter_export_environment.sh
 lib/API.dart
+android/.project
+android/app/.classpath
+android/.settings/org.eclipse.buildship.core.prefs
+android/app/.project
+android/app/.settings/org.eclipse.buildship.core.prefs

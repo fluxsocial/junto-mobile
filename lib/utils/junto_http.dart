@@ -31,7 +31,7 @@ class JuntoHttp {
   }
 
   String _encodeBody(Map<String, dynamic> body) {
-    return body == null ? null : serializeJsonRecursively(body);
+    return body == null ? null : serializeHoloJson(body);
   }
 
   Future<http.Response> get(
@@ -66,10 +66,10 @@ class JuntoHttp {
   /// other status codes to be errors.
   /// Should the response body contain the `Ok` key, it returned as a Map. If the response body contains the
   /// `Err` key, an exception is thrown with the error message.
-  /// Note: Since Holochain is only able to process string, the repsone is parsed using [deserializeJsonRecursively];
+  /// Note: Since Holochain is only able to process string, the repsone is parsed using [deserializeHoloJson];
   static dynamic handleResponse(http.Response response) {
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseBody = deserializeJsonRecursively(response.body);
+      final Map<String, dynamic> responseBody = deserializeHoloJson(response.body);
       if (responseBody['Ok']) {
         return responseBody['Ok'];
       }
