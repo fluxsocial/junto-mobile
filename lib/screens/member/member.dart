@@ -150,10 +150,10 @@ class JuntoMember extends StatelessWidget {
                       Container(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
+                          children: const <Widget>[
                             Icon(CustomIcons.more, size: 17),
-                            const SizedBox(height: 5),
-                            const Text(
+                            SizedBox(height: 5),
+                            Text(
                               'More',
                               style: TextStyle(
                                 fontSize: 12,

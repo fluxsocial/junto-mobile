@@ -4,6 +4,8 @@ import 'package:junto_beta_mobile/models/perspective.dart';
 import 'package:junto_beta_mobile/providers/user_provider.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/create_perspective/perspective_member_preview/perspective_member_preview.dart';
 import 'package:junto_beta_mobile/typography/palette.dart';
+import 'package:junto_beta_mobile/utils/junto_dialog.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
 
 class CreatePerspective extends StatefulWidget {
@@ -28,8 +30,21 @@ class _CreatePerspectiveState extends State<CreatePerspective> {
 
   Future<void> createPerspective() async {
     final String name = controller.value.text;
-    await Provider.of<UserProvider>(context)
+    JuntoOverlay.showLoader(context);
+    final PerspectiveResponse address = await Provider.of<UserProvider>(context)
         .createPerspective(Perspective(name: name));
+    JuntoOverlay.hide();
+    JuntoDialog.showJuntoDialog(
+      context,
+      'Perspective Created | Junto',
+      'Name: ${address.name} \n Address: ${address.address}',
+      <Widget>[
+        FlatButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text('Ok'),
+        ),
+      ],
+    );
   }
 
   @override

@@ -6,7 +6,7 @@ void main() {
   group('createUser', () {
     test('Serialization', () {
       // TODO: Write.
-      
+
       // const String expectedResult =
       //     '{"zome":"user","function":"create_user","args":"{\"user_data\":{\"username\":\"null\",\"first_name\":\"NASH\",\"last_name\":\"Ramdial\",\"profile_picture\":\"\",\"bio\":\"bio\"}}"}';
 

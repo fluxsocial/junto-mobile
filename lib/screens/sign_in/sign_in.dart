@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/providers/auth_provider/auth_provider.dart';
 import 'package:junto_beta_mobile/screens/template/template.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -36,9 +37,11 @@ class _SignInState extends State<SignIn> {
     final String password = _passwordController.value.text;
     final UserAuthLoginDetails loginDetails =
         UserAuthLoginDetails(email: email, password: password);
+    JuntoOverlay.showLoader(context);
     await Provider.of<AuthenticationProvider>(context).loginUser(loginDetails);
     await SharedPreferences.getInstance()
       ..setBool('isLoggedIn', true);
+    JuntoOverlay.hide();
     Navigator.pushReplacement(
       context,
       MaterialPageRoute<dynamic>(

@@ -11,11 +11,13 @@ abstract class UserProvider {
   Future<PerspectiveResponse> createPerspective(Perspective perspective);
 
   /// Adds the given user to a perspective. The perspective address and user address must be supplied.
-  Future<String> addUserToPerspective(String perspectiveAddress, String userAddress);
+  Future<String> addUserToPerspective(
+      String perspectiveAddress, String userAddress);
 
   /// Similar to [addUserToPerspective], this function takes the address of the perspective and returns a list
   /// containing `'address': 'address_of_user','entry': {'username': 'username_of_user'}`
-  Future<List<Map<String, dynamic>>> getUsersInPerspective(String perspectiveAddress);
+  Future<List<Map<String, dynamic>>> getUsersInPerspective(
+      String perspectiveAddress);
 }
 
 class UserProviderImpl implements UserProvider {
@@ -32,18 +34,21 @@ class UserProviderImpl implements UserProvider {
       },
     };
 
-    final http.Response serverResponse = await JuntoHttp().post(resource, body: body);
+    final http.Response serverResponse =
+        await JuntoHttp().post(resource, body: body);
     //ignore: always_specify_types
     final responseMap = deserializeHoloJson(serverResponse.body);
-    if (responseMap['Ok'] != null) {
-      final PerspectiveResponse perspectiveDetails = PerspectiveResponse.fromMap(
-        responseMap['Ok'],
+    if (responseMap['result']['Ok'] != null) {
+      final PerspectiveResponse perspectiveDetails =
+          PerspectiveResponse.fromMap(
+        responseMap['result']['Ok'],
       );
       return perspectiveDetails;
     }
 
     if (responseMap['result']['Err'] != null) {
       print(responseMap['result']['Err']);
+      throw Exception(responseMap['result']['Err']);
     }
 
     // Should not get here.
@@ -51,7 +56,8 @@ class UserProviderImpl implements UserProvider {
   }
 
   @override
-  Future<String> addUserToPerspective(String perspectiveAddress, String userAddress) async {
+  Future<String> addUserToPerspective(
+      String perspectiveAddress, String userAddress) async {
     assert(perspectiveAddress.isNotEmpty && userAddress.isNotEmpty);
     final Map<String, dynamic> _body = JuntoHttp.holobody(
       'add_user_to_perspective',
@@ -76,7 +82,8 @@ class UserProviderImpl implements UserProvider {
   }
 
   @override
-  Future<List<Map<String, dynamic>>> getUsersInPerspective(String perspectiveAddress) async {
+  Future<List<Map<String, dynamic>>> getUsersInPerspective(
+      String perspectiveAddress) async {
     assert(perspectiveAddress.isNotEmpty);
     final Map<String, dynamic> _body = JuntoHttp.holobody(
       'get_perspectives_users',
@@ -90,7 +97,8 @@ class UserProviderImpl implements UserProvider {
         resource,
         body: _body,
       );
-      final List<Map<String, dynamic>> juntoResponse = JuntoHttp.handleResponse(_response);
+      final List<Map<String, dynamic>> juntoResponse =
+          JuntoHttp.handleResponse(_response);
       print(juntoResponse);
       return juntoResponse;
     } on HttpException catch (error) {

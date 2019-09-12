@@ -37,7 +37,7 @@ class PackOpenFAB extends StatelessWidget {
                 children: <Widget>[
                   Container(
                     width: MediaQuery.of(context).size.width * .25,
-                    child: Icon(
+                    child: const Icon(
                       CustomIcons.half_lotus,
                       size: 17,
                       color: JuntoPalette.juntoGrey,
@@ -45,7 +45,7 @@ class PackOpenFAB extends StatelessWidget {
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width * .25,
-                    child: RotatedBox(
+                    child: const RotatedBox(
                       quarterTurns: 2,
                       child: Icon(
                         CustomIcons.triangle,

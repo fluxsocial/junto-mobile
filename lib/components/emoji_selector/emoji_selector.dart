@@ -29,7 +29,7 @@ class EmojiSelector extends StatelessWidget {
             onTap: () => onEmojiSelected(parsedEmoji[index]),
             child: Text(
               parsedEmoji[index].code,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 26.0,
               ),
             ),

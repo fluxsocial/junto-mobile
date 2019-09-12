@@ -18,7 +18,8 @@ Map<String, dynamic> _stringifyValuesRecursively(Map<String, dynamic> source) {
 /// i.e., maps within objects are also converted to their
 /// respective JSON representation.
 String serializeHoloJson(Map<String, dynamic> source) {
-  final Map<String, dynamic> stringifiedValuesMap = _stringifyValuesRecursively(source);
+  final Map<String, dynamic> stringifiedValuesMap =
+      _stringifyValuesRecursively(source);
 
   return json.encode(
     stringifiedValuesMap.map(
@@ -48,13 +49,15 @@ dynamic deserializeHoloJson(String source) {
   if (deserialized is Map<String, dynamic>) {
     return deserialized.map(
       (String key, dynamic value) => MapEntry<String, dynamic>(
-        key,
-        value is String ? deserializeHoloJson(value) : value,
-      ),
+            key,
+            value is String ? deserializeHoloJson(value) : value,
+          ),
     );
   }
   if (deserialized is List) {
-    return deserialized.map((dynamic element) => deserializeHoloJson(element)).toList();
+    return deserialized
+        .map((dynamic element) => deserializeHoloJson(element))
+        .toList();
   }
 
   return deserialized;
