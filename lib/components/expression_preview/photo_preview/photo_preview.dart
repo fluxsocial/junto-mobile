@@ -1,33 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/models/expression.dart';
 
 /// Displays the given [image] and [imageCaption]
 class PhotoPreview extends StatelessWidget {
   const PhotoPreview({
     Key key,
-    this.image,
-    this.imageCaption,
+    @required this.expression,
   }) : super(key: key);
 
-  /// Url of the image to be displayed
-  final String image;
+  final Expression expression;
 
-  /// Image caption
-  final String imageCaption;
-
-  Widget _generateCaption() {
-    if (imageCaption == '' || imageCaption == null) {
-      return Container(height: 0, width: 0);
-    } else {
-      return Container(
-        margin: const EdgeInsets.only(top: 10, left: 10),
-        child: Text(
-          imageCaption,
-          maxLines: 2,
-          textAlign: TextAlign.start,
-        ),
-      );
-    }
-  }
+  // Widget _generateCaption() {
+  //   if (imageCaption == '' || imageCaption == null) {
+  //     return Container(height: 0, width: 0);
+  //   } else {
+  //     return Container(
+  //       margin: const EdgeInsets.only(top: 10, left: 10),
+  //       child: Text(
+  //         imageCaption,
+  //         maxLines: 2,
+  //         textAlign: TextAlign.start,
+  //       ),
+  //     );
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +31,10 @@ class PhotoPreview extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(
-          child: Image.asset(image),
+          width: MediaQuery.of(context).size.width,
+          child: Image.asset(expression.expression.expressionContent['image'], fit: BoxFit.fitWidth),
         ),
-        _generateCaption()
+        // _generateCaption()
       ],
     );
   }

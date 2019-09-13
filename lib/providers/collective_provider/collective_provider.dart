@@ -46,6 +46,44 @@ class CollectiveProvider with ChangeNotifier {
     Expression(
       expression: ExpressionContent(
         address: '0xfee32zokie8',
+        expressionType: 'photo',
+        expressionContent: <String, String>{
+          'image': 'assets/images/junto-mobile__stillmind.png',
+        },
+      ),
+      authorUsername: Username(
+        address: '02efredffdfvdbnrtg',
+        username: 'sunyata',
+      ),
+      authorProfile: UserProfile(
+        address: '0vefoiwiafjvkbr32r243r5',
+        firstName: 'Eric',
+        lastName: 'Yang',
+        profilePicture: 'assets/images/junto-mobile__eric.png',
+        bio: 'hellooo',
+        parent: 'parent-address',
+        verified: true,
+      ),
+      subExpressions: <Expression>[],
+      resonations: <dynamic>[],
+      timestamp: '22',
+      channels: <Channel>[
+        Channel(
+          address: 'channel-address',
+          value: 'design',
+          attributeType: 'Channel',
+        ),
+        Channel(
+          address: 'channel-address',
+          value: 'tech',
+          attributeType: 'Channel',
+        ),
+      ],
+    ),    
+
+    Expression(
+      expression: ExpressionContent(
+        address: '0xfee32zokie8',
         expressionType: 'shortform',
         expressionContent: <String, String>{
           'body': 'Junto is releasing September 28th. Mark your calendars!',
@@ -81,6 +119,44 @@ class CollectiveProvider with ChangeNotifier {
         ),
       ],
     ),
+    Expression(
+      expression: ExpressionContent(
+        address: '0xfee32zokie8',
+        expressionType: 'photo',
+        expressionContent: <String, String>{
+          'image': 'assets/images/junto-mobile__kevin.png',
+        },
+      ),
+      authorUsername: Username(
+        address: '02efredffdfvdbnrtg',
+        username: 'sunyata',
+      ),
+      authorProfile: UserProfile(
+        address: '0vefoiwiafjvkbr32r243r5',
+        firstName: 'Eric',
+        lastName: 'Yang',
+        profilePicture: 'assets/images/junto-mobile__eric.png',
+        bio: 'hellooo',
+        parent: 'parent-address',
+        verified: true,
+      ),
+      subExpressions: <Expression>[],
+      resonations: <dynamic>[],
+      timestamp: '22',
+      channels: <Channel>[
+        Channel(
+          address: 'channel-address',
+          value: 'design',
+          attributeType: 'Channel',
+        ),
+        Channel(
+          address: 'channel-address',
+          value: 'tech',
+          attributeType: 'Channel',
+        ),
+      ],
+    ),    
+
     Expression(
       expression: ExpressionContent(
         address: '0xfee32zokie8',
