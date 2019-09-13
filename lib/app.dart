@@ -40,8 +40,8 @@ class JuntoAppState extends State<JuntoApp> {
         ChangeNotifierProvider<SpheresProvider>(
           builder: (BuildContext context) => SpheresProvider(),
         ),
-        ChangeNotifierProvider<PacksProvider>(
-          builder: (BuildContext context) => PacksProvider(),
+        Provider<PacksProvider>(
+          builder: (BuildContext context) => PacksProviderImpl(),
         ),
       ],
       child: MaterialApp(

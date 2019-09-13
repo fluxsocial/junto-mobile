@@ -1,3 +1,5 @@
+import 'package:meta/meta.dart';
+
 class Pack {
   Pack(
     this.packTitle,
@@ -52,5 +54,49 @@ class Pack {
         'assets/images/junto-mobile__david.png',
       ),
     ];
+  }
+}
+
+/// Object representing the response sent back from the server.
+class PackResponse {
+  PackResponse({
+    @required this.address,
+    @required this.name,
+    @required this.ownerAddress,
+    @required this.privacy,
+  });
+
+  /// Creates a [PackResponse] from the given map.
+  factory PackResponse.fromMap(Map<String, dynamic> map) {
+    return PackResponse(
+      address: map['address'] as String,
+      name: map['entry']['name'] as String,
+      ownerAddress: map['entry']['ownerAddress'] as String,
+      privacy: map['entry']['privacy'] as String,
+    );
+  }
+
+  /// Address of the pack.
+  final String address;
+
+  /// Name of the pack.
+  final String name;
+
+  /// Address of the pack owner
+  final String ownerAddress;
+
+  /// Privacy setting of the pack.
+  final String privacy;
+
+  /// Converts the object to a map
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'address': address,
+      'entry': <String, String>{
+        'name': name,
+        'ownerAddress': ownerAddress,
+        'privacy': privacy,
+      }
+    };
   }
 }

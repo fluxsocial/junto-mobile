@@ -17,7 +17,8 @@ abstract class UserProvider {
   /// Similar to [addUserToPerspective], this function takes the address of the perspective and returns a list
   /// containing `'address': 'address_of_user','entry': {'username': 'username_of_user'}`
   Future<List<Map<String, dynamic>>> getUsersInPerspective(
-      String perspectiveAddress);
+    String perspectiveAddress,
+  );
 }
 
 class UserProviderImpl implements UserProvider {
