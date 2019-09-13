@@ -22,13 +22,13 @@ abstract class AuthenticationProvider {
   /// Returns a map containing the username of the user with the given address.
   /// Result Map contains `{ 'address': 'address-of-profile', entry: { parent: 'parent object (user address)',`
   /// `first_name: 'first_name', 'last_name: 'last_name', bio: 'bio', profile_picture: 'profile_picture',verified: true/false} }`
-  Future<Map<String, dynamic>> retriveUsernameFromAddress(String address);
+  Future<Map<String, dynamic>> retrieveUsernameFromAddress(String address);
 
-  /// Retrives the username associated with the current agent.
+  /// Retrieves the username associated with the current agent.
   /// Map contains the following `{ 'address': 'address-of-username', 'entry': { 'username': 'username' } }`
-  Future<Map<String, dynamic>> retriveUsernameByAgent();
+  Future<Map<String, dynamic>> retrieveUsernameByAgent();
 
-  /// Retrives the user's profile associated with the given address.
+  /// Retrieves the user's profile associated with the given address.
   /// Resulting map contains `{ 'address': 'address-of-profile', entry: { parent: 'parent object (user address)',`
   /// `first_name: 'first_name', last_name: 'last_name', bio: 'bio', profile_picture: 'profile_picture',verified: true/false} }`
   Future<Map<String, dynamic>> retriveProfileByAgent();
@@ -157,7 +157,7 @@ class AuthenticationImp implements AuthenticationProvider {
   }
 
   @override
-  Future<Map<String, dynamic>> retriveUsernameByAgent() async {
+  Future<Map<String, dynamic>> retrieveUsernameByAgent() async {
     final Map<String, dynamic> body = JuntoHttp.holobody(
       'get_user_username_by_agent_address',
       'user',
@@ -177,7 +177,7 @@ class AuthenticationImp implements AuthenticationProvider {
   }
 
   @override
-  Future<Map<String, dynamic>> retriveUsernameFromAddress(
+  Future<Map<String, dynamic>> retrieveUsernameFromAddress(
       String address) async {
     final Map<String, dynamic> body = JuntoHttp.holobody(
       'get_user_profile_from_address',
