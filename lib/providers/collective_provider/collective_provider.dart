@@ -48,6 +48,8 @@ abstract class CollectiveProvider with ChangeNotifier {
   Future<List<Den>> getUserDen(String usernameAddress);
 
   List<Expression> get collectiveExpressions;
+
+  Expression get sampleExpression;
 }
 
 class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
@@ -62,7 +64,7 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
       <String, dynamic>{
         'expression': sampleExpression.expression.toMap(),
         'attributes': sampleExpression.channels,
-        'context': <String>['testing'],
+        'context': <String>['QmTodLQKwfLd4pxTkjvAdyaEoqNaJnq12cRPXu2aPx4xbz'],
       },
     );
     try {
@@ -132,8 +134,8 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
       'create_collection',
       'collection',
       <String, dynamic>{
-        'collection': <String, dynamic>{},
-        'collection_tag': 'type-of-collection',
+        'collection': collectionData,
+        'collection_tag': collectionTag,
       },
     );
     try {
@@ -269,6 +271,35 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
   final List<Perspective> _perspectives = <Perspective>[];
 
   @override
+  Expression get sampleExpression => Expression(
+        expression: ExpressionContent(
+          address: '',
+          expressionType: 'longform',
+          expressionContent: <String, String>{
+            'title': 'Testing',
+            'body': 'Hellos this is test data'
+          },
+        ),
+        subExpressions: <Expression>[],
+        authorUsername: Username(
+          address: 'QmWieBF1pJzPX6dusE45nkkvzP3jpGiLpAWRuNu9pzY17k',
+          username: 'Nash',
+        ),
+        authorProfile: UserProfile(
+          address: 'QmXe4zPtBUHCG6gCUUJKGyCrFeLpZCtv3HwA2z7wswGqc8',
+          parent: 'QmWieBF1pJzPX6dusE45nkkvzP3jpGiLpAWRuNu9pzY17k',
+          bio: 'Henlo',
+          firstName: 'Nash',
+          lastName: 'Ramdial',
+          profilePicture: 'assets/images/junto-mobile__eric.png',
+          verified: true,
+        ),
+        resonations: <dynamic>[],
+        timestamp: '2',
+        channels: <Channel>[],
+      );
+
+  @override
   List<Expression> get collectiveExpressions {
     return _collectiveExpressions;
   }
@@ -363,21 +394,21 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
           attributeType: 'Channel',
         ),
       ],
-    ),    
+    ),
     Expression(
       expression: ExpressionContent(
         address: '0xfee32zokie8',
         expressionType: 'event',
         expressionContent: <String, String>{
-          'title': 'Philosophical exchange for individual and mutual improvement',
+          'title':
+              'Philosophical exchange for individual and mutual improvement',
           'location': 'Tubestation, New Polzeath UK',
           'time': 'Sun, Sep 15, 3:00PM',
           'image': 'assets/images/junto-mobile__event.png',
-          'description': 'Join us for an afternoon of deep introspection, interconnectivity, and philosophical discourse! Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum'
-
+          'description':
+              'Join us for an afternoon of deep introspection, interconnectivity, and philosophical discourse! Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum'
         },
       ),
-      
       authorProfile: UserProfile(
         address: '0vefoiwiafjvkbr32r243r5',
         parent: 'parent-address',
@@ -406,8 +437,7 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
           attributeType: 'Channel',
         ),
       ],
-    ),    
-
+    ),
     Expression(
       expression: ExpressionContent(
         address: '0xfee32zokie8',
@@ -486,7 +516,7 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
           attributeType: 'Channel',
         ),
       ],
-    ),        
+    ),
     Expression(
       expression: ExpressionContent(
         address: '0xfee32zokie8',
@@ -523,8 +553,7 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
           attributeType: 'Channel',
         ),
       ],
-    ),    
-
+    ),
     Expression(
       expression: ExpressionContent(
         address: '0xfee32zokie8',

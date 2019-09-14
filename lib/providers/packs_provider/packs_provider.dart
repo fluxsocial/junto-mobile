@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:junto_beta_mobile/models/pack.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/utils/junto_http.dart';
+import 'package:junto_beta_mobile/utils/utils.dart';
 
 /// Interface describing the functions and responsibilities of Pack provider.
 /// Please see [PacksProviderImpl] for implementation.
@@ -172,15 +173,19 @@ class PacksProviderImpl implements PacksProvider {
     try {
       final http.Response serverResponse =
           await JuntoHttp().post('/holochain', body: _body);
-      final dynamic mapResponse = JuntoHttp.handleResponse(serverResponse);
-      if (mapResponse is List) {
-        return mapResponse
-            .map((dynamic data) => PackResponse.fromMap(data))
-            .toList(growable: false);
+      print('Packs Provider body ${serverResponse.body}');
+      final Map<String, dynamic> responseBody =
+          deserializeHoloJson(serverResponse.body);
+      if (responseBody['result']['Ok'] is List) {
+        final List<PackResponse> _results = <PackResponse>[];
+//        responseBody['result']['Ok']?.forEach((dynamic data) {
+//          _results.add(PackResponse.fromMap(data));
+//        }).toList(growable: false);
+//        return _results;
+      print(responseBody['result']['Ok']);
       }
     } catch (error) {
       debugPrint('Get pack members error $error');
-      rethrow;
     }
     return null;
   }
