@@ -268,7 +268,7 @@ class CreateActionsState extends State<CreateActions> {
                     children: <Widget>[
                       Container(
                         margin: const EdgeInsets.only(bottom: 5),
-                        child: Text(
+                        child: const Text(
                           'Choose where to send your expression',
                           style: TextStyle(
                               fontSize: 17, fontWeight: FontWeight.w600),

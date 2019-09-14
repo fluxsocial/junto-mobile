@@ -6,8 +6,9 @@ import 'package:junto_beta_mobile/screens/create/event/event.dart';
 import 'package:junto_beta_mobile/screens/create/longform/longform.dart';
 import 'package:junto_beta_mobile/screens/create/photo/photo.dart';
 import 'package:junto_beta_mobile/screens/create/shortform/shortform.dart';
-import 'package:junto_beta_mobile/palette.dart';
-import 'package:junto_beta_mobile/styles.dart';
+import 'package:junto_beta_mobile/typography/style.dart';
+import 'package:junto_beta_mobile/utils/junto_dialog.dart';
+
 
 class JuntoCreate extends StatefulWidget {
   const JuntoCreate(this.expressionLayer);
@@ -99,45 +100,23 @@ class JuntoCreateState extends State<JuntoCreate> {
   /// empty
   void confirmSwitch(String templateType) {
     if (isEditing.value == true || formKey.currentState?.validate() == true) {
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Padding(
-              padding: const EdgeInsets.only(bottom: 10.0),
-              child: Row(
-                children: const <Widget>[
-                  CircleAvatar(
-                    backgroundImage: AssetImage(
-                      'assets/images/junto-mobile__logo.png',
-                    ),
-                    radius: 20.0,
-                    backgroundColor: Colors.white,
-                  ),
-                  SizedBox(width: 12.0),
-                  Text('Junto'),
-                ],
-              ),
-            ),
-            content: Text(
-              'Are you sure you would like to switch Expression?',
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: const Text('Yes'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  switchTemplate(templateType);
-                },
-              ),
-              FlatButton(
-                child: const Text('No'),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-            ],
-          );
-        },
+      JuntoDialog.showJuntoDialog(
+        context,
+        'Junto',
+        'Are you sure you would like to switch Expression?',
+        <Widget>[
+          FlatButton(
+            child: const Text('Yes'),
+            onPressed: () {
+              Navigator.of(context).pop();
+              switchTemplate(templateType);
+            },
+          ),
+          FlatButton(
+            child: const Text('No'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ],
       );
     } else {
       switchTemplate(templateType);

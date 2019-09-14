@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/providers/auth_provider/auth_provider.dart';
 import 'package:junto_beta_mobile/screens/template/template.dart';
+import 'package:junto_beta_mobile/typography/palette.dart';
+import 'package:junto_beta_mobile/utils/junto_dialog.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -52,17 +55,21 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
       firstName: widget.firstName,
       lastName: widget.lastName,
       password: widget.password,
+      bio: widget.bio,
+      username: widget.username,
+      profileImage: widget.profilePicture ?? '',
     );
     try {
+      JuntoOverlay.showLoader(context);
       final String results = await Provider.of<AuthenticationProvider>(context)
           .registerUser(details);
-      print(results);
       await SharedPreferences.getInstance()
         ..setBool(
           'isLoggedIn',
           true,
         )
-        ..setString('user_token', results);
+        ..setString('user_id', results);
+      JuntoOverlay.hide();
       Navigator.pushReplacement(
         context,
         MaterialPageRoute<dynamic>(
@@ -70,6 +77,19 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
         ),
       );
     } catch (error) {
+      JuntoOverlay.hide();
+      JuntoDialog.showJuntoDialog(
+        context,
+        'Junto',
+        'Unable to create account at this time. '
+            'Recheck your information and try again later',
+        <Widget>[
+          FlatButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('OK'),
+          ),
+        ],
+      );
       print('Error: $error');
     }
   }

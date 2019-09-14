@@ -19,7 +19,7 @@ class NotificationsAppbar extends StatelessWidget {
           children: <Widget>[
             GestureDetector(
               onTap: () => Navigator.pop(context),
-              child: Icon(
+              child: const Icon(
                 CustomIcons.back_arrow_left,
                 textDirection: TextDirection.ltr,
                 color: Color(0xff555555),

@@ -140,32 +140,13 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
   // switch screen and update appbar title
   void _switchScreen(int x) {
     _bottomNavIndex.value = x;
-
-    switch (x) {
-      case 0:
-        setState(() {
-          _currentScreen = 'collective';
-          _appbarTitle = 'JUNTO';
-        });
-        break;
-      case 1:
-        setState(() {
-          _currentScreen = 'spheres';
-          _appbarTitle = 'SPHERES';
-        });
-        break;
-      case 2:
-        setState(() {
-          _currentScreen = 'packs';
-          _appbarTitle = 'PACKS';
-        });
-        break;
-      case 3:
-        setState(() {
-          _currentScreen = 'den';
-          _appbarTitle = 'sunyata';
-        });
-        break;
+    _controller.jumpToPage(x);
+    if (x == 0 && _hideFABController.hasClients) {
+      _hideFABController.animateTo(
+        0.0,
+        curve: Curves.decelerate,
+        duration: const Duration(milliseconds: 300),
+      );
     }
   }
 

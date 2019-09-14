@@ -37,8 +37,8 @@ class JuntoDenState extends State<JuntoDen> {
             children: <Widget>[
               Container(
                 width: MediaQuery.of(context).size.width,
-                padding: const EdgeInsets.symmetric(
-                    horizontal: JuntoStyles.horizontalPadding, vertical: 55),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 55),
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
                       begin: Alignment.bottomLeft,
@@ -85,7 +85,144 @@ class JuntoDenState extends State<JuntoDen> {
                   ],
                 ),
               ),
-
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                decoration: const BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
+                  ),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute<dynamic>(
+                            builder: (BuildContext context) => DenFollowers(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        color: Colors.white,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Image.asset(
+                              'assets/images/junto-mobile__outlinelogo--gradient.png',
+                              height: 17,
+                              color: const Color(0xff555555),
+                            ),
+                            const SizedBox(height: 5),
+                            const Text(
+                              'Followers',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Color(0xff555555),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute<dynamic>(
+                            builder: (BuildContext context) => DenConnections(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        color: Colors.white,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Image.asset(
+                              'assets/images/junto-mobile__infinity.png',
+                              height: 17,
+                              color: const Color(0xff555555),
+                            ),
+                            const SizedBox(height: 5),
+                            const Text(
+                              'Connections',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Color(0xff555555),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute<dynamic>(
+                            builder: (BuildContext context) => const PackOpen(
+                                'The Gnarly Nomads',
+                                'sunyata',
+                                'assets/images/junto-mobile__eric.png'),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        color: Colors.white,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Image.asset(
+                              'assets/images/junto-mobile__join-pack.png',
+                              height: 17,
+                              color: const Color(0xff555555),
+                            ),
+                            const SizedBox(height: 5),
+                            const Text(
+                              'My Pack',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Color(0xff555555),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute<dynamic>(
+                            builder: (BuildContext context) => DenSettings(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        color: Colors.white,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: const <Widget>[
+                            Icon(CustomIcons.more, size: 17),
+                            SizedBox(height: 5),
+                            Text(
+                              'Settings',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Color(0xff555555),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               Container(
                 alignment: Alignment.centerLeft,
                 padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
@@ -96,8 +233,8 @@ class JuntoDenState extends State<JuntoDen> {
                 ),
               ),
               Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: JuntoStyles.horizontalPadding, vertical: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   child: Row(
                     children: <Widget>[
                       Container(
@@ -139,8 +276,8 @@ class JuntoDenState extends State<JuntoDen> {
                     ],
                   )),
               Container(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 10, horizontal: JuntoStyles.horizontalPadding),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                 child: Row(
                   children: <Widget>[
                     Container(
@@ -164,7 +301,7 @@ class JuntoDenState extends State<JuntoDen> {
               RaisedButton(
                 onPressed: () async {
                   await Provider.of<AuthenticationProvider>(context)
-                      .logouUser();
+                      .logoutUser();
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute<dynamic>(
