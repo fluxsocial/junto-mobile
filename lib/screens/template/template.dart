@@ -23,10 +23,9 @@ class JuntoTemplate extends StatefulWidget {
 
 class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
   final GlobalKey<ScaffoldState> _juntoTemplateKey = GlobalKey<ScaffoldState>();
-  PageController _controller;
 
   // Default values for collective screen / JUNTO perspective - change dynamically.
-  final String _currentScreen = 'collective';
+  String _currentScreen = 'collective';
   String _currentPerspective = 'JUNTO';
   String _appbarTitle = 'JUNTO';
 
@@ -39,11 +38,9 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
   // Controller for scroll
   ScrollController _hideFABController;
   ValueNotifier<bool> _isVisible;
-
   @override
   void initState() {
     super.initState();
-    _controller = PageController();
     _hideFABController = ScrollController();
     _bottomNavIndex = ValueNotifier<int>(0);
     _channelController = TextEditingController();
@@ -62,7 +59,6 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
 
   @override
   void dispose() {
-    _controller.dispose();
     _hideFABController.removeListener(_onScrollingHasChanged);
     _hideFABController.dispose();
     _channelController.dispose();
@@ -71,7 +67,7 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: <Widget>[
+    return Stack(children: [
       Positioned(
         child: Scaffold(
           body: Container(color: Colors.blue),
@@ -110,20 +106,7 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
             : null,
 
         // dynamically render body
-//        body: _renderBody(),
-        body: PageView(
-          controller: _controller,
-          physics: const NeverScrollableScrollPhysics(),
-          children: <Widget>[
-            JuntoCollective(
-              controller: _hideFABController,
-              currentPerspective: _currentPerspective,
-            ),
-            JuntoSpheres(),
-            JuntoPacks(),
-            JuntoDen()
-          ],
-        ),
+        body: _renderBody(),
 
         bottomNavigationBar: ValueListenableBuilder<int>(
           valueListenable: _bottomNavIndex,
@@ -138,16 +121,51 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
     ]);
   }
 
+  // render main body of template; i.e. collective, spheres, packs, or den
+  _renderBody() {
+    switch (_currentScreen) {
+      case 'collective':
+        return JuntoCollective(
+            controller: _hideFABController,
+            currentPerspective: _currentPerspective);
+      case 'spheres':
+        return JuntoSpheres();
+      case 'packs':
+        return JuntoPacks();
+      case 'den':
+        return JuntoDen();
+    }
+  }
+
   // switch screen and update appbar title
   void _switchScreen(int x) {
     _bottomNavIndex.value = x;
-    _controller.jumpToPage(x);
-    if (x == 0 && _hideFABController.hasClients) {
-      _hideFABController.animateTo(
-        0.0,
-        curve: Curves.decelerate,
-        duration: const Duration(milliseconds: 300),
-      );
+
+    switch (x) {
+      case 0:
+        setState(() {
+          _currentScreen = 'collective';
+          _appbarTitle = 'JUNTO';
+        });
+        break;
+      case 1:
+        setState(() {
+          _currentScreen = 'spheres';
+          _appbarTitle = 'SPHERES';
+        });
+        break;
+      case 2:
+        setState(() {
+          _currentScreen = 'packs';
+          _appbarTitle = 'PACKS';
+        });
+        break;
+      case 3:
+        setState(() {
+          _currentScreen = 'den';
+          _appbarTitle = 'sunyata';
+        });
+        break;
     }
   }
 

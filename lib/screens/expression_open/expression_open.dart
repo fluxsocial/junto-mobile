@@ -162,62 +162,79 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                             onVerticalDragDown: _onDragDown,
                             onVerticalDragUpdate: _onDragStart,
                             child: Container(
+                              padding: EdgeInsets.only(left: 15),
                               decoration: BoxDecoration(
                                 color: const Color(0xfff9f9f9),
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              width: MediaQuery.of(context).size.width - 135,
+                              width: MediaQuery.of(context).size.width - 66,
                               constraints: const BoxConstraints(maxHeight: 180),
-                              child: TextField(
-                                focusNode: _focusNode,
-                                controller: commentController,
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  // hintText: 'reply',
-                                ),
-                                maxLines: null,
-                                cursorColor: JuntoPalette.juntoGrey,
-                                cursorWidth: 2,
-                                style: const TextStyle(
-                                  fontSize: 17,
-                                  color: JuntoPalette.juntoGrey,
-                                ),
-                                textInputAction: TextInputAction.newline,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Container(
+                                    width:
+                                        MediaQuery.of(context).size.width - 140,
+                                    child: TextField(
+                                      focusNode: _focusNode,
+                                      controller: commentController,
+                                      decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        // hintText: 'reply',
+                                      ),
+                                      maxLines: null,
+                                      cursorColor: JuntoPalette.juntoGrey,
+                                      cursorWidth: 2,
+                                      style: const TextStyle(
+                                        fontSize: 17,
+                                        color: JuntoPalette.juntoGrey,
+                                      ),
+                                      textInputAction: TextInputAction.newline,
+                                    ),
+                                  ),
+                                  _focusNode.hasFocus
+                                      ? Container(
+                                          margin: EdgeInsets.only(right: 10),
+                                          child: Text('reply'),
+                                        )
+                                      : SizedBox()
+                                ],
                               ),
                             ),
                           ),
                         ],
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(25),
-                          gradient: const LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            stops: <double>[0.1, 0.9],
-                            colors: <Color>[
-                              JuntoPalette.juntoPrimary,
-                              JuntoPalette.juntoSecondary
-                            ],
-                          ),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: JuntoStyles.horizontalPadding,
-                          vertical: 5,
-                        ),
-                        child: const Text(
-                          'REPLY',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ),
-                    ),
+                    // GestureDetector(
+                    //   onTap: () {},
+                    //   child: Container(
+                    //     decoration: BoxDecoration(
+                    //       borderRadius: BorderRadius.circular(25),
+                    //       gradient: const LinearGradient(
+                    //         begin: Alignment.centerLeft,
+                    //         end: Alignment.centerRight,
+                    //         stops: <double>[0.1, 0.9],
+                    //         colors: <Color>[
+                    //           JuntoPalette.juntoPrimary,
+                    //           JuntoPalette.juntoSecondary
+                    //         ],
+                    //       ),
+                    //     ),
+                    //     padding: const EdgeInsets.symmetric(
+                    //       horizontal: JuntoStyles.horizontalPadding,
+                    //       vertical: 5,
+                    //     ),
+                    //     child: const Text(
+                    //       'REPLY',
+                    //       style: TextStyle(
+                    //         color: Colors.white,
+                    //         fontWeight: FontWeight.w700,
+                    //         fontSize: 12,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               )
