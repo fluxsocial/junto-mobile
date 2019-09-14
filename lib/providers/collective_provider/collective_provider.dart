@@ -87,10 +87,13 @@ class CollectiveProvider with ChangeNotifier {
         expressionContent: <String, String>{
           'title': 'Philosophical exchange for individual and mutual improvement',
           'location': 'Tubestation, New Polzeath UK',
-          'time': 'SUN, SEP 15, 3:00PM',
-          'image': 'assets/images/junto-mobile__event.png'
+          'time': 'Sun, Sep 15, 3:00PM',
+          'image': 'assets/images/junto-mobile__event.png',
+          'description': 'Join us for an afternoon of deep introspection, interconnectivity, and philosophical discourse! Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum'
+
         },
       ),
+      
       authorProfile: UserProfile(
         address: '0vefoiwiafjvkbr32r243r5',
         parent: 'parent-address',
@@ -167,7 +170,8 @@ class CollectiveProvider with ChangeNotifier {
           'title': 'Ecstatic Dance - Movement to Fill Your Soul',
           'location': 'Tubestation, New Polzeath UK',
           'time': 'SUN, SEP 15, 6:00PM',
-          'image': ''
+          'image': '',
+          'description': 'Get ready to get groovy!'
         },
       ),
       authorProfile: UserProfile(
