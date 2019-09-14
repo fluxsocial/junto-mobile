@@ -2,7 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:junto_beta_mobile/typography/palette.dart';
+import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/styles.dart';
 
 // This widget is enables the user to add channels and create an expression.
 // Rendered within each expression type.
@@ -47,10 +48,11 @@ class CreateActionsState extends State<CreateActions> {
     return Container(
       decoration: const BoxDecoration(
         border: Border(
-          top: BorderSide(color: Color(0xffeeeeee), width: 1),
+          top: BorderSide(color: JuntoPalette.juntoFade, width: 1),
         ),
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 10),
+      padding:
+          const EdgeInsets.symmetric(horizontal: JuntoStyles.horizontalPadding),
       height: 50,
       width: MediaQuery.of(context).size.width,
       child: Row(
@@ -63,15 +65,7 @@ class CreateActionsState extends State<CreateActions> {
               },
               child: Container(
                 width: MediaQuery.of(context).size.width * .5 - 10,
-                child: const Text(
-                  '# CHANNELS',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    color: Color(
-                      0xff333333,
-                    ),
-                  ),
-                ),
+                child: const Text('# CHANNELS', style: JuntoStyles.title),
                 alignment: Alignment.center,
               )),
           GestureDetector(
@@ -80,15 +74,7 @@ class CreateActionsState extends State<CreateActions> {
             },
             child: Container(
               width: MediaQuery.of(context).size.width * .5 - 10,
-              child: const Text(
-                'CREATE',
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  color: Color(
-                    0xff333333,
-                  ),
-                ),
-              ),
+              child: const Text('CREATE', style: JuntoStyles.title),
               alignment: Alignment.center,
             ),
           ),
@@ -108,7 +94,8 @@ class CreateActionsState extends State<CreateActions> {
             StateSetter state,
           ) {
             return Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: JuntoStyles.horizontalPadding),
               height: MediaQuery.of(context).size.height * .4,
               child: Column(children: <Widget>[
                 Container(
@@ -134,10 +121,7 @@ class CreateActionsState extends State<CreateActions> {
                           ),
                           cursorColor: JuntoPalette.juntoGrey,
                           cursorWidth: 2,
-                          style: const TextStyle(
-                              color: Color(0xff333333),
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700),
+                          style: JuntoStyles.title,
                           maxLines: 1,
                           maxLength: 80,
                         ),
@@ -158,13 +142,13 @@ class CreateActionsState extends State<CreateActions> {
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w700,
-                              color: Color(0xff333333),
+                              color: JuntoPalette.juntoGrey,
                             ),
                           ),
                         ),
                         decoration: BoxDecoration(
                           border: Border.all(
-                            color: const Color(0xff333333),
+                            color: JuntoPalette.juntoGrey,
                             width: 1,
                           ),
                           borderRadius: BorderRadius.circular(5),
@@ -175,7 +159,7 @@ class CreateActionsState extends State<CreateActions> {
                   decoration: const BoxDecoration(
                     border: Border(
                       bottom: BorderSide(
-                        color: Color(0xffeeeeee),
+                        color: JuntoPalette.juntoFade,
                         width: 1,
                       ),
                     ),
@@ -212,9 +196,7 @@ class CreateActionsState extends State<CreateActions> {
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(5),
                                         border: Border.all(
-                                          color: const Color(
-                                            0xff333333,
-                                          ),
+                                          color: JuntoPalette.juntoGrey,
                                           width: 1,
                                         ),
                                       ),

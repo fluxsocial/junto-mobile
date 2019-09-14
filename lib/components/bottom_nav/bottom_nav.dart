@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
+import 'package:junto_beta_mobile/palette.dart';
 
 // This widget is the bottom navigation on all of the main screens. Members can
 // navigate to the home, spheres, create, packs, and den screens.
@@ -29,7 +30,7 @@ class BottomNavState extends State<BottomNav> {
         color: Colors.white,
         shape: Border(
           top: BorderSide(
-            color: const Color(0xffeeeeee),
+            color: JuntoPalette.juntoFade,
             width: .75,
           ),
         ),
@@ -81,7 +82,7 @@ class BottomNavState extends State<BottomNav> {
                 },
                 child: Icon(
                   CustomIcons.lotus,
-                  color: const Color(0xff999999),
+                  color: JuntoPalette.juntoGreyLight,
                 ),
               ),
             ),
@@ -130,8 +131,8 @@ class _BottomNavButton extends StatelessWidget {
             key: Key('index-$index-$selectedIndex'),
             size: 20,
             color: selectedIndex == index
-                ? const Color(0xff333333)
-                : const Color(0xff999999),
+                ? JuntoPalette.juntoGrey
+                : JuntoPalette.juntoGreyLight,
           ),
         ),
       ),

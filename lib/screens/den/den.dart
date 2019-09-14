@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/providers/auth_provider/auth_provider.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
-import 'package:junto_beta_mobile/typography/palette.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open.dart';
 import 'package:junto_beta_mobile/screens/den/den_settings/den_settings.dart';
 import 'package:junto_beta_mobile/screens/den/den_connections/den_connections.dart';
 import 'package:junto_beta_mobile/screens/den/den_followers/den_followers.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/styles.dart';
+import 'package:junto_beta_mobile/screens/notifications/notifications.dart';
 
 /// Displays the user's DEN or "profile screen"
 class JuntoDen extends StatefulWidget {
@@ -37,11 +40,18 @@ class JuntoDenState extends State<JuntoDen> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 55),
                 decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                        begin: Alignment.bottomLeft,
-                        end: Alignment.topRight,
-                        stops: <double>[0.1, 0.9],
-                        colors: <Color>[Color(0xff5E54D0), Color(0xff307FAB)])),
+                  gradient: LinearGradient(
+                      begin: Alignment.bottomLeft,
+                      end: Alignment.topRight,
+                      stops: <double>[
+                        0.1,
+                        0.9
+                      ],
+                      colors: <Color>[
+                        JuntoPalette.juntoSecondary,
+                        JuntoPalette.juntoPrimary
+                      ]),
+                ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
@@ -234,13 +244,13 @@ class JuntoDenState extends State<JuntoDen> {
                             Image.asset(
                               'assets/images/junto-mobile__location.png',
                               height: 17,
-                              color: const Color(0xff555555),
+                              color: JuntoPalette.juntoSleek,
                             ),
                             const SizedBox(width: 5),
                             const Text(
                               'Spirit',
                               style: TextStyle(
-                                color: Color(0xff555555),
+                                color: JuntoPalette.juntoSleek,
                               ),
                             ),
                           ],
@@ -252,12 +262,13 @@ class JuntoDenState extends State<JuntoDen> {
                             Image.asset(
                               'assets/images/junto-mobile__link.png',
                               height: 17,
-                              color: const Color(0xff555555),
+                              color: JuntoPalette.juntoSleek,
                             ),
                             const SizedBox(width: 5),
                             const Text(
                               'junto.foundation',
-                              style: TextStyle(color: JuntoPalette.juntoBlue),
+                              style:
+                                  TextStyle(color: JuntoPalette.juntoPrimary),
                             )
                           ],
                         ),

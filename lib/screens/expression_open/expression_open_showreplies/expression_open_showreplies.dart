@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/styles.dart';
+
 class ExpressionOpenShowReplies extends StatelessWidget {
   const ExpressionOpenShowReplies({
     Key key,
@@ -17,11 +20,12 @@ class ExpressionOpenShowReplies extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            padding: const EdgeInsets.symmetric(
+                horizontal: JuntoStyles.horizontalPadding, vertical: 10),
             decoration: const BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color: Color(0xffeeeeee),
+                  color: JuntoPalette.juntoFade,
                   width: .5,
                 ),
               ),

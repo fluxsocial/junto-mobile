@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/typography/style.dart';
+import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/styles.dart';
 
 class LongformPreview extends StatelessWidget {
   const LongformPreview({
@@ -16,20 +17,18 @@ class LongformPreview extends StatelessWidget {
         expression.expression.expressionContent['body'];
     return Container(
       padding: const EdgeInsets.symmetric(
-        horizontal: 10.0,
+        horizontal: JuntoStyles.horizontalPadding,
         vertical: 0,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           _buildTitle(),
-          Text(
-            expressionBody,
-            textAlign: TextAlign.left,
-            maxLines: 4,
-            overflow: TextOverflow.ellipsis,
-            style: JuntoStyles.longformBody,
-          ),
+          Text(expressionBody,
+              textAlign: TextAlign.left,
+              maxLines: 4,
+              overflow: TextOverflow.ellipsis,
+              style: JuntoStyles.longformPreviewBody),
         ],
       ),
     );
@@ -40,11 +39,8 @@ class LongformPreview extends StatelessWidget {
         expression.expression.expressionContent['title'];
     if (expressionTitle != '') {
       return Container(
-        child: Text(
-          expressionTitle,
-          textAlign: TextAlign.left,
-          style: JuntoStyles.longformTitle,
-        ),
+        child: Text(expressionTitle,
+            textAlign: TextAlign.left, style: JuntoStyles.longformPreviewTitle),
       );
     } else {
       return const SizedBox();

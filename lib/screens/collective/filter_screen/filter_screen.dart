@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/screens/collective/filter_fab/filter_fab.dart';
-import 'package:junto_beta_mobile/typography/palette.dart';
+import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/styles.dart';
 
 class CollectiveFilterScreen extends StatelessWidget {
   const CollectiveFilterScreen({
@@ -29,7 +30,7 @@ class CollectiveFilterScreen extends StatelessWidget {
             left: 0,
             child: Container(
               color: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 45),
+              padding: const EdgeInsets.symmetric(horizontal: JuntoStyles.horizontalPadding, vertical: 45),
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
               child: Column(
@@ -38,7 +39,7 @@ class CollectiveFilterScreen extends StatelessWidget {
                     decoration: const BoxDecoration(
                       border: Border(
                         bottom: BorderSide(
-                          color: Color(0xffeeeeee),
+                          color: JuntoPalette.juntoFade,
                           width: 1,
                         ),
                       ),
@@ -57,12 +58,7 @@ class CollectiveFilterScreen extends StatelessWidget {
                       ),
                       cursorColor: JuntoPalette.juntoGrey,
                       cursorWidth: 2,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Color(
-                          0xff333333,
-                        ),
-                      ),
+                      style: JuntoStyles.filterChannelText,
                       maxLines: 1,
                       maxLength: 80,
                     ),

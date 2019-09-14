@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/components/create_fab/create_fab.dart';
 import 'package:junto_beta_mobile/components/utils/hide_fab.dart';
 import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open_appbar/sphere_open_appbar.dart';
+import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/styles.dart';
 
 class SphereOpen extends StatefulWidget {
   const SphereOpen({
@@ -65,13 +68,13 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
           ),
           Container(
               padding: const EdgeInsets.symmetric(
-                horizontal: 10,
+                horizontal: JuntoStyles.horizontalPadding,
                 vertical: 15,
               ),
               decoration: const BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
-                    color: Color(0xffeeeeee),
+                    color: JuntoPalette.juntoFade,
                     width: 1,
                   ),
                 ),
@@ -85,20 +88,12 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Container(
-                            child: Text(
-                              widget.sphereTitle,
-                              style: const TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
+                            child: Text(widget.sphereTitle,
+                                style: JuntoStyles.header),
                           ),
                           Container(
-                            child: Text(
-                              widget.sphereMembers + ' members',
-                              style: const TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.w700),
-                            ),
+                            child: Text(widget.sphereMembers + ' members',
+                                style: JuntoStyles.title),
                           ),
                         ],
                       )
@@ -106,13 +101,8 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                   ),
                   const SizedBox(height: 10),
                   Container(
-                    child: Text(
-                      widget.sphereDescription,
-                      textAlign: TextAlign.start,
-                      style: const TextStyle(
-                        fontSize: 14,
-                      ),
-                    ),
+                    child: Text(widget.sphereDescription,
+                        textAlign: TextAlign.start, style: JuntoStyles.body),
                   ),
                 ],
               ))
@@ -120,4 +110,5 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
       ),
     );
   }
+
 }

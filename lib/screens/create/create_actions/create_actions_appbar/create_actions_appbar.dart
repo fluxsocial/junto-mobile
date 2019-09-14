@@ -4,6 +4,7 @@ import 'package:junto_beta_mobile/providers/collective_provider/collective_provi
 import 'package:junto_beta_mobile/typography/palette.dart';
 import 'package:provider/provider.dart';
 
+
 class CreateActionsAppbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

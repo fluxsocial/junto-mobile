@@ -3,15 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:junto_beta_mobile/components/appbar/appbar.dart';
 import 'package:junto_beta_mobile/components/bottom_nav/bottom_nav.dart';
-import 'package:junto_beta_mobile/components/utils/custom_scroll_behaviour.dart';
 import 'package:junto_beta_mobile/components/utils/hide_fab.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/collective/filter_fab/filter_fab.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspectives.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
+import 'package:junto_beta_mobile/screens/den/den_drawer.dart';
 import 'package:junto_beta_mobile/screens/packs/packs.dart';
 import 'package:junto_beta_mobile/screens/spheres/spheres.dart';
-import 'package:junto_beta_mobile/typography/palette.dart';
+import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/styles.dart';
 
 // This class is a template screen that contains the navbar, bottom bar,
 // and screen (collective, spheres, pack, etc) depending on condition.
@@ -25,8 +26,6 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
 
   // Default values for collective screen / JUNTO perspective - change dynamically.
   String _currentScreen = 'collective';
-
-  //ignore:unused_field
   String _currentPerspective = 'JUNTO';
   String _appbarTitle = 'JUNTO';
 
@@ -36,20 +35,15 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
   final List<String> _channels = <String>[];
   TextEditingController _channelController;
 
-  // Controller for PageView
-  PageController _controller;
-
   // Controller for scroll
   ScrollController _hideFABController;
   ValueNotifier<bool> _isVisible;
-
   @override
   void initState() {
     super.initState();
     _hideFABController = ScrollController();
     _bottomNavIndex = ValueNotifier<int>(0);
     _channelController = TextEditingController();
-    _controller = PageController(initialPage: 0);
     _isVisible = ValueNotifier<bool>(true);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _hideFABController.addListener(_onScrollingHasChanged);
@@ -67,98 +61,84 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
   void dispose() {
     _hideFABController.removeListener(_onScrollingHasChanged);
     _hideFABController.dispose();
-    _controller.dispose();
     _channelController.dispose();
     super.dispose();
   }
 
-  /// Opens the `Perspective` screen if the user swipes right.
-  /// Animates the PageView to the next page if the user swipes left.
-  void _onDragUpdate(DragUpdateDetails details) {
-    if (!details.primaryDelta.isNegative) {
-      _juntoTemplateKey.currentState.openDrawer();
-    } else {
-      _controller.animateToPage(
-        1,
-        duration: kTabScrollDuration,
-        curve: Curves.decelerate,
-      );
+  @override
+  Widget build(BuildContext context) {
+    return Stack(children: [
+      Positioned(
+        child: Scaffold(
+          body: Container(color: Colors.blue),
+        ),
+      ),
+      Scaffold(
+        key: _juntoTemplateKey,
+        backgroundColor: Colors.white,
+        appBar: JuntoAppBar(
+          juntoAppBarTitle: _appbarTitle,
+        ),
+        floatingActionButton: _currentScreen == 'collective'
+            ? CollectiveFilterFAB(
+                isVisible: _isVisible,
+                toggleFilter: _buildFilterChannelModal,
+              )
+            : null,
+        // only enable drawer if current screen is collective
+        drawer: _currentScreen == 'collective'
+            ? WillPopScope(
+                onWillPop: () async {
+                  return false;
+                },
+                child: Perspectives(
+                  changePerspective: _changePerspective,
+                ),
+              )
+            : null,
+        // only enable end drawer if current screen is den
+        endDrawer: _currentScreen == 'den'
+            ? WillPopScope(
+                onWillPop: () async {
+                  return false;
+                },
+                child: DenDrawer())
+            : null,
+
+        // dynamically render body
+        body: _renderBody(),
+
+        bottomNavigationBar: ValueListenableBuilder<int>(
+          valueListenable: _bottomNavIndex,
+          builder: (BuildContext context, int index, _) {
+            return BottomNav(
+              currentIndex: index,
+              setIndex: _switchScreen,
+            );
+          },
+        ),
+      ),
+    ]);
+  }
+
+  // render main body of template; i.e. collective, spheres, packs, or den
+  _renderBody() {
+    switch (_currentScreen) {
+      case 'collective':
+        return JuntoCollective(
+            controller: _hideFABController,
+            currentPerspective: _currentPerspective);
+      case 'spheres':
+        return JuntoSpheres();
+      case 'packs':
+        return JuntoPacks();
+      case 'den':
+        return JuntoDen();
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      key: _juntoTemplateKey,
-      backgroundColor: Colors.white,
-      appBar: JuntoAppBar(
-        juntoAppBarTitle: _appbarTitle,
-        navNotifications: _navNotifications,
-      ),
-      floatingActionButton: _currentScreen == 'collective'
-          ? CollectiveFilterFAB(
-              isVisible: _isVisible,
-              toggleFilter: _buildFilterChannelModal,
-            )
-          : null,
-      // only enable drawer if current screen is collective
-      drawer: _currentScreen == 'collective'
-          ? WillPopScope(
-              onWillPop: () async {
-                return false;
-              },
-              child: Perspectives(
-                changePerspective: _changePerspective,
-              ),
-            )
-          : null,
-      body: SafeArea(
-        child: ScrollConfiguration(
-          behavior: PlainScrollBehaviour(),
-          child: PageView(
-            physics: const ClampingScrollPhysics(),
-            controller: _controller,
-            onPageChanged: (int index) {
-              _isVisible.value = true;
-              if (index == 0) {
-                _switchScreen('collective');
-              } else if (index == 1) {
-                _switchScreen('spheres');
-              } else if (index == 2) {
-                _switchScreen('packs');
-              } else if (index == 3) {
-                _switchScreen('den');
-              }
-            },
-            children: <Widget>[
-              GestureDetector(
-                onHorizontalDragUpdate: _onDragUpdate,
-                child: JuntoCollective(
-                  controller: _hideFABController,
-                  currentPerspective: _currentPerspective,
-                ),
-              ),
-              JuntoSpheres(),
-              JuntoPacks(),
-              JuntoDen()
-            ],
-          ),
-        ),
-      ),
-      bottomNavigationBar: ValueListenableBuilder<int>(
-        valueListenable: _bottomNavIndex,
-        builder: (BuildContext context, int index, _) {
-          return BottomNav(
-            currentIndex: index,
-            setIndex: _setBottomIndex,
-          );
-        },
-      ),
-    );
-  }
-
-  // Set the bottom navbar index; used when bottom nav icon is pressed.
-  void _setBottomIndex(int x) {
+  // switch screen and update appbar title
+  void _switchScreen(int x) {
     _bottomNavIndex.value = x;
     _controller.jumpToPage(x);
     if (x == 0 && _hideFABController.hasClients) {
@@ -176,45 +156,8 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
       () {
         _currentPerspective = perspective;
         _appbarTitle = perspective;
-
-        // re render feed
       },
     );
-  }
-
-  // Switch between screens within PageView
-  void _switchScreen(String screen) {
-    if (screen == 'collective') {
-      setState(() {
-        _currentScreen = 'collective';
-        _appbarTitle = 'JUNTO';
-        _currentPerspective = 'JUNTO';
-        _bottomNavIndex.value = 0;
-      });
-    } else if (screen == 'spheres') {
-      setState(() {
-        _currentScreen = 'spheres';
-        _appbarTitle = 'SPHERES';
-        _bottomNavIndex.value = 1;
-      });
-    } else if (screen == 'packs') {
-      setState(() {
-        _currentScreen = 'packs';
-        _appbarTitle = 'PACKS';
-        _bottomNavIndex.value = 2;
-      });
-    } else if (screen == 'den') {
-      setState(() {
-        _currentScreen = 'den';
-        _appbarTitle = 'sunyata';
-        _bottomNavIndex.value = 3;
-      });
-    }
-  }
-
-  // Navigate to Notifications screen
-  void _navNotifications() {
-    Navigator.pushNamed(context, '/notifications');
   }
 
   // Build bottom modal to filter by channel
@@ -226,7 +169,8 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter state) {
             return Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: JuntoStyles.horizontalPadding),
               height: MediaQuery.of(context).size.height * .4,
               child: Column(
                 children: <Widget>[
@@ -254,7 +198,7 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
                             cursorColor: JuntoPalette.juntoGrey,
                             cursorWidth: 2,
                             style: const TextStyle(
-                              color: Color(0xff333333),
+                              color: JuntoPalette.juntoGrey,
                               fontSize: 14,
                               fontWeight: FontWeight.w700,
                             ),
@@ -280,13 +224,13 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w700,
-                                color: Color(0xff333333),
+                                color: JuntoPalette.juntoGrey,
                               ),
                             ),
                           ),
                           decoration: BoxDecoration(
                             border: Border.all(
-                              color: const Color(0xff333333),
+                              color: JuntoPalette.juntoGrey,
                               width: 1,
                             ),
                             borderRadius: BorderRadius.circular(5),
@@ -296,7 +240,8 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
                     ),
                     decoration: const BoxDecoration(
                       border: Border(
-                        bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
+                        bottom:
+                            BorderSide(color: JuntoPalette.juntoFade, width: 1),
                       ),
                     ),
                   ),
@@ -332,14 +277,15 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
                                           borderRadius:
                                               BorderRadius.circular(5),
                                           border: Border.all(
-                                            color: const Color(0xff333333),
+                                            color: JuntoPalette.juntoGrey,
                                             width: 1,
                                           ),
                                         ),
                                         margin:
                                             const EdgeInsets.only(right: 10),
                                         padding: const EdgeInsets.symmetric(
-                                          horizontal: 10,
+                                          horizontal:
+                                              JuntoStyles.horizontalPadding,
                                           vertical: 5,
                                         ),
                                         child: Text(

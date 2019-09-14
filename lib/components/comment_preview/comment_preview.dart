@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
+import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/styles.dart';
 
 /// Shows a preview of the comments. Takes a un-named [String] as a param.
 class CommentPreview extends StatelessWidget {
@@ -14,7 +16,7 @@ class CommentPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
+      padding: const EdgeInsets.only(left: JuntoStyles.horizontalPadding, right: JuntoStyles.horizontalPadding, top: 10),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -31,7 +33,7 @@ class CommentPreview extends StatelessWidget {
             decoration: const BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color: Color(0xffeeeeee),
+                  color: JuntoPalette.juntoFade,
                   width: .5,
                 ),
               ),
@@ -78,9 +80,7 @@ class CommentPreview extends StatelessWidget {
                     '5 MINUTES AGO',
                     style: TextStyle(
                       fontSize: 10,
-                      color: Color(
-                        0xff555555,
-                      ),
+                      color: JuntoPalette.juntoSleek
                     ),
                   ),
                 ),

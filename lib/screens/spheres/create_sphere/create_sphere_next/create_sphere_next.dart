@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
-import 'package:junto_beta_mobile/typography/palette.dart';
 
 class CreateSphereNext extends StatelessWidget {
   @override
@@ -13,7 +12,7 @@ class CreateSphereNext extends StatelessWidget {
             automaticallyImplyLeading: false,
             brightness: Brightness.light,
             iconTheme: const IconThemeData(
-              color: JuntoPalette.juntoSleek,
+              color: Color(0xff555555),
             ),
             backgroundColor: Colors.white,
             elevation: 0,
@@ -28,7 +27,7 @@ class CreateSphereNext extends StatelessWidget {
                     onTap: () => Navigator.pop(context),
                     child: const Icon(
                       CustomIcons.back_arrow_left,
-                      color: JuntoPalette.juntoSleek,
+                      color: Color(0xff555555),
                       size: 24,
                     ),
                   ),

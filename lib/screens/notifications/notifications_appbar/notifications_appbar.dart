@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
-import 'package:junto_beta_mobile/typography/palette.dart';
 
 class NotificationsAppbar extends StatelessWidget {
   @override
@@ -8,7 +7,7 @@ class NotificationsAppbar extends StatelessWidget {
     return AppBar(
       automaticallyImplyLeading: false,
       brightness: Brightness.light,
-      iconTheme: const IconThemeData(color: JuntoPalette.juntoSleek),
+      iconTheme: const IconThemeData(color: Color(0xff555555)),
       backgroundColor: Colors.white,
       elevation: 0,
       titleSpacing: 0,
@@ -23,7 +22,7 @@ class NotificationsAppbar extends StatelessWidget {
               child: const Icon(
                 CustomIcons.back_arrow_left,
                 textDirection: TextDirection.ltr,
-                color: JuntoPalette.juntoSleek,
+                color: Color(0xff555555),
                 size: 20,
               ),
             ),

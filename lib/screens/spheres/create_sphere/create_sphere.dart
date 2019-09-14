@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/screens/spheres/create_sphere/create_sphere_next/create_sphere_next.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
-import 'package:junto_beta_mobile/typography/palette.dart';
+import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/styles.dart';
 
 // This class renders a widget that enables the user to create a sphere
 class CreateSphere extends StatelessWidget {
@@ -21,7 +22,8 @@ class CreateSphere extends StatelessWidget {
             elevation: 0,
             titleSpacing: 0,
             title: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: JuntoStyles.horizontalPadding),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -43,13 +45,7 @@ class CreateSphere extends StatelessWidget {
                         ),
                       );
                     },
-                    child: const Text(
-                      'next',
-                      style: TextStyle(
-                        color: Color(0xff333333),
-                        fontSize: 14,
-                      ),
-                    ),
+                    child: const Text('next', style: JuntoStyles.body),
                   )
                 ],
               ),
@@ -59,13 +55,14 @@ class CreateSphere extends StatelessWidget {
               child: Container(
                 height: 1,
                 width: MediaQuery.of(context).size.width,
-                color: const Color(0xffeeeeee),
+                color: JuntoPalette.juntoFade,
               ),
             ),
           ),
         ),
         body: Container(
-          padding: const EdgeInsets.only(left: 10, right: 10),
+          padding: const EdgeInsets.symmetric(
+              horizontal: JuntoStyles.horizontalPadding),
           child: Column(
             children: <Widget>[
               Container(
@@ -73,7 +70,7 @@ class CreateSphere extends StatelessWidget {
                 decoration: const BoxDecoration(
                     border: Border(
                   bottom: BorderSide(
-                    color: Color(0xffeeeeee),
+                    color: JuntoPalette.juntoFade,
                     width: 1,
                   ),
                 )),
@@ -86,7 +83,7 @@ class CreateSphere extends StatelessWidget {
                     hintText: 'Name your sphere',
                   ),
                   style: const TextStyle(fontSize: 17),
-                  cursorColor: JuntoPalette.juntoGrey,
+                  cursorColor: JuntoPalette.juntoSleek,
                   cursorWidth: 2,
                   maxLines: 1,
                   maxLength: 80,
@@ -96,7 +93,8 @@ class CreateSphere extends StatelessWidget {
                   width: MediaQuery.of(context).size.width,
                   decoration: const BoxDecoration(
                     border: Border(
-                      bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
+                      bottom:
+                          BorderSide(color: JuntoPalette.juntoFade, width: 1),
                     ),
                   ),
                   child: Row(
@@ -116,7 +114,7 @@ class CreateSphere extends StatelessWidget {
                             border: InputBorder.none,
                             hintText: 'Add members to your sphere',
                           ),
-                          cursorColor: JuntoPalette.juntoGrey,
+                          cursorColor: JuntoPalette.juntoSleek,
                           style: const TextStyle(fontSize: 14),
                           cursorWidth: 2,
                           maxLines: 1,

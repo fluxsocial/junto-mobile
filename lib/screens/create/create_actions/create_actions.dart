@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions_appbar/create_actions_appbar.dart';
-import 'package:junto_beta_mobile/typography/palette.dart';
+import 'package:junto_beta_mobile/palette.dart';
 
 class CreateActions extends StatefulWidget {
   const CreateActions({

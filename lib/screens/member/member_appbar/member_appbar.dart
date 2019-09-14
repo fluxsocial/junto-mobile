@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
-import 'package:junto_beta_mobile/typography/palette.dart';
 
 /// Takes the member's handle as an un-named param.
 class MemberAppbar extends StatelessWidget {
@@ -14,7 +13,7 @@ class MemberAppbar extends StatelessWidget {
     return AppBar(
         automaticallyImplyLeading: false,
         brightness: Brightness.light,
-        iconTheme: const IconThemeData(color: JuntoPalette.juntoSleek),
+        iconTheme: const IconThemeData(color: Color(0xff555555)),
         backgroundColor: Colors.white,
         elevation: 0,
         titleSpacing: 0,
@@ -27,7 +26,7 @@ class MemberAppbar extends StatelessWidget {
                 onTap: () => Navigator.pop(context),
                 child: const Icon(
                   CustomIcons.back_arrow_left,
-                  color: JuntoPalette.juntoSleek,
+                  color: Color(0xff555555),
                   size: 24,
                 ),
               ),

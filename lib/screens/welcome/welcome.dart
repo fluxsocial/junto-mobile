@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/screens/sign_in/sign_in.dart';
 import 'package:junto_beta_mobile/screens/sign_up/sign_up.dart';
+import 'package:junto_beta_mobile/screens/template/template.dart';
 
 class Welcome extends StatelessWidget {
   @override
@@ -107,6 +108,12 @@ class Welcome extends StatelessWidget {
                     ),
                   ),
                 ),
+                RaisedButton(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => JuntoTemplate()));
+                  },
+                  child: Text('skip')
+                )
               ],
             )
           ],

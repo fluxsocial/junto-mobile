@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/typography/palette.dart';
+import 'package:junto_beta_mobile/palette.dart';
 
 class ShortformOpen extends StatefulWidget {
   const ShortformOpen(this.shortformExpression);
@@ -27,28 +27,28 @@ class ShortformOpenState extends State<ShortformOpen> {
       });
     } else if (_shortformBackground == 'one') {
       setState(() {
-        _gradientOne = JuntoPalette.juntoBlue;
-        _gradientTwo = JuntoPalette.juntoBlueLight;
+        _gradientOne = JuntoPalette.juntoPrimary;
+        _gradientTwo = JuntoPalette.juntoPrimaryLight;
       });
     } else if (_shortformBackground == 'two') {
       setState(() {
-        _gradientOne = JuntoPalette.juntoPurple;
-        _gradientTwo = JuntoPalette.juntoPurpleLight;
+        _gradientOne = JuntoPalette.juntoSecondary;
+        _gradientTwo = JuntoPalette.juntoSecondaryLight;
       });
     } else if (_shortformBackground == 'three') {
       setState(() {
-        _gradientOne = JuntoPalette.juntoPurple;
-        _gradientTwo = JuntoPalette.juntoBlue;
+        _gradientOne = JuntoPalette.juntoSecondary;
+        _gradientTwo = JuntoPalette.juntoPrimary;
       });
     } else if (_shortformBackground == 'four') {
       setState(() {
         _gradientOne = JuntoPalette.juntoGreen;
-        _gradientTwo = JuntoPalette.juntoBlue;
+        _gradientTwo = JuntoPalette.juntoPrimary;
       });
     } else if (_shortformBackground == 'five') {
       setState(() {
         _gradientOne = JuntoPalette.juntoGreen;
-        _gradientTwo = JuntoPalette.juntoPurple;
+        _gradientTwo = JuntoPalette.juntoSecondary;
       });
     }
   }

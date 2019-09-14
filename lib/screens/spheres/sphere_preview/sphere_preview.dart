@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open.dart';
+import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/styles.dart';
 
 // This class renders a preview of a sphere
 class SpherePreview extends StatelessWidget {
@@ -21,18 +24,14 @@ class SpherePreview extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute<dynamic>(
+        Navigator.of(context).push(CupertinoPageRoute(
             builder: (BuildContext context) => SphereOpen(
                   sphereTitle: sphereTitle,
                   sphereMembers: sphereMembers,
                   sphereImage: sphereImage,
                   sphereHandle: sphereHandle,
                   sphereDescription: sphereDescription,
-                ),
-          ),
-        );
+                )));
       },
       child: Container(
         margin: const EdgeInsets.only(left: 10.0),
@@ -58,9 +57,7 @@ class SpherePreview extends StatelessWidget {
                     border: Border(
                       bottom: BorderSide(
                         width: .5,
-                        color: Color(
-                          0xffeeeeee,
-                        ),
+                        color: JuntoPalette.juntoFade,
                       ),
                     ),
                   ),
@@ -69,23 +66,10 @@ class SpherePreview extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
-                        sphereTitle,
-                        textAlign: TextAlign.start,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: Color(0xff333333),
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      Text(
-                        '/s/' + sphereHandle,
-                        textAlign: TextAlign.start,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      )
+                      Text(sphereTitle,
+                          textAlign: TextAlign.start, style: JuntoStyles.title),
+                      Text('/s/' + sphereHandle,
+                          textAlign: TextAlign.start, style: JuntoStyles.body)
                     ],
                   ),
                 )

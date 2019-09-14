@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/components/expression_preview/longform_preview/longform_preview.dart';
 import 'package:junto_beta_mobile/components/expression_preview/preview_bottom.dart';
 import 'package:junto_beta_mobile/components/expression_preview/preview_profile.dart';
@@ -30,7 +31,7 @@ class ExpressionPreview extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute<dynamic>(
+                CupertinoPageRoute<dynamic>(
                   builder: (BuildContext context) => ExpressionOpen(expression),
                 ),
               );

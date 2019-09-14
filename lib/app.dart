@@ -10,7 +10,6 @@ import 'package:junto_beta_mobile/screens/notifications/notifications.dart';
 import 'package:junto_beta_mobile/screens/template/template.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:provider/provider.dart';
-
 import 'providers/collective_provider/collective_provider.dart';
 
 class JuntoApp extends StatefulWidget {
@@ -45,9 +44,7 @@ class JuntoAppState extends State<JuntoApp> {
         ),
       ],
       child: MaterialApp(
-        theme: ThemeData(
-          fontFamily: 'Avenir',
-        ),
+        theme: JuntoThemes().juntoLightTheme,
         home: JuntoLoading(),
         routes: <String, WidgetBuilder>{
           '/welcome': (BuildContext context) => Welcome(),
