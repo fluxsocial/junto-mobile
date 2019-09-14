@@ -26,11 +26,6 @@ class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
     return Container(
       margin: const EdgeInsets.only(top: 7.5),
       padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-      decoration: const BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: JuntoPalette.juntoFade, width: .5),
-        ),
-      ),
       child: Column(
         children: <Widget>[
           Row(
