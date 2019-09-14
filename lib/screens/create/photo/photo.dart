@@ -223,8 +223,9 @@ class CreatePhotoState extends State<CreatePhoto> {
                     );
                   },
                   child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: Icon(Icons.arrow_back_ios, size: 17)),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Text('BACK')
+                  ),
                 ),
                 GestureDetector(
                   onTap: () {
@@ -232,7 +233,7 @@ class CreatePhotoState extends State<CreatePhoto> {
                   },
                   child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: const Icon(CustomIcons.camera, size: 17)),
+                      child: Text('LIBRARY')),
                 ),
                 GestureDetector(
                   onTap: () {
@@ -240,25 +241,22 @@ class CreatePhotoState extends State<CreatePhoto> {
                   },
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Icon(
-                      Icons.crop,
-                      size: 17,
-                    ),
+                    child: Text('CROP')
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    setState(
-                      () {
-                        _photoEdit = false;
-                      },
-                    );
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Icon(Icons.arrow_forward_ios, size: 17),
-                  ),
-                ),
+                // GestureDetector(
+                //   onTap: () {
+                //     setState(
+                //       () {
+                //         _photoEdit = false;
+                //       },
+                //     );
+                //   },
+                //   child: Container(
+                //     padding: const EdgeInsets.symmetric(vertical: 10),
+                //     child: Icon(Icons.arrow_forward_ios, size: 17),
+                //   ),
+                // ),
               ],
             ))
       ],

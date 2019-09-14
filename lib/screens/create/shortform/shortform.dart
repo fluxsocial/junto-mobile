@@ -15,15 +15,16 @@ class CreateShortform extends StatefulWidget {
 }
 
 class CreateShortformState extends State<CreateShortform> {
-  Color gradientOne = Colors.white;
-  Color gradientTwo = Colors.white;
-  Color fontColor = JuntoPalette.juntoGrey;
+  Color gradientOne;
+  Color gradientTwo;
   String _currentBackground = 'none';
   TextEditingController _bodyController;
 
   @override
   void initState() {
     super.initState();
+    gradientOne = JuntoPalette.juntoPrimary;
+    gradientTwo = JuntoPalette.juntoSecondary;
     _bodyController = TextEditingController();
     _bodyController.addListener(bodyListener);
   }
@@ -46,14 +47,75 @@ class CreateShortformState extends State<CreateShortform> {
 
   @override
   Widget build(BuildContext context) {
-    final String _bodyValue = _bodyController.text;
+    // final String _bodyValue = _bodyController.text
 
-    //ignore:unused_local_variable
-    final Map<String, dynamic> _shortformExpression = <String, dynamic>{
-      'expression_type': 'ShortForm',
-      'background': _currentBackground,
-      'body': _bodyValue
-    };
+    _setBackground(background) {
+      if (background == 'none') {
+        setState(() {
+          gradientOne = Colors.white;
+          gradientTwo = Colors.white;
+          _currentBackground = 'none';
+        });
+      } else if (background == 'one') {
+        setState(
+          () {
+            gradientOne = JuntoPalette.juntoSecondary;
+            gradientTwo = JuntoPalette.juntoPrimary;
+            _currentBackground = 'one';
+          },
+        );
+      } else if (background == 'two') {
+        setState(
+          () {
+            gradientOne = JuntoPalette.juntoSecondary;
+            gradientTwo = JuntoPalette.juntoSecondaryLight;
+            _currentBackground = 'two';
+          },
+        );
+      } else if (background == 'three') {
+        setState(() {
+          gradientOne = JuntoPalette.juntoPrimary;
+          gradientTwo = JuntoPalette.juntoPrimaryLight;
+          _currentBackground = 'three';
+        });
+      } else if (background == 'four') {
+        setState(
+          () {
+            gradientOne = JuntoPalette.juntoGreen;
+            gradientTwo = JuntoPalette.juntoPrimary;
+            _currentBackground = 'four';
+          },
+        );
+      } else if (background == 'five') {
+        setState(
+          () {
+            gradientOne = JuntoPalette.juntoGreen;
+            gradientTwo = JuntoPalette.juntoSecondary;
+            _currentBackground = 'five';
+          },
+        );
+      }
+    }
+
+    _buildBackgroundPicker(colorOne, colorTwo) {
+      return Container(
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: const Color(0xffeeeeee),
+            width: 1,
+          ),
+          gradient: LinearGradient(
+            begin: Alignment.bottomLeft,
+            end: Alignment.topRight,
+            stops: <double>[0.1, 0.9],
+            colors: <Color>[colorOne, colorTwo],
+          ),
+        ),
+        margin: const EdgeInsets.only(right: 10),
+        height: 36,
+        width: 36,
+      );
+    }
 
     return Expanded(
       child: Column(
@@ -64,186 +126,45 @@ class CreateShortformState extends State<CreateShortform> {
               children: <Widget>[
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
-                  margin: const EdgeInsets.only(bottom: 20),
+                  margin: const EdgeInsets.only(top: 10, bottom: 15),
                   child: Row(
                     children: <Widget>[
                       GestureDetector(
                         onTap: () {
-                          setState(() {
-                            gradientOne = Colors.white;
-                            gradientTwo = Colors.white;
-                            fontColor = JuntoPalette.juntoGrey;
-                            _currentBackground = 'none';
-                          });
+                          _setBackground('one');
                         },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: const Color(0xffeeeeee),
-                              width: 1,
-                            ),
-                            gradient: const LinearGradient(
-                              begin: Alignment.bottomLeft,
-                              end: Alignment.topRight,
-                              stops: <double>[0.1, 0.9],
-                              colors: <Color>[
-                                Colors.white,
-                                Colors.white,
-                              ],
-                            ),
-                          ),
-                          margin: const EdgeInsets.only(right: 10),
-                          height: 36,
-                          width: 36,
-                        ),
+                        child: _buildBackgroundPicker(JuntoPalette.juntoPrimary,
+                            JuntoPalette.juntoSecondary),
                       ),
                       GestureDetector(
                         onTap: () {
-                          setState(
-                            () {
-                              gradientOne = JuntoPalette.juntoPrimary;
-                              gradientTwo = JuntoPalette.juntoPrimaryLight;
-                              fontColor = Colors.white;
-                              _currentBackground = 'one';
-                            },
-                          );
+                          _setBackground('two');
                         },
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.bottomLeft,
-                              end: Alignment.topRight,
-                              stops: <double>[0.1, 0.9],
-                              colors: <Color>[
-                                JuntoPalette.juntoPrimary,
-                                JuntoPalette.juntoPrimaryLight
-                              ],
-                            ),
-                          ),
-                          margin: const EdgeInsets.only(
-                            right: 1,
-                          ),
-                          height: 36,
-                          width: 36,
-                        ),
+                        child: _buildBackgroundPicker(
+                            JuntoPalette.juntoSecondaryLight,
+                            JuntoPalette.juntoSecondary),
                       ),
                       GestureDetector(
                         onTap: () {
-                          setState(
-                            () {
-                              gradientOne = JuntoPalette.juntoSecondary;
-                              gradientTwo = JuntoPalette.juntoSecondaryLight;
-                              fontColor = Colors.white;
-                              _currentBackground = 'two';
-                            },
-                          );
+                          _setBackground('three');
                         },
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.bottomLeft,
-                              end: Alignment.topRight,
-                              stops: <double>[0.1, 0.9],
-                              colors: <Color>[
-                                JuntoPalette.juntoSecondary,
-                                JuntoPalette.juntoSecondaryLight
-                              ],
-                            ),
-                          ),
-                          margin: const EdgeInsets.only(right: 10),
-                          height: 36,
-                          width: 36,
-                        ),
+                        child: _buildBackgroundPicker(
+                            JuntoPalette.juntoPrimaryLight,
+                            JuntoPalette.juntoPrimary),
                       ),
                       GestureDetector(
                         onTap: () {
-                          setState(() {
-                            gradientOne = JuntoPalette.juntoSecondary;
-                            gradientTwo = JuntoPalette.juntoPrimary;
-                            fontColor = Colors.white;
-                            _currentBackground = 'three';
-                          });
+                          _setBackground('four');
                         },
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            gradient: LinearGradient(
-                                begin: Alignment.bottomLeft,
-                                end: Alignment.topRight,
-                                stops: <double>[
-                                  0.1,
-                                  0.9
-                                ],
-                                colors: <Color>[
-                                  JuntoPalette.juntoSecondary,
-                                  JuntoPalette.juntoPrimary
-                                ]),
-                          ),
-                          margin: const EdgeInsets.only(right: 10),
-                          height: 36,
-                          width: 36,
-                        ),
+                        child: _buildBackgroundPicker(
+                            JuntoPalette.juntoGreen, JuntoPalette.juntoPrimary),
                       ),
                       GestureDetector(
                         onTap: () {
-                          setState(
-                            () {
-                              gradientOne = JuntoPalette.juntoGreen;
-                              gradientTwo = JuntoPalette.juntoPrimary;
-                              fontColor = Colors.white;
-                              _currentBackground = 'four';
-                            },
-                          );
+                          _setBackground('five');
                         },
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            gradient: LinearGradient(
-                                begin: Alignment.bottomLeft,
-                                end: Alignment.topRight,
-                                stops: <double>[
-                                  0.1,
-                                  0.9
-                                ],
-                                colors: <Color>[
-                                  JuntoPalette.juntoGreen,
-                                  JuntoPalette.juntoPrimary
-                                ]),
-                          ),
-                          margin: const EdgeInsets.only(right: 10),
-                          height: 36,
-                          width: 36,
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          setState(
-                            () {
-                              gradientOne = JuntoPalette.juntoGreen;
-                              gradientTwo = JuntoPalette.juntoSecondary;
-                              fontColor = Colors.white;
-                              _currentBackground = 'five';
-                            },
-                          );
-                        },
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            gradient: LinearGradient(
-                                begin: Alignment.bottomLeft,
-                                end: Alignment.topRight,
-                                stops: <double>[
-                                  0.1,
-                                  0.9
-                                ],
-                                colors: <Color>[
-                                  JuntoPalette.juntoGreen,
-                                  JuntoPalette.juntoSecondary
-                                ]),
-                          ),
-                          margin: const EdgeInsets.only(
-                            right: 10,
-                          ),
-                          height: 36,
-                          width: 36,
-                        ),
+                        child: _buildBackgroundPicker(JuntoPalette.juntoGreen,
+                            JuntoPalette.juntoSecondary),
                       ),
                     ],
                   ),
@@ -252,7 +173,7 @@ class CreateShortformState extends State<CreateShortform> {
                   padding: EdgeInsets.only(
                       left: 10.0,
                       right: 10.0,
-                      top: MediaQuery.of(context).size.height * .1225),
+                      top: MediaQuery.of(context).size.height * .1),
                   height: MediaQuery.of(context).size.height * .40,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
@@ -277,11 +198,11 @@ class CreateShortformState extends State<CreateShortform> {
                     decoration: InputDecoration(
                       border: InputBorder.none,
                     ),
-                    cursorColor: fontColor,
+                    cursorColor: Colors.white,
                     cursorWidth: 2,
                     maxLines: null,
                     style: TextStyle(
-                        color: fontColor,
+                        color: Colors.white,
                         fontSize: 24,
                         fontWeight: FontWeight.w700),
                     maxLength: 220,

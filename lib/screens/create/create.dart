@@ -190,10 +190,12 @@ class JuntoCreateState extends State<JuntoCreate> {
                       ),
                     ),
                     const SizedBox(width: 10),
-                    Text(
-                      _expressionType.toLowerCase(),
-                      textAlign: TextAlign.start,
-                    ),
+                    Text(_expressionType.toLowerCase(),
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xff333333))),
                   ],
                 ),
                 GestureDetector(
@@ -212,7 +214,7 @@ class JuntoCreateState extends State<JuntoCreate> {
                     style: TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.w600,
-                      color: JuntoPalette.juntoGrey,
+                      color: JuntoPalette.juntoSleek,
                     ),
                   ),
                 )

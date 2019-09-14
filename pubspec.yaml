@@ -26,6 +26,8 @@ dependencies:
   webview_flutter: ^0.3.9+1
   image_cropper: ^1.0.2  
   swipedetector: ^1.2.0  
+  flutter_google_places: ^0.2.3
+
   
 dev_dependencies:
   flutter_test:
@@ -67,6 +69,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/emoji.json
+    - assets/images/blossom.png
     - assets/images/junto-mobile__logo.png
     - assets/images/junto-mobile__logo--collective.png
     - assets/images/junto-mobile__logo--pack.png
@@ -94,6 +97,7 @@ flutter:
     - assets/images/junto-mobile__link.png    
     - assets/images/junto-mobile__join-pack.png    
     - assets/images/junto-mobile__resonation.png    
+    - assets/images/junto-mobile__event.png    
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
