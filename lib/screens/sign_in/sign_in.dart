@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/providers/auth_provider/auth_provider.dart';
 import 'package:junto_beta_mobile/screens/template/template.dart';
+import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,7 +31,7 @@ class _SignInState extends State<SignIn> {
   }
 
   /// Called when the user hits the `Sign In` button.
-  /// Makes a call to [FlutterSecureStorage] then replaces the current route
+  /// Makes a call to [SharedPreferences] then replaces the current route
   /// with [JuntoTemplate].
   Future<void> _handleSignIn(BuildContext context) async {
     final String email = _emailController.value.text;
@@ -38,16 +39,28 @@ class _SignInState extends State<SignIn> {
     final UserAuthLoginDetails loginDetails =
         UserAuthLoginDetails(email: email, password: password);
     JuntoOverlay.showLoader(context);
-    await Provider.of<AuthenticationProvider>(context).loginUser(loginDetails);
-    await SharedPreferences.getInstance()
-      ..setBool('isLoggedIn', true);
-    JuntoOverlay.hide();
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute<dynamic>(
-        builder: (BuildContext context) => JuntoTemplate(),
-      ),
-    );
+    try {
+      await Provider.of<AuthenticationProvider>(context)
+          .loginUser(loginDetails);
+      await SharedPreferences.getInstance()
+        ..setBool('isLoggedIn', true);
+      JuntoOverlay.hide();
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute<dynamic>(
+          builder: (BuildContext context) => JuntoTemplate(),
+        ),
+      );
+    } catch (error) {
+      JuntoOverlay.hide();
+      JuntoDialog.showJuntoDialog(
+          context, 'Junto', 'Unable to login user.', <Widget>[
+        FlatButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text('OK'),
+        ),
+      ]);
+    }
   }
 
   @override

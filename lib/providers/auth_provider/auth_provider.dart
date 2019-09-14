@@ -99,6 +99,8 @@ class AuthenticationImp implements AuthenticationProvider {
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString('auth', responseCookie.value);
         return responseCookie.value;
+      } else if (response.statusCode == 401) {
+        throw const HttpException('Please check your account information.');
       } else {
         print('Response error ${response.toString()}');
         throw HttpException('Recieved Status code ${response.statusCode}');
