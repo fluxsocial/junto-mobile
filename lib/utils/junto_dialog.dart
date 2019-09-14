@@ -21,7 +21,8 @@ class JuntoDialog {
                   backgroundColor: Colors.white,
                 ),
                 const SizedBox(width: 12.0),
-                Text(heading, style: JuntoStyles.perspectiveTitle),
+                Expanded(
+                    child: Text(heading, style: JuntoStyles.perspectiveTitle)),
               ],
             ),
           ),

@@ -5,7 +5,32 @@ import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/styles.dart';
 
 // This class renders a widget that enables the user to create a sphere
-class CreateSphere extends StatelessWidget {
+class CreateSphere extends StatefulWidget {
+  @override
+  _CreateSphereState createState() => _CreateSphereState();
+}
+
+class _CreateSphereState extends State<CreateSphere> {
+  TextEditingController _textEditingController;
+
+  @override
+  void initState() {
+    _textEditingController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _createSphere() async {
+    final String sphereName = _textEditingController.value.text;
+
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +54,7 @@ class CreateSphere extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   GestureDetector(
-                    onTap: () => Navigator.pop(context),
+                    onTap: _createSphere,
                     child: const Icon(
                       CustomIcons.back_arrow_left,
                       color: JuntoPalette.juntoSleek,
@@ -75,8 +100,13 @@ class CreateSphere extends StatelessWidget {
                   ),
                 )),
                 child: TextField(
-                  buildCounter: (BuildContext context,
-                          {int currentLength, int maxLength, bool isFocused}) =>
+                  controller: _textEditingController,
+                  buildCounter: (
+                    BuildContext context, {
+                    int currentLength,
+                    int maxLength,
+                    bool isFocused,
+                  }) =>
                       null,
                   decoration: InputDecoration(
                     border: InputBorder.none,
