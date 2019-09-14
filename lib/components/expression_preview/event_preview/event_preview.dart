@@ -1,85 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/models/expression.dart';
 
 /// Shows a preview for the given event.
 /// Widget takes [eventTitle], [eventLocation] and [eventPhoto]
 class EventPreview extends StatelessWidget {
-  const EventPreview({
-    Key key,
-    @required this.eventTitle,
-    @required this.eventLocation,
-    @required this.eventPhoto,
-  }) : super(key: key);
+  const EventPreview({Key key, @required this.expression}) : super(key: key);
 
   /// Name of the event
-  final String eventTitle;
-
-  /// Location of the event
-  final String eventLocation;
-
-  /// Image url associated with the given event
-  final String eventPhoto;
+  final Expression expression;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
         children: <Widget>[
+          expression.expression.expressionContent['image'] != ''
+              ? Container(
+                  margin: const EdgeInsets.only(bottom: 10),
+                  child: Image.asset(
+                      expression.expression.expressionContent['image'],
+                      fit: BoxFit.fitWidth),
+                )
+              : const SizedBox(),
           Container(
-            width: MediaQuery.of(context).size.width * .6,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  margin: const EdgeInsets.only(bottom: 5),
-                  child: Text(
-                    eventTitle,
-                    style: const TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(bottom: 5),
-                  child: Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.location_searching,
-                        color: const Color(0xff999999),
-                        size: 17,
-                      ),
-                      const SizedBox(width: 5),
-                      Text(
-                        eventLocation,
-                        style: const TextStyle(
-                          color: Color(
-                            0xff999999,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  child: const Text(
-                    'WED, JUN 19, 6:00PM',
+              color: Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    expression.expression.expressionContent['time'],
                     style: TextStyle(
-                      color: JuntoPalette.juntoPrimary,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w700,
-                    ),
+                        color: JuntoPalette.juntoPrimary,
+                        fontSize: 14, fontWeight: FontWeight.w500),
                   ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            width: MediaQuery.of(context).size.width * .27,
-            child: Image.asset(eventPhoto),
-          ),
+                  const SizedBox(height: 2.5),
+                  Text(
+                    expression.expression.expressionContent['title'],
+                    style: TextStyle(
+                        color: JuntoPalette.juntoGrey,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700),
+                  ),
+                  const SizedBox(height: 2.5),
+                  Text(expression.expression.expressionContent['location'],
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: JuntoPalette.juntoGrey)),
+                ],
+              ))
         ],
       ),
     );
