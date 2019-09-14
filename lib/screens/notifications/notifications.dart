@@ -9,7 +9,7 @@ class JuntoNotifications extends StatelessWidget {
         return JuntoNotifications();
       },
     );
-  }  
+  }
 
   @override
   Widget build(BuildContext context) {

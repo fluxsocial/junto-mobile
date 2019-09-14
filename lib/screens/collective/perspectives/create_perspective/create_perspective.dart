@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
+import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/providers/user_provider.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/create_perspective/perspective_member_preview/perspective_member_preview.dart';
-import 'package:junto_beta_mobile/typography/palette.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';

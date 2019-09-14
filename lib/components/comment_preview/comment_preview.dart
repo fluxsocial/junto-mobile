@@ -16,7 +16,10 @@ class CommentPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(left: JuntoStyles.horizontalPadding, right: JuntoStyles.horizontalPadding, top: 10),
+      padding: const EdgeInsets.only(
+          left: JuntoStyles.horizontalPadding,
+          right: JuntoStyles.horizontalPadding,
+          top: 10),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -78,10 +81,8 @@ class CommentPreview extends StatelessWidget {
                 Container(
                   child: const Text(
                     '5 MINUTES AGO',
-                    style: TextStyle(
-                      fontSize: 10,
-                      color: JuntoPalette.juntoSleek
-                    ),
+                    style:
+                        TextStyle(fontSize: 10, color: JuntoPalette.juntoSleek),
                   ),
                 ),
               ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/screens/create/bullet/bullet.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
 import 'package:junto_beta_mobile/screens/create/create_bottom_nav.dart';
@@ -6,9 +7,8 @@ import 'package:junto_beta_mobile/screens/create/event/event.dart';
 import 'package:junto_beta_mobile/screens/create/longform/longform.dart';
 import 'package:junto_beta_mobile/screens/create/photo/photo.dart';
 import 'package:junto_beta_mobile/screens/create/shortform/shortform.dart';
-import 'package:junto_beta_mobile/typography/style.dart';
+import 'package:junto_beta_mobile/styles.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
-
 
 class JuntoCreate extends StatefulWidget {
   const JuntoCreate(this.expressionLayer);

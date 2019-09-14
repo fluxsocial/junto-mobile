@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/typography/style.dart';
+import 'package:junto_beta_mobile/styles.dart';
 
 class JuntoDialog {
   static void showJuntoDialog(

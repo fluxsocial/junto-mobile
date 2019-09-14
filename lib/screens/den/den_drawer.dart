@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/palette.dart';
-import 'package:junto_beta_mobile/styles.dart';
 
 class DenDrawer extends StatelessWidget {
   @override
@@ -18,8 +16,8 @@ class DenDrawer extends StatelessWidget {
             children: <Widget>[
               Container(
                 height: 48,
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                decoration: const BoxDecoration(
                   border: Border(
                     bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
                   ),
@@ -27,12 +25,12 @@ class DenDrawer extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
+                  children: <Widget>[
+                    const Text(
                       'Hey Eric!',
                       style: TextStyle(
                           fontSize: 17,
-                          color: const Color(0xff333333),
+                          color: Color(0xff333333),
                           fontWeight: FontWeight.w700),
                     ),
                     ClipOval(
@@ -76,18 +74,18 @@ class DenDrawer extends StatelessWidget {
     );
   }
 
-  _denDrawerSection(title) {
+  Widget _denDrawerSection(String title) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       alignment: Alignment.centerLeft,
       child: Text(
         title.toUpperCase(),
-        style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
       ),
     );
   }
 
-  _denDrawerItem(title, navigation) {
+  Widget _denDrawerItem(String title, String navigation) {
     return GestureDetector(
       onTap: () {},
       child: Container(
@@ -95,8 +93,13 @@ class DenDrawer extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text(title,
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500)),
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
             Icon(
               Icons.keyboard_arrow_right,
               size: 17,

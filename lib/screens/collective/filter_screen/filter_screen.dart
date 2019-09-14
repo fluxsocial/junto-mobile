@@ -30,7 +30,8 @@ class CollectiveFilterScreen extends StatelessWidget {
             left: 0,
             child: Container(
               color: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: JuntoStyles.horizontalPadding, vertical: 45),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: JuntoStyles.horizontalPadding, vertical: 45),
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
               child: Column(

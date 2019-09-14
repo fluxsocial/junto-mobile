@@ -23,14 +23,12 @@ class JuntoAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: Colors.white,
       automaticallyImplyLeading: false,
-      actions: <Widget>[
-        Container()
-      ],
+      actions: <Widget>[Container()],
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(.75),
         child: Container(
           height: .75,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,

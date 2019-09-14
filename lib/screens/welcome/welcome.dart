@@ -110,10 +110,17 @@ class Welcome extends StatelessWidget {
                 ),
                 RaisedButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => JuntoTemplate()));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute<dynamic>(
+                        builder: (BuildContext context) => JuntoTemplate(),
+                      ),
+                    );
                   },
-                  child: Text('skip')
-                )
+                  child: const Text(
+                    'skip',
+                  ),
+                ),
               ],
             )
           ],

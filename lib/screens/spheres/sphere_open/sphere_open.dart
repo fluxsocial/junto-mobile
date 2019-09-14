@@ -110,5 +110,4 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
       ),
     );
   }
-
 }

@@ -9,6 +9,7 @@ import 'package:junto_beta_mobile/screens/loading_screen/junto_loading_screen.da
 import 'package:junto_beta_mobile/screens/notifications/notifications.dart';
 import 'package:junto_beta_mobile/screens/template/template.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
+import 'package:junto_beta_mobile/themes.dart';
 import 'package:provider/provider.dart';
 import 'providers/collective_provider/collective_provider.dart';
 

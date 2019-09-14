@@ -67,4 +67,18 @@ class JuntoStyles {
   // Text Field style for filtering by channels
   static const TextStyle filterChannelText =
       TextStyle(fontSize: 14, color: JuntoPalette.juntoGrey);
+
+  static const TextStyle lotusLongformBody = TextStyle(
+    height: 1.25,
+    fontSize: 17.0,
+    fontWeight: FontWeight.w600,
+    fontFamily: 'Avenir Heavy',
+    color: JuntoPalette.juntoGrey,
+  );
+
+  static const TextStyle perspectiveTitle = TextStyle(
+    color: JuntoPalette.juntoGrey,
+    fontWeight: FontWeight.w700,
+    fontFamily: 'Avenir',
+  );
 }

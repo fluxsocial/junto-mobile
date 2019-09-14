@@ -28,7 +28,7 @@ class BottomNavState extends State<BottomNav> {
       height: 48.0,
       child: Material(
         color: Colors.white,
-        shape: Border(
+        shape: const Border(
           top: BorderSide(
             color: JuntoPalette.juntoFade,
             width: .75,
