@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
+import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/providers/collective_provider/collective_provider.dart';
 import 'package:provider/provider.dart';
@@ -29,10 +30,12 @@ class CreateActionsAppbar extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () async {
+                final Expression _testData =
+                    Provider.of<CollectiveProvider>(context).sampleExpression;
                 // For now we are using test data until the rich text editor
                 // is up and running.
                 await Provider.of<CollectiveProvider>(context)
-                    .createExpression(null);
+                    .createExpression(_testData);
                 Navigator.of(context).pop();
               },
               child: const Text(

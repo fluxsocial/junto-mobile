@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/components/utils/hide_fab.dart';
+import 'package:junto_beta_mobile/models/pack.dart';
+import 'package:junto_beta_mobile/providers/packs_provider/packs_provider.dart';
+import 'package:provider/provider.dart';
 
 class PackOpenPublic extends StatefulWidget {
   const PackOpenPublic({
@@ -14,6 +17,7 @@ class PackOpenPublic extends StatefulWidget {
 
 class _PackOpenPublicState extends State<PackOpenPublic> with HideFab {
   ScrollController _packOpenPublicController;
+  PacksProvider _packsProvider;
 
   @override
   void initState() {
@@ -29,6 +33,20 @@ class _PackOpenPublicState extends State<PackOpenPublic> with HideFab {
 
   void _onScrollingHasChanged() {
     super.hideFabOnScroll(_packOpenPublicController, widget.fabVisible);
+  }
+
+  @override
+  void didChangeDependencies() {
+    _packsProvider = Provider.of<PacksProvider>(context);
+    printPackResponse();
+    super.didChangeDependencies();
+  }
+
+  //TODO(Nash): We need to store the user address
+  Future<void> printPackResponse() async {
+    final List<PackResponse> response = await _packsProvider
+        .getUserPacks('QmchnP6FXRC7k9bg1oSmXr7DePyYyV4hSB33XAd3K7mCJo,');
+    print(response.toString());
   }
 
   @override
