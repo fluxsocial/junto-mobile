@@ -24,6 +24,11 @@ class Pack {
         'assets/images/junto-mobile__kevin.png',
       ),
       Pack(
+        'Ecstatic Dancers',
+        'Josh Parkin',
+        'assets/images/junto-mobile__josh.png',
+      ),      
+      Pack(
         'HeruPandie',
         'Dora Czovek',
         'assets/images/junto-mobile__dora.png',
@@ -37,11 +42,6 @@ class Pack {
         'Cats',
         'Yaz Owainati',
         'assets/images/junto-mobile__yaz.png',
-      ),
-      Pack(
-        'Ecstatic Dancers',
-        'Josh Parkin',
-        'assets/images/junto-mobile__josh.png',
       ),
       Pack(
         'FlatToppers',
