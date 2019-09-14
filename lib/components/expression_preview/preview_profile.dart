@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/components/expression_action_items/expression_action_items.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
@@ -26,45 +27,48 @@ class PreviewProfile extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              // profile picture
-              ClipOval(
-                child: Image.asset(
-                  profilePicture,
-                  height: 36.0,
-                  width: 36.0,
-                  fit: BoxFit.cover,
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                CupertinoPageRoute<dynamic>(
+                  builder: (
+                    BuildContext context,
+                  ) =>
+                      JuntoMember(),
                 ),
-              ),
-
-              // profile name and handle
-              Container(
-                margin: const EdgeInsets.only(left: 10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute<dynamic>(
-                            builder: (
-                              BuildContext context,
-                            ) =>
-                                JuntoMember(),
-                          ),
-                        );
-                      },
-                      child: Text(firstName + ' ' + lastName,
-                          style: JuntoStyles.title),
+              );
+            },
+            child: Container(
+              color: Colors.white,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  // profile picture
+                  ClipOval(
+                    child: Image.asset(
+                      profilePicture,
+                      height: 36.0,
+                      width: 36.0,
+                      fit: BoxFit.cover,
                     ),
-                    Text(username, style: JuntoStyles.body)
-                  ],
-                ),
+                  ),
+
+                  // profile name and handle
+                  Container(
+                    margin: const EdgeInsets.only(left: 10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(firstName + ' ' + lastName,
+                            style: JuntoStyles.title),
+                        Text(username, style: JuntoStyles.body)
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
           Row(
             children: <Widget>[
