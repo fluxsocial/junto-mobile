@@ -80,6 +80,46 @@ class CollectiveProvider with ChangeNotifier {
         ),
       ],
     ),    
+    Expression(
+      expression: ExpressionContent(
+        address: '0xfee32zokie8',
+        expressionType: 'event',
+        expressionContent: <String, String>{
+          'title': 'Philosophical exchange for individual and mutual improvement',
+          'location': 'Tubestation, New Polzeath UK',
+          'time': 'SUN, SEP 15, 3:00PM',
+          'image': 'assets/images/junto-mobile__event.png'
+        },
+      ),
+      authorProfile: UserProfile(
+        address: '0vefoiwiafjvkbr32r243r5',
+        parent: 'parent-address',
+        bio: 'hellooo',
+        firstName: 'Eric',
+        lastName: 'Yang',
+        profilePicture: 'assets/images/junto-mobile__eric.png',
+        verified: true,
+      ),
+      authorUsername: Username(
+        address: '02efredffdfvdbnrtg',
+        username: 'sunyata',
+      ),
+      subExpressions: <Expression>[],
+      resonations: <dynamic>[],
+      timestamp: '17',
+      channels: <Channel>[
+        Channel(
+          address: 'channel-address',
+          value: 'design',
+          attributeType: 'Channel',
+        ),
+        Channel(
+          address: 'channel-address',
+          value: 'tech',
+          attributeType: 'Channel',
+        ),
+      ],
+    ),    
 
     Expression(
       expression: ExpressionContent(
@@ -119,6 +159,46 @@ class CollectiveProvider with ChangeNotifier {
         ),
       ],
     ),
+    Expression(
+      expression: ExpressionContent(
+        address: '0xfee32zokie8',
+        expressionType: 'event',
+        expressionContent: <String, String>{
+          'title': 'Ecstatic Dance - Movement to Fill Your Soul',
+          'location': 'Tubestation, New Polzeath UK',
+          'time': 'SUN, SEP 15, 6:00PM',
+          'image': ''
+        },
+      ),
+      authorProfile: UserProfile(
+        address: '0vefoiwiafjvkbr32r243r5',
+        parent: 'parent-address',
+        bio: 'hellooo',
+        firstName: 'Eric',
+        lastName: 'Yang',
+        profilePicture: 'assets/images/junto-mobile__eric.png',
+        verified: true,
+      ),
+      authorUsername: Username(
+        address: '02efredffdfvdbnrtg',
+        username: 'sunyata',
+      ),
+      subExpressions: <Expression>[],
+      resonations: <dynamic>[],
+      timestamp: '17',
+      channels: <Channel>[
+        Channel(
+          address: 'channel-address',
+          value: 'design',
+          attributeType: 'Channel',
+        ),
+        Channel(
+          address: 'channel-address',
+          value: 'tech',
+          attributeType: 'Channel',
+        ),
+      ],
+    ),        
     Expression(
       expression: ExpressionContent(
         address: '0xfee32zokie8',

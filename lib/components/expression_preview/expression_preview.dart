@@ -5,6 +5,7 @@ import 'package:junto_beta_mobile/components/expression_preview/preview_bottom.d
 import 'package:junto_beta_mobile/components/expression_preview/preview_profile.dart';
 import 'package:junto_beta_mobile/components/expression_preview/shortform_preview/shortform_preview.dart';
 import 'package:junto_beta_mobile/components/expression_preview/photo_preview/photo_preview.dart';
+import 'package:junto_beta_mobile/components/expression_preview/event_preview/event_preview.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open.dart';
 
@@ -54,6 +55,8 @@ class ExpressionPreview extends StatelessWidget {
       return ShortformPreview(expression);
     } else if (expression.expression.expressionType == 'photo') {
       return PhotoPreview(expression: expression);
+    } else if (expression.expression.expressionType == 'event') {
+      return EventPreview(expression: expression);
     } else {
       return Container();
     }
