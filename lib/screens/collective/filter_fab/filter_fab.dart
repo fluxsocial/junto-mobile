@@ -26,8 +26,8 @@ class CollectiveFilterFAB extends StatelessWidget {
             child: GestureDetector(
               onTap: () => toggleFilter(context),
               child: Container(
-                height: 45,
-                width: 45,
+                height: 44,
+                width: 44,
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
                     begin: Alignment.bottomLeft,
