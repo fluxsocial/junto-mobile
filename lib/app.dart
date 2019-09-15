@@ -29,7 +29,7 @@ class JuntoAppState extends State<JuntoApp> {
           builder: (BuildContext context) => SearchProvider(),
         ),
         Provider<AuthenticationProvider>(
-          builder: (BuildContext context) => AuthenticationImp(),
+          builder: (BuildContext context) => AuthenticationCentralized(),
         ),
         Provider<UserProvider>(
           builder: (BuildContext context) => UserProviderImpl(),

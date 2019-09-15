@@ -34,8 +34,62 @@ abstract class AuthenticationProvider {
   Future<Map<String, dynamic>> retriveProfileByAgent();
 }
 
-/// Concrete implementation of [AuthenticationProvider].
-class AuthenticationImp implements AuthenticationProvider {
+class AuthenticationCentralized implements AuthenticationProvider {
+  @override
+  Future<String> loginUser(UserAuthLoginDetails details) {
+    // TODO: implement loginUser
+    return null;
+  }
+
+  @override
+  Future<void> logoutUser() {
+    // TODO: implement logoutUser
+    return null;
+  }
+
+  @override
+  Future<String> registerUser(UserAuthRegistrationDetails details) async {
+    final Map<String, dynamic> _body = <String, dynamic>{
+      'email': details.email,
+      'password': details.password,
+      'confirm_password': details.password,
+      'first_name': details.firstName,
+      'last_name': details.lastName,
+      'bio': details.bio,
+      'username': details.username,
+      'profile_picture': details.profileImage ?? ''
+    };
+
+    final http.Response response = await JuntoHttp().post(
+      '/users',
+      body: _body,
+    );
+    print('Status code: ${response.statusCode}  Body: ${response.body}');
+    return null;
+  }
+
+  @override
+  Future<Map<String, dynamic>> retrieveUsernameByAgent() {
+    // TODO: implement retrieveUsernameByAgent
+    return null;
+  }
+
+  @override
+  Future<Map<String, dynamic>> retrieveUsernameFromAddress(String address) {
+    // TODO: implement retrieveUsernameFromAddress
+    return null;
+  }
+
+  @override
+  Future<Map<String, dynamic>> retriveProfileByAgent() {
+    // TODO: implement retriveProfileByAgent
+    return null;
+  }
+}
+
+@Deprecated(
+    'This class uses the holochain API and thus should not be used or referanced')
+class AuthenticationHolo implements AuthenticationProvider {
   /// Creates a new user on the server. Returns the user's ID if the operation is
   /// successful. Method takes [UserAuthRegistrationDetails] as its only
   /// parameter.
