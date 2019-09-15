@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/styles.dart';
+import 'package:junto_beta_mobile/components/comment_preview/comment_action_items.dart';
 
 /// Shows a preview of the comments. Takes a un-named [String] as a param.
 class CommentPreview extends StatelessWidget {
@@ -51,7 +52,8 @@ class CommentPreview extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Row(
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: const <Widget>[
                           Text(
                             'Eric Yang',
@@ -63,7 +65,12 @@ class CommentPreview extends StatelessWidget {
                           Text('sunyata'),
                         ],
                       ),
-                      const Icon(CustomIcons.more, size: 20)
+                      GestureDetector(
+                          onTap: () {
+                            CommentActionItems().buildCommentActionItems(context);
+
+                          },
+                          child: const Icon(CustomIcons.more, size: 20))
                     ],
                   ),
                 ),
@@ -75,12 +82,14 @@ class CommentPreview extends StatelessWidget {
                   width: MediaQuery.of(context).size.width - 66,
                   child: Text(
                     commentText,
-                    style: const TextStyle(fontSize: 15),
+                    style: const TextStyle(
+                      fontSize: 17,
+                    ),
                   ),
                 ),
                 Container(
                   child: const Text(
-                    '5 MINUTES AGO',
+                    '5m',
                     style:
                         TextStyle(fontSize: 10, color: JuntoPalette.juntoSleek),
                   ),

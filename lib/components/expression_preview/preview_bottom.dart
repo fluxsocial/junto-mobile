@@ -31,14 +31,14 @@ class PreviewBottom extends StatelessWidget {
               ],
             ),
           ),
-          Container(
-            margin: const EdgeInsets.only(right: 10),
-            child: const Icon(
-              CustomIcons.half_lotus,
-              size: 15,
-              color: JuntoPalette.juntoPrimary,
-            ),
-          )
+          // Container(
+          //   margin: const EdgeInsets.only(right: 10),
+          //   child: const Icon(
+          //     CustomIcons.half_lotus,
+          //     size: 15,
+          //     color: JuntoPalette.juntoPrimary,
+          //   ),
+          // )
         ],
       ),
     );

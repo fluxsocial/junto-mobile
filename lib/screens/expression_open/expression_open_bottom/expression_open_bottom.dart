@@ -24,8 +24,12 @@ class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 7.5),
-      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: Color(0xffeeeeee), width: .75),
+        ),
+      ),
+      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 15, top: 15),
       child: Column(
         children: <Widget>[
           Row(
@@ -33,13 +37,17 @@ class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  timestamp + ' MINUTES AGO',
+                  timestamp + 'm',
                   style: const TextStyle(
                       fontSize: 10, color: JuntoPalette.juntoSleek),
                 ),
-                Container(
-                    margin: const EdgeInsets.only(right: 10),
-                    child: const Icon(CustomIcons.half_lotus, size: 14))
+                Row(
+                  children: <Widget>[
+                    Image.asset('assets/images/junto-mobile__resonation.png',
+                        height: 17)
+                    // Icon(CustomIcons.)
+                  ],
+                )
               ]),
         ],
       ),
