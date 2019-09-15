@@ -23,6 +23,9 @@ class ExpressionOpen extends StatefulWidget {
 }
 
 class ExpressionOpenState extends State<ExpressionOpen> {
+  //  whether the comments are visible or not
+  bool commentsVisible = false;
+
   TextEditingController commentController;
 
   /// [FocusNode] passed to Comments [TextField]
@@ -128,62 +131,90 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                     ExpressionOpenBottom(widget.expression),
                     // ExpressionOpenInteractions(),
                     Container(
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                                color: Color(0xffeeeeee), width: .75),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom:
+                              BorderSide(color: Color(0xffeeeeee), width: .75),
+                        ),
+                      ),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                      child: GestureDetector(
+                        onTap: () {
+                          if (commentsVisible == false) {
+                            setState(() {
+                              commentsVisible = true;
+                            });
+                          } else if (commentsVisible == true) {
+                            setState(() {
+                              commentsVisible = false;
+                            });
+                          }
+                        },
+                        child: Container(
+                          color: Colors.white,
+                          child: Row(
+                            children: <Widget>[
+                              Text(
+                                'Show replies (9)',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              SizedBox(width: 5),
+                              commentsVisible == false
+                                  ? Icon(Icons.keyboard_arrow_down, size: 17)
+                                  : Icon(Icons.keyboard_arrow_up, size: 17)
+                            ],
                           ),
                         ),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                        child: Row(
-                          children: <Widget>[
-                            Text(
-                              'Show replies (9)',
-                              style: TextStyle(fontWeight: FontWeight.w500),
-                            ),
-                            SizedBox(width: 5),
-                            Icon(Icons.keyboard_arrow_down, size: 17)
-                          ],
-                        )),
+                      ),
+                    ),
 
-                    CommentPreview(
-                      commentText: 'love this! is this for everyone??',
-                    ),
-                    CommentPreview(
-                      commentText:
-                          'This reminds of me of the Junto club that was started in the late 1700s by Ben Franklin.',
-                    ),
-                    CommentPreview(
-                      commentText: 'yo',
-                    ),
-                    CommentPreview(
-                      commentText: 'hello',
-                    ),
-                    CommentPreview(
-                      commentText: 'hello',
-                    ),
-                    CommentPreview(
-                      commentText: 'hello',
-                    ),
-                    CommentPreview(
-                      commentText: 'hello',
-                    ),
-                    CommentPreview(
-                      commentText: 'hello',
-                    ),
-                    CommentPreview(
-                      commentText: 'hello',
-                    ),
-                    CommentPreview(
-                      commentText: 'hello',
-                    ),
-                    CommentPreview(
-                      commentText: 'hello',
-                    ),
-                    CommentPreview(
-                      commentText: 'hello',
-                    ),
+                    commentsVisible
+                        ? ListView(
+                            shrinkWrap: true,
+                            physics: ClampingScrollPhysics(),
+                            children: <Widget>[
+                              CommentPreview(
+                                commentText:
+                                    'love this! is this for everyone??',
+                              ),
+                              CommentPreview(
+                                commentText:
+                                    'This reminds of me of the Junto club that was started in the late 1700s by Ben Franklin.',
+                              ),
+                              CommentPreview(
+                                commentText: 'yo',
+                              ),
+                              CommentPreview(
+                                commentText: 'hello',
+                              ),
+                              CommentPreview(
+                                commentText: 'hello',
+                              ),
+                              CommentPreview(
+                                commentText: 'hello',
+                              ),
+                              CommentPreview(
+                                commentText: 'hello',
+                              ),
+                              CommentPreview(
+                                commentText: 'hello',
+                              ),
+                              CommentPreview(
+                                commentText: 'hello',
+                              ),
+                              CommentPreview(
+                                commentText: 'hello',
+                              ),
+                              CommentPreview(
+                                commentText: 'hello',
+                              ),
+                              CommentPreview(
+                                commentText: 'hello',
+                              ),
+                            ],
+                          )
+                        : SizedBox()
                   ],
                 ),
               ),
