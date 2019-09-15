@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
+import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
 
 // This widget is a Floating Action Button
@@ -45,18 +46,27 @@ class CreateFAB extends StatelessWidget {
                 );
               },
               child: Container(
-                height: 48,
-                width: 48,
+                height: 44,
+                width: 44,
                 decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
+                    stops: <double>[0.1, 0.9],
+                    colors: <Color>[
+                      JuntoPalette.juntoSecondary,
+                      JuntoPalette.juntoPrimary,
+                    ],
+                  ),                  
                   color: Colors.white.withOpacity(.7),
                   border: Border.all(
-                    color: Colors.blue,
+                    color: Colors.white,
                     width: 1.5,
                   ),
                   borderRadius: BorderRadius.circular(25),
                 ),
                 alignment: Alignment.center,
-                child: Icon(CustomIcons.lotus, color: Colors.blue),
+                child: Icon(CustomIcons.lotus, color: Colors.white, size: 20),
               ),
             ),
           );
