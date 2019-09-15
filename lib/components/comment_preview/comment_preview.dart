@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/styles.dart';
+import 'package:junto_beta_mobile/components/comment_preview/comment_action_items.dart';
 
 /// Shows a preview of the comments. Takes a un-named [String] as a param.
 class CommentPreview extends StatelessWidget {
@@ -23,12 +26,18 @@ class CommentPreview extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          ClipOval(
-            child: Image.asset(
-              'assets/images/junto-mobile__eric.png',
-              height: 36.0,
-              width: 36.0,
-              fit: BoxFit.cover,
+          GestureDetector(
+            onTap: () {
+              Navigator.push(context,
+                  CupertinoPageRoute(builder: (context) => JuntoMember()));
+            },
+            child: ClipOval(
+              child: Image.asset(
+                'assets/images/junto-mobile__eric.png',
+                height: 36.0,
+                width: 36.0,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           Container(
@@ -51,19 +60,36 @@ class CommentPreview extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Row(
-                        children: const <Widget>[
-                          Text(
-                            'Eric Yang',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                            ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                  builder: (context) => JuntoMember()));
+                        },
+                        child: Container(
+                          color: Colors.white,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: const <Widget>[
+                              Text(
+                                'Eric Yang',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Text('sunyata'),
+                            ],
                           ),
-                          SizedBox(width: 5),
-                          Text('sunyata'),
-                        ],
+                        ),
                       ),
-                      const Icon(CustomIcons.more, size: 20)
+                      GestureDetector(
+                          onTap: () {
+                            CommentActionItems()
+                                .buildCommentActionItems(context);
+                          },
+                          child: const Icon(CustomIcons.more, size: 20))
                     ],
                   ),
                 ),
@@ -75,12 +101,14 @@ class CommentPreview extends StatelessWidget {
                   width: MediaQuery.of(context).size.width - 66,
                   child: Text(
                     commentText,
-                    style: const TextStyle(fontSize: 15),
+                    style: const TextStyle(
+                      fontSize: 17,
+                    ),
                   ),
                 ),
                 Container(
                   child: const Text(
-                    '5 MINUTES AGO',
+                    '5m',
                     style:
                         TextStyle(fontSize: 10, color: JuntoPalette.juntoSleek),
                   ),

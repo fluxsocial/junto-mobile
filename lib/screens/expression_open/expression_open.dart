@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/components/comment_preview/comment_preview.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_appbar/expression_open_appbar.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_bottom/expression_open_bottom.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_interactions/expression_open_interactions.dart';
@@ -22,6 +23,9 @@ class ExpressionOpen extends StatefulWidget {
 }
 
 class ExpressionOpenState extends State<ExpressionOpen> {
+  //  whether the comments are visible or not
+  bool commentsVisible = false;
+
   TextEditingController commentController;
 
   /// [FocusNode] passed to Comments [TextField]
@@ -125,7 +129,92 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                     ExpressionOpenTop(expression: widget.expression),
                     _buildExpression(),
                     ExpressionOpenBottom(widget.expression),
-                    ExpressionOpenInteractions(),
+                    // ExpressionOpenInteractions(),
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom:
+                              BorderSide(color: Color(0xffeeeeee), width: .75),
+                        ),
+                      ),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                      child: GestureDetector(
+                        onTap: () {
+                          if (commentsVisible == false) {
+                            setState(() {
+                              commentsVisible = true;
+                            });
+                          } else if (commentsVisible == true) {
+                            setState(() {
+                              commentsVisible = false;
+                            });
+                          }
+                        },
+                        child: Container(
+                          color: Colors.white,
+                          child: Row(
+                            children: <Widget>[
+                              Text(
+                                'Show replies (9)',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              SizedBox(width: 5),
+                              commentsVisible == false
+                                  ? Icon(Icons.keyboard_arrow_down, size: 17)
+                                  : Icon(Icons.keyboard_arrow_up, size: 17)
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    commentsVisible
+                        ? ListView(
+                            shrinkWrap: true,
+                            physics: ClampingScrollPhysics(),
+                            children: <Widget>[
+                              CommentPreview(
+                                commentText:
+                                    'love this! is this for everyone??',
+                              ),
+                              CommentPreview(
+                                commentText:
+                                    'This reminds of me of the Junto club that was started in the late 1700s by Ben Franklin.',
+                              ),
+                              CommentPreview(
+                                commentText: 'yo',
+                              ),
+                              CommentPreview(
+                                commentText: 'hello',
+                              ),
+                              CommentPreview(
+                                commentText: 'hello',
+                              ),
+                              CommentPreview(
+                                commentText: 'hello',
+                              ),
+                              CommentPreview(
+                                commentText: 'hello',
+                              ),
+                              CommentPreview(
+                                commentText: 'hello',
+                              ),
+                              CommentPreview(
+                                commentText: 'hello',
+                              ),
+                              CommentPreview(
+                                commentText: 'hello',
+                              ),
+                              CommentPreview(
+                                commentText: 'hello',
+                              ),
+                              CommentPreview(
+                                commentText: 'hello',
+                              ),
+                            ],
+                          )
+                        : SizedBox()
                   ],
                 ),
               ),
@@ -206,35 +295,6 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                         ],
                       ),
                     ),
-                    // GestureDetector(
-                    //   onTap: () {},
-                    //   child: Container(
-                    //     decoration: BoxDecoration(
-                    //       borderRadius: BorderRadius.circular(25),
-                    //       gradient: const LinearGradient(
-                    //         begin: Alignment.centerLeft,
-                    //         end: Alignment.centerRight,
-                    //         stops: <double>[0.1, 0.9],
-                    //         colors: <Color>[
-                    //           JuntoPalette.juntoPrimary,
-                    //           JuntoPalette.juntoSecondary
-                    //         ],
-                    //       ),
-                    //     ),
-                    //     padding: const EdgeInsets.symmetric(
-                    //       horizontal: JuntoStyles.horizontalPadding,
-                    //       vertical: 5,
-                    //     ),
-                    //     child: const Text(
-                    //       'REPLY',
-                    //       style: TextStyle(
-                    //         color: Colors.white,
-                    //         fontWeight: FontWeight.w700,
-                    //         fontSize: 12,
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
                   ],
                 ),
               )

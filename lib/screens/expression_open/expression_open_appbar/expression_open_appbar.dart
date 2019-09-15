@@ -25,6 +25,10 @@ class ExpressionOpenAppbar extends StatelessWidget {
                 size: 24,
               ),
             ),
+            Container(
+              margin: EdgeInsets.only(right: 10),
+              child: Icon(CustomIcons.half_lotus, size: 14),
+            )
           ],
         ),
       ),
