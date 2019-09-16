@@ -104,20 +104,20 @@ class AuthenticationCentralized implements AuthenticationProvider {
 
   @override
   Future<Map<String, dynamic>> retrieveUsernameByAgent() {
-    // TODO: implement retrieveUsernameByAgent
-    return null;
+    throw UnimplementedError('This function is not supported by the '
+        'centralized api.');
   }
 
   @override
   Future<Map<String, dynamic>> retrieveUsernameFromAddress(String address) {
-    // TODO: implement retrieveUsernameFromAddress
-    return null;
+    throw UnimplementedError('This function is not supported by the '
+        'centralized api.');
   }
 
   @override
   Future<Map<String, dynamic>> retrieveProfileByAgent() {
-    // TODO: implement retriveProfileByAgent
-    return null;
+    throw UnimplementedError('This function is not supported by the '
+        'centralized api.');
   }
 
   /// Private function which returns the [UserProfile] for the given email
