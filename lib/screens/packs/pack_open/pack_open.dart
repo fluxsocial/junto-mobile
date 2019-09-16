@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:junto_beta_mobile/components/create_fab/create_fab.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
-
+import 'package:junto_beta_mobile/screens/packs/pack_open/pack_drawer.dart';
 import 'pack_open_appbar/pack_open_appbar.dart';
 import 'pack_open_private/pack_open_private.dart';
 import 'pack_open_public/pack_open_public.dart';
@@ -71,6 +71,7 @@ class PackOpenState extends State<PackOpen> {
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        endDrawer: PackDrawer(),
         body: Column(
           children: <Widget>[
             Container(
