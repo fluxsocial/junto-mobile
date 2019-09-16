@@ -48,8 +48,8 @@ class PackOpenAppbar extends StatelessWidget {
                 ClipOval(
                   child: Image.asset(
                     packImage,
-                    height: 27.0,
-                    width: 27.0,
+                    height: 28.0,
+                    width: 28.0,
                     fit: BoxFit.cover,
                   ),
                 ),
