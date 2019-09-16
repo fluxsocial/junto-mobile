@@ -189,11 +189,11 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                     )
                   ],
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 15),
                 Container(
-                  margin: EdgeInsets.only(bottom: 10),
+                  padding: EdgeInsets.symmetric(vertical: 12),
+                  margin: EdgeInsets.only(bottom: 15),
                   alignment: Alignment.center,
-                  height: 50,
                   decoration: BoxDecoration(
                       gradient: LinearGradient(colors: [
                         JuntoPalette.juntoSecondary,
