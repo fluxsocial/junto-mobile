@@ -1,3 +1,6 @@
+import 'package:junto_beta_mobile/models/den_model.dart';
+import 'package:junto_beta_mobile/models/pack.dart';
+import 'package:junto_beta_mobile/models/perspective.dart';
 import 'package:meta/meta.dart';
 
 /// Class used to store the profile information of a user.
@@ -17,13 +20,13 @@ class UserProfile {
   /// Converts the information contained in this class to a map
   factory UserProfile.fromMap(Map<String, dynamic> json) {
     return UserProfile(
-      address: json['entry']['address'],
-      parent: json['entry']['parent'],
-      firstName: json['entry']['first_name'],
-      lastName: json['entry']['last_name'],
-      bio: json['entry']['bio'],
-      profilePicture: json['entry']['profile_picture'],
-      verified: json['entry']['verified'],
+      address: json['address'],
+      parent: json['parent'] ?? '',
+      firstName: json['first_name'],
+      lastName: json['last_name'],
+      bio: json['bio'],
+      profilePicture: json['profile_picture'],
+      verified: json['verified'],
     );
   }
 
@@ -93,6 +96,7 @@ class Username {
 /// Detials used during user authentication.
 abstract class UserAuthDetails {
   String get email;
+
   String get password;
 
   bool get isComplete;
@@ -153,5 +157,48 @@ class UserAuthRegistrationDetails implements UserAuthDetails {
       'profile_picture': profileImage,
       'bio': bio
     };
+  }
+}
+
+class UserData {
+  UserData({
+    @required this.privateDen,
+    @required this.publicDen,
+    @required this.pack,
+    @required this.user,
+    @required this.userPerspective,
+  });
+
+  factory UserData.fromMap(Map<String, dynamic> map) {
+    return UserData(
+      privateDen: CentralizedDen.fromMap(map['private_den']),
+      publicDen: CentralizedDen.fromMap(map['public_den']),
+      pack: CentralizedPack.fromMap(map['pack']),
+      user: UserProfile.fromMap(map['user']),
+      userPerspective: CentralizedPerspective.fromMap(
+        map['user_perspective'],
+      ),
+    );
+  }
+
+  final CentralizedDen privateDen;
+  final CentralizedDen publicDen;
+  final CentralizedPack pack;
+  final UserProfile user;
+  final CentralizedPerspective userPerspective;
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'privateDen': privateDen,
+      'publicDen': publicDen,
+      'pack': pack.toMap(),
+      'user': user,
+      'userPerspective': userPerspective,
+    };
+  }
+
+  @override
+  String toString() {
+    return 'UserData{privateDen: $privateDen, publicDen: $publicDen, pack: $pack, user: $user, userPerspective: $userPerspective}';
   }
 }

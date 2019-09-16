@@ -75,3 +75,47 @@ class PerspectiveResponse {
         }
       };
 }
+
+/// Object representation of a perspective returned by the centralized server.
+class CentralizedPerspective {
+  CentralizedPerspective({
+    @required this.address,
+    @required this.name,
+    @required this.creator,
+    @required this.createdAt,
+    @required this.isDefault,
+  });
+
+  factory CentralizedPerspective.fromMap(Map<String, dynamic> map) {
+    return CentralizedPerspective(
+      address: map['address'] as String,
+      name: map['name'] as String,
+      creator: map['creator'] as String,
+      createdAt: DateTime.parse(map['created_at']),
+      isDefault: map['is_default'] as bool,
+    );
+  }
+
+  /// Address of perspective
+  final String address;
+
+  /// Name of given perspective
+  final String name;
+
+  /// The UUID of the creator
+  final String creator;
+
+  /// Needs to be converted from an ISO 8601 String
+  final DateTime createdAt;
+  final bool isDefault;
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'address': address,
+      'name': name,
+      'creator': creator,
+      'createdAt': createdAt.toIso8601String(),
+      'isDefault': isDefault,
+    };
+  }
+}

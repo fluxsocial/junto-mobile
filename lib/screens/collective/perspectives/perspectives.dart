@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'create_perspective/create_perspective.dart';
 import 'package:junto_beta_mobile/palette.dart';
-import 'package:junto_beta_mobile/styles.dart';
+import 'create_perspective/create_perspective.dart';
 
 class Perspectives extends StatelessWidget {
   const Perspectives({

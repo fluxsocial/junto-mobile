@@ -8,6 +8,7 @@ class Den {
     @required this.privacy,
     @required this.channelType,
   });
+
   factory Den.fromMap(Map<String, dynamic> map) {
     return Den(
       address: map['address'] as String,
@@ -40,6 +41,42 @@ class Den {
       'denName': denName,
       'privacy': privacy,
       'channelType': channelType,
+    };
+  }
+}
+
+class CentralizedDen {
+  CentralizedDen({
+    @required this.address,
+    @required this.name,
+    @required this.creator,
+    @required this.privacy,
+    @required this.isDefault,
+  });
+
+  factory CentralizedDen.fromMap(Map<String, dynamic> map) {
+    return CentralizedDen(
+      address: map['address'] ?? '',
+      name: map['name'] as String,
+      creator: map['creator'] as String,
+      privacy: map['privacy'] as String,
+      isDefault: map['isDefault'] as bool,
+    );
+  }
+
+  final String address;
+  final String name;
+  final String creator;
+  final String privacy;
+  final bool isDefault;
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'address': address,
+      'name': name,
+      'creator': creator,
+      'privacy': privacy,
+      'isDefault': isDefault,
     };
   }
 }
