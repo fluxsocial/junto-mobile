@@ -27,7 +27,7 @@ class Pack {
         'Ecstatic Dancers',
         'Josh Parkin',
         'assets/images/junto-mobile__josh.png',
-      ),      
+      ),
       Pack(
         'HeruPandie',
         'Dora Czovek',
@@ -97,6 +97,46 @@ class PackResponse {
         'ownerAddress': ownerAddress,
         'privacy': privacy,
       }
+    };
+  }
+}
+
+class CentralizedPack {
+  CentralizedPack({
+    @required this.address,
+    @required this.name,
+    @required this.creator,
+    @required this.createdAt,
+    @required this.privacy,
+    @required this.isDefault,
+  });
+
+  factory CentralizedPack.fromMap(Map<String, dynamic> map) {
+    return CentralizedPack(
+      address: map['address'] as String,
+      name: map['name'] as String,
+      creator: map['creator'] as String,
+      createdAt: DateTime.parse(map['created_at']),
+      privacy: map['privacy'] as String,
+      isDefault: map['is_default'] as bool,
+    );
+  }
+
+  final String address;
+  final String name;
+  final String creator;
+  final DateTime createdAt;
+  final String privacy;
+  final bool isDefault;
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'address': address,
+      'name': name,
+      'creator': creator,
+      'created_at': createdAt.toIso8601String(),
+      'privacy': privacy,
+      'is_default': isDefault,
     };
   }
 }
