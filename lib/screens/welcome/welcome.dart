@@ -4,6 +4,14 @@ import 'package:junto_beta_mobile/screens/sign_up/sign_up.dart';
 import 'package:junto_beta_mobile/screens/template/template.dart';
 
 class Welcome extends StatelessWidget {
+  static Route<dynamic> route() {
+    return MaterialPageRoute<dynamic>(
+      builder: (BuildContext context) {
+        return Welcome();
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

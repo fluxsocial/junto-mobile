@@ -1,4 +1,5 @@
 import 'package:junto_beta_mobile/API.dart';
+import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -9,8 +10,7 @@ class JuntoHttp {
   final String _endPoint = END_POINT;
 
   Future<String> _getAuthKey() async {
-    final SharedPreferences sharedPreferences =
-        await SharedPreferences.getInstance();
+    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     return sharedPreferences.getString('auth');
   }
 
@@ -23,17 +23,12 @@ class JuntoHttp {
   }
 
   String _encodeUrl(String resource) {
-    assert(resource.startsWith('/'),
-        'Resources should start with a forward-slash.');
+    assert(resource.startsWith('/'), 'Resources should start with a forward-slash.');
     return Uri.encodeFull('$_endPoint$resource');
   }
 
-  Future<Map<String, String>> _withPersistentHeaders(
-      Map<String, String> headers) async {
-    return <String, String>{
-      ...await _getPersistentHeaders(),
-      ...headers ?? const <String, String>{}
-    };
+  Future<Map<String, String>> _withPersistentHeaders(Map<String, String> headers) async {
+    return <String, String>{...await _getPersistentHeaders(), ...headers ?? const <String, String>{}};
   }
 
   String _encodeBody(Map<String, dynamic> body) {
@@ -63,13 +58,8 @@ class JuntoHttp {
     );
   }
 
-  static Map<String, dynamic> holobody(
-      String functionName, String zome, Map<String, dynamic> args) {
-    return <String, dynamic>{
-      'zome': zome,
-      'function': functionName,
-      'args': args
-    };
+  static Map<String, dynamic> holobody(String functionName, String zome, Map<String, dynamic> args) {
+    return <String, dynamic>{'zome': zome, 'function': functionName, 'args': args};
   }
 
   /// Parses the [http.Response] sent back to the client. Function takes the repsonse and verifies the
@@ -80,17 +70,16 @@ class JuntoHttp {
   /// Note: Since Holochain is only able to process string, the repsone is parsed using [deserializeHoloJson];
   static dynamic handleResponse(http.Response response) {
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseBody =
-          deserializeHoloJson(response.body);
-      if (responseBody['Ok']) {
-        return responseBody['Ok'];
+      final Map<String, dynamic> responseBody = deserializeHoloJson(response.body);
+      if (responseBody != null) {
+        return responseBody;
       }
-      if (responseBody['Err']) {
-        throw Exception('Server returned error ${responseBody['Err']}');
-      }
-    } else {
-      throw Exception('Server returned status code != 200');
+
+      throw const JuntoException('Error occured parsing response');
     }
-    throw Exception('Error occured parsing response');
+    if (response.statusCode == 400) {
+      final Map<String, dynamic> results = deserializeHoloJson(response?.body);
+      throw JuntoException('Forbidden ${results['error']}');
+    }
   }
 }

@@ -11,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// Abstract class which defines the functionality of the Authentication Provider
 abstract class AuthenticationProvider {
   /// Registers a user on the server and creates their holochain profile.
-  Future<String> registerUser(UserAuthRegistrationDetails details);
+  Future<UserData> registerUser(UserAuthRegistrationDetails details);
 
   /// Authenticates a registered user.
   Future<String> loginUser(UserAuthLoginDetails details);
@@ -48,7 +48,7 @@ class AuthenticationCentralized implements AuthenticationProvider {
   }
 
   @override
-  Future<String> registerUser(UserAuthRegistrationDetails details) async {
+  Future<UserData> registerUser(UserAuthRegistrationDetails details) async {
     final Map<String, dynamic> _body = <String, dynamic>{
       'email': details.email,
       'password': details.password,
@@ -64,8 +64,11 @@ class AuthenticationCentralized implements AuthenticationProvider {
       '/users',
       body: _body,
     );
-    print('Status code: ${response.statusCode}  Body: ${response.body}');
-    return null;
+    final Map<String, dynamic> _responseMap =
+        JuntoHttp.handleResponse(response);
+    final UserData _userData = UserData.fromMap(_responseMap);
+    print(_userData);
+    return _userData;
   }
 
   @override
@@ -94,7 +97,7 @@ class AuthenticationHolo implements AuthenticationProvider {
   /// successful. Method takes [UserAuthRegistrationDetails] as its only
   /// parameter.
   @override
-  Future<String> registerUser(UserAuthRegistrationDetails details) async {
+  Future<UserData> registerUser(UserAuthRegistrationDetails details) async {
     assert(details.isComplete);
     final Map<String, String> payload = <String, String>{
       'email': details.email,
@@ -119,7 +122,8 @@ class AuthenticationHolo implements AuthenticationProvider {
         await _createHoloUser(details);
 
         // The results ID is returned to the user
-        return results['user_id'];
+//        return results['user_id'];
+        return null;
       } else {
         throw HttpException('Recieved Status code ${response.statusCode}');
       }
