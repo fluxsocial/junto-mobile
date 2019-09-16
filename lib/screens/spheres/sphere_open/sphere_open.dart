@@ -190,25 +190,25 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                   ],
                 ),
                 const SizedBox(height: 10),
-                // Container(
-                //   margin: EdgeInsets.only(bottom: 10),
-                //   alignment: Alignment.center,
-                //   height: 50,
-                //   decoration: BoxDecoration(
-                //       gradient: LinearGradient(colors: [
-                //         JuntoPalette.juntoSecondary,
-                //         JuntoPalette.juntoPrimary
-                //       ]),
-                //       borderRadius: BorderRadius.circular(10)),
+                Container(
+                  margin: EdgeInsets.only(bottom: 10),
+                  alignment: Alignment.center,
+                  height: 50,
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(colors: [
+                        JuntoPalette.juntoSecondary,
+                        JuntoPalette.juntoPrimary
+                      ]),
+                      borderRadius: BorderRadius.circular(10)),
 
-                //   child: Text(
-                //     'Join Sphere',
-                //     style: TextStyle(
-                //         color: Colors.white,
-                //         fontSize: 17,
-                //         fontWeight: FontWeight.w700),
-                //   ),
-                // ),
+                  child: Text(
+                    'Join Sphere',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700),
+                  ),
+                ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -226,7 +226,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                               ),
                             ),
                             SizedBox(width: 5),
-
                             ClipOval(
                               child: Image.asset(
                                 'assets/images/junto-mobile__riley.png',
@@ -234,7 +233,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                                 width: 28.0,
                                 fit: BoxFit.cover,
                               ),
-                            ),                            
+                            ),
                             SizedBox(width: 5),
                             ClipOval(
                               child: Image.asset(
@@ -254,7 +253,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                               ),
                             ),
                             SizedBox(width: 5),
-
                             ClipOval(
                               child: Image.asset(
                                 'assets/images/junto-mobile__eric.png',
@@ -271,7 +269,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                                 width: 28.0,
                                 fit: BoxFit.cover,
                               ),
-                            ),                            
+                            ),
                             SizedBox(width: 5),
                             ClipOval(
                               child: Image.asset(
@@ -289,8 +287,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                                 width: 28.0,
                                 fit: BoxFit.cover,
                               ),
-                            ),                            
-                            
+                            ),
                           ],
                         ),
                         SizedBox(height: 5),
@@ -324,9 +321,42 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Text('Principles', style: JuntoStyles.header),
+                const SizedBox(height: 10),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        width: MediaQuery.of(context).size.width * .88,
+                        child: const Text(
+                            'Help maintain an awesome, respectful community!'),
+                      ),
+                      Icon(
+                        Icons.keyboard_arrow_right,
+                        size: 20,
+                        color: Color(0xff555555),
+                      )
+                    ]),
+              ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            decoration: const BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: JuntoPalette.juntoFade,
+                  width: .75,
+                ),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
