@@ -19,6 +19,7 @@ class PackOpenAppbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
+      actions: <Widget>[Container()],
       brightness: Brightness.light,
       iconTheme: const IconThemeData(color: JuntoPalette.juntoSleek),
       backgroundColor: Colors.white,
@@ -38,23 +39,26 @@ class PackOpenAppbar extends StatelessWidget {
                 size: 24,
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  margin: const EdgeInsets.only(right: 10),
-                  child: Text(packTitle, style: JuntoStyles.title),
-                ),
-                ClipOval(
-                  child: Image.asset(
-                    packImage,
-                    height: 28.0,
-                    width: 28.0,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ],
+            Container(
+              margin: const EdgeInsets.only(right: 10),
+              child: Text(packTitle, style: JuntoStyles.title),
             ),
+            GestureDetector(
+              onTap: () {
+                Scaffold.of(context).openEndDrawer();
+              },
+              child: ClipOval(
+                child: Image.asset(
+                  packImage,
+                  height: 28.0,
+                  width: 28.0,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            )
+            // GestureDetector(
+            //   child: Icon(CustomIcons.more),
+            // )
           ],
         ),
       ),
