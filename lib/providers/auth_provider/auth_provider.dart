@@ -5,15 +5,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:junto_beta_mobile/API.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Abstract class which defines the functionality of the Authentication Provider
 abstract class AuthenticationProvider {
-  /// Registers a user on the server and creates their holochain profile.
+  /// Registers a user on the server and creates their profile.
   Future<UserData> registerUser(UserAuthRegistrationDetails details);
 
-  /// Authenticates a registered user.
+  /// Authenticates a registered user. Returns the auth cookie to be used in
+  /// future request.
   Future<String> loginUser(UserAuthLoginDetails details);
 
   /// Logs out a user and removes their auth token from the device.
@@ -36,15 +38,32 @@ abstract class AuthenticationProvider {
 
 class AuthenticationCentralized implements AuthenticationProvider {
   @override
-  Future<String> loginUser(UserAuthLoginDetails details) {
-    // TODO: implement loginUser
-    return null;
+  Future<String> loginUser(UserAuthLoginDetails details) async {
+    final http.Response response = await JuntoHttp().post(
+      '/auth',
+      body: <String, String>{
+        'email': details.email,
+        'password': details.password,
+      },
+    );
+    if (response.statusCode == 200) {
+      final Cookie responseCookie =
+          Cookie.fromSetCookieValue(response.headers['set-cookie']);
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('auth', responseCookie.value);
+      return responseCookie.value;
+    } else {
+      final Map<String, dynamic> errorResponse =
+          JuntoHttp.handleResponse(response);
+      throw JuntoException('Unable to login: ${errorResponse['error']}');
+    }
   }
 
   @override
-  Future<void> logoutUser() {
-    // TODO: implement logoutUser
-    return null;
+  Future<void> logoutUser() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isLoggedIn', false);
+    await prefs.remove('auth');
   }
 
   @override
@@ -67,7 +86,14 @@ class AuthenticationCentralized implements AuthenticationProvider {
     final Map<String, dynamic> _responseMap =
         JuntoHttp.handleResponse(response);
     final UserData _userData = UserData.fromMap(_responseMap);
-    print(_userData);
+    // We need to manually login a user after their account has been create
+    // to obtain an auth cookie.
+    await loginUser(
+      UserAuthLoginDetails(
+        email: details.email,
+        password: details.password,
+      ),
+    );
     return _userData;
   }
 

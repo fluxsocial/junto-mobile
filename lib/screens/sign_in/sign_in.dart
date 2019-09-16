@@ -54,12 +54,16 @@ class _SignInState extends State<SignIn> {
     } catch (error) {
       JuntoOverlay.hide();
       JuntoDialog.showJuntoDialog(
-          context, 'Junto', 'Unable to login user.', <Widget>[
-        FlatButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: const Text('OK'),
-        ),
-      ]);
+          context,
+          'Junto',
+          'Unable to login user. Please recheck your '
+              'account.',
+          <Widget>[
+            FlatButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('OK'),
+            ),
+          ]);
     }
   }
 
