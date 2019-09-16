@@ -144,6 +144,24 @@ class EventOpen extends StatelessWidget {
                             fit: BoxFit.cover,
                           ),
                         ),
+                        SizedBox(width: 5),
+                        ClipOval(
+                          child: Image.asset(
+                            'assets/images/junto-mobile__dora.png',
+                            height: 33.0,
+                            width: 33.0,
+                            fit: BoxFit.cover,
+                          ),
+                        ),                        SizedBox(width: 5),
+                        ClipOval(
+                          child: Image.asset(
+                            'assets/images/junto-mobile__drea.png',
+                            height: 33.0,
+                            width: 33.0,
+                            fit: BoxFit.cover,
+                          ),
+                        ),  
+                                            
                       ],
                     ),
                     SizedBox(height: 5),

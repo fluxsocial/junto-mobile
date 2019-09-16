@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/styles.dart';
+import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open_action_items.dart';
 
 class SphereOpenAppbar extends StatelessWidget {
-  const SphereOpenAppbar(this.sphereHandle);
+  const SphereOpenAppbar(this.sphereHandle, this.sphereImage);
 
   /// The handle of the given sphere
   final String sphereHandle;
+  final String sphereImage;
 
   @override
   Widget build(BuildContext context) {
@@ -31,15 +33,22 @@ class SphereOpenAppbar extends StatelessWidget {
                 size: 24,
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  margin: const EdgeInsets.only(right: 10),
-                  child: Text('/s/' + sphereHandle, style: JuntoStyles.title),
-                ),
-              ],
+            Container(
+              margin: const EdgeInsets.only(right: 5),
+              child: Text('/s/' + sphereHandle, style: JuntoStyles.title),
             ),
+            GestureDetector(
+              onTap: () {
+                SphereOpenActionItems().buildSphereOpenActionItems(context);
+              },
+              child: Container(
+                child: Icon(
+                  CustomIcons.more,
+                  size: 20,
+                  color: Color(0xff333333),
+                ),
+              ),
+            )
           ],
         ),
       ),

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:junto_beta_mobile/components/utils/hide_fab.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/components/expression_preview/expression_preview.dart';
 import 'package:junto_beta_mobile/components/create_fab/create_fab.dart';
-import 'package:junto_beta_mobile/components/utils/hide_fab.dart';
 import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open_appbar/sphere_open_appbar.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/styles.dart';
@@ -32,7 +32,8 @@ class SphereOpen extends StatefulWidget {
 }
 
 class SphereOpenState extends State<SphereOpen> with HideFab {
-  final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
+  ScrollController _hideFABController;
+  ValueNotifier<bool> _isVisible;
 
   List<Expression> expressions = [
     Expression(
@@ -119,7 +120,26 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
 
   @override
   void initState() {
+    _hideFABController = ScrollController();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _hideFABController.addListener(_onScrollingHasChanged);
+      _hideFABController.position.isScrollingNotifier.addListener(
+        _onScrollingHasChanged,
+      );
+    });
+    _isVisible = ValueNotifier<bool>(true);
     super.initState();
+  }
+
+  void _onScrollingHasChanged() {
+    super.hideFabOnScroll(_hideFABController, _isVisible);
+  }
+
+  @override
+  void dispose() {
+    _hideFABController.removeListener(_onScrollingHasChanged);
+    _hideFABController.dispose();
+    super.dispose();
   }
 
   @override
@@ -128,9 +148,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
       backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(45),
-        child: SphereOpenAppbar(
-          widget.sphereHandle,
-        ),
+        child: SphereOpenAppbar(widget.sphereHandle, widget.sphereImage),
       ),
       floatingActionButton: ValueListenableBuilder<bool>(
         valueListenable: _isVisible,
@@ -149,23 +167,9 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
           ),
         ),
       ),
-      // floatingActionButton: ValueListenableBuilder<bool>(
-      //     valueListenable: isVisible,
-      //     builder: (BuildContext context, bool value, _) {
-      //       return AnimatedOpacity(
-      //         duration: const Duration(milliseconds: 300),
-      //         opacity: value ? 1.0 : 0,
-      //         child: Padding(
-      //           padding: const EdgeInsets.all(8.0),
-      //           child: CreateFAB(
-      //             sphereHandle: widget.sphereHandle,
-      //             isVisible: isVisible,
-      //           ),
-      //         ),
-      //       );
-      //     }),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: ListView(
+        controller: _hideFABController,
         children: <Widget>[
           Container(
             constraints: const BoxConstraints.expand(height: 200),
@@ -183,7 +187,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
               border: Border(
                 bottom: BorderSide(
                   color: JuntoPalette.juntoFade,
-                  width: 1,
+                  width: .75,
                 ),
               ),
             ),
@@ -197,21 +201,200 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                       children: <Widget>[
                         Container(
                           child: Text(widget.sphereTitle,
-                              style: JuntoStyles.header),
-                        ),
-                        Container(
-                          child: Text(widget.sphereMembers + ' members',
-                              style: JuntoStyles.title),
+                              style: TextStyle(
+                                  color: JuntoPalette.juntoGrey,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700)),
                         ),
                       ],
                     )
                   ],
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 15),
                 Container(
-                  child: Text(widget.sphereDescription,
-                      textAlign: TextAlign.start, style: JuntoStyles.body),
+                  padding: EdgeInsets.symmetric(vertical: 12),
+                  margin: EdgeInsets.only(bottom: 15),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(colors: [
+                        JuntoPalette.juntoSecondary,
+                        JuntoPalette.juntoPrimary
+                      ]),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Text(
+                    'Join Sphere',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700),
+                  ),
                 ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            ClipOval(
+                              child: Image.asset(
+                                'assets/images/junto-mobile__eric.png',
+                                height: 28.0,
+                                width: 28.0,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            SizedBox(width: 5),
+                            ClipOval(
+                              child: Image.asset(
+                                'assets/images/junto-mobile__riley.png',
+                                height: 28.0,
+                                width: 28.0,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            SizedBox(width: 5),
+                            ClipOval(
+                              child: Image.asset(
+                                'assets/images/junto-mobile__yaz.png',
+                                height: 28.0,
+                                width: 28.0,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            SizedBox(width: 5),
+                            ClipOval(
+                              child: Image.asset(
+                                'assets/images/junto-mobile__josh.png',
+                                height: 28.0,
+                                width: 28.0,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            SizedBox(width: 5),
+                            ClipOval(
+                              child: Image.asset(
+                                'assets/images/junto-mobile__eric.png',
+                                height: 28.0,
+                                width: 28.0,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            SizedBox(width: 5),
+                            ClipOval(
+                              child: Image.asset(
+                                'assets/images/junto-mobile__riley.png',
+                                height: 28.0,
+                                width: 28.0,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            SizedBox(width: 5),
+                            ClipOval(
+                              child: Image.asset(
+                                'assets/images/junto-mobile__yaz.png',
+                                height: 28.0,
+                                width: 28.0,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            SizedBox(width: 5),
+                            ClipOval(
+                              child: Image.asset(
+                                'assets/images/junto-mobile__josh.png',
+                                height: 28.0,
+                                width: 28.0,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 5),
+                        Container(
+                          child: Text(widget.sphereMembers + ' members',
+                              style: JuntoStyles.title),
+                        ),
+                        SizedBox(height: 10),
+                        Container(
+                          child: Text(widget.sphereDescription,
+                              textAlign: TextAlign.start,
+                              style: TextStyle(fontSize: 15, height: 1.4)),
+                        ),
+                      ],
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            decoration: const BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: JuntoPalette.juntoFade,
+                  width: .75,
+                ),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text('Principles', style: JuntoStyles.header),
+                const SizedBox(height: 10),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        width: MediaQuery.of(context).size.width * .88,
+                        child: const Text(
+                            'Help maintain an awesome, respectful community!'),
+                      ),
+                      Icon(
+                        Icons.keyboard_arrow_right,
+                        size: 20,
+                        color: Color(0xff555555),
+                      )
+                    ]),
+              ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            decoration: const BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: JuntoPalette.juntoFade,
+                  width: .75,
+                ),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Facilitators', style: JuntoStyles.header),
+                          const SizedBox(height: 10),
+                          const Text('Eric Yang and 7 others'),
+                        ]),
+                    ClipOval(
+                      child: Image.asset(
+                        'assets/images/junto-mobile__eric.png',
+                        height: 45.0,
+                        width: 45.0,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
           ),

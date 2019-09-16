@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/models/sphere.dart';
 import 'package:junto_beta_mobile/screens/spheres/create_sphere/create_sphere.dart';
 import 'package:junto_beta_mobile/providers/spheres_provider/spheres_provider.dart';
@@ -21,7 +22,7 @@ class JuntoSpheres extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute<dynamic>(
+                CupertinoPageRoute<dynamic>(
                   builder: (BuildContext context) => CreateSphere(),
                 ),
               );
@@ -57,12 +58,12 @@ class JuntoSpheres extends StatelessWidget {
                 children: spheres.spheres
                     .map(
                       (Sphere sphere) => SpherePreview(
-                            sphere.sphereTitle,
-                            sphere.sphereMembers,
-                            sphere.sphereImage,
-                            sphere.sphereHandle,
-                            sphere.sphereDescription,
-                          ),
+                        sphere.sphereTitle,
+                        sphere.sphereMembers,
+                        sphere.sphereImage,
+                        sphere.sphereHandle,
+                        sphere.sphereDescription,
+                      ),
                     )
                     .toList(),
               );
