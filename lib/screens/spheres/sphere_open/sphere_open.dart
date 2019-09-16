@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:junto_beta_mobile/components/utils/hide_fab.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/components/expression_preview/expression_preview.dart';
 import 'package:junto_beta_mobile/components/create_fab/create_fab.dart';
-import 'package:junto_beta_mobile/components/utils/hide_fab.dart';
 import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open_appbar/sphere_open_appbar.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/styles.dart';
@@ -32,7 +32,8 @@ class SphereOpen extends StatefulWidget {
 }
 
 class SphereOpenState extends State<SphereOpen> with HideFab {
-  final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
+  ScrollController _hideFABController;
+  ValueNotifier<bool> _isVisible;
 
   List<Expression> expressions = [
     Expression(
@@ -119,7 +120,26 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
 
   @override
   void initState() {
+    _hideFABController = ScrollController();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _hideFABController.addListener(_onScrollingHasChanged);
+      _hideFABController.position.isScrollingNotifier.addListener(
+        _onScrollingHasChanged,
+      );
+    });
+    _isVisible = ValueNotifier<bool>(true);
     super.initState();
+  }
+
+  void _onScrollingHasChanged() {
+    super.hideFabOnScroll(_hideFABController, _isVisible);
+  }
+
+  @override
+  void dispose() {
+    _hideFABController.removeListener(_onScrollingHasChanged);
+    _hideFABController.dispose();
+    super.dispose();
   }
 
   @override
@@ -149,6 +169,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: ListView(
+        controller: _hideFABController,
         children: <Widget>[
           Container(
             constraints: const BoxConstraints.expand(height: 200),
@@ -200,7 +221,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                         JuntoPalette.juntoPrimary
                       ]),
                       borderRadius: BorderRadius.circular(10)),
-
                   child: Text(
                     'Join Sphere',
                     style: TextStyle(

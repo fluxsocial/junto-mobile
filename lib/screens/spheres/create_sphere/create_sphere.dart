@@ -29,7 +29,7 @@ class _CreateSphereState extends State<CreateSphere> {
 
   Future<void> _createSphere() async {
     final String sphereName = _textEditingController.value.text;
-    assert(sphereName.isNotEmpty);
+    // assert(sphereName.isNotEmpty);
     // TODO(Nash): At the moment we don't have an endpoint for creating a sphere/group.
    // Once this is online, this function will be impl
     Navigator.pop(context);
