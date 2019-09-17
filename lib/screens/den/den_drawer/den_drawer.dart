@@ -63,7 +63,7 @@ class DenDrawer extends StatelessWidget {
                     _denDrawerItem(context, 'Edit profile', 'edit', true),
                     // _denDrawerItem('Night theme', 'nav'),
                     // _denDrawerItem('Notifications', 'nav'),
-                    _denDrawerItem(context, 'Manage account', 'nav', true),
+                    // _denDrawerItem(context, 'Manage account', 'nav', true),
                     // _denDrawerItem('Privacy', 'nav'),
 
                     // Support

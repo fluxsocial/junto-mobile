@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-
 import 'package:junto_beta_mobile/providers/auth_provider/auth_provider.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
+import 'package:junto_beta_mobile/screens/den/den_expanded.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/palette.dart';
@@ -16,6 +16,10 @@ class JuntoDen extends StatefulWidget {
 }
 
 class JuntoDenState extends State<JuntoDen> {
+  String handle = 'sunyata';
+  String name = 'Eric Yang';
+  String profilePicture = 'assets/images/junto-mobile__eric.png';
+  String bio = 'on the vibe';
   void noNav() {
     return;
   }
@@ -57,21 +61,35 @@ class JuntoDenState extends State<JuntoDen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       // SizedBox(width: 20),
-                      Container(
-                        width: 72,
-                        height: 72,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.blue,
-                          border: Border.all(
-                            width: 2.0,
-                            color: Colors.white,
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => DenExpanded(
+                                  handle: handle,
+                                  name: name,
+                                  profilePicture: profilePicture,
+                                  bio: bio),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          width: 72,
+                          height: 72,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.blue,
+                            border: Border.all(
+                              width: 2.0,
+                              color: Colors.white,
+                            ),
                           ),
-                        ),
-                        child: ClipOval(
-                          child: Image.asset(
-                            'assets/images/junto-mobile__eric.png',
-                            fit: BoxFit.cover,
+                          child: ClipOval(
+                            child: Image.asset(
+                              profilePicture,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       ),
@@ -97,14 +115,12 @@ class JuntoDenState extends State<JuntoDen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        'Eric Yang',
+                        name,
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.w700),
                       ),
                       SizedBox(height: 10),
-                      Text(
-                          '"To a mind that is still, the whole universe surrenders."',
-                          style: TextStyle(fontSize: 15)),
+                      Text(bio, style: TextStyle(fontSize: 15)),
                       SizedBox(height: 10),
                       Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
