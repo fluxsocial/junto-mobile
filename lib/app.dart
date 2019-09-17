@@ -32,7 +32,7 @@ class JuntoAppState extends State<JuntoApp> {
           builder: (BuildContext context) => AuthenticationCentralized(),
         ),
         Provider<UserProvider>(
-          builder: (BuildContext context) => UserProviderImpl(),
+          builder: (BuildContext context) => UserProviderCentralized(),
         ),
         ChangeNotifierProvider<CollectiveProvider>(
           builder: (BuildContext context) => CollectiveProviderImpl(),
