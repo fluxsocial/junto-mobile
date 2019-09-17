@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/member/member_appbar/member_appbar.dart';
+import 'package:junto_beta_mobile/screens/member/member_expanded.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/styles.dart';
 
 class JuntoMember extends StatelessWidget {
-  // placeholder location
-  final String _memberLocation = 'Spirit';
-
-  // placeholder website
-  final String _memberWebsite = 'junto.foundation';
+  // placeholder member details
+  final String memberHandle = 'sunyata';
+  final String memberName = 'Eric Yang';
+  final String memberProfilePicture = 'assets/images/junto-mobile__eric.png';
+  final String memberBio = 'on the vibe';
+  final String memberLocation = 'Spirit';
+  final String memberWebsite = 'junto.foundation';
 
   @override
   Widget build(BuildContext context) {
@@ -53,22 +57,35 @@ class JuntoMember extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          // SizedBox(width: 20),
-                          Container(
-                            width: 72,
-                            height: 72,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.blue,
-                              border: Border.all(
-                                width: 3,
-                                color: Colors.white,
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                  builder: (context) => MemberExpanded(
+                                      handle: memberHandle,
+                                      name: memberName,
+                                      profilePicture: memberProfilePicture,
+                                      bio: memberBio),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              width: 72,
+                              height: 72,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.blue,
+                                border: Border.all(
+                                  width: 3,
+                                  color: Colors.white,
+                                ),
                               ),
-                            ),
-                            child: ClipOval(
-                              child: Image.asset(
-                                'assets/images/junto-mobile__eric.png',
-                                fit: BoxFit.cover,
+                              child: ClipOval(
+                                child: Image.asset(
+                                  memberProfilePicture,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                           ),
@@ -107,38 +124,36 @@ class JuntoMember extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            'Eric Yang',
+                            memberName,
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.w700),
                           ),
                           SizedBox(height: 10),
-                          Text(
-                              '"To a mind that is still, the whole universe surrenders."',
-                              style: TextStyle(fontSize: 15)),
+                          Text(memberBio, style: TextStyle(fontSize: 15)),
                           SizedBox(height: 10),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              margin: const EdgeInsets.only(right: 15),
-                              child: Row(
-                                children: <Widget>[
-                                  Image.asset(
-                                    'assets/images/junto-mobile__location.png',
-                                    height: 17,
-                                    color: JuntoPalette.juntoSleek,
+                          Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                  margin: const EdgeInsets.only(right: 15),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Image.asset(
+                                        'assets/images/junto-mobile__location.png',
+                                        height: 17,
+                                        color: JuntoPalette.juntoSleek,
+                                      ),
+                                      const SizedBox(width: 5),
+                                      Text(
+                                        memberLocation,
+                                        style: TextStyle(
+                                          color: JuntoPalette.juntoSleek,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  const SizedBox(width: 5),
-                                  const Text(
-                                    'Spirit',
-                                    style: TextStyle(
-                                      color: JuntoPalette.juntoSleek,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(height: 10),
+                                ),
+                                const SizedBox(height: 10),
                                 Container(
                                   child: Row(
                                     children: <Widget>[
@@ -148,8 +163,8 @@ class JuntoMember extends StatelessWidget {
                                         color: JuntoPalette.juntoSleek,
                                       ),
                                       const SizedBox(width: 5),
-                                      const Text(
-                                        'junto.foundation',
+                                      Text(
+                                        memberWebsite,
                                         style: TextStyle(
                                             color: JuntoPalette.juntoPrimary),
                                       )
