@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
 
 class Perspective {
   const Perspective({@required this.name});
@@ -84,6 +87,7 @@ class CentralizedPerspective {
     @required this.creator,
     @required this.createdAt,
     @required this.isDefault,
+    this.users,
   });
 
   factory CentralizedPerspective.fromMap(Map<String, dynamic> map) {
@@ -93,6 +97,7 @@ class CentralizedPerspective {
       creator: map['creator'] as String,
       createdAt: DateTime.parse(map['created_at']),
       isDefault: map['is_default'] as bool,
+      users: _parseUsers(map['users']),
     );
   }
 
@@ -109,6 +114,9 @@ class CentralizedPerspective {
   final DateTime createdAt;
   final bool isDefault;
 
+  /// List of users associated with the given perspective.
+  final List<UserProfile> users;
+
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'address': address,
@@ -117,5 +125,14 @@ class CentralizedPerspective {
       'createdAt': createdAt.toIso8601String(),
       'isDefault': isDefault,
     };
+  }
+
+  static List<UserProfile> _parseUsers(List<Map<String, dynamic>> _listData) {
+    if (_listData.isNotEmpty) {
+      _listData.map((Map<String, dynamic> userData) {
+        return UserProfile.fromMap(userData);
+      }).toList();
+    }
+    return <UserProfile>[];
   }
 }
