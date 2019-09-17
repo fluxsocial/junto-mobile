@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/rendering.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
 import 'package:http/http.dart' as http;
+import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_http.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 
@@ -19,6 +21,9 @@ abstract class UserProvider {
   Future<List<Map<String, dynamic>>> getUsersInPerspective(
     String perspectiveAddress,
   );
+
+  /// Gets the user
+  Future<UserData> getUser(String userAddress);
 }
 
 class UserProviderImpl implements UserProvider {
@@ -47,9 +52,9 @@ class UserProviderImpl implements UserProvider {
       return perspectiveDetails;
     }
 
-    if (responseMap['result']['Err'] != null) {
-      print(responseMap['result']['Err']);
-      throw Exception(responseMap['result']['Err']);
+    if (responseMap['error'] != null) {
+      print(responseMap['error']);
+      throw JuntoException(responseMap['error']);
     }
 
     // Should not get here.
@@ -106,5 +111,15 @@ class UserProviderImpl implements UserProvider {
       debugPrint('Error occured in user_provider $error');
       rethrow;
     }
+  }
+
+  @override
+  Future<UserData> getUser(String userAddress) async {
+    final http.Response _serverResponse =
+        await JuntoHttp().get('/users/$userAddress');
+    final Map<String, dynamic> _resultMap =
+        JuntoHttp.handleResponse(_serverResponse);
+    final UserData _userData = UserData.fromMap(_resultMap);
+    return _userData;
   }
 }
