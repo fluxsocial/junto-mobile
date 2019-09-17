@@ -7,6 +7,7 @@ import 'package:junto_beta_mobile/API.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_http.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Abstract class which defines the functionality of the Authentication Provider
@@ -40,6 +41,7 @@ abstract class AuthenticationProvider {
 class AuthenticationCentralized implements AuthenticationProvider {
   @override
   Future<UserProfile> loginUser(UserAuthLoginDetails details) async {
+    final LocalStorage _storage = LocalStorage('user-details');
     final http.Response response = await JuntoHttp().post(
       '/auth',
       body: <String, String>{
@@ -56,6 +58,11 @@ class AuthenticationCentralized implements AuthenticationProvider {
 
       // Once we authenticate the user, we can get their [UserProfile].
       final UserProfile _userData = await _retrieveUserByEmail(details.email);
+      _storage.ready.then((bool ready) {
+        if (ready) {
+          _storage.setItem('data', json.encode(_userData.toMap()));
+        }
+      });
       return _userData;
     } else {
       final Map<String, dynamic> errorResponse =
