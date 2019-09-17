@@ -33,18 +33,18 @@ class DenEditProfile extends StatelessWidget {
                     size: 24,
                   ),
                 ),
-                Text(
+                const Text(
                   'Edit Profile',
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
-                    color: const Color(0xff333333),
+                    color: Color(0xff333333),
                   ),
                 ),
-                Text(
+                const Text(
                   'Save',
                   style: TextStyle(
-                    color: const Color(0xff333333),
+                    color: Color(0xff333333),
                     fontSize: 14,
                   ),
                 )
@@ -109,7 +109,7 @@ class DenEditProfile extends StatelessWidget {
                       decoration: InputDecoration(
                           border: InputBorder.none, hintText: 'name'),
                       maxLines: null,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 14,
                       )),
                 ),
@@ -126,7 +126,7 @@ class DenEditProfile extends StatelessWidget {
                       decoration: InputDecoration(
                           border: InputBorder.none, hintText: 'bio'),
                       maxLines: null,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 14,
                       )),
                 ),
@@ -143,7 +143,7 @@ class DenEditProfile extends StatelessWidget {
                       decoration: InputDecoration(
                           border: InputBorder.none, hintText: 'location'),
                       maxLines: null,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 14,
                       )),
                 ),
@@ -160,7 +160,7 @@ class DenEditProfile extends StatelessWidget {
                     decoration: InputDecoration(
                         border: InputBorder.none, hintText: 'website'),
                     maxLines: null,
-                    style: TextStyle(fontSize: 14),
+                    style: const TextStyle(fontSize: 14),
                   ),
                 ),
               ],
