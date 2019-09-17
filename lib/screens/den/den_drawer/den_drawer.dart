@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open.dart';
+import 'package:junto_beta_mobile/screens/den/den_drawer/den_connections.dart';
+import 'package:junto_beta_mobile/screens/den/den_drawer/den_followers.dart';
+import 'package:junto_beta_mobile/screens/den/den_drawer/den_edit_profile.dart';
 
 class DenDrawer extends StatelessWidget {
   @override
@@ -51,19 +56,19 @@ class DenDrawer extends StatelessWidget {
                   ),
                   children: <Widget>[
                     // relationships
-                    _denDrawerSection('Experience'),
-                    _denDrawerItem('My Pack', 'nav'),
-                    _denDrawerItem('Connections', 'nav'),
-                    _denDrawerItem('Followers and following', 'nav'),
-                    _denDrawerItem('Edit profile', 'nav'),
-                    _denDrawerItem('Night theme', 'nav'),
-                    _denDrawerItem('Notifications', 'nav'),
-                    _denDrawerItem('Manage account', 'nav'),
-                    _denDrawerItem('Privacy', 'nav'),
+                    _denDrawerItem(context, 'My Pack', 'pack', true),
+                    _denDrawerItem(context, 'Connections', 'connections', true),
+                    _denDrawerItem(
+                        context, 'Followers and following', 'followers', true),
+                    _denDrawerItem(context, 'Edit profile', 'edit', true),
+                    // _denDrawerItem('Night theme', 'nav'),
+                    // _denDrawerItem('Notifications', 'nav'),
+                    _denDrawerItem(context, 'Manage account', 'nav', true),
+                    // _denDrawerItem('Privacy', 'nav'),
+
                     // Support
-                    _denDrawerSection('Support'),
-                    _denDrawerItem('Resources', 'nav'),
-                    _denDrawerItem('Logout', 'nav'),
+                    // _denDrawerItem('Resources', 'nav'),
+                    _denDrawerItem(context, 'Logout', 'nav', false),
                   ],
                 ),
               )
@@ -74,21 +79,13 @@ class DenDrawer extends StatelessWidget {
     );
   }
 
-  Widget _denDrawerSection(String title) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      alignment: Alignment.centerLeft,
-      child: Text(
-        title.toUpperCase(),
-        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
-      ),
-    );
-  }
-
-  Widget _denDrawerItem(String title, String navigation) {
+  Widget _denDrawerItem(context, String title, String action, arrow) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        _drawerAction(action, context);
+      },
       child: Container(
+        color: Colors.white,
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -100,14 +97,51 @@ class DenDrawer extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            Icon(
-              Icons.keyboard_arrow_right,
-              size: 17,
-              color: const Color(0xff555555),
-            ),
+            arrow == true
+                ? Icon(
+                    Icons.keyboard_arrow_right,
+                    size: 17,
+                    color: const Color(0xff555555),
+                  )
+                : SizedBox()
           ],
         ),
       ),
     );
+  }
+}
+
+_drawerAction(action, context) {
+  if (action == 'pack') {
+    Navigator.push(
+      context,
+      CupertinoPageRoute(
+        builder: (context) => PackOpen('The Gnarly Nomads', 'Eric Yang',
+            'assets/images/junto-mobile__eric.png'),
+      ),
+    );
+  } else if (action == 'connections') {
+    Navigator.push(
+      context,
+      CupertinoPageRoute(
+        builder: (context) => DenConnections(),
+      ),
+    );
+  } else if (action == 'followers') {
+    Navigator.push(
+      context,
+      CupertinoPageRoute(
+        builder: (context) => DenFollowers(),
+      ),
+    );
+  } else if (action == 'edit') {
+    Navigator.push(
+      context,
+      CupertinoPageRoute(
+        builder: (context) => DenEditProfile(),
+      ),
+    );
+  } else {
+    return;
   }
 }

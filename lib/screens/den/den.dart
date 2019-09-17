@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+
 import 'package:junto_beta_mobile/providers/auth_provider/auth_provider.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
-import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open.dart';
-import 'package:junto_beta_mobile/screens/den/den_settings/den_settings.dart';
-import 'package:junto_beta_mobile/screens/den/den_connections/den_connections.dart';
-import 'package:junto_beta_mobile/screens/den/den_followers/den_followers.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/styles.dart';
 
 /// Displays the user's DEN or "profile screen"
 class JuntoDen extends StatefulWidget {
@@ -108,8 +106,8 @@ class JuntoDenState extends State<JuntoDen> {
                           '"To a mind that is still, the whole universe surrenders."',
                           style: TextStyle(fontSize: 15)),
                       SizedBox(height: 10),
-                      Row(
-                          // mainAxisAlignment: MainAxisAlignment.center,
+                      Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Container(
                               margin: const EdgeInsets.only(right: 15),
@@ -130,6 +128,7 @@ class JuntoDenState extends State<JuntoDen> {
                                 ],
                               ),
                             ),
+                            SizedBox(height: 10),
                             Container(
                               child: Row(
                                 children: <Widget>[
@@ -151,7 +150,39 @@ class JuntoDenState extends State<JuntoDen> {
                     ],
                   ),
                 ),
-              )
+              ),
+
+              // Container(
+              //   padding: EdgeInsets.symmetric(vertical: 15),
+              //   decoration: BoxDecoration(
+              //     border: Border(
+              //       bottom: BorderSide(
+              //         color: Color(0xffeeeeee),
+              //         width: .75,
+              //       ),
+              //       top: BorderSide(color: Color(0xffeeeeee), width: .75),
+              //     ),
+              //   ),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+              //     children: <Widget>[
+              //       Container(
+              //         width: MediaQuery.of(context).size.width * .5,
+              //         alignment: Alignment.center,
+              //         child: Text('EXPRESSIONS',
+              //             style: TextStyle(
+              //                 fontSize: 12, fontWeight: FontWeight.w700)),
+              //       ),
+              //       Container(
+              //         width: MediaQuery.of(context).size.width * .5,
+              //         alignment: Alignment.center,
+              //         child: Text('DEN',
+              //             style: TextStyle(
+              //                 fontSize: 12, fontWeight: FontWeight.w700)),
+              //       ),
+              //     ],
+              //   ),
+              // )
             ],
           ),
         ),

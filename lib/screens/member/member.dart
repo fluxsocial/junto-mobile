@@ -75,102 +75,24 @@ class JuntoMember extends StatelessWidget {
                           Transform.translate(
                               offset: const Offset(0.0, 9.0),
                               child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 7.5),
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: JuntoPalette.juntoGrey,
-                                          width: 1),
-                                      borderRadius: BorderRadius.circular(5)),
-                                  child: Row(
-                                    children: <Widget>[
-                                      SizedBox(width: 14),
-
-                                      Image.asset(
-                                          'assets/images/junto-mobile__infinity.png',
-                                          height: 14),
-                                          SizedBox(width: 2),
-                                      Icon(Icons.keyboard_arrow_down, size: 12)
-                                    ],
-                                  ))
-
-                              // Container(
-                              //   height: 36,
-                              //   child: Row(
-                              //     crossAxisAlignment: CrossAxisAlignment.center,
-                              //     mainAxisAlignment:
-                              //         MainAxisAlignment.spaceBetween,
-                              //     children: <Widget>[
-                              //       Container(
-                              //         child: Column(
-                              //           crossAxisAlignment:
-                              //               CrossAxisAlignment.center,
-                              //           children: <Widget>[
-                              //             Image.asset(
-                              //               'assets/images/junto-mobile__outlinelogo--gradient.png',
-                              //               height: 17,
-                              //               color: JuntoPalette.juntoSleek,
-                              //             ),
-                              //             const SizedBox(height: 5),
-                              //             const Text(
-                              //               'Follow',
-                              //               style: TextStyle(
-                              //                 fontSize: 12,
-                              //                 color: JuntoPalette.juntoSleek,
-                              //               ),
-                              //             ),
-                              //           ],
-                              //         ),
-                              //       ),
-                              //       SizedBox(width: 45),
-                              //       Container(
-                              //         child: Column(
-                              //           crossAxisAlignment:
-                              //               CrossAxisAlignment.center,
-                              //           children: <Widget>[
-                              //             Image.asset(
-                              //               'assets/images/junto-mobile__infinity.png',
-                              //               height: 17,
-                              //               color: JuntoPalette.juntoSleek,
-                              //             ),
-                              //             const SizedBox(height: 5),
-                              //             const Text(
-                              //               'Connect',
-                              //               style: TextStyle(
-                              //                 fontSize: 12,
-                              //                 color: JuntoPalette.juntoSleek,
-                              //               ),
-                              //             ),
-                              //           ],
-                              //         ),
-                              //       ),
-                              //       SizedBox(width: 45),
-
-                              //       Container(
-                              //         child: Column(
-                              //           crossAxisAlignment:
-                              //               CrossAxisAlignment.center,
-                              //           children: <Widget>[
-                              //             Image.asset(
-                              //               'assets/images/junto-mobile__join-pack.png',
-                              //               height: 17,
-                              //               color: JuntoPalette.juntoSleek,
-                              //             ),
-                              //             const SizedBox(height: 5),
-                              //             const Text(
-                              //               'Join Pack',
-                              //               style: TextStyle(
-                              //                 fontSize: 12,
-                              //                 color: JuntoPalette.juntoSleek,
-                              //               ),
-                              //             ),
-                              //           ],
-                              //         ),
-                              //       ),
-                              //     ],
-                              //   ),
-                              // ),
-                              )
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 7.5),
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: JuntoPalette.juntoGrey,
+                                        width: 1),
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: Row(
+                                  children: <Widget>[
+                                    SizedBox(width: 14),
+                                    Image.asset(
+                                        'assets/images/junto-mobile__infinity.png',
+                                        height: 14),
+                                    SizedBox(width: 2),
+                                    Icon(Icons.keyboard_arrow_down, size: 12)
+                                  ],
+                                ),
+                              ))
                         ],
                       ),
                     ),
@@ -194,28 +116,29 @@ class JuntoMember extends StatelessWidget {
                               '"To a mind that is still, the whole universe surrenders."',
                               style: TextStyle(fontSize: 15)),
                           SizedBox(height: 10),
-                          Row(
-                              // mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Container(
-                                  margin: const EdgeInsets.only(right: 15),
-                                  child: Row(
-                                    children: <Widget>[
-                                      Image.asset(
-                                        'assets/images/junto-mobile__location.png',
-                                        height: 17,
-                                        color: JuntoPalette.juntoSleek,
-                                      ),
-                                      const SizedBox(width: 5),
-                                      const Text(
-                                        'Spirit',
-                                        style: TextStyle(
-                                          color: JuntoPalette.juntoSleek,
-                                        ),
-                                      ),
-                                    ],
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              margin: const EdgeInsets.only(right: 15),
+                              child: Row(
+                                children: <Widget>[
+                                  Image.asset(
+                                    'assets/images/junto-mobile__location.png',
+                                    height: 17,
+                                    color: JuntoPalette.juntoSleek,
                                   ),
-                                ),
+                                  const SizedBox(width: 5),
+                                  const Text(
+                                    'Spirit',
+                                    style: TextStyle(
+                                      color: JuntoPalette.juntoSleek,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 10),
                                 Container(
                                   child: Row(
                                     children: <Widget>[
