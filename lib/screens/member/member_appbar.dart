@@ -42,7 +42,7 @@ class MemberAppbar extends StatelessWidget {
                   ),
                 ),
               ),
-              GestureDetector(                
+              GestureDetector(
                 onTap: () {
                   MemberActionItems().buildMemberActionItems(context);
                 },
