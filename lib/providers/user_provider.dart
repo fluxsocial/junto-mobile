@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/rendering.dart';
-import 'package:junto_beta_mobile/API.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
 import 'package:http/http.dart' as http;
 import 'package:junto_beta_mobile/models/user_model.dart';
@@ -15,17 +14,12 @@ enum QueryType { address, email, username }
 
 abstract class UserProvider {
   /// Allows the user to create a [Perspective] on the server.
-  Future<PerspectiveResponse> createPerspective(Perspective perspective);
+  Future<CentralizedPerspective> createPerspective(Perspective perspective);
 
-  /// Adds the given user to a perspective. The perspective address and user address must be supplied.
+  /// Adds the given user to a perspective. The perspective address and user
+  /// address must be supplied.
   Future<String> addUserToPerspective(
       String perspectiveAddress, String userAddress);
-
-  /// Similar to [addUserToPerspective], this function takes the address of the perspective and returns a list
-  /// containing `'address': 'address_of_user','entry': {'username': 'username_of_user'}`
-  Future<List<Map<String, dynamic>>> getUsersInPerspective(
-    String perspectiveAddress,
-  );
 
   /// Gets the user
   Future<UserData> getUser(String userAddress);
@@ -33,51 +27,45 @@ abstract class UserProvider {
   /// Returns the [UserProfile] for the given [QueryType]
   Future<UserProfile> queryUser(String param, QueryType queryType);
 
+  /// Returns a [CentralizedPerspective] containing a list of `user`s who are
+  /// apart of the given perspective.
   Future<List<CentralizedPerspective>> getUserPerspective(String userAddress);
+
+  /// Returns a list of users in a group. Note: The return type of this
+  /// function is [CentralizedPerspective] since the response sent back from
+  /// the server is identical to [getUserPerspective]
+  Future<List<CentralizedPerspective>> getUserGroups(String userAddress);
+
+  /// Currently under development server-side.
+  Future<void> getUsersResonations(String userAddress);
+
+  /// Placeholder for now, currently under development server-side.
+  Future<void> getUsersExpressions(String userAddress);
+
+  /// Reads the cached user from the device.
+  Future<UserData> readLocalUser();
 }
 
 class UserProviderCentralized implements UserProvider {
   /// Creates a [Perspective] on the server. Function takes a single argument.
   @override
-  Future<PerspectiveResponse> createPerspective(Perspective perspective) async {
-    final Map<String, dynamic> body = <String, dynamic>{
-      'zome': 'perspective',
-      'function': 'create_perspective',
-      'args': <String, String>{
-        'name': perspective.name,
-      },
+  Future<CentralizedPerspective> createPerspective(
+      Perspective perspective) async {
+    final Map<String, dynamic> _postBody = <String, dynamic>{
+      'name': perspective.name,
     };
-
-    final http.Response serverResponse =
-        await JuntoHttp().post(END_POINT, body: body);
-    //ignore: always_specify_types
-    final responseMap = deserializeHoloJson(serverResponse.body);
-    if (responseMap['result']['Ok'] != null) {
-      final PerspectiveResponse perspectiveDetails =
-          PerspectiveResponse.fromMap(
-        responseMap['result']['Ok'],
-      );
-      return perspectiveDetails;
-    }
-
-    if (responseMap['error'] != null) {
-      print(responseMap['error']);
-      throw JuntoException(responseMap['error']);
-    }
-
-    // Should not get here.
-    return null;
+    final http.Response _serverResponse = await JuntoHttp().post(
+      '/perspectives',
+      body: _postBody,
+    );
+    final Map<String, dynamic> _body =
+        JuntoHttp.handleResponse(_serverResponse);
+    return CentralizedPerspective.fromMap(_body);
   }
 
   @override
   Future<String> addUserToPerspective(
       String perspectiveAddress, String userAddress) async {
-    throw UnimplementedError('Not implemented in centralized API');
-  }
-
-  @override
-  Future<List<Map<String, dynamic>>> getUsersInPerspective(
-      String perspectiveAddress) async {
     throw UnimplementedError('Not implemented in centralized API');
   }
 
@@ -133,6 +121,45 @@ class UserProviderCentralized implements UserProvider {
         .toList(growable: false);
   }
 
+  @override
+  Future<List<CentralizedPerspective>> getUserGroups(String userAddress) async {
+    final http.Response response =
+        await JuntoHttp().post('/users/$userAddress/groups');
+    final List<Map<String, dynamic>> _responseMap =
+        JuntoHttp.handleResponse(response);
+    return _responseMap
+        .map(
+            (Map<String, dynamic> data) => CentralizedPerspective.fromMap(data))
+        .toList(growable: false);
+  }
+
+  @override
+  Future<void> getUsersResonations(String userAddress) async {
+    final http.Response response =
+        await JuntoHttp().post('/users/$userAddress/resonations');
+    // ignore: unused_local_variable
+    final List<Map<String, dynamic>> _responseMap =
+        JuntoHttp.handleResponse(response);
+    throw UnimplementedError('This function is yet to be implemented on the '
+        'server.');
+  }
+
+  @override
+  Future<void> getUsersExpressions(String userAddress) async {
+    final http.Response response =
+        await JuntoHttp().post('/users/$userAddress/expressions');
+    // ignore: unused_local_variable
+    final List<Map<String, dynamic>> _responseMap =
+        JuntoHttp.handleResponse(response);
+    throw UnimplementedError('This function is yet to be implemented on the '
+        'server.');
+  }
+
+  @override
+  Future<UserData> readLocalUser() {
+    throw UnimplementedError();
+  }
+
   /// Private function which returns the correct query param for the given
   /// [QueryType]
   Map<String, dynamic> _buildQueryParam(String param, QueryType queryType) {
@@ -158,7 +185,8 @@ class UserProviderHolo implements UserProvider {
 
   /// Creates a [Perspective] on the server. Function takes a single argument.
   @override
-  Future<PerspectiveResponse> createPerspective(Perspective perspective) async {
+  Future<CentralizedPerspective> createPerspective(
+      Perspective perspective) async {
     final Map<String, dynamic> body = <String, dynamic>{
       'zome': 'perspective',
       'function': 'create_perspective',
@@ -172,11 +200,12 @@ class UserProviderHolo implements UserProvider {
     //ignore: always_specify_types
     final responseMap = deserializeHoloJson(serverResponse.body);
     if (responseMap['result']['Ok'] != null) {
+      // ignore: unused_local_variable
       final PerspectiveResponse perspectiveDetails =
           PerspectiveResponse.fromMap(
         responseMap['result']['Ok'],
       );
-      return perspectiveDetails;
+      return null;
     }
 
     if (responseMap['error'] != null) {
@@ -215,32 +244,6 @@ class UserProviderHolo implements UserProvider {
   }
 
   @override
-  Future<List<Map<String, dynamic>>> getUsersInPerspective(
-      String perspectiveAddress) async {
-    assert(perspectiveAddress.isNotEmpty);
-    final Map<String, dynamic> _body = JuntoHttp.holobody(
-      'get_perspectives_users',
-      'perspective',
-      <String, dynamic>{
-        'perspective': perspectiveAddress,
-      },
-    );
-    try {
-      final http.Response _response = await JuntoHttp().post(
-        resource,
-        body: _body,
-      );
-      final List<Map<String, dynamic>> juntoResponse =
-          JuntoHttp.handleResponse(_response);
-      print(juntoResponse);
-      return juntoResponse;
-    } on HttpException catch (error) {
-      debugPrint('Error occured in user_provider $error');
-      rethrow;
-    }
-  }
-
-  @override
   Future<UserData> getUser(String userAddress) async {
     throw UnimplementedError('This functions does not exist on the Holochain '
         'API');
@@ -253,8 +256,49 @@ class UserProviderHolo implements UserProvider {
   }
 
   @override
-  Future<List<CentralizedPerspective>> getUserPerspective(String userAddress) {
+  Future<List<CentralizedPerspective>> getUserPerspective(
+      String userAddress) async {
+    assert(userAddress.isNotEmpty);
+    final Map<String, dynamic> _body = JuntoHttp.holobody(
+      'get_perspectives_users',
+      'perspective',
+      <String, dynamic>{
+        'perspective': userAddress,
+      },
+    );
+    try {
+      final http.Response _response = await JuntoHttp().post(
+        resource,
+        body: _body,
+      );
+      // ignore: unused_local_variable
+      final List<Map<String, dynamic>> juntoResponse =
+          JuntoHttp.handleResponse(_response);
+      return null;
+    } on HttpException catch (error) {
+      debugPrint('Error occured in user_provider $error');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<CentralizedPerspective>> getUserGroups(String userAddress) {
     throw UnimplementedError('This functions does not exist on the Holochain '
         'API');
+  }
+
+  @override
+  Future<void> getUsersResonations(String userAddress) {
+    throw UnimplementedError('This function is not supported by the holo api');
+  }
+
+  @override
+  Future<void> getUsersExpressions(String userAddress) {
+    throw UnimplementedError('This function is not supported by the holo api');
+  }
+
+  @override
+  Future<UserData> readLocalUser() {
+    throw UnimplementedError();
   }
 }

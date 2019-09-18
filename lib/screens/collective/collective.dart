@@ -100,7 +100,6 @@ class JuntoCollectiveState extends State<JuntoCollective> {
                   _sixDegreesColor,
                 )
               : const SizedBox(),
-              
 
           for (int index = 0; index < initialData.length + 1; index++)
             if (index == initialData.length)

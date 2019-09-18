@@ -42,8 +42,6 @@ class _CreateEventState extends State<CreateEvent> {
   var endYear = '';
   var endPeriod = '';
 
-
-
   @override
   void initState() {
     super.initState();

@@ -164,6 +164,54 @@ class JuntoDenState extends State<JuntoDen> {
                             )
                           ]),
                     ],
+                  )),
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      child: const Text(
+                        'EXPRESSIONS',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 12),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              RaisedButton(onPressed: () async {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute<dynamic>(
+                    builder: (BuildContext context) => JuntoMember(),
+                  ),
+                );
+              }),
+              RaisedButton(
+                onPressed: () async {
+                  await Provider.of<AuthenticationProvider>(context)
+                      .logoutUser();
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute<dynamic>(
+                      builder: (BuildContext context) => Welcome(),
+                    ),
+                  );
+                },
+                color: const Color(0xff4968BF),
+                child: const Text(
+                  'LOG OUT',
+                  style: TextStyle(
+                    // color: JuntoPalette.juntoBlue,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 14,
+                  ),
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                    100,
                   ),
                 ),
               ),

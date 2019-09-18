@@ -29,7 +29,7 @@ class _CreateSphereState extends State<CreateSphere> {
     final String sphereName = _textEditingController.value.text;
     // assert(sphereName.isNotEmpty);
     // TODO(Nash): At the moment we don't have an endpoint for creating a sphere/group.
-   // Once this is online, this function will be impl
+    // Once this is online, this function will be impl
     Navigator.pop(context);
   }
 
@@ -49,7 +49,8 @@ class _CreateSphereState extends State<CreateSphere> {
             elevation: 0,
             titleSpacing: 0,
             title: Container(
-              padding: const EdgeInsets.symmetric(horizontal: JuntoStyles.horizontalPadding),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: JuntoStyles.horizontalPadding),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -87,7 +88,8 @@ class _CreateSphereState extends State<CreateSphere> {
           ),
         ),
         body: Container(
-          padding: const EdgeInsets.symmetric(horizontal: JuntoStyles.horizontalPadding),
+          padding: const EdgeInsets.symmetric(
+              horizontal: JuntoStyles.horizontalPadding),
           child: Column(
             children: <Widget>[
               Container(
@@ -123,7 +125,8 @@ class _CreateSphereState extends State<CreateSphere> {
                   width: MediaQuery.of(context).size.width,
                   decoration: const BoxDecoration(
                     border: Border(
-                      bottom: BorderSide(color: JuntoPalette.juntoFade, width: 1),
+                      bottom:
+                          BorderSide(color: JuntoPalette.juntoFade, width: 1),
                     ),
                   ),
                   child: Row(
@@ -134,7 +137,10 @@ class _CreateSphereState extends State<CreateSphere> {
                       Container(
                         width: MediaQuery.of(context).size.width * .75,
                         child: TextField(
-                          buildCounter: (BuildContext context, {int currentLength, int maxLength, bool isFocused}) =>
+                          buildCounter: (BuildContext context,
+                                  {int currentLength,
+                                  int maxLength,
+                                  bool isFocused}) =>
                               null,
                           decoration: InputDecoration(
                             border: InputBorder.none,

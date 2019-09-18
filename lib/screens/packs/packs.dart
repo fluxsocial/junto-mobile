@@ -26,10 +26,10 @@ class JuntoPacks extends StatelessWidget {
               children: packs.packs
                   .map(
                     (Pack pack) => PackPreview(
-                      pack.packTitle,
-                      pack.packUser,
-                      pack.packImage,
-                    ),
+                          pack.packTitle,
+                          pack.packUser,
+                          pack.packImage,
+                        ),
                   )
                   .toList(),
             );

@@ -25,10 +25,9 @@ class ExpressionOpenTop extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           GestureDetector(
-            onTap:() {
-              Navigator.push(context, CupertinoPageRoute(
-                builder: (context) => JuntoMember()
-              ));
+            onTap: () {
+              Navigator.push(context,
+                  CupertinoPageRoute(builder: (context) => JuntoMember()));
             },
             child: Container(
               color: Colors.white,
