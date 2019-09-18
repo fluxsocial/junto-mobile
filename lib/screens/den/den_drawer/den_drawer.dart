@@ -1,15 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/providers/provider.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open.dart';
 import 'package:junto_beta_mobile/screens/den/den_drawer/den_connections.dart';
 import 'package:junto_beta_mobile/screens/den/den_drawer/den_followers.dart';
 import 'package:junto_beta_mobile/screens/den/den_drawer/den_edit_profile.dart';
+import 'package:provider/provider.dart';
 
-class DenDrawer extends StatelessWidget {
+class DenDrawer extends StatefulWidget {
+  @override
+  _DenDrawerState createState() => _DenDrawerState();
+}
+
+class _DenDrawerState extends State<DenDrawer> {
+  UserProfile profile;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _retrieveUserInfo();
+  }
+
+  Future<void> _retrieveUserInfo() async {
+    final UserProvider _userProvider = Provider.of<UserProvider>(context);
+    try {
+      final UserProfile _profile = await _userProvider.readLocalUser();
+      setState(() {
+        profile = _profile;
+      });
+    } catch (error) {
+      debugPrint('Error occured in _retrieveUserInfo: $error');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
-
     return SizedBox(
       width: MediaQuery.of(context).size.width * .9,
       child: Drawer(
@@ -31,16 +58,16 @@ class DenDrawer extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    const Text(
-                      'Hey Eric!',
-                      style: TextStyle(
+                    Text(
+                      'Hey ${profile.firstName}!',
+                      style: const TextStyle(
                           fontSize: 17,
                           color: Color(0xff333333),
                           fontWeight: FontWeight.w700),
                     ),
                     ClipOval(
                       child: Image.asset(
-                        'assets/images/junto-mobile__eric.png',
+                        'assets/images/junto-mobile__logo.png',
                         height: 36.0,
                         width: 36.0,
                         fit: BoxFit.cover,

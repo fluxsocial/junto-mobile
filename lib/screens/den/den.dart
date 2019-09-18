@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/providers/provider.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
@@ -15,13 +16,33 @@ class JuntoDen extends StatefulWidget {
 }
 
 class JuntoDenState extends State<JuntoDen> {
-  String handle = 'sunyata';
-  String name = 'Eric Yang';
-  String profilePicture = 'assets/images/junto-mobile__eric.png';
-  String bio = 'on the vibe';
+  String handle = '';
+  String name = '';
+  String profilePicture = 'assets/images/junto-mobile__logo.png';
+  String bio = '';
 
   void noNav() {
     return;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _retrieveUserInfo();
+  }
+
+  Future<void> _retrieveUserInfo() async {
+    final UserProvider _userProvider = Provider.of<UserProvider>(context);
+    try {
+      final UserProfile _profile = await _userProvider.readLocalUser();
+      setState(() {
+        handle = _profile.username;
+        name = '${_profile.firstName} ${_profile.lastName}';
+        bio = _profile.bio;
+      });
+    } catch (error) {
+      debugPrint('Error occured in _retrieveUserInfo: $error');
+    }
   }
 
   @override

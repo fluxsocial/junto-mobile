@@ -8,6 +8,7 @@ import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_http.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum QueryType { address, email, username }
@@ -43,7 +44,7 @@ abstract class UserProvider {
   Future<void> getUsersExpressions(String userAddress);
 
   /// Reads the cached user from the device.
-  Future<UserData> readLocalUser();
+  Future<UserProfile> readLocalUser();
 }
 
 class UserProviderCentralized implements UserProvider {
@@ -156,8 +157,15 @@ class UserProviderCentralized implements UserProvider {
   }
 
   @override
-  Future<UserData> readLocalUser() {
-    throw UnimplementedError();
+  Future<UserProfile> readLocalUser() async {
+    final LocalStorage _storage = LocalStorage('user-details');
+    final bool isReady = await _storage.ready;
+    if (isReady) {
+      final String _data = _storage.getItem('data');
+      final UserProfile profile = UserProfile.fromMap(json.decode(_data));
+      return profile;
+    }
+    throw const JuntoException('Unable to read local user');
   }
 
   /// Private function which returns the correct query param for the given
@@ -298,7 +306,7 @@ class UserProviderHolo implements UserProvider {
   }
 
   @override
-  Future<UserData> readLocalUser() {
+  Future<UserProfile> readLocalUser() {
     throw UnimplementedError();
   }
 }
