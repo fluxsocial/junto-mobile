@@ -26,8 +26,12 @@ class ExpressionOpenTop extends StatelessWidget {
         children: <Widget>[
           GestureDetector(
             onTap: () {
-              Navigator.push(context,
-                  CupertinoPageRoute(builder: (context) => JuntoMember()));
+              Navigator.push(
+                context,
+                CupertinoPageRoute<dynamic>(
+                  builder: (BuildContext context) => JuntoMember(),
+                ),
+              );
             },
             child: Container(
               color: Colors.white,

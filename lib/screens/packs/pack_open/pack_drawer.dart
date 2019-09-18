@@ -25,8 +25,8 @@ class PackDrawer extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    const Text(
+                  children: const <Widget>[
+                    Text(
                       'The Gnarly Nomads',
                       style: TextStyle(
                           fontSize: 17,
@@ -59,8 +59,8 @@ class PackDrawer extends StatelessWidget {
                           ),
                         ),
                       ),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
@@ -74,7 +74,7 @@ class PackDrawer extends StatelessWidget {
                                   fit: BoxFit.cover,
                                 ),
                               ),
-                              SizedBox(width: 5),
+                              const SizedBox(width: 5),
                               ClipOval(
                                 child: Image.asset(
                                   'assets/images/junto-mobile__riley.png',
@@ -83,7 +83,7 @@ class PackDrawer extends StatelessWidget {
                                   fit: BoxFit.cover,
                                 ),
                               ),
-                              SizedBox(width: 5),
+                              const SizedBox(width: 5),
                               ClipOval(
                                 child: Image.asset(
                                   'assets/images/junto-mobile__josh.png',
@@ -94,8 +94,8 @@ class PackDrawer extends StatelessWidget {
                               ),
                             ],
                           ),
-                          SizedBox(height: 5),
-                          Text(
+                          const SizedBox(height: 5),
+                          const Text(
                             '50 pack members',
                             style: TextStyle(
                                 fontWeight: FontWeight.w700, fontSize: 14),
@@ -112,9 +112,9 @@ class PackDrawer extends StatelessWidget {
                             ),
                           ),
                         ),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                        child: Text(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 15),
+                        child: const Text(
                           'Leave pack',
                           style: TextStyle(fontWeight: FontWeight.w500),
                         )),

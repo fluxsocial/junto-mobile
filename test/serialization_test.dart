@@ -1,5 +1,3 @@
-import 'package:junto_beta_mobile/utils/junto_http.dart';
-import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:test/test.dart';
 
 void main() {

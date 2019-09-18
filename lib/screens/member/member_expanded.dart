@@ -3,7 +3,8 @@ import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/palette.dart';
 
 class MemberExpanded extends StatelessWidget {
-  MemberExpanded({Key key, this.handle, this.name, this.profilePicture, this.bio})
+  MemberExpanded(
+      {Key key, this.handle, this.name, this.profilePicture, this.bio})
       : super(key: key);
   String handle;
   String name;
@@ -72,9 +73,8 @@ class MemberExpanded extends StatelessWidget {
                     children: <Widget>[
                       Container(
                         width: MediaQuery.of(context).size.width,
-                        child: Image.asset(
-                            profilePicture,
-                            fit: BoxFit.fitWidth),
+                        child:
+                            Image.asset(profilePicture, fit: BoxFit.fitWidth),
                       ),
                       const SizedBox(height: 5),
                       Text(

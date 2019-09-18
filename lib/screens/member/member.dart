@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/member/member_appbar.dart';
 import 'package:junto_beta_mobile/screens/member/member_expanded.dart';
 import 'package:junto_beta_mobile/palette.dart';
-import 'package:junto_beta_mobile/styles.dart';
 
 class JuntoMember extends StatelessWidget {
   // placeholder member details
@@ -55,7 +53,7 @@ class JuntoMember extends StatelessWidget {
                 Transform.translate(
                   offset: const Offset(0.0, -18.0),
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -64,12 +62,13 @@ class JuntoMember extends StatelessWidget {
                           onTap: () {
                             Navigator.push(
                               context,
-                              CupertinoPageRoute(
-                                builder: (context) => MemberExpanded(
-                                    handle: memberHandle,
-                                    name: memberName,
-                                    profilePicture: memberProfilePicture,
-                                    bio: memberBio),
+                              CupertinoPageRoute<dynamic>(
+                                builder: (BuildContext context) =>
+                                    MemberExpanded(
+                                        handle: memberHandle,
+                                        name: memberName,
+                                        profilePicture: memberProfilePicture,
+                                        bio: memberBio),
                               ),
                             );
                           },
@@ -98,16 +97,15 @@ class JuntoMember extends StatelessWidget {
                             onTap: () {
                               showModalBottomSheet(
                                   context: context,
-                                  builder: (context) => Container(
-                                        color: Color(0xff737373),
+                                  builder: (BuildContext context) => Container(
+                                        color: const Color(0xff737373),
                                         child: Container(
                                           height: 240,
-                                          padding: EdgeInsets.all(10),
-                                          decoration: BoxDecoration(
+                                          padding: const EdgeInsets.all(10),
+                                          decoration: const BoxDecoration(
                                             color: Colors.white,
                                             borderRadius: BorderRadius.only(
-                                              topLeft:
-                                                  const Radius.circular(10),
+                                              topLeft: Radius.circular(10),
                                               topRight: Radius.circular(10),
                                             ),
                                           ),
@@ -116,13 +114,13 @@ class JuntoMember extends StatelessWidget {
                                                 CrossAxisAlignment.start,
                                             children: <Widget>[
                                               ListTile(
-                                                title: Text('Follow'),
+                                                title: const Text('Follow'),
                                               ),
                                               ListTile(
-                                                title: Text('Connect'),
+                                                title: const Text('Connect'),
                                               ),
                                               ListTile(
-                                                title: Text('Join Pack'),
+                                                title: const Text('Join Pack'),
                                               ),
                                             ],
                                           ),
@@ -130,7 +128,7 @@ class JuntoMember extends StatelessWidget {
                                       ));
                             },
                             child: Container(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 7.5),
                               decoration: BoxDecoration(
                                   border: Border.all(
@@ -138,11 +136,11 @@ class JuntoMember extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(5)),
                               child: Row(
                                 children: <Widget>[
-                                  SizedBox(width: 14),
+                                  const SizedBox(width: 14),
                                   Image.asset(
                                       'assets/images/junto-mobile__infinity.png',
                                       height: 14),
-                                  SizedBox(width: 2),
+                                  const SizedBox(width: 2),
                                   Icon(Icons.keyboard_arrow_down, size: 12)
                                 ],
                               ),
@@ -156,19 +154,20 @@ class JuntoMember extends StatelessWidget {
                 Transform.translate(
                   offset: const Offset(0.0, -18.0),
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     width: MediaQuery.of(context).size.width,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
                           memberName,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 20, fontWeight: FontWeight.w700),
                         ),
-                        SizedBox(height: 10),
-                        Text(memberBio, style: TextStyle(fontSize: 15)),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
+                        Text(memberBio, style: const TextStyle(fontSize: 15)),
+                        const SizedBox(height: 10),
                         Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
@@ -184,7 +183,7 @@ class JuntoMember extends StatelessWidget {
                                     const SizedBox(width: 5),
                                     Text(
                                       memberLocation,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: JuntoPalette.juntoSleek,
                                       ),
                                     ),
@@ -203,7 +202,7 @@ class JuntoMember extends StatelessWidget {
                                     const SizedBox(width: 5),
                                     Text(
                                       memberWebsite,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           color: JuntoPalette.juntoPrimary),
                                     )
                                   ],

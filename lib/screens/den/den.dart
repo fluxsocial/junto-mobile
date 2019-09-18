@@ -7,7 +7,6 @@ import 'package:junto_beta_mobile/screens/den/den_expanded.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/palette.dart';
-import 'package:junto_beta_mobile/styles.dart';
 
 /// Displays the user's DEN or "profile screen"
 class JuntoDen extends StatefulWidget {
@@ -20,6 +19,7 @@ class JuntoDenState extends State<JuntoDen> {
   String name = 'Eric Yang';
   String profilePicture = 'assets/images/junto-mobile__eric.png';
   String bio = 'on the vibe';
+
   void noNav() {
     return;
   }
@@ -55,7 +55,7 @@ class JuntoDenState extends State<JuntoDen> {
               Transform.translate(
                 offset: const Offset(0.0, -18.0),
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -65,8 +65,8 @@ class JuntoDenState extends State<JuntoDen> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            CupertinoPageRoute(
-                              builder: (context) => DenExpanded(
+                            CupertinoPageRoute<dynamic>(
+                              builder: (BuildContext context) => DenExpanded(
                                   handle: handle,
                                   name: name,
                                   profilePicture: profilePicture,
@@ -109,19 +109,20 @@ class JuntoDenState extends State<JuntoDen> {
               Transform.translate(
                 offset: const Offset(0.0, -18.0),
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   width: MediaQuery.of(context).size.width,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
                         name,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 20, fontWeight: FontWeight.w700),
                       ),
-                      SizedBox(height: 10),
-                      Text(bio, style: TextStyle(fontSize: 15)),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
+                      Text(bio, style: const TextStyle(fontSize: 15)),
+                      const SizedBox(height: 10),
                       Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -144,7 +145,7 @@ class JuntoDenState extends State<JuntoDen> {
                                 ],
                               ),
                             ),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                             Container(
                               child: Row(
                                 children: <Widget>[
@@ -164,7 +165,9 @@ class JuntoDenState extends State<JuntoDen> {
                             )
                           ]),
                     ],
-                  )),
+                  ),
+                ),
+              ),
               Container(
                 padding:
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 10),

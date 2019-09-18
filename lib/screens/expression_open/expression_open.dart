@@ -3,7 +3,6 @@ import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/components/comment_preview/comment_preview.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_appbar/expression_open_appbar.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_bottom/expression_open_bottom.dart';
-import 'package:junto_beta_mobile/screens/expression_open/expression_open_interactions/expression_open_interactions.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_top/expression_open_top.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/longform_open/longform_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/shortform_open/shortform_open.dart';
@@ -131,14 +130,14 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                     ExpressionOpenBottom(widget.expression),
                     // ExpressionOpenInteractions(),
                     Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         border: Border(
                           bottom:
                               BorderSide(color: Color(0xffeeeeee), width: .75),
                         ),
                       ),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 15),
                       child: GestureDetector(
                         onTap: () {
                           if (commentsVisible == false) {
@@ -155,11 +154,11 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                           color: Colors.white,
                           child: Row(
                             children: <Widget>[
-                              Text(
+                              const Text(
                                 'Show replies (9)',
                                 style: TextStyle(fontWeight: FontWeight.w500),
                               ),
-                              SizedBox(width: 5),
+                              const SizedBox(width: 5),
                               commentsVisible == false
                                   ? Icon(Icons.keyboard_arrow_down, size: 17)
                                   : Icon(Icons.keyboard_arrow_up, size: 17)
@@ -172,8 +171,8 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                     commentsVisible
                         ? ListView(
                             shrinkWrap: true,
-                            physics: ClampingScrollPhysics(),
-                            children: <Widget>[
+                            physics: const ClampingScrollPhysics(),
+                            children: const <Widget>[
                               CommentPreview(
                                 commentText:
                                     'love this! is this for everyone??',
@@ -214,7 +213,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                               ),
                             ],
                           )
-                        : SizedBox()
+                        : const SizedBox()
                   ],
                 ),
               ),
@@ -251,7 +250,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                             onVerticalDragDown: _onDragDown,
                             onVerticalDragUpdate: _onDragStart,
                             child: Container(
-                              padding: EdgeInsets.only(left: 15),
+                              padding: const EdgeInsets.only(left: 15),
                               decoration: BoxDecoration(
                                 color: const Color(0xfff9f9f9),
                                 borderRadius: BorderRadius.circular(10),
@@ -268,7 +267,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                                     child: TextField(
                                       focusNode: _focusNode,
                                       controller: commentController,
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         border: InputBorder.none,
                                         // hintText: 'reply',
                                       ),
@@ -284,10 +283,11 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                                   ),
                                   _focusNode.hasFocus
                                       ? Container(
-                                          margin: EdgeInsets.only(right: 10),
-                                          child: Text('reply'),
+                                          margin:
+                                              const EdgeInsets.only(right: 10),
+                                          child: const Text('reply'),
                                         )
-                                      : SizedBox()
+                                      : const SizedBox()
                                 ],
                               ),
                             ),

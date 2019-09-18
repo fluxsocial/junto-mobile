@@ -19,11 +19,11 @@ class Perspectives extends StatelessWidget {
       child: Drawer(
         elevation: 0,
         child: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 gradient: LinearGradient(
                     begin: Alignment.bottomLeft,
                     end: Alignment.topRight,
-                    colors: [
+                    colors: <Color>[
                   JuntoPalette.juntoSecondary,
                   JuntoPalette.juntoPrimary
                 ])),
@@ -67,7 +67,7 @@ class Perspectives extends StatelessWidget {
                           width: 20,
                           height: 38,
                           alignment: Alignment.centerRight,
-                          child: Text(
+                          child: const Text(
                             '+',
                             style: TextStyle(fontSize: 20),
                           ),

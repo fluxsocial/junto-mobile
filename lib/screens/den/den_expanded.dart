@@ -72,9 +72,8 @@ class DenExpanded extends StatelessWidget {
                     children: <Widget>[
                       Container(
                         width: MediaQuery.of(context).size.width,
-                        child: Image.asset(
-                            profilePicture,
-                            fit: BoxFit.fitWidth),
+                        child:
+                            Image.asset(profilePicture, fit: BoxFit.fitWidth),
                       ),
                       const SizedBox(height: 5),
                       Text(

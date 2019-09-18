@@ -26,6 +26,7 @@ class _CreateSphereState extends State<CreateSphere> {
   }
 
   Future<void> _createSphere() async {
+    // ignore: unused_local_variable
     final String sphereName = _textEditingController.value.text;
     // assert(sphereName.isNotEmpty);
     // TODO(Nash): At the moment we don't have an endpoint for creating a sphere/group.
@@ -110,7 +111,7 @@ class _CreateSphereState extends State<CreateSphere> {
                     bool isFocused,
                   }) =>
                       null,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: InputBorder.none,
                     hintText: 'Name your sphere',
                   ),
@@ -142,7 +143,7 @@ class _CreateSphereState extends State<CreateSphere> {
                                   int maxLength,
                                   bool isFocused}) =>
                               null,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             border: InputBorder.none,
                             hintText: 'Add members to your sphere',
                           ),

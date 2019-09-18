@@ -42,7 +42,7 @@ class SphereOpenAppbar extends StatelessWidget {
                 SphereOpenActionItems().buildSphereOpenActionItems(context);
               },
               child: Container(
-                child: Icon(
+                child: const Icon(
                   CustomIcons.more,
                   size: 20,
                   color: Color(0xff333333),

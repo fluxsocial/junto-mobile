@@ -12,7 +12,7 @@ class ExpressionOpenInteractions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             border: Border(
           bottom: BorderSide(color: Color(0xffeeeeee), width: .75),
         )),
@@ -25,7 +25,7 @@ class ExpressionOpenInteractions extends StatelessWidget {
               },
               child: Container(
                 color: Colors.white,
-                padding: EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 width: MediaQuery.of(context).size.width * .5 - 10,
                 alignment: Alignment.center,
                 child: ValueListenableBuilder<String>(
@@ -42,7 +42,7 @@ class ExpressionOpenInteractions extends StatelessWidget {
             GestureDetector(
               child: Container(
                   color: Colors.white,
-                  padding: EdgeInsets.symmetric(vertical: 10),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                   width: MediaQuery.of(context).size.width * .5 - 10,
                   alignment: Alignment.center,
                   child: Row(
