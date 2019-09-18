@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
+import 'package:junto_beta_mobile/screens/member/member_action_items.dart';
 
 /// Takes the member's handle as an un-named param.
 class MemberAppbar extends StatelessWidget {
@@ -41,6 +42,12 @@ class MemberAppbar extends StatelessWidget {
                   ),
                 ),
               ),
+              GestureDetector(
+                onTap: () {
+                  MemberActionItems().buildMemberActionItems(context);
+                },
+                child: Icon(CustomIcons.more),
+              )
             ],
           ),
         ),

@@ -2,7 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/palette.dart';
 
-class DenFollowers extends StatelessWidget {
+class MemberExpanded extends StatelessWidget {
+  MemberExpanded({Key key, this.handle, this.name, this.profilePicture, this.bio})
+      : super(key: key);
+  String handle;
+  String name;
+  String profilePicture;
+  String bio;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,22 +34,15 @@ class DenFollowers extends StatelessWidget {
                     size: 24,
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      margin: const EdgeInsets.only(right: 10),
-                      child: Text(
-                        'Followers',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                  ],
+                Text(
+                  handle,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xff333333),
+                  ),
                 ),
+                const SizedBox(width: 24)
               ],
             ),
           ),
@@ -64,9 +63,37 @@ class DenFollowers extends StatelessWidget {
       body: Column(
         children: <Widget>[
           Expanded(
-              child: ListView(
-            children: const <Widget>[SizedBox()],
-          ))
+            child: ListView(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        child: Image.asset(
+                            profilePicture,
+                            fit: BoxFit.fitWidth),
+                      ),
+                      const SizedBox(height: 5),
+                      Text(
+                        name,
+                        style: TextStyle(
+                            fontSize: 28, fontWeight: FontWeight.w700),
+                      ),
+                      const SizedBox(height: 5),
+                      Text(
+                        bio,
+                        style: TextStyle(
+                            fontSize: 17, fontWeight: FontWeight.w500),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          )
         ],
       ),
     );

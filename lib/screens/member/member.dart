@@ -1,19 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
-import 'package:junto_beta_mobile/screens/member/member_appbar/member_appbar.dart';
+import 'package:junto_beta_mobile/screens/member/member_appbar.dart';
+import 'package:junto_beta_mobile/screens/member/member_expanded.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/styles.dart';
 
 class JuntoMember extends StatelessWidget {
-  // placeholder location
-  final String _memberLocation = 'Spirit';
+  // placeholder member details
+  final String memberHandle = 'sunyata';
+  final String memberName = 'Eric Yang';
+  final String memberProfilePicture = 'assets/images/junto-mobile__eric.png';
+  final String memberBio = 'on the vibe';
+  final String memberLocation = 'Spirit';
+  final String memberWebsite = 'junto.foundation';
 
-  // placeholder website
-  final String _memberWebsite = 'junto.foundation';
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(45),
         child: MemberAppbar('sunyata'),
@@ -30,180 +37,162 @@ class JuntoMember extends StatelessWidget {
               children: <Widget>[
                 Container(
                   width: MediaQuery.of(context).size.width,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: JuntoStyles.horizontalPadding, vertical: 55),
+                  height: MediaQuery.of(context).size.height * .2,
                   decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.bottomLeft,
-                          end: Alignment.topRight,
-                          stops: <double>[
-                        0.1,
-                        0.9
-                      ],
-                          colors: <Color>[
-                        JuntoPalette.juntoSecondary,
-                        JuntoPalette.juntoPrimary
-                      ])),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.blue,
-                          border: Border.all(
-                            width: 3.0,
-                            color: Colors.white,
-                          ),
-                        ),
-                        child: ClipOval(
-                          child: Image.asset(
-                            'assets/images/junto-mobile__eric.png',
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      const Text(
-                        'Eric Yang',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 17,
-                            fontWeight: FontWeight.w700),
-                      ),
-                    ],
+                    gradient: LinearGradient(
+                        begin: Alignment.bottomLeft,
+                        end: Alignment.topRight,
+                        stops: <double>[
+                          0.1,
+                          0.9
+                        ],
+                        colors: <Color>[
+                          JuntoPalette.juntoSecondary,
+                          JuntoPalette.juntoPrimary
+                        ]),
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: JuntoStyles.horizontalPadding, vertical: 15),
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      bottom:
-                          BorderSide(color: JuntoPalette.juntoFade, width: 1),
+                Transform.translate(
+                  offset: const Offset(0.0, -18.0),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (context) => MemberExpanded(
+                                    handle: memberHandle,
+                                    name: memberName,
+                                    profilePicture: memberProfilePicture,
+                                    bio: memberBio),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            width: 72,
+                            height: 72,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.blue,
+                              border: Border.all(
+                                width: 3,
+                                color: Colors.white,
+                              ),
+                            ),
+                            child: ClipOval(
+                              child: Image.asset(
+                                memberProfilePicture,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Transform.translate(
+                          offset: const Offset(0.0, 9.0),
+                          child: GestureDetector(
+                            onTap: () {
+                              showModalBottomSheet(
+                                  context: context,
+                                  builder: (context) => Container(
+                                        color: Color(0xff737373),
+                                        child: Container(
+                                          height: 240,
+                                          padding: EdgeInsets.all(10),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.only(
+                                              topLeft:
+                                                  const Radius.circular(10),
+                                              topRight: Radius.circular(10),
+                                            ),
+                                          ),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              ListTile(
+                                                title: Text('Follow'),
+                                              ),
+                                              ListTile(
+                                                title: Text('Connect'),
+                                              ),
+                                              ListTile(
+                                                title: Text('Join Pack'),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ));
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 7.5),
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: JuntoPalette.juntoGrey, width: 1),
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: Row(
+                                children: <Widget>[
+                                  SizedBox(width: 14),
+                                  Image.asset(
+                                      'assets/images/junto-mobile__infinity.png',
+                                      height: 14),
+                                  SizedBox(width: 2),
+                                  Icon(Icons.keyboard_arrow_down, size: 12)
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                   ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Container(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Image.asset(
-                              'assets/images/junto-mobile__outlinelogo--gradient.png',
-                              height: 17,
-                              color: JuntoPalette.juntoSleek,
-                            ),
-                            const SizedBox(height: 5),
-                            const Text(
-                              'Follow',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: JuntoPalette.juntoSleek,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Image.asset(
-                              'assets/images/junto-mobile__infinity.png',
-                              height: 17,
-                              color: JuntoPalette.juntoSleek,
-                            ),
-                            const SizedBox(height: 5),
-                            const Text(
-                              'Connect',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: JuntoPalette.juntoSleek,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Image.asset(
-                              'assets/images/junto-mobile__join-pack.png',
-                              height: 17,
-                              color: JuntoPalette.juntoSleek,
-                            ),
-                            const SizedBox(height: 5),
-                            const Text(
-                              'Join Pack',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: JuntoPalette.juntoSleek,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: const <Widget>[
-                            Icon(CustomIcons.more, size: 17),
-                            SizedBox(height: 5),
-                            Text(
-                              'More',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: JuntoPalette.juntoSleek,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
                 ),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
-                  child: const Text(
-                    'To a mind that is still, the whole universe surrenders',
-                    textAlign: TextAlign.start,
-                    style: TextStyle(fontSize: 15),
-                  ),
-                ),
-                Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: JuntoStyles.horizontalPadding,
-                        vertical: 10),
-                    child: Row(
+                Transform.translate(
+                  offset: const Offset(0.0, -18.0),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    width: MediaQuery.of(context).size.width,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Container(
-                          margin: const EdgeInsets.only(right: 15),
-                          child: Row(
+                        Text(
+                          memberName,
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w700),
+                        ),
+                        SizedBox(height: 10),
+                        Text(memberBio, style: TextStyle(fontSize: 15)),
+                        SizedBox(height: 10),
+                        Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Image.asset(
-                                'assets/images/junto-mobile__location.png',
-                                height: 17,
-                                color: JuntoPalette.juntoSleek,
-                              ),
-                              const SizedBox(width: 5),
-                              Text(
-                                _memberLocation,
-                                style: const TextStyle(
-                                  color: JuntoPalette.juntoSleek,
+                              Container(
+                                margin: const EdgeInsets.only(right: 15),
+                                child: Row(
+                                  children: <Widget>[
+                                    Image.asset(
+                                      'assets/images/junto-mobile__location.png',
+                                      height: 17,
+                                      color: JuntoPalette.juntoSleek,
+                                    ),
+                                    const SizedBox(width: 5),
+                                    Text(
+                                      memberLocation,
+                                      style: TextStyle(
+                                        color: JuntoPalette.juntoSleek,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                        _memberWebsite != ''
-                            ? Container(
+                              const SizedBox(height: 10),
+                              Container(
                                 child: Row(
                                   children: <Widget>[
                                     Image.asset(
@@ -213,32 +202,18 @@ class JuntoMember extends StatelessWidget {
                                     ),
                                     const SizedBox(width: 5),
                                     Text(
-                                      _memberWebsite,
+                                      memberWebsite,
                                       style: TextStyle(
-                                          color:
-                                              Theme.of(context).primaryColor),
+                                          color: JuntoPalette.juntoPrimary),
                                     )
                                   ],
                                 ),
                               )
-                            : const SizedBox()
+                            ]),
                       ],
-                    )),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 10, horizontal: JuntoStyles.horizontalPadding),
-                  child: Row(
-                    children: <Widget>[
-                      Container(
-                        child: const Text(
-                          'EXPRESSIONS',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w700, fontSize: 12),
-                        ),
-                      )
-                    ],
+                    ),
                   ),
-                ),
+                )
               ],
             ),
           ),

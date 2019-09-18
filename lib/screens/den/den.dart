@@ -3,13 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/providers/provider.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
+import 'package:junto_beta_mobile/screens/den/den_expanded.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
-import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open.dart';
-import 'package:junto_beta_mobile/screens/den/den_settings/den_settings.dart';
-import 'package:junto_beta_mobile/screens/den/den_connections/den_connections.dart';
-import 'package:junto_beta_mobile/screens/den/den_followers/den_followers.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/styles.dart';
 
 /// Displays the user's DEN or "profile screen"
 class JuntoDen extends StatefulWidget {
@@ -18,6 +16,10 @@ class JuntoDen extends StatefulWidget {
 }
 
 class JuntoDenState extends State<JuntoDen> {
+  String handle = 'sunyata';
+  String name = 'Eric Yang';
+  String profilePicture = 'assets/images/junto-mobile__eric.png';
+  String bio = 'on the vibe';
   void noNav() {
     return;
   }
@@ -35,8 +37,7 @@ class JuntoDenState extends State<JuntoDen> {
             children: <Widget>[
               Container(
                 width: MediaQuery.of(context).size.width,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 55),
+                height: MediaQuery.of(context).size.height * .2,
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
                       begin: Alignment.bottomLeft,
@@ -50,227 +51,118 @@ class JuntoDenState extends State<JuntoDen> {
                         JuntoPalette.juntoPrimary
                       ]),
                 ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      width: 60,
-                      height: 60,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.blue,
-                        border: Border.all(
-                          width: 3.0,
-                          color: Colors.white,
-                        ),
-                      ),
-                      child: ClipOval(
-                        child: Image.asset(
-                          'assets/images/junto-mobile__eric.png',
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    const Text(
-                      'Eric Yang',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 17,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ],
-                ),
               ),
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                decoration: const BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
-                  ),
-                ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute<dynamic>(
-                            builder: (BuildContext context) => DenFollowers(),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        color: Colors.white,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Image.asset(
-                              'assets/images/junto-mobile__outlinelogo--gradient.png',
-                              height: 17,
-                              color: const Color(0xff555555),
-                            ),
-                            const SizedBox(height: 5),
-                            const Text(
-                              'Followers',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Color(0xff555555),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute<dynamic>(
-                            builder: (BuildContext context) => DenConnections(),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        color: Colors.white,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Image.asset(
-                              'assets/images/junto-mobile__infinity.png',
-                              height: 17,
-                              color: const Color(0xff555555),
-                            ),
-                            const SizedBox(height: 5),
-                            const Text(
-                              'Connections',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Color(0xff555555),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute<dynamic>(
-                            builder: (BuildContext context) => const PackOpen(
-                                'The Gnarly Nomads',
-                                'sunyata',
-                                'assets/images/junto-mobile__eric.png'),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        color: Colors.white,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Image.asset(
-                              'assets/images/junto-mobile__join-pack.png',
-                              height: 17,
-                              color: const Color(0xff555555),
-                            ),
-                            const SizedBox(height: 5),
-                            const Text(
-                              'My Pack',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Color(0xff555555),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute<dynamic>(
-                            builder: (BuildContext context) => DenSettings(),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        color: Colors.white,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: const <Widget>[
-                            Icon(CustomIcons.more, size: 17),
-                            SizedBox(height: 5),
-                            Text(
-                              'Settings',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Color(0xff555555),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                alignment: Alignment.centerLeft,
-                padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
-                child: const Text(
-                  'To a mind that is still, the whole universe surrenders',
-                  textAlign: TextAlign.start,
-                  style: TextStyle(fontSize: 15),
-                ),
-              ),
-              Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              Transform.translate(
+                offset: const Offset(0.0, -18.0),
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Container(
-                        margin: const EdgeInsets.only(right: 15),
-                        child: Row(
-                          children: <Widget>[
-                            Image.asset(
-                              'assets/images/junto-mobile__location.png',
-                              height: 17,
-                              color: JuntoPalette.juntoSleek,
+                      // SizedBox(width: 20),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => DenExpanded(
+                                  handle: handle,
+                                  name: name,
+                                  profilePicture: profilePicture,
+                                  bio: bio),
                             ),
-                            const SizedBox(width: 5),
-                            const Text(
-                              'Spirit',
-                              style: TextStyle(
-                                color: JuntoPalette.juntoSleek,
-                              ),
+                          );
+                        },
+                        child: Container(
+                          width: 72,
+                          height: 72,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.blue,
+                            border: Border.all(
+                              width: 2.0,
+                              color: Colors.white,
                             ),
-                          ],
+                          ),
+                          child: ClipOval(
+                            child: Image.asset(
+                              profilePicture,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         ),
                       ),
-                      Container(
-                        child: Row(
-                          children: <Widget>[
-                            Image.asset(
-                              'assets/images/junto-mobile__link.png',
-                              height: 17,
-                              color: JuntoPalette.juntoSleek,
-                            ),
-                            const SizedBox(width: 5),
-                            const Text(
-                              'junto.foundation',
-                              style:
-                                  TextStyle(color: JuntoPalette.juntoPrimary),
-                            )
-                          ],
+                      Transform.translate(
+                        offset: const Offset(0.0, 9.0),
+                        child: GestureDetector(
+                          onTap: () {
+                            Scaffold.of(context).openEndDrawer();
+                          },
+                          child: Icon(CustomIcons.more, size: 24),
                         ),
                       )
+                    ],
+                  ),
+                ),
+              ),
+              Transform.translate(
+                offset: const Offset(0.0, -18.0),
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        name,
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w700),
+                      ),
+                      SizedBox(height: 10),
+                      Text(bio, style: TextStyle(fontSize: 15)),
+                      SizedBox(height: 10),
+                      Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              margin: const EdgeInsets.only(right: 15),
+                              child: Row(
+                                children: <Widget>[
+                                  Image.asset(
+                                    'assets/images/junto-mobile__location.png',
+                                    height: 17,
+                                    color: JuntoPalette.juntoSleek,
+                                  ),
+                                  const SizedBox(width: 5),
+                                  const Text(
+                                    'Spirit',
+                                    style: TextStyle(
+                                      color: JuntoPalette.juntoSleek,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            Container(
+                              child: Row(
+                                children: <Widget>[
+                                  Image.asset(
+                                    'assets/images/junto-mobile__link.png',
+                                    height: 17,
+                                    color: JuntoPalette.juntoSleek,
+                                  ),
+                                  const SizedBox(width: 5),
+                                  const Text(
+                                    'junto.foundation',
+                                    style: TextStyle(
+                                        color: JuntoPalette.juntoPrimary),
+                                  )
+                                ],
+                              ),
+                            )
+                          ]),
                     ],
                   )),
               Container(
@@ -323,6 +215,38 @@ class JuntoDenState extends State<JuntoDen> {
                   ),
                 ),
               ),
+
+              // Container(
+              //   padding: EdgeInsets.symmetric(vertical: 15),
+              //   decoration: BoxDecoration(
+              //     border: Border(
+              //       bottom: BorderSide(
+              //         color: Color(0xffeeeeee),
+              //         width: .75,
+              //       ),
+              //       top: BorderSide(color: Color(0xffeeeeee), width: .75),
+              //     ),
+              //   ),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+              //     children: <Widget>[
+              //       Container(
+              //         width: MediaQuery.of(context).size.width * .5,
+              //         alignment: Alignment.center,
+              //         child: Text('EXPRESSIONS',
+              //             style: TextStyle(
+              //                 fontSize: 12, fontWeight: FontWeight.w700)),
+              //       ),
+              //       Container(
+              //         width: MediaQuery.of(context).size.width * .5,
+              //         alignment: Alignment.center,
+              //         child: Text('DEN',
+              //             style: TextStyle(
+              //                 fontSize: 12, fontWeight: FontWeight.w700)),
+              //       ),
+              //     ],
+              //   ),
+              // )
             ],
           ),
         ),
