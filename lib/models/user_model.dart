@@ -15,19 +15,20 @@ class UserProfile {
     this.bio,
     this.profilePicture,
     this.verified,
+    this.username,
   });
 
   /// Converts the information contained in this class to a map
   factory UserProfile.fromMap(Map<String, dynamic> json) {
     return UserProfile(
-      address: json['address'],
-      parent: json['parent'] ?? '',
-      firstName: json['first_name'],
-      lastName: json['last_name'],
-      bio: json['bio'],
-      profilePicture: json['profile_picture'],
-      verified: json['verified'],
-    );
+        address: json['address'],
+        parent: json['parent'] ?? '',
+        firstName: json['first_name'],
+        lastName: json['last_name'],
+        bio: json['bio'],
+        profilePicture: json['profile_picture'],
+        verified: json['verified'],
+        username: json['username'] ?? '');
   }
 
   /// Location
@@ -51,17 +52,19 @@ class UserProfile {
   /// Whether the given user account has been verified
   final bool verified;
 
+  /// Username of the given user.
+  final String username;
+
   /// Converts the class to a map
   Map<String, dynamic> toMap() => <String, dynamic>{
         'address': address,
-        'entry': <String, dynamic>{
-          'parent': parent,
-          'first_name': firstName,
-          'last_name': lastName,
-          'bio': bio,
-          'profile_picture': profilePicture,
-          'verified': verified,
-        },
+        'parent': parent,
+        'first_name': firstName,
+        'last_name': lastName,
+        'bio': bio,
+        'profile_picture': profilePicture,
+        'verified': verified,
+        'username': username
       };
 }
 
