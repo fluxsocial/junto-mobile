@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/providers/auth_provider/auth_provider.dart';
-import 'package:junto_beta_mobile/providers/packs_provider/packs_provider.dart';
-import 'package:junto_beta_mobile/providers/search_provider/search_provider.dart';
-import 'package:junto_beta_mobile/providers/spheres_provider/spheres_provider.dart';
 import 'package:junto_beta_mobile/providers/user_provider.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
 import 'package:junto_beta_mobile/screens/loading_screen/junto_loading_screen.dart';
@@ -11,7 +7,7 @@ import 'package:junto_beta_mobile/screens/template/template.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/themes.dart';
 import 'package:provider/provider.dart';
-import 'providers/collective_provider/collective_provider.dart';
+import 'providers/provider.dart';
 
 class JuntoApp extends StatefulWidget {
   @override

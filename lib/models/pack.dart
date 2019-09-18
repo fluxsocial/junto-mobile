@@ -70,9 +70,9 @@ class PackResponse {
   factory PackResponse.fromMap(Map<String, dynamic> map) {
     return PackResponse(
       address: map['address'] as String,
-      name: map['entry']['name'] as String,
-      ownerAddress: map['entry']['ownerAddress'] as String,
-      privacy: map['entry']['privacy'] as String,
+      name: map['name'] as String,
+      ownerAddress: map['ownerAddress'] as String,
+      privacy: map['privacy'] as String,
     );
   }
 
@@ -94,7 +94,7 @@ class PackResponse {
       'address': address,
       'entry': <String, String>{
         'name': name,
-        'ownerAddress': ownerAddress,
+        'owner_address': ownerAddress,
         'privacy': privacy,
       }
     };

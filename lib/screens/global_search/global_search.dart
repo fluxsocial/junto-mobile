@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/providers/search_provider/search_provider.dart';
+import 'package:junto_beta_mobile/providers/provider.dart';
 import 'package:junto_beta_mobile/screens/global_search/member_preview/member_preview.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/palette.dart';

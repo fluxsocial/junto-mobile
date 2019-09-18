@@ -11,6 +11,8 @@ import 'package:junto_beta_mobile/utils/junto_http.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+enum QueryType { address, email, username }
+
 abstract class UserProvider {
   /// Allows the user to create a [Perspective] on the server.
   Future<PerspectiveResponse> createPerspective(Perspective perspective);
@@ -28,12 +30,11 @@ abstract class UserProvider {
   /// Gets the user
   Future<UserData> getUser(String userAddress);
 
+  /// Returns the [UserProfile] for the given [QueryType]
   Future<UserProfile> queryUser(String param, QueryType queryType);
 
   Future<List<CentralizedPerspective>> getUserPerspective(String userAddress);
 }
-
-enum QueryType { address, email, username }
 
 class UserProviderCentralized implements UserProvider {
   /// Creates a [Perspective] on the server. Function takes a single argument.
@@ -151,6 +152,7 @@ class UserProviderCentralized implements UserProvider {
   }
 }
 
+@Deprecated('This class is not compatible with the centralized api')
 class UserProviderHolo implements UserProvider {
   static String resource = '/holochain';
 

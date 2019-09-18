@@ -60,7 +60,7 @@ class CentralizedDen {
       name: map['name'] as String,
       creator: map['creator'] as String,
       privacy: map['privacy'] as String,
-      isDefault: map['isDefault'] as bool,
+      isDefault: map['is_default'] as bool,
     );
   }
 
@@ -76,7 +76,7 @@ class CentralizedDen {
       'name': name,
       'creator': creator,
       'privacy': privacy,
-      'isDefault': isDefault,
+      'is_default': isDefault,
     };
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/pack.dart';
-import 'package:junto_beta_mobile/providers/packs_provider/packs_provider.dart';
+import 'package:junto_beta_mobile/providers/provider.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_preview/pack_preview.dart';
 import 'package:provider/provider.dart';
 
@@ -26,10 +26,10 @@ class JuntoPacks extends StatelessWidget {
               children: packs.packs
                   .map(
                     (Pack pack) => PackPreview(
-                          pack.packTitle,
-                          pack.packUser,
-                          pack.packImage,
-                        ),
+                      pack.packTitle,
+                      pack.packUser,
+                      pack.packImage,
+                    ),
                   )
                   .toList(),
             );

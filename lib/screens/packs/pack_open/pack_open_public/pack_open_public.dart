@@ -3,8 +3,8 @@ import 'package:junto_beta_mobile/components/utils/hide_fab.dart';
 import 'package:junto_beta_mobile/models/pack.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/providers/packs_provider/packs_provider.dart';
 import 'package:junto_beta_mobile/components/expression_preview/expression_preview.dart';
+import 'package:junto_beta_mobile/providers/provider.dart';
 import 'package:provider/provider.dart';
 
 class PackOpenPublic extends StatefulWidget {

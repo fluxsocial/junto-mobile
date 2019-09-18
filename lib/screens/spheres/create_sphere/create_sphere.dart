@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/providers/collective_provider/collective_provider.dart';
 import 'package:junto_beta_mobile/screens/spheres/create_sphere/create_sphere_next/create_sphere_next.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/styles.dart';
-import 'package:provider/provider.dart';
 
 // This class renders a widget that enables the user to create a sphere
 class CreateSphere extends StatefulWidget {
