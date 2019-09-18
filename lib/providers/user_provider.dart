@@ -16,7 +16,8 @@ abstract class UserProvider {
   /// Allows the user to create a [Perspective] on the server.
   Future<CentralizedPerspective> createPerspective(Perspective perspective);
 
-  /// Adds the given user to a perspective. The perspective address and user address must be supplied.
+  /// Adds the given user to a perspective. The perspective address and user
+  /// address must be supplied.
   Future<String> addUserToPerspective(
       String perspectiveAddress, String userAddress);
 
@@ -26,6 +27,8 @@ abstract class UserProvider {
   /// Returns the [UserProfile] for the given [QueryType]
   Future<UserProfile> queryUser(String param, QueryType queryType);
 
+  /// Returns a [CentralizedPerspective] containing a list of `user`s who are
+  /// apart of the given perspective.
   Future<List<CentralizedPerspective>> getUserPerspective(String userAddress);
 
   /// Returns a list of users in a group. Note: The return type of this
@@ -38,6 +41,9 @@ abstract class UserProvider {
 
   /// Placeholder for now, currently under development server-side.
   Future<void> getUsersExpressions(String userAddress);
+
+  /// Reads the cached user from the device.
+  Future<UserData> readLocalUser();
 }
 
 class UserProviderCentralized implements UserProvider {
@@ -60,12 +66,6 @@ class UserProviderCentralized implements UserProvider {
   @override
   Future<String> addUserToPerspective(
       String perspectiveAddress, String userAddress) async {
-    throw UnimplementedError('Not implemented in centralized API');
-  }
-
-  @override
-  Future<List<Map<String, dynamic>>> getUsersInPerspective(
-      String perspectiveAddress) async {
     throw UnimplementedError('Not implemented in centralized API');
   }
 
@@ -153,6 +153,11 @@ class UserProviderCentralized implements UserProvider {
         JuntoHttp.handleResponse(response);
     throw UnimplementedError('This function is yet to be implemented on the '
         'server.');
+  }
+
+  @override
+  Future<UserData> readLocalUser() {
+    throw UnimplementedError();
   }
 
   /// Private function which returns the correct query param for the given
@@ -290,5 +295,10 @@ class UserProviderHolo implements UserProvider {
   @override
   Future<void> getUsersExpressions(String userAddress) {
     throw UnimplementedError('This function is not supported by the holo api');
+  }
+
+  @override
+  Future<UserData> readLocalUser() {
+    throw UnimplementedError();
   }
 }
