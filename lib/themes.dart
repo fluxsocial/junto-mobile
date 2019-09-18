@@ -6,5 +6,7 @@ class JuntoThemes {
     fontFamily: 'Avenir',
     // backgroundColor: Colors.white,
     primaryColor: JuntoPalette.juntoGrey,
+    // bottomSheetTheme: BottomSheetThemeData(backgroundColor: Colors.green, shape: )
+    
   );
 }
