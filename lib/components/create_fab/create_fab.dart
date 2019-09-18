@@ -57,7 +57,7 @@ class CreateFAB extends StatelessWidget {
                       JuntoPalette.juntoSecondary,
                       JuntoPalette.juntoPrimary,
                     ],
-                  ),                  
+                  ),
                   color: Colors.white.withOpacity(.7),
                   border: Border.all(
                     color: Colors.white,

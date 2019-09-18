@@ -223,9 +223,8 @@ class CreatePhotoState extends State<CreatePhoto> {
                     );
                   },
                   child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Text('BACK')
-                  ),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Text('BACK')),
                 ),
                 GestureDetector(
                   onTap: () {
@@ -240,9 +239,8 @@ class CreatePhotoState extends State<CreatePhoto> {
                     _cropImage(_imageFile);
                   },
                   child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Text('CROP')
-                  ),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Text('CROP')),
                 ),
                 // GestureDetector(
                 //   onTap: () {

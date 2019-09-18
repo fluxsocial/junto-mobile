@@ -31,8 +31,9 @@ class _CreatePerspectiveState extends State<CreatePerspective> {
   Future<void> createPerspective() async {
     final String name = controller.value.text;
     JuntoOverlay.showLoader(context);
-    final PerspectiveResponse address = await Provider.of<UserProvider>(context)
-        .createPerspective(Perspective(name: name));
+    final CentralizedPerspective address =
+        await Provider.of<UserProvider>(context)
+            .createPerspective(Perspective(name: name));
     JuntoOverlay.hide();
     JuntoDialog.showJuntoDialog(
       context,

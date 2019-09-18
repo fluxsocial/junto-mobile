@@ -128,7 +128,7 @@ class CentralizedPerspective {
   }
 
   static List<UserProfile> _parseUsers(List<Map<String, dynamic>> _listData) {
-    if (_listData.isNotEmpty) {
+    if (_listData != null && _listData.isNotEmpty) {
       _listData.map((Map<String, dynamic> userData) {
         return UserProfile.fromMap(userData);
       }).toList();

@@ -58,12 +58,12 @@ class JuntoSpheres extends StatelessWidget {
                 children: spheres.spheres
                     .map(
                       (Sphere sphere) => SpherePreview(
-                        sphere.sphereTitle,
-                        sphere.sphereMembers,
-                        sphere.sphereImage,
-                        sphere.sphereHandle,
-                        sphere.sphereDescription,
-                      ),
+                            sphere.sphereTitle,
+                            sphere.sphereMembers,
+                            sphere.sphereImage,
+                            sphere.sphereHandle,
+                            sphere.sphereDescription,
+                          ),
                     )
                     .toList(),
               );

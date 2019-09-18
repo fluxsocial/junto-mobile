@@ -296,7 +296,6 @@ class JuntoDenState extends State<JuntoDen> {
                   ),
                 );
               }),
-
               RaisedButton(
                 onPressed: () async {
                   await Provider.of<AuthenticationProvider>(context)

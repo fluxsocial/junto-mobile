@@ -152,7 +152,8 @@ class EventOpen extends StatelessWidget {
                             width: 33.0,
                             fit: BoxFit.cover,
                           ),
-                        ),                        SizedBox(width: 5),
+                        ),
+                        SizedBox(width: 5),
                         ClipOval(
                           child: Image.asset(
                             'assets/images/junto-mobile__drea.png',
@@ -160,8 +161,7 @@ class EventOpen extends StatelessWidget {
                             width: 33.0,
                             fit: BoxFit.cover,
                           ),
-                        ),  
-                                            
+                        ),
                       ],
                     ),
                     SizedBox(height: 5),

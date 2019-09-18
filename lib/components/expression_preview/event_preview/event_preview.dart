@@ -33,7 +33,8 @@ class EventPreview extends StatelessWidget {
                     expression.expression.expressionContent['time'],
                     style: TextStyle(
                         color: JuntoPalette.juntoPrimary,
-                        fontSize: 14, fontWeight: FontWeight.w500),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500),
                   ),
                   const SizedBox(height: 2.5),
                   Text(
