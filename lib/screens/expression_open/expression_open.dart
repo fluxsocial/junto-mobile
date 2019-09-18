@@ -3,7 +3,6 @@ import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/components/comment_preview/comment_preview.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_appbar/expression_open_appbar.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_bottom/expression_open_bottom.dart';
-import 'package:junto_beta_mobile/screens/expression_open/expression_open_interactions/expression_open_interactions.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_top/expression_open_top.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/longform_open/longform_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/shortform_open/shortform_open.dart';
@@ -27,6 +26,8 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   bool commentsVisible = false;
 
   TextEditingController commentController;
+
+  bool createComment = false;
 
   /// [FocusNode] passed to Comments [TextField]
   FocusNode _focusNode;
@@ -66,7 +67,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
     }
   }
 
-  /// When the user swipes down, the keyboard is dismissed.
+  // /// When the user swipes down, the keyboard is dismissed.
   void _onDragDown(DragDownDetails details) {
     FocusScope.of(context).unfocus();
   }
@@ -90,6 +91,25 @@ class ExpressionOpenState extends State<ExpressionOpen> {
       return EventOpen(widget.expression);
     } else {
       return const SizedBox();
+    }
+  }
+
+  _createCommentIcon(bool createComment) {
+    if (createComment == true) {
+      return GestureDetector(
+        onTap: () {},
+        child: Icon(
+          Icons.send,
+          size: 20,
+          color: JuntoPalette.juntoPrimary,
+        ),
+      );
+    } else {
+      return const Icon(
+        Icons.send,
+        size: 20,
+        color: Color(0xff999999),
+      );
     }
   }
 
@@ -129,16 +149,15 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                     ExpressionOpenTop(expression: widget.expression),
                     _buildExpression(),
                     ExpressionOpenBottom(widget.expression),
-                    // ExpressionOpenInteractions(),
                     Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         border: Border(
                           bottom:
                               BorderSide(color: Color(0xffeeeeee), width: .75),
                         ),
                       ),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 15),
                       child: GestureDetector(
                         onTap: () {
                           if (commentsVisible == false) {
@@ -159,7 +178,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                                 'Show replies (9)',
                                 style: TextStyle(fontWeight: FontWeight.w500),
                               ),
-                              SizedBox(width: 5),
+                              const SizedBox(width: 5),
                               commentsVisible == false
                                   ? Icon(Icons.keyboard_arrow_down, size: 17)
                                   : Icon(Icons.keyboard_arrow_up, size: 17)
@@ -168,7 +187,6 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                         ),
                       ),
                     ),
-
                     commentsVisible
                         ? ListView(
                             shrinkWrap: true,
@@ -214,90 +232,169 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                               ),
                             ],
                           )
-                        : SizedBox()
+                        : const SizedBox()
                   ],
                 ),
               ),
               Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  border: Border(
-                    top: BorderSide(
-                      width: 1,
-                      color: JuntoPalette.juntoFade,
-                    ),
-                  ),
-                ),
-                padding: const EdgeInsets.symmetric(
-                    horizontal: JuntoStyles.horizontalPadding, vertical: 5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      child: Row(
-                        children: <Widget>[
-                          Container(
-                            margin: const EdgeInsets.only(right: 10),
-                            child: ClipOval(
-                              child: Image.asset(
-                                'assets/images/junto-mobile__eric.png',
-                                height: 36.0,
-                                width: 36.0,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onVerticalDragDown: _onDragDown,
-                            onVerticalDragUpdate: _onDragStart,
-                            child: Container(
-                              padding: EdgeInsets.only(left: 15),
-                              decoration: BoxDecoration(
-                                color: const Color(0xfff9f9f9),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              width: MediaQuery.of(context).size.width - 66,
-                              constraints: const BoxConstraints(maxHeight: 180),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width - 140,
-                                    child: TextField(
-                                      focusNode: _focusNode,
-                                      controller: commentController,
-                                      decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                        // hintText: 'reply',
-                                      ),
-                                      maxLines: null,
-                                      cursorColor: JuntoPalette.juntoGrey,
-                                      cursorWidth: 2,
-                                      style: const TextStyle(
-                                        fontSize: 17,
-                                        color: JuntoPalette.juntoGrey,
-                                      ),
-                                      textInputAction: TextInputAction.newline,
-                                    ),
-                                  ),
-                                  _focusNode.hasFocus
-                                      ? Container(
-                                          margin: EdgeInsets.only(right: 10),
-                                          child: Text('reply'),
-                                        )
-                                      : SizedBox()
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    border: Border(
+                      top: BorderSide(
+                        width: 1,
+                        color: JuntoPalette.juntoFade,
                       ),
                     ),
-                  ],
-                ),
-              )
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: JuntoStyles.horizontalPadding, vertical: 5),
+                  child: Column(
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Container(
+                            child: Row(
+                              children: <Widget>[
+                                Container(
+                                  margin: const EdgeInsets.only(right: 10),
+                                  child: ClipOval(
+                                    child: Image.asset(
+                                      'assets/images/junto-mobile__eric.png',
+                                      height: 36.0,
+                                      width: 36.0,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onVerticalDragDown: _onDragDown,
+                                  onVerticalDragUpdate: _onDragStart,
+                                  child: Container(
+                                    padding: EdgeInsets.only(left: 15),
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xfff9f9f9),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    width: _focusNode.hasFocus
+                                        ? MediaQuery.of(context).size.width -
+                                            100
+                                        : MediaQuery.of(context).size.width -
+                                            66,
+                                    constraints:
+                                        const BoxConstraints(maxHeight: 180),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width -
+                                              140,
+                                          child: TextField(
+                                            focusNode: _focusNode,
+                                            controller: commentController,
+                                            onChanged: (value) {
+                                              if (value == '') {
+                                                setState(() {
+                                                  createComment = false;
+                                                });
+                                              } else if (value != '') {
+                                                setState(() {
+                                                  createComment = true;
+                                                });
+                                              }
+                                            },
+                                            decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              // hintText: 'reply',
+                                            ),
+                                            maxLines: null,
+                                            cursorColor: JuntoPalette.juntoGrey,
+                                            cursorWidth: 2,
+                                            style: const TextStyle(
+                                              fontSize: 17,
+                                              color: JuntoPalette.juntoGrey,
+                                            ),
+                                            textInputAction:
+                                                TextInputAction.newline,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          _focusNode.hasFocus
+                              ? _createCommentIcon(createComment)
+                              : SizedBox()
+                        ],
+                      ),
+                      _focusNode.hasFocus
+                          ? Container(
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              child: Row(
+                                children: <Widget>[
+                                  GestureDetector(
+                                    onTap: () {
+                                      print('yo');
+                                      showModalBottomSheet(
+                                        context: context,
+                                        builder: (context) => Container(
+                                          color: Color(0xff737373),
+                                          child: Container(
+                                            height: 240,
+                                            padding: EdgeInsets.all(10),
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.only(
+                                                topLeft:
+                                                    const Radius.circular(10),
+                                                topRight: Radius.circular(10),
+                                              ),
+                                            ),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                ListTile(
+                                                  title: Text('Public'),
+                                                ),
+                                                ListTile(
+                                                  title: Text('Private'),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      color: Colors.white,
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          Text(
+                                            'public',
+                                            style: TextStyle(
+                                                color: const Color(0xff333333),
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          Icon(Icons.keyboard_arrow_down,
+                                              size: 14)
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ))
+                          : SizedBox()
+                    ],
+                  ))
             ],
           ),
         ),

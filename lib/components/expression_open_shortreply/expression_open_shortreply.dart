@@ -20,25 +20,27 @@ class ExpressionOpenShortReply extends StatelessWidget {
       ),
       padding: const EdgeInsets.symmetric(
           vertical: 10, horizontal: JuntoStyles.horizontalPadding),
-      child: Container(
-        decoration: const BoxDecoration(
-          color: JuntoPalette.juntoFade,
-          borderRadius: BorderRadius.all(
-            Radius.circular(10),
-          ),
-        ),
-        padding: const EdgeInsets.symmetric(
-            horizontal: JuntoStyles.horizontalPadding),
-        child: TextField(
-          style: const TextStyle(fontSize: 17),
-          maxLines: null,
-          keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            hintText: 'Reply to Eric',
-          ),
-        ),
-      ),
+      child:         Icon(Icons.send),
+
+      // Container(
+      //   decoration: const BoxDecoration(
+      //     color: JuntoPalette.juntoFade,
+      //     borderRadius: BorderRadius.all(
+      //       Radius.circular(10),
+      //     ),
+      //   ),
+      //   padding: const EdgeInsets.symmetric(
+      //       horizontal: JuntoStyles.horizontalPadding),
+      //   child: TextField(
+      //     style: const TextStyle(fontSize: 17),
+      //     maxLines: null,
+      //     keyboardType: TextInputType.text,
+      //     decoration: InputDecoration(
+      //       border: InputBorder.none,
+      //       hintText: 'Reply to Eric',
+      //     ),
+      //   ),
+      // ),
     );
   }
 }
