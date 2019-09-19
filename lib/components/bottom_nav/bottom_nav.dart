@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
 import 'package:junto_beta_mobile/palette.dart';
@@ -46,7 +47,7 @@ class BottomNavState extends State<BottomNav> {
             _BottomNavButton(
               index: 1,
               selectedIndex: widget.currentIndex,
-              icon: CustomIcons.circle,
+              icon: CustomIcons.circle, 
               onTap: widget.setIndex,
             ),
             Expanded(
