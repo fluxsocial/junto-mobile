@@ -25,59 +25,30 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   //  whether the comments are visible or not
   bool commentsVisible = false;
 
+  // privacy layer of the comment
+  String _commentPrivacy = 'public';
+
+  // Create a controller for the comment text field
   TextEditingController commentController;
 
+  // Boolean that signals whether the member can create a comment or not
   bool createComment = false;
 
   /// [FocusNode] passed to Comments [TextField]
   FocusNode _focusNode;
-
-  /// Notifier which is used to rebuild the UI when the keyboard has focus.
-  /// See [_onKeyboardFocus] for implementation details.
-  final ValueNotifier<bool> _keyboardHasFocus = ValueNotifier<bool>(false);
 
   @override
   void initState() {
     super.initState();
     commentController = TextEditingController();
     _focusNode = FocusNode();
-    _focusNode.addListener(_onKeyboardFocus);
   }
 
   @override
   void dispose() {
     commentController.dispose();
-    _focusNode.removeListener(_onKeyboardFocus);
     _focusNode.dispose();
     super.dispose();
-  }
-
-  /// Controls how the pointer events are handled when the keyboard has foucs.
-  /// When the keyboard has focus, the ListView does not recieve pointer events.
-  /// Swiping down on the expression dismisses the keyboard then allows the user
-  /// to scoll as the would.
-  /// `_keyboardHasFocus` is also used to to animated the padding of the page
-  /// when the keyboard is called.
-  void _onKeyboardFocus() {
-    if (_focusNode.hasFocus) {
-      _keyboardHasFocus.value = true;
-    }
-    if (!_focusNode.hasFocus) {
-      _keyboardHasFocus.value = false;
-    }
-  }
-
-  // /// When the user swipes down, the keyboard is dismissed.
-  void _onDragDown(DragDownDetails details) {
-    FocusScope.of(context).unfocus();
-  }
-
-  /// When the user swipes up, the textfield is focused
-  /// and the system keyboard is shown.
-  void _onDragStart(DragUpdateDetails details) {
-    if (details.delta.direction < -1.3) {
-      FocusScope.of(context).autofocus(_focusNode);
-    }
   }
 
   /// Builds an expression for the given type. IE: Longform or shortform
@@ -113,291 +84,297 @@ class ExpressionOpenState extends State<ExpressionOpen> {
     }
   }
 
+  // Swipe down to dismiss keyboard
+  _onDragDown(DragDownDetails details) {
+    FocusScope.of(context).requestFocus(new FocusNode());
+  }
+
+  // Bring the focus back to the TextField
+  _focusTextField() {
+    FocusScope.of(context).requestFocus(_focusNode);
+  }
+
+  // Open modal bottom sheet and refocus TextField after dismissed
+  _showPrivacyModalSheet() async {
+    await showModalBottomSheet(
+      context: context,
+      builder: (context) => Container(
+        color: const Color(0xff737373),
+        child: Container(
+          height: 240,
+          padding: const EdgeInsets.all(10),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10),
+              topRight: Radius.circular(10),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              ListTile(
+                onTap: () {
+                  setState(() {
+                    _commentPrivacy = 'public';
+                  });
+                  Navigator.pop(context);
+                },
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      'Public',
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+                    ),
+                    const SizedBox(height: 5),
+                    const Text(
+                        'Your comment will visible to everyone who can see this expression.')
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+              ListTile(
+                onTap: () {
+                  setState(() {
+                    _commentPrivacy = 'private';
+                  });
+                  Navigator.pop(context);
+                },
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      'Private',
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+                    ),
+                    const SizedBox(height: 5),
+                    const Text(
+                        'Your comment will only be visible to the creator of this expression.')
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    _focusTextField();
+  }
+
   @override
   Widget build(BuildContext context) {
     final double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(45.0),
         child: ExpressionOpenAppbar(),
       ),
       backgroundColor: Colors.white,
-      body: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onVerticalDragDown: _onDragDown,
-        child: ValueListenableBuilder<bool>(
-          valueListenable: _keyboardHasFocus,
-          builder: (BuildContext context, bool value, Widget child) {
-            return IgnorePointer(
-              ignoring: value,
-              child: AnimatedPadding(
-                duration: const Duration(milliseconds: 500),
-                curve: Curves.decelerate,
-                padding: value
-                    ? EdgeInsets.only(bottom: bottomInsets)
-                    : EdgeInsets.zero,
-                child: child,
-              ),
-            );
-          },
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                child: ListView(
-                  children: <Widget>[
-                    ExpressionOpenTop(expression: widget.expression),
-                    _buildExpression(),
-                    ExpressionOpenBottom(widget.expression),
-                    Container(
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          bottom:
-                              BorderSide(color: Color(0xffeeeeee), width: .75),
-                        ),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 15),
-                      child: GestureDetector(
-                        onTap: () {
-                          if (commentsVisible == false) {
-                            setState(() {
-                              commentsVisible = true;
-                            });
-                          } else if (commentsVisible == true) {
-                            setState(() {
-                              commentsVisible = false;
-                            });
-                          }
-                        },
-                        child: Container(
-                          color: Colors.white,
-                          child: Row(
-                            children: <Widget>[
-                              Text(
-                                'Show replies (9)',
-                                style: TextStyle(fontWeight: FontWeight.w500),
-                              ),
-                              const SizedBox(width: 5),
-                              commentsVisible == false
-                                  ? Icon(Icons.keyboard_arrow_down, size: 17)
-                                  : Icon(Icons.keyboard_arrow_up, size: 17)
-                            ],
-                          ),
-                        ),
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: GestureDetector(
+              onVerticalDragDown: _onDragDown,
+              child: ListView(
+                children: <Widget>[
+                  ExpressionOpenTop(expression: widget.expression),
+                  _buildExpression(),
+                  ExpressionOpenBottom(widget.expression),
+                  Container(
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        bottom:
+                            BorderSide(color: Color(0xffeeeeee), width: .75),
                       ),
                     ),
-                    commentsVisible
-                        ? ListView(
-                            shrinkWrap: true,
-                            physics: ClampingScrollPhysics(),
-                            children: <Widget>[
-                              CommentPreview(
-                                commentText:
-                                    'love this! is this for everyone??',
-                              ),
-                              CommentPreview(
-                                commentText:
-                                    'This reminds of me of the Junto club that was started in the late 1700s by Ben Franklin.',
-                              ),
-                              CommentPreview(
-                                commentText: 'yo',
-                              ),
-                              CommentPreview(
-                                commentText: 'hello',
-                              ),
-                              CommentPreview(
-                                commentText: 'hello',
-                              ),
-                              CommentPreview(
-                                commentText: 'hello',
-                              ),
-                              CommentPreview(
-                                commentText: 'hello',
-                              ),
-                              CommentPreview(
-                                commentText: 'hello',
-                              ),
-                              CommentPreview(
-                                commentText: 'hello',
-                              ),
-                              CommentPreview(
-                                commentText: 'hello',
-                              ),
-                              CommentPreview(
-                                commentText: 'hello',
-                              ),
-                              CommentPreview(
-                                commentText: 'hello',
-                              ),
-                            ],
-                          )
-                        : const SizedBox()
-                  ],
-                ),
-              ),
-              Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    border: Border(
-                      top: BorderSide(
-                        width: 1,
-                        color: JuntoPalette.juntoFade,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 15),
+                    child: GestureDetector(
+                      onTap: () {
+                        if (commentsVisible == false) {
+                          setState(() {
+                            commentsVisible = true;
+                          });
+                        } else if (commentsVisible == true) {
+                          setState(() {
+                            commentsVisible = false;
+                          });
+                        }
+                      },
+                      child: Container(
+                        color: Colors.white,
+                        child: Row(
+                          children: <Widget>[
+                            Text(
+                              'Show replies (9)',
+                              style: TextStyle(fontWeight: FontWeight.w500),
+                            ),
+                            const SizedBox(width: 5),
+                            commentsVisible == false
+                                ? Icon(Icons.keyboard_arrow_down, size: 17)
+                                : Icon(Icons.keyboard_arrow_up, size: 17)
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: JuntoStyles.horizontalPadding, vertical: 5),
-                  child: Column(
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  commentsVisible
+                      ? ListView(
+                          shrinkWrap: true,
+                          physics: ClampingScrollPhysics(),
+                          children: <Widget>[
+                            CommentPreview(
+                              commentText: 'love this! is this for everyone??',
+                            ),
+                            CommentPreview(
+                              commentText:
+                                  'This reminds of me of the Junto club that was started in the late 1700s by Ben Franklin.',
+                            ),
+                            CommentPreview(
+                              commentText: 'yo',
+                            ),
+                            CommentPreview(
+                              commentText: 'hello',
+                            ),
+                            CommentPreview(
+                              commentText: 'hello',
+                            ),
+                            CommentPreview(
+                              commentText: 'hello',
+                            ),
+                            CommentPreview(
+                              commentText: 'hello',
+                            ),
+                          ],
+                        )
+                      : const SizedBox()
+                ],
+              ),
+            ),
+          ),
+          Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              border: Border(
+                top: BorderSide(
+                  width: 1,
+                  color: JuntoPalette.juntoFade,
+                ),
+              ),
+            ),
+            padding: const EdgeInsets.symmetric(
+                horizontal: JuntoStyles.horizontalPadding, vertical: 5),
+            child: Column(
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      child: Row(
                         children: <Widget>[
                           Container(
+                            margin: const EdgeInsets.only(right: 10),
+                            child: ClipOval(
+                              child: Image.asset(
+                                'assets/images/junto-mobile__eric.png',
+                                height: 36.0,
+                                width: 36.0,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(left: 15),
+                            decoration: BoxDecoration(
+                              color: const Color(0xfff9f9f9),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            width: _focusNode.hasFocus
+                                ? MediaQuery.of(context).size.width - 100
+                                : MediaQuery.of(context).size.width - 66,
+                            constraints: const BoxConstraints(maxHeight: 180),
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Container(
-                                  margin: const EdgeInsets.only(right: 10),
-                                  child: ClipOval(
-                                    child: Image.asset(
-                                      'assets/images/junto-mobile__eric.png',
-                                      height: 36.0,
-                                      width: 36.0,
-                                      fit: BoxFit.cover,
+                                  width:
+                                      MediaQuery.of(context).size.width - 140,
+                                  child: TextField(
+                                    focusNode: _focusNode,
+                                    controller: commentController,
+                                    onChanged: (value) {
+                                      if (value == '') {
+                                        setState(() {
+                                          createComment = false;
+                                        });
+                                      } else if (value != '') {
+                                        setState(() {
+                                          createComment = true;
+                                        });
+                                      }
+                                    },
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      // hintText: 'reply',
                                     ),
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onVerticalDragDown: _onDragDown,
-                                  onVerticalDragUpdate: _onDragStart,
-                                  child: Container(
-                                    padding: EdgeInsets.only(left: 15),
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xfff9f9f9),
-                                      borderRadius: BorderRadius.circular(10),
+                                    maxLines: null,
+                                    cursorColor: JuntoPalette.juntoGrey,
+                                    cursorWidth: 2,
+                                    style: const TextStyle(
+                                      fontSize: 17,
+                                      color: JuntoPalette.juntoGrey,
                                     ),
-                                    width: _focusNode.hasFocus
-                                        ? MediaQuery.of(context).size.width -
-                                            100
-                                        : MediaQuery.of(context).size.width -
-                                            66,
-                                    constraints:
-                                        const BoxConstraints(maxHeight: 180),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width -
-                                              140,
-                                          child: TextField(
-                                            focusNode: _focusNode,
-                                            controller: commentController,
-                                            onChanged: (value) {
-                                              if (value == '') {
-                                                setState(() {
-                                                  createComment = false;
-                                                });
-                                              } else if (value != '') {
-                                                setState(() {
-                                                  createComment = true;
-                                                });
-                                              }
-                                            },
-                                            decoration: InputDecoration(
-                                              border: InputBorder.none,
-                                              // hintText: 'reply',
-                                            ),
-                                            maxLines: null,
-                                            cursorColor: JuntoPalette.juntoGrey,
-                                            cursorWidth: 2,
-                                            style: const TextStyle(
-                                              fontSize: 17,
-                                              color: JuntoPalette.juntoGrey,
-                                            ),
-                                            textInputAction:
-                                                TextInputAction.newline,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                    textInputAction: TextInputAction.done,
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          _focusNode.hasFocus
-                              ? _createCommentIcon(createComment)
-                              : SizedBox()
                         ],
                       ),
-                      _focusNode.hasFocus
-                          ? Container(
-                              padding: EdgeInsets.symmetric(vertical: 10),
-                              child: Row(
-                                children: <Widget>[
-                                  GestureDetector(
-                                    onTap: () {
-                                      print('yo');
-                                      showModalBottomSheet(
-                                        context: context,
-                                        builder: (context) => Container(
-                                          color: Color(0xff737373),
-                                          child: Container(
-                                            height: 240,
-                                            padding: EdgeInsets.all(10),
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius: BorderRadius.only(
-                                                topLeft:
-                                                    const Radius.circular(10),
-                                                topRight: Radius.circular(10),
-                                              ),
-                                            ),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: <Widget>[
-                                                ListTile(
-                                                  title: Text('Public'),
-                                                ),
-                                                ListTile(
-                                                  title: Text('Private'),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    child: Container(
-                                      color: Colors.white,
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: <Widget>[
-                                          Text(
-                                            'public',
-                                            style: TextStyle(
-                                                color: const Color(0xff333333),
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                          Icon(Icons.keyboard_arrow_down,
-                                              size: 14)
-                                        ],
-                                      ),
+                    ),
+                    _focusNode.hasFocus
+                        ? _createCommentIcon(createComment)
+                        : SizedBox()
+                  ],
+                ),
+                _focusNode.hasFocus
+                    ? Container(
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        child: Row(
+                          children: <Widget>[
+                            GestureDetector(
+                              onTap: () {
+                                _showPrivacyModalSheet();
+                              },
+                              child: Container(
+                                color: Colors.white,
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    Text(
+                                      _commentPrivacy,
+                                      style: TextStyle(
+                                          color: const Color(0xff333333),
+                                          fontWeight: FontWeight.w500),
                                     ),
-                                  )
-                                ],
-                              ))
-                          : SizedBox()
-                    ],
-                  ))
-            ],
+                                    Icon(Icons.keyboard_arrow_down, size: 14)
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      )
+                    : SizedBox()
+              ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
