@@ -4,6 +4,8 @@ import 'package:flutter/rendering.dart';
 import 'package:junto_beta_mobile/components/appbar/appbar.dart';
 import 'package:junto_beta_mobile/components/bottom_nav/bottom_nav.dart';
 import 'package:junto_beta_mobile/components/utils/hide_fab.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/providers/provider.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/collective/filter_fab/filter_fab.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspectives.dart';
@@ -13,6 +15,7 @@ import 'package:junto_beta_mobile/screens/packs/packs.dart';
 import 'package:junto_beta_mobile/screens/spheres/spheres.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/styles.dart';
+import 'package:provider/provider.dart';
 
 // This class is a template screen that contains the navbar, bottom bar,
 // and screen (collective, spheres, pack, etc) depending on condition.
@@ -38,6 +41,7 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
   // Controller for scroll
   ScrollController _hideFABController;
   ValueNotifier<bool> _isVisible;
+  UserProfile profile;
 
   @override
   void initState() {
@@ -56,6 +60,26 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
 
   void _onScrollingHasChanged() {
     super.hideFabOnScroll(_hideFABController, _isVisible);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _retrieveUserInfo();
+  }
+
+//TODO(Nash): This function is being repeated a lot, consider turning into a
+// mixin.
+  Future<void> _retrieveUserInfo() async {
+    final UserProvider _userProvider = Provider.of<UserProvider>(context);
+    try {
+      final UserProfile _profile = await _userProvider.readLocalUser();
+      setState(() {
+        profile = _profile;
+      });
+    } catch (error) {
+      debugPrint('Error occured in _retrieveUserInfo: $error');
+    }
   }
 
   @override
@@ -89,6 +113,7 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
                 },
                 child: Perspectives(
                   changePerspective: _changePerspective,
+                  profile: profile,
                 ),
               )
             : null,
@@ -295,34 +320,31 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
                           children: _channels
                               .map(
                                 (String channel) => GestureDetector(
-                                      onDoubleTap: () {
-                                        _removeChannel(state, channel);
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          border: Border.all(
-                                            color: JuntoPalette.juntoGrey,
-                                            width: 1,
-                                          ),
-                                        ),
-                                        margin:
-                                            const EdgeInsets.only(right: 10),
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal:
-                                              JuntoStyles.horizontalPadding,
-                                          vertical: 5,
-                                        ),
-                                        child: Text(
-                                          channel,
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                        ),
+                                  onDoubleTap: () {
+                                    _removeChannel(state, channel);
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      border: Border.all(
+                                        color: JuntoPalette.juntoGrey,
+                                        width: 1,
                                       ),
                                     ),
+                                    margin: const EdgeInsets.only(right: 10),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: JuntoStyles.horizontalPadding,
+                                      vertical: 5,
+                                    ),
+                                    child: Text(
+                                      channel,
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               )
                               .toList(),
                         ),

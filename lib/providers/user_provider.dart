@@ -45,6 +45,9 @@ abstract class UserProvider {
 
   /// Reads the cached user from the device.
   Future<UserProfile> readLocalUser();
+
+  /// Returns a list of perspectives owned by the given user
+  Future<List<CentralizedPerspective>> userPerspectives(String userAddress);
 }
 
 class UserProviderCentralized implements UserProvider {
@@ -113,9 +116,9 @@ class UserProviderCentralized implements UserProvider {
   Future<List<CentralizedPerspective>> getUserPerspective(
       String userAddress) async {
     final http.Response response =
-        await JuntoHttp().post('/users/$userAddress/perspectives');
-    final List<Map<String, dynamic>> _responseMap =
-        JuntoHttp.handleResponse(response);
+        await JuntoHttp().get('/users/$userAddress/perspectives');
+    final Iterable<Map<String, dynamic>> _responseMap =
+        json.decode(response.body);
     return _responseMap
         .map(
             (Map<String, dynamic> data) => CentralizedPerspective.fromMap(data))
@@ -166,6 +169,18 @@ class UserProviderCentralized implements UserProvider {
       return profile;
     }
     throw const JuntoException('Unable to read local user');
+  }
+
+  @override
+  Future<List<CentralizedPerspective>> userPerspectives(
+      String userAddress) async {
+    final http.Response _serverResponse =
+        await JuntoHttp().get('/users/$userAddress/perspectives');
+    final List<Map<String, dynamic>> items =
+        JuntoHttp.handleResponse(_serverResponse);
+    return items.map(
+      (Map<String, dynamic> data) => CentralizedPerspective.fromMap(data),
+    );
   }
 
   /// Private function which returns the correct query param for the given
@@ -308,5 +323,10 @@ class UserProviderHolo implements UserProvider {
   @override
   Future<UserProfile> readLocalUser() {
     throw UnimplementedError();
+  }
+
+  @override
+  Future<List<CentralizedPerspective>> userPerspectives(String userAddress) {
+    throw UnimplementedError('This function is not supported by the holo api');
   }
 }
