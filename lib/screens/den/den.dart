@@ -16,32 +16,51 @@ class JuntoDen extends StatefulWidget {
 }
 
 class JuntoDenState extends State<JuntoDen> {
-  String handle = '';
-  String name = '';
-  String profilePicture = 'assets/images/junto-mobile__logo.png';
-  String bio = '';
+  String handle = 'sunyata';
+  String name = 'Eric Yang';
+  String profilePicture = 'assets/images/junto-mobile__eric.png';
+  String bio = 'on the vibe';
+
+  bool publicExpressionsActive = true;
+  bool publicCollectionActive = false;
+  bool privateExpressionsActive = true;
+  bool privateCollectionActive = false;
 
   void noNav() {
     return;
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _retrieveUserInfo();
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   _retrieveUserInfo();
+  // }
 
-  Future<void> _retrieveUserInfo() async {
-    final UserProvider _userProvider = Provider.of<UserProvider>(context);
-    try {
-      final UserProfile _profile = await _userProvider.readLocalUser();
+  // Future<void> _retrieveUserInfo() async {
+  //   final UserProvider _userProvider = Provider.of<UserProvider>(context);
+  //   try {
+  //     final UserProfile _profile = await _userProvider.readLocalUser();
+  //     setState(() {
+  //       handle = _profile.username;
+  //       name = '${_profile.firstName} ${_profile.lastName}';
+  //       bio = _profile.bio;
+  //     });
+  //   } catch (error) {
+  //     debugPrint('Error occured in _retrieveUserInfo: $error');
+  //   }
+  // }
+
+  _togglePublicDomain(domain) {
+    if (domain == 'expressions') {
       setState(() {
-        handle = _profile.username;
-        name = '${_profile.firstName} ${_profile.lastName}';
-        bio = _profile.bio;
+        publicExpressionsActive = true;
+        publicCollectionActive = false;
       });
-    } catch (error) {
-      debugPrint('Error occured in _retrieveUserInfo: $error');
+    } else if (domain == 'collection') {
+      setState(() {
+        publicExpressionsActive = false;
+        publicCollectionActive = true;
+      });
     }
   }
 
@@ -190,87 +209,144 @@ class JuntoDenState extends State<JuntoDen> {
                 ),
               ),
               Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: Color(0xffeeeeee),
+                      width: .75,
+                    ),
+                    // top: BorderSide(color: Color(0xffeeeeee), width: .75),
+                  ),
+                ),
                 padding:
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                child: Row(
+                child: Column(
                   children: <Widget>[
-                    Container(
-                      child: const Text(
-                        'EXPRESSIONS',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w700, fontSize: 12),
-                      ),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.only(right: 15),
+                          child: const Text(
+                            'Public Den',
+                            style: TextStyle(fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                        Container(
+                          child: const Text(
+                            'Private Den',
+                            style: TextStyle(fontWeight: FontWeight.w500),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Container(
+                          padding: EdgeInsets.all(2.5),
+                          height: 30,
+                          width: 80,
+                          decoration: BoxDecoration(
+                            color: Color(0xfffeeeeee),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Row(
+                            children: <Widget>[
+                              GestureDetector(
+                                onTap: () {
+                                  _togglePublicDomain('expressions');
+                                },
+                                child: Container(
+                                  height: 30,
+                                  // half width of parent container minus horizontal padding
+                                  width: 37.5,
+                                  decoration: BoxDecoration(
+                                    color: publicExpressionsActive
+                                        ? Colors.white
+                                        : Color(0xffeeeeee),
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  child: Icon(
+                                    CustomIcons.half_lotus,
+                                    size: 12,
+                                    color: publicExpressionsActive
+                                        ? Color(0xff555555)
+                                        : Color(0xff999999),
+                                  ),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  _togglePublicDomain('collection');
+                                },
+                                child: Container(
+                                  height: 30,
+                                  // half width of parent container minus horizontal padding
+                                  width: 37.5,
+                                  decoration: BoxDecoration(
+                                    color: publicCollectionActive
+                                        ? Colors.white
+                                        : Color(0xffeeeeee),
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  child: Icon(
+                                    Icons.collections,
+                                    size: 12,
+                                    color: publicCollectionActive
+                                        ? Color(0xff555555)
+                                        : Color(0xff999999),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        publicCollectionActive
+                            ? Row(
+                                children: <Widget>[
+                                  Text('create a collection',
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w500)),
+                                  SizedBox(width: 5),
+                                  Icon(Icons.add, size: 14)
+                                ],
+                              )
+                            : SizedBox()
+                      ],
                     )
                   ],
                 ),
               ),
-              RaisedButton(onPressed: () async {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute<dynamic>(
-                    builder: (BuildContext context) => JuntoMember(),
-                  ),
-                );
-              }),
-              RaisedButton(
-                onPressed: () async {
-                  await Provider.of<AuthenticationProvider>(context)
-                      .logoutUser();
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute<dynamic>(
-                      builder: (BuildContext context) => Welcome(),
-                    ),
-                  );
-                },
-                color: const Color(0xff4968BF),
-                child: const Text(
-                  'LOG OUT',
-                  style: TextStyle(
-                    // color: JuntoPalette.juntoBlue,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 14,
-                  ),
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(
-                    100,
-                  ),
-                ),
-              ),
 
-              // Container(
-              //   padding: EdgeInsets.symmetric(vertical: 15),
-              //   decoration: BoxDecoration(
-              //     border: Border(
-              //       bottom: BorderSide(
-              //         color: Color(0xffeeeeee),
-              //         width: .75,
+              // RaisedButton(
+              //   onPressed: () async {
+              //     await Provider.of<AuthenticationProvider>(context)
+              //         .logoutUser();
+              //     Navigator.pushReplacement(
+              //       context,
+              //       MaterialPageRoute<dynamic>(
+              //         builder: (BuildContext context) => Welcome(),
               //       ),
-              //       top: BorderSide(color: Color(0xffeeeeee), width: .75),
+              //     );
+              //   },
+              //   color: const Color(0xff4968BF),
+              //   child: const Text(
+              //     'LOG OUT',
+              //     style: TextStyle(
+              //       // color: JuntoPalette.juntoBlue,
+              //       color: Colors.white,
+              //       fontWeight: FontWeight.w700,
+              //       fontSize: 14,
               //     ),
               //   ),
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-              //     children: <Widget>[
-              //       Container(
-              //         width: MediaQuery.of(context).size.width * .5,
-              //         alignment: Alignment.center,
-              //         child: Text('EXPRESSIONS',
-              //             style: TextStyle(
-              //                 fontSize: 12, fontWeight: FontWeight.w700)),
-              //       ),
-              //       Container(
-              //         width: MediaQuery.of(context).size.width * .5,
-              //         alignment: Alignment.center,
-              //         child: Text('DEN',
-              //             style: TextStyle(
-              //                 fontSize: 12, fontWeight: FontWeight.w700)),
-              //       ),
-              //     ],
+              //   shape: RoundedRectangleBorder(
+              //     borderRadius: BorderRadius.circular(
+              //       100,
+              //     ),
               //   ),
-              // )
+              // ),
             ],
           ),
         ),

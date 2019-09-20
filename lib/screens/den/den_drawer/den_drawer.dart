@@ -16,23 +16,23 @@ class DenDrawer extends StatefulWidget {
 class _DenDrawerState extends State<DenDrawer> {
   UserProfile profile;
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _retrieveUserInfo();
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   _retrieveUserInfo();
+  // }
 
-  Future<void> _retrieveUserInfo() async {
-    final UserProvider _userProvider = Provider.of<UserProvider>(context);
-    try {
-      final UserProfile _profile = await _userProvider.readLocalUser();
-      setState(() {
-        profile = _profile;
-      });
-    } catch (error) {
-      debugPrint('Error occured in _retrieveUserInfo: $error');
-    }
-  }
+  // Future<void> _retrieveUserInfo() async {
+  //   final UserProvider _userProvider = Provider.of<UserProvider>(context);
+  //   try {
+  //     final UserProfile _profile = await _userProvider.readLocalUser();
+  //     setState(() {
+  //       profile = _profile;
+  //     });
+  //   } catch (error) {
+  //     debugPrint('Error occured in _retrieveUserInfo: $error');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +59,8 @@ class _DenDrawerState extends State<DenDrawer> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      'Hey ${profile.firstName}!',
+                      'Hey Eric!',
+                      // 'Hey ${profile.firstName}!',
                       style: const TextStyle(
                           fontSize: 17,
                           color: Color(0xff333333),
@@ -67,7 +68,7 @@ class _DenDrawerState extends State<DenDrawer> {
                     ),
                     ClipOval(
                       child: Image.asset(
-                        'assets/images/junto-mobile__logo.png',
+                        'assets/images/junto-mobile__eric.png',
                         height: 36.0,
                         width: 36.0,
                         fit: BoxFit.cover,
