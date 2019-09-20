@@ -117,12 +117,11 @@ class UserProviderCentralized implements UserProvider {
       String userAddress) async {
     final http.Response response =
         await JuntoHttp().get('/users/$userAddress/perspectives');
-    final Iterable<Map<String, dynamic>> _responseMap =
-        json.decode(response.body);
-    return _responseMap
-        .map(
-            (Map<String, dynamic> data) => CentralizedPerspective.fromMap(data))
+    final List<dynamic> _listData = json.decode(response.body);
+    final List<CentralizedPerspective> _results = _listData
+        .map((dynamic data) => CentralizedPerspective.fromMap(data))
         .toList(growable: false);
+    return _results;
   }
 
   @override
