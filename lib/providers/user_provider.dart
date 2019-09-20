@@ -48,6 +48,13 @@ abstract class UserProvider {
 
   /// Returns a list of perspectives owned by the given user
   Future<List<CentralizedPerspective>> userPerspectives(String userAddress);
+
+  Future<UserProfile> createPerspectiveUserEntry(String userAddress);
+
+  /// Uses a Delete request.
+  Future<void> deletePerspectiveUserEntry(String userAddress);
+
+  Future<List<UserProfile>> getPerspectiveUsers(String perspective);
 }
 
 class UserProviderCentralized implements UserProvider {
@@ -199,6 +206,21 @@ class UserProviderCentralized implements UserProvider {
       };
     }
   }
+
+  @override
+  Future<UserProfile> createPerspectiveUserEntry(String userAddress) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> deletePerspectiveUserEntry(String userAddress) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<UserProfile>> getPerspectiveUsers(String perspective) {
+    throw UnimplementedError();
+  }
 }
 
 @Deprecated('This class is not compatible with the centralized api')
@@ -326,6 +348,21 @@ class UserProviderHolo implements UserProvider {
 
   @override
   Future<List<CentralizedPerspective>> userPerspectives(String userAddress) {
+    throw UnimplementedError('This function is not supported by the holo api');
+  }
+
+  @override
+  Future<UserProfile> createPerspectiveUserEntry(String userAddress) {
+    throw UnimplementedError('This function is not supported by the holo api');
+  }
+
+  @override
+  Future<void> deletePerspectiveUserEntry(String userAddress) {
+    throw UnimplementedError('This function is not supported by the holo api');
+  }
+
+  @override
+  Future<List<UserProfile>> getPerspectiveUsers(String perspective) {
     throw UnimplementedError('This function is not supported by the holo api');
   }
 }
