@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:junto_beta_mobile/API.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/utils/form-validation.dart';
 // import 'package:google_maps_webservice/places.dart';
@@ -25,24 +26,22 @@ class _CreateEventState extends State<CreateEvent> {
   TextEditingController locationController;
   TextEditingController detailsController;
 
-  var _startDate = DateTime.now();
-  var startPickerOpen = false;
-  var startMinute;
-  var startHour;
-  var startDay;
-  var startMonth;
-  var startYear;
-  var startPeriod = '';
+  DateTime _startDate = DateTime.now();
+  bool startPickerOpen = false;
+  String startMinute;
+  String startHour;
+  String startDay;
+  String startMonth;
+  String startYear;
+  String startPeriod = '';
 
-  var endPickerOpen = false;
-  var endMinute = '';
-  var endHour = '';
-  var endDay = '';
-  var endMonth = '';
-  var endYear = '';
-  var endPeriod = '';
-
-
+  bool endPickerOpen = false;
+  String endMinute = '';
+  String endHour = '';
+  String endDay = '';
+  String endMonth = '';
+  String endYear = '';
+  String endPeriod = '';
 
   @override
   void initState() {
@@ -69,7 +68,7 @@ class _CreateEventState extends State<CreateEvent> {
     super.dispose();
   }
 
-  transformHour(hour, period) {
+  int transformHour(int hour, String period) {
     if (hour < 12 && hour != 0) {
       if (period == 'start') {
         setState(() {
@@ -115,9 +114,10 @@ class _CreateEventState extends State<CreateEvent> {
       }
       return hour;
     }
+    return 0;
   }
 
-  transformMinute(minute) {
+  String transformMinute(int minute) {
     if (minute < 10) {
       return '0' + minute.toString();
     } else {
@@ -125,7 +125,7 @@ class _CreateEventState extends State<CreateEvent> {
     }
   }
 
-  transformMonth(month) {
+  String transformMonth(int month) {
     switch (month) {
       case 1:
         return 'Jan';
@@ -164,9 +164,10 @@ class _CreateEventState extends State<CreateEvent> {
         return 'Dec';
         break;
     }
+    return '';
   }
 
-  _updateDate(date, period) {
+  void _updateDate(DateTime date, String period) {
     print(DateTime.now());
     setState(() {
       if (period == 'start') {
@@ -211,7 +212,7 @@ class _CreateEventState extends State<CreateEvent> {
                         bool isFocused,
                       }) =>
                           null,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Name of event',
                         hintStyle: TextStyle(
@@ -224,7 +225,7 @@ class _CreateEventState extends State<CreateEvent> {
                       cursorWidth: 2,
                       maxLines: null,
                       maxLength: 140,
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 17,
                           color: Color(0xff333333),
                           fontWeight: FontWeight.w700),
@@ -235,11 +236,11 @@ class _CreateEventState extends State<CreateEvent> {
                   //   color: Color(0xffeeeeee),
                   // ),
                   Container(
-                    color: Color(0xfffbfbfb),
+                    color: const Color(0xfffbfbfb),
                     height: 200,
                     width: MediaQuery.of(context).size.width,
                     child: Center(
-                      child: Text('Add a cover photo (optional)'),
+                      child: const Text('Add a cover photo (optional)'),
                     ),
                   ),
                   GestureDetector(
@@ -259,12 +260,12 @@ class _CreateEventState extends State<CreateEvent> {
                     },
                     child: Container(
                       color: Colors.white,
-                      padding: EdgeInsets.symmetric(vertical: 15),
+                      padding: const EdgeInsets.symmetric(vertical: 15),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text(
+                          const Text(
                             'Start Date',
                             style: TextStyle(
                                 fontSize: 17, fontWeight: FontWeight.w600),
@@ -283,7 +284,7 @@ class _CreateEventState extends State<CreateEvent> {
                                     startMinute +
                                     ' ' +
                                     startPeriod,
-                                style: TextStyle(fontSize: 17),
+                                style: const TextStyle(fontSize: 17),
                               )
                             ],
                           )
@@ -304,7 +305,7 @@ class _CreateEventState extends State<CreateEvent> {
                             },
                           ),
                         )
-                      : SizedBox(),
+                      : const SizedBox(),
                   GestureDetector(
                     onTap: () {
                       switch (endPickerOpen) {
@@ -322,18 +323,18 @@ class _CreateEventState extends State<CreateEvent> {
                     },
                     child: Container(
                       color: Colors.white,
-                      padding: EdgeInsets.symmetric(vertical: 15),
+                      padding: const EdgeInsets.symmetric(vertical: 15),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text(
+                          const Text(
                             'End Date',
                             style: TextStyle(
                                 fontSize: 17, fontWeight: FontWeight.w600),
                           ),
                           endDay == ''
-                              ? SizedBox()
+                              ? const SizedBox()
                               : Row(
                                   children: <Widget>[
                                     Text(
@@ -348,7 +349,7 @@ class _CreateEventState extends State<CreateEvent> {
                                           endMinute +
                                           ' ' +
                                           endPeriod,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 17,
                                       ),
                                     )
@@ -369,10 +370,10 @@ class _CreateEventState extends State<CreateEvent> {
                             },
                           ),
                         )
-                      : SizedBox(),
+                      : const SizedBox(),
                   Container(
-                    padding: EdgeInsets.symmetric(vertical: 15),
-                    child: Text(
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    child: const Text(
                       'Location',
                       style: TextStyle(
                           color: Color(0xff333333),
@@ -381,8 +382,8 @@ class _CreateEventState extends State<CreateEvent> {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(vertical: 15),
-                    child: Text(
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    child: const Text(
                       'Details',
                       style: TextStyle(
                           color: Color(0xff333333),
@@ -391,7 +392,7 @@ class _CreateEventState extends State<CreateEvent> {
                     ),
                   ),
                   Container(
-                    color: Color(0xfffbfbfb),
+                    color: const Color(0xfffbfbfb),
                     constraints:
                         const BoxConstraints(minHeight: 140, maxHeight: 240),
                     padding: const EdgeInsets.only(bottom: 40),
@@ -405,7 +406,7 @@ class _CreateEventState extends State<CreateEvent> {
                         bool isFocused,
                       }) =>
                           null,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: InputBorder.none,
                       ),
                       cursorColor: JuntoPalette.juntoGrey,
@@ -415,7 +416,7 @@ class _CreateEventState extends State<CreateEvent> {
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
-                        color: Color(0xff333333),
+                        color: const Color(0xff333333),
                       ),
                     ),
                   )

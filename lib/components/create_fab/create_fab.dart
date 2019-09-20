@@ -49,7 +49,7 @@ class CreateFAB extends StatelessWidget {
                 height: 44,
                 width: 44,
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
+                  gradient: const LinearGradient(
                     begin: Alignment.bottomLeft,
                     end: Alignment.topRight,
                     stops: <double>[0.1, 0.9],
@@ -57,7 +57,7 @@ class CreateFAB extends StatelessWidget {
                       JuntoPalette.juntoSecondary,
                       JuntoPalette.juntoPrimary,
                     ],
-                  ),                  
+                  ),
                   color: Colors.white.withOpacity(.7),
                   border: Border.all(
                     color: Colors.white,

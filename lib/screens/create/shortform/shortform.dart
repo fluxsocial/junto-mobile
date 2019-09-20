@@ -17,6 +17,8 @@ class CreateShortform extends StatefulWidget {
 class CreateShortformState extends State<CreateShortform> {
   Color gradientOne;
   Color gradientTwo;
+
+  // ignore: unused_field
   String _currentBackground = 'none';
   TextEditingController _bodyController;
 
@@ -49,7 +51,7 @@ class CreateShortformState extends State<CreateShortform> {
   Widget build(BuildContext context) {
     // final String _bodyValue = _bodyController.text
 
-    _setBackground(background) {
+    void _setBackground(String background) {
       if (background == 'none') {
         setState(() {
           gradientOne = Colors.white;
@@ -97,7 +99,7 @@ class CreateShortformState extends State<CreateShortform> {
       }
     }
 
-    _buildBackgroundPicker(colorOne, colorTwo) {
+    Widget _buildBackgroundPicker(Color colorOne, Color colorTwo) {
       return Container(
         decoration: BoxDecoration(
           border: Border.all(
@@ -107,7 +109,7 @@ class CreateShortformState extends State<CreateShortform> {
           gradient: LinearGradient(
             begin: Alignment.bottomLeft,
             end: Alignment.topRight,
-            stops: <double>[0.1, 0.9],
+            stops: const <double>[0.1, 0.9],
             colors: <Color>[colorOne, colorTwo],
           ),
         ),
@@ -195,13 +197,13 @@ class CreateShortformState extends State<CreateShortform> {
                       bool isFocused,
                     }) =>
                         null,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: InputBorder.none,
                     ),
                     cursorColor: Colors.white,
                     cursorWidth: 2,
                     maxLines: null,
-                    style: TextStyle(
+                    style: const TextStyle(
                         color: Colors.white,
                         fontSize: 24,
                         fontWeight: FontWeight.w700),

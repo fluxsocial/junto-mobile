@@ -26,7 +26,7 @@ class ExpressionOpenAppbar extends StatelessWidget {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(right: 10),
+              margin: const EdgeInsets.only(right: 10),
               child: Icon(CustomIcons.half_lotus, size: 14),
             )
           ],

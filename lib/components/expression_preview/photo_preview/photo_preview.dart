@@ -32,7 +32,8 @@ class PhotoPreview extends StatelessWidget {
       children: <Widget>[
         Container(
           width: MediaQuery.of(context).size.width,
-          child: Image.asset(expression.expression.expressionContent['image'], fit: BoxFit.fitWidth),
+          child: Image.asset(expression.expression.expressionContent['image'],
+              fit: BoxFit.fitWidth),
         ),
         // _generateCaption()
       ],

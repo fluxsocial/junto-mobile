@@ -320,6 +320,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
                                       // hintText: 'reply',
+
                                     ),
                                     maxLines: null,
                                     cursorColor: JuntoPalette.juntoGrey,
@@ -332,6 +333,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                                   ),
                                 ),
                               ],
+
                             ),
                           ),
                         ],

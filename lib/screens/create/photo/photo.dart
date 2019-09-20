@@ -223,9 +223,8 @@ class CreatePhotoState extends State<CreatePhoto> {
                     );
                   },
                   child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Text('BACK')
-                  ),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: const Text('BACK')),
                 ),
                 GestureDetector(
                   onTap: () {
@@ -233,16 +232,15 @@ class CreatePhotoState extends State<CreatePhoto> {
                   },
                   child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: Text('LIBRARY')),
+                      child: const Text('LIBRARY')),
                 ),
                 GestureDetector(
                   onTap: () {
                     _cropImage(_imageFile);
                   },
                   child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Text('CROP')
-                  ),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: const Text('CROP')),
                 ),
                 // GestureDetector(
                 //   onTap: () {
@@ -286,7 +284,7 @@ class CreatePhotoState extends State<CreatePhoto> {
                     bool isFocused,
                   }) =>
                       null,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: InputBorder.none,
                     hintText: 'Write a caption (optional)',
                   ),

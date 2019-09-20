@@ -177,12 +177,13 @@ class PacksProviderImpl implements PacksProvider {
       final Map<String, dynamic> responseBody =
           deserializeHoloJson(serverResponse.body);
       if (responseBody['result']['Ok'] is List) {
+        // ignore: unused_local_variable
         final List<PackResponse> _results = <PackResponse>[];
 //        responseBody['result']['Ok']?.forEach((dynamic data) {
 //          _results.add(PackResponse.fromMap(data));
 //        }).toList(growable: false);
 //        return _results;
-      print(responseBody['result']['Ok']);
+        print(responseBody['result']['Ok']);
       }
     } catch (error) {
       debugPrint('Get pack members error $error');

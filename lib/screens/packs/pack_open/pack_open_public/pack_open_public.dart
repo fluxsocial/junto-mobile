@@ -19,7 +19,7 @@ class PackOpenPublic extends StatefulWidget {
 }
 
 class _PackOpenPublicState extends State<PackOpenPublic> with HideFab {
-  List<Expression> expression = [
+  List<Expression> expression = <Expression>[
     Expression(
       expression: ExpressionContent(
         address: '0xfee32zokie8',
@@ -144,7 +144,7 @@ class _PackOpenPublicState extends State<PackOpenPublic> with HideFab {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(controller: _packOpenPublicController, children: [
+    return ListView(controller: _packOpenPublicController, children: <Widget>[
       ExpressionPreview(expression: expression[0]),
       ExpressionPreview(expression: expression[1]),
       ExpressionPreview(expression: expression[0]),

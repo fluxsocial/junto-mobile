@@ -35,7 +35,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   ScrollController _hideFABController;
   ValueNotifier<bool> _isVisible;
 
-  List<Expression> expressions = [
+  List<Expression> expressions = <Expression>[
     Expression(
       expression: ExpressionContent(
         address: '0xfee32zokie8',
@@ -200,11 +200,14 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Container(
-                          child: Text(widget.sphereTitle,
-                              style: TextStyle(
-                                  color: JuntoPalette.juntoGrey,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w700)),
+                          child: Text(
+                            widget.sphereTitle,
+                            style: const TextStyle(
+                              color: JuntoPalette.juntoGrey,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
                         ),
                       ],
                     )
@@ -212,16 +215,18 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                 ),
                 const SizedBox(height: 15),
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: 12),
-                  margin: EdgeInsets.only(bottom: 15),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  margin: const EdgeInsets.only(bottom: 15),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                      gradient: LinearGradient(colors: [
-                        JuntoPalette.juntoSecondary,
-                        JuntoPalette.juntoPrimary
-                      ]),
+                      gradient: const LinearGradient(
+                        colors: <Color>[
+                          JuntoPalette.juntoSecondary,
+                          JuntoPalette.juntoPrimary
+                        ],
+                      ),
                       borderRadius: BorderRadius.circular(10)),
-                  child: Text(
+                  child: const Text(
                     'Join Sphere',
                     style: TextStyle(
                         color: Colors.white,
@@ -245,7 +250,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                                 fit: BoxFit.cover,
                               ),
                             ),
-                            SizedBox(width: 5),
+                            const SizedBox(width: 5),
                             ClipOval(
                               child: Image.asset(
                                 'assets/images/junto-mobile__riley.png',
@@ -254,7 +259,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                                 fit: BoxFit.cover,
                               ),
                             ),
-                            SizedBox(width: 5),
+                            const SizedBox(width: 5),
                             ClipOval(
                               child: Image.asset(
                                 'assets/images/junto-mobile__yaz.png',
@@ -263,7 +268,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                                 fit: BoxFit.cover,
                               ),
                             ),
-                            SizedBox(width: 5),
+                            const SizedBox(width: 5),
                             ClipOval(
                               child: Image.asset(
                                 'assets/images/junto-mobile__josh.png',
@@ -272,7 +277,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                                 fit: BoxFit.cover,
                               ),
                             ),
-                            SizedBox(width: 5),
+                            const SizedBox(width: 5),
                             ClipOval(
                               child: Image.asset(
                                 'assets/images/junto-mobile__eric.png',
@@ -281,7 +286,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                                 fit: BoxFit.cover,
                               ),
                             ),
-                            SizedBox(width: 5),
+                            const SizedBox(width: 5),
                             ClipOval(
                               child: Image.asset(
                                 'assets/images/junto-mobile__riley.png',
@@ -290,7 +295,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                                 fit: BoxFit.cover,
                               ),
                             ),
-                            SizedBox(width: 5),
+                            const SizedBox(width: 5),
                             ClipOval(
                               child: Image.asset(
                                 'assets/images/junto-mobile__yaz.png',
@@ -299,7 +304,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                                 fit: BoxFit.cover,
                               ),
                             ),
-                            SizedBox(width: 5),
+                            const SizedBox(width: 5),
                             ClipOval(
                               child: Image.asset(
                                 'assets/images/junto-mobile__josh.png',
@@ -310,16 +315,17 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                             ),
                           ],
                         ),
-                        SizedBox(height: 5),
+                        const SizedBox(height: 5),
                         Container(
                           child: Text(widget.sphereMembers + ' members',
                               style: JuntoStyles.title),
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Container(
                           child: Text(widget.sphereDescription,
                               textAlign: TextAlign.start,
-                              style: TextStyle(fontSize: 15, height: 1.4)),
+                              style:
+                                  const TextStyle(fontSize: 15, height: 1.4)),
                         ),
                       ],
                     ),
@@ -329,7 +335,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             decoration: const BoxDecoration(
               border: Border(
                 bottom: BorderSide(
@@ -355,14 +361,14 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                       Icon(
                         Icons.keyboard_arrow_right,
                         size: 20,
-                        color: Color(0xff555555),
+                        color: const Color(0xff555555),
                       )
                     ]),
               ],
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             decoration: const BoxDecoration(
               border: Border(
                 bottom: BorderSide(
@@ -380,7 +386,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                   children: <Widget>[
                     Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                        children: <Widget>[
                           Text('Facilitators', style: JuntoStyles.header),
                           const SizedBox(height: 10),
                           const Text('Eric Yang and 7 others'),
@@ -400,7 +406,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
           ),
           ListView(
             shrinkWrap: true,
-            physics: ClampingScrollPhysics(),
+            physics: const ClampingScrollPhysics(),
             children: <Widget>[
               ExpressionPreview(expression: expressions[0]),
               ExpressionPreview(expression: expressions[1]),

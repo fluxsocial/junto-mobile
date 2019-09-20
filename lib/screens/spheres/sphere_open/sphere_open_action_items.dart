@@ -16,7 +16,7 @@ class SphereOpenActionItems {
               child: const Text(
                 'Leave Sphere',
               ),
-            ),            
+            ),
             CupertinoActionSheetAction(
               onPressed: () {},
               child: const Text('Report Sphere'),

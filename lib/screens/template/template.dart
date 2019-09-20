@@ -38,6 +38,7 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
   // Controller for scroll
   ScrollController _hideFABController;
   ValueNotifier<bool> _isVisible;
+
   @override
   void initState() {
     super.initState();
@@ -67,7 +68,7 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [
+    return Stack(children: <Widget>[
       Scaffold(
         key: _juntoTemplateKey,
         backgroundColor: Colors.white,
@@ -127,7 +128,7 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
   }
 
   // render main body of template; i.e. collective, spheres, packs, or den
-  _renderBody() {
+  Widget _renderBody() {
     switch (_currentScreen) {
       case 'collective':
         return JuntoCollective(
@@ -140,6 +141,7 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
       case 'den':
         return JuntoDen();
     }
+    return Container();
   }
 
   // switch screen and update appbar title
@@ -215,7 +217,7 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
                               bool isFocused,
                             }) =>
                                 null,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               border: InputBorder.none,
                               hintText: '# filter by channel',
                             ),
@@ -293,31 +295,34 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
                           children: _channels
                               .map(
                                 (String channel) => GestureDetector(
-                                  onDoubleTap: () {
-                                    _removeChannel(state, channel);
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      border: Border.all(
-                                        color: JuntoPalette.juntoGrey,
-                                        width: 1,
+                                      onDoubleTap: () {
+                                        _removeChannel(state, channel);
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          border: Border.all(
+                                            color: JuntoPalette.juntoGrey,
+                                            width: 1,
+                                          ),
+                                        ),
+                                        margin:
+                                            const EdgeInsets.only(right: 10),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal:
+                                              JuntoStyles.horizontalPadding,
+                                          vertical: 5,
+                                        ),
+                                        child: Text(
+                                          channel,
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                    margin: const EdgeInsets.only(right: 10),
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: JuntoStyles.horizontalPadding,
-                                      vertical: 5,
-                                    ),
-                                    child: Text(
-                                      channel,
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                  ),
-                                ),
                               )
                               .toList(),
                         ),

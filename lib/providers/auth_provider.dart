@@ -41,7 +41,6 @@ abstract class AuthenticationProvider {
 class AuthenticationCentralized implements AuthenticationProvider {
   @override
   Future<UserProfile> loginUser(UserAuthLoginDetails details) async {
-    final LocalStorage _storage = LocalStorage('user-details');
     final http.Response response = await JuntoHttp().post(
       '/auth',
       body: <String, String>{
@@ -58,11 +57,7 @@ class AuthenticationCentralized implements AuthenticationProvider {
 
       // Once we authenticate the user, we can get their [UserProfile].
       final UserProfile _userData = await _retrieveUserByEmail(details.email);
-      _storage.ready.then((bool ready) {
-        if (ready) {
-          _storage.setItem('data', json.encode(_userData.toMap()));
-        }
-      });
+      await _setLocalUserProfile(_userData);
       return _userData;
     } else {
       final Map<String, dynamic> errorResponse =
@@ -106,6 +101,7 @@ class AuthenticationCentralized implements AuthenticationProvider {
         password: details.password,
       ),
     );
+    await _setLocalUserProfile(_userData.user);
     return _userData;
   }
 
@@ -160,6 +156,19 @@ class AuthenticationCentralized implements AuthenticationProvider {
     }
     // Throw an exception if the user does not have a profile.
     throw const JuntoException('Unable to retrive user profile');
+  }
+
+  Future<void> _setLocalUserProfile(UserProfile profile) async {
+    final LocalStorage _storage = LocalStorage('user-details');
+    final bool ready = await _storage.ready;
+    if (ready) {
+      _storage.setItem(
+        'data',
+        json.encode(
+          profile.toMap(),
+        ),
+      );
+    }
   }
 }
 

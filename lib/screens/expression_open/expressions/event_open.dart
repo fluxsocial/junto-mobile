@@ -34,34 +34,35 @@ class EventOpen extends StatelessWidget {
               children: <Widget>[
                 Text(
                   eventTitle,
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: JuntoPalette.juntoGrey,
                       fontSize: 20,
                       fontWeight: FontWeight.w700),
                 ),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     border: Border(
                       bottom:
                           BorderSide(color: JuntoPalette.juntoFade, width: .75),
                     ),
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Container(
                   alignment: Alignment.center,
                   height: 50,
                   // width: MediaQuery.of(context).size.width * .8,
                   // height: 50,
                   decoration: BoxDecoration(
-                      gradient: LinearGradient(colors: [
-                        JuntoPalette.juntoSecondary,
-                        JuntoPalette.juntoPrimary
-                      ]),
-                      borderRadius: BorderRadius.circular(10)),
+                    gradient: const LinearGradient(colors: <Color>[
+                      JuntoPalette.juntoSecondary,
+                      JuntoPalette.juntoPrimary
+                    ]),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
 
-                  child: Text(
+                  child: const Text(
                     'RSVP',
                     style: TextStyle(
                         color: Colors.white,
@@ -69,9 +70,9 @@ class EventOpen extends StatelessWidget {
                         fontWeight: FontWeight.w700),
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     border: Border(
                       bottom:
                           BorderSide(color: JuntoPalette.juntoFade, width: .75),
@@ -81,17 +82,17 @@ class EventOpen extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Text(
                       eventTime,
-                      style:
-                          TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
+                      style: const TextStyle(
+                          fontSize: 17, fontWeight: FontWeight.w600),
                     ),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     Text(
                       eventLocation,
-                      style:
-                          TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
+                      style: const TextStyle(
+                          fontSize: 17, fontWeight: FontWeight.w600),
                     ),
                     // SizedBox(height: 5),
                     // Text(
@@ -99,14 +100,14 @@ class EventOpen extends StatelessWidget {
                     //   style:
                     //       TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
                     // ),
-                    SizedBox(height: 5),
-                    Text(
+                    const SizedBox(height: 5),
+                    const Text(
                       '90 members going',
                       style:
                           TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
                     ),
 
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     Row(
                       children: <Widget>[
                         ClipOval(
@@ -117,7 +118,7 @@ class EventOpen extends StatelessWidget {
                             fit: BoxFit.cover,
                           ),
                         ),
-                        SizedBox(width: 5),
+                        const SizedBox(width: 5),
                         ClipOval(
                           child: Image.asset(
                             'assets/images/junto-mobile__riley.png',
@@ -126,7 +127,7 @@ class EventOpen extends StatelessWidget {
                             fit: BoxFit.cover,
                           ),
                         ),
-                        SizedBox(width: 5),
+                        const SizedBox(width: 5),
                         ClipOval(
                           child: Image.asset(
                             'assets/images/junto-mobile__yaz.png',
@@ -135,7 +136,7 @@ class EventOpen extends StatelessWidget {
                             fit: BoxFit.cover,
                           ),
                         ),
-                        SizedBox(width: 5),
+                        const SizedBox(width: 5),
                         ClipOval(
                           child: Image.asset(
                             'assets/images/junto-mobile__josh.png',
@@ -144,7 +145,7 @@ class EventOpen extends StatelessWidget {
                             fit: BoxFit.cover,
                           ),
                         ),
-                        SizedBox(width: 5),
+                        const SizedBox(width: 5),
                         ClipOval(
                           child: Image.asset(
                             'assets/images/junto-mobile__dora.png',
@@ -152,7 +153,8 @@ class EventOpen extends StatelessWidget {
                             width: 33.0,
                             fit: BoxFit.cover,
                           ),
-                        ),                        SizedBox(width: 5),
+                        ),
+                        const SizedBox(width: 5),
                         ClipOval(
                           child: Image.asset(
                             'assets/images/junto-mobile__drea.png',
@@ -160,11 +162,10 @@ class EventOpen extends StatelessWidget {
                             width: 33.0,
                             fit: BoxFit.cover,
                           ),
-                        ),  
-                                            
+                        ),
                       ],
                     ),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     Text(
                       eventDescription,
                       style: TextStyle(
