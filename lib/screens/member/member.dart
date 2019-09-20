@@ -97,37 +97,37 @@ class JuntoMember extends StatelessWidget {
                           child: GestureDetector(
                             onTap: () {
                               showModalBottomSheet(
-                                  context: context,
-                                  builder: (context) => Container(
-                                        color: Color(0xff737373),
-                                        child: Container(
-                                          height: 240,
-                                          padding: EdgeInsets.all(10),
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.only(
-                                              topLeft:
-                                                  const Radius.circular(10),
-                                              topRight: Radius.circular(10),
-                                            ),
-                                          ),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              ListTile(
-                                                title: Text('Follow'),
-                                              ),
-                                              ListTile(
-                                                title: Text('Connect'),
-                                              ),
-                                              ListTile(
-                                                title: Text('Join Pack'),
-                                              ),
-                                            ],
-                                          ),
+                                context: context,
+                                builder: (context) => Container(
+                                  color: Color(0xff737373),
+                                  child: Container(
+                                    height: 240,
+                                    padding: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: const Radius.circular(10),
+                                        topRight: Radius.circular(10),
+                                      ),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        ListTile(
+                                          title: Text('Follow'),
                                         ),
-                                      ));
+                                        ListTile(
+                                          title: Text('Connect'),
+                                        ),
+                                        ListTile(
+                                          title: Text('Join Pack'),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
                             },
                             child: Container(
                               padding: EdgeInsets.symmetric(

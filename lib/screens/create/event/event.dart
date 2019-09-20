@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/utils/form-validation.dart';
-import 'package:google_maps_webservice/places.dart';
-import 'package:flutter_google_places/flutter_google_places.dart';
+// import 'package:google_maps_webservice/places.dart';
+// import 'package:flutter_google_places/flutter_google_places.dart';
 
 const kGoogleApiKey = 'AIzaSyAhV0-bpFqLYSV8xmFJ7JAR5bupoLfTaO8';
 
-GoogleMapsPlaces _places = GoogleMapsPlaces(apiKey: kGoogleApiKey);
+// GoogleMapsPlaces _places = GoogleMapsPlaces(apiKey: kGoogleApiKey);
 
 /// Allows the user to create an event
 class CreateEvent extends StatefulWidget {
