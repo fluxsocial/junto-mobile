@@ -1,3 +1,4 @@
+import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:meta/meta.dart';
 
@@ -98,7 +99,7 @@ class CentralizedSphere {
   final List<String> members;
 
   Map<String, dynamic> toMap() {
-    return {
+    return <String, dynamic>{
       'name': name,
       'privacy': privacy,
       'sphere_handle': sphereHandle,
@@ -161,7 +162,7 @@ class CentralizedSphereResponse {
   final String privacy;
   final String groupType;
   final GroupData groupData;
-  final List<_Users> users;
+  final List<Users> users;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -174,63 +175,29 @@ class CentralizedSphereResponse {
       data['group_data'] = groupData.toJson();
     }
     if (users != null) {
-      data['users'] = users.map((_Users user) => user.toJson()).toList();
+      data['users'] = users.map((Users user) => user.toJson()).toList();
     }
     return data;
   }
 
-  static List<_Users> _parseUsers(List<dynamic> _listData) {
+  static List<Users> _parseUsers(List<dynamic> _listData) {
     if (_listData != null && _listData.isNotEmpty) {
       _listData.map((dynamic userData) {
-        return _Users.fromJson(userData);
+        return Users.fromJson(userData);
       }).toList();
     }
-    return <_Users>[];
+    return <Users>[];
   }
 }
 
-class GroupData {
-  GroupData({
-    this.description,
-    this.name,
-    this.photo,
-    this.principles,
-    this.sphereHandle,
-  });
-
-  GroupData.fromJson(Map<String, dynamic> json) {
-    description = json['description'];
-    name = json['name'];
-    photo = json['photo'];
-    principles = json['principles'];
-    sphereHandle = json['sphere_handle'];
-  }
-
-  String description;
-  String name;
-  String photo;
-  String principles;
-  String sphereHandle;
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['description'] = description;
-    data['name'] = name;
-    data['photo'] = photo;
-    data['principles'] = principles;
-    data['sphere_handle'] = sphereHandle;
-    return data;
-  }
-}
-
-class _Users {
-  _Users._({
+class Users {
+  Users._({
     @required this.user,
     @required this.permissionLevel,
   });
 
-  factory _Users.fromJson(Map<String, dynamic> json) {
-    return _Users._(
+  factory Users.fromJson(Map<String, dynamic> json) {
+    return Users._(
       user: UserProfile.fromMap(json['user']),
       permissionLevel: json['permission_level'],
     );
