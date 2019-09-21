@@ -52,6 +52,17 @@ class JuntoHttp {
     );
   }
 
+  Future<http.Response> delete(
+    String resource, {
+    Map<String, String> headers,
+    Map<String, dynamic> body,
+  }) async {
+    return http.delete(
+      _encodeUrl(resource),
+      headers: await _withPersistentHeaders(headers),
+    );
+  }
+
   Future<http.Response> post(
     String resource, {
     Map<String, String> headers,
@@ -73,20 +84,22 @@ class JuntoHttp {
     };
   }
 
-  /// Parses the [http.Response] sent back to the client. Function takes the repsonse and verifies the
+  /// Parses the [http.Response] sent back to the client. Function takes the response and verifies the
   /// status code. Since holochain sends all responses with a `response.statusCode == 200`, we consider all
   /// other status codes to be errors.
   /// Should the response body contain the `Ok` key, it returned as a Map. If the response body contains the
   /// `Err` key, an exception is thrown with the error message.
-  /// Note: Since Holochain is only able to process string, the repsone is parsed using [deserializeHoloJson];
+  /// Note: Since Holochain is only able to process string, the response is
+  /// parsed using [deserializeHoloJson];
   static dynamic handleResponse(http.Response response) {
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseBody =
-          deserializeHoloJson(response.body);
+      final dynamic responseBody = deserializeHoloJson(response.body);
       if (responseBody != null) {
         return responseBody;
       }
-
+      if (responseBody['error']) {
+        throw JuntoException("Something went wrong ${responseBody['error']}");
+      }
       throw const JuntoException('Error occured parsing response');
     }
     if (response.statusCode == 400) {
