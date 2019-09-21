@@ -109,7 +109,7 @@ class JuntoDenState extends State<JuntoDen> {
                           child: ClipOval(
                             child: Image.asset(
                               profilePicture,
-                              fit: BoxFit.cover,
+                              fit: BoxFit.fill,
                             ),
                           ),
                         ),
