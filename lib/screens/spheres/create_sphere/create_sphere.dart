@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/models/sphere.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/providers/provider.dart';
 import 'package:junto_beta_mobile/screens/spheres/create_sphere/create_sphere_next/create_sphere_next.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/styles.dart';
+import 'package:provider/provider.dart';
 
 // This class renders a widget that enables the user to create a sphere
 class CreateSphere extends StatefulWidget {
@@ -26,12 +30,22 @@ class _CreateSphereState extends State<CreateSphere> {
   }
 
   Future<void> _createSphere() async {
-    // ignore: unused_local_variable
+    final UserProfile _profile =
+        await Provider.of<UserProvider>(context).readLocalUser();
     final String sphereName = _textEditingController.value.text;
-    // assert(sphereName.isNotEmpty);
-    // TODO(Nash): At the moment we don't have an endpoint for creating a sphere/group.
-    // Once this is online, this function will be impl
-    Navigator.pop(context);
+    final CentralizedSphere sphere = CentralizedSphere(
+      name: sphereName,
+      description: '',
+      facilitators: [
+        _profile.address,
+      ],
+      photo: '',
+      members: <String>[],
+      principles: "Don't be a horrible human being",
+      sphereHandle: sphereName,
+      privacy: '',
+    );
+    Navigator.of(context).push(CreateSphereNext.route(sphere));
   }
 
   @override
@@ -57,7 +71,7 @@ class _CreateSphereState extends State<CreateSphere> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   GestureDetector(
-                    onTap: _createSphere,
+                    onTap: () => Navigator.of(context).pop(),
                     child: const Icon(
                       CustomIcons.back_arrow_left,
                       color: JuntoPalette.juntoSleek,
@@ -65,14 +79,7 @@ class _CreateSphereState extends State<CreateSphere> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute<dynamic>(
-                          builder: (BuildContext context) => CreateSphereNext(),
-                        ),
-                      );
-                    },
+                    onTap: _createSphere,
                     child: const Text('next', style: JuntoStyles.body),
                   )
                 ],

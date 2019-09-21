@@ -1,3 +1,4 @@
+import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:meta/meta.dart';
 
 class Sphere {
@@ -59,5 +60,191 @@ class Sphere {
             'Holochain is a framework to build scalable, distributed applications.',
       ),
     ];
+  }
+}
+
+class CentralizedSphere {
+  CentralizedSphere({
+    this.name,
+    this.privacy,
+    this.sphereHandle,
+    this.description,
+    this.principles,
+    this.facilitators,
+    this.photo,
+    this.members,
+  });
+
+  factory CentralizedSphere.fromJson(Map<String, dynamic> json) {
+    return CentralizedSphere(
+      name: json['name'],
+      privacy: json['privacy'],
+      sphereHandle: json['sphere_handle'],
+      description: json['description'],
+      principles: json['principles'],
+      facilitators: json['facilitators'].cast<String>(),
+      photo: json['photo'],
+      members: json['members'].cast<String>(),
+    );
+  }
+
+  final String name;
+  final String privacy;
+  final String sphereHandle;
+  final String description;
+  final String principles;
+  final List<String> facilitators;
+  final String photo;
+  final List<String> members;
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'privacy': privacy,
+      'sphere_handle': sphereHandle,
+      'description': description,
+      'principles': principles,
+      'facilitators': facilitators,
+      'photo': photo,
+      'members': members,
+    };
+  }
+
+  CentralizedSphere copyWith(
+      {String name,
+      String privacy,
+      String sphereHandle,
+      String description,
+      String principles,
+      List<String> facilitators,
+      String photo,
+      List<String> members}) {
+    return CentralizedSphere(
+        name: name ?? this.name,
+        privacy: privacy ?? this.privacy,
+        sphereHandle: sphereHandle ?? this.sphereHandle,
+        description: description ?? this.description,
+        members: members ?? this.members,
+        photo: photo ?? this.photo,
+        facilitators: facilitators ?? this.facilitators,
+        principles: principles ?? this.principles);
+  }
+}
+
+/// Response sent back from the server when creating a sphere
+class CentralizedSphereResponse {
+  CentralizedSphereResponse({
+    @required this.address,
+    @required this.creator,
+    @required this.createdAt,
+    @required this.privacy,
+    @required this.groupType,
+    @required this.groupData,
+    @required this.users,
+  });
+
+  factory CentralizedSphereResponse.fromJson(Map<String, dynamic> json) {
+    return CentralizedSphereResponse(
+      address: json['address'],
+      creator: json['creator'],
+      createdAt: DateTime.parse(json['created_at']),
+      privacy: json['privacy'],
+      groupType: json['group_type'],
+      groupData: GroupData.fromJson(json['group_data']),
+      users: _parseUsers(json['users']),
+    );
+  }
+
+  final String address;
+  final String creator;
+  final DateTime createdAt;
+  final String privacy;
+  final String groupType;
+  final GroupData groupData;
+  final List<_Users> users;
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['address'] = address;
+    data['creator'] = creator;
+    data['created_at'] = createdAt.toIso8601String();
+    data['privacy'] = privacy;
+    data['group_type'] = groupType;
+    if (groupData != null) {
+      data['group_data'] = groupData.toJson();
+    }
+    if (users != null) {
+      data['users'] = users.map((_Users user) => user.toJson()).toList();
+    }
+    return data;
+  }
+
+  static List<_Users> _parseUsers(List<dynamic> _listData) {
+    if (_listData != null && _listData.isNotEmpty) {
+      _listData.map((dynamic userData) {
+        return _Users.fromJson(userData);
+      }).toList();
+    }
+    return <_Users>[];
+  }
+}
+
+class GroupData {
+  GroupData({
+    this.description,
+    this.name,
+    this.photo,
+    this.principles,
+    this.sphereHandle,
+  });
+
+  GroupData.fromJson(Map<String, dynamic> json) {
+    description = json['description'];
+    name = json['name'];
+    photo = json['photo'];
+    principles = json['principles'];
+    sphereHandle = json['sphere_handle'];
+  }
+
+  String description;
+  String name;
+  String photo;
+  String principles;
+  String sphereHandle;
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['description'] = description;
+    data['name'] = name;
+    data['photo'] = photo;
+    data['principles'] = principles;
+    data['sphere_handle'] = sphereHandle;
+    return data;
+  }
+}
+
+class _Users {
+  _Users._({
+    @required this.user,
+    @required this.permissionLevel,
+  });
+
+  factory _Users.fromJson(Map<String, dynamic> json) {
+    return _Users._(
+      user: UserProfile.fromMap(json['user']),
+      permissionLevel: json['permission_level'],
+    );
+  }
+
+  final UserProfile user;
+  final String permissionLevel;
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (user != null) {
+      data['user'] = user.toMap();
+    }
+    data['permission_level'] = permissionLevel;
+    return data;
   }
 }
