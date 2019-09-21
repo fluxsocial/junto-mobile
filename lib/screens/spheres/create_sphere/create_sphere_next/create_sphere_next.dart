@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/models/sphere.dart';
 import 'package:junto_beta_mobile/providers/provider.dart';
+import 'package:junto_beta_mobile/screens/template/template.dart';
 import 'package:junto_beta_mobile/themes.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
@@ -49,7 +50,8 @@ class _CreateSphereNextState extends State<CreateSphereNext> {
         'Creator : ${_response.creator}, Address ${_response.address}',
         <Widget>[
           FlatButton(
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => Navigator.of(context)
+                .pushAndRemoveUntil(JuntoTemplate.route(), (_) => false),
             child: const Text('Ok'),
           ),
         ],
