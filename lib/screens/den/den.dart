@@ -8,6 +8,7 @@ import 'package:junto_beta_mobile/screens/den/den_expanded.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/screens/den/den_collection_preview.dart';
 
 /// Displays the user's DEN or "profile screen"
 class JuntoDen extends StatefulWidget {
@@ -227,7 +228,7 @@ class JuntoDenState extends State<JuntoDen> {
                         Container(
                           margin: EdgeInsets.only(right: 15),
                           child: const Text(
-                            'Public Den',
+                            'Open Den',
                             style: TextStyle(fontWeight: FontWeight.w500),
                           ),
                         ),
@@ -302,23 +303,59 @@ class JuntoDenState extends State<JuntoDen> {
                             ],
                           ),
                         ),
-                        publicCollectionActive
-                            ? Row(
-                                children: <Widget>[
-                                  Text('create a collection',
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w500)),
-                                  SizedBox(width: 5),
-                                  Icon(Icons.add, size: 14)
-                                ],
-                              )
-                            : SizedBox()
+                        // publicCollectionActive
+                        //     ? Row(
+                        //         children: <Widget>[
+                        //           Text('create a collection',
+                        //               style: TextStyle(
+                        //                   fontSize: 12,
+                        //                   fontWeight: FontWeight.w500)),
+                        //           SizedBox(width: 5),
+                        //           Icon(Icons.add, size: 14)
+                        //         ],
+                        //       )
+                        //     : SizedBox()
                       ],
                     )
                   ],
                 ),
               ),
+              publicCollectionActive
+                  ? Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Color(0xffeeeeee),
+                            width: .75,
+                          ),
+                        ),
+                      ),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            'Create a collection',
+                            style: TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.w500),
+                          ),
+                          Icon(
+                            Icons.add,
+                            size: 17,
+                            color: Color(0xff555555),
+                          )
+                        ],
+                      ),
+                    )
+                  : SizedBox(),
+              publicCollectionActive
+                  ? ListView(
+                      shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
+                      children: <Widget>[DenCollectionPreview()],
+                    )
+                  : SizedBox(),
 
               // RaisedButton(
               //   onPressed: () async {
