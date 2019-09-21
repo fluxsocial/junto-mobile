@@ -229,15 +229,6 @@ class JuntoDenState extends State<JuntoDen> {
                 ),
               ),
               Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: Color(0xffeeeeee),
-                      width: .75,
-                    ),
-                    // top: BorderSide(color: Color(0xffeeeeee), width: .75),
-                  ),
-                ),
                 padding:
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                 child: Column(
@@ -341,6 +332,10 @@ class JuntoDenState extends State<JuntoDen> {
                         decoration: BoxDecoration(
                           border: Border(
                             bottom: BorderSide(
+                              color: Color(0xffeeeeee),
+                              width: .75,
+                            ),
+                            top: BorderSide(
                               color: Color(0xffeeeeee),
                               width: .75,
                             ),

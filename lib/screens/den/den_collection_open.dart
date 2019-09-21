@@ -124,14 +124,6 @@ class DenCollectionOpenState extends State<DenCollectionOpen> {
             child: ListView(
               children: <Widget>[
                 Container(
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: Color(0xffeeeeee),
-                        width: .75,
-                      ),
-                    ),
-                  ),
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -219,6 +211,10 @@ class DenCollectionOpenState extends State<DenCollectionOpen> {
                                 color: Color(0xffeeeeee),
                                 width: .75,
                               ),
+                              top: BorderSide(
+                                color: Color(0xffeeeeee),
+                                width: .75,
+                              ),                              
                             ),
                           ),
                           padding: EdgeInsets.symmetric(
