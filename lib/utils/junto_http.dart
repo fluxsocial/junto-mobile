@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:junto_beta_mobile/API.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
@@ -75,6 +77,18 @@ class JuntoHttp {
     );
   }
 
+  Future<http.Response> postWithoutEncoding(
+    String resource, {
+    Map<String, String> headers,
+    Map<String, dynamic> body,
+  }) async {
+    return http.post(
+      _encodeUrl(resource),
+      headers: await _withPersistentHeaders(headers),
+      body: json.encode(body),
+    );
+  }
+
   static Map<String, dynamic> holobody(
       String functionName, String zome, Map<String, dynamic> args) {
     return <String, dynamic>{
@@ -105,6 +119,9 @@ class JuntoHttp {
     if (response.statusCode == 400) {
       final Map<String, dynamic> results = deserializeHoloJson(response?.body);
       throw JuntoException('Forbidden ${results['error']}');
+    }
+    if (response.statusCode == 500) {
+      throw const JuntoException("Ooh no, our server isn't feeling so good");
     }
   }
 }
