@@ -68,8 +68,6 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
     _retrieveUserInfo();
   }
 
-//TODO(Nash): This function is being repeated a lot, consider turning into a
-// mixin.
   Future<void> _retrieveUserInfo() async {
     final UserProvider _userProvider = Provider.of<UserProvider>(context);
     try {
@@ -195,7 +193,7 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
       case 3:
         setState(() {
           _currentScreen = 'den';
-          _appbarTitle = 'sunyata';
+          _appbarTitle = profile?.username ?? 'Junto';
         });
         break;
     }
