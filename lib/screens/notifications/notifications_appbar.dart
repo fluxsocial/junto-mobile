@@ -41,6 +41,7 @@ class NotificationsAppbar extends StatelessWidget {
                 ),
               ],
             ),
+            SizedBox(width: 20)
           ],
         ),
       ),

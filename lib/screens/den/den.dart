@@ -175,7 +175,6 @@ class JuntoDenState extends State<JuntoDen> {
                                 Scaffold.of(context).openEndDrawer();
                               },
                               child: Icon(CustomIcons.more, size: 24),
-
                             ),
                           )
                         ],
