@@ -78,3 +78,6 @@ android/app/.classpath
 android/.settings/org.eclipse.buildship.core.prefs
 android/app/.project
 android/app/.settings/org.eclipse.buildship.core.prefs
+android/key.keystore
+android/app/key.keystore
+android/app/release/
