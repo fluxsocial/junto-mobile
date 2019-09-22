@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/providers/user_provider.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
 import 'package:junto_beta_mobile/screens/loading_screen/junto_loading_screen.dart';
@@ -43,6 +44,9 @@ class JuntoAppState extends State<JuntoApp> {
       child: MaterialApp(
         theme: JuntoThemes().juntoLightTheme,
         home: JuntoLoading(),
+        debugShowCheckedModeBanner: false,
+        title: 'Junto Alpha',
+        color: JuntoPalette.juntoPrimary,
         routes: <String, WidgetBuilder>{
           '/welcome': (BuildContext context) => Welcome(),
           '/template': (BuildContext context) => JuntoTemplate(),
