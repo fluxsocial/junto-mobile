@@ -34,6 +34,7 @@ class _DenDrawerState extends State<DenDrawer> {
   //   }
   // }
 
+
   @override
   Widget build(BuildContext context) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
@@ -61,6 +62,7 @@ class _DenDrawerState extends State<DenDrawer> {
                     Text(
                       'Hey Eric!',
                       // 'Hey ${profile.firstName}!',
+
                       style: const TextStyle(
                           fontSize: 17,
                           color: Color(0xff333333),
@@ -107,7 +109,8 @@ class _DenDrawerState extends State<DenDrawer> {
     );
   }
 
-  Widget _denDrawerItem(context, String title, String action, arrow) {
+  Widget _denDrawerItem(
+      BuildContext context, String title, String action, bool arrow) {
     return GestureDetector(
       onTap: () {
         _drawerAction(action, context);
@@ -131,7 +134,7 @@ class _DenDrawerState extends State<DenDrawer> {
                     size: 17,
                     color: const Color(0xff555555),
                   )
-                : SizedBox()
+                : const SizedBox()
           ],
         ),
       ),
@@ -139,34 +142,37 @@ class _DenDrawerState extends State<DenDrawer> {
   }
 }
 
-_drawerAction(action, context) {
+void _drawerAction(String action, BuildContext context) {
   if (action == 'pack') {
     Navigator.push(
       context,
-      CupertinoPageRoute(
-        builder: (context) => PackOpen('The Gnarly Nomads', 'Eric Yang',
+      CupertinoPageRoute<dynamic>(
+        builder: (BuildContext context) => const PackOpen(
+            'The Gnarly '
+                'Nomads',
+            'Eric Yang',
             'assets/images/junto-mobile__eric.png'),
       ),
     );
   } else if (action == 'connections') {
     Navigator.push(
       context,
-      CupertinoPageRoute(
-        builder: (context) => DenConnections(),
+      CupertinoPageRoute<dynamic>(
+        builder: (BuildContext context) => DenConnections(),
       ),
     );
   } else if (action == 'followers') {
     Navigator.push(
       context,
-      CupertinoPageRoute(
-        builder: (context) => DenFollowers(),
+      CupertinoPageRoute<dynamic>(
+        builder: (BuildContext context) => DenFollowers(),
       ),
     );
   } else if (action == 'edit') {
     Navigator.push(
       context,
-      CupertinoPageRoute(
-        builder: (context) => DenEditProfile(),
+      CupertinoPageRoute<dynamic>(
+        builder: (BuildContext context) => DenEditProfile(),
       ),
     );
   } else {

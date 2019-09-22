@@ -167,6 +167,7 @@ class JuntoDenState extends State<JuntoDen> {
                               ),
                             ),
                           ),
+
                           Transform.translate(
                             offset: const Offset(0.0, 9.0),
                             child: GestureDetector(
@@ -174,6 +175,7 @@ class JuntoDenState extends State<JuntoDen> {
                                 Scaffold.of(context).openEndDrawer();
                               },
                               child: Icon(CustomIcons.more, size: 24),
+
                             ),
                           )
                         ],

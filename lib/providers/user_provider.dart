@@ -45,6 +45,25 @@ abstract class UserProvider {
 
   /// Reads the cached user from the device.
   Future<UserProfile> readLocalUser();
+
+  /// Returns a list of perspectives owned by the given user
+  Future<List<CentralizedPerspective>> userPerspectives(String userAddress);
+
+  Future<UserProfile> createPerspectiveUserEntry(
+    String userAddress,
+    String perspectiveAddress,
+  );
+
+  /// Uses a Delete request.
+  Future<void> deletePerspectiveUserEntry(
+    String userAddress,
+    String perspectiveAddress,
+  );
+
+  Future<List<UserProfile>> getPerspectiveUsers(
+    String perspective,
+    String perspectiveAddress,
+  );
 }
 
 class UserProviderCentralized implements UserProvider {
@@ -113,13 +132,12 @@ class UserProviderCentralized implements UserProvider {
   Future<List<CentralizedPerspective>> getUserPerspective(
       String userAddress) async {
     final http.Response response =
-        await JuntoHttp().post('/users/$userAddress/perspectives');
-    final List<Map<String, dynamic>> _responseMap =
-        JuntoHttp.handleResponse(response);
-    return _responseMap
-        .map(
-            (Map<String, dynamic> data) => CentralizedPerspective.fromMap(data))
+        await JuntoHttp().get('/users/$userAddress/perspectives');
+    final List<dynamic> _listData = json.decode(response.body);
+    final List<CentralizedPerspective> _results = _listData
+        .map((dynamic data) => CentralizedPerspective.fromMap(data))
         .toList(growable: false);
+    return _results;
   }
 
   @override
@@ -166,6 +184,57 @@ class UserProviderCentralized implements UserProvider {
       return profile;
     }
     throw const JuntoException('Unable to read local user');
+  }
+
+  @override
+  Future<List<CentralizedPerspective>> userPerspectives(
+      String userAddress) async {
+    final http.Response _serverResponse =
+        await JuntoHttp().get('/users/$userAddress/perspectives');
+    final List<Map<String, dynamic>> items =
+        JuntoHttp.handleResponse(_serverResponse);
+    return items.map(
+      (Map<String, dynamic> data) => CentralizedPerspective.fromMap(data),
+    );
+  }
+
+  @override
+  Future<UserProfile> createPerspectiveUserEntry(
+    String userAddress,
+    String perspectiveAddress,
+  ) async {
+    final Map<String, dynamic> _postBody = <String, dynamic>{
+      'user_address': userAddress
+    };
+    final http.Response _serverResponse = await JuntoHttp()
+        .post('/perspectives/$perspectiveAddress/users', body: _postBody);
+    final Map<String, dynamic> _decodedResponse =
+        JuntoHttp.handleResponse(_serverResponse);
+    return UserProfile.fromMap(_decodedResponse);
+  }
+
+  @override
+  Future<void> deletePerspectiveUserEntry(
+    String userAddress,
+    String perspectiveAddress,
+  ) async {
+    final http.Response _serverResponse =
+        await JuntoHttp().delete('/perspectives/$perspectiveAddress/users');
+    JuntoHttp.handleResponse(_serverResponse);
+  }
+
+  @override
+  Future<List<UserProfile>> getPerspectiveUsers(
+    String perspective,
+    String perspectiveAddress,
+  ) async {
+    final http.Response _serverResponse =
+        await JuntoHttp().get('/perspectives/$perspectiveAddress/users');
+    final List<Map<String, dynamic>> items =
+        JuntoHttp.handleResponse(_serverResponse);
+    return items.map(
+      (Map<String, dynamic> data) => UserProfile.fromMap(data),
+    );
   }
 
   /// Private function which returns the correct query param for the given
@@ -308,5 +377,34 @@ class UserProviderHolo implements UserProvider {
   @override
   Future<UserProfile> readLocalUser() {
     throw UnimplementedError();
+  }
+
+  @override
+  Future<List<CentralizedPerspective>> userPerspectives(String userAddress) {
+    throw UnimplementedError('This function is not supported by the holo api');
+  }
+
+  @override
+  Future<UserProfile> createPerspectiveUserEntry(
+    String userAddress,
+    String perspectiveAddress,
+  ) {
+    throw UnimplementedError('This function is not supported by the holo api');
+  }
+
+  @override
+  Future<void> deletePerspectiveUserEntry(
+    String userAddress,
+    String perspectiveAddress,
+  ) {
+    throw UnimplementedError('This function is not supported by the holo api');
+  }
+
+  @override
+  Future<List<UserProfile>> getPerspectiveUsers(
+    String perspective,
+    String perspectiveAddress,
+  ) {
+    throw UnimplementedError('This function is not supported by the holo api');
   }
 }

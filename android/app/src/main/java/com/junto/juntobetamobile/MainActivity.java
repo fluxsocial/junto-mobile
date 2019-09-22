@@ -1,4 +1,4 @@
-package com.example.juntobetamobile;
+package com.junto.juntobetamobile;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
