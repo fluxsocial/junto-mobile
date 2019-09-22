@@ -33,7 +33,6 @@ String serializeHoloJson(Map<String, dynamic> source) {
   ).replaceAll('\\\\', '');
 }
 
-// TODO: Fix.
 /// Deserializes (json.decode) all fields `source`
 /// for compatibility with the current backend,
 /// i.e., maps within the `source` are also converted to their

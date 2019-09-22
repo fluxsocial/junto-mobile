@@ -20,6 +20,14 @@ import 'package:provider/provider.dart';
 // This class is a template screen that contains the navbar, bottom bar,
 // and screen (collective, spheres, pack, etc) depending on condition.
 class JuntoTemplate extends StatefulWidget {
+  static Route<dynamic> route() {
+    return MaterialPageRoute<dynamic>(
+      builder: (BuildContext context) {
+        return JuntoTemplate();
+      },
+    );
+  }
+
   @override
   State<StatefulWidget> createState() => JuntoTemplateState();
 }
