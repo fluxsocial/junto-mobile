@@ -44,6 +44,7 @@ class JuntoAppState extends State<JuntoApp> {
       child: MaterialApp(
         theme: JuntoThemes().juntoLightTheme,
         home: JuntoLoading(),
+        debugShowCheckedModeBanner: false,
         title: 'Junto Alpha',
         color: JuntoPalette.juntoPrimary,
         routes: <String, WidgetBuilder>{
