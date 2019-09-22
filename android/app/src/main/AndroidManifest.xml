@@ -14,7 +14,7 @@
          FlutterApplication and put your custom class here. -->
     <application
             android:name="io.flutter.app.FlutterApplication"
-            android:label="junto_beta_mobile"
+            android:label="Junto Alpha"
             android:icon="@mipmap/ic_launcher">
         <activity
                 android:name=".MainActivity"
