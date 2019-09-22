@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/screens/collective/filter_fab/filter_fab.dart';
+import 'package:junto_beta_mobile/screens/collective/filter_fab.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/styles.dart';
 

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/providers/provider.dart';
 import 'package:provider/provider.dart';
@@ -23,20 +22,16 @@ class Perspectives extends StatelessWidget {
       child: Drawer(
         elevation: 0,
         child: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.bottomLeft,
-              end: Alignment.topRight,
-              colors: <Color>[
-                JuntoPalette.juntoSecondary,
-                JuntoPalette.juntoPrimary
-              ],
-            ),
-          ),
+          color: Colors.white,
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Column(
             children: <Widget>[
               Container(
+                decoration: const BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
+                  ),
+                ),
                 alignment: Alignment.centerLeft,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -46,9 +41,7 @@ class Perspectives extends StatelessWidget {
                       style: TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: 17,
-                        color: Color(
-                          0xffffffff,
-                        ),
+                        color: Color(0xff333333),
                       ),
                     ),
                     GestureDetector(
@@ -123,7 +116,9 @@ class Perspectives extends StatelessWidget {
         }
         if (snapshot.hasData) {
           return ListView(
+            padding: EdgeInsets.all(0),
             shrinkWrap: true,
+            physics: ClampingScrollPhysics(),
             children: snapshot.data
                 .map(
                   (CentralizedPerspective perspective) => PerspectiveTile(
@@ -165,7 +160,7 @@ class PerspectiveTile extends StatelessWidget {
             Text(
               name,
               style: const TextStyle(
-                color: Colors.white,
+                color: Color(0xff333333),
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
               ),
