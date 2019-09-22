@@ -231,6 +231,14 @@ class JuntoDenState extends State<JuntoDen> {
               Container(
                 padding:
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: Color(0xffeeeeee),
+                      width: .75,
+                    ),
+                  ),
+                ),
                 child: Column(
                   children: <Widget>[
                     Row(
@@ -313,67 +321,76 @@ class JuntoDenState extends State<JuntoDen> {
                             ],
                           ),
                         ),
-                        // publicCollectionActive
-                        //     ? Row(
-                        //         mainAxisAlignment:
-                        //             MainAxisAlignment.spaceBetween,
-                        //         children: <Widget>[
-                        //           Icon(
-                        //             Icons.add,
-                        //             size: 17,
-                        //             color: Color(0xff555555),
-                        //           )
-                        //         ],
-                        //       )
-                        //     : SizedBox()
+                        publicCollectionActive
+                            ? GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(
+                                      builder: (context) =>
+                                          DenCreateCollection(),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  width: 38,
+                                  alignment: Alignment.centerRight,
+                                  child: Icon(
+                                    Icons.add,
+                                    size: 20,
+                                    color: Color(0xff555555),
+                                  ),
+                                ),
+                              )
+                            : SizedBox()
                       ],
                     )
                   ],
                 ),
               ),
-              publicCollectionActive
-                  ? GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                            builder: (context) => DenCreateCollection(),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: Color(0xffeeeeee),
-                              width: .75,
-                            ),
-                            top: BorderSide(
-                              color: Color(0xffeeeeee),
-                              width: .75,
-                            ),
-                          ),
-                        ),
-                        padding:
-                            EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              'Create collection',
-                              style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.w500),
-                            ),
-                            Icon(
-                              Icons.add,
-                              size: 17,
-                              color: Color(0xff555555),
-                            )
-                          ],
-                        ),
-                      ),
-                    )
-                  : SizedBox(),
+              // publicCollectionActive
+              //     ? GestureDetector(
+              //         onTap: () {
+              //           Navigator.push(
+              //             context,
+              //             CupertinoPageRoute(
+              //               builder: (context) => DenCreateCollection(),
+              //             ),
+              //           );
+              //         },
+              //         child: Container(
+              //           decoration: BoxDecoration(
+              //             border: Border(
+              //               bottom: BorderSide(
+              //                 color: Color(0xffeeeeee),
+              //                 width: .75,
+              //               ),
+              //               top: BorderSide(
+              //                 color: Color(0xffeeeeee),
+              //                 width: .75,
+              //               ),
+              //             ),
+              //           ),
+              //           padding:
+              //               EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+              //           child: Row(
+              //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //             children: <Widget>[
+              //               Text(
+              //                 'Create collection',
+              //                 style: TextStyle(
+              //                     fontSize: 14, fontWeight: FontWeight.w500),
+              //               ),
+              //               Icon(
+              //                 Icons.add,
+              //                 size: 17,
+              //                 color: Color(0xff555555),
+              //               )
+              //             ],
+              //           ),
+              //         ),
+              //       )
+              //     : SizedBox(),
               _buildDenList()
 
               // RaisedButton(
