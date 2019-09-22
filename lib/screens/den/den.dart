@@ -236,7 +236,7 @@ class JuntoDenState extends State<JuntoDen> {
                     Row(
                       children: <Widget>[
                         Container(
-                          margin: EdgeInsets.only(right: 15),
+                          margin: EdgeInsets.only(right: 25),
                           child: const Text(
                             'Open Den',
                             style: TextStyle(fontWeight: FontWeight.w500),
@@ -313,6 +313,19 @@ class JuntoDenState extends State<JuntoDen> {
                             ],
                           ),
                         ),
+                        // publicCollectionActive
+                        //     ? Row(
+                        //         mainAxisAlignment:
+                        //             MainAxisAlignment.spaceBetween,
+                        //         children: <Widget>[
+                        //           Icon(
+                        //             Icons.add,
+                        //             size: 17,
+                        //             color: Color(0xff555555),
+                        //           )
+                        //         ],
+                        //       )
+                        //     : SizedBox()
                       ],
                     )
                   ],

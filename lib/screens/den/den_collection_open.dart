@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/styles.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
+import 'package:junto_beta_mobile/screens/den/den_create_subcollection.dart';
 
 class DenCollectionOpen extends StatefulWidget {
   @override
@@ -203,7 +204,14 @@ class DenCollectionOpenState extends State<DenCollectionOpen> {
                 ),
                 subcollectionActive
                     ? GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => DenCreateSubcollection(),
+                            ),
+                          );
+                        },
                         child: Container(
                           decoration: BoxDecoration(
                             border: Border(
@@ -214,7 +222,7 @@ class DenCollectionOpenState extends State<DenCollectionOpen> {
                               top: BorderSide(
                                 color: Color(0xffeeeeee),
                                 width: .75,
-                              ),                              
+                              ),
                             ),
                           ),
                           padding: EdgeInsets.symmetric(
