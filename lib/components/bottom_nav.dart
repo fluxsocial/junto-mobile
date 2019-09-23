@@ -87,7 +87,6 @@ class BottomNavState extends State<BottomNav> {
                 ),
               ),
             ),
-            
             _BottomNavButton(
               index: 2,
               selectedIndex: widget.currentIndex,
@@ -126,15 +125,18 @@ class _BottomNavButton extends StatelessWidget {
     return Expanded(
       child: InkWell(
         onTap: () => onTap(index),
-        child: AnimatedSwitcher(
-          duration: kThemeChangeDuration,
-          child: Icon(
-            icon,
-            key: Key('index-$index-$selectedIndex'),
-            size: 20,
-            color: selectedIndex == index
-                ? JuntoPalette.juntoGrey
-                : JuntoPalette.juntoGreyLight,
+        child: RotatedBox(
+          quarterTurns: icon == CustomIcons.triangle ? 2 : 0,
+          child: AnimatedSwitcher(
+            duration: kThemeChangeDuration,
+            child: Icon(
+              icon,
+              key: Key('index-$index-$selectedIndex'),
+              size: 20,
+              color: selectedIndex == index
+                  ? JuntoPalette.juntoGrey
+                  : JuntoPalette.juntoGreyLight,
+            ),
           ),
         ),
       ),
