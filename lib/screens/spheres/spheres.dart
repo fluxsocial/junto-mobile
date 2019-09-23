@@ -1,35 +1,76 @@
-
 import 'package:flutter/material.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:junto_beta_mobile/models/sphere.dart';
+import 'package:junto_beta_mobile/providers/provider.dart';
+import 'package:junto_beta_mobile/screens/spheres/create_sphere/create_sphere.dart';
+import 'package:junto_beta_mobile/screens/spheres/sphere_preview.dart';
+import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/styles.dart';
 
-import '../../scoped_models/scoped_user.dart';
-import './spheres__create/spheres__create.dart';
-import './sphere_preview/sphere_preview.dart';
-
-// This class renders the main screen for Spheres. It includes a widget to create
-// a screen as well as a ListView of all the sphere previews
+/// This class renders the main screen for Spheres. It includes a widget to
+/// create
+/// a screen as well as a ListView of all the sphere previews
 class JuntoSpheres extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return 
-        Container(          
-          child: 
-            ListView(
-              children: <Widget>[
-                // Create sphere
-                SpheresCreate(),
-
-                // List of spheres member belongs to
-                ScopedModelDescendant<ScopedUser> (
-                  builder: (context, child, model) => 
-                  ListView(
-                    shrinkWrap: true,
-                    physics: ClampingScrollPhysics(),
-                    children: model.spheres.map((sphere) => SpherePreview(sphere.sphereTitle, sphere.sphereMembers, sphere.sphereImage)).toList()
-                  )
-                )                                
-              ],
+    return Container(
+      child: ListView(
+        children: <Widget>[
+          // Create sphere
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                CupertinoPageRoute<dynamic>(
+                  builder: (BuildContext context) => CreateSphere(),
+                ),
+              );
+            },
+            child: Container(
+              decoration: const BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(color: JuntoPalette.juntoFade, width: .5),
+                ),
+              ),
+              padding: const EdgeInsets.symmetric(
+                  vertical: 20, horizontal: JuntoStyles.horizontalPadding),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const <Widget>[
+                  Text('Create a sphere', style: JuntoStyles.title),
+                  Text(
+                    '+',
+                    style: TextStyle(fontSize: 17),
+                  ),
+                ],
+              ),
             ),
-        );      
+          ),
+
+          // List of spheres member belongs to
+          Consumer<SpheresProvider>(
+            builder:
+                (BuildContext context, SpheresProvider spheres, Widget child) {
+              return ListView(
+                shrinkWrap: true,
+                physics: const ClampingScrollPhysics(),
+                children: spheres.spheres
+                    .map(
+                      (Sphere sphere) => SpherePreview(
+                            sphere.sphereTitle,
+                            sphere.sphereMembers,
+                            sphere.sphereImage,
+                            sphere.sphereHandle,
+                            sphere.sphereDescription,
+                          ),
+                    )
+                    .toList(),
+              );
+            },
+          )
+        ],
+      ),
+    );
   }
 }

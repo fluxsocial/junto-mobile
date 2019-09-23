@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter/rendering.dart';
-
-import './pack_open_fab/pack_open_fab.dart';
-import './pack_open_appbar/pack_open_appbar.dart';
-import '../../../scoped_models/scoped_user.dart';
-import '../../../components/expression_preview/expression_preview.dart';
-import '../../../custom_icons.dart';
-import '../../../typography/palette.dart';
+import 'package:junto_beta_mobile/components/create_fab/create_fab.dart';
+import 'package:junto_beta_mobile/custom_icons.dart';
+import 'package:junto_beta_mobile/screens/packs/pack_open/pack_drawer.dart';
+import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open_appbar.dart';
+import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open_private.dart';
+import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open_public.dart';
 
 
 class PackOpen extends StatefulWidget {
-  final packTitle;
-  final packUser;
-  final packImage;
+  const PackOpen(this.packTitle, this.packUser, this.packImage);
 
-  PackOpen(this.packTitle, this.packUser, this.packImage);
+  //TODO(Nash): Speak to Eric regard the types for these params.
+  final dynamic packTitle;
+  final dynamic packUser;
+  final dynamic packImage;
 
   @override
   State<StatefulWidget> createState() {
@@ -25,87 +24,134 @@ class PackOpen extends StatefulWidget {
 
 class PackOpenState extends State<PackOpen> {
   // Controller for PageView
-  final controller = PageController(initialPage: 0);
+  PageController controller;
+  bool publicActive = true;
+  final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
 
-  // Controller for scroll
-  ScrollController _hideFABController = ScrollController();
-  bool _isVisible = true;
-
-  bool _filterOn = false;
   @override
   void initState() {
-    _hideFABController.addListener(() {
-      if (_hideFABController.position.userScrollDirection == ScrollDirection.idle) {
-        setState(() {
-          _isVisible = true;
-        });
-      }           
-      else if (_hideFABController.position.userScrollDirection == ScrollDirection.reverse) {
-        setState(() {
-          _isVisible = false;
-        });
-      }       
-      else if (_hideFABController.position.userScrollDirection == ScrollDirection.forward) {
-        setState(() {
-          _isVisible = true;
-        });
-      } 
-    });
     super.initState();
+    controller = PageController(initialPage: 0);
+  } 
+
+  @override
+  void dispose() {
+    super.dispose();
+    controller.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return 
-    DefaultTabController(
+    return DefaultTabController(
       length: 2,
-      
-      child: 
-      Scaffold(
-      backgroundColor: Colors.white,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(45),
-        child: PackOpenAppbar(widget.packTitle, widget.packUser, widget.packImage),
-      ),
-    
-      floatingActionButton: PackOpenFAB(_isVisible),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-
-      body:   
-        Column(children: <Widget>[  
-          Container(
-            // height: 60,
-            color: Colors.white,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                // Container(
-                //   width: MediaQuery.of(context).size.width * .5,
-                //   child: Icon(CustomIcons.half_lotus, size: 17)
-                // ),
-                // Container(
-                //   width: MediaQuery.of(context).size.width * .5,
-                //   child: RotatedBox(
-                //     quarterTurns: 2,
-                //     child: Icon(CustomIcons.triangle, size: 17)
-                //   )
-                // )
-            ],)
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(45),
+          child: PackOpenAppbar(
+            packTitle: widget.packTitle,
+            packUser: widget.packUser,
+            packImage: widget.packImage,
           ),
-
-          Expanded(
-            child: 
-              ScopedModelDescendant<ScopedUser>(
-                builder: (context, child, model) => ListView(
-                      controller: _hideFABController,
-                      children: model.collectiveExpressions
-                          .map((expression) => ExpressionPreview(expression))
-                          .toList(),
+        ),
+        floatingActionButton: ValueListenableBuilder<bool>(
+          valueListenable: _isVisible,
+          builder: (BuildContext context, bool visible, Widget child) {
+            return AnimatedOpacity(
+              duration: const Duration(milliseconds: 300),
+              opacity: visible ? 1.0 : 0.0,
+              child: child,
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CreateFAB(
+              sphereHandle: widget.packTitle,
+              isVisible: _isVisible,
+            ),
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        endDrawer: PackDrawer(),
+        body: Column(
+          children: <Widget>[
+            Container(
+                padding: const EdgeInsets.only(top: 20),
+                decoration: const BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: Color(0xffeeeeee),
+                      width: .75,
                     ),
-              ),            
-          )
-        ],)    
-      ) 
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: () {
+                        controller.jumpToPage(0);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.only(bottom: 20),
+                        width: MediaQuery.of(context).size.width * .5,
+                        child: Icon(
+                          CustomIcons.half_lotus,
+                          size: 17,
+                          color: publicActive
+                              ? const Color(0xff333333)
+                              : const Color(0xff999999),
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        controller.jumpToPage(1);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.only(bottom: 20),
+                        width: MediaQuery.of(context).size.width * .5,
+                        child: RotatedBox(
+                          quarterTurns: 2,
+                          child: Icon(
+                            CustomIcons.triangle,
+                            size: 17,
+                            color: publicActive
+                                ? const Color(0xff999999)
+                                : const Color(0xff333333),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                )),
+            Expanded(
+              child: PageView(
+                controller: controller,
+                onPageChanged: (int index) {
+                  if (index == 0) {
+                    setState(() {
+                      publicActive = true;
+                    });
+                  } else if (index == 1) {
+                    setState(() {
+                      publicActive = false;
+                    });
+                  }
+                },
+                children: <Widget>[
+                  PackOpenPublic(
+                    fabVisible: _isVisible,
+                  ),
+                  PackOpenPrivate(
+                    fabVisible: _isVisible,
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }

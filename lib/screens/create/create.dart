@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
-
-import './create_bottom_nav.dart';
-import '../../typography/style.dart';
-import './longform/longform.dart';
-import './shortform/shortform.dart';
-import './photo/photo.dart';
-import './bullet/bullet.dart';
-import './event/event.dart';
-import './music/music.dart';
-import './create_actions.dart';
-import './../../typography/palette.dart';
+import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/screens/create/create_templates/bullet/bullet.dart';
+import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
+import 'package:junto_beta_mobile/screens/create/create_bottom_nav.dart';
+import 'package:junto_beta_mobile/screens/create/create_templates/event.dart';
+import 'package:junto_beta_mobile/screens/create/create_templates/longform.dart';
+import 'package:junto_beta_mobile/screens/create/create_templates/photo.dart';
+import 'package:junto_beta_mobile/screens/create/create_templates/shortform.dart';
+import 'package:junto_beta_mobile/styles.dart';
+import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 
 class JuntoCreate extends StatefulWidget {
+  const JuntoCreate(this.expressionLayer);
+
+  final String expressionLayer;
+
   @override
   State<StatefulWidget> createState() {
     return JuntoCreateState();
@@ -19,17 +22,32 @@ class JuntoCreate extends StatefulWidget {
 }
 
 class JuntoCreateState extends State<JuntoCreate> {
-  String _expressionType = 'LONGFORM';
+  String _expressionType = 'dynamic';
   bool _longform = true;
   bool _shortform = false;
   bool _bullet = false;
   bool _photo = false;
   bool _events = false;
-  bool _music = false;
-
   bool _bottomNavVisible = true;
+  ValueNotifier<bool> isEditing;
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  _toggleBottomNavVisibility() {
+  @override
+  void initState() {
+    super.initState();
+    isEditing = ValueNotifier<bool>(false);
+    isEditing.addListener(() {
+      print('user is editing');
+    });
+  }
+
+  @override
+  void dispose() {
+    isEditing.dispose();
+    super.dispose();
+  }
+
+  void _toggleBottomNavVisibility() {
     if (_bottomNavVisible) {
       setState(() {
         _bottomNavVisible = false;
@@ -42,19 +60,28 @@ class JuntoCreateState extends State<JuntoCreate> {
   }
 
   // Build expression template based off state
-  _buildTemplate() {
+  Widget _buildTemplate() {
     if (_longform) {
-      return CreateLongform();
+      return CreateLongform(
+        isEditing: isEditing,
+      );
     } else if (_shortform) {
-      return CreateShortform();
+      return CreateShortform(
+        isEditing: isEditing,
+      );
     } else if (_bullet) {
       return CreateBullet();
     } else if (_photo) {
-      return CreatePhoto(_toggleBottomNavVisibility);
+      return CreatePhoto(
+        toggleBottomNavVisibility: _toggleBottomNavVisibility,
+        isEditing: isEditing,
+      );
     } else if (_events) {
-      return CreateEvent();
-    } else if (_music) {
-      return CreateMusic();
+      return CreateEvent(
+        formKey: formKey,
+      );
+    } else {
+      return Container();
     }
   }
 
@@ -66,15 +93,44 @@ class JuntoCreateState extends State<JuntoCreate> {
       _bullet = false;
       _photo = false;
       _events = false;
-      _music = false;
     });
   }
 
-  // Ask for user confirmation to switch between expressions if field is not empty
-  confirmSwitch() {}
+  /// Ask for user confirmation to switch between expressions if field is no
+  /// empty
+  // void confirmSwitch(String templateType) {
+  //   if (isEditing.value == true || formKey.currentState?.validate() == true) {
+  //     JuntoDialog.showJuntoDialog(
+  //       context,
+  //       'Are you sure you want to switch expressions?',
+  //       <Widget>[
+  //         FlatButton(
+  //           child: const Text(
+  //             'Yes',
+  //           ),
+  //           onPressed: () {
+  //             Navigator.of(context).pop();
+  //             switchTemplate(templateType);
+  //           },
+  //         ),
+  //         FlatButton(
+  //           child: const Text(
+  //             'No',
+  //           ),
+  //           onPressed: () => Navigator.of(context).pop(),
+  //         ),
+  //       ],
+  //     );
+  //   } else {
+  //     switchTemplate(templateType);
+  //   }
+  // }
 
-  // Switch between different expression templates
-  switchTemplate(templateType) {
+  confirmSwitch(templateType) {
+      switchTemplate(templateType);
+  }
+// Switch between different expression templates
+  void switchTemplate(String templateType) {
     // Reset State
     _resetState();
 
@@ -102,10 +158,6 @@ class JuntoCreateState extends State<JuntoCreate> {
       setState(() {
         _events = true;
       });
-    } else if (templateType == 'music') {
-      setState(() {
-        _music = true;
-      });
     } else {
       print('not an expresion type');
     }
@@ -117,22 +169,77 @@ class JuntoCreateState extends State<JuntoCreate> {
       resizeToAvoidBottomPadding: false,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       backgroundColor: Colors.white,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(45),
+        child: AppBar(
+          automaticallyImplyLeading: false,
+          brightness: Brightness.light,
+          iconTheme: const IconThemeData(color: JuntoPalette.juntoGrey),
+          backgroundColor: Colors.white,
+          elevation: 0,
+          titleSpacing: 0,
+          title: Container(
+            padding: const EdgeInsets.symmetric(
+                horizontal: JuntoStyles.horizontalPadding),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    ClipOval(
+                      child: Image.asset(
+                        'assets/images/junto-mobile__eric.png',
+                        height: 30.0,
+                        width: 30.0,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Text(
+                      _expressionType == 'longform'
+                          ? 'dynamic'
+                          : _expressionType.toLowerCase(),
+                      textAlign: TextAlign.start,
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xff333333),
+                      ),
+                    ),
+                  ],
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute<dynamic>(
+                        builder: (BuildContext context) => CreateActions(
+                          expressionLayer: widget.expressionLayer,
+                        ),
+                      ),
+                    );
+                  },
+                  child: const Text(
+                    'next',
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w600,
+                      color: JuntoPalette.juntoSleek,
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
       body: Column(
         children: <Widget>[
-          Container(
-            margin: EdgeInsets.only(top: 20, bottom: 20),
-            padding: EdgeInsets.only(left: 10, right: 10, top: 30),
-            width: MediaQuery.of(context).size.width,
-            child: Text(_expressionType.toUpperCase(),
-                textAlign: TextAlign.start,
-                style: JuntoStyles.lotusExpressionType),
-          ),
-
           _buildTemplate(),
-
         ],
       ),
-      bottomNavigationBar: CreateBottomNav(switchTemplate, _bottomNavVisible),
+      bottomNavigationBar: CreateBottomNav(confirmSwitch, _bottomNavVisible),
     );
   }
 }

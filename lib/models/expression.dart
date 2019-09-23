@@ -1,142 +1,154 @@
+import 'package:junto_beta_mobile/models/user_model.dart';
 
+/// Expressions are at the center of Junto. Users can choose form Longform,
+/// shortform and media.
 class Expression {
-  final String expressionType;
-  final String time;
-  final String title;
-  final String location;
-  final String body;
-  final String image;
-  final String imageCaption;
-  final String shortformText;
-  final String channelOne;
-  final String channelTwo;
-  final String channelThree;
+  Expression({
+    this.expression,
+    this.subExpressions,
+    this.authorUsername,
+    this.authorProfile,
+    this.resonations,
+    this.timestamp,
+    this.channels,
+  });
 
-  Expression({this.expressionType, this.time, this.title, this.location, this.body, this.image, this.imageCaption, this.shortformText, this.channelOne, this.channelTwo,this.channelThree,});
-  static fetchAll() {
-
-      return [   
-        Expression(
-            expressionType: 'longform',
-            time: '2',
-            title: 'The Medium is the Message',
-            body: 'The forms we communicate through are just as important as the message itself. The evolution of social media starts with revisiting the fundamentals and redesigning them in more humane ways.',
-            image: null,
-            imageCaption: null, 
-            shortformText: null,
-            channelOne: 'technology',
-            channelTwo: 'design',
-            channelThree: 'authenticity'
+  /// Creates an [Expression] from the given map
+  factory Expression.fromMap(Map<String, dynamic> json) {
+    return Expression(
+      expression: ExpressionContent.fromMap(
+        json['expression'],
+      ),
+      subExpressions: List<Expression>.from(
+        json['sub_expressions'].map(
+          (Map<String, dynamic> expression) => Expression.fromMap(expression),
         ),
-
-        Expression(
-          expressionType: 'photo', 
-          time: '17',
-          title: null, 
-          body: null,
-          image: 'assets/images/junto-mobile__expression--photo.png',
-          imageCaption: 'Some exciting developments happening between Junto and Holochain coming your way.',
-          shortformText: null,
-          channelOne: 'holochain',
-          channelTwo: 'junto',
-          channelThree: ''          
+      ),
+      authorUsername: Username.fromMap(
+        json['author_username'],
+      ),
+      authorProfile: UserProfile.fromMap(
+        json['author_profile'],
+      ),
+      resonations: List<dynamic>.from(
+        json['resonations'].map((dynamic resonations) => resonations),
+      ),
+      timestamp: json['timestamp'],
+      channels: List<Channel>.from(
+        json['channels'].map(
+          (dynamic channel) => Channel.fromMap(channel),
         ),
+      ),
+    );
+  }
 
-        Expression(
-          expressionType: 'shortform', 
-          time: '22',
-          title: null, 
-          body: null, 
-          image: null,
-          imageCaption: null, 
-          shortformText: 'Get ready for our 2019 release!',
-          channelOne: '',
-          channelTwo: '',
-          channelThree: ''             
-        ), 
+  final ExpressionContent expression;
 
-        Expression(
-          expressionType: 'event', 
-          time: '24',
-          title: 'Saturday Zazen Meditation at Still Mind Zendo', 
-          location: 'Still Mind Zendo',
-          body: null, 
-          image: 'assets/images/junto-mobile__stillmind.png',
-          imageCaption: null, 
-          shortformText: 'Get ready for our 2019 release!',
-          channelOne: '',
-          channelTwo: '',
-          channelThree: ''             
-        ),         
+  /// List of expressions associated with the given `Expression`
+  final List<Expression> subExpressions;
 
-        Expression(
-          expressionType: 'longform', 
-          time: '45',
-          title: 'Rebalancing our relationship with technology', 
-          body: 'Junto is a new breed of social media. Our goal is to rebalance our relationship with technology.', 
-          image: null,
-          imageCaption: null, 
-          shortformText: null,
-          channelOne: '',
-          channelTwo: '',
-          channelThree: 'hello'             
-        ),       
-        
+  /// This field contains the author's address and entry (username)
+  final Username authorUsername;
 
-        Expression(
-          expressionType: 'shortform', 
-          time: '57',
-          title: null, 
-          body: null, 
-          image: null,
-          imageCaption: null, 
-          shortformText: 'This is a shortform expression. There will likely be 220 characters that will be overlayed against a beautiful gradient.',
-          channelOne: 'hype',
-          channelTwo: 'junto',
-          channelThree: ''             
-        ),           
+  /// Contains the address and profile information associated with the author.
+  final UserProfile authorProfile;
 
-        Expression(
-          expressionType: 'event', 
-          time: '24',
-          title: 'Junto Den Freeform II', 
-          location: 'Junto Haus',
-          body: null, 
-          image: 'assets/images/junto-mobile__ecstatic.png',
-          imageCaption: null, 
-          shortformText: 'Get ready for our 2019 release!',
-          channelOne: '',
-          channelTwo: '',
-          channelThree: ''             
-        ), 
+  //TODO(Nash):  Speak to Eric regarding the content of resonations
+  final List<dynamic> resonations;
 
-        Expression(
-          expressionType: 'photo', 
-          time: '17',
-          title: null, 
-          body: null,
-          image: 'assets/images/junto-mobile__expression--photo.png',
-          imageCaption: '',
-          shortformText: null,
-          channelOne: '',
-          channelTwo: '',
-          channelThree: ''          
-        ),      
+  /// String containing the date
+  final String timestamp;
 
-        Expression(            
-            expressionType: 'longform',
-            time: '2',
-            title: 'The Medium is the Message: Rebalancing Our Relationship With Technology',
-            body: 'The forms we communicate through are just as important as the message itself. The evolution of social media starts with revisiting the fundamentals and redesigning them in more humane ways.  The forms we communicate through are just as important as the message itself. The evolution of social media starts with revisiting the fundamentals and redesigning them in more humane ways  The forms we communicate through are just as important as the message itself. The evolution of social media starts with revisiting the fundamentals and redesigning them in more humane ways  The forms we communicate through are just as important as the message itself. The evolution of social media starts with revisiting the fundamentals and redesigning them in more humane ways The forms we communicate through are just as important as the message itself. The evolution of social media starts with revisiting the fundamentals and redesigning them in more humane ways.  The forms we communicate through are just as important as the message itself. The evolution of social media starts with revisiting the fundamentals and redesigning them in more humane ways  The forms we communicate through are just as important as the message itself. The evolution of social media starts with revisiting the fundamentals and redesigning them in more humane ways  The forms we communicate through are just as important as the message itself. The evolution of social media starts with revisiting the fundamentals and redesigning them in more humane ways',
-            image: null,
-            imageCaption: null, 
-            shortformText: null,
-            channelOne: 'technology',
-            channelTwo: 'design',
-            channelThree: 'authenticity'
-        ),                 
-      ];
-    }
+  /// The channel where the expression was posted
+  final List<Channel> channels;
+
+  /// Converts the given expression to Map
+  Map<String, dynamic> toMap() => <String, dynamic>{
+        'expression': expression.toMap(),
+        'sub_expressions': List<dynamic>.from(
+          subExpressions.map(
+            (Expression subExpression) => subExpression.toMap(),
+          ),
+        ),
+        'author_username': authorUsername.toMap(),
+        'author_profile': authorProfile.toMap(),
+        'resonations': List<dynamic>.from(
+          resonations.map((dynamic resonations) => resonations),
+        ),
+        'timestamp': timestamp,
+        'channels': List<dynamic>.from(
+          channels.map(
+            (Channel channel) => channel.toMap(),
+          ),
+        ),
+      };
 }
- 
 
+class Channel {
+  Channel({
+    this.address,
+    this.value,
+    this.attributeType,
+  });
+
+  factory Channel.fromMap(Map<String, dynamic> json) => Channel(
+        address: json['address'],
+        attributeType: json['entry']['attribute_type'],
+        value: json['entry']['value'],
+      );
+
+  /// Location
+  final String address;
+
+  /// Channel where the `Expression` was posted
+  final String value;
+
+  final String attributeType;
+
+  /// Converts the object to a map
+  Map<String, dynamic> toMap() => <String, dynamic>{
+        'address': address,
+        'entry': <String, String>{
+          'value': value,
+          'attribute_type': attributeType,
+        },
+      };
+}
+
+/// Contains the type of expression along with the content of the expression.
+/// Fields include [title] and [body].
+class ExpressionContent {
+  ExpressionContent({
+    this.address,
+    this.expressionContent,
+    this.expressionType,
+  });
+
+  factory ExpressionContent.fromMap(Map<String, dynamic> json) {
+    return ExpressionContent(
+      address: json['address'],
+      expressionType: json['entry']['expression_type'],
+      expressionContent: json['entry']['expression'],
+    );
+  }
+
+  /// Location
+  String address;
+
+  /// The type of [Expression]. Longform or shortform
+  final String expressionType;
+
+  /// Contains the content of the expression. Varies depending on
+  /// [expressionType]
+  final Map<String, dynamic> expressionContent;
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'address': address,
+      'entry': <String, dynamic>{
+        'expression_type': expressionType,
+        'expression': expressionContent,
+      },
+    };
+  }
+}

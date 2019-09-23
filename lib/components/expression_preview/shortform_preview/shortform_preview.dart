@@ -1,96 +1,96 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/styles.dart';
 
-import './../../../typography/palette.dart';
-import '../../../screens/expression_open/expression_open.dart';
-
+/// Takes an un-named [ExpressionResult] to be displayed
 class ShortformPreview extends StatefulWidget {
-  final String _shortformBackground;
-  final String _shortformText;
+  const ShortformPreview(this.expression);
 
-  ShortformPreview(this._shortformBackground, this._shortformText);
+  /// [ExpressionResult] to be displayed
+  final Expression expression;
 
   @override
-  State<StatefulWidget> createState() {
-    return ShortformPreviewState();
-  }
+  State<StatefulWidget> createState() => ShortformPreviewState();
 }
 
 class ShortformPreviewState extends State<ShortformPreview> {
   Color _gradientOne;
   Color _gradientTwo;
+  String shortformBody = '';
 
-  _buildBackground() {
-    if (widget._shortformBackground == 'zero') {
+  @override
+  void initState() {
+    super.initState();
+    _buildBackground();
+    shortformBody = widget.expression.expression.expressionContent['body'];
+  }
+
+  void _buildBackground() {
+    final String shortformBackground =
+        widget.expression.expression.expressionContent['background'];
+
+    if (shortformBackground == 'zero') {
       setState(() {
-        _gradientOne = Color(0xffffffff);
-        _gradientTwo = Color(0xffffffff);
+        _gradientOne = JuntoPalette.juntoWhite;
+        _gradientTwo = JuntoPalette.juntoWhite;
       });
-    } else if (widget._shortformBackground == 'one') {
+    } else if (shortformBackground == 'one') {
       setState(() {
-        _gradientOne = JuntoPalette.juntoBlue;
-        _gradientTwo = JuntoPalette.juntoBlueLight;
+        _gradientOne = JuntoPalette.juntoPrimary;
+        _gradientTwo = JuntoPalette.juntoPrimaryLight;
       });
-    } else if (widget._shortformBackground == 'two') {
+    } else if (shortformBackground == 'two') {
       setState(() {
-        _gradientOne = JuntoPalette.juntoPurple;
-        _gradientTwo = JuntoPalette.juntoPurpleLight;
+        _gradientOne = JuntoPalette.juntoSecondary;
+        _gradientTwo = JuntoPalette.juntoSecondaryLight;
       });
-    } else if (widget._shortformBackground == 'three') {
+    } else if (shortformBackground == 'three') {
       setState(() {
-        _gradientOne = JuntoPalette.juntoPurple;
-        _gradientTwo = JuntoPalette.juntoBlue;
+        _gradientOne = JuntoPalette.juntoSecondary;
+        _gradientTwo = JuntoPalette.juntoPrimary;
       });
-    } else if (widget._shortformBackground == 'four') {
+    } else if (shortformBackground == 'four') {
       setState(() {
         _gradientOne = JuntoPalette.juntoGreen;
-        _gradientTwo = JuntoPalette.juntoBlue;
+        _gradientTwo = JuntoPalette.juntoPrimary;
       });
-    } else if (widget._shortformBackground == 'five') {
+    } else if (shortformBackground == 'five') {
       setState(() {
         _gradientOne = JuntoPalette.juntoGreen;
-        _gradientTwo = JuntoPalette.juntoPurple;
+        _gradientTwo = JuntoPalette.juntoSecondary;
       });
     }
   }
 
   @override
-  void initState() {
-    _buildBackground();
-
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return 
-      Container(
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.bottomLeft,
-                end: Alignment.topRight,
-                stops: [0.1, 0.9],
-                colors: [_gradientOne, _gradientTwo])),
-
-        constraints: BoxConstraints(
-          minHeight: 240,
-        ),
-        width: 1000,
-        // color: Colors.lightBlue,
-        alignment: Alignment.center,
-        padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 50.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              widget._shortformText,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 17.0,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white),
-            ),
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.bottomLeft,
+          end: Alignment.topRight,
+          stops: const <double>[0.1, 0.9],
+          colors: <Color>[
+            _gradientOne,
+            _gradientTwo,
           ],
         ),
+      ),
+      constraints: const BoxConstraints(
+        minHeight: 240,
+      ),
+      width: MediaQuery.of(context).size.width,
+      alignment: Alignment.center,
+      padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 50.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(shortformBody,
+              textAlign: TextAlign.center,
+              style: JuntoStyles.shortformPreviewTitle),
+        ],
+      ),
     );
   }
 }

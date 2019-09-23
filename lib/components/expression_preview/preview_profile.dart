@@ -1,62 +1,88 @@
 import 'package:flutter/material.dart';
-import '../../typography/style.dart';
-import '../../custom_icons.dart';
-
-import '../../screens/member/member.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:junto_beta_mobile/components/expression_action_items/expression_action_items.dart';
+import 'package:junto_beta_mobile/custom_icons.dart';
+import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/screens/member/member.dart';
+import 'package:junto_beta_mobile/styles.dart';
 
 class PreviewProfile extends StatelessWidget {
-  final String handle;
+  const PreviewProfile({
+    Key key,
+    this.expression,
+  }) : super(key: key);
 
-  PreviewProfile(this.handle);
+  final Expression expression;
+
   @override
   Widget build(BuildContext context) {
+    final String firstName = expression.authorProfile.firstName;
+    final String lastName = expression.authorProfile.lastName;
+    final String username = expression.authorUsername.username;
+    final String profilePicture = expression.authorProfile.profilePicture;
+
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+      padding: const EdgeInsets.symmetric(
+          horizontal: JuntoStyles.horizontalPadding, vertical: 10.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-            
-            // profile picture
-            ClipOval(
-              child: Image.asset(
-                'assets/images/junto-mobile__eric.png',
-                height: 36.0,
-                width: 36.0,
-                fit: BoxFit.cover,
-              ),
-            ),
-
-            // profile name and handle
-            Container(
-              margin: EdgeInsets.only(left: 10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                CupertinoPageRoute<dynamic>(
+                  builder: (
+                    BuildContext context,
+                  ) =>
+                      JuntoMember(),
+                ),
+              );
+            },
+            child: Container(
+              color: Colors.white,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  GestureDetector(
-                    onTap: () => {
-                      Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => JuntoMember()
-                      ))
-                    },
-                    child: Text(
-                      'Eric Yang',
-                      style: JuntoStyles.expressionPreviewName,
+                  // profile picture
+                  ClipOval(
+                    child: Image.asset(
+                      profilePicture,
+                      height: 36.0,
+                      width: 36.0,
+                      fit: BoxFit.cover,
                     ),
                   ),
-                  
-                  Text(handle, style: JuntoStyles.expressionPreviewHandle)
+
+                  // profile name and handle
+                  Container(
+                    margin: const EdgeInsets.only(left: 10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(firstName + ' ' + lastName,
+                            style: JuntoStyles.title),
+                        Text(username, style: JuntoStyles.body)
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
-          ]),
-          Row(children: [
-            // Text(time, style: TextStyle(fontSize: 12)),
-            // more option on expression preview
-            Container(child: Icon(CustomIcons.more, size: 17))
-          ])
+          ),
+          Row(
+            children: <Widget>[
+              GestureDetector(
+                onTap: () {
+                  ExpressionActionItems().buildExpressionActionItems(context);
+                },
+                child: const Icon(
+                  CustomIcons.more,
+                  size: 20,
+                ),
+              )
+            ],
+          )
         ],
       ),
     );

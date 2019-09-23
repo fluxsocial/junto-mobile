@@ -1,7 +1,4 @@
+import 'package:junto_beta_mobile/app.dart';
+import 'package:junto_beta_mobile/utils/logging.dart';
 
-import 'package:flutter/material.dart';
-
-import './app.dart';
-
-void main() => runApp(JuntoApp());
-
+void main() => runLoggedApp(JuntoApp());
