@@ -1,13 +1,18 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/providers/provider.dart';
 import 'package:junto_beta_mobile/providers/user_provider.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
 
+//TODO(Nash): This page should be broken up into smaller, more manageable widgets
 class CreatePerspective extends StatefulWidget {
   @override
   _CreatePerspectiveState createState() => _CreatePerspectiveState();
@@ -15,6 +20,9 @@ class CreatePerspective extends StatefulWidget {
 
 class _CreatePerspectiveState extends State<CreatePerspective> {
   TextEditingController controller;
+  Timer debounceTimer;
+  ValueNotifier<List<UserProfile>> queriedUsers =
+      ValueNotifier<List<UserProfile>>(<UserProfile>[]);
 
   @override
   void initState() {
@@ -28,13 +36,27 @@ class _CreatePerspectiveState extends State<CreatePerspective> {
     super.dispose();
   }
 
+  void _onTextChange(String value) {
+    if (debounceTimer != null) {
+      debounceTimer.cancel();
+    }
+    debounceTimer = Timer(const Duration(milliseconds: 500), () async {
+      if (mounted) {
+        final List<UserProfile> result =
+            await Provider.of<SearchProvider>(context).searchMember(value);
+        if (result != null && result.isNotEmpty) {
+          queriedUsers.value = result;
+        }
+      }
+    });
+  }
+
   Future<void> createPerspective() async {
     final String name = controller.value.text;
     JuntoOverlay.showLoader(context);
     try {
-      final CentralizedPerspective address =
-          await Provider.of<UserProvider>(context)
-              .createPerspective(Perspective(name: name));
+      await Provider.of<UserProvider>(context)
+          .createPerspective(Perspective(name: name));
       JuntoOverlay.hide();
       Navigator.pop(context);
     } on JuntoException catch (error) {
@@ -196,83 +218,103 @@ class _CreatePerspectiveState extends State<CreatePerspective> {
         showModalBottomSheet(
           isScrollControlled: true,
           context: context,
-          builder: (BuildContext context) => Container(
-            color: const Color(0xff737373),
-            child: Container(
-              height: MediaQuery.of(context).size.height * .9,
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(10),
-                  topRight: Radius.circular(10),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  const SizedBox(height: 10),
-                  Row(
-                    children: const <Widget>[
-                      Text(
-                        'Members',
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xff333333),
-                        ),
-                      ),
-                    ],
+          builder: (BuildContext context) {
+            return Container(
+              color: const Color(0xff737373),
+              child: Container(
+                height: MediaQuery.of(context).size.height * .9,
+                padding: const EdgeInsets.all(10),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10),
                   ),
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        width: MediaQuery.of(context).size.width - 60,
-                        decoration: const BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: Color(0xffeeeeee),
-                              width: .75,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const SizedBox(height: 10),
+                    Row(
+                      children: const <Widget>[
+                        Text(
+                          'Members',
+                          style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xff333333),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          width: MediaQuery.of(context).size.width - 60,
+                          decoration: const BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                color: Color(0xffeeeeee),
+                                width: .75,
+                              ),
                             ),
                           ),
-                        ),
-                        child: TextField(
-                          buildCounter: (
-                            BuildContext context, {
-                            int currentLength,
-                            int maxLength,
-                            bool isFocused,
-                          }) =>
-                              null,
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Search members',
-                            hintStyle: TextStyle(
-                                color: Color(0xff999999),
-                                fontSize: 17,
-                                fontWeight: FontWeight.w500),
+                          child: TextField(
+                            buildCounter: (
+                              BuildContext context, {
+                              int currentLength,
+                              int maxLength,
+                              bool isFocused,
+                            }) =>
+                                null,
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'Search members',
+                              hintStyle: TextStyle(
+                                  color: Color(0xff999999),
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            cursorColor: const Color(0xff333333),
+                            cursorWidth: 2,
+                            maxLines: null,
+                            style: const TextStyle(
+                              color: Color(0xff333333),
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            maxLength: 80,
+                            textInputAction: TextInputAction.done,
+                            onChanged: _onTextChange,
                           ),
-                          cursorColor: const Color(0xff333333),
-                          cursorWidth: 2,
-                          maxLines: null,
-                          style: const TextStyle(
-                            color: Color(0xff333333),
-                            fontSize: 17,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          maxLength: 80,
-                          textInputAction: TextInputAction.done,
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    ValueListenableBuilder<List<UserProfile>>(
+                        valueListenable: queriedUsers,
+                        builder: (BuildContext context,
+                            List<UserProfile> snapshot, _) {
+                          return ListView(
+                            shrinkWrap: true,
+                            children: snapshot.map(
+                              (UserProfile _user) {
+                                return ListTile(
+                                  title: Text(
+                                      '${_user.firstName} ${_user.lastName}'),
+                                );
+                              },
+                            ).toList(),
+                          );
+                        })
+                  ],
+                ),
               ),
-            ),
-          ),
+            );
+          },
         );
       },
       child: Container(
