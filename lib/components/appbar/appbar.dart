@@ -8,7 +8,7 @@ import 'package:junto_beta_mobile/styles.dart';
 
 // Junto app bar used throughout the main screens. Rendered in JuntoTemplate.
 class JuntoAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const JuntoAppBar({
+  JuntoAppBar({
     Key key,
     @required this.juntoAppBarTitle,
   }) : super(key: key);
@@ -83,10 +83,103 @@ class JuntoAppBar extends StatelessWidget implements PreferredSizeWidget {
                       ),
                     );
                   },
-                  child: Container(
-                    child: Icon(Icons.search,
-                        color: JuntoPalette.juntoSleek,
-                        size: JuntoStyles.appbarIcon),
+                  child: GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (context) => Container(
+                          color: Color(0xff737373),
+                          child: Container(
+                            // height: 280,
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.only(
+                                topLeft: const Radius.circular(10),
+                                topRight: Radius.circular(10),
+                              ),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                SizedBox(height: 10),
+                                Row(
+                                  children: <Widget>[
+                                    Text(
+                                      'Members',
+                                      style: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w700,
+                                        color: Color(0xff333333),
+                                      ),
+                                    ),
+                                    SizedBox(width: 25),
+                                    Text(
+                                      'Spheres',
+                                      style: TextStyle(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w700,
+                                          color: Color(0xff999999)),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(height: 10),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Container(
+                                      width: MediaQuery.of(context).size.width -
+                                          60,
+                                      decoration: BoxDecoration(
+                                        border: Border(
+                                          bottom: BorderSide(
+                                            color: Color(0xffeeeeee),
+                                            width: .75,
+                                          ),
+                                        ),
+                                      ),
+                                      child: TextField(
+                                        buildCounter: (
+                                          BuildContext context, {
+                                          int currentLength,
+                                          int maxLength,
+                                          bool isFocused,
+                                        }) =>
+                                            null,
+                                        decoration: const InputDecoration(
+                                          border: InputBorder.none,
+                                          hintText: 'Search members',
+                                          hintStyle: const TextStyle(
+                                              color: Color(0xff999999),
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                        cursorColor: Color(0xff333333),
+                                        cursorWidth: 2,
+                                        maxLines: null,
+                                        style: const TextStyle(
+                                            color: Color(0xff333333),
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w500),
+                                        maxLength: 80,
+                                        textInputAction: TextInputAction.done,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      child: Icon(Icons.search,
+                          color: JuntoPalette.juntoSleek,
+                          size: JuntoStyles.appbarIcon),
+                    ),
                   ),
                 ),
                 GestureDetector(
