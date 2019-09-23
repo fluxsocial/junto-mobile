@@ -25,7 +25,7 @@ class LongformPreview extends StatelessWidget {
           _buildTitle(),
           Text(expressionBody,
               textAlign: TextAlign.left,
-              maxLines: 4,
+              maxLines: 3,
               overflow: TextOverflow.ellipsis,
               style: JuntoStyles.longformPreviewBody),
         ],

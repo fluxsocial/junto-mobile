@@ -325,8 +325,8 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
         address: '0xfee32zokie8',
         expressionType: 'longform',
         expressionContent: <String, String>{
-          'title': 'The Medium is the Message',
-          'body': 'Hellos my name is Urk'
+          'title': 'Dynamic form is in motion!',
+          'body': "Hey! Eric here. We're currently working with a London-based dev agency called DevAngels to build out our dynamic, rich text editor. Soon, you'll be able to create short or longform expressions that contain text, links, images complemented with features such as bullet points, horiozntal lines, bold and italic font, and much more. This should be done in the next 1 or 2 weeks so stay tuned!"
         },
       ),
       subExpressions: <Expression>[],
@@ -363,25 +363,25 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
         address: '0xfee32zokie8',
         expressionType: 'photo',
         expressionContent: <String, String>{
-          'image': 'assets/images/junto-mobile__stillmind.png',
+          'image': 'assets/images/junto-mobile__photo--one.png',
         },
       ),
       authorUsername: Username(
         address: '02efredffdfvdbnrtg',
-        username: 'sunyata',
+        username: 'jdeepee',
       ),
       authorProfile: UserProfile(
         address: '0vefoiwiafjvkbr32r243r5',
-        firstName: 'Eric',
-        lastName: 'Yang',
-        profilePicture: 'assets/images/junto-mobile__eric.png',
+        firstName: 'Josh',
+        lastName: 'Parkin',
+        profilePicture: 'assets/images/junto-mobile__josh.png',
         bio: 'hellooo',
         parent: 'parent-address',
         verified: true,
       ),
       subExpressions: <Expression>[],
       resonations: <dynamic>[],
-      timestamp: '22',
+      timestamp: '18',
       channels: <Channel>[
         Channel(
           address: 'channel-address',
@@ -400,31 +400,29 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
         address: '0xfee32zokie8',
         expressionType: 'event',
         expressionContent: <String, String>{
-          'title':
-              'Philosophical exchange for individual and mutual improvement',
-          'location': 'Tubestation, New Polzeath UK',
+          'title': 'Junto Presents: Jazz and Draw',
+          'location': 'The Assemblage',
           'time': 'Sun, Sep 15, 3:00PM',
-          'image': 'assets/images/junto-mobile__event.png',
-          'description':
-              'Join us for an afternoon of deep introspection, interconnectivity, and philosophical discourse! Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum'
+          'image': 'assets/images/junto-mobile__event--one.png',
+          'description': "Join us for a jazzy afternoon of paint-splattering fun! We'll be grooving to your favorite blues while creating beautiful masterpieces together. All are invited!"
         },
       ),
       authorProfile: UserProfile(
         address: '0vefoiwiafjvkbr32r243r5',
         parent: 'parent-address',
-        bio: 'hellooo',
-        firstName: 'Eric',
-        lastName: 'Yang',
-        profilePicture: 'assets/images/junto-mobile__eric.png',
+        bio: "I'm Drea.",
+        firstName: 'Drea',
+        lastName: 'Bennett',
+        profilePicture: 'assets/images/junto-mobile__drea.png',
         verified: true,
       ),
       authorUsername: Username(
         address: '02efredffdfvdbnrtg',
-        username: 'sunyata',
+        username: 'dmoney',
       ),
       subExpressions: <Expression>[],
       resonations: <dynamic>[],
-      timestamp: '17',
+      timestamp: '22',
       channels: <Channel>[
         Channel(
           address: 'channel-address',

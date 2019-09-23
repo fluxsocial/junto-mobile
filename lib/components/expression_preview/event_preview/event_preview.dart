@@ -24,34 +24,36 @@ class EventPreview extends StatelessWidget {
                 )
               : const SizedBox(),
           Container(
-              color: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    expression.expression.expressionContent['time'],
+            color: Colors.white,
+            width: MediaQuery.of(context).size.width,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  expression.expression.expressionContent['time'],
+                  style: TextStyle(
+                      color: JuntoPalette.juntoGrey,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500),
+                ),
+                const SizedBox(height: 2.5),
+                Text(
+                  expression.expression.expressionContent['title'],
+                  style: TextStyle(
+                      color: JuntoPalette.juntoGrey,
+                      fontSize: 17,
+                      fontWeight: FontWeight.w700),
+                ),
+                const SizedBox(height: 2.5),
+                Text(expression.expression.expressionContent['location'],
                     style: TextStyle(
-                        color: JuntoPalette.juntoPrimary,
                         fontSize: 14,
-                        fontWeight: FontWeight.w500),
-                  ),
-                  const SizedBox(height: 2.5),
-                  Text(
-                    expression.expression.expressionContent['title'],
-                    style: TextStyle(
-                        color: JuntoPalette.juntoGrey,
-                        fontSize: 17,
-                        fontWeight: FontWeight.w700),
-                  ),
-                  const SizedBox(height: 2.5),
-                  Text(expression.expression.expressionContent['location'],
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          color: JuntoPalette.juntoGrey)),
-                ],
-              ))
+                        fontWeight: FontWeight.w400,
+                        color: JuntoPalette.juntoGrey)),
+              ],
+            ),
+          )
         ],
       ),
     );

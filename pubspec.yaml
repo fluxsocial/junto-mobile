@@ -101,6 +101,8 @@ flutter:
     - assets/images/junto-mobile__resonation.png    
     - assets/images/junto-mobile__event.png    
     - assets/images/junto-mobile__collection.png    
+    - assets/images/junto-mobile__photo--one.png    
+    - assets/images/junto-mobile__event--one.png    
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
