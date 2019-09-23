@@ -46,11 +46,13 @@ class EventPreview extends StatelessWidget {
                       fontWeight: FontWeight.w700),
                 ),
                 const SizedBox(height: 2.5),
-                Text(expression.expression.expressionContent['location'],
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: JuntoPalette.juntoGrey)),
+                Text(
+                  expression.expression.expressionContent['location'],
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: JuntoPalette.juntoGrey),
+                ),
               ],
             ),
           )

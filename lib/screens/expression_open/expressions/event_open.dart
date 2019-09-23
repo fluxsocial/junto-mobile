@@ -34,20 +34,12 @@ class EventOpen extends StatelessWidget {
               children: <Widget>[
                 Text(
                   eventTitle,
-                  style: const TextStyle(
+                  style: const TextStyle( 
                       color: JuntoPalette.juntoGrey,
                       fontSize: 20,
                       fontWeight: FontWeight.w700),
                 ),
-                const SizedBox(height: 5),
-                Container(
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      bottom:
-                          BorderSide(color: JuntoPalette.juntoFade, width: .75),
-                    ),
-                  ),
-                ),
+
                 const SizedBox(height: 10),
                 Container(
                   alignment: Alignment.center,
@@ -70,15 +62,7 @@ class EventOpen extends StatelessWidget {
                         fontWeight: FontWeight.w700),
                   ),
                 ),
-                const SizedBox(height: 10),
-                Container(
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      bottom:
-                          BorderSide(color: JuntoPalette.juntoFade, width: .75),
-                    ),
-                  ),
-                ),
+
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
