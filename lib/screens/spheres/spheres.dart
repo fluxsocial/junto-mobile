@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/models/sphere.dart';
 import 'package:junto_beta_mobile/providers/provider.dart';
 import 'package:junto_beta_mobile/screens/spheres/create_sphere/create_sphere.dart';
-import 'package:junto_beta_mobile/screens/spheres/sphere_preview/sphere_preview.dart';
+import 'package:junto_beta_mobile/screens/spheres/sphere_preview.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/styles.dart';

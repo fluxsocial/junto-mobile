@@ -47,7 +47,7 @@ class Sphere {
       ),
       const Sphere(
         sphereTitle: 'JUNTO Core',
-        sphereMembers: '5',
+        sphereMembers: '7',
         sphereImage: 'assets/images/junto-mobile__junto.png',
         sphereHandle: 'juntocore',
         sphereDescription: 'Junto Core team happenings',

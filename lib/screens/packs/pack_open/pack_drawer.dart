@@ -33,14 +33,6 @@ class PackDrawer extends StatelessWidget {
                           color: Color(0xff333333),
                           fontWeight: FontWeight.w700),
                     ),
-                    // ClipOval(
-                    //   child: Image.asset(
-                    //     'assets/images/junto-mobile__eric.png',
-                    //     height: 36.0,
-                    //     width: 36.0,
-                    //     fit: BoxFit.cover,
-                    //   ),
-                    // ),
                   ],
                 ),
               ),
@@ -104,20 +96,37 @@ class PackDrawer extends StatelessWidget {
                       ),
                     ),
                     Container(
-                        decoration: const BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: Color(0xffeeeeee),
-                              width: .75,
-                            ),
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Color(0xffeeeeee),
+                            width: .75,
                           ),
                         ),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 15),
-                        child: const Text(
-                          'Leave pack',
-                          style: TextStyle(fontWeight: FontWeight.w500),
-                        )),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 15),
+                      child: const Text(
+                        'Edit Pack',
+                        style: TextStyle(fontWeight: FontWeight.w500),
+                      ),
+                    ),                    
+                    Container(
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Color(0xffeeeeee),
+                            width: .75,
+                          ),
+                        ),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 15),
+                      child: const Text(
+                        'Leave Pack',
+                        style: TextStyle(fontWeight: FontWeight.w500),
+                      ),
+                    ),
                   ],
                 ),
               )

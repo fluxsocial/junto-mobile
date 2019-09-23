@@ -86,6 +86,9 @@ flutter:
     - assets/images/junto-mobile__josh.png 
     - assets/images/junto-mobile__dora.png 
     - assets/images/junto-mobile__drea.png 
+    - assets/images/junto-mobile__nash.png 
+    - assets/images/junto-mobile__tomis.png 
+    - assets/images/junto-mobile__leif.png 
     - assets/images/junto-mobile__expression--photo.png
     - assets/images/junto-mobile__den--photo.png
     - assets/images/junto-mobile__logo--white.png
@@ -101,6 +104,10 @@ flutter:
     - assets/images/junto-mobile__resonation.png    
     - assets/images/junto-mobile__event.png    
     - assets/images/junto-mobile__collection.png    
+    - assets/images/junto-mobile__photo--one.png    
+    - assets/images/junto-mobile__photo--two.png    
+    - assets/images/junto-mobile__event--one.png    
+    - assets/images/junto-mobile__event--two.png    
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -32,6 +32,7 @@ class JuntoCollectiveState extends State<JuntoCollective> {
   @override
   void initState() {
     super.initState();
+    
     widget.controller.addListener(scollListener);
   }
 
@@ -87,9 +88,9 @@ class JuntoCollectiveState extends State<JuntoCollective> {
       child: ListView(
         controller: widget.controller,
         children: <Widget>[
-          /// Degrees of Separation Widget rendered only when on the 'JUNTO'
+          /// Degrees of Separation Widget rendered only when on the 'Degrees of separation'
           /// perspective
-          widget.currentPerspective == 'degrees of separation'
+          widget.currentPerspective == 'Degrees of separation'
               ? DegreesOfSeparation(
                   _changeDegree,
                   _oneDegreeColor,

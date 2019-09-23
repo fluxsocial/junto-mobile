@@ -75,7 +75,6 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
       JuntoOverlay.hide();
       JuntoDialog.showJuntoDialog(
         context,
-        'Junto',
         error.message,
         <Widget>[
           FlatButton(

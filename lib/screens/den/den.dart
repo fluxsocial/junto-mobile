@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/providers/provider.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/screens/den/den_expanded.dart';
+import 'package:junto_beta_mobile/components/expression_preview/expression_preview.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/palette.dart';
@@ -30,6 +32,87 @@ class JuntoDenState extends State<JuntoDen> {
 
   PageController controller;
 
+  List expressions = [
+    Expression(
+      expression: ExpressionContent(
+        address: '0xfee32zokie8',
+        expressionType: 'longform',
+        expressionContent: <String, String>{
+          'title': 'Dynamic form is in motion!',
+          'body':
+              "Hey! Eric here. We're currently working with a London-based dev agency called DevAngels to build out our dynamic, rich text editor. Soon, you'll be able to create short or longform expressions that contain text, links, images complemented with features such as bullet points, horiozntal lines, bold and italic font, and much more. This should be done in the next 1 or 2 weeks so stay tuned!"
+        },
+      ),
+      subExpressions: <Expression>[],
+      authorUsername: Username(
+        address: '02efredffdfvdbnrtg',
+        username: 'sunyata',
+      ),
+      authorProfile: UserProfile(
+        address: '0vefoiwiafjvkbr32r243r5',
+        parent: 'parent-address',
+        bio: 'hellooo',
+        firstName: 'Eric',
+        lastName: 'Yang',
+        profilePicture: 'assets/images/junto-mobile__eric.png',
+        verified: true,
+      ),
+      resonations: <dynamic>[],
+      timestamp: '2',
+      channels: <Channel>[
+        Channel(
+          address: 'channel-address',
+          value: 'design',
+          attributeType: 'Channel',
+        ),
+        Channel(
+          address: 'channel-address',
+          value: 'tech',
+          attributeType: 'Channel',
+        ),
+      ],
+    ),
+
+    Expression(
+      expression: ExpressionContent(
+        address: '0xfee32zokie8',
+        expressionType: 'photo',
+        expressionContent: <String, String>{
+          'image': 'assets/images/junto-mobile__photo--one.png',
+          'caption': 'Went surfing for the first time! :) Got my ass handed to me...'
+        },
+      ),
+      authorUsername: Username(
+        address: '02efredffdfvdbnrtg',
+        username: 'sunyata',
+      ),
+      authorProfile: UserProfile(
+        address: '0vefoiwiafjvkbr32r243r5',
+        firstName: 'Eric',
+        lastName: 'Yang',
+        profilePicture: 'assets/images/junto-mobile__eric.png',
+        bio: 'hellooo',
+        parent: 'parent-address',
+        verified: true,
+      ),
+      subExpressions: <Expression>[],
+      resonations: <dynamic>[],
+      timestamp: '18',
+      channels: <Channel>[
+        Channel(
+          address: 'channel-address',
+          value: 'design',
+          attributeType: 'Channel',
+        ),
+        Channel(
+          address: 'channel-address',
+          value: 'tech',
+          attributeType: 'Channel',
+        ),
+      ],
+    ),    
+
+  ];
   @override
   void initState() {
     super.initState();
@@ -175,7 +258,6 @@ class JuntoDenState extends State<JuntoDen> {
                                 Scaffold.of(context).openEndDrawer();
                               },
                               child: Icon(CustomIcons.more, size: 24),
-
                             ),
                           )
                         ],
@@ -270,7 +352,51 @@ class JuntoDenState extends State<JuntoDen> {
               child: _buildPublicPage(),
             ),
             Transform.translate(
-                offset: const Offset(0.0, -18.0), child: _buildDenList())
+              offset: const Offset(0.0, -18.0),
+              child: _buildDenList(),
+            ),
+
+            publicExpressionsActive
+                ? Transform.translate(
+                    offset: const Offset(0.0, -18.0),
+                    child: ListView(
+                      shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
+                      children: <Widget>[
+                        ExpressionPreview(expression: expressions[0]),
+                        ExpressionPreview(expression: expressions[1]),
+                      ],
+                    ),
+                  )
+                : SizedBox()
+
+            // RaisedButton(
+            //   onPressed: () async {
+            //     await Provider.of<AuthenticationProvider>(context)
+            //         .logoutUser();
+            //     Navigator.pushReplacement(
+            //       context,
+            //       MaterialPageRoute<dynamic>(
+            //         builder: (BuildContext context) => Welcome(),
+            //       ),
+            //     );
+            //   },
+            //   color: const Color(0xff4968BF),
+            //   child: const Text(
+            //     'LOG OUT',
+            //     style: TextStyle(
+            //       // color: JuntoPalette.juntoBlue,
+            //       color: Colors.white,
+            //       fontWeight: FontWeight.w700,
+            //       fontSize: 14,
+            //     ),
+            //   ),
+            //   shape: RoundedRectangleBorder(
+            //     borderRadius: BorderRadius.circular(
+            //       100,
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

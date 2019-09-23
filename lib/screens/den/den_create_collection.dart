@@ -52,13 +52,16 @@ class DenCreateCollectionState extends State<DenCreateCollection> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Icon(
-                    CustomIcons.back_arrow_left,
-                    color: JuntoPalette.juntoSleek,
-                    size: 24,
+                  onTap: () => Navigator.pop(context),
+                  child: Container(
+                    color: Colors.white,
+                    width: 38,
+                    alignment: Alignment.centerLeft,
+                    child: Icon(
+                      CustomIcons.back_arrow_left,
+                      color: JuntoPalette.juntoSleek,
+                      size: 28,
+                    ),
                   ),
                 ),
                 Text(
@@ -68,12 +71,19 @@ class DenCreateCollectionState extends State<DenCreateCollection> {
                       color: Color(0xff333333),
                       fontWeight: FontWeight.w700),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    // create collection
-                  },
-                  child: const Text('create', style: JuntoStyles.body),
-                )
+                Container(
+                  // width: 38,
+                  color: Colors.white,
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    'create',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14,
+                      color: Color(0xff333333),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -135,30 +145,95 @@ class DenCreateCollectionState extends State<DenCreateCollection> {
                           textInputAction: TextInputAction.done,
                         ),
                       ),
-                      Container(
-                        padding: EdgeInsets.symmetric(vertical: 15),
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: Color(0xffeeeeee),
-                              width: .75,
+                      GestureDetector(
+                        onTap: () {
+                          showModalBottomSheet(
+                            isScrollControlled: true,
+                            context: context,
+                            builder: (context) => Container(
+                              color: Color(0xff737373),
+                              child: Container(
+                                height: MediaQuery.of(context).size.height * .9,
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: const Radius.circular(10),
+                                    topRight: Radius.circular(10),
+                                  ),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    SizedBox(height: 10),
+                                    Row(
+                                      children: <Widget>[
+                                        Text(
+                                          'Expressions',
+                                          style: TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w700,
+                                            color: Color(0xff333333),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 10),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width -
+                                              60,
+                                          decoration: BoxDecoration(
+                                            border: Border(
+                                              bottom: BorderSide(
+                                                color: Color(0xffeeeeee),
+                                                width: .75,
+                                              ),
+                                            ),
+                                          ),
+                                          child: Text(
+                                              'This will be a feed of all of the expressions (both public and private) a member has created in addition to those that they save from other people. Therefore, collections will be a culmination of any expression a member wants, including from othere people. '),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 15),
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                color: Color(0xffeeeeee),
+                                width: .75,
+                              ),
                             ),
                           ),
-                        ),
-                        child: Row(
-                          children: <Widget>[
-                            Icon(
-                              CustomIcons.half_lotus,
-                              size: 17,
-                              color: Color(0xff333333),
-                            ),
-                            SizedBox(width: 20),
-                            Text(
-                              'add expressions',
-                              style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.w500),
-                            ),
-                          ],
+                          child: Row(
+                            children: <Widget>[
+                              Icon(
+                                CustomIcons.half_lotus,
+                                size: 17,
+                                color: Color(0xff333333),
+                              ),
+                              SizedBox(width: 20),
+                              Text(
+                                'add expressions',
+                                style: TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.w500),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       Container(

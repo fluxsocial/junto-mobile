@@ -89,15 +89,15 @@ class _DenDrawerState extends State<DenDrawer> {
                     _denDrawerItem(context, 'My Pack', 'pack', true),
                     _denDrawerItem(context, 'Connections', 'connections', true),
                     _denDrawerItem(
-                        context, 'Followers and following', 'followers', true),
+                        context, 'Subscribers', 'followers', true),
                     _denDrawerItem(context, 'Edit profile', 'edit', true),
-                    // _denDrawerItem('Night theme', 'nav'),
+                    _denDrawerItem(context, 'Night theme', 'nav', false),
                     // _denDrawerItem('Notifications', 'nav'),
-                    // _denDrawerItem(context, 'Manage account', 'nav', true),
+                    _denDrawerItem(context, 'Manage account', 'nav', true),
                     // _denDrawerItem('Privacy', 'nav'),
 
                     // Support
-                    // _denDrawerItem('Resources', 'nav'),
+                    _denDrawerItem(context, 'Resources', 'nav', true),
                     _denDrawerItem(context, 'Logout', 'nav', false),
                   ],
                 ),

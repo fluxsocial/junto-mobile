@@ -3,7 +3,6 @@ import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/providers/user_provider.dart';
-import 'package:junto_beta_mobile/screens/collective/perspectives/create_perspective/perspective_member_preview/perspective_member_preview.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
@@ -35,147 +34,255 @@ class _CreatePerspectiveState extends State<CreatePerspective> {
         await Provider.of<UserProvider>(context)
             .createPerspective(Perspective(name: name));
     JuntoOverlay.hide();
-    JuntoDialog.showJuntoDialog(
-      context,
-      'Perspective Created | Junto',
-      'Name: ${address.name} \n Address: ${address.address}',
-      <Widget>[
-        FlatButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Ok'),
-        ),
-      ],
-    );
+    Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(45),
-          child: AppBar(
-            automaticallyImplyLeading: false,
-            brightness: Brightness.light,
-            iconTheme: const IconThemeData(
-              color: JuntoPalette.juntoSleek,
-            ),
-            backgroundColor: Colors.white,
-            elevation: 0,
-            titleSpacing: 0,
-            title: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child: const Icon(
-                      CustomIcons.back_arrow_left,
-                      color: JuntoPalette.juntoSleek,
-                      size: 24,
+      backgroundColor: Colors.white,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(45),
+        child: AppBar(
+          automaticallyImplyLeading: false,
+          brightness: Brightness.light,
+          iconTheme: const IconThemeData(
+            color: JuntoPalette.juntoSleek,
+          ),
+          backgroundColor: Colors.white,
+          elevation: 0,
+          titleSpacing: 0,
+          title: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () => Navigator.pop(context),
+                  child: const Icon(
+                    CustomIcons.back_arrow_left,
+                    color: JuntoPalette.juntoSleek,
+                    size: 24,
+                  ),
+                ),
+                Text(
+                  'New Perspective',
+                  style: TextStyle(
+                      fontSize: 15,
+                      color: Color(0xff333333),
+                      fontWeight: FontWeight.w700),
+                ),
+                InkWell(
+                  onTap: () {
+                    if (controller.value.text != '') {
+                      createPerspective();
+                    } else {
+                      return;
+                    }
+                  },
+                  enableFeedback: false,
+                  child: const Text(
+                    'create',
+                    style: TextStyle(
+                      color: Color(0xff333333),
+                      fontSize: 14,
                     ),
                   ),
-                  InkWell(
-                    onTap: createPerspective,
-                    enableFeedback: false,
-                    child: const Text(
-                      'create',
-                      style: TextStyle(
-                        color: Color(0xff333333),
-                        fontSize: 14,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-            bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(1),
-              child: Container(
-                height: 1,
-                width: MediaQuery.of(context).size.width,
-                color: const Color(0xffeeeeee),
-              ),
+          ),
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(1),
+            child: Container(
+              height: 1,
+              width: MediaQuery.of(context).size.width,
+              color: const Color(0xffeeeeee),
             ),
           ),
         ),
-        body: Container(
-          padding: const EdgeInsets.only(left: 10, right: 10),
-          child: Column(
-            children: <Widget>[
-              Container(
-                width: MediaQuery.of(context).size.width,
-                // padding: const EdgeInsets.symmetric(vertical: 5),
-                decoration: const BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
-                  ),
-                ),
-                child: TextField(
-                  controller: controller,
-                  buildCounter: (
-                    BuildContext context, {
-                    int currentLength,
-                    int maxLength,
-                    bool isFocused,
-                  }) =>
-                      null,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Name your perspective',
-                  ),
-                  style: const TextStyle(fontSize: 17),
-                  cursorColor: JuntoPalette.juntoGrey,
-                  cursorWidth: 2,
-                  maxLines: 1,
-                  maxLength: 80,
-                ),
-              ),
-              Container(
-                  width: MediaQuery.of(context).size.width,
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
-                    ),
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+      ),
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: ListView(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Icon(Icons.search, size: 17),
-                      const SizedBox(width: 10),
                       Container(
-                        width: MediaQuery.of(context).size.width * .75,
-                        child: TextField(
-                          buildCounter: (BuildContext context,
-                                  {int currentLength,
-                                  int maxLength,
-                                  bool isFocused}) =>
-                              null,
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Add members to your perspective',
+                        // padding: EdgeInsets.symmetric(vertical: 15),
+                        width: MediaQuery.of(context).size.width - 20,
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: Color(0xffeeeeee),
+                              width: .75,
+                            ),
                           ),
-                          cursorColor: JuntoPalette.juntoGrey,
-                          style: const TextStyle(fontSize: 14),
-                          cursorWidth: 2,
-                          maxLines: 1,
-                          maxLength: 80,
                         ),
-                      )
+                        child: TextField(
+                          controller: controller,
+                          buildCounter: (
+                            BuildContext context, {
+                            int currentLength,
+                            int maxLength,
+                            bool isFocused,
+                          }) =>
+                              null,
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Name your perspective',
+                            hintStyle: const TextStyle(
+                                color: Color(0xff999999),
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700),
+                          ),
+                          cursorColor: Color(0xff333333),
+                          cursorWidth: 2,
+                          maxLines: null,
+                          style: const TextStyle(
+                              color: Color(0xff333333),
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700),
+                          maxLength: 80,
+                          textInputAction: TextInputAction.done,
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(vertical: 15),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: Color(0xffeeeeee),
+                              width: .75,
+                            ),
+                          ),
+                        ),
+                        child: GestureDetector(
+                          onTap: () {
+                            showModalBottomSheet(
+                              isScrollControlled: true,
+                              context: context,
+                              builder: (context) => Container(
+                                color: Color(0xff737373),
+                                child: Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * .9,
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: const Radius.circular(10),
+                                      topRight: Radius.circular(10),
+                                    ),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      SizedBox(height: 10),
+                                      Row(
+                                        children: <Widget>[
+                                          Text(
+                                            'Members',
+                                            style: TextStyle(
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.w700,
+                                              color: Color(0xff333333),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 10),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width -
+                                                60,
+                                            decoration: BoxDecoration(
+                                              border: Border(
+                                                bottom: BorderSide(
+                                                  color: Color(0xffeeeeee),
+                                                  width: .75,
+                                                ),
+                                              ),
+                                            ),
+                                            child: TextField(
+                                              buildCounter: (
+                                                BuildContext context, {
+                                                int currentLength,
+                                                int maxLength,
+                                                bool isFocused,
+                                              }) =>
+                                                  null,
+                                              decoration: const InputDecoration(
+                                                border: InputBorder.none,
+                                                hintText: 'Search members',
+                                                hintStyle: const TextStyle(
+                                                    color: Color(0xff999999),
+                                                    fontSize: 17,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                              cursorColor: Color(0xff333333),
+                                              cursorWidth: 2,
+                                              maxLines: null,
+                                              style: const TextStyle(
+                                                  color: Color(0xff333333),
+                                                  fontSize: 17,
+                                                  fontWeight: FontWeight.w500),
+                                              maxLength: 80,
+                                              textInputAction:
+                                                  TextInputAction.done,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            color: Colors.white,
+                            child: Row(
+                              children: <Widget>[
+                                Icon(
+                                  CustomIcons.half_lotus,
+                                  size: 17,
+                                  color: Color(0xff333333),
+                                ),
+                                SizedBox(width: 20),
+                                Text(
+                                  'add members',
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
-                  )),
-              Expanded(
-                  child: ListView(
-                children: <Widget>[
-                  PerspectiveMemberPreview(),
-                  PerspectiveMemberPreview(),
-                  PerspectiveMemberPreview(),
-                ],
-              ))
-            ],
-          ),
-        ));
+                  ),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
   }
 }

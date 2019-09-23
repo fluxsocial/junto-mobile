@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:junto_beta_mobile/components/appbar/appbar.dart';
-import 'package:junto_beta_mobile/components/bottom_nav/bottom_nav.dart';
+import 'package:junto_beta_mobile/components/appbar.dart';
+import 'package:junto_beta_mobile/components/bottom_nav.dart';
 import 'package:junto_beta_mobile/components/utils/hide_fab.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/providers/provider.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
-import 'package:junto_beta_mobile/screens/collective/filter_fab/filter_fab.dart';
+import 'package:junto_beta_mobile/screens/collective/filter_fab.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspectives.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/den/den_drawer/den_drawer.dart';
@@ -145,16 +145,6 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
           },
         ),
       ),
-      // Container(
-      //   color: Color(0xff111111),
-      //   child: Center(
-      //     child: Container(
-      //       width: MediaQuery.of(context).size.width,
-      //       child: Image.asset('assets/images/junto-mobile__eric.png',
-      //           fit: BoxFit.fitWidth),
-      //     ),
-      //   ),
-      // ),
     ]);
   }
 
@@ -201,7 +191,8 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
       case 3:
         setState(() {
           _currentScreen = 'den';
-          _appbarTitle = profile?.username ?? 'Junto';
+          _appbarTitle = 'sunyata';
+          // _appbarTitle = profile?.username ?? 'Junto';
         });
         break;
     }
@@ -221,148 +212,71 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
   void _buildFilterChannelModal(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      builder: (BuildContext context) {
-        // Use StatefulBuilder to pass state of CreateActions
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter state) {
-            return Container(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: JuntoStyles.horizontalPadding),
-              height: MediaQuery.of(context).size.height * .4,
-              child: Column(
+      builder: (context) => Container(
+        color: Color(0xff737373),
+        child: Container(
+          height: 280,
+          padding: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(10),
+              topRight: Radius.circular(10),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Container(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          width: MediaQuery.of(context).size.width * .75,
-                          child: TextField(
-                            controller: _channelController,
-                            buildCounter: (
-                              BuildContext context, {
-                              int currentLength,
-                              int maxLength,
-                              bool isFocused,
-                            }) =>
-                                null,
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              hintText: '# filter by channel',
-                            ),
-                            cursorColor: JuntoPalette.juntoGrey,
-                            cursorWidth: 2,
-                            style: const TextStyle(
-                              color: JuntoPalette.juntoGrey,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700,
-                            ),
-                            maxLines: 1,
-                            maxLength: 80,
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 5),
-                          child: GestureDetector(
-                            onTap: () {
-                              // Update channels list in state until there are 3
-                              _channels.length < 3
-                                  ? _updateChannels(
-                                      state,
-                                      _channelController.text,
-                                    )
-                                  : _nullChannels();
-                            },
-                            child: const Text(
-                              'add',
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
-                                color: JuntoPalette.juntoGrey,
-                              ),
-                            ),
-                          ),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: JuntoPalette.juntoGrey,
-                              width: 1,
-                            ),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                        ),
-                      ],
-                    ),
-                    decoration: const BoxDecoration(
+                    width: MediaQuery.of(context).size.width - 60,
+                    decoration: BoxDecoration(
                       border: Border(
-                        bottom:
-                            BorderSide(color: JuntoPalette.juntoFade, width: 1),
+                        bottom: BorderSide(
+                          color: Color(0xffeeeeee),
+                          width: .75,
+                        ),
                       ),
+                    ),
+                    child: TextField(
+                      controller: _channelController,
+                      buildCounter: (
+                        BuildContext context, {
+                        int currentLength,
+                        int maxLength,
+                        bool isFocused,
+                      }) =>
+                          null,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Filter by channel',
+                        hintStyle: const TextStyle(
+                            color: Color(0xff999999),
+                            fontSize: 17,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      cursorColor: Color(0xff333333),
+                      cursorWidth: 2,
+                      maxLines: null,
+                      style: const TextStyle(
+                          color: Color(0xff333333),
+                          fontSize: 17,
+                          fontWeight: FontWeight.w500),
+                      maxLength: 80,
+                      textInputAction: TextInputAction.done,
                     ),
                   ),
                   Container(
-                    alignment: Alignment.centerLeft,
-                    padding: _channels.isEmpty
-                        ? const EdgeInsets.all(0)
-                        : const EdgeInsets.symmetric(vertical: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        _channels.isEmpty
-                            ? const SizedBox()
-                            : Container(
-                                margin: const EdgeInsets.only(bottom: 10),
-                                child: const Text(
-                                  'DOUBLE TAP TO REMOVE CHANNEL',
-                                  style: TextStyle(fontSize: 12),
-                                ),
-                              ),
-                        Wrap(
-                          runSpacing: 5,
-                          alignment: WrapAlignment.start,
-                          direction: Axis.horizontal,
-                          children: _channels
-                              .map(
-                                (String channel) => GestureDetector(
-                                  onDoubleTap: () {
-                                    _removeChannel(state, channel);
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      border: Border.all(
-                                        color: JuntoPalette.juntoGrey,
-                                        width: 1,
-                                      ),
-                                    ),
-                                    margin: const EdgeInsets.only(right: 10),
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: JuntoStyles.horizontalPadding,
-                                      vertical: 5,
-                                    ),
-                                    child: Text(
-                                      channel,
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                        ),
-                      ],
-                    ),
-                  ),
+                    child: Icon(Icons.add, size: 20),
+                  )
                 ],
               ),
-            );
-          },
-        );
-      },
+            ],
+          ),
+        ),
+      ),
     );
   }
 

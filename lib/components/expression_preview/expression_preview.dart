@@ -21,36 +21,37 @@ class ExpressionPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            CupertinoPageRoute<dynamic>(
-              builder: (BuildContext context) => ExpressionOpen(expression),
-            ),
-          );
-        },
-        child: Container(
-          color: Colors.white,
-          margin: const EdgeInsets.only(bottom: 10.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              // expression preview profile
-              PreviewProfile(expression: expression),
-
-              // expression preview body
-              _returnExpression(),
-
-              // expression preview channels, resonation, and comments
-              PreviewBottom(expression: expression)
-            ],
+      onTap: () {
+        Navigator.push(
+          context,
+          CupertinoPageRoute<dynamic>(
+            builder: (BuildContext context) => ExpressionOpen(expression),
           ),
-        ));
+        );
+      },
+      child: Container(
+        color: Colors.white,
+        margin: const EdgeInsets.only(bottom: 10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            // expression preview profile
+            PreviewProfile(expression: expression),
+
+            // expression preview body
+            _returnExpression(),
+
+            // expression preview channels, resonation, and comments
+            PreviewBottom(expression: expression)
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _returnExpression() {
     if (expression.expression.expressionType == 'longform') {
-      return LongformPreview(expression: expression);
+      return LongformPreview(expression: expression);      
     } else if (expression.expression.expressionType == 'shortform') {
       return ShortformPreview(expression);
     } else if (expression.expression.expressionType == 'photo') {

@@ -23,11 +23,14 @@ class LongformPreview extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           _buildTitle(),
-          Text(expressionBody,
-              textAlign: TextAlign.left,
-              maxLines: 4,
-              overflow: TextOverflow.ellipsis,
-              style: JuntoStyles.longformPreviewBody),
+          Text(
+            expressionBody,
+            textAlign: TextAlign.left,
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+                fontSize: 15, height: 1.4, fontWeight: FontWeight.w500),
+          ),
         ],
       ),
     );
@@ -38,8 +41,11 @@ class LongformPreview extends StatelessWidget {
         expression.expression.expressionContent['title'];
     if (expressionTitle != '') {
       return Container(
-        child: Text(expressionTitle,
-            textAlign: TextAlign.left, style: JuntoStyles.longformPreviewTitle),
+        child: Text(
+          expressionTitle,
+          textAlign: TextAlign.left,
+          style: JuntoStyles.longformPreviewTitle,
+        ),
       );
     } else {
       return const SizedBox();

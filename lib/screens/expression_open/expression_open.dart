@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/components/comment_preview/comment_preview.dart';
-import 'package:junto_beta_mobile/screens/expression_open/expression_open_appbar/expression_open_appbar.dart';
-import 'package:junto_beta_mobile/screens/expression_open/expression_open_bottom/expression_open_bottom.dart';
-import 'package:junto_beta_mobile/screens/expression_open/expression_open_top/expression_open_top.dart';
-import 'package:junto_beta_mobile/screens/expression_open/expressions/longform_open/longform_open.dart';
-import 'package:junto_beta_mobile/screens/expression_open/expressions/shortform_open/shortform_open.dart';
+import 'package:junto_beta_mobile/screens/expression_open/expression_open_appbar.dart';
+import 'package:junto_beta_mobile/screens/expression_open/expression_open_bottom.dart';
+import 'package:junto_beta_mobile/screens/expression_open/expression_open_top.dart';
+import 'package:junto_beta_mobile/screens/expression_open/expressions/longform_open.dart';
+import 'package:junto_beta_mobile/screens/expression_open/expressions/shortform_open.dart';
+import 'package:junto_beta_mobile/screens/expression_open/expressions/photo_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/event_open.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/styles.dart';
@@ -55,9 +56,11 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   Widget _buildExpression() {
     final String expressionType = widget.expression.expression.expressionType;
     if (expressionType == 'longform') {
-      return LongformOpen(widget.expression);
+      return LongformOpen(widget.expression);      
     } else if (expressionType == 'shortform') {
       return ShortformOpen(widget.expression);
+    } else if (expressionType == 'photo') {
+      return PhotoOpen(widget.expression);
     } else if (expressionType == 'event') {
       return EventOpen(widget.expression);
     } else {
@@ -113,6 +116,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              SizedBox(height: 10),
               ListTile(
                 onTap: () {
                   setState(() {
@@ -228,26 +232,30 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                           physics: ClampingScrollPhysics(),
                           children: <Widget>[
                             CommentPreview(
-                              commentText: 'love this! is this for everyone??',
+                              commentText:
+                                  'Hey there! This is what a comment preview looks like.',
                             ),
                             CommentPreview(
                               commentText:
-                                  'This reminds of me of the Junto club that was started in the late 1700s by Ben Franklin.',
+                                  'All comments are hidden initially so the viewer can have complete independence of thought while viewing expressions.',
                             ),
                             CommentPreview(
-                              commentText: 'yo',
+                              commentText:
+                                  'In Junto, comments are treated like expressions. You can resonate them or reply to a comment (nested comments). This is quite complex so we are tacklign this once the rest of the core functionality is finished.',
                             ),
                             CommentPreview(
-                              commentText: 'hello',
+                              commentText:
+                                  "And yes, I know what you're thinking. 'Comments??' We need a new semantic!",
                             ),
                             CommentPreview(
-                              commentText: 'hello',
+                              commentText:
+                                  "Let's leave that to Fri to discuss :)",
                             ),
                             CommentPreview(
-                              commentText: 'hello',
+                              commentText: 'Much',
                             ),
                             CommentPreview(
-                              commentText: 'hello',
+                              commentText: 'love <3',
                             ),
                           ],
                         )
@@ -320,7 +328,6 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
                                       // hintText: 'reply',
-
                                     ),
                                     maxLines: null,
                                     cursorColor: JuntoPalette.juntoGrey,
@@ -333,7 +340,6 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                                   ),
                                 ),
                               ],
-
                             ),
                           ),
                         ],
