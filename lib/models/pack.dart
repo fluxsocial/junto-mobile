@@ -39,6 +39,11 @@ class Pack {
         'assets/images/junto-mobile__drea.png',
       ),
       Pack(
+        'Self-Directed AF',
+        'Tomis Parker',
+        'assets/images/junto-mobile__tomis.png',
+      ),      
+      Pack(
         'Cats',
         'Yaz Owainati',
         'assets/images/junto-mobile__yaz.png',
@@ -53,6 +58,11 @@ class Pack {
         'David Wu',
         'assets/images/junto-mobile__david.png',
       ),
+      Pack(
+        'Nacho Cat',
+        'Leif Lion',
+        'assets/images/junto-mobile__leif.png',
+      ),      
     ];
   }
 }

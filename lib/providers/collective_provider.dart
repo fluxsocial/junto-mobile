@@ -332,7 +332,7 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
       subExpressions: <Expression>[],
       authorUsername: Username(
         address: '02efredffdfvdbnrtg',
-        username: 'eric',
+        username: 'sunyata',
       ),
       authorProfile: UserProfile(
         address: '0vefoiwiafjvkbr32r243r5',

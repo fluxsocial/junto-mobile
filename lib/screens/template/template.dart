@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:junto_beta_mobile/components/appbar/appbar.dart';
-import 'package:junto_beta_mobile/components/bottom_nav/bottom_nav.dart';
+import 'package:junto_beta_mobile/components/appbar.dart';
+import 'package:junto_beta_mobile/components/bottom_nav.dart';
 import 'package:junto_beta_mobile/components/utils/hide_fab.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/providers/provider.dart';
@@ -201,7 +201,8 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
       case 3:
         setState(() {
           _currentScreen = 'den';
-          _appbarTitle = profile?.username ?? 'Junto';
+          _appbarTitle = 'sunyata';
+          // _appbarTitle = profile?.username ?? 'Junto';
         });
         break;
     }

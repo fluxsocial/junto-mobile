@@ -47,7 +47,7 @@ class BottomNavState extends State<BottomNav> {
             _BottomNavButton(
               index: 1,
               selectedIndex: widget.currentIndex,
-              icon: CustomIcons.circle,   
+              icon: CustomIcons.circle,
               onTap: widget.setIndex,
             ),
             Expanded(
@@ -87,6 +87,7 @@ class BottomNavState extends State<BottomNav> {
                 ),
               ),
             ),
+            
             _BottomNavButton(
               index: 2,
               selectedIndex: widget.currentIndex,
