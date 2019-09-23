@@ -4,7 +4,6 @@ import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/providers/user_provider.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
 import 'package:junto_beta_mobile/screens/loading_screen/junto_loading_screen.dart';
-import 'package:junto_beta_mobile/screens/notifications/notifications.dart';
 import 'package:junto_beta_mobile/screens/template/template.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/themes.dart';
@@ -56,7 +55,6 @@ class JuntoAppState extends State<JuntoApp> {
           '/welcome': (BuildContext context) => Welcome(),
           '/template': (BuildContext context) => JuntoTemplate(),
           '/create': (BuildContext context) => const JuntoCreate('collective'),
-          '/notifications': (BuildContext context) => JuntoNotifications(),
         },
       ),
     );

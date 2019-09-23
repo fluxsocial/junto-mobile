@@ -45,7 +45,8 @@ class _CreateSphereNextState extends State<CreateSphereNext> {
           await Provider.of<SpheresProvider>(context)
               .createSphere(updatedSphere);
       JuntoOverlay.hide();
-      Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) => JuntoTemplate()));
+      Navigator.pushReplacement(
+          context, CupertinoPageRoute(builder: (context) => JuntoTemplate()));
     } on JuntoException catch (error) {
       JuntoOverlay.hide();
       JuntoDialog.showJuntoDialog(
