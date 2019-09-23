@@ -87,6 +87,12 @@ class DenExpanded extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 17, fontWeight: FontWeight.w500),
                       ),
+                      const SizedBox(height: 25),
+                      Text(
+                        'This is the expanded version of a den/profile. The image will be full size as well as a bio, which will have a much larger character limit to enable people to express themseleves in more depth vs other platforms.',
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.w500),
+                      ),
                     ],
                   ),
                 )

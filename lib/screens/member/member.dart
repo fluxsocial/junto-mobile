@@ -114,14 +114,25 @@ class JuntoMember extends StatelessWidget {
                                           CrossAxisAlignment.start,
                                       children: <Widget>[
                                         ListTile(
-                                          title: Text('Follow'),
+                                          title: Text(
+                                            'Subscribe',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w500),
+                                          ),
                                         ),
                                         ListTile(
-                                          title: Text('Connect'),
-
+                                          title: Text(
+                                            'Connect',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w500),
+                                          ),
                                         ),
                                         ListTile(
-                                          title: Text('Join Pack'),
+                                          title: Text(
+                                            'Join Pack',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w500),
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -209,7 +220,11 @@ class JuntoMember extends StatelessWidget {
                                     )
                                   ],
                                 ),
-                              )
+                              ),
+                              Container(
+                                padding: EdgeInsets.symmetric(vertical: 25),
+                                child: Text('// This is what a profile/den looks like when you are viewing someone else. You will be able to see both their public expressions and collections. Will be fully built / dynamic in a few days..')
+                              ),
                             ]),
                       ],
                     ),

@@ -162,7 +162,7 @@ class PerspectiveTile extends StatelessWidget {
               style: const TextStyle(
                 color: Color(0xff333333),
                 fontSize: 14,
-                fontWeight: FontWeight.w700,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ],
