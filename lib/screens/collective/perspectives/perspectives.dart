@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/providers/provider.dart';
 import 'package:provider/provider.dart';
 import 'create_perspective/create_perspective.dart';
@@ -99,7 +98,7 @@ class Perspectives extends StatelessWidget {
   Widget _buildUserPerspectives(BuildContext context) {
     return FutureBuilder<List<CentralizedPerspective>>(
       future: Provider.of<UserProvider>(context)
-          .getUserPerspective(profile.address),
+          .getUserPerspective(profile?.address),
       builder: (
         BuildContext context,
         AsyncSnapshot<List<CentralizedPerspective>> snapshot,
@@ -116,9 +115,9 @@ class Perspectives extends StatelessWidget {
         }
         if (snapshot.hasData) {
           return ListView(
-            padding: EdgeInsets.all(0),
+            padding: const EdgeInsets.all(0),
             shrinkWrap: true,
-            physics: ClampingScrollPhysics(),
+            physics: const ClampingScrollPhysics(),
             children: snapshot.data
                 .map(
                   (CentralizedPerspective perspective) => PerspectiveTile(
