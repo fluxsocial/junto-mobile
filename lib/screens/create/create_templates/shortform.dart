@@ -44,8 +44,8 @@ class CreateShortformState extends State<CreateShortform> {
 
   @override
   void dispose() {
-    _bodyController.dispose();
     _bodyController.removeListener(bodyListener);
+    _bodyController.dispose();
     super.dispose();
   }
 

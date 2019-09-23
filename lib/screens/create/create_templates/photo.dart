@@ -6,6 +6,8 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/palette.dart';
+import 'package:flutter/services.dart' show PlatformException;
+import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 
 /// Create using photo form
 class CreatePhoto extends StatefulWidget {
@@ -39,28 +41,43 @@ class CreatePhotoState extends State<CreatePhoto> {
       setState(() {
         _imageFile = image;
       });
-
       _cropImage(image);
-
       if (_onFirstScreen) {
         widget.toggleBottomNavVisibility();
         _onFirstScreen = false;
         _photoEdit = true;
       }
+    }).catchError((dynamic error) {
+      if (error is PlatformException && error.code == 'photo_access_denied')
+        JuntoDialog.showJuntoDialog(
+          context,
+          'You need to allow photo '
+          'permission',
+          <Widget>[
+            FlatButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Ok'),
+            ),
+          ],
+        );
+      debugPrint('Error occured selecting photo');
     });
   }
 
   // Function to crop an image
   Future<void> _cropImage(File imageFile) async {
-    final File croppedFile = await ImageCropper.cropImage(
-      sourcePath: imageFile.path,
-      maxWidth: 512,
-      maxHeight: 512,
-    );
-    widget.isEditing.value = true;
-    setState(() {
-      _croppedFile = croppedFile;
-    });
+    if (imageFile != null) {
+      final File croppedFile = await ImageCropper.cropImage(
+        sourcePath: imageFile?.path,
+        maxWidth: 512,
+        maxHeight: 512,
+      );
+      widget.isEditing.value = true;
+      setState(() {
+        _croppedFile = croppedFile;
+      });
+    }
+    return;
   }
 
   // Upload Image component - rendered in _photoTypeTemplate()
