@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/screens/create/create_actions.dart';
+import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
 import 'package:junto_beta_mobile/palette.dart';
 
 class CreateBullet extends StatefulWidget {
@@ -188,7 +188,6 @@ class CreateBulletState extends State<CreateBullet> {
               ],
             ),
           ),
-          CreateActions(_bulletExpression)
         ],
       ),
     );

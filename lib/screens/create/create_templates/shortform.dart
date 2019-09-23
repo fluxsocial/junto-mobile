@@ -29,6 +29,8 @@ class CreateShortformState extends State<CreateShortform> {
     gradientTwo = JuntoPalette.juntoSecondary;
     _bodyController = TextEditingController();
     _bodyController.addListener(bodyListener);
+    _bodyController.text = 'Going to create two color pickers that people can use to generate their own gradient. These are just placeholders';
+
   }
 
   void bodyListener() {
@@ -199,7 +201,7 @@ class CreateShortformState extends State<CreateShortform> {
                         null,
                     decoration: const InputDecoration(
                       border: InputBorder.none,
-                    ),
+                    ),                    
                     cursorColor: Colors.white,
                     cursorWidth: 2,
                     maxLines: null,

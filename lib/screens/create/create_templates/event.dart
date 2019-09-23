@@ -216,9 +216,9 @@ class _CreateEventState extends State<CreateEvent> {
                         border: InputBorder.none,
                         hintText: 'Name of event',
                         hintStyle: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xff333333),
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xff999999),
                         ),
                       ),
                       cursorColor: JuntoPalette.juntoGrey,
@@ -226,7 +226,7 @@ class _CreateEventState extends State<CreateEvent> {
                       maxLines: null,
                       maxLength: 140,
                       style: const TextStyle(
-                          fontSize: 17,
+                          fontSize: 20,
                           color: Color(0xff333333),
                           fontWeight: FontWeight.w700),
                     ),
@@ -268,7 +268,10 @@ class _CreateEventState extends State<CreateEvent> {
                           const Text(
                             'Start Date',
                             style: TextStyle(
-                                fontSize: 17, fontWeight: FontWeight.w600),
+                              fontSize: 17,
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xff999999),
+                            ),
                           ),
                           Row(
                             children: <Widget>[
@@ -284,7 +287,8 @@ class _CreateEventState extends State<CreateEvent> {
                                     startMinute +
                                     ' ' +
                                     startPeriod,
-                                style: const TextStyle(fontSize: 17),
+                                style: const TextStyle(
+                                    fontSize: 17, fontWeight: FontWeight.w500),
                               )
                             ],
                           )
@@ -331,7 +335,10 @@ class _CreateEventState extends State<CreateEvent> {
                           const Text(
                             'End Date',
                             style: TextStyle(
-                                fontSize: 17, fontWeight: FontWeight.w600),
+                              fontSize: 17,
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xff999999),
+                            ),
                           ),
                           endDay == ''
                               ? const SizedBox()
@@ -350,8 +357,8 @@ class _CreateEventState extends State<CreateEvent> {
                                           ' ' +
                                           endPeriod,
                                       style: const TextStyle(
-                                        fontSize: 17,
-                                      ),
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w500),
                                     )
                                   ],
                                 )
@@ -372,33 +379,8 @@ class _CreateEventState extends State<CreateEvent> {
                         )
                       : const SizedBox(),
                   Container(
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                    child: const Text(
-                      'Location',
-                      style: TextStyle(
-                          color: Color(0xff333333),
-                          fontSize: 17,
-                          fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                    child: const Text(
-                      'Details',
-                      style: TextStyle(
-                          color: Color(0xff333333),
-                          fontSize: 17,
-                          fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                  Container(
-                    color: const Color(0xfffbfbfb),
-                    constraints:
-                        const BoxConstraints(minHeight: 140, maxHeight: 240),
-                    padding: const EdgeInsets.only(bottom: 40),
-                    child: TextFormField(
-                      validator: Validator.validateNonEmpty,
-                      controller: detailsController,
+                    // padding: const EdgeInsets.symmetric(vertical: 15),
+                    child: TextField(
                       buildCounter: (
                         BuildContext context, {
                         int currentLength,
@@ -408,18 +390,52 @@ class _CreateEventState extends State<CreateEvent> {
                           null,
                       decoration: const InputDecoration(
                         border: InputBorder.none,
+                        hintText: 'Location',
+                        hintStyle: const TextStyle(
+                            color: Color(0xff999999),
+                            fontSize: 17,
+                            fontWeight: FontWeight.w700),
                       ),
-                      cursorColor: JuntoPalette.juntoGrey,
+                      cursorColor: Color(0xff333333),
                       cursorWidth: 2,
                       maxLines: null,
-                      textInputAction: TextInputAction.newline,
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: const Color(0xff333333),
-                      ),
+                      style: const TextStyle(
+                          color: Color(0xff333333),
+                          fontSize: 17,
+                          fontWeight: FontWeight.w700),
+                      maxLength: 80,
+                      textInputAction: TextInputAction.done,
                     ),
-                  )
+                  ),
+                  Container(
+                    // padding: const EdgeInsets.symmetric(vertical: 15),
+                    child: TextField(
+                      buildCounter: (
+                        BuildContext context, {
+                        int currentLength,
+                        int maxLength,
+                        bool isFocused,
+                      }) =>
+                          null,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Details',
+                        hintStyle: const TextStyle(
+                            color: Color(0xff999999),
+                            fontSize: 17,
+                            fontWeight: FontWeight.w700),
+                      ),
+                      cursorColor: Color(0xff333333),
+                      cursorWidth: 2,
+                      maxLines: null,
+                      style: const TextStyle(
+                          color: Color(0xff333333),
+                          fontSize: 17,
+                          fontWeight: FontWeight.w700),
+                      maxLength: 80,
+                      textInputAction: TextInputAction.done,
+                    ),
+                  ),
                 ],
               ),
             ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/screens/create/create_actions/create_actions_appbar/create_actions_appbar.dart';
+import 'package:junto_beta_mobile/screens/create/create_actions/create_actions_appbar.dart';
 import 'package:junto_beta_mobile/palette.dart';
 
 class CreateActions extends StatefulWidget {
@@ -16,6 +16,7 @@ class CreateActions extends StatefulWidget {
 
 class CreateActionsState extends State<CreateActions> {
   final List<String> _channels = <String>[];
+  String _selectedType = 'Collective';
 
   // instantiate TextEditingController to pass to TextField widget
   TextEditingController _channelController;
@@ -55,9 +56,8 @@ class CreateActionsState extends State<CreateActions> {
                 ),
               ),
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-              child: const Text(
-                'add channels',
-              ),
+              child: const Text('# add channels',
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500)),
             ),
           ),
           GestureDetector(
@@ -78,8 +78,16 @@ class CreateActionsState extends State<CreateActions> {
                 horizontal: 10,
                 vertical: 20,
               ),
-              child: Text(
-                'sharing to ' + widget.expressionLayer,
+              child: Row(
+                children: <Widget>[
+                  Text(
+                    'sharing to ' + widget.expressionLayer,
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+                  ),
+                  SizedBox(width: 1),
+                  Icon(Icons.keyboard_arrow_down,
+                      color: Color(0xff333333), size: 17)
+                ],
               ),
             ),
           ),
@@ -91,234 +99,195 @@ class CreateActionsState extends State<CreateActions> {
   // Build bottom modal to add channels to expression
   void _buildChannelsModal(BuildContext context) {
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
-      builder: (BuildContext context) {
-        // Use StatefulBuilder to pass state of CreateActions
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter state) {
-            return Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Column(
+      builder: (context) => Container(
+        color: Color(0xff737373),
+        child: Container(
+          height: MediaQuery.of(context).size.height * .9,
+          padding: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(10),
+              topRight: Radius.circular(10),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Container(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          width: MediaQuery.of(context).size.width * .75,
-                          child: TextField(
-                            controller: _channelController,
-                            buildCounter: (BuildContext context,
-                                    {int currentLength,
-                                    int maxLength,
-                                    bool isFocused}) =>
-                                null,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: '# add up to three channels',
-                            ),
-                            cursorColor: JuntoPalette.juntoGrey,
-                            cursorWidth: 2,
-                            style: const TextStyle(
-                              color: Color(
-                                0xff333333,
-                              ),
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700,
-                            ),
-                            maxLines: 1,
-                            maxLength: 80,
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 5),
-                          child: GestureDetector(
-                            onTap: () {
-                              // Update channels list in state until there are 3
-                              _channels.length < 3
-                                  ? _updateChannels(
-                                      state,
-                                      _channelController.text,
-                                    )
-                                  : _nullChannels();
-                            },
-                            child: const Text(
-                              'add',
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
-                                color: Color(0xff333333),
-                              ),
-                            ),
-                          ),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                                color: const Color(0xff333333), width: 1),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                        ),
-                      ],
-                    ),
-                    decoration: const BoxDecoration(
+                    width: MediaQuery.of(context).size.width - 60,
+                    decoration: BoxDecoration(
                       border: Border(
                         bottom: BorderSide(
                           color: Color(0xffeeeeee),
-                          width: 1,
+                          width: .75,
                         ),
                       ),
                     ),
-                  ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    padding: _channels.isEmpty
-                        ? const EdgeInsets.all(0)
-                        : const EdgeInsets.symmetric(vertical: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        _channels.isEmpty
-                            ? const SizedBox()
-                            : Container(
-                                margin: const EdgeInsets.only(bottom: 10),
-                                child: const Text(
-                                  'DOUBLE TAP TO REMOVE CHANNEL',
-                                  style: TextStyle(fontSize: 12),
-                                ),
-                              ),
-                        Wrap(
-                          runSpacing: 5,
-                          alignment: WrapAlignment.start,
-                          direction: Axis.horizontal,
-                          children: _channels
-                              .map(
-                                (String channel) => GestureDetector(
-                                      onDoubleTap: () =>
-                                          _removeChannel(state, channel),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          border: Border.all(
-                                            color: const Color(0xff333333),
-                                            width: 1,
-                                          ),
-                                        ),
-                                        margin: const EdgeInsets.only(
-                                          right: 10,
-                                        ),
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 10,
-                                          vertical: 5,
-                                        ),
-                                        child: Text(
-                                          channel,
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                              )
-                              .toList(),
-                        ),
-                      ],
+                    child: TextField(
+                      controller: _channelController,
+                      buildCounter: (
+                        BuildContext context, {
+                        int currentLength,
+                        int maxLength,
+                        bool isFocused,
+                      }) =>
+                          null,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Add up to five channels',
+                        hintStyle: const TextStyle(
+                            color: Color(0xff999999),
+                            fontSize: 17,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      cursorColor: Color(0xff333333),
+                      cursorWidth: 2,
+                      maxLines: null,
+                      style: const TextStyle(
+                          color: Color(0xff333333),
+                          fontSize: 17,
+                          fontWeight: FontWeight.w500),
+                      maxLength: 80,
+                      textInputAction: TextInputAction.done,
                     ),
                   ),
+                  Container(
+                    child: Icon(Icons.add, size: 20),
+                  )
                 ],
               ),
-            );
-          },
-        );
-      },
+            ],
+          ),
+        ),
+      ),
     );
-  }
-
-  // Update the list of channels in state
-  void _updateChannels(StateSetter updateState, String channel) {
-    updateState(() {
-      if (channel != '') {
-        _channels.add(channel);
-
-        _channelController.text = '';
-      }
-    });
-  }
-
-  // Remove a channel from the list of channels in state
-  void _removeChannel(StateSetter updateState, String channel) {
-    updateState(() {
-      _channels.remove(channel);
-    });
-  }
-
-  // Called when channels.length > x
-  void _nullChannels() {
-    return;
   }
 
   // Build bottom modal to add channels to expression
   void _buildLayersModal(BuildContext context) {
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
-      builder: (BuildContext context) {
-        // Use StatefulBuilder to pass state of CreateActions
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter state) {
-            return Container(
-              color: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+      builder: (context) => Container(
+        color: Color(0xff737373),
+        child: Container(
+          height: MediaQuery.of(context).size.height * .9,
+          padding: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(10),
+              topRight: Radius.circular(10),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(height: 10),
+              Text(
+                'Where would you like to share?',
+                style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xff333333),
+                ),
+              ),
+              SizedBox(height: 10),
+              Text(
+                'Will build when API is 100%.. members can choose between collective, any spheres they belong to, pack, and den',
+                style: TextStyle(fontSize: 15),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _SelectionTile extends StatefulWidget {
+  const _SelectionTile({
+    Key key,
+    @required this.name,
+    @required this.desc,
+    @required this.onClick,
+    @required this.isSelected,
+  }) : super(key: key);
+
+  final String name;
+  final String desc;
+  final bool isSelected;
+  final ValueChanged<String> onClick;
+
+  @override
+  State createState() => _SelectionTileState();
+}
+
+class _SelectionTileState extends State<_SelectionTile> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
+        ),
+      ),
+      padding: const EdgeInsets.symmetric(
+        vertical: 15,
+      ),
+      child: InkWell(
+        onTap: () => widget.onClick(widget.name),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Container(
+              width: MediaQuery.of(context).size.width * .75,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          width: MediaQuery.of(context).size.width * .75,
-                          color: Colors.white,
-                          child: TextField(
-                            controller: _channelController,
-                            buildCounter: (
-                              BuildContext context, {
-                              int currentLength,
-                              int maxLength,
-                              bool isFocused,
-                            }) =>
-                                null,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'choose where to share your expression',
-                            ),
-                            cursorColor: JuntoPalette.juntoGrey,
-                            cursorWidth: 2,
-                            style: const TextStyle(
-                              color: Color(0xff333333),
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700,
-                            ),
-                            maxLines: 1,
-                            maxLength: 80,
-                          ),
-                        ),
-                      ],
-                    ),
-                    decoration: const BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
-                      ),
+                  Text(
+                    widget.name,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ],
               ),
-            );
-          },
-        );
-      },
+            ),
+            AnimatedContainer(
+              duration: kThemeChangeDuration,
+              height: 17,
+              width: 17,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: widget.isSelected
+                        ? [
+                            JuntoPalette.juntoSecondary,
+                            JuntoPalette.juntoPrimary
+                          ]
+                        : [Colors.white, Colors.white],
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight),
+                // color: widget.isSelected ? JuntoPalette.juntoPrimary : null,
+                border: Border.all(
+                  color: widget.isSelected
+                      ? Colors.white
+                      : const Color(0xffeeeeee),
+                  width: 2,
+                ),
+                borderRadius: BorderRadius.circular(25),
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }

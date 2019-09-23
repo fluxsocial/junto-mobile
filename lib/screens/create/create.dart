@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/palette.dart';
-import 'package:junto_beta_mobile/screens/create/bullet/bullet.dart';
+import 'package:junto_beta_mobile/screens/create/create_templates/bullet/bullet.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
 import 'package:junto_beta_mobile/screens/create/create_bottom_nav.dart';
-import 'package:junto_beta_mobile/screens/create/event/event.dart';
-import 'package:junto_beta_mobile/screens/create/longform/longform.dart';
-import 'package:junto_beta_mobile/screens/create/photo/photo.dart';
-import 'package:junto_beta_mobile/screens/create/shortform/shortform.dart';
+import 'package:junto_beta_mobile/screens/create/create_templates/event.dart';
+import 'package:junto_beta_mobile/screens/create/create_templates/longform.dart';
+import 'package:junto_beta_mobile/screens/create/create_templates/photo.dart';
+import 'package:junto_beta_mobile/screens/create/create_templates/shortform.dart';
 import 'package:junto_beta_mobile/styles.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 
@@ -98,34 +98,37 @@ class JuntoCreateState extends State<JuntoCreate> {
 
   /// Ask for user confirmation to switch between expressions if field is no
   /// empty
-  void confirmSwitch(String templateType) {
-    if (isEditing.value == true || formKey.currentState?.validate() == true) {
-      JuntoDialog.showJuntoDialog(
-        context,
-        'Are you sure you want to switch expressions?',
-        <Widget>[
-          FlatButton(
-            child: const Text(
-              'Yes',
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-              switchTemplate(templateType);
-            },
-          ),
-          FlatButton(
-            child: const Text(
-              'No',
-            ),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-        ],
-      );
-    } else {
-      switchTemplate(templateType);
-    }
-  }
+  // void confirmSwitch(String templateType) {
+  //   if (isEditing.value == true || formKey.currentState?.validate() == true) {
+  //     JuntoDialog.showJuntoDialog(
+  //       context,
+  //       'Are you sure you want to switch expressions?',
+  //       <Widget>[
+  //         FlatButton(
+  //           child: const Text(
+  //             'Yes',
+  //           ),
+  //           onPressed: () {
+  //             Navigator.of(context).pop();
+  //             switchTemplate(templateType);
+  //           },
+  //         ),
+  //         FlatButton(
+  //           child: const Text(
+  //             'No',
+  //           ),
+  //           onPressed: () => Navigator.of(context).pop(),
+  //         ),
+  //       ],
+  //     );
+  //   } else {
+  //     switchTemplate(templateType);
+  //   }
+  // }
 
+  confirmSwitch(templateType) {
+      switchTemplate(templateType);
+  }
 // Switch between different expression templates
   void switchTemplate(String templateType) {
     // Reset State
