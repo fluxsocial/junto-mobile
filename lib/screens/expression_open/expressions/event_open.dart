@@ -157,8 +157,6 @@ class EventOpen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(width: 5),
-
-                                         
                       ],
                     ),
                     const SizedBox(height: 5),

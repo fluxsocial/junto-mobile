@@ -84,13 +84,17 @@ class _CreateSphereNextState extends State<CreateSphereNext> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: const Icon(
-                    CustomIcons.back_arrow_left,
-                    color: Color(0xff555555),
-                    size: 24,
-                  ),
-                ),
+                    onTap: () => Navigator.pop(context),
+                    child: Container(
+                      color: Colors.white,
+                      width: 38,
+                      alignment: Alignment.centerLeft,
+                      child: Icon(
+                        CustomIcons.back_arrow_left,
+                        color: JuntoPalette.juntoSleek,
+                        size: 28,
+                      ),
+                    )),
                 Text(
                   'Sphere Privacy',
                   style: TextStyle(
@@ -99,12 +103,17 @@ class _CreateSphereNextState extends State<CreateSphereNext> {
                       fontSize: 15),
                 ),
                 GestureDetector(
-                  onTap: _createSphere,
-                  child: const Text(
-                    'create',
-                    style: TextStyle(color: Color(0xff333333), fontSize: 14),
-                  ),
-                )
+                    onTap: _createSphere,
+                    child: Container(
+                      color: Colors.white,
+                      width: 38,
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        'create',
+                        style:
+                            TextStyle(color: Color(0xff333333), fontSize: 14),
+                      ),
+                    ))
               ],
             ),
           ),

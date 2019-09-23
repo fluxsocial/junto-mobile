@@ -27,24 +27,39 @@ class SphereOpenAppbar extends StatelessWidget {
           children: <Widget>[
             GestureDetector(
               onTap: () => Navigator.pop(context),
-              child: const Icon(
-                CustomIcons.back_arrow_left,
-                color: JuntoPalette.juntoSleek,
-                size: 24,
+              child: Container(
+                color: Colors.white,
+                width: 38,
+                alignment: Alignment.centerLeft,
+                child: Icon(
+                  CustomIcons.back_arrow_left,
+                  color: JuntoPalette.juntoSleek,
+                  size: 28,
+                ),
               ),
             ),
             Container(
               margin: const EdgeInsets.only(right: 5),
-              child: Text('/s/' + sphereHandle, style: JuntoStyles.title),
+              child: Text(
+                '/s/' + sphereHandle,
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xff333333),
+                ),
+              ),
             ),
             GestureDetector(
               onTap: () {
                 SphereOpenActionItems().buildSphereOpenActionItems(context);
               },
               child: Container(
+                width: 38,
+                color: Colors.white,
+                alignment: Alignment.centerRight,
                 child: const Icon(
                   CustomIcons.more,
-                  size: 20,
+                  size: 24,
                   color: Color(0xff333333),
                 ),
               ),

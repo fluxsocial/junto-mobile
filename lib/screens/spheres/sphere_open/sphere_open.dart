@@ -5,7 +5,7 @@ import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/components/expression_preview/expression_preview.dart';
 import 'package:junto_beta_mobile/components/create_fab/create_fab.dart';
-import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open_appbar/sphere_open_appbar.dart';
+import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open_appbar.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/styles.dart';
 
