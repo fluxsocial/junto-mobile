@@ -34,18 +34,15 @@ class EventOpen extends StatelessWidget {
               children: <Widget>[
                 Text(
                   eventTitle,
-                  style: const TextStyle( 
+                  style: const TextStyle(
                       color: JuntoPalette.juntoGrey,
                       fontSize: 20,
                       fontWeight: FontWeight.w700),
                 ),
-
                 const SizedBox(height: 10),
                 Container(
                   alignment: Alignment.center,
-                  height: 50,
-                  // width: MediaQuery.of(context).size.width * .8,
-                  // height: 50,
+                  padding: const EdgeInsets.symmetric(vertical: 12),
                   decoration: BoxDecoration(
                     gradient: const LinearGradient(colors: <Color>[
                       JuntoPalette.juntoSecondary,
@@ -53,7 +50,6 @@ class EventOpen extends StatelessWidget {
                     ]),
                     borderRadius: BorderRadius.circular(10),
                   ),
-
                   child: const Text(
                     'RSVP',
                     style: TextStyle(
@@ -62,35 +58,39 @@ class EventOpen extends StatelessWidget {
                         fontWeight: FontWeight.w700),
                   ),
                 ),
-
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     const SizedBox(height: 10),
-                    Text(
-                      eventTime,
-                      style: const TextStyle(
-                          fontSize: 17, fontWeight: FontWeight.w600),
+                    Row(
+                      children: <Widget>[
+                        Icon(Icons.timer),
+                        SizedBox(width: 5),
+                        Text(
+                          eventTime,
+                          style: const TextStyle(
+                              fontSize: 17, fontWeight: FontWeight.w600),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 5),
-                    Text(
-                      eventLocation,
-                      style: const TextStyle(
-                          fontSize: 17, fontWeight: FontWeight.w600),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: <Widget>[
+                        Icon(Icons.location_searching),
+                        SizedBox(width: 5),
+                        Text(
+                          eventLocation,
+                          style: const TextStyle(
+                              fontSize: 17, fontWeight: FontWeight.w600),
+                        ),
+                      ],
                     ),
-                    // SizedBox(height: 5),
-                    // Text(
-                    //   'hosted by',
-                    //   style:
-                    //       TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
-                    // ),
-                    const SizedBox(height: 5),
+                    const SizedBox(height: 10),
                     const Text(
                       '90 members going',
                       style:
                           TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
                     ),
-
                     const SizedBox(height: 5),
                     Row(
                       children: <Widget>[
@@ -147,6 +147,18 @@ class EventOpen extends StatelessWidget {
                             fit: BoxFit.cover,
                           ),
                         ),
+                        const SizedBox(width: 5),
+                        ClipOval(
+                          child: Image.asset(
+                            'assets/images/junto-mobile__tomis.png',
+                            height: 33.0,
+                            width: 33.0,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+
+                                         
                       ],
                     ),
                     const SizedBox(height: 5),

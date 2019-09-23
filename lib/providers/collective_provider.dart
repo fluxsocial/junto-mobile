@@ -456,7 +456,7 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
       ),
       authorUsername: Username(
         address: '02efredffdfvdbnrtg',
-        username: 'dmoney',
+        username: 'DMONEY',
       ),
       subExpressions: <Expression>[],
       resonations: <dynamic>[],
@@ -572,7 +572,7 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
       ),
       authorUsername: Username(
         address: '02efredffdfvdbnrtg',
-        username: 'Leif',
+        username: 'tomis',
       ),
       resonations: <dynamic>[],
       channels: <Channel>[
