@@ -51,7 +51,6 @@ class _CreateSphereNextState extends State<CreateSphereNext> {
       JuntoOverlay.hide();
       JuntoDialog.showJuntoDialog(
         context,
-        'Error',
         error.message,
         <Widget>[
           FlatButton(

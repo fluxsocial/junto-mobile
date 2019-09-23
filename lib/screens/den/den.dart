@@ -271,33 +271,33 @@ class JuntoDenState extends State<JuntoDen> {
             Transform.translate(
                 offset: const Offset(0.0, -18.0), child: _buildDenList(),),
 
-              RaisedButton(
-                onPressed: () async {
-                  await Provider.of<AuthenticationProvider>(context)
-                      .logoutUser();
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute<dynamic>(
-                      builder: (BuildContext context) => Welcome(),
-                    ),
-                  );
-                },
-                color: const Color(0xff4968BF),
-                child: const Text(
-                  'LOG OUT',
-                  style: TextStyle(
-                    // color: JuntoPalette.juntoBlue,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 14,
-                  ),
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(
-                    100,
-                  ),
-                ),
-              ),                
+              // RaisedButton(
+              //   onPressed: () async {
+              //     await Provider.of<AuthenticationProvider>(context)
+              //         .logoutUser();
+              //     Navigator.pushReplacement(
+              //       context,
+              //       MaterialPageRoute<dynamic>(
+              //         builder: (BuildContext context) => Welcome(),
+              //       ),
+              //     );
+              //   },
+              //   color: const Color(0xff4968BF),
+              //   child: const Text(
+              //     'LOG OUT',
+              //     style: TextStyle(
+              //       // color: JuntoPalette.juntoBlue,
+              //       color: Colors.white,
+              //       fontWeight: FontWeight.w700,
+              //       fontSize: 14,
+              //     ),
+              //   ),
+              //   shape: RoundedRectangleBorder(
+              //     borderRadius: BorderRadius.circular(
+              //       100,
+              //     ),
+              //   ),
+              // ),                
           ],
         ),
       ),

@@ -55,7 +55,6 @@ class _SignInState extends State<SignIn> {
       JuntoOverlay.hide();
       JuntoDialog.showJuntoDialog(
           context,
-          'Junto',
           'Unable to login user. Please recheck your '
               'account.',
           <Widget>[

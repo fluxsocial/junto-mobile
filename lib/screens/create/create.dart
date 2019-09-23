@@ -22,7 +22,7 @@ class JuntoCreate extends StatefulWidget {
 }
 
 class JuntoCreateState extends State<JuntoCreate> {
-  String _expressionType = 'Storyform';
+  String _expressionType = 'dynamic';
   bool _longform = true;
   bool _shortform = false;
   bool _bullet = false;
@@ -102,18 +102,21 @@ class JuntoCreateState extends State<JuntoCreate> {
     if (isEditing.value == true || formKey.currentState?.validate() == true) {
       JuntoDialog.showJuntoDialog(
         context,
-        'Junto',
-        'Are you sure you would like to switch Expression?',
+        'Are you sure you want to switch expressions?',
         <Widget>[
           FlatButton(
-            child: const Text('Yes'),
+            child: const Text(
+              'Yes',
+            ),
             onPressed: () {
               Navigator.of(context).pop();
               switchTemplate(templateType);
             },
           ),
           FlatButton(
-            child: const Text('No'),
+            child: const Text(
+              'No',
+            ),
             onPressed: () => Navigator.of(context).pop(),
           ),
         ],
@@ -191,7 +194,9 @@ class JuntoCreateState extends State<JuntoCreate> {
                     ),
                     const SizedBox(width: 10),
                     Text(
-                      _expressionType.toLowerCase(),
+                      _expressionType == 'longform'
+                          ? 'dynamic'
+                          : _expressionType.toLowerCase(),
                       textAlign: TextAlign.start,
                       style: const TextStyle(
                         fontSize: 17,
@@ -207,8 +212,8 @@ class JuntoCreateState extends State<JuntoCreate> {
                       context,
                       MaterialPageRoute<dynamic>(
                         builder: (BuildContext context) => CreateActions(
-                              expressionLayer: widget.expressionLayer,
-                            ),
+                          expressionLayer: widget.expressionLayer,
+                        ),
                       ),
                     );
                   },
