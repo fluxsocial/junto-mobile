@@ -6,6 +6,8 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/palette.dart';
+import 'package:flutter/services.dart' show PlatformException;
+import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 
 /// Create using photo form
 class CreatePhoto extends StatefulWidget {
@@ -47,6 +49,20 @@ class CreatePhotoState extends State<CreatePhoto> {
         _onFirstScreen = false;
         _photoEdit = true;
       }
+    }).catchError((dynamic error) {
+      if (error is PlatformException && error.code == 'photo_access_denied')
+        JuntoDialog.showJuntoDialog(
+          context,
+          'You need to allow photo '
+          'permission',
+          <Widget>[
+            FlatButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Ok'),
+            ),
+          ],
+        );
+      debugPrint('Error occured selecting photo');
     });
   }
 
