@@ -211,8 +211,8 @@ class _SelectionTileState extends State<_SelectionTile> {
             ),
             AnimatedContainer(
               duration: kThemeChangeDuration,
-              height: 24,
-              width: 24,
+              height: 22,
+              width: 22,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                     colors: widget.isSelected

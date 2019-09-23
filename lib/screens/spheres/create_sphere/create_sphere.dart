@@ -71,13 +71,17 @@ class _CreateSphereState extends State<CreateSphere> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 GestureDetector(
-                  onTap: () => Navigator.of(context).pop(),
-                  child: const Icon(
-                    CustomIcons.back_arrow_left,
-                    color: JuntoPalette.juntoSleek,
-                    size: 28,
-                  ),
-                ),
+                    onTap: () => Navigator.pop(context),
+                    child: Container(
+                      color: Colors.white,
+                      width: 38,
+                      alignment: Alignment.centerLeft,
+                      child: Icon(
+                        CustomIcons.back_arrow_left,
+                        color: JuntoPalette.juntoSleek,
+                        size: 28,
+                      ),
+                    )),
                 Text(
                   'Create Sphere',
                   style: TextStyle(
@@ -88,6 +92,8 @@ class _CreateSphereState extends State<CreateSphere> {
                 GestureDetector(
                   onTap: _createSphere,
                   child: Container(
+                    width: 38,
+                    alignment: Alignment.centerRight,
                     child: Text('next', style: JuntoStyles.body),
                   ),
                 )
@@ -260,11 +266,11 @@ class _CreateSphereState extends State<CreateSphere> {
                             child: Row(
                               children: <Widget>[
                                 Icon(
-                                  CustomIcons.half_lotus,
+                                  Icons.people,
                                   size: 17,
                                   color: Color(0xff333333),
                                 ),
-                                SizedBox(width: 20),
+                                SizedBox(width: 10),
                                 Text(
                                   'add members',
                                   style: TextStyle(
