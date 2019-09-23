@@ -41,9 +41,7 @@ class CreatePhotoState extends State<CreatePhoto> {
       setState(() {
         _imageFile = image;
       });
-
       _cropImage(image);
-
       if (_onFirstScreen) {
         widget.toggleBottomNavVisibility();
         _onFirstScreen = false;
@@ -68,15 +66,18 @@ class CreatePhotoState extends State<CreatePhoto> {
 
   // Function to crop an image
   Future<void> _cropImage(File imageFile) async {
-    final File croppedFile = await ImageCropper.cropImage(
-      sourcePath: imageFile.path,
-      maxWidth: 512,
-      maxHeight: 512,
-    );
-    widget.isEditing.value = true;
-    setState(() {
-      _croppedFile = croppedFile;
-    });
+    if (imageFile != null) {
+      final File croppedFile = await ImageCropper.cropImage(
+        sourcePath: imageFile?.path,
+        maxWidth: 512,
+        maxHeight: 512,
+      );
+      widget.isEditing.value = true;
+      setState(() {
+        _croppedFile = croppedFile;
+      });
+    }
+    return;
   }
 
   // Upload Image component - rendered in _photoTypeTemplate()
