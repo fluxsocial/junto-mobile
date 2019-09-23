@@ -43,8 +43,15 @@ class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
                 Row(
                   children: <Widget>[
                     Image.asset('assets/images/junto-mobile__resonation.png',
-                        height: 17)
-                    // Icon(CustomIcons.)
+                        height: 17, color: Color(0xff999999)),
+                    SizedBox(width: 5),
+                    Text(
+                      'Resonate',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xff999999),
+                      ),
+                    )
                   ],
                 )
               ]),

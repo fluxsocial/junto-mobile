@@ -131,7 +131,7 @@ class JuntoAppBar extends StatelessWidget implements PreferredSizeWidget {
                                   children: <Widget>[
                                     Container(
                                       width: MediaQuery.of(context).size.width -
-                                          60,
+                                          20,
                                       decoration: BoxDecoration(
                                         border: Border(
                                           bottom: BorderSide(

@@ -25,7 +25,7 @@ class LongformOpen extends StatelessWidget {
               textAlign: TextAlign.start,
               style: TextStyle(
                   color: Colors.black,
-                  fontSize: 17,
+                  fontSize: 20,
                   fontWeight: FontWeight.w700,
                   height: 1.1),
             ),
@@ -35,7 +35,7 @@ class LongformOpen extends StatelessWidget {
             child: Text(
               longformBody,
               textAlign: TextAlign.start,
-              style: const TextStyle(fontSize: 15, height: 1.2),
+              style: const TextStyle(fontSize: 17, height: 1.4),
             ),
           ),
         ],
