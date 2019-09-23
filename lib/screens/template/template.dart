@@ -145,16 +145,6 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
           },
         ),
       ),
-      // Container(
-      //   color: Color(0xff111111),
-      //   child: Center(
-      //     child: Container(
-      //       width: MediaQuery.of(context).size.width,
-      //       child: Image.asset('assets/images/junto-mobile__eric.png',
-      //           fit: BoxFit.fitWidth),
-      //     ),
-      //   ),
-      // ),
     ]);
   }
 

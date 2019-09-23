@@ -56,7 +56,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   Widget _buildExpression() {
     final String expressionType = widget.expression.expression.expressionType;
     if (expressionType == 'longform') {
-      return LongformOpen(widget.expression);
+      return LongformOpen(widget.expression);      
     } else if (expressionType == 'shortform') {
       return ShortformOpen(widget.expression);
     } else if (expressionType == 'photo') {
@@ -237,11 +237,11 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                             ),
                             CommentPreview(
                               commentText:
-                                  'All comment are hidden initially so the viewer can have complete independence of thought while viewing expressions.',
+                                  'All comments are hidden initially so the viewer can have complete independence of thought while viewing expressions.',
                             ),
                             CommentPreview(
                               commentText:
-                                  'In Junto, comment are treated like expressions. You can resonate them or reply to a comment (nested comments). This is quite complex so we are tacklign this once the rest of the core functionality is finished.',
+                                  'In Junto, comments are treated like expressions. You can resonate them or reply to a comment (nested comments). This is quite complex so we are tacklign this once the rest of the core functionality is finished.',
                             ),
                             CommentPreview(
                               commentText:

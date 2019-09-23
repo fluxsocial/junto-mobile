@@ -53,21 +53,64 @@ class JuntoAppBar extends StatelessWidget implements PreferredSizeWidget {
           children: <Widget>[
             Builder(
               builder: (BuildContext context) {
-                return GestureDetector(
-                  onTap: () {
-                    Scaffold.of(context).openDrawer();
-                  },
-                  child: Row(
-                    children: <Widget>[
-                      Image.asset('assets/images/junto-mobile__logo.png',
-                          height: 20.0, width: 20.0),
-                      Container(
+                return Row(
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: () {
+                        Scaffold.of(context).openDrawer();
+                      },
+                      child: Image.asset('assets/images/junto-mobile__logo.png',
+                          height: 22.0, width: 22.0),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                          isScrollControlled: true,
+                          context: context,
+                          builder: (context) => Container(
+                            color: Color(0xff737373),
+                            child: Container(
+                              height: MediaQuery.of(context).size.height * .9,
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.only(
+                                  topLeft: const Radius.circular(10),
+                                  topRight: Radius.circular(10),
+                                ),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  SizedBox(height: 10),
+                                  Row(
+                                    children: <Widget>[
+                                      Text(
+                                        'Edit Perspective',
+                                        style: TextStyle(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w700,
+                                          color: Color(0xff333333),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 10),
+                                  Text(
+                                      'This modal will enable you to edit your perspective. This includes adding/removing members, changing the name, deleting the perspective, and so on. You will also be able to view the list of members, etc.')
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                      child: Container(
                         margin: const EdgeInsets.only(left: 7.5),
                         child: Text(juntoAppBarTitle,
                             style: JuntoStyles.appbarTitle),
                       ),
-                    ],
-                  ),
+                    )
+                  ],
                 );
               },
             ),

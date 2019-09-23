@@ -89,7 +89,7 @@ class JuntoCollectiveState extends State<JuntoCollective> {
         children: <Widget>[
           /// Degrees of Separation Widget rendered only when on the 'JUNTO'
           /// perspective
-          widget.currentPerspective == 'degrees of separation'
+          widget.currentPerspective == 'Degrees of separation'
               ? DegreesOfSeparation(
                   _changeDegree,
                   _oneDegreeColor,

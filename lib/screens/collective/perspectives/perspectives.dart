@@ -104,13 +104,13 @@ class Perspectives extends StatelessWidget {
         BuildContext context,
         AsyncSnapshot<List<CentralizedPerspective>> snapshot,
       ) {
-        if (!snapshot.hasData) {
-          return Container(
-            child: Center(
-              child: const CircularProgressIndicator(),
-            ),
-          );
-        }
+        // if (!snapshot.hasData) {
+        //   return Container(
+        //     child: Center(
+        //       child: const CircularProgressIndicator(),
+        //     ),
+        //   );
+        // }
         if (snapshot.hasError) {
           return Container();
         }
