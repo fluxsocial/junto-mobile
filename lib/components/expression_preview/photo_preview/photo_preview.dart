@@ -35,7 +35,14 @@ class PhotoPreview extends StatelessWidget {
           child: Image.asset(expression.expression.expressionContent['image'],
               fit: BoxFit.fitWidth),
         ),
-        // _generateCaption()
+        SizedBox(height: 10),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: Text(
+            expression.expression.expressionContent['caption'],
+            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
+          ),
+        )
       ],
     );
   }

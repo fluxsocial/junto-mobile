@@ -332,7 +332,7 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
       subExpressions: <Expression>[],
       authorUsername: Username(
         address: '02efredffdfvdbnrtg',
-        username: 'sunyata',
+        username: 'eric',
       ),
       authorProfile: UserProfile(
         address: '0vefoiwiafjvkbr32r243r5',
@@ -402,6 +402,7 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
         expressionType: 'photo',
         expressionContent: <String, String>{
           'image': 'assets/images/junto-mobile__photo--one.png',
+          'caption': 'Catching some waves in New Polzeath!'
         },
       ),
       authorUsername: Username(
@@ -519,6 +520,7 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
         expressionType: 'photo',
         expressionContent: <String, String>{
           'image': 'assets/images/junto-mobile__photo--two.png',
+          'caption': 'Hi, Yaz here!',
         },
       ),
       authorUsername: Username(
@@ -550,6 +552,44 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
         ),
       ],
     ),
+    Expression(
+      expression: ExpressionContent(
+        address: '0xfee32zokie8',
+        expressionType: 'shortform',
+        expressionContent: <String, String>{
+          'body': "Looking to learn salsa... any pointers?",
+          'background': 'three'
+        },
+      ),
+      authorUsername: Username(
+        address: '02efredffdfvdbnrtg',
+        username: 'eric',
+      ),
+      authorProfile: UserProfile(
+        address: '0vefoiwiafjvkbr32r243r5',
+        firstName: 'Eric',
+        lastName: 'Yang',
+        profilePicture: 'assets/images/junto-mobile__eric.png',
+        bio: 'hellooo',
+        parent: 'parent-address',
+        verified: true,
+      ),
+      subExpressions: <Expression>[],
+      resonations: <dynamic>[],
+      timestamp: '49',
+      channels: <Channel>[
+        Channel(
+          address: 'channel-address',
+          value: 'design',
+          attributeType: 'Channel',
+        ),
+        Channel(
+          address: 'channel-address',
+          value: 'tech',
+          attributeType: 'Channel',
+        ),
+      ],
+    ),         
     Expression(
       expression: ExpressionContent(
         address: '0xfee32zokie8',

@@ -6,6 +6,7 @@ import 'package:junto_beta_mobile/screens/expression_open/expression_open_bottom
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_top/expression_open_top.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/longform_open/longform_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/shortform_open/shortform_open.dart';
+import 'package:junto_beta_mobile/screens/expression_open/expressions/photo_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/event_open.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/styles.dart';
@@ -58,7 +59,9 @@ class ExpressionOpenState extends State<ExpressionOpen> {
       return LongformOpen(widget.expression);
     } else if (expressionType == 'shortform') {
       return ShortformOpen(widget.expression);
-    } else if (expressionType == 'event') {
+    } else if (expressionType == 'photo') {
+      return PhotoOpen(widget.expression);
+    }else if (expressionType == 'event') {
       return EventOpen(widget.expression);
     } else {
       return const SizedBox();
