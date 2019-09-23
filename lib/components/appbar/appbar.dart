@@ -86,11 +86,12 @@ class JuntoAppBar extends StatelessWidget implements PreferredSizeWidget {
                   child: GestureDetector(
                     onTap: () {
                       showModalBottomSheet(
+                        isScrollControlled: true,
                         context: context,
                         builder: (context) => Container(
                           color: Color(0xff737373),
                           child: Container(
-                            // height: 280,
+                            height: MediaQuery.of(context).size.height * .9,
                             padding: EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               color: Colors.white,
@@ -184,10 +185,42 @@ class JuntoAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute<dynamic>(
-                        builder: (BuildContext context) => JuntoNotifications(),
+                    showModalBottomSheet(
+                      isScrollControlled: true,
+                      context: context,
+                      builder: (context) => Container(
+                        color: Color(0xff737373),
+                        child: Container(
+                          height: MediaQuery.of(context).size.height * .9,
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                              topLeft: const Radius.circular(10),
+                              topRight: Radius.circular(10),
+                            ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              SizedBox(height: 10),
+                              Row(
+                                children: <Widget>[
+                                  Text(
+                                    'Notifications',
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w700,
+                                      color: Color(0xff333333),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 10),
+                              Text('building this last...')
+                            ],
+                          ),
+                        ),
                       ),
                     );
                   },
