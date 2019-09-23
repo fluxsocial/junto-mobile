@@ -4,6 +4,7 @@ import 'package:junto_beta_mobile/models/perspective.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/providers/user_provider.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
+import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
 
@@ -30,11 +31,25 @@ class _CreatePerspectiveState extends State<CreatePerspective> {
   Future<void> createPerspective() async {
     final String name = controller.value.text;
     JuntoOverlay.showLoader(context);
-    final CentralizedPerspective address =
-        await Provider.of<UserProvider>(context)
-            .createPerspective(Perspective(name: name));
-    JuntoOverlay.hide();
-    Navigator.pop(context);
+    try {
+      final CentralizedPerspective address =
+          await Provider.of<UserProvider>(context)
+              .createPerspective(Perspective(name: name));
+      JuntoOverlay.hide();
+      Navigator.pop(context);
+    } on JuntoException catch (error) {
+      JuntoOverlay.hide();
+      JuntoDialog.showJuntoDialog(
+        context,
+        error.message,
+        <Widget>[
+          FlatButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Ok'),
+          ),
+        ],
+      );
+    }
   }
 
   @override
@@ -66,7 +81,7 @@ class _CreatePerspectiveState extends State<CreatePerspective> {
                     size: 24,
                   ),
                 ),
-                Text(
+                const Text(
                   'New Perspective',
                   style: TextStyle(
                       fontSize: 15,
@@ -109,14 +124,14 @@ class _CreatePerspectiveState extends State<CreatePerspective> {
             child: ListView(
               children: <Widget>[
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Container(
                         // padding: EdgeInsets.symmetric(vertical: 15),
                         width: MediaQuery.of(context).size.width - 20,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           border: Border(
                             bottom: BorderSide(
                               color: Color(0xffeeeeee),
@@ -136,12 +151,12 @@ class _CreatePerspectiveState extends State<CreatePerspective> {
                           decoration: const InputDecoration(
                             border: InputBorder.none,
                             hintText: 'Name your perspective',
-                            hintStyle: const TextStyle(
+                            hintStyle: TextStyle(
                                 color: Color(0xff999999),
                                 fontSize: 20,
                                 fontWeight: FontWeight.w700),
                           ),
-                          cursorColor: Color(0xff333333),
+                          cursorColor: const Color(0xff333333),
                           cursorWidth: 2,
                           maxLines: null,
                           style: const TextStyle(
@@ -153,8 +168,8 @@ class _CreatePerspectiveState extends State<CreatePerspective> {
                         ),
                       ),
                       Container(
-                        padding: EdgeInsets.symmetric(vertical: 15),
-                        decoration: BoxDecoration(
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        decoration: const BoxDecoration(
                           border: Border(
                             bottom: BorderSide(
                               color: Color(0xffeeeeee),
@@ -162,118 +177,7 @@ class _CreatePerspectiveState extends State<CreatePerspective> {
                             ),
                           ),
                         ),
-                        child: GestureDetector(
-                          onTap: () {
-                            showModalBottomSheet(
-                              isScrollControlled: true,
-                              context: context,
-                              builder: (context) => Container(
-                                color: Color(0xff737373),
-                                child: Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * .9,
-                                  padding: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: const Radius.circular(10),
-                                      topRight: Radius.circular(10),
-                                    ),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      SizedBox(height: 10),
-                                      Row(
-                                        children: <Widget>[
-                                          Text(
-                                            'Members',
-                                            style: TextStyle(
-                                              fontSize: 17,
-                                              fontWeight: FontWeight.w700,
-                                              color: Color(0xff333333),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(height: 10),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width -
-                                                60,
-                                            decoration: BoxDecoration(
-                                              border: Border(
-                                                bottom: BorderSide(
-                                                  color: Color(0xffeeeeee),
-                                                  width: .75,
-                                                ),
-                                              ),
-                                            ),
-                                            child: TextField(
-                                              buildCounter: (
-                                                BuildContext context, {
-                                                int currentLength,
-                                                int maxLength,
-                                                bool isFocused,
-                                              }) =>
-                                                  null,
-                                              decoration: const InputDecoration(
-                                                border: InputBorder.none,
-                                                hintText: 'Search members',
-                                                hintStyle: const TextStyle(
-                                                    color: Color(0xff999999),
-                                                    fontSize: 17,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                              cursorColor: Color(0xff333333),
-                                              cursorWidth: 2,
-                                              maxLines: null,
-                                              style: const TextStyle(
-                                                  color: Color(0xff333333),
-                                                  fontSize: 17,
-                                                  fontWeight: FontWeight.w500),
-                                              maxLength: 80,
-                                              textInputAction:
-                                                  TextInputAction.done,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            color: Colors.white,
-                            child: Row(
-                              children: <Widget>[
-                                Icon(
-                                  CustomIcons.half_lotus,
-                                  size: 17,
-                                  color: Color(0xff333333),
-                                ),
-                                SizedBox(width: 20),
-                                Text(
-                                  'add members',
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                        child: _showBottomSheet(context),
                       ),
                     ],
                   ),
@@ -282,6 +186,114 @@ class _CreatePerspectiveState extends State<CreatePerspective> {
             ),
           )
         ],
+      ),
+    );
+  }
+
+  GestureDetector _showBottomSheet(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        showModalBottomSheet(
+          isScrollControlled: true,
+          context: context,
+          builder: (BuildContext context) => Container(
+            color: const Color(0xff737373),
+            child: Container(
+              height: MediaQuery.of(context).size.height * .9,
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(10),
+                  topRight: Radius.circular(10),
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  const SizedBox(height: 10),
+                  Row(
+                    children: const <Widget>[
+                      Text(
+                        'Members',
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xff333333),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        width: MediaQuery.of(context).size.width - 60,
+                        decoration: const BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: Color(0xffeeeeee),
+                              width: .75,
+                            ),
+                          ),
+                        ),
+                        child: TextField(
+                          buildCounter: (
+                            BuildContext context, {
+                            int currentLength,
+                            int maxLength,
+                            bool isFocused,
+                          }) =>
+                              null,
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Search members',
+                            hintStyle: TextStyle(
+                                color: Color(0xff999999),
+                                fontSize: 17,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          cursorColor: const Color(0xff333333),
+                          cursorWidth: 2,
+                          maxLines: null,
+                          style: const TextStyle(
+                            color: Color(0xff333333),
+                            fontSize: 17,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          maxLength: 80,
+                          textInputAction: TextInputAction.done,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+      child: Container(
+        color: Colors.white,
+        child: Row(
+          children: <Widget>[
+            Icon(
+              CustomIcons.half_lotus,
+              size: 17,
+              color: const Color(0xff333333),
+            ),
+            const SizedBox(width: 20),
+            const Text(
+              'add members',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
