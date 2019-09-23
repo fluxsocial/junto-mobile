@@ -1,9 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/models/sphere.dart';
 import 'package:junto_beta_mobile/providers/provider.dart';
 import 'package:junto_beta_mobile/screens/template/template.dart';
-import 'package:junto_beta_mobile/themes.dart';
+import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
@@ -44,18 +45,7 @@ class _CreateSphereNextState extends State<CreateSphereNext> {
           await Provider.of<SpheresProvider>(context)
               .createSphere(updatedSphere);
       JuntoOverlay.hide();
-      JuntoDialog.showJuntoDialog(
-        context,
-        'Sphere Created!',
-        'Creator : ${_response.creator}, Address ${_response.address}',
-        <Widget>[
-          FlatButton(
-            onPressed: () => Navigator.of(context)
-                .pushAndRemoveUntil(JuntoTemplate.route(), (_) => false),
-            child: const Text('Ok'),
-          ),
-        ],
-      );
+      Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) => JuntoTemplate()));
     } on JuntoException catch (error) {
       JuntoOverlay.hide();
       JuntoDialog.showJuntoDialog(
@@ -101,10 +91,17 @@ class _CreateSphereNextState extends State<CreateSphereNext> {
                     size: 24,
                   ),
                 ),
+                Text(
+                  'Sphere Privacy',
+                  style: TextStyle(
+                      color: Color(0xff333333),
+                      fontWeight: FontWeight.w700,
+                      fontSize: 15),
+                ),
                 GestureDetector(
                   onTap: _createSphere,
                   child: const Text(
-                    'Create',
+                    'create',
                     style: TextStyle(color: Color(0xff333333), fontSize: 14),
                   ),
                 )
@@ -128,7 +125,7 @@ class _CreateSphereNextState extends State<CreateSphereNext> {
             children: <Widget>[
               _SelectionTile(
                 name: 'Public',
-                desc: 'Anyone can join this sphere, read its ,'
+                desc: 'Anyone can join this sphere, read its, '
                     'expressions and share to it',
                 onClick: (String privacy) {
                   setState(() => _selectedType = privacy);
@@ -136,9 +133,18 @@ class _CreateSphereNextState extends State<CreateSphereNext> {
                 isSelected: _selectedType == 'Public',
               ),
               _SelectionTile(
+                name: 'Shared',
+                desc: 'Only members can read expressions '
+                    'and share to it. Facilitators can invite members or accept their request to join.',
+                onClick: (String privacy) {
+                  setState(() => _selectedType = privacy);
+                },
+                isSelected: _selectedType == 'Shared',
+              ),
+              _SelectionTile(
                 name: 'Private',
-                desc: 'Members must be invited into this sphere in '
-                    'order to read its expressions and share to it',
+                desc:
+                    'Members must be invited into this sphere. This sphere is only searchable by members.',
                 onClick: (String privacy) {
                   setState(() => _selectedType = privacy);
                 },
@@ -208,9 +214,20 @@ class _SelectionTileState extends State<_SelectionTile> {
               height: 24,
               width: 24,
               decoration: BoxDecoration(
-                color: widget.isSelected ? Colors.blueAccent : null,
+                gradient: LinearGradient(
+                    colors: widget.isSelected
+                        ? [
+                            JuntoPalette.juntoSecondary,
+                            JuntoPalette.juntoPrimary
+                          ]
+                        : [Colors.white, Colors.white],
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight),
+                // color: widget.isSelected ? JuntoPalette.juntoPrimary : null,
                 border: Border.all(
-                  color: const Color(0xffeeeeee),
+                  color: widget.isSelected
+                      ? Colors.white
+                      : const Color(0xffeeeeee),
                   width: 2,
                 ),
                 borderRadius: BorderRadius.circular(25),
