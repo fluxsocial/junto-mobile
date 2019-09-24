@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/components/comment_preview/comment_preview.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_appbar.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_bottom.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_top.dart';
@@ -10,6 +9,7 @@ import 'package:junto_beta_mobile/screens/expression_open/expressions/photo_open
 import 'package:junto_beta_mobile/screens/expression_open/expressions/event_open.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/styles.dart';
+import 'package:junto_beta_mobile/widgets/comment_preview/comment_preview.dart';
 
 class ExpressionOpen extends StatefulWidget {
   const ExpressionOpen(this.expression);
@@ -56,7 +56,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   Widget _buildExpression() {
     final String expressionType = widget.expression.expression.expressionType;
     if (expressionType == 'longform') {
-      return LongformOpen(widget.expression);      
+      return LongformOpen(widget.expression);
     } else if (expressionType == 'shortform') {
       return ShortformOpen(widget.expression);
     } else if (expressionType == 'photo') {
@@ -229,8 +229,8 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                   commentsVisible
                       ? ListView(
                           shrinkWrap: true,
-                          physics: ClampingScrollPhysics(),
-                          children: <Widget>[
+                          physics: const ClampingScrollPhysics(),
+                          children: const <Widget>[
                             CommentPreview(
                               commentText:
                                   'Hey there! This is what a comment preview looks like.',

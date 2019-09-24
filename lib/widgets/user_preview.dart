@@ -1,0 +1,81 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/styles.dart';
+
+class UserPreview extends StatelessWidget {
+  const UserPreview({
+    Key key,
+    @required this.userProfile,
+    @required this.onTap,
+  }) : super(key: key);
+
+  final UserProfile userProfile;
+  final ValueChanged<UserProfile> onTap;
+
+  Widget _handleNullImage(String imageUrl) {
+    if (imageUrl == null || imageUrl == '') {
+      return Image.asset(
+        'assets/images/junto-mobile__logo.png',
+        height: 45.0,
+        width: 45.0,
+        fit: BoxFit.cover,
+      );
+    } else {
+      return Image.network(
+        imageUrl,
+        height: 45.0,
+        width: 45.0,
+        fit: BoxFit.cover,
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => onTap(userProfile),
+      child: Container(
+        margin: const EdgeInsets.only(left: 10.0),
+        color: Colors.white,
+        child: Row(
+          children: <Widget>[
+            ClipOval(
+              child: _handleNullImage(userProfile.profilePicture),
+            ),
+            Expanded(
+              child: Container(
+                width: MediaQuery.of(context).size.width - 65,
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                decoration: const BoxDecoration(
+                  border: Border(
+                    bottom:
+                        BorderSide(width: .5, color: JuntoPalette.juntoFade),
+                  ),
+                ),
+                margin: const EdgeInsets.only(left: 10.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      '${userProfile.firstName} ${userProfile.lastName}',
+                      textAlign: TextAlign.start,
+                      style: JuntoStyles.title,
+                    ),
+                    Text(
+                      '@${userProfile.username}',
+                      textAlign: TextAlign.start,
+                      style: JuntoStyles.body,
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}

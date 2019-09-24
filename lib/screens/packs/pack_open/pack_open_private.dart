@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/components/utils/hide_fab.dart';
+import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 
 class PackOpenPrivate extends StatefulWidget {
   const PackOpenPrivate({

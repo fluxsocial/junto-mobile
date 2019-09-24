@@ -4,7 +4,7 @@ import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/styles.dart';
-import 'package:junto_beta_mobile/components/comment_preview/comment_action_items.dart';
+import 'package:junto_beta_mobile/widgets/comment_preview/comment_action_items.dart';
 
 /// Shows a preview of the comments. Takes a un-named [String] as a param.
 class CommentPreview extends StatelessWidget {

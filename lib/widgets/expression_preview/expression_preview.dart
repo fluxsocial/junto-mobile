@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:junto_beta_mobile/components/expression_preview/longform_preview/longform_preview.dart';
-import 'package:junto_beta_mobile/components/expression_preview/preview_bottom.dart';
-import 'package:junto_beta_mobile/components/expression_preview/preview_profile.dart';
-import 'package:junto_beta_mobile/components/expression_preview/shortform_preview/shortform_preview.dart';
-import 'package:junto_beta_mobile/components/expression_preview/photo_preview/photo_preview.dart';
-import 'package:junto_beta_mobile/components/expression_preview/event_preview/event_preview.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open.dart';
+import 'package:junto_beta_mobile/widgets/expression_preview/event_preview/event_preview.dart';
+import 'package:junto_beta_mobile/widgets/expression_preview/longform_preview/longform_preview.dart';
+import 'package:junto_beta_mobile/widgets/expression_preview/photo_preview/photo_preview.dart';
+import 'package:junto_beta_mobile/widgets/expression_preview/preview_bottom.dart';
+import 'package:junto_beta_mobile/widgets/expression_preview/preview_profile.dart';
+import 'package:junto_beta_mobile/widgets/expression_preview/shortform_preview/shortform_preview.dart';
 
 /// Renders a concise overview of one given [ExpressionResult].
 class ExpressionPreview extends StatelessWidget {

@@ -10,6 +10,7 @@ import 'package:junto_beta_mobile/providers/user_provider.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:junto_beta_mobile/widgets/user_preview.dart';
 import 'package:provider/provider.dart';
 
 class CreatePerspective extends StatefulWidget {
@@ -339,11 +340,9 @@ class __SearchMembersModalState extends State<_SearchMembersModal> {
                           shrinkWrap: true,
                           itemBuilder: (BuildContext context, int index) {
                             final UserProfile _user = query[index];
-                            return ListTile(
-                              onTap: () => widget.onProfileSelected(_user),
-                              title: Text(
-                                '${_user.firstName} ${_user.lastName}',
-                              ),
+                            return UserPreview(
+                              onTap: widget.onProfileSelected,
+                              userProfile: _user,
                             );
                           },
                         );

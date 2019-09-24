@@ -69,10 +69,10 @@ class UserProfile {
 
   @override
   String toString() {
-    return 'UserProfile{address: $address, parent: $parent, firstName: '
+    return 'UserProfile: address: $address, parent: $parent, firstName: '
         '$firstName, lastName: $lastName, bio: $bio,'
         ' profilePicture: $profilePicture, verified: $verified,'
-        ' username: $username}';
+        ' username: $username';
   }
 }
 
