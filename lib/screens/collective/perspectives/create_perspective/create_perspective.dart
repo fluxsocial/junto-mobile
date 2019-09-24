@@ -12,7 +12,6 @@ import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
 
-//TODO(Nash): This page should be broken up into smaller, more manageable widgets
 class CreatePerspective extends StatefulWidget {
   @override
   _CreatePerspectiveState createState() => _CreatePerspectiveState();
@@ -72,6 +71,10 @@ class _CreatePerspectiveState extends State<CreatePerspective> {
         ],
       );
     }
+  }
+
+  void _onUserSelected(UserProfile value) {
+    print(value.toString());
   }
 
   @override
@@ -199,7 +202,11 @@ class _CreatePerspectiveState extends State<CreatePerspective> {
                             ),
                           ),
                         ),
-                        child: _showBottomSheet(context),
+                        child: _SearchMembersModal(
+                          onTextChange: _onTextChange,
+                          query: queriedUsers,
+                          onProfileSelected: _onUserSelected,
+                        ),
                       ),
                     ],
                   ),
@@ -211,8 +218,27 @@ class _CreatePerspectiveState extends State<CreatePerspective> {
       ),
     );
   }
+}
 
-  GestureDetector _showBottomSheet(BuildContext context) {
+class _SearchMembersModal extends StatefulWidget {
+  const _SearchMembersModal({
+    Key key,
+    @required this.onTextChange,
+    @required this.query,
+    @required this.onProfileSelected,
+  }) : super(key: key);
+
+  final ValueChanged<String> onTextChange;
+  final ValueChanged<UserProfile> onProfileSelected;
+  final ValueNotifier<List<UserProfile>> query;
+
+  @override
+  __SearchMembersModalState createState() => __SearchMembersModalState();
+}
+
+class __SearchMembersModalState extends State<_SearchMembersModal> {
+  @override
+  Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         showModalBottomSheet(
@@ -288,28 +314,31 @@ class _CreatePerspectiveState extends State<CreatePerspective> {
                             ),
                             maxLength: 80,
                             textInputAction: TextInputAction.done,
-                            onChanged: _onTextChange,
+                            onChanged: widget.onTextChange,
                           ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 10),
                     ValueListenableBuilder<List<UserProfile>>(
-                        valueListenable: queriedUsers,
-                        builder: (BuildContext context,
-                            List<UserProfile> snapshot, _) {
-                          return ListView(
-                            shrinkWrap: true,
-                            children: snapshot.map(
-                              (UserProfile _user) {
-                                return ListTile(
-                                  title: Text(
-                                      '${_user.firstName} ${_user.lastName}'),
-                                );
-                              },
-                            ).toList(),
-                          );
-                        })
+                      valueListenable: widget.query,
+                      builder:
+                          (BuildContext context, List<UserProfile> query, _) {
+                        return ListView.builder(
+                          itemCount: query.length,
+                          shrinkWrap: true,
+                          itemBuilder: (BuildContext context, int index) {
+                            final UserProfile _user = query[index];
+                            return ListTile(
+                              onTap: () => widget.onProfileSelected(_user),
+                              title: Text(
+                                '${_user.firstName} ${_user.lastName}',
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),
