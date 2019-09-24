@@ -74,6 +74,31 @@ class UserProfile {
         ' profilePicture: $profilePicture, verified: $verified,'
         ' username: $username';
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is UserProfile &&
+          runtimeType == other.runtimeType &&
+          address == other.address &&
+          parent == other.parent &&
+          firstName == other.firstName &&
+          lastName == other.lastName &&
+          bio == other.bio &&
+          profilePicture == other.profilePicture &&
+          verified == other.verified &&
+          username == other.username;
+
+  @override
+  int get hashCode =>
+      address.hashCode ^
+      parent.hashCode ^
+      firstName.hashCode ^
+      lastName.hashCode ^
+      bio.hashCode ^
+      profilePicture.hashCode ^
+      verified.hashCode ^
+      username.hashCode;
 }
 
 /// The username of the user.
