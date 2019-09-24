@@ -45,8 +45,12 @@ class _CreateSphereNextState extends State<CreateSphereNext> {
           await Provider.of<SpheresProvider>(context)
               .createSphere(updatedSphere);
       JuntoOverlay.hide();
-      Navigator.pushReplacement(
-          context, CupertinoPageRoute(builder: (context) => JuntoTemplate()));
+      Navigator.pushAndRemoveUntil(
+          context,
+          CupertinoPageRoute<dynamic>(
+            builder: (BuildContext context) => JuntoTemplate(),
+          ),
+          (_) => false);
     } on JuntoException catch (error) {
       JuntoOverlay.hide();
       JuntoDialog.showJuntoDialog(
@@ -95,7 +99,7 @@ class _CreateSphereNextState extends State<CreateSphereNext> {
                         size: 28,
                       ),
                     )),
-                Text(
+                const Text(
                   'Sphere Privacy',
                   style: TextStyle(
                       color: Color(0xff333333),
@@ -108,7 +112,7 @@ class _CreateSphereNextState extends State<CreateSphereNext> {
                       color: Colors.white,
                       width: 38,
                       alignment: Alignment.centerRight,
-                      child: Text(
+                      child: const Text(
                         'create',
                         style:
                             TextStyle(color: Color(0xff333333), fontSize: 14),

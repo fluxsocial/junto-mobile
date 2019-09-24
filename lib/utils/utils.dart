@@ -61,3 +61,17 @@ dynamic deserializeHoloJson(String source) {
 
   return deserialized;
 }
+
+mixin AddUserToList {
+  List<String> placeUser(String data, List<String> list) {
+    if (list.contains(data)) {
+      final List<String> newList = list;
+      newList.remove(data);
+      return newList;
+    } else {
+      final List<String> newList = list;
+      newList.add(data);
+      return newList;
+    }
+  }
+}

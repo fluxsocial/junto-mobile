@@ -9,10 +9,12 @@ class UserPreview extends StatelessWidget {
     Key key,
     @required this.userProfile,
     @required this.onTap,
+    this.isSelected,
   }) : super(key: key);
 
   final UserProfile userProfile;
   final ValueChanged<UserProfile> onTap;
+  final bool isSelected;
 
   Widget _handleNullImage(String imageUrl) {
     if (imageUrl == null || imageUrl == '') {
@@ -35,7 +37,9 @@ class UserPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => onTap(userProfile),
+      onTap: () {
+        onTap(userProfile);
+      },
       child: Container(
         margin: const EdgeInsets.only(left: 10.0),
         color: Colors.white,
@@ -71,6 +75,32 @@ class UserPreview extends StatelessWidget {
                     ),
                   ],
                 ),
+              ),
+            ),
+            AnimatedContainer(
+              duration: kThemeChangeDuration,
+              height: 22,
+              width: 22,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: isSelected
+                      ? <Color>[
+                          JuntoPalette.juntoSecondary,
+                          JuntoPalette.juntoPrimary
+                        ]
+                      : <Color>[
+                          Colors.white,
+                          Colors.white,
+                        ],
+                  begin: Alignment.bottomLeft,
+                  end: Alignment.topRight,
+                ),
+                // color: widget.isSelected ? JuntoPalette.juntoPrimary : null,
+                border: Border.all(
+                  color: isSelected ? Colors.white : const Color(0xffeeeeee),
+                  width: 2,
+                ),
+                borderRadius: BorderRadius.circular(25),
               ),
             )
           ],
