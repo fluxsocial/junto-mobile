@@ -66,6 +66,14 @@ class UserProfile {
         'verified': verified,
         'username': username
       };
+
+  @override
+  String toString() {
+    return 'UserProfile{address: $address, parent: $parent, firstName: '
+        '$firstName, lastName: $lastName, bio: $bio,'
+        ' profilePicture: $profilePicture, verified: $verified,'
+        ' username: $username}';
+  }
 }
 
 /// The username of the user.
