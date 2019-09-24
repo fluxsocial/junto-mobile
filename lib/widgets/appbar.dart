@@ -1,13 +1,19 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/providers/provider.dart';
 import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/styles.dart';
+import 'package:junto_beta_mobile/widgets/user_preview.dart';
+import 'package:provider/provider.dart';
 
 // Junto app bar used throughout the main screens. Rendered in JuntoTemplate.
-class JuntoAppBar extends StatelessWidget implements PreferredSizeWidget {
-  JuntoAppBar({
+class JuntoAppBar extends StatefulWidget implements PreferredSizeWidget {
+  const JuntoAppBar({
     Key key,
     @required this.juntoAppBarTitle,
   }) : super(key: key);
@@ -16,6 +22,30 @@ class JuntoAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => const Size.fromHeight(48.0);
+
+  @override
+  _JuntoAppBarState createState() => _JuntoAppBarState();
+}
+
+class _JuntoAppBarState extends State<JuntoAppBar> {
+  Timer debounceTimer;
+  ValueNotifier<List<UserProfile>> queriedUsers =
+      ValueNotifier<List<UserProfile>>(<UserProfile>[]);
+
+  void _onTextChange(String value) {
+    if (debounceTimer != null) {
+      debounceTimer.cancel();
+    }
+    debounceTimer = Timer(const Duration(milliseconds: 500), () async {
+      if (mounted) {
+        final List<UserProfile> result =
+            await Provider.of<SearchProvider>(context).searchMember(value);
+        if (result != null && result.isNotEmpty) {
+          queriedUsers.value = result;
+        }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,22 +97,22 @@ class JuntoAppBar extends StatelessWidget implements PreferredSizeWidget {
                         showModalBottomSheet(
                           isScrollControlled: true,
                           context: context,
-                          builder: (context) => Container(
-                            color: Color(0xff737373),
+                          builder: (BuildContext context) => Container(
+                            color: const Color(0xff737373),
                             child: Container(
                               height: MediaQuery.of(context).size.height * .9,
-                              padding: EdgeInsets.all(10),
-                              decoration: BoxDecoration(
+                              padding: const EdgeInsets.all(10),
+                              decoration: const BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.only(
-                                  topLeft: const Radius.circular(10),
+                                  topLeft: Radius.circular(10),
                                   topRight: Radius.circular(10),
                                 ),
                               ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  SizedBox(height: 10),
+                                  const SizedBox(height: 10),
                                   Row(
                                     children: <Widget>[
                                       Text(
@@ -90,14 +120,20 @@ class JuntoAppBar extends StatelessWidget implements PreferredSizeWidget {
                                         style: TextStyle(
                                           fontSize: 17,
                                           fontWeight: FontWeight.w700,
-                                          color: Color(0xff333333),
+                                          color: const Color(0xff333333),
                                         ),
                                       ),
                                     ],
                                   ),
-                                  SizedBox(height: 10),
-                                  Text(
-                                      'This modal will enable you to edit your perspective. This includes adding/removing members, changing the name, deleting the perspective, and so on. You will also be able to view the list of members, etc.')
+                                  const SizedBox(height: 10),
+                                  const Text(
+                                    'This modal will enable you to edit your'
+                                    ' perspective. This includes '
+                                    'adding/removing members, changing'
+                                    ' the name, deleting the perspective,'
+                                    ' and so on. You will also be able to '
+                                    'view the list of members, etc.',
+                                  )
                                 ],
                               ),
                             ),
@@ -106,7 +142,7 @@ class JuntoAppBar extends StatelessWidget implements PreferredSizeWidget {
                       },
                       child: Container(
                         margin: const EdgeInsets.only(left: 7.5),
-                        child: Text(juntoAppBarTitle,
+                        child: Text(widget.juntoAppBarTitle,
                             style: JuntoStyles.appbarTitle),
                       ),
                     )
@@ -130,98 +166,21 @@ class JuntoAppBar extends StatelessWidget implements PreferredSizeWidget {
                       showModalBottomSheet(
                         isScrollControlled: true,
                         context: context,
-                        builder: (context) => Container(
-                          color: Color(0xff737373),
-                          child: Container(
-                            height: MediaQuery.of(context).size.height * .9,
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.only(
-                                topLeft: const Radius.circular(10),
-                                topRight: Radius.circular(10),
-                              ),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                SizedBox(height: 10),
-                                Row(
-                                  children: <Widget>[
-                                    Text(
-                                      'Members',
-                                      style: TextStyle(
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w700,
-                                        color: Color(0xff333333),
-                                      ),
-                                    ),
-                                    SizedBox(width: 25),
-                                    Text(
-                                      'Spheres',
-                                      style: TextStyle(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w700,
-                                          color: Color(0xff999999)),
-                                    )
-                                  ],
-                                ),
-                                SizedBox(height: 10),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Container(
-                                      width: MediaQuery.of(context).size.width -
-                                          20,
-                                      decoration: BoxDecoration(
-                                        border: Border(
-                                          bottom: BorderSide(
-                                            color: Color(0xffeeeeee),
-                                            width: .75,
-                                          ),
-                                        ),
-                                      ),
-                                      child: TextField(
-                                        buildCounter: (
-                                          BuildContext context, {
-                                          int currentLength,
-                                          int maxLength,
-                                          bool isFocused,
-                                        }) =>
-                                            null,
-                                        decoration: const InputDecoration(
-                                          border: InputBorder.none,
-                                          hintText: 'Search members',
-                                          hintStyle: const TextStyle(
-                                              color: Color(0xff999999),
-                                              fontSize: 17,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                        cursorColor: Color(0xff333333),
-                                        cursorWidth: 2,
-                                        maxLines: null,
-                                        style: const TextStyle(
-                                            color: Color(0xff333333),
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.w500),
-                                        maxLength: 80,
-                                        textInputAction: TextInputAction.done,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                        builder: (BuildContext context) {
+                          return _SearchBottomSheet(
+                            results: queriedUsers,
+                            onProfileSelected: (UserProfile value) {},
+                            onTextChange: _onTextChange,
+                          );
+                        },
                       );
                     },
                     child: Container(
-                      child: Icon(Icons.search,
-                          color: JuntoPalette.juntoSleek,
-                          size: JuntoStyles.appbarIcon),
+                      child: Icon(
+                        Icons.search,
+                        color: JuntoPalette.juntoSleek,
+                        size: JuntoStyles.appbarIcon,
+                      ),
                     ),
                   ),
                 ),
@@ -230,22 +189,22 @@ class JuntoAppBar extends StatelessWidget implements PreferredSizeWidget {
                     showModalBottomSheet(
                       isScrollControlled: true,
                       context: context,
-                      builder: (context) => Container(
-                        color: Color(0xff737373),
+                      builder: (BuildContext context) => Container(
+                        color: const Color(0xff737373),
                         child: Container(
                           height: MediaQuery.of(context).size.height * .9,
-                          padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
+                          padding: const EdgeInsets.all(10),
+                          decoration: const BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.only(
-                              topLeft: const Radius.circular(10),
+                              topLeft: Radius.circular(10),
                               topRight: Radius.circular(10),
                             ),
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               Row(
                                 children: <Widget>[
                                   Text(
@@ -253,13 +212,13 @@ class JuntoAppBar extends StatelessWidget implements PreferredSizeWidget {
                                     style: TextStyle(
                                       fontSize: 17,
                                       fontWeight: FontWeight.w700,
-                                      color: Color(0xff333333),
+                                      color: const Color(0xff333333),
                                     ),
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 10),
-                              Text('building this last...')
+                              const SizedBox(height: 10),
+                              const Text('building this last...')
                             ],
                           ),
                         ),
@@ -275,6 +234,136 @@ class JuntoAppBar extends StatelessWidget implements PreferredSizeWidget {
                 )
               ],
             )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SearchBottomSheet extends StatefulWidget {
+  const _SearchBottomSheet({
+    Key key,
+    @required this.onTextChange,
+    @required this.onProfileSelected,
+    @required this.results,
+  }) : super(key: key);
+
+  /// [ValueChanged] callback which exposes the text typed by the user
+  final ValueChanged<String> onTextChange;
+
+  /// [ValueChanged] callback which exposes the selected user profile
+  final ValueChanged<UserProfile> onProfileSelected;
+
+  /// [ValueNotifier] used to rebuild the results [ListView] with the data
+  /// sent back from the server.
+  final ValueNotifier<List<UserProfile>> results;
+
+  @override
+  __SearchBottomSheetState createState() => __SearchBottomSheetState();
+}
+
+class __SearchBottomSheetState extends State<_SearchBottomSheet> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: const Color(0xff737373),
+      child: Container(
+        height: MediaQuery.of(context).size.height * .9,
+        padding: const EdgeInsets.all(10),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10),
+            topRight: Radius.circular(10),
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const SizedBox(height: 10),
+            Row(
+              children: <Widget>[
+                Text(
+                  'Members',
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w700,
+                    color: const Color(0xff333333),
+                  ),
+                ),
+                const SizedBox(width: 25),
+                Text(
+                  'Spheres',
+                  style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xff999999)),
+                )
+              ],
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  width: MediaQuery.of(context).size.width - 20,
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Color(0xffeeeeee),
+                        width: .75,
+                      ),
+                    ),
+                  ),
+                  child: TextField(
+                    buildCounter: (
+                      BuildContext context, {
+                      int currentLength,
+                      int maxLength,
+                      bool isFocused,
+                    }) =>
+                        null,
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'Search members',
+                      hintStyle: TextStyle(
+                          color: Color(0xff999999),
+                          fontSize: 17,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    cursorColor: const Color(0xff333333),
+                    cursorWidth: 2,
+                    maxLines: null,
+                    style: const TextStyle(
+                        color: Color(0xff333333),
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500),
+                    maxLength: 80,
+                    textInputAction: TextInputAction.done,
+                    onChanged: widget.onTextChange,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            ValueListenableBuilder<List<UserProfile>>(
+              valueListenable: widget.results,
+              builder: (BuildContext context, List<UserProfile> query, _) {
+                return ListView.builder(
+                  itemCount: query.length,
+                  shrinkWrap: true,
+                  itemBuilder: (BuildContext context, int index) {
+                    final UserProfile _user = query[index];
+                    return UserPreview(
+                      onTap: widget.onProfileSelected,
+                      userProfile: _user,
+                    );
+                  },
+                );
+              },
+            ),
           ],
         ),
       ),
