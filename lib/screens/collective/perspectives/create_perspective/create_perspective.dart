@@ -10,7 +10,8 @@ import 'package:junto_beta_mobile/providers/user_provider.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
-import 'package:junto_beta_mobile/widgets/user_preview.dart';
+import 'package:junto_beta_mobile/utils/utils.dart';
+import 'package:junto_beta_mobile/widgets/search_members_modal.dart';
 import 'package:provider/provider.dart';
 
 class CreatePerspective extends StatefulWidget {
@@ -18,11 +19,13 @@ class CreatePerspective extends StatefulWidget {
   _CreatePerspectiveState createState() => _CreatePerspectiveState();
 }
 
-class _CreatePerspectiveState extends State<CreatePerspective> {
+class _CreatePerspectiveState extends State<CreatePerspective>
+    with AddUserToList {
   TextEditingController controller;
   Timer debounceTimer;
   ValueNotifier<List<UserProfile>> queriedUsers =
       ValueNotifier<List<UserProfile>>(<UserProfile>[]);
+  List<String> _selectedUsers = <String>[];
 
   @override
   void initState() {
@@ -75,7 +78,7 @@ class _CreatePerspectiveState extends State<CreatePerspective> {
   }
 
   void _onUserSelected(UserProfile value) {
-    print(value.toString());
+    _selectedUsers = placeUser(value.address, _selectedUsers);
   }
 
   @override
@@ -203,9 +206,9 @@ class _CreatePerspectiveState extends State<CreatePerspective> {
                             ),
                           ),
                         ),
-                        child: _SearchMembersModal(
+                        child: SearchMembersModal(
                           onTextChange: _onTextChange,
-                          query: queriedUsers,
+                          results: queriedUsers,
                           onProfileSelected: _onUserSelected,
                         ),
                       ),
@@ -216,164 +219,6 @@ class _CreatePerspectiveState extends State<CreatePerspective> {
             ),
           )
         ],
-      ),
-    );
-  }
-}
-
-/// showModalBottomSheet] which allows the user to search members via their
-/// username.
-/// The parameters [onTextChange], [query] and [onProfileSelected] must not
-/// be null.
-class _SearchMembersModal extends StatefulWidget {
-  const _SearchMembersModal({
-    Key key,
-    @required this.onTextChange,
-    @required this.query,
-    @required this.onProfileSelected,
-  }) : super(key: key);
-
-  /// [ValueChanged] callback which exposes the text typed by the user
-  final ValueChanged<String> onTextChange;
-
-  /// [ValueChanged] callback which exposes the selected user profile
-  final ValueChanged<UserProfile> onProfileSelected;
-
-  /// [ValueNotifier] used to rebuild the results [ListView] with the data
-  /// sent back from the server.
-  final ValueNotifier<List<UserProfile>> query;
-
-  @override
-  __SearchMembersModalState createState() => __SearchMembersModalState();
-}
-
-class __SearchMembersModalState extends State<_SearchMembersModal> {
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        showModalBottomSheet(
-          isScrollControlled: true,
-          context: context,
-          builder: (BuildContext context) {
-            return Material(
-              color: const Color(0xff737373),
-              child: Container(
-                height: MediaQuery.of(context).size.height * .9,
-                padding: const EdgeInsets.all(10),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10),
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    const SizedBox(height: 10),
-                    Row(
-                      children: const <Widget>[
-                        Text(
-                          'Members',
-                          style: TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w700,
-                            color: Color(0xff333333),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          width: MediaQuery.of(context).size.width - 60,
-                          decoration: const BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: Color(0xffeeeeee),
-                                width: .75,
-                              ),
-                            ),
-                          ),
-                          child: TextField(
-                            buildCounter: (
-                              BuildContext context, {
-                              int currentLength,
-                              int maxLength,
-                              bool isFocused,
-                            }) =>
-                                null,
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'Search members',
-                              hintStyle: TextStyle(
-                                  color: Color(0xff999999),
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                            cursorColor: const Color(0xff333333),
-                            cursorWidth: 2,
-                            maxLines: null,
-                            style: const TextStyle(
-                              color: Color(0xff333333),
-                              fontSize: 17,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            maxLength: 80,
-                            textInputAction: TextInputAction.done,
-                            onChanged: widget.onTextChange,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    ValueListenableBuilder<List<UserProfile>>(
-                      valueListenable: widget.query,
-                      builder:
-                          (BuildContext context, List<UserProfile> query, _) {
-                        return ListView.builder(
-                          itemCount: query.length,
-                          shrinkWrap: true,
-                          itemBuilder: (BuildContext context, int index) {
-                            final UserProfile _user = query[index];
-                            return UserPreview(
-                              onTap: widget.onProfileSelected,
-                              userProfile: _user,
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        );
-      },
-      child: Container(
-        color: Colors.white,
-        child: Row(
-          children: <Widget>[
-            Icon(
-              CustomIcons.half_lotus,
-              size: 17,
-              color: const Color(0xff333333),
-            ),
-            const SizedBox(width: 20),
-            const Text(
-              'add members',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
