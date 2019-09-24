@@ -43,26 +43,30 @@ class Perspectives extends StatelessWidget {
                         color: Color(0xff333333),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute<dynamic>(
-                            builder: (BuildContext context) =>
-                                CreatePerspective(),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: SizedBox(
+                        height: 32,
+                        width: 32,
+                        child: FlatButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute<dynamic>(
+                                builder: (BuildContext context) =>
+                                    CreatePerspective(),
+                              ),
+                            );
+                          },
+                          child: const Center(
+                            child: Text(
+                              '+',
+                              style: TextStyle(fontSize: 20),
+                            ),
                           ),
-                        );
-                      },
-                      child: Container(
-                        width: 20,
-                        height: 38,
-                        alignment: Alignment.centerRight,
-                        child: const Text(
-                          '+',
-                          style: TextStyle(fontSize: 20),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
                 height: 45,
@@ -103,13 +107,6 @@ class Perspectives extends StatelessWidget {
         BuildContext context,
         AsyncSnapshot<List<CentralizedPerspective>> snapshot,
       ) {
-        // if (!snapshot.hasData) {
-        //   return Container(
-        //     child: Center(
-        //       child: const CircularProgressIndicator(),
-        //     ),
-        //   );
-        // }
         if (snapshot.hasError) {
           return Container();
         }

@@ -220,6 +220,10 @@ class _CreatePerspectiveState extends State<CreatePerspective> {
   }
 }
 
+/// showModalBottomSheet] which allows the user to search members via their
+/// username.
+/// The parameters [onTextChange], [query] and [onProfileSelected] must not
+/// be null.
 class _SearchMembersModal extends StatefulWidget {
   const _SearchMembersModal({
     Key key,
@@ -228,8 +232,14 @@ class _SearchMembersModal extends StatefulWidget {
     @required this.onProfileSelected,
   }) : super(key: key);
 
+  /// [ValueChanged] callback which exposes the text typed by the user
   final ValueChanged<String> onTextChange;
+
+  /// [ValueChanged] callback which exposes the selected user profile
   final ValueChanged<UserProfile> onProfileSelected;
+
+  /// [ValueNotifier] used to rebuild the results [ListView] with the data
+  /// sent back from the server.
   final ValueNotifier<List<UserProfile>> query;
 
   @override
@@ -245,7 +255,7 @@ class __SearchMembersModalState extends State<_SearchMembersModal> {
           isScrollControlled: true,
           context: context,
           builder: (BuildContext context) {
-            return Container(
+            return Material(
               color: const Color(0xff737373),
               child: Container(
                 height: MediaQuery.of(context).size.height * .9,
