@@ -48,6 +48,12 @@ class _JuntoAppBarState extends State<JuntoAppBar> {
   }
 
   @override
+  void dispose() {
+    debounceTimer?.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.white,
@@ -114,13 +120,13 @@ class _JuntoAppBarState extends State<JuntoAppBar> {
                                 children: <Widget>[
                                   const SizedBox(height: 10),
                                   Row(
-                                    children: <Widget>[
+                                    children: const <Widget>[
                                       Text(
                                         'Edit Perspective',
                                         style: TextStyle(
                                           fontSize: 17,
                                           fontWeight: FontWeight.w700,
-                                          color: const Color(0xff333333),
+                                          color: Color(0xff333333),
                                         ),
                                       ),
                                     ],
@@ -206,13 +212,13 @@ class _JuntoAppBarState extends State<JuntoAppBar> {
                             children: <Widget>[
                               const SizedBox(height: 10),
                               Row(
-                                children: <Widget>[
+                                children: const <Widget>[
                                   Text(
                                     'Notifications',
                                     style: TextStyle(
                                       fontSize: 17,
                                       fontWeight: FontWeight.w700,
-                                      color: const Color(0xff333333),
+                                      color: Color(0xff333333),
                                     ),
                                   ),
                                 ],
@@ -283,22 +289,22 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
           children: <Widget>[
             const SizedBox(height: 10),
             Row(
-              children: <Widget>[
+              children: const <Widget>[
                 Text(
                   'Members',
                   style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w700,
-                    color: const Color(0xff333333),
+                    color: Color(0xff333333),
                   ),
                 ),
-                const SizedBox(width: 25),
+                SizedBox(width: 25),
                 Text(
                   'Spheres',
                   style: TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.w700,
-                      color: const Color(0xff999999)),
+                      color: Color(0xff999999)),
                 )
               ],
             ),
@@ -359,6 +365,8 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                     return UserPreview(
                       onTap: widget.onProfileSelected,
                       userProfile: _user,
+                      //FIXME(Nash): Check if user is selected
+                      isSelected: false,
                     );
                   },
                 );

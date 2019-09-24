@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/sphere.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
@@ -6,6 +8,8 @@ import 'package:junto_beta_mobile/screens/spheres/create_sphere/create_sphere_ne
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/styles.dart';
+import 'package:junto_beta_mobile/utils/utils.dart' show AddUserToList;
+import 'package:junto_beta_mobile/widgets/search_members_modal.dart';
 import 'package:provider/provider.dart';
 
 // This class renders a widget that enables the user to create a sphere
@@ -14,13 +18,36 @@ class CreateSphere extends StatefulWidget {
   _CreateSphereState createState() => _CreateSphereState();
 }
 
-class _CreateSphereState extends State<CreateSphere> {
+class _CreateSphereState extends State<CreateSphere> with AddUserToList {
   TextEditingController _textEditingController;
+  Timer debounceTimer;
+  ValueNotifier<List<UserProfile>> queriedUsers =
+      ValueNotifier<List<UserProfile>>(<UserProfile>[]);
+  List<String> _selectedUsers = <String>[];
 
   @override
   void initState() {
     _textEditingController = TextEditingController();
     super.initState();
+  }
+
+  void _addUser(UserProfile user) {
+    _selectedUsers = placeUser(user.address, _selectedUsers);
+  }
+
+  void _onTextChange(String value) {
+    if (debounceTimer != null) {
+      debounceTimer.cancel();
+    }
+    debounceTimer = Timer(const Duration(milliseconds: 500), () async {
+      if (mounted) {
+        final List<UserProfile> result =
+            await Provider.of<SearchProvider>(context).searchMember(value);
+        if (result != null && result.isNotEmpty) {
+          queriedUsers.value = result;
+        }
+      }
+    });
   }
 
   @override
@@ -36,11 +63,11 @@ class _CreateSphereState extends State<CreateSphere> {
     final CentralizedSphere sphere = CentralizedSphere(
       name: sphereName,
       description: '',
-      facilitators: [
+      facilitators: <String>[
         _profile.address,
       ],
       photo: '',
-      members: <String>[],
+      members: _selectedUsers,
       principles: "Don't be a horrible human being",
       sphereHandle: sphereName,
       privacy: '',
@@ -76,13 +103,13 @@ class _CreateSphereState extends State<CreateSphere> {
                       color: Colors.white,
                       width: 38,
                       alignment: Alignment.centerLeft,
-                      child: Icon(
+                      child: const Icon(
                         CustomIcons.back_arrow_left,
                         color: JuntoPalette.juntoSleek,
                         size: 28,
                       ),
                     )),
-                Text(
+                const Text(
                   'Create Sphere',
                   style: TextStyle(
                       fontSize: 15,
@@ -116,14 +143,14 @@ class _CreateSphereState extends State<CreateSphere> {
             child: ListView(
               children: <Widget>[
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Container(
                         // padding: EdgeInsets.symmetric(vertical: 15),
                         width: MediaQuery.of(context).size.width - 20,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           border: Border(
                             bottom: BorderSide(
                               color: Color(0xffeeeeee),
@@ -143,12 +170,12 @@ class _CreateSphereState extends State<CreateSphere> {
                           decoration: const InputDecoration(
                             border: InputBorder.none,
                             hintText: 'Name your sphere',
-                            hintStyle: const TextStyle(
+                            hintStyle: TextStyle(
                                 color: Color(0xff999999),
                                 fontSize: 20,
                                 fontWeight: FontWeight.w700),
                           ),
-                          cursorColor: Color(0xff333333),
+                          cursorColor: const Color(0xff333333),
                           cursorWidth: 2,
                           maxLines: null,
                           style: const TextStyle(
@@ -160,8 +187,8 @@ class _CreateSphereState extends State<CreateSphere> {
                         ),
                       ),
                       Container(
-                        padding: EdgeInsets.symmetric(vertical: 15),
-                        decoration: BoxDecoration(
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        decoration: const BoxDecoration(
                           border: Border(
                             bottom: BorderSide(
                               color: Color(0xffeeeeee),
@@ -169,117 +196,10 @@ class _CreateSphereState extends State<CreateSphere> {
                             ),
                           ),
                         ),
-                        child: GestureDetector(
-                          onTap: () {
-                            showModalBottomSheet(
-                              isScrollControlled: true,
-                              context: context,
-                              builder: (context) => Container(
-                                color: Color(0xff737373),
-                                child: Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * .9,
-                                  padding: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: const Radius.circular(10),
-                                      topRight: Radius.circular(10),
-                                    ),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      SizedBox(height: 10),
-                                      Row(
-                                        children: <Widget>[
-                                          Text(
-                                            'Members',
-                                            style: TextStyle(
-                                              fontSize: 17,
-                                              fontWeight: FontWeight.w700,
-                                              color: Color(0xff333333),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(height: 10),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width -
-                                                60,
-                                            decoration: BoxDecoration(
-                                              border: Border(
-                                                bottom: BorderSide(
-                                                  color: Color(0xffeeeeee),
-                                                  width: .75,
-                                                ),
-                                              ),
-                                            ),
-                                            child: TextField(
-                                              buildCounter: (
-                                                BuildContext context, {
-                                                int currentLength,
-                                                int maxLength,
-                                                bool isFocused,
-                                              }) =>
-                                                  null,
-                                              decoration: const InputDecoration(
-                                                border: InputBorder.none,
-                                                hintText: 'Search members',
-                                                hintStyle: const TextStyle(
-                                                    color: Color(0xff999999),
-                                                    fontSize: 17,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                              cursorColor: Color(0xff333333),
-                                              cursorWidth: 2,
-                                              maxLines: null,
-                                              style: const TextStyle(
-                                                  color: Color(0xff333333),
-                                                  fontSize: 17,
-                                                  fontWeight: FontWeight.w500),
-                                              maxLength: 80,
-                                              textInputAction:
-                                                  TextInputAction.done,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            color: Colors.white,
-                            child: Row(
-                              children: <Widget>[
-                                Icon(
-                                  Icons.people,
-                                  size: 17,
-                                  color: Color(0xff333333),
-                                ),
-                                SizedBox(width: 10),
-                                Text(
-                                  'add members',
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              ],
-                            ),
-                          ),
+                        child: SearchMembersModal(
+                          onProfileSelected: _addUser,
+                          results: queriedUsers,
+                          onTextChange: _onTextChange,
                         ),
                       ),
                     ],
