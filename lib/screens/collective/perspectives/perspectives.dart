@@ -118,9 +118,9 @@ class Perspectives extends StatelessWidget {
             children: snapshot.data
                 .map(
                   (CentralizedPerspective perspective) => PerspectiveTile(
-                    name: perspective.name,
-                    onClick: changePerspective,
-                  ),
+                        name: perspective.name,
+                        onClick: changePerspective,
+                      ),
                 )
                 .toList(),
           );

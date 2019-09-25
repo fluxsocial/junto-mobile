@@ -381,7 +381,7 @@ class _PackOpenPublicState extends State<PackOpenPublic> with HideFab {
       ExpressionPreview(expression: expression[2]),
       ExpressionPreview(expression: expression[3]),
       ExpressionPreview(expression: expression[4]),
-      ExpressionPreview(expression: expression[5]),            
+      ExpressionPreview(expression: expression[5]),
       ExpressionPreview(expression: expression[6]),
       ExpressionPreview(expression: expression[7]),
     ]);

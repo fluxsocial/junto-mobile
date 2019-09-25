@@ -213,70 +213,70 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
     showModalBottomSheet(
       context: context,
       builder: (context) => Container(
-        color: Color(0xff737373),
-        child: Container(
-          height: 280,
-          padding: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: const Radius.circular(10),
-              topRight: Radius.circular(10),
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            color: Color(0xff737373),
+            child: Container(
+              height: 280,
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: const Radius.circular(10),
+                  topRight: Radius.circular(10),
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Container(
-                    width: MediaQuery.of(context).size.width - 60,
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Color(0xffeeeeee),
-                          width: .75,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        width: MediaQuery.of(context).size.width - 60,
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: Color(0xffeeeeee),
+                              width: .75,
+                            ),
+                          ),
+                        ),
+                        child: TextField(
+                          controller: _channelController,
+                          buildCounter: (
+                            BuildContext context, {
+                            int currentLength,
+                            int maxLength,
+                            bool isFocused,
+                          }) =>
+                              null,
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Filter by channel',
+                            hintStyle: const TextStyle(
+                                color: Color(0xff999999),
+                                fontSize: 17,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          cursorColor: Color(0xff333333),
+                          cursorWidth: 2,
+                          maxLines: null,
+                          style: const TextStyle(
+                              color: Color(0xff333333),
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500),
+                          maxLength: 80,
+                          textInputAction: TextInputAction.done,
                         ),
                       ),
-                    ),
-                    child: TextField(
-                      controller: _channelController,
-                      buildCounter: (
-                        BuildContext context, {
-                        int currentLength,
-                        int maxLength,
-                        bool isFocused,
-                      }) =>
-                          null,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Filter by channel',
-                        hintStyle: const TextStyle(
-                            color: Color(0xff999999),
-                            fontSize: 17,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      cursorColor: Color(0xff333333),
-                      cursorWidth: 2,
-                      maxLines: null,
-                      style: const TextStyle(
-                          color: Color(0xff333333),
-                          fontSize: 17,
-                          fontWeight: FontWeight.w500),
-                      maxLength: 80,
-                      textInputAction: TextInputAction.done,
-                    ),
+                      Container(
+                        child: Icon(Icons.add, size: 20),
+                      )
+                    ],
                   ),
-                  Container(
-                    child: Icon(Icons.add, size: 20),
-                  )
                 ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
     );
   }
 

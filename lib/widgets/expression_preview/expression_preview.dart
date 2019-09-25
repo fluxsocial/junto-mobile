@@ -51,7 +51,7 @@ class ExpressionPreview extends StatelessWidget {
 
   Widget _returnExpression() {
     if (expression.expression.expressionType == 'longform') {
-      return LongformPreview(expression: expression);      
+      return LongformPreview(expression: expression);
     } else if (expression.expression.expressionType == 'shortform') {
       return ShortformPreview(expression);
     } else if (expression.expression.expressionType == 'photo') {

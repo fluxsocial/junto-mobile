@@ -18,63 +18,60 @@ class ExpressionOpenAppbar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             GestureDetector(
-              onTap: () => Navigator.pop(context),
-              child: Container(
-                color: Colors.white,
-                width: 38,
-                alignment: Alignment.centerLeft,
-                child: Icon(
-                CustomIcons.back_arrow_left,
-                color: JuntoPalette.juntoSleek,
-                size: 28,
-              ),)
-            ),
+                onTap: () => Navigator.pop(context),
+                child: Container(
+                  color: Colors.white,
+                  width: 38,
+                  alignment: Alignment.centerLeft,
+                  child: Icon(
+                    CustomIcons.back_arrow_left,
+                    color: JuntoPalette.juntoSleek,
+                    size: 28,
+                  ),
+                )),
             GestureDetector(
               onTap: () {
                 showModalBottomSheet(
                   isScrollControlled: true,
                   context: context,
                   builder: (context) => Container(
-                    color: Color(0xff737373),
-                    child: Container(
-                      height: MediaQuery.of(context).size.height * .9,
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                          topLeft: const Radius.circular(10),
-                          topRight: Radius.circular(10),
-                        ),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          SizedBox(height: 10),
-                          Row(
+                        color: Color(0xff737373),
+                        child: Container(
+                          height: MediaQuery.of(context).size.height * .9,
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                              topLeft: const Radius.circular(10),
+                              topRight: Radius.circular(10),
+                            ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Text(
-                                'Expression context',
-                                style: TextStyle(
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w700,
-                                  color: Color(0xff333333),
-                                ),
+                              SizedBox(height: 10),
+                              Row(
+                                children: <Widget>[
+                                  Text(
+                                    'Expression context',
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w700,
+                                      color: Color(0xff333333),
+                                    ),
+                                  ),
+                                ],
                               ),
+                              SizedBox(height: 10),
+                              Text(
+                                'This will show the context of each expression, and the icon that you pressed to open this modal up will be dynamic. For example, for a given expression this would show that it resides in the collective and is tagged into channels x, y, z.'
+                                ' Expressions that live in the collective context will have the collective icon (tbd). Those that live in spheres, pack, den will reflect the icons that represent those contexts as well. Hope this makes sense!',
+                                style: TextStyle(fontSize: 15, height: 1.4),
+                              )
                             ],
                           ),
-                          SizedBox(height: 10),
-                          Text(
-                            'This will show the context of each expression, and the icon that you pressed to open this modal up will be dynamic. For example, for a given expression this would show that it resides in the collective and is tagged into channels x, y, z.'
-                            ' Expressions that live in the collective context will have the collective icon (tbd). Those that live in spheres, pack, den will reflect the icons that represent those contexts as well. Hope this makes sense!',
-                            style: TextStyle(
-                              fontSize: 15,
-                              height: 1.4
-                            ),
-                          )
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
                 );
               },
               child: Container(

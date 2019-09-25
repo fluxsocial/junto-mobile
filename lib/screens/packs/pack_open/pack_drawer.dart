@@ -110,7 +110,7 @@ class PackDrawer extends StatelessWidget {
                         'Edit Pack',
                         style: TextStyle(fontWeight: FontWeight.w500),
                       ),
-                    ),                    
+                    ),
                     Container(
                       decoration: const BoxDecoration(
                         border: Border(

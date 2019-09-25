@@ -127,8 +127,9 @@ class JuntoCreateState extends State<JuntoCreate> {
   // }
 
   confirmSwitch(templateType) {
-      switchTemplate(templateType);
+    switchTemplate(templateType);
   }
+
 // Switch between different expression templates
   void switchTemplate(String templateType) {
     // Reset State
@@ -215,8 +216,8 @@ class JuntoCreateState extends State<JuntoCreate> {
                       context,
                       MaterialPageRoute<dynamic>(
                         builder: (BuildContext context) => CreateActions(
-                          expressionLayer: widget.expressionLayer,
-                        ),
+                              expressionLayer: widget.expressionLayer,
+                            ),
                       ),
                     );
                   },

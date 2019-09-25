@@ -34,7 +34,6 @@ class _DenDrawerState extends State<DenDrawer> {
   //   }
   // }
 
-
   @override
   Widget build(BuildContext context) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
@@ -88,8 +87,7 @@ class _DenDrawerState extends State<DenDrawer> {
                     // relationships
                     _denDrawerItem(context, 'My Pack', 'pack', true),
                     _denDrawerItem(context, 'Connections', 'connections', true),
-                    _denDrawerItem(
-                        context, 'Subscribers', 'followers', true),
+                    _denDrawerItem(context, 'Subscribers', 'followers', true),
                     _denDrawerItem(context, 'Edit profile', 'edit', true),
                     _denDrawerItem(context, 'Night theme', 'nav', false),
                     // _denDrawerItem('Notifications', 'nav'),

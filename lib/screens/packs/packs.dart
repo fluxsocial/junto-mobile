@@ -25,11 +25,8 @@ class JuntoPacksState extends State<JuntoPacks> {
     return ListView(
       children: <Widget>[
         // My Pack
-        PackPreview(
-          'The Gnarly Nomads',
-          'Eric Yang',
-          'assets/images/junto-mobile__eric.png'
-        ),
+        PackPreview('The Gnarly Nomads', 'Eric Yang',
+            'assets/images/junto-mobile__eric.png'),
 
         // Other Packs user belongs to
         Consumer<PacksProvider>(
@@ -40,10 +37,10 @@ class JuntoPacksState extends State<JuntoPacks> {
               children: packs.packs
                   .map(
                     (Pack pack) => PackPreview(
-                      pack.packTitle,
-                      pack.packUser,
-                      pack.packImage,
-                    ),
+                          pack.packTitle,
+                          pack.packUser,
+                          pack.packImage,
+                        ),
                   )
                   .toList(),
             );

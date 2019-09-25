@@ -207,7 +207,8 @@ class DenCreateSubcollectionState extends State<DenCreateSubcollection> {
                                       children: <Widget>[
                                         GestureDetector(
                                           onTap: () {
-                                            _toggleSubcollectionPrivacy('public');
+                                            _toggleSubcollectionPrivacy(
+                                                'public');
                                           },
                                           child: Container(
                                             height: 28,
@@ -224,7 +225,8 @@ class DenCreateSubcollectionState extends State<DenCreateSubcollection> {
                                         ),
                                         GestureDetector(
                                           onTap: () {
-                                            _toggleSubcollectionPrivacy('private');
+                                            _toggleSubcollectionPrivacy(
+                                                'private');
                                           },
                                           child: Container(
                                             height: 28,

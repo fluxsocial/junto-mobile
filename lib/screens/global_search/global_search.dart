@@ -93,7 +93,8 @@ class GlobalSearchState extends State<GlobalSearch> {
           ),
           Expanded(
             child: FutureBuilder<List<UserProfile>>(
-              future: Provider.of<SearchProvider>(context).searchMember(searchedTerm),
+              future: Provider.of<SearchProvider>(context)
+                  .searchMember(searchedTerm),
               builder: (
                 BuildContext context,
                 AsyncSnapshot<List<UserProfile>> snapshot,

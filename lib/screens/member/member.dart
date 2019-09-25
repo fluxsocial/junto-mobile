@@ -98,46 +98,49 @@ class JuntoMember extends StatelessWidget {
                               showModalBottomSheet(
                                 context: context,
                                 builder: (context) => Container(
-                                  color: Color(0xff737373),
-                                  child: Container(
-                                    height: 240,
-                                    padding: EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: const Radius.circular(10),
-                                        topRight: Radius.circular(10),
+                                      color: Color(0xff737373),
+                                      child: Container(
+                                        height: 240,
+                                        padding: EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: const Radius.circular(10),
+                                            topRight: Radius.circular(10),
+                                          ),
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            ListTile(
+                                              title: Text(
+                                                'Subscribe',
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                            ),
+                                            ListTile(
+                                              title: Text(
+                                                'Connect',
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                            ),
+                                            ListTile(
+                                              title: Text(
+                                                'Join Pack',
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        ListTile(
-                                          title: Text(
-                                            'Subscribe',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ),
-                                        ListTile(
-                                          title: Text(
-                                            'Connect',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ),
-                                        ListTile(
-                                          title: Text(
-                                            'Join Pack',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
                               );
                             },
                             child: Container(
@@ -222,9 +225,9 @@ class JuntoMember extends StatelessWidget {
                                 ),
                               ),
                               Container(
-                                padding: EdgeInsets.symmetric(vertical: 25),
-                                child: Text('// This is what a profile/den looks like when you are viewing someone else. You will be able to see both their public expressions and collections. Will be fully built / dynamic in a few days..')
-                              ),
+                                  padding: EdgeInsets.symmetric(vertical: 25),
+                                  child: Text(
+                                      '// This is what a profile/den looks like when you are viewing someone else. You will be able to see both their public expressions and collections. Will be fully built / dynamic in a few days..')),
                             ]),
                       ],
                     ),

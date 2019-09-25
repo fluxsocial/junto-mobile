@@ -102,68 +102,68 @@ class ExpressionOpenState extends State<ExpressionOpen> {
     await showModalBottomSheet(
       context: context,
       builder: (context) => Container(
-        color: const Color(0xff737373),
-        child: Container(
-          height: 240,
-          padding: const EdgeInsets.all(10),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(10),
-              topRight: Radius.circular(10),
+            color: const Color(0xff737373),
+            child: Container(
+              height: 240,
+              padding: const EdgeInsets.all(10),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10),
+                  topRight: Radius.circular(10),
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  SizedBox(height: 10),
+                  ListTile(
+                    onTap: () {
+                      setState(() {
+                        _commentPrivacy = 'public';
+                      });
+                      Navigator.pop(context);
+                    },
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          'Public',
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w700),
+                        ),
+                        const SizedBox(height: 5),
+                        const Text(
+                            'Your comment will visible to everyone who can see this expression.')
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  ListTile(
+                    onTap: () {
+                      setState(() {
+                        _commentPrivacy = 'private';
+                      });
+                      Navigator.pop(context);
+                    },
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          'Private',
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w700),
+                        ),
+                        const SizedBox(height: 5),
+                        const Text(
+                            'Your comment will only be visible to the creator of this expression.')
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SizedBox(height: 10),
-              ListTile(
-                onTap: () {
-                  setState(() {
-                    _commentPrivacy = 'public';
-                  });
-                  Navigator.pop(context);
-                },
-                title: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      'Public',
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
-                    ),
-                    const SizedBox(height: 5),
-                    const Text(
-                        'Your comment will visible to everyone who can see this expression.')
-                  ],
-                ),
-              ),
-              const SizedBox(height: 10),
-              ListTile(
-                onTap: () {
-                  setState(() {
-                    _commentPrivacy = 'private';
-                  });
-                  Navigator.pop(context);
-                },
-                title: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      'Private',
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
-                    ),
-                    const SizedBox(height: 5),
-                    const Text(
-                        'Your comment will only be visible to the creator of this expression.')
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
     );
 
     _focusTextField();

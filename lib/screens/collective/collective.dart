@@ -32,7 +32,7 @@ class JuntoCollectiveState extends State<JuntoCollective> {
   @override
   void initState() {
     super.initState();
-    
+
     widget.controller.addListener(scollListener);
   }
 

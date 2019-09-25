@@ -151,62 +151,64 @@ class DenCreateCollectionState extends State<DenCreateCollection> {
                             isScrollControlled: true,
                             context: context,
                             builder: (context) => Container(
-                              color: Color(0xff737373),
-                              child: Container(
-                                height: MediaQuery.of(context).size.height * .9,
-                                padding: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: const Radius.circular(10),
-                                    topRight: Radius.circular(10),
-                                  ),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    SizedBox(height: 10),
-                                    Row(
-                                      children: <Widget>[
-                                        Text(
-                                          'Expressions',
-                                          style: TextStyle(
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.w700,
-                                            color: Color(0xff333333),
-                                          ),
-                                        ),
-                                      ],
+                                  color: Color(0xff737373),
+                                  child: Container(
+                                    height:
+                                        MediaQuery.of(context).size.height * .9,
+                                    padding: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: const Radius.circular(10),
+                                        topRight: Radius.circular(10),
+                                      ),
                                     ),
-                                    SizedBox(height: 10),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                    child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: <Widget>[
-                                        Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width -
-                                              60,
-                                          decoration: BoxDecoration(
-                                            border: Border(
-                                              bottom: BorderSide(
-                                                color: Color(0xffeeeeee),
-                                                width: .75,
+                                        SizedBox(height: 10),
+                                        Row(
+                                          children: <Widget>[
+                                            Text(
+                                              'Expressions',
+                                              style: TextStyle(
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.w700,
+                                                color: Color(0xff333333),
                                               ),
                                             ),
-                                          ),
-                                          child: Text(
-                                              'This will be a feed of all of the expressions (both public and private) a member has created in addition to those that they save from other people. Therefore, collections will be a culmination of any expression a member wants, including from othere people. '),
+                                          ],
+                                        ),
+                                        SizedBox(height: 10),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width -
+                                                  60,
+                                              decoration: BoxDecoration(
+                                                border: Border(
+                                                  bottom: BorderSide(
+                                                    color: Color(0xffeeeeee),
+                                                    width: .75,
+                                                  ),
+                                                ),
+                                              ),
+                                              child: Text(
+                                                  'This will be a feed of all of the expressions (both public and private) a member has created in addition to those that they save from other people. Therefore, collections will be a culmination of any expression a member wants, including from othere people. '),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
-                                  ],
+                                  ),
                                 ),
-                              ),
-                            ),
                           );
                         },
                         child: Container(

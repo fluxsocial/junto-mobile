@@ -10,11 +10,13 @@ class UserPreview extends StatelessWidget {
     @required this.userProfile,
     @required this.onTap,
     this.isSelected,
+    this.showSelectionIndicator = true,
   }) : super(key: key);
 
   final UserProfile userProfile;
   final ValueChanged<UserProfile> onTap;
   final bool isSelected;
+  final bool showSelectionIndicator;
 
   Widget _handleNullImage(String imageUrl) {
     if (imageUrl == null || imageUrl == '') {
@@ -77,32 +79,33 @@ class UserPreview extends StatelessWidget {
                 ),
               ),
             ),
-            AnimatedContainer(
-              duration: kThemeChangeDuration,
-              height: 22,
-              width: 22,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: isSelected
-                      ? <Color>[
-                          JuntoPalette.juntoSecondary,
-                          JuntoPalette.juntoPrimary
-                        ]
-                      : <Color>[
-                          Colors.white,
-                          Colors.white,
-                        ],
-                  begin: Alignment.bottomLeft,
-                  end: Alignment.topRight,
+            if (showSelectionIndicator)
+              AnimatedContainer(
+                duration: kThemeChangeDuration,
+                height: 22,
+                width: 22,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: isSelected
+                        ? <Color>[
+                            JuntoPalette.juntoSecondary,
+                            JuntoPalette.juntoPrimary
+                          ]
+                        : <Color>[
+                            Colors.white,
+                            Colors.white,
+                          ],
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
+                  ),
+                  // color: widget.isSelected ? JuntoPalette.juntoPrimary : null,
+                  border: Border.all(
+                    color: isSelected ? Colors.white : const Color(0xffeeeeee),
+                    width: 2,
+                  ),
+                  borderRadius: BorderRadius.circular(25),
                 ),
-                // color: widget.isSelected ? JuntoPalette.juntoPrimary : null,
-                border: Border.all(
-                  color: isSelected ? Colors.white : const Color(0xffeeeeee),
-                  width: 2,
-                ),
-                borderRadius: BorderRadius.circular(25),
-              ),
-            )
+              )
           ],
         ),
       ),

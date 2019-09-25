@@ -326,7 +326,8 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
         expressionType: 'longform',
         expressionContent: <String, String>{
           'title': 'Dynamic form is in motion!',
-          'body': "Hey! Eric here. We're currently working with a London-based dev agency called DevAngels to build out our dynamic, rich text editor. Soon, you'll be able to create short or longform expressions that contain text, links, images complemented with features such as bullet points, horiozntal lines, bold and italic font, and much more. This should be done in the next 1 or 2 weeks so stay tuned!"
+          'body':
+              "Hey! Eric here. We're currently working with a London-based dev agency called DevAngels to build out our dynamic, rich text editor. Soon, you'll be able to create short or longform expressions that contain text, links, images complemented with features such as bullet points, horiozntal lines, bold and italic font, and much more. This should be done in the next 1 or 2 weeks so stay tuned!"
         },
       ),
       subExpressions: <Expression>[],
@@ -363,7 +364,8 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
         address: '0xfee32zokie8',
         expressionType: 'shortform',
         expressionContent: <String, String>{
-          'body': "Have you heard of Paradym sound healing meditation? Join us for a transformational session this Friday!",
+          'body':
+              "Have you heard of Paradym sound healing meditation? Join us for a transformational session this Friday!",
           'background': 'four'
         },
       ),
@@ -395,7 +397,7 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
           attributeType: 'Channel',
         ),
       ],
-    ),        
+    ),
     Expression(
       expression: ExpressionContent(
         address: '0xfee32zokie8',
@@ -443,7 +445,8 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
           'location': 'The Assemblage',
           'time': 'Sun, Sep 15, 3:00PM',
           'image': 'assets/images/junto-mobile__event--one.png',
-          'description': "Join us for a splendiferous afternoon of paint-splattering fun! We'll be syncing our movements to your favorite blues while creating beautiful masterpieces together. All are invited!"
+          'description':
+              "Join us for a splendiferous afternoon of paint-splattering fun! We'll be syncing our movements to your favorite blues while creating beautiful masterpieces together. All are invited!"
         },
       ),
       authorProfile: UserProfile(
@@ -481,7 +484,8 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
         expressionType: 'longform',
         expressionContent: <String, String>{
           'title': 'Welcome to Junto!',
-          'body': "Hey! I'm Nash. Over the past few weeks, I've been working with Eric and the rest of the Junto team to prepare for Junto's upcoming release. I also just finished a project for the government of Trinidad and Tobago (where i'm from) and I'm stoked to say we won first place! Anyway, really looking forward to watching this go live. Can't wait to meet you all!"
+          'body':
+              "Hey! I'm Nash. Over the past few weeks, I've been working with Eric and the rest of the Junto team to prepare for Junto's upcoming release. I also just finished a project for the government of Trinidad and Tobago (where i'm from) and I'm stoked to say we won first place! Anyway, really looking forward to watching this go live. Can't wait to meet you all!"
         },
       ),
       subExpressions: <Expression>[],
@@ -512,8 +516,7 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
           attributeType: 'Channel',
         ),
       ],
-    ),    
-
+    ),
     Expression(
       expression: ExpressionContent(
         address: '0xfee32zokie8',
@@ -552,14 +555,14 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
         ),
       ],
     ),
-
     Expression(
       expression: ExpressionContent(
         address: '0xfee32zokie8',
         expressionType: 'longform',
         expressionContent: <String, String>{
           'title': 'The funny story about my name...',
-          'body': "A question I get all the time is, 'Is that your real name?' Well, I'm glad you asked. You see, it was a hot afternoon in Lexington, Kentucky. Feeling hangry, I swung by the closest Subway shop and..."
+          'body':
+              "A question I get all the time is, 'Is that your real name?' Well, I'm glad you asked. You see, it was a hot afternoon in Lexington, Kentucky. Feeling hangry, I swung by the closest Subway shop and..."
         },
       ),
       subExpressions: <Expression>[],
@@ -595,7 +598,8 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
           'location': 'within',
           'time': 'ANYTIME',
           'image': 'assets/images/junto-mobile__event--two.png',
-          'description': "Now, you may not be as muscular as this stud. But let me tell you - You. Are. Beautiful. Everything you need is within, so come book an appointmnet with Happy Leif and we're guarantee you some Happy Photos ;)"
+          'description':
+              "Now, you may not be as muscular as this stud. But let me tell you - You. Are. Beautiful. Everything you need is within, so come book an appointmnet with Happy Leif and we're guarantee you some Happy Photos ;)"
         },
       ),
       authorProfile: UserProfile(
@@ -627,6 +631,5 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
         ),
       ],
     ),
-
   ];
 }

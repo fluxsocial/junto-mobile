@@ -56,7 +56,7 @@ class _SignInState extends State<SignIn> {
       JuntoDialog.showJuntoDialog(
           context,
           'Unable to login user. Please recheck your '
-              'account.',
+          'account.',
           <Widget>[
             FlatButton(
               onPressed: () => Navigator.of(context).pop(),

@@ -7,7 +7,6 @@ import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open_private.dart
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open_public.dart';
 import 'package:junto_beta_mobile/widgets/create_fab/create_fab.dart';
 
-
 class PackOpen extends StatefulWidget {
   const PackOpen(this.packTitle, this.packUser, this.packImage);
 
@@ -31,7 +30,7 @@ class PackOpenState extends State<PackOpen> {
   void initState() {
     super.initState();
     controller = PageController(initialPage: 0);
-  } 
+  }
 
   @override
   void dispose() {
