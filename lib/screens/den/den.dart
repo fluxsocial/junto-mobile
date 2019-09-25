@@ -2,16 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/providers/provider.dart';
-import 'package:junto_beta_mobile/screens/member/member.dart';
-import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/screens/den/den_expanded.dart';
-import 'package:junto_beta_mobile/components/expression_preview/expression_preview.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
-import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/screens/den/den_collection_preview.dart';
 import 'package:junto_beta_mobile/screens/den/den_create_collection.dart';
+import 'package:junto_beta_mobile/widgets/expression_preview/expression_preview.dart';
 
 /// Displays the user's DEN or "profile screen"
 class JuntoDen extends StatefulWidget {
@@ -72,14 +68,14 @@ class JuntoDenState extends State<JuntoDen> {
         ),
       ],
     ),
-
     Expression(
       expression: ExpressionContent(
         address: '0xfee32zokie8',
         expressionType: 'photo',
         expressionContent: <String, String>{
           'image': 'assets/images/junto-mobile__photo--one.png',
-          'caption': 'Went surfing for the first time! :) Got my ass handed to me...'
+          'caption':
+              'Went surfing for the first time! :) Got my ass handed to me...'
         },
       ),
       authorUsername: Username(
@@ -110,9 +106,9 @@ class JuntoDenState extends State<JuntoDen> {
           attributeType: 'Channel',
         ),
       ],
-    ),    
-
+    ),
   ];
+
   @override
   void initState() {
     super.initState();
@@ -361,7 +357,7 @@ class JuntoDenState extends State<JuntoDen> {
                     offset: const Offset(0.0, -18.0),
                     child: ListView(
                       shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
+                      physics: const ClampingScrollPhysics(),
                       children: <Widget>[
                         ExpressionPreview(expression: expressions[0]),
                         ExpressionPreview(expression: expressions[1]),

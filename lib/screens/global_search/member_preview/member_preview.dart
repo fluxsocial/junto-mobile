@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
 
 class SearchMemberPreview extends StatelessWidget {
   const SearchMemberPreview({
@@ -6,7 +7,7 @@ class SearchMemberPreview extends StatelessWidget {
     @required this.member,
   }) : super(key: key);
 
-  final MemberPreviewModel member;
+  final UserProfile member;
 
   @override
   Widget build(BuildContext context) {
@@ -21,14 +22,15 @@ class SearchMemberPreview extends StatelessWidget {
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  ClipOval(
-                    child: Image.asset(
-                      member.prewviewImage,
-                      height: 45.0,
-                      width: 45.0,
-                      fit: BoxFit.cover,
+                  if (member.profilePicture != null)
+                    ClipOval(
+                      child: Image.asset(
+                        member.profilePicture,
+                        height: 45.0,
+                        width: 45.0,
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                  ),
                   Container(
                     width: MediaQuery.of(context).size.width - 65,
                     padding: const EdgeInsets.symmetric(vertical: 20),
@@ -48,7 +50,7 @@ class SearchMemberPreview extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          member.name,
+                          '${member.firstName} ${member.lastName}',
                           textAlign: TextAlign.start,
                           style: const TextStyle(
                             fontSize: 14,
@@ -57,7 +59,7 @@ class SearchMemberPreview extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          member.userName,
+                          member.username,
                           textAlign: TextAlign.start,
                           style: const TextStyle(
                             fontSize: 14,

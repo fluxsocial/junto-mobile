@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/providers/provider.dart';
 import 'package:junto_beta_mobile/screens/global_search/member_preview/member_preview.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
@@ -54,7 +55,7 @@ class GlobalSearchState extends State<GlobalSearch> {
                       bool isFocused,
                     }) =>
                         null,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: InputBorder.none,
                       hintText: 'search..',
                     ),
@@ -91,12 +92,11 @@ class GlobalSearchState extends State<GlobalSearch> {
             ),
           ),
           Expanded(
-            child: StreamBuilder<List<MemberPreviewModel>>(
-              stream: Provider.of<SearchProvider>(context)
-                  .searchMembers(searchedTerm),
+            child: FutureBuilder<List<UserProfile>>(
+              future: Provider.of<SearchProvider>(context).searchMember(searchedTerm),
               builder: (
                 BuildContext context,
-                AsyncSnapshot<List<MemberPreviewModel>> snapshot,
+                AsyncSnapshot<List<UserProfile>> snapshot,
               ) {
                 if (!snapshot.hasData) {
                   return Container();
@@ -105,7 +105,7 @@ class GlobalSearchState extends State<GlobalSearch> {
                   return Container(color: Colors.red);
                 }
 
-                final List<MemberPreviewModel> items = snapshot.data;
+                final List<UserProfile> items = snapshot.data;
                 if (items.isEmpty) {
                   return Container(
                     child: const Text('Is Empty'),

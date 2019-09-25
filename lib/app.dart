@@ -20,7 +20,7 @@ class JuntoApp extends StatefulWidget {
 class JuntoAppState extends State<JuntoApp> {
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([
+    SystemChrome.setPreferredOrientations(<DeviceOrientation>[
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);

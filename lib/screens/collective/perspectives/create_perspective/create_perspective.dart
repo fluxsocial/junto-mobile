@@ -1,20 +1,37 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/providers/provider.dart';
 import 'package:junto_beta_mobile/providers/user_provider.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:junto_beta_mobile/utils/utils.dart';
+import 'package:junto_beta_mobile/widgets/search_members_modal.dart';
+import 'package:junto_beta_mobile/widgets/user_preview.dart';
 import 'package:provider/provider.dart';
+
+class SelectedUsers {
+  List<UserProfile> selection = <UserProfile>[];
+}
 
 class CreatePerspective extends StatefulWidget {
   @override
   _CreatePerspectiveState createState() => _CreatePerspectiveState();
 }
 
-class _CreatePerspectiveState extends State<CreatePerspective> {
+class _CreatePerspectiveState extends State<CreatePerspective>
+    with AddUserToList<UserProfile>, ChangeNotifier {
   TextEditingController controller;
+  Timer debounceTimer;
+  ValueNotifier<List<UserProfile>> queriedUsers =
+      ValueNotifier<List<UserProfile>>(<UserProfile>[]);
+  final ValueNotifier<SelectedUsers> _users =
+      ValueNotifier<SelectedUsers>(SelectedUsers());
 
   @override
   void initState() {
@@ -28,13 +45,27 @@ class _CreatePerspectiveState extends State<CreatePerspective> {
     super.dispose();
   }
 
+  void _onTextChange(String value) {
+    if (debounceTimer != null) {
+      debounceTimer.cancel();
+    }
+    debounceTimer = Timer(const Duration(milliseconds: 500), () async {
+      if (mounted) {
+        final List<UserProfile> result =
+            await Provider.of<SearchProvider>(context).searchMember(value);
+        if (result != null && result.isNotEmpty) {
+          queriedUsers.value = result;
+        }
+      }
+    });
+  }
+
   Future<void> createPerspective() async {
     final String name = controller.value.text;
     JuntoOverlay.showLoader(context);
     try {
-      final CentralizedPerspective address =
-          await Provider.of<UserProvider>(context)
-              .createPerspective(Perspective(name: name));
+      await Provider.of<UserProvider>(context)
+          .createPerspective(Perspective(name: name));
       JuntoOverlay.hide();
       Navigator.pop(context);
     } on JuntoException catch (error) {
@@ -50,6 +81,11 @@ class _CreatePerspectiveState extends State<CreatePerspective> {
         ],
       );
     }
+  }
+
+  void _onUserSelected(UserProfile value) {
+    _users.value.selection = placeUser(value, _users.value.selection);
+    _users.notifyListeners();
   }
 
   @override
@@ -177,123 +213,47 @@ class _CreatePerspectiveState extends State<CreatePerspective> {
                             ),
                           ),
                         ),
-                        child: _showBottomSheet(context),
+                        child: ListenableProvider<
+                            ValueNotifier<SelectedUsers>>.value(
+                          value: _users,
+                          child: SearchMembersModal(
+                            onTextChange: _onTextChange,
+                            results: queriedUsers,
+                            onProfileSelected: _onUserSelected,
+                          ),
+                        ),
                       ),
                     ],
                   ),
-                )
+                ),
+                const SizedBox(height: 12.0),
+                ValueListenableBuilder<SelectedUsers>(
+                  valueListenable: _users,
+                  builder: (BuildContext context, SelectedUsers snapshot, _) {
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: snapshot.selection.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final UserProfile _profile = snapshot.selection[index];
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: UserPreview(
+                            userProfile: _profile,
+                            onTap: (UserProfile profile) {
+                              _users.value.selection.remove(profile);
+                              _users.notifyListeners();
+                            },
+                            isSelected: true,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
               ],
             ),
           )
         ],
-      ),
-    );
-  }
-
-  GestureDetector _showBottomSheet(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        showModalBottomSheet(
-          isScrollControlled: true,
-          context: context,
-          builder: (BuildContext context) => Container(
-            color: const Color(0xff737373),
-            child: Container(
-              height: MediaQuery.of(context).size.height * .9,
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(10),
-                  topRight: Radius.circular(10),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  const SizedBox(height: 10),
-                  Row(
-                    children: const <Widget>[
-                      Text(
-                        'Members',
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xff333333),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        width: MediaQuery.of(context).size.width - 60,
-                        decoration: const BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: Color(0xffeeeeee),
-                              width: .75,
-                            ),
-                          ),
-                        ),
-                        child: TextField(
-                          buildCounter: (
-                            BuildContext context, {
-                            int currentLength,
-                            int maxLength,
-                            bool isFocused,
-                          }) =>
-                              null,
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Search members',
-                            hintStyle: TextStyle(
-                                color: Color(0xff999999),
-                                fontSize: 17,
-                                fontWeight: FontWeight.w500),
-                          ),
-                          cursorColor: const Color(0xff333333),
-                          cursorWidth: 2,
-                          maxLines: null,
-                          style: const TextStyle(
-                            color: Color(0xff333333),
-                            fontSize: 17,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          maxLength: 80,
-                          textInputAction: TextInputAction.done,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-      child: Container(
-        color: Colors.white,
-        child: Row(
-          children: <Widget>[
-            Icon(
-              CustomIcons.half_lotus,
-              size: 17,
-              color: const Color(0xff333333),
-            ),
-            const SizedBox(width: 20),
-            const Text(
-              'add members',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
