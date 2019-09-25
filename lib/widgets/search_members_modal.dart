@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/create_perspective/create_perspective.dart';
 import 'package:junto_beta_mobile/widgets/user_preview.dart';
+import 'package:provider/provider.dart';
 
 /// showModalBottomSheet] which allows the user to search members via their
 /// username.
@@ -25,7 +27,6 @@ class SearchMembersModal extends StatefulWidget {
   /// sent back from the server.
   final ValueNotifier<List<UserProfile>> results;
 
-
   @override
   _SearchMembersModalState createState() => _SearchMembersModalState();
 }
@@ -33,6 +34,7 @@ class SearchMembersModal extends StatefulWidget {
 class _SearchMembersModalState extends State<SearchMembersModal> {
   @override
   Widget build(BuildContext context) {
+    final ValueNotifier<SelectedUsers> _selectedUsers = Provider.of<ValueNotifier<SelectedUsers>>(context);
     return GestureDetector(
       onTap: () {
         showModalBottomSheet(
@@ -93,10 +95,7 @@ class _SearchMembersModalState extends State<SearchMembersModal> {
                             decoration: const InputDecoration(
                               border: InputBorder.none,
                               hintText: 'Search members',
-                              hintStyle: TextStyle(
-                                  color: Color(0xff999999),
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w500),
+                              hintStyle: TextStyle(color: Color(0xff999999), fontSize: 17, fontWeight: FontWeight.w500),
                             ),
                             cursorColor: const Color(0xff333333),
                             cursorWidth: 2,
@@ -116,18 +115,22 @@ class _SearchMembersModalState extends State<SearchMembersModal> {
                     const SizedBox(height: 10),
                     ValueListenableBuilder<List<UserProfile>>(
                       valueListenable: widget.results,
-                      builder:
-                          (BuildContext context, List<UserProfile> query, _) {
+                      builder: (BuildContext context, List<UserProfile> query, _) {
                         return ListView.builder(
                           itemCount: query.length,
                           shrinkWrap: true,
                           itemBuilder: (BuildContext context, int index) {
                             final UserProfile _user = query[index];
-                            return UserPreview(
-                              key: ValueKey<UserProfile>(_user),
-                              onTap: widget.onProfileSelected,
-                              userProfile: _user,
-                              isSelected: false,
+                            return ValueListenableBuilder<SelectedUsers>(
+                              valueListenable: _selectedUsers,
+                              builder: (BuildContext context, SelectedUsers snapshot, _) {
+                                return UserPreview(
+                                  key: ValueKey<UserProfile>(_user),
+                                  onTap: widget.onProfileSelected,
+                                  userProfile: _user,
+                                  isSelected: snapshot.selection.contains(_user.address),
+                                );
+                              },
                             );
                           },
                         );

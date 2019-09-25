@@ -14,18 +14,20 @@ import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/search_members_modal.dart';
 import 'package:provider/provider.dart';
 
+class SelectedUsers {
+  List<String> selection = <String>[];
+}
+
 class CreatePerspective extends StatefulWidget {
   @override
   _CreatePerspectiveState createState() => _CreatePerspectiveState();
 }
 
-class _CreatePerspectiveState extends State<CreatePerspective>
-    with AddUserToList {
+class _CreatePerspectiveState extends State<CreatePerspective> with AddUserToList, ChangeNotifier {
   TextEditingController controller;
   Timer debounceTimer;
-  ValueNotifier<List<UserProfile>> queriedUsers =
-      ValueNotifier<List<UserProfile>>(<UserProfile>[]);
-  List<String> _selectedUsers = <String>[];
+  ValueNotifier<List<UserProfile>> queriedUsers = ValueNotifier<List<UserProfile>>(<UserProfile>[]);
+  final ValueNotifier<SelectedUsers> _users = ValueNotifier<SelectedUsers>(SelectedUsers());
 
   @override
   void initState() {
@@ -45,8 +47,7 @@ class _CreatePerspectiveState extends State<CreatePerspective>
     }
     debounceTimer = Timer(const Duration(milliseconds: 500), () async {
       if (mounted) {
-        final List<UserProfile> result =
-            await Provider.of<SearchProvider>(context).searchMember(value);
+        final List<UserProfile> result = await Provider.of<SearchProvider>(context).searchMember(value);
         if (result != null && result.isNotEmpty) {
           queriedUsers.value = result;
         }
@@ -58,8 +59,7 @@ class _CreatePerspectiveState extends State<CreatePerspective>
     final String name = controller.value.text;
     JuntoOverlay.showLoader(context);
     try {
-      await Provider.of<UserProvider>(context)
-          .createPerspective(Perspective(name: name));
+      await Provider.of<UserProvider>(context).createPerspective(Perspective(name: name));
       JuntoOverlay.hide();
       Navigator.pop(context);
     } on JuntoException catch (error) {
@@ -78,7 +78,8 @@ class _CreatePerspectiveState extends State<CreatePerspective>
   }
 
   void _onUserSelected(UserProfile value) {
-    _selectedUsers = placeUser(value.address, _selectedUsers);
+    _users.value.selection = placeUser(value.address, _users.value.selection);
+    _users.notifyListeners();
   }
 
   @override
@@ -112,10 +113,7 @@ class _CreatePerspectiveState extends State<CreatePerspective>
                 ),
                 const Text(
                   'New Perspective',
-                  style: TextStyle(
-                      fontSize: 15,
-                      color: Color(0xff333333),
-                      fontWeight: FontWeight.w700),
+                  style: TextStyle(fontSize: 15, color: Color(0xff333333), fontWeight: FontWeight.w700),
                 ),
                 InkWell(
                   onTap: () {
@@ -180,18 +178,12 @@ class _CreatePerspectiveState extends State<CreatePerspective>
                           decoration: const InputDecoration(
                             border: InputBorder.none,
                             hintText: 'Name your perspective',
-                            hintStyle: TextStyle(
-                                color: Color(0xff999999),
-                                fontSize: 20,
-                                fontWeight: FontWeight.w700),
+                            hintStyle: TextStyle(color: Color(0xff999999), fontSize: 20, fontWeight: FontWeight.w700),
                           ),
                           cursorColor: const Color(0xff333333),
                           cursorWidth: 2,
                           maxLines: null,
-                          style: const TextStyle(
-                              color: Color(0xff333333),
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700),
+                          style: const TextStyle(color: Color(0xff333333), fontSize: 20, fontWeight: FontWeight.w700),
                           maxLength: 80,
                           textInputAction: TextInputAction.done,
                         ),
@@ -206,10 +198,13 @@ class _CreatePerspectiveState extends State<CreatePerspective>
                             ),
                           ),
                         ),
-                        child: SearchMembersModal(
-                          onTextChange: _onTextChange,
-                          results: queriedUsers,
-                          onProfileSelected: _onUserSelected,
+                        child: ListenableProvider<ValueNotifier<SelectedUsers>>.value(
+                          value: _users,
+                          child: SearchMembersModal(
+                            onTextChange: _onTextChange,
+                            results: queriedUsers,
+                            onProfileSelected: _onUserSelected,
+                          ),
                         ),
                       ),
                     ],
