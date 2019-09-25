@@ -151,7 +151,7 @@ class CentralizedSphereResponse {
       createdAt: DateTime.parse(json['created_at']),
       privacy: json['privacy'],
       groupType: json['group_type'],
-      groupData: GroupData.fromJson(json['group_data']),
+      groupData: GroupDataSphere.fromJson(json['group_data']),
       users: _parseUsers(json['users']),
     );
   }
@@ -161,7 +161,7 @@ class CentralizedSphereResponse {
   final DateTime createdAt;
   final String privacy;
   final String groupType;
-  final GroupData groupData;
+  final GroupDataSphere groupData;
   final List<Users> users;
 
   Map<String, dynamic> toJson() {
