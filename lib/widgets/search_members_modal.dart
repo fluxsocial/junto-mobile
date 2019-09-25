@@ -34,7 +34,8 @@ class SearchMembersModal extends StatefulWidget {
 class _SearchMembersModalState extends State<SearchMembersModal> {
   @override
   Widget build(BuildContext context) {
-    final ValueNotifier<SelectedUsers> _selectedUsers = Provider.of<ValueNotifier<SelectedUsers>>(context);
+    final ValueNotifier<SelectedUsers> _selectedUsers =
+        Provider.of<ValueNotifier<SelectedUsers>>(context);
     return GestureDetector(
       onTap: () {
         showModalBottomSheet(
@@ -95,7 +96,10 @@ class _SearchMembersModalState extends State<SearchMembersModal> {
                             decoration: const InputDecoration(
                               border: InputBorder.none,
                               hintText: 'Search members',
-                              hintStyle: TextStyle(color: Color(0xff999999), fontSize: 17, fontWeight: FontWeight.w500),
+                              hintStyle: TextStyle(
+                                  color: Color(0xff999999),
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w500),
                             ),
                             cursorColor: const Color(0xff333333),
                             cursorWidth: 2,
@@ -115,7 +119,8 @@ class _SearchMembersModalState extends State<SearchMembersModal> {
                     const SizedBox(height: 10),
                     ValueListenableBuilder<List<UserProfile>>(
                       valueListenable: widget.results,
-                      builder: (BuildContext context, List<UserProfile> query, _) {
+                      builder:
+                          (BuildContext context, List<UserProfile> query, _) {
                         return ListView.builder(
                           itemCount: query.length,
                           shrinkWrap: true,
@@ -123,12 +128,14 @@ class _SearchMembersModalState extends State<SearchMembersModal> {
                             final UserProfile _user = query[index];
                             return ValueListenableBuilder<SelectedUsers>(
                               valueListenable: _selectedUsers,
-                              builder: (BuildContext context, SelectedUsers snapshot, _) {
+                              builder: (BuildContext context,
+                                  SelectedUsers snapshot, _) {
                                 return UserPreview(
                                   key: ValueKey<UserProfile>(_user),
                                   onTap: widget.onProfileSelected,
                                   userProfile: _user,
-                                  isSelected: snapshot.selection.contains(_user),
+                                  isSelected:
+                                      snapshot.selection.contains(_user),
                                 );
                               },
                             );

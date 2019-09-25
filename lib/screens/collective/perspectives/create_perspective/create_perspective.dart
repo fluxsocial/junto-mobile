@@ -25,7 +25,7 @@ class CreatePerspective extends StatefulWidget {
 }
 
 class _CreatePerspectiveState extends State<CreatePerspective>
-    with AddUserToList<UserProfile>, ChangeNotifier {
+    with AddUserToList<UserProfile> {
   TextEditingController controller;
   Timer debounceTimer;
   ValueNotifier<List<UserProfile>> queriedUsers =
@@ -60,6 +60,12 @@ class _CreatePerspectiveState extends State<CreatePerspective>
     });
   }
 
+  void _removeSelectedItem(UserProfile profile) {
+    _users.value.selection.remove(profile);
+    //ignore:, invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+    _users.notifyListeners();
+  }
+
   Future<void> createPerspective() async {
     final String name = controller.value.text;
     JuntoOverlay.showLoader(context);
@@ -85,6 +91,7 @@ class _CreatePerspectiveState extends State<CreatePerspective>
 
   void _onUserSelected(UserProfile value) {
     _users.value.selection = placeUser(value, _users.value.selection);
+    // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
     _users.notifyListeners();
   }
 
@@ -237,13 +244,15 @@ class _CreatePerspectiveState extends State<CreatePerspective>
                         final UserProfile _profile = snapshot.selection[index];
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: UserPreview(
-                            userProfile: _profile,
-                            onTap: (UserProfile profile) {
-                              _users.value.selection.remove(profile);
-                              _users.notifyListeners();
-                            },
-                            isSelected: true,
+                          child: Dismissible(
+                            key: ValueKey<UserProfile>(_profile),
+                            background: Material(color: Colors.redAccent),
+                            onDismissed: (_) => _removeSelectedItem(_profile),
+                            child: UserPreview(
+                              userProfile: _profile,
+                              onTap: _removeSelectedItem,
+                              showSelectionIndicator: false,
+                            ),
                           ),
                         );
                       },

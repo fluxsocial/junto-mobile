@@ -84,6 +84,12 @@ class _CreateSphereState extends State<CreateSphere>
     Navigator.of(context).push(CreateSphereNext.route(sphere));
   }
 
+  void _removeSelectedItem(UserProfile profile) {
+    _users.value.selection.remove(profile);
+    //ignore:, invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+    _users.notifyListeners();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -228,14 +234,16 @@ class _CreateSphereState extends State<CreateSphere>
                                   snapshot.selection[index];
                               return Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: UserPreview(
-                                  userProfile: _profile,
-                                  onTap: (UserProfile profile) {
-                                    _users.value.selection.remove(profile);
-                                    //ignore:, invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
-                                    _users.notifyListeners();
-                                  },
-                                  isSelected: true,
+                                child: Dismissible(
+                                  key: ValueKey<UserProfile>(_profile),
+                                  background: Material(color: Colors.redAccent),
+                                  onDismissed: (_) =>
+                                      _removeSelectedItem(_profile),
+                                  child: UserPreview(
+                                    userProfile: _profile,
+                                    onTap: _removeSelectedItem,
+                                    showSelectionIndicator: false,
+                                  ),
                                 ),
                               );
                             },
