@@ -5,9 +5,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/providers/provider.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives'
+    '/create_perspective/create_perspective.dart' show SelectedUsers;
 import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/styles.dart';
+import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/user_preview.dart';
 import 'package:provider/provider.dart';
 
@@ -27,10 +30,14 @@ class JuntoAppBar extends StatefulWidget implements PreferredSizeWidget {
   _JuntoAppBarState createState() => _JuntoAppBarState();
 }
 
-class _JuntoAppBarState extends State<JuntoAppBar> {
+class _JuntoAppBarState extends State<JuntoAppBar>
+    with AddUserToList<UserProfile>, ChangeNotifier {
   Timer debounceTimer;
   ValueNotifier<List<UserProfile>> queriedUsers =
       ValueNotifier<List<UserProfile>>(<UserProfile>[]);
+  final ValueNotifier<SelectedUsers> _users = ValueNotifier<SelectedUsers>(
+    SelectedUsers(),
+  );
 
   void _onTextChange(String value) {
     if (debounceTimer != null) {
@@ -45,6 +52,11 @@ class _JuntoAppBarState extends State<JuntoAppBar> {
         }
       }
     });
+  }
+
+  void _onUserSelected(UserProfile value) {
+    _users.value.selection = placeUser(value, _users.value.selection);
+    _users.notifyListeners();
   }
 
   @override
@@ -173,10 +185,14 @@ class _JuntoAppBarState extends State<JuntoAppBar> {
                         isScrollControlled: true,
                         context: context,
                         builder: (BuildContext context) {
-                          return _SearchBottomSheet(
-                            results: queriedUsers,
-                            onProfileSelected: (UserProfile value) {},
-                            onTextChange: _onTextChange,
+                          return ListenableProvider<
+                              ValueNotifier<SelectedUsers>>.value(
+                            value: _users,
+                            child: _SearchBottomSheet(
+                              results: queriedUsers,
+                              onProfileSelected: _onUserSelected,
+                              onTextChange: _onTextChange,
+                            ),
                           );
                         },
                       );
@@ -272,6 +288,9 @@ class _SearchBottomSheet extends StatefulWidget {
 class __SearchBottomSheetState extends State<_SearchBottomSheet> {
   @override
   Widget build(BuildContext context) {
+    final ValueNotifier<SelectedUsers> _selectedUsers =
+        Provider.of<ValueNotifier<SelectedUsers>>(context);
+
     return Container(
       color: const Color(0xff737373),
       child: Container(
@@ -362,11 +381,16 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                   shrinkWrap: true,
                   itemBuilder: (BuildContext context, int index) {
                     final UserProfile _user = query[index];
-                    return UserPreview(
-                      onTap: widget.onProfileSelected,
-                      userProfile: _user,
-                      //FIXME(Nash): Check if user is selected
-                      isSelected: false,
+                    return ValueListenableBuilder<SelectedUsers>(
+                      valueListenable: _selectedUsers,
+                      builder: (BuildContext context,
+                          SelectedUsers selectedUser, _) {
+                        return UserPreview(
+                          onTap: widget.onProfileSelected,
+                          userProfile: _user,
+                          isSelected: selectedUser.selection.contains(_user),
+                        );
+                      },
                     );
                   },
                 );

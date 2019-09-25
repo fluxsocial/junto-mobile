@@ -128,7 +128,7 @@ class _SearchMembersModalState extends State<SearchMembersModal> {
                                   key: ValueKey<UserProfile>(_user),
                                   onTap: widget.onProfileSelected,
                                   userProfile: _user,
-                                  isSelected: snapshot.selection.contains(_user.address),
+                                  isSelected: snapshot.selection.contains(_user),
                                 );
                               },
                             );

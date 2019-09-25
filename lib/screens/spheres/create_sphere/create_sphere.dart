@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/sphere.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/providers/provider.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/create_perspective/create_perspective.dart'
+    show SelectedUsers;
 import 'package:junto_beta_mobile/screens/spheres/create_sphere/create_sphere_next.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/styles.dart';
 import 'package:junto_beta_mobile/utils/utils.dart' show AddUserToList;
 import 'package:junto_beta_mobile/widgets/search_members_modal.dart';
+import 'package:junto_beta_mobile/widgets/user_preview.dart';
 import 'package:provider/provider.dart';
 
 // This class renders a widget that enables the user to create a sphere
@@ -18,12 +21,14 @@ class CreateSphere extends StatefulWidget {
   _CreateSphereState createState() => _CreateSphereState();
 }
 
-class _CreateSphereState extends State<CreateSphere> with AddUserToList {
+class _CreateSphereState extends State<CreateSphere>
+    with AddUserToList<UserProfile> {
   TextEditingController _textEditingController;
   Timer debounceTimer;
   ValueNotifier<List<UserProfile>> queriedUsers =
       ValueNotifier<List<UserProfile>>(<UserProfile>[]);
-  List<String> _selectedUsers = <String>[];
+  final ValueNotifier<SelectedUsers> _users =
+      ValueNotifier<SelectedUsers>(SelectedUsers());
 
   @override
   void initState() {
@@ -32,7 +37,9 @@ class _CreateSphereState extends State<CreateSphere> with AddUserToList {
   }
 
   void _addUser(UserProfile user) {
-    _selectedUsers = placeUser(user.address, _selectedUsers);
+    _users.value.selection = placeUser(user, _users.value.selection);
+    // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+    _users.notifyListeners();
   }
 
   void _onTextChange(String value) {
@@ -67,7 +74,9 @@ class _CreateSphereState extends State<CreateSphere> with AddUserToList {
         _profile.address,
       ],
       photo: '',
-      members: _selectedUsers,
+      members: _users.value.selection
+          .map((UserProfile _profile) => _profile.address)
+          .toList(growable: false),
       principles: "Don't be a horrible human being",
       sphereHandle: sphereName,
       privacy: '',
@@ -196,11 +205,42 @@ class _CreateSphereState extends State<CreateSphere> with AddUserToList {
                             ),
                           ),
                         ),
-                        child: SearchMembersModal(
-                          onProfileSelected: _addUser,
-                          results: queriedUsers,
-                          onTextChange: _onTextChange,
+                        child: ListenableProvider<
+                            ValueNotifier<SelectedUsers>>.value(
+                          value: _users,
+                          child: SearchMembersModal(
+                            onProfileSelected: _addUser,
+                            results: queriedUsers,
+                            onTextChange: _onTextChange,
+                          ),
                         ),
+                      ),
+                      const SizedBox(height: 12.0),
+                      ValueListenableBuilder<SelectedUsers>(
+                        valueListenable: _users,
+                        builder:
+                            (BuildContext context, SelectedUsers snapshot, _) {
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: snapshot.selection.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              final UserProfile _profile =
+                                  snapshot.selection[index];
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: UserPreview(
+                                  userProfile: _profile,
+                                  onTap: (UserProfile profile) {
+                                    _users.value.selection.remove(profile);
+                                    //ignore:, invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+                                    _users.notifyListeners();
+                                  },
+                                  isSelected: true,
+                                ),
+                              );
+                            },
+                          );
+                        },
                       ),
                     ],
                   ),
