@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/rendering.dart';
+import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
 import 'package:http/http.dart' as http;
 import 'package:junto_beta_mobile/models/user_model.dart';
@@ -35,7 +36,7 @@ abstract class UserProvider {
   /// Returns a list of users in a group. Note: The return type of this
   /// function is [CentralizedPerspective] since the response sent back from
   /// the server is identical to [getUserPerspective]
-  Future<List<CentralizedPerspective>> getUserGroups(String userAddress);
+  Future<UserGroupsResponse> getUserGroups(String userAddress);
 
   /// Currently under development server-side.
   Future<void> getUsersResonations(String userAddress);
@@ -141,15 +142,12 @@ class UserProviderCentralized implements UserProvider {
   }
 
   @override
-  Future<List<CentralizedPerspective>> getUserGroups(String userAddress) async {
+  Future<UserGroupsResponse> getUserGroups(String userAddress) async {
     final http.Response response =
         await JuntoHttp().post('/users/$userAddress/groups');
-    final List<Map<String, dynamic>> _responseMap =
+    final Map<String, dynamic> _responseMap =
         JuntoHttp.handleResponse(response);
-    return _responseMap
-        .map(
-            (Map<String, dynamic> data) => CentralizedPerspective.fromMap(data))
-        .toList(growable: false);
+    return UserGroupsResponse.fromMap(_responseMap);
   }
 
   @override
@@ -359,7 +357,7 @@ class UserProviderHolo implements UserProvider {
   }
 
   @override
-  Future<List<CentralizedPerspective>> getUserGroups(String userAddress) {
+  Future<UserGroupsResponse> getUserGroups(String userAddress) {
     throw UnimplementedError('This functions does not exist on the Holochain '
         'API');
   }
