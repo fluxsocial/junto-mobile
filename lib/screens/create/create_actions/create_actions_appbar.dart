@@ -6,6 +6,13 @@ import 'package:junto_beta_mobile/providers/provider.dart';
 import 'package:provider/provider.dart';
 
 class CreateActionsAppbar extends StatelessWidget {
+  const CreateActionsAppbar({
+    Key key,
+    @required this.onCreateTap,
+  }) : super(key: key);
+
+  final VoidCallback onCreateTap;
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -28,24 +35,8 @@ class CreateActionsAppbar extends StatelessWidget {
                 size: 24,
               ),
             ),
-            // Text(
-            //   'Expression',
-            //   style: TextStyle(
-            //     color: Color(0xff333333),
-            //     fontSize: 15,
-            //     fontWeight: FontWeight.w700
-            //   ),
-            // ),
             GestureDetector(
-              onTap: () async {
-                final Expression _testData =
-                    Provider.of<CollectiveProvider>(context).sampleExpression;
-                // For now we are using test data until the rich text editor
-                // is up and running.
-                await Provider.of<CollectiveProvider>(context)
-                    .createExpression(_testData);
-                Navigator.of(context).pop();
-              },
+              onTap: onCreateTap,
               child: const Text(
                 'create',
                 style: TextStyle(

@@ -8,7 +8,6 @@ import 'package:junto_beta_mobile/screens/create/create_templates/longform.dart'
 import 'package:junto_beta_mobile/screens/create/create_templates/photo.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/shortform.dart';
 import 'package:junto_beta_mobile/styles.dart';
-import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 
 class JuntoCreate extends StatefulWidget {
   const JuntoCreate(this.expressionLayer);
@@ -32,13 +31,19 @@ class JuntoCreateState extends State<JuntoCreate> {
   ValueNotifier<bool> isEditing;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
+  GlobalKey<CreateLongformState> _longFormKey;
+  GlobalKey<CreateShortformState> _shortFormKey;
+  GlobalKey<CreatePhotoState> _photoFormKey;
+  GlobalKey<CreateEventState> _eventKey;
+
   @override
   void initState() {
     super.initState();
     isEditing = ValueNotifier<bool>(false);
-    isEditing.addListener(() {
-      print('user is editing');
-    });
+    _longFormKey = GlobalKey<CreateLongformState>();
+    _shortFormKey = GlobalKey<CreateShortformState>();
+    _photoFormKey = GlobalKey<CreatePhotoState>();
+    _eventKey = GlobalKey<CreateEventState>();
   }
 
   @override
@@ -63,21 +68,25 @@ class JuntoCreateState extends State<JuntoCreate> {
   Widget _buildTemplate() {
     if (_longform) {
       return CreateLongform(
+        key: _longFormKey,
         isEditing: isEditing,
       );
     } else if (_shortform) {
       return CreateShortform(
+        key: _shortFormKey,
         isEditing: isEditing,
       );
     } else if (_bullet) {
       return CreateBullet();
     } else if (_photo) {
       return CreatePhoto(
+        key: _photoFormKey,
         toggleBottomNavVisibility: _toggleBottomNavVisibility,
         isEditing: isEditing,
       );
     } else if (_events) {
       return CreateEvent(
+        key: _eventKey,
         formKey: formKey,
       );
     } else {
@@ -126,7 +135,7 @@ class JuntoCreateState extends State<JuntoCreate> {
   //   }
   // }
 
-  confirmSwitch(templateType) {
+  void confirmSwitch(String templateType) {
     switchTemplate(templateType);
   }
 
@@ -139,28 +148,61 @@ class JuntoCreateState extends State<JuntoCreate> {
     _expressionType = templateType;
 
     // Update state
-    if (templateType == 'longform') {
+    if (templateType == 'LongForm' || templateType == 'dynamic') {
       setState(() {
         _longform = true;
       });
-    } else if (templateType == 'shortform') {
+    } else if (templateType == 'ShortForm') {
       setState(() {
         _shortform = true;
       });
-    } else if (templateType == 'bullet') {
+    } else if (templateType == 'BulletForm') {
       setState(() {
         _bullet = true;
       });
-    } else if (templateType == 'photo') {
+    } else if (templateType == 'PhotoForm') {
       setState(() {
         _photo = true;
       });
-    } else if (templateType == 'events') {
+    } else if (templateType == 'EventForm') {
       setState(() {
         _events = true;
       });
     } else {
       print('not an expresion type');
+    }
+  }
+
+  void _onNextClick() {
+    Navigator.push(
+      context,
+      MaterialPageRoute<dynamic>(
+        builder: (BuildContext context) {
+          return CreateActions(
+            expressionLayer: widget.expressionLayer,
+            expressionType: _expressionType,
+            expression: getExpression(),
+          );
+        },
+      ),
+    );
+  }
+
+  dynamic getExpression() {
+    if (_expressionType == 'LongForm' || _expressionType == 'dynamic') {
+      return _longFormKey.currentState.createExpression();
+    }
+    if (_expressionType == 'ShortForm') {
+      return _shortFormKey.currentState.createExpression();
+    }
+    if (_expressionType == 'BulletForm') {
+      return null;
+    }
+    if (_expressionType == 'PhotoForm') {
+      return _photoFormKey.currentState.createExpression();
+    }
+    if (_expressionType == 'EventForm') {
+      return _eventKey.currentState.createExpression();
     }
   }
 
@@ -198,7 +240,7 @@ class JuntoCreateState extends State<JuntoCreate> {
                     ),
                     const SizedBox(width: 10),
                     Text(
-                      _expressionType == 'longform'
+                      _expressionType == 'LongForm'
                           ? 'dynamic'
                           : _expressionType.toLowerCase(),
                       textAlign: TextAlign.start,
@@ -211,18 +253,7 @@ class JuntoCreateState extends State<JuntoCreate> {
                   ],
                 ),
                 GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute<dynamic>(
-                        builder: (BuildContext context) {
-                          return CreateActions(
-                              expressionLayer: widget.expressionLayer,
-                            );
-                        },
-                      ),
-                    );
-                  },
+                  onTap: _onNextClick,
                   child: const Text(
                     'next',
                     style: TextStyle(
