@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 
 /// Expressions are at the center of Junto. Users can choose form Longform,
@@ -149,6 +150,179 @@ class ExpressionContent {
         'expression_type': expressionType,
         'expression': expressionContent,
       },
+    };
+  }
+}
+
+enum ExpressionType {
+  LongForm,
+  ShortForm,
+  PhotoForm,
+  EventForm,
+  BulletForm,
+}
+
+/// Base class for posting an expression to the server
+class CentralizedExpression {
+  CentralizedExpression({
+    @required this.type,
+    @required this.expressionData,
+    @required this.context,
+  });
+
+  factory CentralizedExpression.fromMap(Map<String, dynamic> map) {
+    return CentralizedExpression(
+      type: map['type'] as String,
+      expressionData: map['expression_data'] as Map<String, dynamic>,
+      context: map['context'] as Map<String, dynamic>,
+    );
+  }
+
+  final String type;
+  final Map<String, dynamic> expressionData;
+  final Map<String, dynamic> context;
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'type': type,
+      'expression_data': expressionData,
+      'context': context,
+    };
+  }
+}
+
+class CentralizedLongFormExpression {
+  CentralizedLongFormExpression({
+    this.title,
+    this.body,
+  });
+
+  factory CentralizedLongFormExpression.fromMap(Map<String, dynamic> json) {
+    return CentralizedLongFormExpression(
+      title: json['title'],
+      body: json['body'],
+    );
+  }
+
+  final String title;
+  final String body;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+        'title': title,
+        'body': body,
+      };
+}
+
+class CentralizedShortFormExpression {
+  CentralizedShortFormExpression({
+    this.background,
+    this.body,
+  });
+
+  factory CentralizedShortFormExpression.fromMap(Map<String, dynamic> json) {
+    return CentralizedShortFormExpression(
+      background: json['background'],
+      body: json['body'],
+    );
+  }
+
+  final String background;
+  final String body;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+        'background': background,
+        'body': body,
+      };
+}
+
+class CentralizedPhotoFormExpression {
+  CentralizedPhotoFormExpression({
+    this.image,
+    this.caption,
+  });
+
+  factory CentralizedPhotoFormExpression.fromMap(Map<String, dynamic> json) {
+    return CentralizedPhotoFormExpression(
+      image: json['image'],
+      caption: json['caption'],
+    );
+  }
+
+  String image;
+  String caption;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+        'image': image,
+        'caption': caption,
+      };
+}
+
+class CentralizedEventFormExpression {
+  CentralizedEventFormExpression({
+    this.title,
+    this.description,
+    this.photo,
+    this.location,
+    this.startTime,
+    this.endTime,
+  });
+
+  factory CentralizedEventFormExpression.fromMap(Map<String, dynamic> json) {
+    return CentralizedEventFormExpression(
+      title: json['title'],
+      description: json['description'],
+      photo: json['photo'],
+      location: json['location'],
+      startTime: json['start_time'],
+      endTime: json['end_time'],
+    );
+  }
+
+  final String title;
+  final String description;
+  final String photo;
+  final String location;
+  final String startTime;
+  final String endTime;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+        'title': title,
+        'description': description,
+        'photo': photo,
+        'location': location,
+        'start_time': startTime,
+        'end_time': endTime,
+      };
+}
+
+class CentralizedBulletFormExpression {
+  CentralizedBulletFormExpression({
+    this.title,
+    this.bullets,
+  });
+
+  factory CentralizedBulletFormExpression.fromMap(Map<String, dynamic> json) {
+    return CentralizedBulletFormExpression(
+      title: json['title'],
+      bullets: List<String>.from(
+        json['bullets'].map(
+          (String _bullet) {
+            return _bullet;
+          },
+        ),
+      ),
+    );
+  }
+
+  final String title;
+  final List<String> bullets;
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'title': title,
+      'bullet': List<String>.from(
+        bullets.map((String _bullet) => _bullet),
+      ),
     };
   }
 }

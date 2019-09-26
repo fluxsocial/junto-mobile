@@ -75,7 +75,7 @@ class CreateLongformState extends State<CreateLongform> {
                     controller: _bodyController,
                     // keyboardType: TextInputType.multiline,
                     textInputAction: TextInputAction.done,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: InputBorder.none,
                     ),
                     cursorColor: JuntoPalette.juntoGrey,

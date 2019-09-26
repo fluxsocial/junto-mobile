@@ -215,9 +215,11 @@ class JuntoCreateState extends State<JuntoCreate> {
                     Navigator.push(
                       context,
                       MaterialPageRoute<dynamic>(
-                        builder: (BuildContext context) => CreateActions(
+                        builder: (BuildContext context) {
+                          return CreateActions(
                               expressionLayer: widget.expressionLayer,
-                            ),
+                            );
+                        },
                       ),
                     );
                   },
