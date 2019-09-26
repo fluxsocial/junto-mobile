@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/palette.dart';
 
 class CreateLongform extends StatefulWidget {
@@ -14,8 +15,10 @@ class CreateLongform extends StatefulWidget {
 class CreateLongformState extends State<CreateLongform> {
   TextEditingController _titleController;
   TextEditingController _bodyController;
+
   //ignore:unused_field
   String _titleValue;
+
   //ignore:unused_field
   String _bodyValue;
 
@@ -47,6 +50,15 @@ class CreateLongformState extends State<CreateLongform> {
     if (_bodyController.value.text.isEmpty) {
       widget.isEditing.value = false;
     }
+  }
+
+  /// Creates a [CentralizedLongFormExpression] from the given data entered
+  /// by the user.
+  CentralizedLongFormExpression createExpression() {
+    return CentralizedLongFormExpression(
+      body: _bodyController.value.text,
+      title: _titleController.value.text,
+    );
   }
 
   @override
