@@ -13,10 +13,11 @@ import 'package:junto_beta_mobile/utils/utils.dart';
 /// Interface which defines the roles and functionality of the
 /// CollectiveProvider.
 abstract class CollectiveProvider with ChangeNotifier {
-  /// Creates an expression on the server.  Method requires the [Expression]
+  /// Creates an expression on the server.  Method requires the [CentralizedExpression]
   /// to be created.
   /// Zome: `Expression` function: `post_expression` args: `{ expression: {expression object data}, attributes: [array of attributes (channels)], context: [array of context(s) addresses] }`
-  Future<void> createExpression(Expression expression);
+  Future<CentralizedExpressionResponse> createExpression(
+      CentralizedExpression expression);
 
   /// Fetches a list of [Expression]s from the server which matches the params.
   /// Zome: `Expression`, function: `query_expressions`, Args: `{ expression: {expression object data}, attributes: [array of attributes (channels)], context: [array of context(s) addresses] }`
@@ -52,11 +53,72 @@ abstract class CollectiveProvider with ChangeNotifier {
   Expression get sampleExpression;
 }
 
+class CollectiveProviderCentralized
+    with ChangeNotifier
+    implements CollectiveProvider {
+  @override
+  List<Expression> get collectiveExpressions =>
+      CollectiveProviderImpl.sampleExpressions;
+
+  @override
+  Future<CentralizedExpressionResponse> createExpression(
+      CentralizedExpression expression) async {
+    final Map<String, dynamic> _postBody = expression.toMap();
+    final http.Response _serverResponse =
+        await JuntoHttp().post('/expressions', body: _postBody);
+    final Map<String, dynamic> parsedata =
+        JuntoHttp.handleResponse(_serverResponse);
+    return CentralizedExpressionResponse.fromMap(parsedata);
+  }
+
+  @override
+  Future<String> createCollection(
+      Map<String, String> collectionData, String collectionTag) {
+    throw UnsupportedError('This function has not been implemented in to the '
+        'app yet');
+  }
+
+  @override
+  Future<List<ExpressionContent>> filterExpression(String params) {
+    throw UnsupportedError('This function has not been implemented in to the '
+        'app yet');
+  }
+
+  @override
+  Future<List<Den>> getUserDen(String usernameAddress) {
+    throw UnsupportedError('This function has not been implemented in to the '
+        'app yet');
+  }
+
+  @override
+  Future<bool> isCollectiveOwner(String collectiveAddress, String userAddress) {
+    throw UnsupportedError('This function has not been implemented in to the '
+        'app yet');
+  }
+
+  @override
+  Future<String> postCommentExpression(
+      ExpressionContent expression, String parentAddress) {
+    throw UnsupportedError('This function has not been implemented in to the '
+        'app yet');
+  }
+
+  @override
+  Future<void> postResonation(String address) {
+    throw UnsupportedError('This function has not been implemented in to the '
+        'app yet');
+  }
+
+  @override
+  Expression get sampleExpression => null;
+}
+
 class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
   /// Like all holo functions, we need to call a `zome` and pass the
   /// parameters as args to create a new expression.
   @override
-  Future<void> createExpression(Expression expression) async {
+  Future<CentralizedExpressionResponse> createExpression(
+      CentralizedExpression expression) async {
     final Expression sampleExpression = collectiveExpressions.first;
     final Map<String, dynamic> expressionBody = JuntoHttp.holobody(
       'post_expression',
@@ -76,6 +138,7 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
     } on HttpException catch (error) {
       debugPrint('Error posting expression $error');
     }
+    return null;
   }
 
   @override
@@ -301,7 +364,7 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
 
   @override
   List<Expression> get collectiveExpressions {
-    return _collectiveExpressions;
+    return sampleExpressions;
   }
 
   List<Perspective> get perspectives {
@@ -319,7 +382,7 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
     return base64Url.encode(values);
   }
 
-  final List<Expression> _collectiveExpressions = <Expression>[
+  static List<Expression> sampleExpressions = <Expression>[
     Expression(
       expression: ExpressionContent(
         address: '0xfee32zokie8',
