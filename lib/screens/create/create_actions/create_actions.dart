@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/providers/provider.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions_appbar.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/longform.dart';
+import 'package:provider/provider.dart';
 
 class CreateActions extends StatefulWidget {
   const CreateActions({
@@ -39,15 +41,19 @@ class CreateActionsState extends State<CreateActions> {
     _channelController.dispose();
   }
 
-  void _createExpression() {
+  Future<void> _createExpression() async {
     final CentralizedExpression _expression = CentralizedExpression(
       type: widget.expressionType,
       context: <String, dynamic>{
-        'Group': {'address': 'uid'}
+        'Group': <String, dynamic>{
+          'address': '1cc0cc2e-5eb8-4577-900e-70c8de184ede'
+        }
       },
       expressionData: widget.expression.toMap(),
     );
-    //TODO(Nash): Call Provider Function
+    final result = await Provider.of<CollectiveProvider>(context)
+        .createExpression(_expression);
+    print(result.address);
   }
 
   @override
