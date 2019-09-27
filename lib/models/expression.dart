@@ -326,3 +326,86 @@ class CentralizedBulletFormExpression {
     };
   }
 }
+
+/// Response sent back from the centralized server after a
+/// [CentralizedExpression] has been successfully created.
+class CentralizedExpressionResponse {
+  CentralizedExpressionResponse({
+    this.address,
+    this.type,
+    this.expressionData,
+    this.creator,
+    this.createdAt,
+    this.privacy,
+    this.context,
+  });
+
+  factory CentralizedExpressionResponse.fromMap(Map<String, dynamic> json) =>
+      CentralizedExpressionResponse(
+        address: json['address'],
+        type: json['type'] as String,
+        expressionData: _generateExpressionData(
+          json['type'],
+          json['expression_data'],
+        ),
+        creator: json['creator'],
+        createdAt: DateTime.parse(json['created_at']),
+        privacy: json['privacy'],
+        context: json['context'],
+      );
+
+  /// Address of the expression
+  final String address;
+
+  /// Type of expression ie: LongForm, ShortForm, PhotoForm, EventForm,
+  /// BulletForm
+  final String type;
+
+  /// Type based on [type], can be [CentralizedEventFormExpression].
+  /// [CentralizedShortFormExpression], [CentralizedPhotoFormExpression],
+  /// [CentralizedEventFormExpression] or  [CentralizedBulletFormExpression]
+  final dynamic expressionData;
+
+  /// UUID of the user who created the given expression.
+  final String creator;
+
+  /// Time expression was created ISO 8601
+  final DateTime createdAt;
+
+  /// Privacy setting of the expression: Private, Shared, Public
+  final String privacy;
+
+  /// Can be  "collective" or uuid  for group/perspective
+  final String context;
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'address': address,
+      'type': type,
+      'expression_data': expressionData.toMap(),
+      'creator': creator,
+      'created_at': createdAt.toIso8601String(),
+      'privacy': privacy,
+      'context': context,
+    };
+  }
+
+  static dynamic _generateExpressionData(
+      String type, Map<String, dynamic> json) {
+    if (type == 'LongForm') {
+      return CentralizedLongFormExpression.fromMap(json['expression_data']);
+    }
+    if (type == 'ShortForm') {
+      return CentralizedShortFormExpression.fromMap(json['expression_data']);
+    }
+    if (type == 'PhotoForm') {
+      return CentralizedPhotoFormExpression.fromMap(json['expression_data']);
+    }
+    if (type == 'EventForm') {
+      return CentralizedEventFormExpression.fromMap(json['expression_data']);
+    }
+    if (type == 'BulletForm') {
+      return CentralizedBulletFormExpression.fromMap(json['expression_data']);
+    }
+  }
+}
