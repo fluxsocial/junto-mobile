@@ -21,7 +21,7 @@ class JuntoCreate extends StatefulWidget {
 }
 
 class JuntoCreateState extends State<JuntoCreate> {
-  String _expressionType = 'dynamic';
+  String _expressionType = 'LongForm';
   bool _longform = true;
   bool _shortform = false;
   bool _bullet = false;
@@ -189,7 +189,7 @@ class JuntoCreateState extends State<JuntoCreate> {
   }
 
   dynamic getExpression() {
-    if (_expressionType == 'LongForm' || _expressionType == 'dynamic') {
+    if (_expressionType == 'LongForm') {
       return _longFormKey.currentState.createExpression();
     }
     if (_expressionType == 'ShortForm') {
