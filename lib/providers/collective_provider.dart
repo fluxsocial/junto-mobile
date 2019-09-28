@@ -65,10 +65,13 @@ class CollectiveProviderCentralized
       CentralizedExpression expression) async {
     final Map<String, dynamic> _postBody = expression.toMap();
     final http.Response _serverResponse =
-        await JuntoHttp().post('/expressions', body: _postBody);
-    final Map<String, dynamic> parsedata =
+        await JuntoHttp().postWithoutEncoding('/expressions', body: _postBody);
+    final Map<String, dynamic> parseData =
         JuntoHttp.handleResponse(_serverResponse);
-    return CentralizedExpressionResponse.fromMap(parsedata);
+    print(parseData);
+    final CentralizedExpressionResponse response =
+        CentralizedExpressionResponse.fromMap(parseData);
+    return response;
   }
 
   @override
@@ -113,6 +116,7 @@ class CollectiveProviderCentralized
   Expression get sampleExpression => null;
 }
 
+@Deprecated('Uses Holo api. Class is not used in alpha')
 class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
   /// Like all holo functions, we need to call a `zome` and pass the
   /// parameters as args to create a new expression.
@@ -428,7 +432,8 @@ class CollectiveProviderImpl with ChangeNotifier implements CollectiveProvider {
         expressionType: 'shortform',
         expressionContent: <String, String>{
           'body':
-              "Have you heard of Paradym sound healing meditation? Join us for a transformational session this Friday!",
+              'Have you heard of Paradym sound healing meditation? Join us for '
+                  'a transformational session this Friday!',
           'background': 'four'
         },
       ),
