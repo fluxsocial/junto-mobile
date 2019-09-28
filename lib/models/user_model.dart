@@ -26,7 +26,7 @@ class UserProfile {
         firstName: json['first_name'],
         lastName: json['last_name'],
         bio: json['bio'],
-        profilePicture: json['profile_picture'],
+        profilePicture: json['profile_picture'] ?? '',
         verified: json['verified'],
         username: json['username'] ?? '');
   }
