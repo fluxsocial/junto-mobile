@@ -70,10 +70,11 @@ class JuntoHttp {
     Map<String, String> headers,
     Map<String, dynamic> body,
   }) async {
+    final String _body = _encodeBody(body);
     return http.post(
       _encodeUrl(resource),
       headers: await _withPersistentHeaders(headers),
-      body: _encodeBody(body),
+      body: _body,
     );
   }
 

@@ -59,11 +59,6 @@ class _JuntoAppBarState extends State<JuntoAppBar>
     _users.notifyListeners();
   }
 
-  @override
-  void dispose() {
-    debounceTimer?.cancel();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {

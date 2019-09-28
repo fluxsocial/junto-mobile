@@ -71,6 +71,11 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
           true,
         )
         ..setString('user_id', results.user.address);
+      JuntoOverlay.hide();
+      Navigator.of(context).pushAndRemoveUntil(
+        JuntoTemplate.route(),
+        (Route<dynamic> route) => false,
+      );
     } on JuntoException catch (error) {
       JuntoOverlay.hide();
       JuntoDialog.showJuntoDialog(
@@ -79,9 +84,9 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
         <Widget>[
           FlatButton(
             onPressed: () => Navigator.of(context).pushAndRemoveUntil(
-                  Welcome.route(),
-                  (Route<dynamic> route) => false,
-                ),
+              Welcome.route(),
+              (Route<dynamic> route) => false,
+            ),
             child: const Text('OK'),
           ),
         ],
