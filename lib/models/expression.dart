@@ -336,6 +336,8 @@ class CentralizedExpressionResponse {
     this.comments,
     this.resonations,
     this.creator,
+    this.context,
+    this.privacy,
   });
 
   factory CentralizedExpressionResponse.fromMap(Map<String, dynamic> json) {
@@ -349,11 +351,17 @@ class CentralizedExpressionResponse {
       createdAt: DateTime.parse(
         json['created_at'],
       ),
-      comments: json['comments'].toString() ?? '',
-      resonations: json['resonations'].toString() ?? '',
+      comments: json['comments'].map(
+        (dynamic data) => Comment.fromMap(data),
+      ),
+      resonations: json['resonations']
+          .map((dynamic data) => UserProfile.fromMap(data))
+          .toList(),
       creator: UserProfile.fromMap(
         json['creator'],
       ),
+      privacy: json['privacy'] ?? '',
+      context: json['context'] ?? '',
     );
   }
 
@@ -361,8 +369,10 @@ class CentralizedExpressionResponse {
   final String type;
   final dynamic expressionData;
   final DateTime createdAt;
-  final String comments;
-  final String resonations;
+  final List<Comment> comments;
+  final List<UserProfile> resonations;
+  final String privacy;
+  final String context;
   final UserProfile creator;
 
   Map<String, dynamic> toMap() {
@@ -374,6 +384,8 @@ class CentralizedExpressionResponse {
       'comments': comments,
       'resonations': resonations,
       'creator': creator.toMap(),
+      'privacy': privacy ?? '',
+      'context': context ?? '',
     };
   }
 
@@ -397,40 +409,55 @@ class CentralizedExpressionResponse {
   }
 }
 
-/// Comment created under expression. Requires [targetExpression], [type] and
-/// [expressionData] as a map.
-class CommentExpression {
-  CommentExpression({
-    this.targetExpression,
+class Comment {
+  Comment({
+    this.address,
     this.type,
     this.expressionData,
+    this.creator,
+    this.comments,
+    this.resonations,
+    this.createdAt,
+    this.privacy,
+    this.context,
   });
 
-  factory CommentExpression.fromMap(Map<String, dynamic> json) {
-    return CommentExpression(
-      targetExpression: json['target_expression'],
+  factory Comment.fromMap(Map<String, dynamic> json) {
+    return Comment(
+      address: json['address'],
       type: json['type'],
       expressionData: CentralizedExpressionResponse.generateExpressionData(
         json['type'],
         json['expression_data'],
       ),
+      creator: UserProfile.fromMap(json['creator']),
+      comments: json['comments'],
+      resonations: json['resonations'],
+      createdAt: DateTime.parse(json['created_at']),
+      privacy: json['privacy'],
+      context: json['context'],
     );
   }
 
-  /// Address of the parent expression.
-  final String targetExpression;
-
-  /// Type of expression to be created.
+  final String address;
   final String type;
+  final dynamic expressionData;
+  final UserProfile creator;
+  final int comments;
+  final int resonations;
+  final DateTime createdAt;
+  final String privacy;
+  final String context;
 
-  /// Expression data as a map. Data is based on the [type] of expressions.
-  final Map<String, dynamic> expressionData;
-
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'target_expression': targetExpression,
-      'type': type,
-      'expression_data': expressionData,
-    };
-  }
+  Map<String, dynamic> toMap() => <String, dynamic>{
+        'address': address,
+        'type': type,
+        'expression_data': expressionData.toMap(),
+        'creator': creator.toMap(),
+        'comments': comments,
+        'resonations': resonations,
+        'created_at': createdAt.toIso8601String(),
+        'privacy': privacy,
+        'context': context,
+      };
 }

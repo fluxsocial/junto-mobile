@@ -207,7 +207,8 @@ class UserData {
 
   factory UserData.fromMap(Map<String, dynamic> map) {
     return UserData(
-      privateDen: CentralizedDen.fromMap(map['private_den']),
+      privateDen:
+          map['private_den'] ?? CentralizedDen.fromMap(map['private_den']),
       publicDen: CentralizedDen.fromMap(map['public_den']),
       pack: CentralizedPack.fromMap(map['pack']),
       user: UserProfile.fromMap(map['user']),
