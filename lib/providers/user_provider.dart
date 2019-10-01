@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/rendering.dart';
+import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
 import 'package:http/http.dart' as http;
@@ -39,10 +40,13 @@ abstract class UserProvider {
   Future<UserGroupsResponse> getUserGroups(String userAddress);
 
   /// Currently under development server-side.
-  Future<void> getUsersResonations(String userAddress);
+  Future<List<CentralizedExpressionResponse>> getUsersResonations(
+      String userAddress);
 
   /// Placeholder for now, currently under development server-side.
-  Future<void> getUsersExpressions(String userAddress);
+  Future<List<CentralizedExpressionResponse>> getUsersExpressions(
+    String userAddress,
+  );
 
   /// Reads the cached user from the device.
   Future<UserProfile> readLocalUser();
@@ -144,32 +148,39 @@ class UserProviderCentralized implements UserProvider {
   @override
   Future<UserGroupsResponse> getUserGroups(String userAddress) async {
     final http.Response response =
-        await JuntoHttp().post('/users/$userAddress/groups');
+        await JuntoHttp().get('/users/$userAddress/groups');
     final Map<String, dynamic> _responseMap =
         JuntoHttp.handleResponse(response);
     return UserGroupsResponse.fromMap(_responseMap);
   }
 
   @override
-  Future<void> getUsersResonations(String userAddress) async {
+  Future<List<CentralizedExpressionResponse>> getUsersResonations(
+    String userAddress,
+  ) async {
     final http.Response response =
-        await JuntoHttp().post('/users/$userAddress/resonations');
-    // ignore: unused_local_variable
-    final List<Map<String, dynamic>> _responseMap =
-        JuntoHttp.handleResponse(response);
-    throw UnimplementedError('This function is yet to be implemented on the '
-        'server.');
+        await JuntoHttp().get('/users/$userAddress/resonations');
+    final List<dynamic> _responseMap = JuntoHttp.handleResponse(response);
+    return _responseMap
+        .map(
+          (dynamic data) =>
+              CentralizedExpressionResponse.withCommentsAndResonations(data),
+        )
+        .toList();
   }
 
   @override
-  Future<void> getUsersExpressions(String userAddress) async {
+  Future<List<CentralizedExpressionResponse>> getUsersExpressions(
+    String userAddress,
+  ) async {
     final http.Response response =
-        await JuntoHttp().post('/users/$userAddress/expressions');
-    // ignore: unused_local_variable
-    final List<Map<String, dynamic>> _responseMap =
-        JuntoHttp.handleResponse(response);
-    throw UnimplementedError('This function is yet to be implemented on the '
-        'server.');
+        await JuntoHttp().get('/users/$userAddress/expressions');
+    final List<dynamic> _responseMap = JuntoHttp.handleResponse(response);
+    return _responseMap
+        .map(
+          (dynamic data) => CentralizedExpressionResponse.fromMap(data),
+        )
+        .toList();
   }
 
   @override
@@ -363,12 +374,14 @@ class UserProviderHolo implements UserProvider {
   }
 
   @override
-  Future<void> getUsersResonations(String userAddress) {
+  Future<List<CentralizedExpressionResponse>> getUsersResonations(
+      String userAddress) {
     throw UnimplementedError('This function is not supported by the holo api');
   }
 
   @override
-  Future<void> getUsersExpressions(String userAddress) {
+  Future<List<CentralizedExpressionResponse>> getUsersExpressions(
+      String userAddress) {
     throw UnimplementedError('This function is not supported by the holo api');
   }
 
