@@ -341,7 +341,8 @@ class CentralizedExpressionResponse {
       this.comments = const <Comment>[],
       this.resonations = const <UserProfile>[]});
 
-  factory CentralizedExpressionResponse.withCommentsAndResonations(Map<String, dynamic> json) {
+  factory CentralizedExpressionResponse.withCommentsAndResonations(
+      Map<String, dynamic> json) {
     return CentralizedExpressionResponse(
       address: json['address'],
       type: json['type'],
@@ -361,12 +362,12 @@ class CentralizedExpressionResponse {
       context: json['context'] ?? '',
       comments: List<Comment>.from(
         json['comments'].map(
-          (Map<String, dynamic> comment) => UserProfile.fromMap(comment),
+          (dynamic comment) => Comment.fromMap(comment),
         ),
       ),
       resonations: List<UserProfile>.from(
         json['resonations'].map(
-          (Map<String, dynamic> profile) => UserProfile.fromMap(profile),
+          (dynamic profile) => UserProfile.fromMap(profile),
         ),
       ),
     );
@@ -419,7 +420,8 @@ class CentralizedExpressionResponse {
     };
   }
 
-  static dynamic generateExpressionData(String type, Map<String, dynamic> json) {
+  static dynamic generateExpressionData(
+      String type, Map<String, dynamic> json) {
     if (type == 'LongForm') {
       return CentralizedLongFormExpression.fromMap(json);
     }
