@@ -207,9 +207,11 @@ class UserData {
 
   factory UserData.fromMap(Map<String, dynamic> map) {
     return UserData(
-      privateDen:
-          map['private_den'] ?? CentralizedDen.fromMap(map['private_den']),
-      publicDen: CentralizedDen.fromMap(map['public_den']),
+      privateDen: map['private_den'] != null
+          ? CentralizedDen.fromMap(map['private_den'])
+          : null,
+      publicDen:
+          map['private_den'] ?? CentralizedDen.fromMap(map['public_den']),
       pack: CentralizedPack.fromMap(map['pack']),
       user: UserProfile.fromMap(map['user']),
       userPerspective: CentralizedPerspective.fromMap(
