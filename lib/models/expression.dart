@@ -215,8 +215,8 @@ class CentralizedLongFormExpression {
 
 class CentralizedShortFormExpression {
   CentralizedShortFormExpression({
-    this.background,
-    this.body,
+    @required this.background,
+    @required this.body,
   });
 
   factory CentralizedShortFormExpression.fromMap(Map<String, dynamic> json) {
@@ -328,17 +328,49 @@ class CentralizedBulletFormExpression {
 }
 
 class CentralizedExpressionResponse {
-  CentralizedExpressionResponse({
-    this.address,
-    this.type,
-    this.expressionData,
-    this.createdAt,
-    this.comments,
-    this.resonations,
-    this.creator,
-    this.context,
-    this.privacy,
-  });
+  CentralizedExpressionResponse(
+      {this.address,
+      this.type,
+      this.expressionData,
+      this.createdAt,
+      this.numberComments,
+      this.numberResonations,
+      this.creator,
+      this.context,
+      this.privacy,
+      this.comments = const <Comment>[],
+      this.resonations = const <UserProfile>[]});
+
+  factory CentralizedExpressionResponse.withCommentsAndResonations(Map<String, dynamic> json) {
+    return CentralizedExpressionResponse(
+      address: json['address'],
+      type: json['type'],
+      expressionData: generateExpressionData(
+        json['type'],
+        json['expression_data'],
+      ),
+      createdAt: DateTime.parse(
+        json['created_at'],
+      ),
+      numberComments: json['comments'].length,
+      numberResonations: json['resonations'].length,
+      creator: UserProfile.fromMap(
+        json['creator'],
+      ),
+      privacy: json['privacy'] ?? '',
+      context: json['context'] ?? '',
+      comments: List<Comment>.from(
+        json['comments'].map(
+          (Map<String, dynamic> comment) => UserProfile.fromMap(comment),
+        ),
+      ),
+      resonations: List<UserProfile>.from(
+        json['resonations'].map(
+          (Map<String, dynamic> profile) => UserProfile.fromMap(profile),
+        ),
+      ),
+    );
+  }
 
   factory CentralizedExpressionResponse.fromMap(Map<String, dynamic> json) {
     return CentralizedExpressionResponse(
@@ -351,12 +383,8 @@ class CentralizedExpressionResponse {
       createdAt: DateTime.parse(
         json['created_at'],
       ),
-      comments: json['comments'].map(
-        (dynamic data) => Comment.fromMap(data),
-      ),
-      resonations: json['resonations']
-          .map((dynamic data) => UserProfile.fromMap(data))
-          .toList(),
+      numberComments: json['comments'] ?? 0,
+      numberResonations: json['resonations'] ?? 0,
       creator: UserProfile.fromMap(
         json['creator'],
       ),
@@ -369,6 +397,8 @@ class CentralizedExpressionResponse {
   final String type;
   final dynamic expressionData;
   final DateTime createdAt;
+  final int numberComments;
+  final int numberResonations;
   final List<Comment> comments;
   final List<UserProfile> resonations;
   final String privacy;
@@ -381,16 +411,15 @@ class CentralizedExpressionResponse {
       'type': type,
       'expression_data': expressionData.toMap(),
       'created_at': createdAt.toIso8601String(),
-      'comments': comments,
-      'resonations': resonations,
+      'comments': numberComments,
+      'resonations': numberResonations,
       'creator': creator.toMap(),
       'privacy': privacy ?? '',
       'context': context ?? '',
     };
   }
 
-  static dynamic generateExpressionData(
-      String type, Map<String, dynamic> json) {
+  static dynamic generateExpressionData(String type, Map<String, dynamic> json) {
     if (type == 'LongForm') {
       return CentralizedLongFormExpression.fromMap(json);
     }
