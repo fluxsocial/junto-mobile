@@ -71,6 +71,11 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
           true,
         )
         ..setString('user_id', results.user.address);
+      JuntoOverlay.hide();
+      Navigator.of(context).pushAndRemoveUntil(
+        JuntoTemplate.route(),
+        (Route<dynamic> route) => false,
+      );
     } on JuntoException catch (error) {
       JuntoOverlay.hide();
       JuntoDialog.showJuntoDialog(

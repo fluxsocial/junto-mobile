@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 
 /// Expressions are at the center of Junto. Users can choose form Longform,
@@ -151,4 +152,312 @@ class ExpressionContent {
       },
     };
   }
+}
+
+enum ExpressionType {
+  LongForm,
+  ShortForm,
+  PhotoForm,
+  EventForm,
+  BulletForm,
+}
+
+/// Base class for posting an expression to the server
+class CentralizedExpression {
+  CentralizedExpression({
+    @required this.type,
+    @required this.expressionData,
+    @required this.context,
+  });
+
+  factory CentralizedExpression.fromMap(Map<String, dynamic> map) {
+    return CentralizedExpression(
+      type: map['type'] as String,
+      expressionData: map['expression_data'] as Map<String, dynamic>,
+      context: map['context'] as Map<String, dynamic>,
+    );
+  }
+
+  final String type;
+  final Map<String, dynamic> expressionData;
+  final Map<String, dynamic> context;
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'type': type,
+      'expression_data': expressionData,
+      'context': context,
+    };
+  }
+}
+
+class CentralizedLongFormExpression {
+  CentralizedLongFormExpression({
+    this.title,
+    this.body,
+  });
+
+  factory CentralizedLongFormExpression.fromMap(Map<String, dynamic> json) {
+    return CentralizedLongFormExpression(
+      title: json['title'] ?? '',
+      body: json['body'] ?? '',
+    );
+  }
+
+  final String title;
+  final String body;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+        'title': title,
+        'body': body,
+      };
+}
+
+class CentralizedShortFormExpression {
+  CentralizedShortFormExpression({
+    this.background,
+    this.body,
+  });
+
+  factory CentralizedShortFormExpression.fromMap(Map<String, dynamic> json) {
+    return CentralizedShortFormExpression(
+      background: json['background'],
+      body: json['body'],
+    );
+  }
+
+  final String background;
+  final String body;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+        'background': background,
+        'body': body,
+      };
+}
+
+class CentralizedPhotoFormExpression {
+  CentralizedPhotoFormExpression({
+    this.image,
+    this.caption,
+  });
+
+  factory CentralizedPhotoFormExpression.fromMap(Map<String, dynamic> json) {
+    return CentralizedPhotoFormExpression(
+      image: json['image'],
+      caption: json['caption'],
+    );
+  }
+
+  String image;
+  String caption;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+        'image': image,
+        'caption': caption,
+      };
+}
+
+class CentralizedEventFormExpression {
+  CentralizedEventFormExpression({
+    this.title,
+    this.description,
+    this.photo,
+    this.location,
+    this.startTime,
+    this.endTime,
+  });
+
+  factory CentralizedEventFormExpression.fromMap(Map<String, dynamic> json) {
+    return CentralizedEventFormExpression(
+      title: json['title'],
+      description: json['description'],
+      photo: json['photo'],
+      location: json['location'],
+      startTime: json['start_time'],
+      endTime: json['end_time'],
+    );
+  }
+
+  final String title;
+  final String description;
+  final String photo;
+  final String location;
+  final String startTime;
+  final String endTime;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+        'title': title,
+        'description': description,
+        'photo': photo,
+        'location': location,
+        'start_time': startTime,
+        'end_time': endTime,
+      };
+}
+
+class CentralizedBulletFormExpression {
+  CentralizedBulletFormExpression({
+    this.title,
+    this.bullets,
+  });
+
+  factory CentralizedBulletFormExpression.fromMap(Map<String, dynamic> json) {
+    return CentralizedBulletFormExpression(
+      title: json['title'],
+      bullets: List<String>.from(
+        json['bullets'].map(
+          (String _bullet) {
+            return _bullet;
+          },
+        ),
+      ),
+    );
+  }
+
+  final String title;
+  final List<String> bullets;
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'title': title,
+      'bullet': List<String>.from(
+        bullets.map((String _bullet) => _bullet),
+      ),
+    };
+  }
+}
+
+class CentralizedExpressionResponse {
+  CentralizedExpressionResponse({
+    this.address,
+    this.type,
+    this.expressionData,
+    this.createdAt,
+    this.comments,
+    this.resonations,
+    this.creator,
+    this.context,
+    this.privacy,
+  });
+
+  factory CentralizedExpressionResponse.fromMap(Map<String, dynamic> json) {
+    return CentralizedExpressionResponse(
+      address: json['address'],
+      type: json['type'],
+      expressionData: generateExpressionData(
+        json['type'],
+        json['expression_data'],
+      ),
+      createdAt: DateTime.parse(
+        json['created_at'],
+      ),
+      comments: json['comments'].map(
+        (dynamic data) => Comment.fromMap(data),
+      ),
+      resonations: json['resonations']
+          .map((dynamic data) => UserProfile.fromMap(data))
+          .toList(),
+      creator: UserProfile.fromMap(
+        json['creator'],
+      ),
+      privacy: json['privacy'] ?? '',
+      context: json['context'] ?? '',
+    );
+  }
+
+  final String address;
+  final String type;
+  final dynamic expressionData;
+  final DateTime createdAt;
+  final List<Comment> comments;
+  final List<UserProfile> resonations;
+  final String privacy;
+  final String context;
+  final UserProfile creator;
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'address': address,
+      'type': type,
+      'expression_data': expressionData.toMap(),
+      'created_at': createdAt.toIso8601String(),
+      'comments': comments,
+      'resonations': resonations,
+      'creator': creator.toMap(),
+      'privacy': privacy ?? '',
+      'context': context ?? '',
+    };
+  }
+
+  static dynamic generateExpressionData(
+      String type, Map<String, dynamic> json) {
+    if (type == 'LongForm') {
+      return CentralizedLongFormExpression.fromMap(json);
+    }
+    if (type == 'ShortForm') {
+      return CentralizedShortFormExpression.fromMap(json);
+    }
+    if (type == 'PhotoForm') {
+      return CentralizedPhotoFormExpression.fromMap(json);
+    }
+    if (type == 'EventForm') {
+      return CentralizedEventFormExpression.fromMap(json);
+    }
+    if (type == 'BulletForm') {
+      return CentralizedBulletFormExpression.fromMap(json);
+    }
+  }
+}
+
+class Comment {
+  Comment({
+    this.address,
+    this.type,
+    this.expressionData,
+    this.creator,
+    this.comments,
+    this.resonations,
+    this.createdAt,
+    this.privacy,
+    this.context,
+  });
+
+  factory Comment.fromMap(Map<String, dynamic> json) {
+    return Comment(
+      address: json['address'],
+      type: json['type'],
+      expressionData: CentralizedExpressionResponse.generateExpressionData(
+        json['type'],
+        json['expression_data'],
+      ),
+      creator: UserProfile.fromMap(json['creator']),
+      comments: json['comments'],
+      resonations: json['resonations'],
+      createdAt: DateTime.parse(json['created_at']),
+      privacy: json['privacy'],
+      context: json['context'],
+    );
+  }
+
+  final String address;
+  final String type;
+  final dynamic expressionData;
+  final UserProfile creator;
+  final int comments;
+  final int resonations;
+  final DateTime createdAt;
+  final String privacy;
+  final String context;
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+        'address': address,
+        'type': type,
+        'expression_data': expressionData.toMap(),
+        'creator': creator.toMap(),
+        'comments': comments,
+        'resonations': resonations,
+        'created_at': createdAt.toIso8601String(),
+        'privacy': privacy,
+        'context': context,
+      };
 }

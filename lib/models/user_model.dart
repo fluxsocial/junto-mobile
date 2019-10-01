@@ -26,7 +26,7 @@ class UserProfile {
         firstName: json['first_name'],
         lastName: json['last_name'],
         bio: json['bio'],
-        profilePicture: json['profile_picture'],
+        profilePicture: json['profile_picture'] ?? '',
         verified: json['verified'],
         username: json['username'] ?? '');
   }
@@ -207,7 +207,8 @@ class UserData {
 
   factory UserData.fromMap(Map<String, dynamic> map) {
     return UserData(
-      privateDen: CentralizedDen.fromMap(map['private_den']),
+      privateDen:
+          map['private_den'] ?? CentralizedDen.fromMap(map['private_den']),
       publicDen: CentralizedDen.fromMap(map['public_den']),
       pack: CentralizedPack.fromMap(map['pack']),
       user: UserProfile.fromMap(map['user']),

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
+import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:flutter/services.dart' show PlatformException;
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
@@ -34,6 +35,14 @@ class CreatePhotoState extends State<CreatePhoto> {
   bool _photoEdit = false;
   bool _libraryActive = true;
   bool _cameraActive = false;
+
+  //TODO(Nash): Connect to backend and impl once image upload becomes
+  // available.
+  /// Creates a [CentralizedPhotoFormExpression] from the given data entered
+  /// by the user.
+  CentralizedPhotoFormExpression createExpression() {
+    return CentralizedPhotoFormExpression(image: '', caption: '');
+  }
 
   // Function to retrieve image from source (i.e. library or camera)
   void _getImage(BuildContext context, ImageSource source) {
