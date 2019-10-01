@@ -62,7 +62,6 @@ class CollectiveProviderCentralized implements CollectiveProvider {
         await JuntoHttp().postWithoutEncoding('/expressions', body: _postBody);
     final Map<String, dynamic> parseData =
         JuntoHttp.handleResponse(_serverResponse);
-    print(parseData);
     final CentralizedExpressionResponse response =
         CentralizedExpressionResponse.fromMap(parseData);
     return response;
@@ -99,11 +98,12 @@ class CollectiveProviderCentralized implements CollectiveProvider {
   Future<CentralizedExpressionResponse> getExpression(
     String expressionAddress,
   ) async {
-    final http.Response _response = await JuntoHttp()
-        .postWithoutEncoding('/expressions/$expressionAddress');
+    final http.Response _response =
+        await JuntoHttp().get('/expressions/$expressionAddress');
     final Map<String, dynamic> _decodedResponse =
         JuntoHttp.handleResponse(_response);
-    return CentralizedExpressionResponse.fromMap(_decodedResponse);
+    return CentralizedExpressionResponse.withCommentsAndResonations(
+        _decodedResponse);
   }
 
   @override
