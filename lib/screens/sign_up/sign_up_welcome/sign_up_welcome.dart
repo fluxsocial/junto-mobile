@@ -84,9 +84,9 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
         <Widget>[
           FlatButton(
             onPressed: () => Navigator.of(context).pushAndRemoveUntil(
-              Welcome.route(),
-              (Route<dynamic> route) => false,
-            ),
+                  Welcome.route(),
+                  (Route<dynamic> route) => false,
+                ),
             child: const Text('OK'),
           ),
         ],

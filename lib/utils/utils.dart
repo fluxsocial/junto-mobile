@@ -76,8 +76,7 @@ mixin AddUserToList<T> {
   }
 }
 
-mixin DateParser{
-
+mixin DateParser {
   String transformMinute(int minute) {
     if (minute < 10) {
       return '0' + minute.toString();
