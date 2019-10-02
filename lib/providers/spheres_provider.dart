@@ -1,8 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/sphere.dart';
 import 'package:junto_beta_mobile/utils/junto_http.dart';
-import 'package:http/http.dart' as http;
 
 abstract class SpheresProvider with ChangeNotifier {
   List<Sphere> get spheres;
@@ -87,51 +89,11 @@ class SphereProviderCentralized with ChangeNotifier implements SpheresProvider {
   Future<List<Users>> getGroupMembers(String groupAddress) async {
     final http.Response _serverResponse =
         await JuntoHttp().get('/groups/$groupAddress/members');
-    final List<Map<String, dynamic>> items =
-        JuntoHttp.handleResponse(_serverResponse);
+    final List<dynamic> items = json.decode(_serverResponse.body);
     return items
         .map(
-          (Map<String, dynamic> data) => Users.fromJson(data),
+          (dynamic data) => Users.fromJson(data),
         )
         .toList();
-  }
-}
-
-@Deprecated('This should only be used for testing.')
-class MockSphere with ChangeNotifier implements SpheresProvider {
-  final List<Sphere> _spheres = Sphere.fetchAll();
-
-  @override
-  List<Sphere> get spheres {
-    return _spheres;
-  }
-
-  @override
-  Future<CentralizedSphereResponse> createSphere(CentralizedSphere sphere) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Group> getGroup(String groupAddress) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> addGroupMember(
-    String groupAddress,
-    String userAddress,
-    String perms,
-  ) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> removeGroupMember(String groupAddress, String userAddress) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<List<Users>> getGroupMembers(String groupAddress) {
-    throw UnimplementedError();
   }
 }
