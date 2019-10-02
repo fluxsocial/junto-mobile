@@ -53,19 +53,27 @@ class PreviewProfile extends StatelessWidget {
                       fit: BoxFit.cover,
                     ),
                   ),
+                  Container(
+                    margin: const EdgeInsets.only(left: 7.5),
+                    child: Text(
+                      username,
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+                    ),
+                  )
 
                   // profile name and handle
-                  Container(
-                    margin: const EdgeInsets.only(left: 10.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(firstName + ' ' + lastName,
-                            style: JuntoStyles.title),
-                        Text(username, style: JuntoStyles.body)
-                      ],
-                    ),
-                  ),
+                  // Container(
+                  //   margin: const EdgeInsets.only(left: 10.0),
+                  //   child: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: <Widget>[
+                  //       Text(firstName + ' ' + lastName,
+                  //           style: JuntoStyles.title),
+                  //       Text(username, style: JuntoStyles.body)
+                  //     ],
+                  //   ),
+                  // ),
                 ],
               ),
             ),
