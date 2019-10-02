@@ -177,574 +177,241 @@ class JuntoDenState extends State<JuntoDen> {
     }
   }
 
-    List _tabs = ['Open Den', 'Private Den'];
+  List _tabs = ['Open Den', 'Private Den'];
 
   @override
   Widget build(BuildContext context) {
     // List _tabs = ['Open Den', 'Private Den'];
 
-    return 
-      Transform.translate(
-                              offset: const Offset(0.0, -50.0),
-
-              child: DefaultTabController(
-          length: _tabs.length,
-          child: NestedScrollView(
-            physics: ClampingScrollPhysics(),
-            headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-              return <Widget>[
-                SliverOverlapAbsorber(
-                  handle:
-                      NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                  child: SliverAppBar(
-                    brightness: Brightness.light,
-                    automaticallyImplyLeading: false,
-                    backgroundColor: Colors.white,
-                    title: SizedBox(height: 0, width: 0),
-                    // title: Column(
-                    //   children: <Widget>[
-                    //     Container(
-                    //       height: 50,
-                    //       color: Colors.white,
-                    //       padding: const EdgeInsets.symmetric(
-                    //           horizontal: JuntoStyles.horizontalPadding),
-                    //       child: Row(
-                    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //         children: <Widget>[
-                    //           Row(
-                    //             children: <Widget>[
-                    //               Image.asset(
-                    //                   'assets/images/junto-mobile__logo.png',
-                    //                   height: 22.0,
-                    //                   width: 22.0),
-                    //               Container(
-                    //                 margin: const EdgeInsets.only(left: 7.5),
-                    //                 child: Text('sunyata',
-                    //                     style: JuntoStyles.appbarTitle),
-                    //               ),
-                    //             ],
-                    //           ),
-                    //           Row(
-                    //             children: <Widget>[
-                    //               Container(
-                    //                 child: Icon(
-                    //                   Icons.search,
-                    //                   color: JuntoPalette.juntoSleek,
-                    //                   size: JuntoStyles.appbarIcon,
-                    //                 ),
-                    //               ),
-                    //             ],
-                    //           )
-                    //         ],
-                    //       ),
-                    //     ),
-                    //     Container(
-                    //       height: .75,
-                    //       decoration: const BoxDecoration(
-                    //         gradient: LinearGradient(
-                    //             begin: Alignment.centerLeft,
-                    //             end: Alignment.centerRight,
-                    //             stops: <double>[
-                    //               0.1,
-                    //               0.9
-                    //             ],
-                    //             colors: <Color>[
-                    //               JuntoPalette.juntoSecondary,
-                    //               JuntoPalette.juntoPrimary
-                    //             ]),
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
-                    flexibleSpace: FlexibleSpaceBar(
-                        collapseMode: CollapseMode.pin,
-                        background: Column(
-                          // fit: StackFit.expand,
-                          children: <Widget>[
-                            Container(height: 50),
-                            Container(
-                              height: MediaQuery.of(context).size.height * .2,
-                              decoration: const BoxDecoration(
-                                gradient: LinearGradient(
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                    stops: <double>[
-                                      0.1,
-                                      0.9
-                                    ],
-                                    colors: <Color>[
-                                      JuntoPalette.juntoSecondary,
-                                      JuntoPalette.juntoPrimary
-                                    ]),
-                              ),
-                            ),
-                            Transform.translate(
-                              offset: const Offset(0.0, -18.0),
-                              child: Container(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    // SizedBox(width: 20),
-                                    GestureDetector(
-                                      onTap: () {},
-                                      child: Container(
-                                        width: 72,
-                                        height: 72,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.blue,
-                                          border: Border.all(
-                                            width: 2.0,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        child: ClipOval(
-                                          child: Image.asset(
-                                            'assets/images/junto-mobile__eric.png',
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-
-                                    Transform.translate(
-                                      offset: const Offset(0.0, 9.0),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          Scaffold.of(context).openEndDrawer();
-                                        },
-                                        child: Icon(CustomIcons.more, size: 24),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Transform.translate(
-                              offset: const Offset(0.0, -18.0),
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 5),
-                                width: MediaQuery.of(context).size.width,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      'Eric Yang',
-                                      style: const TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w700),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Text('on the vibe',
-                                        style: const TextStyle(fontSize: 15)),
-                                    const SizedBox(height: 10),
-                                    Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Container(
-                                            margin:
-                                                const EdgeInsets.only(right: 15),
-                                            child: Row(
-                                              children: <Widget>[
-                                                Image.asset(
-                                                  'assets/images/junto-mobile__location.png',
-                                                  height: 17,
-                                                  color: JuntoPalette.juntoSleek,
-                                                ),
-                                                const SizedBox(width: 5),
-                                                const Text(
-                                                  'Spirit',
-                                                  style: TextStyle(
-                                                    color:
-                                                        JuntoPalette.juntoSleek,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          const SizedBox(height: 10),
-                                          Container(
-                                            child: Row(
-                                              children: <Widget>[
-                                                Image.asset(
-                                                  'assets/images/junto-mobile__link.png',
-                                                  height: 17,
-                                                  color: JuntoPalette.juntoSleek,
-                                                ),
-                                                const SizedBox(width: 5),
-                                                const Text(
-                                                  'junto.foundation',
-                                                  style: TextStyle(
-                                                      color: JuntoPalette
-                                                          .juntoPrimary),
-                                                )
-                                              ],
-                                            ),
-                                          )
-                                        ]),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        )),
-                    titleSpacing: 0,
-                    pinned: true,
-                    expandedHeight: MediaQuery.of(context).size.height * .2 + 280,
-                    forceElevated: innerBoxIsScrolled,
-                    bottom: PreferredSize(
-                      preferredSize: Size.fromHeight(42),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            padding: EdgeInsets.symmetric(horizontal: 10),
-                            child: TabBar(
-                              labelPadding: EdgeInsets.all(0),
-                              isScrollable: true,
-                              labelColor: Color(0xff333333),
-                              labelStyle: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w700,
-                                color: Color(0xff333333),
-                              ),
-                              indicatorWeight: 1,
-                              indicatorColor: Color(0xffeeeeee),
-                              tabs: _tabs
-                                  .map((name) => Container(
-                                      margin: EdgeInsets.only(right: 24),
-                                      color: Colors.white,
-                                      child: Tab(
-                                        text: name,
-                                      )))
-                                  .toList(),
-                            ),
-                          ),
-                        ],
+    return Transform.translate(
+      offset: const Offset(0.0, 0.0),
+      child: DefaultTabController(
+        length: _tabs.length,
+        child: NestedScrollView(
+          physics: ClampingScrollPhysics(),
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              SliverAppBar(
+                brightness: Brightness.light,
+                automaticallyImplyLeading: false,
+                primary: false,
+                actions: <Widget>[SizedBox(height: 0, width: 0)],
+                backgroundColor: Colors.white,
+                pinned: false,
+                flexibleSpace: FlexibleSpaceBar(
+                  collapseMode: CollapseMode.pin,
+                  background: Column(
+                    children: <Widget>[
+                      Container(
+                        height: MediaQuery.of(context).size.height * .2,
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              stops: <double>[
+                                0.1,
+                                0.9
+                              ],
+                              colors: <Color>[
+                                JuntoPalette.juntoSecondary,
+                                JuntoPalette.juntoPrimary
+                              ]),
+                        ),
                       ),
-                    ),
-                  ),
-                ),
-              ];
-            },
-            body: TabBarView(
-              // These are the contents of the tab views, below the tabs.
-              children: _tabs.map((name) {
-                return SafeArea(
-                  top: false,
-                  bottom: false,
-                  child: Builder(
-                    builder: (BuildContext context) {
-                      return CustomScrollView(
-                        key: PageStorageKey<String>(name),
-                        slivers: <Widget>[
-                          SliverOverlapInjector(
-                            handle:
-                                NestedScrollView.sliverOverlapAbsorberHandleFor(
-                                    context),
-                          ),
-                          SliverPadding(
-                            padding: const EdgeInsets.all(8.0),
-                            sliver: SliverList(
-                              delegate: SliverChildBuilderDelegate(
-                                (BuildContext context, int index) {
-                                  return Container(
-                                    height: 500.0,
-                                    color: index % 2 == 0
-                                        ? Colors.red
-                                        : Colors.orange,
+                      Transform.translate(
+                        offset: const Offset(0.0, -18.0),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              // SizedBox(width: 20),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    CupertinoPageRoute<dynamic>(
+                                      builder: (BuildContext context) =>
+                                          DenExpanded(
+                                              handle: handle,
+                                              name: name,
+                                              profilePicture: profilePicture,
+                                              bio: bio),
+                                    ),
                                   );
                                 },
-                                childCount: 50,
+                                child: Container(
+                                  width: 72,
+                                  height: 72,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.blue,
+                                    border: Border.all(
+                                      width: 2.0,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  child: ClipOval(
+                                    child: Image.asset(
+                                      'assets/images/junto-mobile__eric.png',
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
+
+                              Transform.translate(
+                                offset: const Offset(0.0, 9.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Scaffold.of(context).openEndDrawer();
+                                  },
+                                  child: Icon(CustomIcons.more, size: 24),
+                                ),
+                              )
+                            ],
                           ),
-                        ],
-                      );
-                    },
+                        ),
+                      ),
+                      Transform.translate(
+                        offset: const Offset(0.0, -18.0),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          width: MediaQuery.of(context).size.width,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                'Eric Yang',
+                                style: const TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.w700),
+                              ),
+                              const SizedBox(height: 10),
+                              Text('on the vibe',
+                                  style: const TextStyle(fontSize: 15)),
+                              const SizedBox(height: 10),
+                              Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Container(
+                                      margin: const EdgeInsets.only(right: 15),
+                                      child: Row(
+                                        children: <Widget>[
+                                          Image.asset(
+                                            'assets/images/junto-mobile__location.png',
+                                            height: 17,
+                                            color: JuntoPalette.juntoSleek,
+                                          ),
+                                          const SizedBox(width: 5),
+                                          const Text(
+                                            'Spirit',
+                                            style: TextStyle(
+                                              color: JuntoPalette.juntoSleek,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Container(
+                                      child: Row(
+                                        children: <Widget>[
+                                          Image.asset(
+                                            'assets/images/junto-mobile__link.png',
+                                            height: 17,
+                                            color: JuntoPalette.juntoSleek,
+                                          ),
+                                          const SizedBox(width: 5),
+                                          const Text(
+                                            'junto.foundation',
+                                            style: TextStyle(
+                                                color:
+                                                    JuntoPalette.juntoPrimary),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ]),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                );
-              }).toList(),
-            ),
-          ),
+                ),
+                expandedHeight: MediaQuery.of(context).size.height * .2 + 191,
+                forceElevated: false,
+              ),
+              SliverPersistentHeader(
+                delegate: _SliverAppBarDelegate(
+                  TabBar(
+                    labelPadding: EdgeInsets.all(0),
+                    isScrollable: true,
+                    labelColor: Color(0xff333333),
+                    labelStyle: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xff333333),
+                    ),
+                    indicatorWeight: 1,
+                    indicatorColor: Color(0xffeeeeee),
+                    tabs: _tabs
+                        .map((name) => Container(
+                            margin: EdgeInsets.only(right: 24),
+                            color: Colors.white,
+                            child: Tab(
+                              text: name,
+                            )))
+                        .toList(),
+                  ),
+                ),
+                pinned: true,
+              ),
+            ];
+          },
+          body: TabBarView(
+
+              // These are the contents of the tab views, below the tabs.
+              children: [
+                ListView(
+                  children: <Widget>[
+                    Container(height: 200, color: Colors.orange),
+                    Container(height: 200, color: Colors.blue),
+                    Container(height: 200, color: Colors.orange),
+                    Container(height: 200, color: Colors.blue),
+                  ],
+                ),
+
+                ListView(
+                  children: <Widget>[
+                    Container(height: 200, color: Colors.orange),
+                    Container(height: 200, color: Colors.blue),
+                  ],
+                ),
+
+                // _buildPublicPage(),
+
+                // _buildDenList(),
+
+                // publicExpressionsActive
+                //     ? Transform.translate(
+                //         offset: const Offset(0.0, -18.0),
+                //         child: ListView(
+                //           shrinkWrap: true,
+                //           physics: const ClampingScrollPhysics(),
+                //           children: <Widget>[
+                //             ExpressionPreview(expression: expressions[0]),
+                //             ExpressionPreview(expression: expressions[1]),
+                //           ],
+                //         ),
+                //       )
+                //     : SizedBox()
+              ]),
         ),
-      );    
-
-
-
-
-
-
-
-    // return DefaultTabController(
-    //   length: 2,
-    //   child: ListView(children: [
-    //     ListView(
-    //       shrinkWrap: true,
-    //       physics: ClampingScrollPhysics(),
-    //       children: <Widget>[
-    //         Container(
-    //           color: Colors.white,
-    //           child: Column(
-    //             children: <Widget>[
-    //               Container(
-    //                 width: MediaQuery.of(context).size.width,
-    //                 height: MediaQuery.of(context).size.height * .2,
-    //                 decoration: const BoxDecoration(
-    //                   gradient: LinearGradient(
-    //                       begin: Alignment.bottomLeft,
-    //                       end: Alignment.topRight,
-    //                       stops: <double>[
-    //                         0.1,
-    //                         0.9
-    //                       ],
-    //                       colors: <Color>[
-    //                         JuntoPalette.juntoSecondary,
-    //                         JuntoPalette.juntoPrimary
-    //                       ]),
-    //                 ),
-    //               ),
-    //               Transform.translate(
-    //                 offset: const Offset(0.0, -18.0),
-    //                 child: Container(
-    //                   padding: const EdgeInsets.symmetric(horizontal: 10),
-    //                   child: Row(
-    //                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //                     crossAxisAlignment: CrossAxisAlignment.center,
-    //                     children: <Widget>[
-    //                       // SizedBox(width: 20),
-    //                       GestureDetector(
-    //                         onTap: () {
-    //                           Navigator.push(
-    //                             context,
-    //                             CupertinoPageRoute<dynamic>(
-    //                               builder: (BuildContext context) =>
-    //                                   DenExpanded(
-    //                                       handle: handle,
-    //                                       name: name,
-    //                                       profilePicture: profilePicture,
-    //                                       bio: bio),
-    //                             ),
-    //                           );
-    //                         },
-    //                         child: Container(
-    //                           width: 72,
-    //                           height: 72,
-    //                           decoration: BoxDecoration(
-    //                             shape: BoxShape.circle,
-    //                             color: Colors.blue,
-    //                             border: Border.all(
-    //                               width: 2.0,
-    //                               color: Colors.white,
-    //                             ),
-    //                           ),
-    //                           child: ClipOval(
-    //                             child: Image.asset(
-    //                               profilePicture,
-    //                               fit: BoxFit.cover,
-    //                             ),
-    //                           ),
-    //                         ),
-    //                       ),
-
-    //                       Transform.translate(
-    //                         offset: const Offset(0.0, 9.0),
-    //                         child: GestureDetector(
-    //                           onTap: () {
-    //                             Scaffold.of(context).openEndDrawer();
-    //                           },
-    //                           child: Icon(CustomIcons.more, size: 24),
-    //                         ),
-    //                       ) 
-    //                     ],
-    //                   ),
-    //                 ),
-    //               ),
-    //               Transform.translate(
-    //                 offset: const Offset(0.0, -18.0),
-    //                 child: Container(
-    //                   padding: const EdgeInsets.symmetric(
-    //                       horizontal: 10, vertical: 5),
-    //                   width: MediaQuery.of(context).size.width,
-    //                   child: Column(
-    //                     crossAxisAlignment: CrossAxisAlignment.start,
-    //                     children: <Widget>[
-    //                       Text(
-    //                         name,
-    //                         style: const TextStyle(
-    //                             fontSize: 20, fontWeight: FontWeight.w700),
-    //                       ),
-    //                       const SizedBox(height: 10),
-    //                       Text(bio, style: const TextStyle(fontSize: 15)),
-    //                       const SizedBox(height: 10),
-    //                       Column(
-    //                           crossAxisAlignment: CrossAxisAlignment.start,
-    //                           children: <Widget>[
-    //                             Container(
-    //                               margin: const EdgeInsets.only(right: 15),
-    //                               child: Row(
-    //                                 children: <Widget>[
-    //                                   Image.asset(
-    //                                     'assets/images/junto-mobile__location.png',
-    //                                     height: 17,
-    //                                     color: JuntoPalette.juntoSleek,
-    //                                   ),
-    //                                   const SizedBox(width: 5),
-    //                                   const Text(
-    //                                     'Spirit',
-    //                                     style: TextStyle(
-    //                                       color: JuntoPalette.juntoSleek,
-    //                                     ),
-    //                                   ),
-    //                                 ],
-    //                               ),
-    //                             ),
-    //                             const SizedBox(height: 10),
-    //                             Container(
-    //                               child: Row(
-    //                                 children: <Widget>[
-    //                                   Image.asset(
-    //                                     'assets/images/junto-mobile__link.png',
-    //                                     height: 17,
-    //                                     color: JuntoPalette.juntoSleek,
-    //                                   ),
-    //                                   const SizedBox(width: 5),
-    //                                   const Text(
-    //                                     'junto.foundation',
-    //                                     style: TextStyle(
-    //                                         color: JuntoPalette.juntoPrimary),
-    //                                   )
-    //                                 ],
-    //                               ),
-    //                             )
-    //                           ]),
-    //                       SizedBox(height: 15),
-
-    //                       RaisedButton(onPressed: () {
-    //                         Navigator.push(
-    //                           context,
-    //                           CupertinoPageRoute(
-    //                             builder: (context) => DenTest(),
-    //                           ),
-    //                         );
-    //                       })
-
-    //                       // Row(
-    //                       //   children: <Widget>[
-    //                       //     Container(
-    //                       //       margin: EdgeInsets.only(right: 25),
-    //                       //       child: const Text(
-    //                       //         'Open Den',
-    //                       //         style: TextStyle(fontWeight: FontWeight.w500),
-    //                       //       ),
-    //                       //     ),
-    //                       //     Container(
-    //                       //       child: const Text(
-    //                       //         'Private Den',
-    //                       //         style: TextStyle(fontWeight: FontWeight.w500),
-    //                       //       ),
-    //                       //     )
-    //                       //   ],
-    //                       // ),
-    //                     ],
-    //                   ),
-    //                 ),
-    //               ),
-    //             ],
-    //           ),
-    //         ),
-
-    //         // Transform.translate(
-    //         //   offset: const Offset(0.0, -18.0),
-    //         //   child: _buildPublicPage(),
-    //         // ),
-    //         // Transform.translate(
-    //         //   offset: const Offset(0.0, -18.0),
-    //         //   child: _buildDenList(),
-    //         // ),
-
-    //         // publicExpressionsActive
-    //         //     ? Transform.translate(
-    //         //         offset: const Offset(0.0, -18.0),
-    //         //         child: ListView(
-    //         //           shrinkWrap: true,
-    //         //           physics: const ClampingScrollPhysics(),
-    //         //           children: <Widget>[
-    //         //             ExpressionPreview(expression: expressions[0]),
-    //         //             ExpressionPreview(expression: expressions[1]),
-    //         //           ],
-    //         //         ),
-    //         //       )
-    //         //     : SizedBox()
-
-    //         // RaisedButton(
-    //         //   onPressed: () async {
-    //         //     await Provider.of<AuthenticationProvider>(context)
-    //         //         .logoutUser();
-    //         //     Navigator.pushReplacement(
-    //         //       context,
-    //         //       MaterialPageRoute<dynamic>(
-    //         //         builder: (BuildContext context) => Welcome(),
-    //         //       ),
-    //         //     );
-    //         //   },
-    //         //   color: const Color(0xff4968BF),
-    //         //   child: const Text(
-    //         //     'LOG OUT',
-    //         //     style: TextStyle(
-    //         //       // color: JuntoPalette.juntoBlue,
-    //         //       color: Colors.white,
-    //         //       fontWeight: FontWeight.w700,
-    //         //       fontSize: 14,
-    //         //     ),
-    //         //   ),
-    //         //   shape: RoundedRectangleBorder(
-    //         //     borderRadius: BorderRadius.circular(
-    //         //       100,
-    //         //     ),
-    //         //   ),
-    //         // ),
-    //       ],
-    //     ),
-    //     ListView(
-    //       shrinkWrap: true,
-    //       physics: ClampingScrollPhysics(),
-    //       children: <Widget>[
-    //         TabBar(tabs: [
-    //           Icon(Icons.public, color: Colors.grey),
-    //           Icon(Icons.panorama_fish_eye, color: Colors.grey)
-    //         ]),
-    //         Container(
-    //           height: 900,
-    //           child: TabBarView(
-    //             children: <Widget>[
-    //               Column(
-    //                 children: <Widget>[
-    //                   Container(height: 200, color: Colors.orange),
-    //                   Container(height: 100, color: Colors.red),
-    //                   Container(height: 200, color: Colors.orange),
-    //                   Container(height: 100, color: Colors.red),
-    //                 ],
-    //               ),
-    //               Column(
-    //                 children: <Widget>[
-    //                   Container(height: 200, color: Colors.blue)
-    //                 ],
-    //               ),
-    //             ],
-    //           ),
-    //         )
-    //       ],
-    //     ),
-    //   ]),
-    // );
+      ),
+    );
   }
 
   _buildPublicPage() {
@@ -848,5 +515,32 @@ class JuntoDenState extends State<JuntoDen> {
         ],
       ),
     );
+  }
+}
+
+class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
+  _SliverAppBarDelegate(this._tabBar);
+
+  final TabBar _tabBar;
+
+  @override
+  double get minExtent => _tabBar.preferredSize.height;
+  @override
+  double get maxExtent => _tabBar.preferredSize.height;
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return new Container(
+      color: Colors.white,
+      padding: EdgeInsets.symmetric(horizontal: 10),
+      width: MediaQuery.of(context).size.width,
+      child: _tabBar,
+    );
+  }
+
+  @override
+  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
+    return false;
   }
 }
