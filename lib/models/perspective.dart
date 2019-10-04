@@ -2,15 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 
 class Perspective {
-  const Perspective({@required this.name});
+  const Perspective({@required this.name, this.members});
 
   factory Perspective.fromMap(Map<String, dynamic> map) {
     return Perspective(
       name: map['name'],
+      members: List<String>.from(
+        map['name'].map((dynamic data) => data.toString()).toList(),
+      ),
     );
   }
 
   final String name;
+  final List<String> members;
 
   static List<Perspective> fetchAll() {
     return <Perspective>[
@@ -26,6 +30,7 @@ class Perspective {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'name': name,
+      'members': members,
     };
   }
 }
