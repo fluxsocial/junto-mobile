@@ -1,12 +1,11 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/sphere.dart';
 import 'package:junto_beta_mobile/utils/junto_http.dart';
 
-abstract class SpheresProvider with ChangeNotifier {
+abstract class SpheresProvider {
   List<Sphere> get spheres;
 
   /// Allows an authenticated user to create a sphere.
@@ -28,7 +27,7 @@ abstract class SpheresProvider with ChangeNotifier {
   Future<void> removeGroupMember(String groupAddress, String userAddress);
 }
 
-class SphereProviderCentralized with ChangeNotifier implements SpheresProvider {
+class SphereProviderCentralized implements SpheresProvider {
   @override
   Future<CentralizedSphereResponse> createSphere(
     CentralizedSphere sphere,
