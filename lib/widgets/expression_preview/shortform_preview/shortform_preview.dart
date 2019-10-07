@@ -60,6 +60,11 @@ class ShortformPreviewState extends State<ShortformPreview> {
         _gradientOne = JuntoPalette.juntoGreen;
         _gradientTwo = JuntoPalette.juntoSecondary;
       });
+    } else {
+      setState(() {
+        _gradientOne = JuntoPalette.juntoWhite;
+        _gradientTwo = JuntoPalette.juntoWhite;
+      });
     }
   }
 

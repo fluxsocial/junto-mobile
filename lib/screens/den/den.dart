@@ -28,61 +28,34 @@ class JuntoDenState extends State<JuntoDen> {
 
   PageController controller;
 
-  List expressions = [
-    Expression(
-      expression: ExpressionContent(
-        address: '0xfee32zokie8',
-        expressionType: 'longform',
-        expressionContent: <String, String>{
-          'title': 'Dynamic form is in motion!',
-          'body':
-              "Hey! Eric here. We're currently working with a London-based dev agency called DevAngels to build out our dynamic, rich text editor. Soon, you'll be able to create short or longform expressions that contain text, links, images complemented with features such as bullet points, horiozntal lines, bold and italic font, and much more. This should be done in the next 1 or 2 weeks so stay tuned!"
-        },
-      ),
-      subExpressions: <Expression>[],
-      authorUsername: Username(
-        address: '02efredffdfvdbnrtg',
-        username: 'sunyata',
-      ),
-      authorProfile: UserProfile(
-        address: '0vefoiwiafjvkbr32r243r5',
-        parent: 'parent-address',
+  List<CentralizedExpressionResponse> expressions =
+      <CentralizedExpressionResponse>[
+    CentralizedExpressionResponse(
+      address: '0xfee32zokie8',
+      type: 'LongForm',
+      comments: <Comment>[],
+      context: '',
+      createdAt: DateTime.now(),
+      creator: UserProfile(
         bio: 'hellooo',
         firstName: 'Eric',
         lastName: 'Yang',
         profilePicture: 'assets/images/junto-mobile__eric.png',
         verified: true,
       ),
-      resonations: <dynamic>[],
-      timestamp: '2',
-      channels: <Channel>[
-        Channel(
-          address: 'channel-address',
-          value: 'design',
-          attributeType: 'Channel',
-        ),
-        Channel(
-          address: 'channel-address',
-          value: 'tech',
-          attributeType: 'Channel',
-        ),
-      ],
+      expressionData: CentralizedLongFormExpression(
+        title: 'Dynamic form is in motion!',
+        body: "Hey! Eric here. We're currently working with a London-based dev "
+            "agency called DevAngels to build out our dynamic, rich text editor. Soon, you'll be able to create short or longform expressions that contain text, links, images complemented with features such as bullet points, horiozntal lines, bold and italic font, and much more. This should be done in the next 1 or 2 weeks so stay tuned!",
+      ),
     ),
-    Expression(
-      expression: ExpressionContent(
-        address: '0xfee32zokie8',
-        expressionType: 'photo',
-        expressionContent: <String, String>{
-          'image': 'assets/images/junto-mobile__photo--one.png',
-          'caption':
-              'Went surfing for the first time! :) Got my ass handed to me...'
-        },
-      ),
-      authorUsername: Username(
-        address: '02efredffdfvdbnrtg',
-        username: 'sunyata',
-      ),
-      authorProfile: UserProfile(
+    CentralizedExpressionResponse(
+      address: '0xfee32zokie8',
+      type: 'PhotoForm',
+      comments: <Comment>[],
+      context: '',
+      createdAt: DateTime.now(),
+      creator: UserProfile(
         address: '0vefoiwiafjvkbr32r243r5',
         firstName: 'Eric',
         lastName: 'Yang',
@@ -90,22 +63,13 @@ class JuntoDenState extends State<JuntoDen> {
         bio: 'hellooo',
         parent: 'parent-address',
         verified: true,
+        username: 'sunyata',
       ),
-      subExpressions: <Expression>[],
-      resonations: <dynamic>[],
-      timestamp: '18',
-      channels: <Channel>[
-        Channel(
-          address: 'channel-address',
-          value: 'design',
-          attributeType: 'Channel',
-        ),
-        Channel(
-          address: 'channel-address',
-          value: 'tech',
-          attributeType: 'Channel',
-        ),
-      ],
+      expressionData: CentralizedPhotoFormExpression(
+        image: 'assets/images/junto-mobile__photo--one.png',
+        caption:
+            'Went surfing for the first time! :) Got my ass handed to me...',
+      ),
     ),
   ];
 

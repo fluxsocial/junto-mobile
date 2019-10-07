@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open_appbar.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open_appbar.dart';
 import 'package:junto_beta_mobile/styles.dart';
 import 'package:junto_beta_mobile/widgets/create_fab/create_fab.dart';
 import 'package:junto_beta_mobile/widgets/expression_preview/expression_preview.dart';
@@ -35,23 +35,15 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   ScrollController _hideFABController;
   ValueNotifier<bool> _isVisible;
 
-  List<Expression> expressions = <Expression>[
-    Expression(
-      expression: ExpressionContent(
-        address: '0xfee32zokie8',
-        expressionType: 'longform',
-        expressionContent: <String, String>{
-          'title': 'Dynamic form is in motion!',
-          'body':
-              "Hey! Eric here. We're currently working with a London-based dev agency called DevAngels to build out our dynamic, rich text editor. Soon, you'll be able to create short or longform expressions that contain text, links, images complemented with features such as bullet points, horiozntal lines, bold and italic font, and much more. This should be done in the next 1 or 2 weeks so stay tuned!"
-        },
-      ),
-      subExpressions: <Expression>[],
-      authorUsername: Username(
-        address: '02efredffdfvdbnrtg',
-        username: 'eric',
-      ),
-      authorProfile: UserProfile(
+  List<CentralizedExpressionResponse> expressions =
+      <CentralizedExpressionResponse>[
+    CentralizedExpressionResponse(
+      address: '0xfee32zokie8',
+      type: 'LongForm',
+      comments: <Comment>[],
+      context: '',
+      createdAt: DateTime.now(),
+      creator: UserProfile(
         address: '0vefoiwiafjvkbr32r243r5',
         parent: 'parent-address',
         bio: 'hellooo',
@@ -59,37 +51,21 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
         lastName: 'Yang',
         profilePicture: 'assets/images/junto-mobile__eric.png',
         verified: true,
+        username: 'Eric',
       ),
-      resonations: <dynamic>[],
-      timestamp: '2',
-      channels: <Channel>[
-        Channel(
-          address: 'channel-address',
-          value: 'design',
-          attributeType: 'Channel',
-        ),
-        Channel(
-          address: 'channel-address',
-          value: 'tech',
-          attributeType: 'Channel',
-        ),
-      ],
+      expressionData: CentralizedLongFormExpression(
+        title: 'Dynamic form is in motion!',
+        body: "Hey! Eric here. We're currently working with a London-based dev "
+            "agency called DevAngels to build out our dynamic, rich text editor. Soon, you'll be able to create short or longform expressions that contain text, links, images complemented with features such as bullet points, horiozntal lines, bold and italic font, and much more. This should be done in the next 1 or 2 weeks so stay tuned!",
+      ),
     ),
-    Expression(
-      expression: ExpressionContent(
-        address: '0xfee32zokie8',
-        expressionType: 'shortform',
-        expressionContent: <String, String>{
-          'body':
-              "Have you heard of Paradym sound healing meditation? Join us for a transformational session this Friday!",
-          'background': 'four'
-        },
-      ),
-      authorUsername: Username(
-        address: '02efredffdfvdbnrtg',
-        username: 'wingedmessenger',
-      ),
-      authorProfile: UserProfile(
+    CentralizedExpressionResponse(
+      address: '0xfee32zokie8',
+      type: 'ShortForm',
+      comments: <Comment>[],
+      context: '',
+      createdAt: DateTime.now(),
+      creator: UserProfile(
         address: '0vefoiwiafjvkbr32r243r5',
         firstName: 'Dora',
         lastName: 'Czovek',
@@ -97,154 +73,20 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
         bio: 'hellooo',
         parent: 'parent-address',
         verified: true,
+        username: 'wingedmessenger',
       ),
-      subExpressions: <Expression>[],
-      resonations: <dynamic>[],
-      timestamp: '7',
-      channels: <Channel>[
-        Channel(
-          address: 'channel-address',
-          value: 'design',
-          attributeType: 'Channel',
-        ),
-        Channel(
-          address: 'channel-address',
-          value: 'tech',
-          attributeType: 'Channel',
-        ),
-      ],
+      expressionData: CentralizedShortFormExpression(
+          body:
+              "Have you heard of Paradym sound healing meditation? Join us for a transformational session this Friday!",
+          background: 'four'),
     ),
-    Expression(
-      expression: ExpressionContent(
-        address: '0xfee32zokie8',
-        expressionType: 'photo',
-        expressionContent: <String, String>{
-          'image': 'assets/images/junto-mobile__photo--one.png',
-          'caption': 'Catching some waves in New Polzeath!'
-        },
-      ),
-      authorUsername: Username(
-        address: '02efredffdfvdbnrtg',
-        username: 'jdlparkin',
-      ),
-      authorProfile: UserProfile(
-        address: '0vefoiwiafjvkbr32r243r5',
-        firstName: 'Josh',
-        lastName: 'Parkin',
-        profilePicture: 'assets/images/junto-mobile__josh.png',
-        bio: 'hellooo',
-        parent: 'parent-address',
-        verified: true,
-      ),
-      subExpressions: <Expression>[],
-      resonations: <dynamic>[],
-      timestamp: '18',
-      channels: <Channel>[
-        Channel(
-          address: 'channel-address',
-          value: 'design',
-          attributeType: 'Channel',
-        ),
-        Channel(
-          address: 'channel-address',
-          value: 'tech',
-          attributeType: 'Channel',
-        ),
-      ],
-    ),
-    Expression(
-      expression: ExpressionContent(
-        address: '0xfee32zokie8',
-        expressionType: 'event',
-        expressionContent: <String, String>{
-          'title': 'Junto Presents: Jazz and Draw',
-          'location': 'The Assemblage',
-          'time': 'Sun, Sep 15, 3:00PM',
-          'image': 'assets/images/junto-mobile__event--one.png',
-          'description':
-              "Join us for a splendiferous afternoon of paint-splattering fun! We'll be syncing our movements to your favorite blues while creating beautiful masterpieces together. All are invited!"
-        },
-      ),
-      authorProfile: UserProfile(
-        address: '0vefoiwiafjvkbr32r243r5',
-        parent: 'parent-address',
-        bio: "I'm Drea.",
-        firstName: 'Drea',
-        lastName: 'Bennett',
-        profilePicture: 'assets/images/junto-mobile__drea.png',
-        verified: true,
-      ),
-      authorUsername: Username(
-        address: '02efredffdfvdbnrtg',
-        username: 'DMONEY',
-      ),
-      subExpressions: <Expression>[],
-      resonations: <dynamic>[],
-      timestamp: '22',
-      channels: <Channel>[
-        Channel(
-          address: 'channel-address',
-          value: 'design',
-          attributeType: 'Channel',
-        ),
-        Channel(
-          address: 'channel-address',
-          value: 'tech',
-          attributeType: 'Channel',
-        ),
-      ],
-    ),
-    Expression(
-      expression: ExpressionContent(
-        address: '0xfee32zokie8',
-        expressionType: 'photo',
-        expressionContent: <String, String>{
-          'image': 'assets/images/junto-mobile__photo--two.png',
-          'caption': 'Hi, Yaz here!',
-        },
-      ),
-      authorUsername: Username(
-        address: '02efredffdfvdbnrtg',
-        username: 'yaz',
-      ),
-      authorProfile: UserProfile(
-        address: '0vefoiwiafjvkbr32r243r5',
-        firstName: 'Yaz',
-        lastName: 'Owainati',
-        profilePicture: 'assets/images/junto-mobile__yaz.png',
-        bio: 'hellooo',
-        parent: 'parent-address',
-        verified: true,
-      ),
-      subExpressions: <Expression>[],
-      resonations: <dynamic>[],
-      timestamp: '38',
-      channels: <Channel>[
-        Channel(
-          address: 'channel-address',
-          value: 'design',
-          attributeType: 'Channel',
-        ),
-        Channel(
-          address: 'channel-address',
-          value: 'tech',
-          attributeType: 'Channel',
-        ),
-      ],
-    ),
-    Expression(
-      expression: ExpressionContent(
-        address: '0xfee32zokie8',
-        expressionType: 'longform',
-        expressionContent: <String, String>{
-          'title': 'The funny story about my name...',
-          'body':
-              "A question I get all the time is, 'Is that your real name?' Well, I'm glad you asked. You see, it was a hot afternoon in Lexington, Kentucky. Feeling hangry, I swung by the closest Subway shop and..."
-        },
-      ),
-      subExpressions: <Expression>[],
-      timestamp: '4',
-      authorProfile: UserProfile(
+    CentralizedExpressionResponse(
+      address: '0xfee32zokie8',
+      type: 'LongForm',
+      comments: <Comment>[],
+      context: '',
+      createdAt: DateTime.now(),
+      creator: UserProfile(
         address: '0vefoiwiafjvkbr32r243r5',
         parent: 'parent-address',
         firstName: 'Tomis',
@@ -252,34 +94,21 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
         profilePicture: 'assets/images/junto-mobile__tomis.png',
         verified: true,
         bio: 'hellooo',
-      ),
-      authorUsername: Username(
-        address: '02efredffdfvdbnrtg',
         username: 'tomis',
       ),
-      resonations: <dynamic>[],
-      channels: <Channel>[
-        Channel(
-          address: 'channel-address',
-          value: 'tech',
-          attributeType: 'Channel',
-        ),
-      ],
-    ),
-    Expression(
-      expression: ExpressionContent(
-        address: '0xfee32zokie8',
-        expressionType: 'event',
-        expressionContent: <String, String>{
-          'title': 'Happiness is Your True Nature',
-          'location': 'within',
-          'time': 'ANYTIME',
-          'image': 'assets/images/junto-mobile__event--two.png',
-          'description':
-              "Now, you may not be as muscular as this stud. But let me tell you - You. Are. Beautiful. Everything you need is within, so come book an appointmnet with Happy Leif and we're guarantee you some Happy Photos ;)"
-        },
+      expressionData: CentralizedLongFormExpression(
+        title: 'The funny story about my name...',
+        body: "A question I get all the time is, 'Is that your real name?' "
+            "Well, I'm glad you asked. You see, it was a hot afternoon in Lexington, Kentucky. Feeling hangry, I swung by the closest Subway shop and...",
       ),
-      authorProfile: UserProfile(
+    ),
+    CentralizedExpressionResponse(
+      address: '0xfee32zokie8',
+      type: 'EventForm',
+      comments: <Comment>[],
+      context: '',
+      createdAt: DateTime.now(),
+      creator: UserProfile(
         address: '0vefoiwiafjvkbr32r243r5',
         parent: 'parent-address',
         bio: "I'm Leif.",
@@ -287,26 +116,15 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
         lastName: 'Lioness',
         profilePicture: 'assets/images/junto-mobile__leif.png',
         verified: true,
-      ),
-      authorUsername: Username(
-        address: '02efredffdfvdbnrtg',
         username: 'leifthelion',
       ),
-      subExpressions: <Expression>[],
-      resonations: <dynamic>[],
-      timestamp: '59',
-      channels: <Channel>[
-        Channel(
-          address: 'channel-address',
-          value: 'design',
-          attributeType: 'Channel',
-        ),
-        Channel(
-          address: 'channel-address',
-          value: 'tech',
-          attributeType: 'Channel',
-        ),
-      ],
+      expressionData: CentralizedEventFormExpression(
+          title: 'Happiness is Your True Nature',
+          location: 'within',
+          startTime: 'ANYTIME',
+          photo: 'assets/images/junto-mobile__event--two.png',
+          description:
+              "Now, you may not be as muscular as this stud. But let me tell you - You. Are. Beautiful. Everything you need is within, so come book an appointmnet with Happy Leif and we're guarantee you some Happy Photos ;)"),
     ),
   ];
 

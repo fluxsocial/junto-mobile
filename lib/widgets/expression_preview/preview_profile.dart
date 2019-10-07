@@ -62,7 +62,7 @@ class PreviewProfile extends StatelessWidget {
                       children: <Widget>[
                         Text(firstName + ' ' + lastName,
                             style: JuntoStyles.title),
-                        Text(username, style: JuntoStyles.body)
+                        Text(username ?? '', style: JuntoStyles.body)
                       ],
                     ),
                   ),

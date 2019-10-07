@@ -15,10 +15,10 @@ class EventPreview extends StatelessWidget {
     return Container(
       child: Column(
         children: <Widget>[
-          expression.expressionData.image != ''
+          expression.expressionData.photo != ''
               ? Container(
                   margin: const EdgeInsets.only(bottom: 10),
-                  child: Image.asset(expression.expressionData.image,
+                  child: Image.asset(expression.expressionData.photo,
                       fit: BoxFit.fitWidth),
                 )
               : const SizedBox(),
@@ -31,7 +31,7 @@ class EventPreview extends StatelessWidget {
               children: <Widget>[
                 Text(
                   expression.expressionData.startTime,
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: JuntoPalette.juntoGrey,
                       fontSize: 14,
                       fontWeight: FontWeight.w500),

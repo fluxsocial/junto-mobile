@@ -42,9 +42,6 @@ class JuntoAppState extends State<JuntoApp> {
         Provider<SpheresProvider>(
           builder: (BuildContext context) => SphereProviderCentralized(),
         ),
-        Provider<PacksProvider>(
-          builder: (BuildContext context) => PacksProviderImpl(),
-        ),
       ],
       child: MaterialApp(
         theme: JuntoThemes().juntoLightTheme,

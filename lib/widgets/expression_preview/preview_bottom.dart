@@ -8,7 +8,8 @@ class PreviewBottom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String expressionTime = expression.createdAt.toString();
+    final String expressionTime =
+        MaterialLocalizations.of(context).formatFullDate(expression.createdAt);
     return Container(
       margin: const EdgeInsets.only(top: 7.5),
       padding:
@@ -22,21 +23,15 @@ class PreviewBottom extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
-                  child: Text(expressionTime + ' MINUTES AGO',
-                      textAlign: TextAlign.start,
-                      style: JuntoStyles.expressionTimestamp),
+                  child: Text(
+                    expressionTime,
+                    textAlign: TextAlign.start,
+                    style: JuntoStyles.expressionTimestamp,
+                  ),
                 )
               ],
             ),
           ),
-          // Container(
-          //   margin: const EdgeInsets.only(right: 10),
-          //   child: const Icon(
-          //     CustomIcons.half_lotus,
-          //     size: 15,
-          //     color: JuntoPalette.juntoPrimary,
-          //   ),
-          // )
         ],
       ),
     );
