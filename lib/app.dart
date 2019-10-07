@@ -8,6 +8,7 @@ import 'package:junto_beta_mobile/screens/template/template.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/themes.dart';
 import 'package:provider/provider.dart';
+
 import 'providers/provider.dart';
 
 class JuntoApp extends StatefulWidget {
@@ -38,11 +39,8 @@ class JuntoAppState extends State<JuntoApp> {
         Provider<CollectiveProvider>(
           builder: (BuildContext context) => CollectiveProviderCentralized(),
         ),
-        ChangeNotifierProvider<SpheresProvider>(
+        Provider<SpheresProvider>(
           builder: (BuildContext context) => SphereProviderCentralized(),
-        ),
-        Provider<PacksProvider>(
-          builder: (BuildContext context) => PacksProviderImpl(),
         ),
       ],
       child: MaterialApp(

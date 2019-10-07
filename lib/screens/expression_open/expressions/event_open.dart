@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/palette.dart';
 
 class EventOpen extends StatelessWidget {
   const EventOpen(this.expression);
 
-  final Expression expression;
+  final CentralizedExpressionResponse expression;
 
   @override
   Widget build(BuildContext context) {
-    final String eventTitle = expression.expression.expressionContent['title'];
-    final String eventTime = expression.expression.expressionContent['time'];
-    final String eventLocation =
-        expression.expression.expressionContent['location'];
-    final String eventImage = expression.expression.expressionContent['image'];
-    final String eventDescription =
-        expression.expression.expressionContent['description'];
+    final CentralizedEventFormExpression eventExpression =
+        expression.expressionData as CentralizedEventFormExpression;
+    final String eventTitle = eventExpression.title;
+    final String eventTime = eventExpression.startTime;
+    final String eventLocation = eventExpression.location;
+    final String eventImage = eventExpression.photo;
+    final String eventDescription = eventExpression.description;
 
     return Container(
       child: Column(

@@ -48,9 +48,9 @@ dynamic deserializeHoloJson(String source) {
   if (deserialized is Map<String, dynamic>) {
     return deserialized.map(
       (String key, dynamic value) => MapEntry<String, dynamic>(
-            key,
-            value is String ? deserializeHoloJson(value) : value,
-          ),
+        key,
+        value is String ? deserializeHoloJson(value) : value,
+      ),
     );
   }
   if (deserialized is List) {

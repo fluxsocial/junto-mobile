@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
@@ -12,14 +12,14 @@ class PreviewProfile extends StatelessWidget {
     this.expression,
   }) : super(key: key);
 
-  final Expression expression;
+  final CentralizedExpressionResponse expression;
 
   @override
   Widget build(BuildContext context) {
-    final String firstName = expression.authorProfile.firstName;
-    final String lastName = expression.authorProfile.lastName;
-    final String username = expression.authorUsername.username;
-    final String profilePicture = expression.authorProfile.profilePicture;
+    final String firstName = expression.creator.firstName;
+    final String lastName = expression.creator.lastName;
+    final String username = expression.creator.username;
+    final String profilePicture = expression.creator.profilePicture;
 
     return Container(
       padding: const EdgeInsets.symmetric(
@@ -62,7 +62,7 @@ class PreviewProfile extends StatelessWidget {
                       children: <Widget>[
                         Text(firstName + ' ' + lastName,
                             style: JuntoStyles.title),
-                        Text(username, style: JuntoStyles.body)
+                        Text(username ?? '', style: JuntoStyles.body)
                       ],
                     ),
                   ),
