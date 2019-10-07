@@ -4,14 +4,15 @@ import 'package:junto_beta_mobile/models/expression.dart';
 class LongformOpen extends StatelessWidget {
   const LongformOpen(this.longformExpression);
 
-  final Expression longformExpression;
+  final CentralizedExpressionResponse longformExpression;
 
   @override
   Widget build(BuildContext context) {
-    final String longformTitle =
-        longformExpression.expression.expressionContent['title'];
-    final String longformBody =
-        longformExpression.expression.expressionContent['body'];
+    final CentralizedLongFormExpression _expression =
+        longformExpression.expressionData as CentralizedLongFormExpression;
+
+    final String longformTitle = _expression.title;
+    final String longformBody = _expression.body;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),

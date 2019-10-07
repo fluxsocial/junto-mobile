@@ -1,12 +1,12 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/screens/den/den_expanded.dart';
+import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
+import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/screens/den/den_collection_preview.dart';
 import 'package:junto_beta_mobile/screens/den/den_create_collection.dart';
+import 'package:junto_beta_mobile/screens/den/den_expanded.dart';
 import 'package:junto_beta_mobile/widgets/expression_preview/expression_preview.dart';
 
 /// Displays the user's DEN or "profile screen"
@@ -145,7 +145,7 @@ class JuntoDenState extends State<JuntoDen> {
   //   }
   // }
 
-  _togglePublicDomain(domain) {
+  void _togglePublicDomain(String domain) {
     if (domain == 'expressions') {
       setState(() {
         publicExpressionsActive = true;
@@ -159,21 +159,21 @@ class JuntoDenState extends State<JuntoDen> {
     }
   }
 
-  _buildDenList() {
+  Widget _buildDenList() {
     if (publicExpressionsActive) {
       return ListView(
         shrinkWrap: true,
-        physics: ClampingScrollPhysics(),
-        children: <Widget>[SizedBox()],
+        physics: const ClampingScrollPhysics(),
+        children: const <Widget>[SizedBox()],
       );
     } else if (publicCollectionActive == true) {
       return ListView(
         shrinkWrap: true,
-        physics: ClampingScrollPhysics(),
+        physics: const ClampingScrollPhysics(),
         children: <Widget>[DenCollectionPreview()],
       );
     } else {
-      return SizedBox();
+      return const SizedBox();
     }
   }
 
@@ -318,11 +318,11 @@ class JuntoDenState extends State<JuntoDen> {
                                   ),
                                 )
                               ]),
-                          SizedBox(height: 15),
+                          const SizedBox(height: 15),
                           Row(
                             children: <Widget>[
                               Container(
-                                margin: EdgeInsets.only(right: 25),
+                                margin: const EdgeInsets.only(right: 25),
                                 child: const Text(
                                   'Open Den',
                                   style: TextStyle(fontWeight: FontWeight.w500),
@@ -364,7 +364,7 @@ class JuntoDenState extends State<JuntoDen> {
                       ],
                     ),
                   )
-                : SizedBox()
+                : const SizedBox()
 
             // RaisedButton(
             //   onPressed: () async {
@@ -399,10 +399,10 @@ class JuntoDenState extends State<JuntoDen> {
     ]);
   }
 
-  _buildPublicPage() {
+  Widget _buildPublicPage() {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         border: Border(
           bottom: BorderSide(
             color: Color(0xffeeeeee),
@@ -416,11 +416,11 @@ class JuntoDenState extends State<JuntoDen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Container(
-                padding: EdgeInsets.all(2.5),
+                padding: const EdgeInsets.all(2.5),
                 height: 30,
                 width: 80,
                 decoration: BoxDecoration(
-                  color: Color(0xfffeeeeee),
+                  color: const Color(0xffeeeeee),
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: Row(
@@ -436,15 +436,15 @@ class JuntoDenState extends State<JuntoDen> {
                         decoration: BoxDecoration(
                           color: publicExpressionsActive
                               ? Colors.white
-                              : Color(0xffeeeeee),
+                              : const Color(0xffeeeeee),
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Icon(
                           CustomIcons.half_lotus,
                           size: 12,
                           color: publicExpressionsActive
-                              ? Color(0xff555555)
-                              : Color(0xff999999),
+                              ? const Color(0xff555555)
+                              : const Color(0xff999999),
                         ),
                       ),
                     ),
@@ -459,15 +459,15 @@ class JuntoDenState extends State<JuntoDen> {
                         decoration: BoxDecoration(
                           color: publicCollectionActive
                               ? Colors.white
-                              : Color(0xffeeeeee),
+                              : const Color(0xffeeeeee),
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Icon(
                           Icons.collections,
                           size: 12,
                           color: publicCollectionActive
-                              ? Color(0xff555555)
-                              : Color(0xff999999),
+                              ? const Color(0xff555555)
+                              : const Color(0xff999999),
                         ),
                       ),
                     ),
@@ -479,8 +479,9 @@ class JuntoDenState extends State<JuntoDen> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          CupertinoPageRoute(
-                            builder: (context) => DenCreateCollection(),
+                          CupertinoPageRoute<dynamic>(
+                            builder: (BuildContext context) =>
+                                DenCreateCollection(),
                           ),
                         );
                       },
@@ -490,11 +491,11 @@ class JuntoDenState extends State<JuntoDen> {
                         child: Icon(
                           Icons.add,
                           size: 20,
-                          color: Color(0xff555555),
+                          color: const Color(0xff555555),
                         ),
                       ),
                     )
-                  : SizedBox()
+                  : const SizedBox()
             ],
           )
         ],

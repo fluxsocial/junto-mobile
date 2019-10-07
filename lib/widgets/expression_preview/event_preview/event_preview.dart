@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/palette.dart';
 
 /// Shows a preview for the given event.
 /// Widget takes [eventTitle], [eventLocation] and [eventPhoto]
@@ -8,18 +8,17 @@ class EventPreview extends StatelessWidget {
   const EventPreview({Key key, @required this.expression}) : super(key: key);
 
   /// Name of the event
-  final Expression expression;
+  final CentralizedExpressionResponse expression;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Column(
         children: <Widget>[
-          expression.expression.expressionContent['image'] != ''
+          expression.expressionData.image != ''
               ? Container(
                   margin: const EdgeInsets.only(bottom: 10),
-                  child: Image.asset(
-                      expression.expression.expressionContent['image'],
+                  child: Image.asset(expression.expressionData.image,
                       fit: BoxFit.fitWidth),
                 )
               : const SizedBox(),
@@ -31,7 +30,7 @@ class EventPreview extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  expression.expression.expressionContent['time'],
+                  expression.expressionData.startTime,
                   style: TextStyle(
                       color: JuntoPalette.juntoGrey,
                       fontSize: 14,
@@ -39,7 +38,7 @@ class EventPreview extends StatelessWidget {
                 ),
                 const SizedBox(height: 2.5),
                 Text(
-                  expression.expression.expressionContent['title'],
+                  expression.expressionData.title,
                   style: TextStyle(
                       color: JuntoPalette.juntoGrey,
                       fontSize: 17,
@@ -47,7 +46,7 @@ class EventPreview extends StatelessWidget {
                 ),
                 const SizedBox(height: 2.5),
                 Text(
-                  expression.expression.expressionContent['location'],
+                  expression.expressionData.location,
                   style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w400,

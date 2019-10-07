@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open.dart';
 import 'package:junto_beta_mobile/widgets/expression_preview/event_preview/event_preview.dart';
@@ -16,7 +16,7 @@ class ExpressionPreview extends StatelessWidget {
     @required this.expression,
   }) : super(key: key);
 
-  final Expression expression;
+  final CentralizedExpressionResponse expression;
 
   @override
   Widget build(BuildContext context) {
@@ -50,13 +50,13 @@ class ExpressionPreview extends StatelessWidget {
   }
 
   Widget _returnExpression() {
-    if (expression.expression.expressionType == 'longform') {
+    if (expression.type == 'LongForm') {
       return LongformPreview(expression: expression);
-    } else if (expression.expression.expressionType == 'shortform') {
+    } else if (expression.type == 'ShortForm') {
       return ShortformPreview(expression);
-    } else if (expression.expression.expressionType == 'photo') {
+    } else if (expression.type == 'PhotoForm') {
       return PhotoPreview(expression: expression);
-    } else if (expression.expression.expressionType == 'event') {
+    } else if (expression.type == 'EventForm') {
       return EventPreview(expression: expression);
     } else {
       return Container();

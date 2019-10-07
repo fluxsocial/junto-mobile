@@ -4,11 +4,11 @@ import 'package:junto_beta_mobile/styles.dart';
 
 class PreviewBottom extends StatelessWidget {
   const PreviewBottom({Key key, this.expression}) : super(key: key);
-  final Expression expression;
+  final CentralizedExpressionResponse expression;
 
   @override
   Widget build(BuildContext context) {
-    final String expressionTime = expression.timestamp;
+    final String expressionTime = expression.createdAt.toString();
     return Container(
       margin: const EdgeInsets.only(top: 7.5),
       padding:

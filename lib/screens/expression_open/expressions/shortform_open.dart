@@ -3,9 +3,9 @@ import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/palette.dart';
 
 class ShortformOpen extends StatefulWidget {
-  const ShortformOpen(this.shortformExpression);
+  const ShortformOpen(this.expression);
 
-  final Expression shortformExpression;
+  final CentralizedExpressionResponse expression;
 
   @override
   State<StatefulWidget> createState() {
@@ -55,10 +55,8 @@ class ShortformOpenState extends State<ShortformOpen> {
 
   @override
   void initState() {
-    _shortformBody =
-        widget.shortformExpression.expression.expressionContent['body'];
-    _shortformBackground =
-        widget.shortformExpression.expression.expressionContent['background'];
+    _shortformBody = widget.expression.expressionData.body;
+    _shortformBackground = widget.expression.expressionData.background;
     _buildBackground();
 
     super.initState();

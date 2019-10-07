@@ -8,12 +8,11 @@ class LongformPreview extends StatelessWidget {
     @required this.expression,
   }) : super(key: key);
 
-  final Expression expression;
+  final CentralizedExpressionResponse expression;
 
   @override
   Widget build(BuildContext context) {
-    final String expressionBody =
-        expression.expression.expressionContent['body'];
+    final String expressionBody = expression.expressionData.body;
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: JuntoStyles.horizontalPadding,
@@ -37,8 +36,7 @@ class LongformPreview extends StatelessWidget {
   }
 
   Widget _buildTitle() {
-    final String expressionTitle =
-        expression.expression.expressionContent['title'];
+    final String expressionTitle = expression.expressionData.title;
     if (expressionTitle != '') {
       return Container(
         child: Text(

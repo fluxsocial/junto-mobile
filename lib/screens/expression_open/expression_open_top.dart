@@ -1,22 +1,22 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/styles.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
+import 'package:junto_beta_mobile/styles.dart';
 import 'package:junto_beta_mobile/widgets/expression_action_items/expression_action_items.dart';
 
 class ExpressionOpenTop extends StatelessWidget {
   const ExpressionOpenTop({Key key, this.expression}) : super(key: key);
 
-  final Expression expression;
+  final CentralizedExpressionResponse expression;
 
   @override
   Widget build(BuildContext context) {
-    final String username = expression.authorUsername.username;
-    final String firstName = expression.authorProfile.firstName;
-    final String lastName = expression.authorProfile.lastName;
-    final String profilePicture = expression.authorProfile.profilePicture;
+    final String username = expression.creator.username;
+    final String firstName = expression.creator.firstName;
+    final String lastName = expression.creator.lastName;
+    final String profilePicture = expression.creator.profilePicture;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
