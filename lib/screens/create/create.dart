@@ -10,9 +10,10 @@ import 'package:junto_beta_mobile/screens/create/create_templates/shortform.dart
 import 'package:junto_beta_mobile/styles.dart';
 
 class JuntoCreate extends StatefulWidget {
-  const JuntoCreate(this.expressionLayer);
+  const JuntoCreate(this.expressionLayer, {this.address});
 
   final String expressionLayer;
+  final String address;
 
   @override
   State<StatefulWidget> createState() {

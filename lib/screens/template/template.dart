@@ -10,8 +10,6 @@ import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/den/den_drawer/den_drawer.dart';
 import 'package:junto_beta_mobile/screens/packs/packs.dart';
 import 'package:junto_beta_mobile/screens/spheres/spheres.dart';
-import 'package:junto_beta_mobile/palette.dart';
-import 'package:junto_beta_mobile/styles.dart';
 import 'package:junto_beta_mobile/widgets/appbar.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
@@ -156,7 +154,9 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
             controller: _hideFABController,
             currentPerspective: _currentPerspective);
       case 'spheres':
-        return JuntoSpheres();
+        return JuntoSpheres(
+          userProfile: profile,
+        );
       case 'packs':
         return JuntoPacks();
       case 'den':
@@ -213,70 +213,70 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
     showModalBottomSheet(
       context: context,
       builder: (context) => Container(
-            color: Color(0xff737373),
-            child: Container(
-              height: 280,
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: const Radius.circular(10),
-                  topRight: Radius.circular(10),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Container(
-                        width: MediaQuery.of(context).size.width - 60,
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: Color(0xffeeeeee),
-                              width: .75,
-                            ),
-                          ),
-                        ),
-                        child: TextField(
-                          controller: _channelController,
-                          buildCounter: (
-                            BuildContext context, {
-                            int currentLength,
-                            int maxLength,
-                            bool isFocused,
-                          }) =>
-                              null,
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Filter by channel',
-                            hintStyle: const TextStyle(
-                                color: Color(0xff999999),
-                                fontSize: 17,
-                                fontWeight: FontWeight.w500),
-                          ),
-                          cursorColor: Color(0xff333333),
-                          cursorWidth: 2,
-                          maxLines: null,
-                          style: const TextStyle(
-                              color: Color(0xff333333),
-                              fontSize: 17,
-                              fontWeight: FontWeight.w500),
-                          maxLength: 80,
-                          textInputAction: TextInputAction.done,
-                        ),
-                      ),
-                      Container(
-                        child: Icon(Icons.add, size: 20),
-                      )
-                    ],
-                  ),
-                ],
-              ),
+        color: Color(0xff737373),
+        child: Container(
+          height: 280,
+          padding: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(10),
+              topRight: Radius.circular(10),
             ),
           ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
+                    width: MediaQuery.of(context).size.width - 60,
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Color(0xffeeeeee),
+                          width: .75,
+                        ),
+                      ),
+                    ),
+                    child: TextField(
+                      controller: _channelController,
+                      buildCounter: (
+                        BuildContext context, {
+                        int currentLength,
+                        int maxLength,
+                        bool isFocused,
+                      }) =>
+                          null,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Filter by channel',
+                        hintStyle: const TextStyle(
+                            color: Color(0xff999999),
+                            fontSize: 17,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      cursorColor: Color(0xff333333),
+                      cursorWidth: 2,
+                      maxLines: null,
+                      style: const TextStyle(
+                          color: Color(0xff333333),
+                          fontSize: 17,
+                          fontWeight: FontWeight.w500),
+                      maxLength: 80,
+                      textInputAction: TextInputAction.done,
+                    ),
+                  ),
+                  Container(
+                    child: Icon(Icons.add, size: 20),
+                  )
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 

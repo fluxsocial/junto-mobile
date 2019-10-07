@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open_appbar.dart';
@@ -12,18 +13,10 @@ import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 class SphereOpen extends StatefulWidget {
   const SphereOpen({
     Key key,
-    @required this.sphereTitle,
-    @required this.sphereImage,
-    @required this.sphereMembers,
-    @required this.sphereHandle,
-    @required this.sphereDescription,
+    this.group,
   }) : super(key: key);
 
-  final String sphereTitle;
-  final String sphereImage;
-  final String sphereMembers;
-  final String sphereHandle;
-  final String sphereDescription;
+  final Group group;
 
   @override
   State<StatefulWidget> createState() {
@@ -158,7 +151,10 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
       backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(45),
-        child: SphereOpenAppbar(widget.sphereHandle, widget.sphereImage),
+        child: SphereOpenAppbar(
+          widget.group.groupData.sphereHandle,
+          widget.group.groupData.photo,
+        ),
       ),
       floatingActionButton: ValueListenableBuilder<bool>(
         valueListenable: _isVisible,
@@ -172,7 +168,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: CreateFAB(
-            sphereHandle: widget.sphereHandle,
+            sphereHandle: widget.group.groupData.sphereHandle,
             isVisible: _isVisible,
           ),
         ),
@@ -184,7 +180,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
           Container(
             constraints: const BoxConstraints.expand(height: 200),
             child: Image.asset(
-              widget.sphereImage,
+              'assets/images/junto-mobile__logo.png',
               fit: BoxFit.cover,
             ),
           ),
@@ -211,7 +207,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                       children: <Widget>[
                         Container(
                           child: Text(
-                            widget.sphereTitle,
+                            widget.group.groupData.name,
                             style: const TextStyle(
                               color: JuntoPalette.juntoGrey,
                               fontSize: 20,
@@ -327,12 +323,11 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                         ),
                         const SizedBox(height: 5),
                         Container(
-                          child: Text(widget.sphereMembers + ' members',
-                              style: JuntoStyles.title),
+                          child: Text('Nash members', style: JuntoStyles.title),
                         ),
                         const SizedBox(height: 10),
                         Container(
-                          child: Text(widget.sphereDescription,
+                          child: Text(widget.group.groupData.description,
                               textAlign: TextAlign.start,
                               style:
                                   const TextStyle(fontSize: 15, height: 1.4)),
@@ -365,8 +360,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                     children: <Widget>[
                       Container(
                         width: MediaQuery.of(context).size.width * .88,
-                        child: const Text(
-                            'Help maintain an awesome, respectful community!'),
+                        child: Text(widget.group.groupData.principles),
                       ),
                       Icon(
                         Icons.keyboard_arrow_right,
@@ -422,9 +416,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
               ExpressionPreview(expression: expressions[1]),
               ExpressionPreview(expression: expressions[2]),
               ExpressionPreview(expression: expressions[3]),
-              ExpressionPreview(expression: expressions[4]),
-              ExpressionPreview(expression: expressions[5]),
-              ExpressionPreview(expression: expressions[6]),
             ],
           )
         ],
