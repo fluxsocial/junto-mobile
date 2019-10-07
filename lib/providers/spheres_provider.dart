@@ -2,11 +2,14 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:junto_beta_mobile/models/group_model.dart';
+import 'package:junto_beta_mobile/models/pack.dart';
 import 'package:junto_beta_mobile/models/sphere.dart';
 import 'package:junto_beta_mobile/utils/junto_http.dart';
 
 abstract class SpheresProvider {
   List<Sphere> get spheres;
+
+  List<Pack> get packs;
 
   /// Allows an authenticated user to create a sphere.
   Future<CentralizedSphereResponse> createSphere(CentralizedSphere sphere);
@@ -28,6 +31,13 @@ abstract class SpheresProvider {
 }
 
 class SphereProviderCentralized implements SpheresProvider {
+  final List<Pack> _packs = Pack.fetchAll();
+
+  @override
+  List<Pack> get packs {
+    return _packs;
+  }
+
   @override
   Future<CentralizedSphereResponse> createSphere(
     CentralizedSphere sphere,
