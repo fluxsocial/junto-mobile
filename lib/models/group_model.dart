@@ -51,6 +51,25 @@ class Group {
         'group_type': groupType,
         'group_data': groupData.toJson(),
       };
+
+  @override
+  bool operator == (Object other) =>
+      identical(this, other) ||
+          other is Group &&
+              address == other.address &&
+              createdAt == other.createdAt &&
+              privacy == other.privacy &&
+              groupType == other.groupType;
+
+  @override
+  int get hashCode =>
+      address.hashCode ^
+      creator.hashCode ^
+      createdAt.hashCode ^
+      privacy.hashCode ^
+      groupType.hashCode ^
+      groupData.hashCode;
+
 }
 
 /// Returned when [Group.groupType] == `Pack`.
