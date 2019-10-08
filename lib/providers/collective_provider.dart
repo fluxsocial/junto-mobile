@@ -144,6 +144,7 @@ List<CentralizedExpressionResponse> sampleExpressions =
       firstName: 'Eric',
       lastName: 'Yang',
       profilePicture: 'assets/images/junto-mobile__eric.png',
+      username: 'sunyata',
       verified: true,
     ),
     expressionData: CentralizedLongFormExpression(
@@ -163,6 +164,7 @@ List<CentralizedExpressionResponse> sampleExpressions =
       lastName: 'Czovek',
       profilePicture: 'assets/images/junto-mobile__dora.png',
       bio: 'hellooo',
+      username: 'wingedmessenger',
       parent: 'parent-address',
       verified: true,
     ),
