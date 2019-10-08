@@ -40,6 +40,7 @@ class JuntoDenState extends State<JuntoDen> {
         bio: 'hellooo',
         firstName: 'Eric',
         lastName: 'Yang',
+        username: 'sunyata',
         profilePicture: 'assets/images/junto-mobile__eric.png',
         verified: true,
       ),
