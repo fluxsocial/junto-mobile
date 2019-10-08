@@ -7,7 +7,9 @@ import 'package:junto_beta_mobile/providers/provider.dart';
 import 'package:junto_beta_mobile/screens/spheres/create_sphere/create_sphere.dart';
 import 'package:junto_beta_mobile/screens/spheres/sphere_preview.dart';
 import 'package:junto_beta_mobile/styles.dart';
+import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:provider/provider.dart';
+import 'package:async/async.dart' show AsyncMemoizer;
 
 /// This class renders the main screen for Spheres. It includes a widget to
 /// create
@@ -24,8 +26,10 @@ class JuntoSpheres extends StatefulWidget {
   State<StatefulWidget> createState() => JuntoSpheresState();
 }
 
-class JuntoSpheresState extends State<JuntoSpheres> {
+class JuntoSpheresState extends State<JuntoSpheres> with ListDistinct {
   UserProvider _userProvider;
+  final AsyncMemoizer<UserGroupsResponse> _memoizer =
+      AsyncMemoizer<UserGroupsResponse>();
 
   @override
   void didChangeDependencies() {
@@ -54,6 +58,12 @@ class JuntoSpheresState extends State<JuntoSpheres> {
           ],
         ),
       ),
+    );
+  }
+
+  Future<UserGroupsResponse> getUserGroups() async {
+    return _memoizer.runOnce(
+      () => _userProvider.getUserGroups(widget.userProfile.address),
     );
   }
 
@@ -93,23 +103,19 @@ class JuntoSpheresState extends State<JuntoSpheres> {
             ),
           ),
           FutureBuilder<UserGroupsResponse>(
-            future: _userProvider.getUserGroups(widget.userProfile.address),
+            future: getUserGroups(),
             builder: (BuildContext context,
                 AsyncSnapshot<UserGroupsResponse> snapshot) {
               if (snapshot.hasError) {
                 return buildError();
               }
               if (snapshot.hasData && !snapshot.hasError) {
-                final List<Group> ownedGroups = snapshot.data.owned
-                    .where((Group group) => group.groupType == 'Sphere')
-                    .toList();
-                final List<Group> associatedGroups = snapshot.data.associated
-                    .where((Group group) => group.groupType == 'Sphere')
-                    .toList();
-                final List<Group> userGroups = <Group>[
-                  ...ownedGroups,
-                  ...associatedGroups,
-                ];
+                final List<Group> ownedGroups = snapshot.data.owned;
+                final List<Group> associatedGroups = snapshot.data.associated;
+                final List<Group> userGroups =
+                    distinct<Group>(ownedGroups, associatedGroups)
+                        .where((Group group) => group.groupType == 'Sphere')
+                        .toList();
                 return ListView(
                   shrinkWrap: true,
                   physics: const ClampingScrollPhysics(),

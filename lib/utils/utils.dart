@@ -169,3 +169,20 @@ mixin DateParser {
     return 0;
   }
 }
+
+/// Mixin containing a helper list method
+mixin ListDistinct {
+  /// Creates a new list with the unique elements form [listOne] and [listTwo].
+  /// The new list is returned  with the specified type [T]
+  List<T> distinct<T>(List<T> listOne, List<T> listTwo) {
+    final List<T> _newList = <T>[];
+    _newList.addAll(listOne);
+    for (final T item in listTwo) {
+      if (_newList.contains(item)) {
+        _newList.remove(item);
+      }
+      _newList.add(item);
+    }
+    return _newList;
+  }
+}
