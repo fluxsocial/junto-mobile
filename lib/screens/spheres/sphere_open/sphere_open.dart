@@ -168,6 +168,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: CreateFAB(
+            address: widget.group.address,
             sphereHandle: widget.group.groupData.sphereHandle,
             isVisible: _isVisible,
           ),
@@ -354,20 +355,10 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
               children: <Widget>[
                 Text('Principles', style: JuntoStyles.header),
                 const SizedBox(height: 10),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        width: MediaQuery.of(context).size.width * .88,
-                        child: Text(widget.group.groupData.principles),
-                      ),
-                      Icon(
-                        Icons.keyboard_arrow_right,
-                        size: 20,
-                        color: const Color(0xff555555),
-                      )
-                    ]),
+                Container(
+                  width: MediaQuery.of(context).size.width * .88,
+                  child: Text(widget.group.groupData.principles),
+                ),
               ],
             ),
           ),
