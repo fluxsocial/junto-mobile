@@ -19,21 +19,12 @@ class UserPreview extends StatelessWidget {
   final bool showSelectionIndicator;
 
   Widget _handleNullImage(String imageUrl) {
-    if (imageUrl == null || imageUrl == '') {
-      return Image.asset(
-        'assets/images/junto-mobile__logo.png',
-        height: 45.0,
-        width: 45.0,
-        fit: BoxFit.cover,
-      );
-    } else {
-      return Image.network(
-        imageUrl,
-        height: 45.0,
-        width: 45.0,
-        fit: BoxFit.cover,
-      );
-    }
+    return Image.asset(
+      'assets/images/junto-mobile__logo.png',
+      height: 45.0,
+      width: 45.0,
+      fit: BoxFit.cover,
+    );
   }
 
   @override

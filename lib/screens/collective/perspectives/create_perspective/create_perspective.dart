@@ -15,7 +15,7 @@ import 'package:junto_beta_mobile/widgets/search_members_modal.dart';
 import 'package:junto_beta_mobile/widgets/user_preview.dart';
 import 'package:provider/provider.dart';
 
-class SelectedUsers {
+class SelectedUsers extends ChangeNotifier{
   List<UserProfile> selection = <UserProfile>[];
 }
 

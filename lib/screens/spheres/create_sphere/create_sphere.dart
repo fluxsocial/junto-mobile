@@ -23,7 +23,8 @@ class CreateSphere extends StatefulWidget {
 
 class _CreateSphereState extends State<CreateSphere>
     with AddUserToList<UserProfile> {
-  TextEditingController _textEditingController;
+  TextEditingController _nameController;
+  TextEditingController _descriptionController;
   Timer debounceTimer;
   ValueNotifier<List<UserProfile>> queriedUsers =
       ValueNotifier<List<UserProfile>>(<UserProfile>[]);
@@ -32,7 +33,8 @@ class _CreateSphereState extends State<CreateSphere>
 
   @override
   void initState() {
-    _textEditingController = TextEditingController();
+    _nameController = TextEditingController();
+    _descriptionController = TextEditingController();
     super.initState();
   }
 
@@ -59,17 +61,19 @@ class _CreateSphereState extends State<CreateSphere>
 
   @override
   void dispose() {
-    _textEditingController.dispose();
+    _nameController.dispose();
+    _descriptionController.dispose();
     super.dispose();
   }
 
   Future<void> _createSphere() async {
     final UserProfile _profile =
         await Provider.of<UserProvider>(context).readLocalUser();
-    final String sphereName = _textEditingController.value.text;
+    final String sphereName = _nameController.value.text;
+    final String sphereDescription = _descriptionController.value.text;
     final CentralizedSphere sphere = CentralizedSphere(
       name: sphereName,
-      description: '',
+      description: sphereDescription,
       facilitators: <String>[
         _profile.address,
       ],
@@ -162,44 +166,15 @@ class _CreateSphereState extends State<CreateSphere>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Container(
-                        // padding: EdgeInsets.symmetric(vertical: 15),
-                        width: MediaQuery.of(context).size.width - 20,
-                        decoration: const BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: Color(0xffeeeeee),
-                              width: .75,
-                            ),
-                          ),
-                        ),
-                        child: TextField(
-                          controller: _textEditingController,
-                          buildCounter: (
-                            BuildContext context, {
-                            int currentLength,
-                            int maxLength,
-                            bool isFocused,
-                          }) =>
-                              null,
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Name your sphere',
-                            hintStyle: TextStyle(
-                                color: Color(0xff999999),
-                                fontSize: 20,
-                                fontWeight: FontWeight.w700),
-                          ),
-                          cursorColor: const Color(0xff333333),
-                          cursorWidth: 2,
-                          maxLines: null,
-                          style: const TextStyle(
-                              color: Color(0xff333333),
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700),
-                          maxLength: 80,
-                          textInputAction: TextInputAction.done,
-                        ),
+                      _CreateSphereTextField(
+                        key: const Key('name-field-create-sphere'),
+                        controller: _nameController,
+                        hintText: 'Name your sphere',
+                      ),
+                      _CreateSphereTextField(
+                        key: const Key('Description-field-create-sphere'),
+                        controller: _descriptionController,
+                        hintText: 'Describe your sphere',
                       ),
                       Container(
                         padding: const EdgeInsets.symmetric(vertical: 15),
@@ -257,6 +232,66 @@ class _CreateSphereState extends State<CreateSphere>
             ),
           )
         ],
+      ),
+    );
+  }
+}
+
+class _CreateSphereTextField extends StatefulWidget {
+  const _CreateSphereTextField({
+    Key key,
+    @required this.controller,
+    @required this.hintText,
+  }) : super(key: key);
+
+  final TextEditingController controller;
+  final String hintText;
+
+  @override
+  __CreateSphereTextFieldState createState() => __CreateSphereTextFieldState();
+}
+
+class __CreateSphereTextFieldState extends State<_CreateSphereTextField> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      // padding: EdgeInsets.symmetric(vertical: 15),
+      width: MediaQuery.of(context).size.width - 20,
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: Color(0xffeeeeee),
+            width: .75,
+          ),
+        ),
+      ),
+      child: TextField(
+        controller: widget.controller,
+        buildCounter: (
+          BuildContext context, {
+          int currentLength,
+          int maxLength,
+          bool isFocused,
+        }) =>
+            null,
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          hintText: widget.hintText,
+          hintStyle: const TextStyle(
+            color: Color(0xff999999),
+            fontSize: 20,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        cursorColor: const Color(0xff333333),
+        cursorWidth: 2,
+        maxLines: null,
+        style: const TextStyle(
+            color: Color(0xff333333),
+            fontSize: 20,
+            fontWeight: FontWeight.w700),
+        maxLength: 80,
+        textInputAction: TextInputAction.done,
       ),
     );
   }
