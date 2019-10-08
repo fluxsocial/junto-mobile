@@ -159,6 +159,20 @@ class JuntoDenState extends State<JuntoDen> {
     }
   }
 
+  _togglePrivateDomain(domain) {
+    if (domain == 'expressions') {
+      setState(() {
+        privateExpressionsActive = true;
+        privateCollectionActive = false;
+      });
+    } else if (domain == 'collection') {
+      setState(() {
+        privateExpressionsActive = false;
+        privateCollectionActive = true;
+      });
+    }
+  }
+
   _buildDenList() {
     if (publicExpressionsActive) {
       return ListView(
@@ -181,8 +195,6 @@ class JuntoDenState extends State<JuntoDen> {
 
   @override
   Widget build(BuildContext context) {
-    // List _tabs = ['Open Den', 'Private Den'];
-
     return Transform.translate(
       offset: const Offset(0.0, 0.0),
       child: DefaultTabController(
@@ -355,8 +367,7 @@ class JuntoDenState extends State<JuntoDen> {
                       fontWeight: FontWeight.w700,
                       color: Color(0xff333333),
                     ),
-                    indicatorWeight: 1,
-                    indicatorColor: Color(0xffeeeeee),
+                    indicatorWeight: 0.0001,
                     tabs: _tabs
                         .map((name) => Container(
                             margin: EdgeInsets.only(right: 24),
@@ -372,59 +383,42 @@ class JuntoDenState extends State<JuntoDen> {
             ];
           },
           body: TabBarView(
-
               // These are the contents of the tab views, below the tabs.
-              children: [
-                ListView(
-                  children: <Widget>[
-                    Container(height: 200, color: Colors.orange),
-                    Container(height: 200, color: Colors.blue),
-                    Container(height: 200, color: Colors.orange),
-                    Container(height: 200, color: Colors.blue),
-                  ],
-                ),
-
-                ListView(
-                  children: <Widget>[
-                    Container(height: 200, color: Colors.orange),
-                    Container(height: 200, color: Colors.blue),
-                  ],
-                ),
-
-                // _buildPublicPage(),
-
-                // _buildDenList(),
-
-                // publicExpressionsActive
-                //     ? Transform.translate(
-                //         offset: const Offset(0.0, -18.0),
-                //         child: ListView(
-                //           shrinkWrap: true,
-                //           physics: const ClampingScrollPhysics(),
-                //           children: <Widget>[
-                //             ExpressionPreview(expression: expressions[0]),
-                //             ExpressionPreview(expression: expressions[1]),
-                //           ],
-                //         ),
-                //       )
-                //     : SizedBox()
-              ]),
+              children: [_buildOpenDen(), _buildPrivateDen()]),
         ),
       ),
     );
   }
 
-  _buildPublicPage() {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: Color(0xffeeeeee),
-            width: .75,
+  _buildOpenDen() {
+    if (publicExpressionsActive) {
+      return ListView(
+        children: <Widget>[
+          _buildOpenDenToggle(),
+          ExpressionPreview(
+            expression: expressions[0],
           ),
-        ),
-      ),
+          ExpressionPreview(
+            expression: expressions[1],
+          ),
+          ExpressionPreview(
+            expression: expressions[0],
+          ),
+          ExpressionPreview(
+            expression: expressions[1],
+          ),
+        ],
+      );
+    } else if (publicCollectionActive) {
+      return ListView(
+        children: <Widget>[_buildOpenDenToggle(), _buildDenList()],
+      );
+    }
+  }
+
+  _buildOpenDenToggle() {
+    return Container(
+      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 10),
       child: Column(
         children: <Widget>[
           Row(
@@ -516,27 +510,152 @@ class JuntoDenState extends State<JuntoDen> {
       ),
     );
   }
+
+  _buildPrivateDen() {
+    if (privateExpressionsActive) {
+      return ListView(
+        children: <Widget>[
+          _buildPrivateDenToggle(),
+          ExpressionPreview(
+            expression: expressions[0],
+          ),
+          ExpressionPreview(
+            expression: expressions[1],
+          ),
+          ExpressionPreview(
+            expression: expressions[0],
+          ),
+          ExpressionPreview(
+            expression: expressions[1],
+          ),
+        ],
+      );
+    } else if (privateCollectionActive) {
+      return ListView(
+        children: <Widget>[_buildPrivateDenToggle(), _buildDenList()],
+      );
+    }
+  }
+
+  _buildPrivateDenToggle() {
+    return Container(
+      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 10),
+      child: Column(
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.all(2.5),
+                height: 30,
+                width: 80,
+                decoration: BoxDecoration(
+                  color: Color(0xfffeeeeee),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Row(
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: () {
+                        _togglePrivateDomain('expressions');
+                      },
+                      child: Container(
+                        height: 30,
+                        // half width of parent container minus horizontal padding
+                        width: 37.5,
+                        decoration: BoxDecoration(
+                          color: privateExpressionsActive
+                              ? Colors.white
+                              : Color(0xffeeeeee),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Icon(
+                          CustomIcons.half_lotus,
+                          size: 12,
+                          color: privateExpressionsActive
+                              ? Color(0xff555555)
+                              : Color(0xff999999),
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        _togglePrivateDomain('collection');
+                      },
+                      child: Container(
+                        height: 30,
+                        // half width of parent container minus horizontal padding
+                        width: 37.5,
+                        decoration: BoxDecoration(
+                          color: privateCollectionActive
+                              ? Colors.white
+                              : Color(0xffeeeeee),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Icon(
+                          Icons.collections,
+                          size: 12,
+                          color: privateCollectionActive
+                              ? Color(0xff555555)
+                              : Color(0xff999999),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              privateCollectionActive
+                  ? GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => DenCreateCollection(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        width: 38,
+                        alignment: Alignment.centerRight,
+                        child: Icon(
+                          Icons.add,
+                          size: 20,
+                          color: Color(0xff555555),
+                        ),
+                      ),
+                    )
+                  : SizedBox()
+            ],
+          )
+        ],
+      ),
+    );
+  }
 }
 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   _SliverAppBarDelegate(this._tabBar);
 
-  final TabBar _tabBar;
+  final _tabBar;
 
   @override
-  double get minExtent => _tabBar.preferredSize.height;
+  double get minExtent => _tabBar.preferredSize.height + .5;
   @override
-  double get maxExtent => _tabBar.preferredSize.height;
+  double get maxExtent => _tabBar.preferredSize.height + .5;
 
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return new Container(
-      color: Colors.white,
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      width: MediaQuery.of(context).size.width,
-      child: _tabBar,
-    );
+        padding: EdgeInsets.symmetric(horizontal: 10),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border(
+            bottom: BorderSide(color: Color(0xffeeeeee), width: .5),
+          ),
+        ),
+        width: MediaQuery.of(context).size.width,
+        child: _tabBar);
   }
 
   @override
