@@ -5,7 +5,7 @@ import 'package:junto_beta_mobile/palette.dart';
 class ExpressionOpenBottom extends StatefulWidget {
   const ExpressionOpenBottom(this.expression);
 
-  final Expression expression;
+  final CentralizedExpressionResponse expression;
 
   @override
   State<StatefulWidget> createState() => ExpressionOpenBottomState();
@@ -17,7 +17,8 @@ class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
   @override
   void initState() {
     super.initState();
-    timestamp = widget.expression.timestamp;
+    //FIXME(Nash):Prettify date
+    timestamp = widget.expression.createdAt.toIso8601String();
   }
 
   @override

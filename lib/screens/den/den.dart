@@ -1,12 +1,12 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/screens/den/den_expanded.dart';
+import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
+import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/screens/den/den_collection_preview.dart';
 import 'package:junto_beta_mobile/screens/den/den_create_collection.dart';
+import 'package:junto_beta_mobile/screens/den/den_expanded.dart';
 import 'package:junto_beta_mobile/widgets/expression_preview/expression_preview.dart';
 
 /// Displays the user's DEN or "profile screen"
@@ -28,61 +28,34 @@ class JuntoDenState extends State<JuntoDen> {
 
   PageController controller;
 
-  List expressions = [
-    Expression(
-      expression: ExpressionContent(
-        address: '0xfee32zokie8',
-        expressionType: 'longform',
-        expressionContent: <String, String>{
-          'title': 'Dynamic form is in motion!',
-          'body':
-              "Hey! Eric here. We're currently working with a London-based dev agency called DevAngels to build out our dynamic, rich text editor. Soon, you'll be able to create short or longform expressions that contain text, links, images complemented with features such as bullet points, horiozntal lines, bold and italic font, and much more. This should be done in the next 1 or 2 weeks so stay tuned!"
-        },
-      ),
-      subExpressions: <Expression>[],
-      authorUsername: Username(
-        address: '02efredffdfvdbnrtg',
-        username: 'sunyata',
-      ),
-      authorProfile: UserProfile(
-        address: '0vefoiwiafjvkbr32r243r5',
-        parent: 'parent-address',
+  List<CentralizedExpressionResponse> expressions =
+      <CentralizedExpressionResponse>[
+    CentralizedExpressionResponse(
+      address: '0xfee32zokie8',
+      type: 'LongForm',
+      comments: <Comment>[],
+      context: '',
+      createdAt: DateTime.now(),
+      creator: UserProfile(
         bio: 'hellooo',
         firstName: 'Eric',
         lastName: 'Yang',
         profilePicture: 'assets/images/junto-mobile__eric.png',
         verified: true,
       ),
-      resonations: <dynamic>[],
-      timestamp: '2',
-      channels: <Channel>[
-        Channel(
-          address: 'channel-address',
-          value: 'design',
-          attributeType: 'Channel',
-        ),
-        Channel(
-          address: 'channel-address',
-          value: 'tech',
-          attributeType: 'Channel',
-        ),
-      ],
+      expressionData: CentralizedLongFormExpression(
+        title: 'Dynamic form is in motion!',
+        body: "Hey! Eric here. We're currently working with a London-based dev "
+            "agency called DevAngels to build out our dynamic, rich text editor. Soon, you'll be able to create short or longform expressions that contain text, links, images complemented with features such as bullet points, horiozntal lines, bold and italic font, and much more. This should be done in the next 1 or 2 weeks so stay tuned!",
+      ),
     ),
-    Expression(
-      expression: ExpressionContent(
-        address: '0xfee32zokie8',
-        expressionType: 'photo',
-        expressionContent: <String, String>{
-          'image': 'assets/images/junto-mobile__photo--one.png',
-          'caption':
-              'Went surfing for the first time! :) Got my ass handed to me...'
-        },
-      ),
-      authorUsername: Username(
-        address: '02efredffdfvdbnrtg',
-        username: 'sunyata',
-      ),
-      authorProfile: UserProfile(
+    CentralizedExpressionResponse(
+      address: '0xfee32zokie8',
+      type: 'PhotoForm',
+      comments: <Comment>[],
+      context: '',
+      createdAt: DateTime.now(),
+      creator: UserProfile(
         address: '0vefoiwiafjvkbr32r243r5',
         firstName: 'Eric',
         lastName: 'Yang',
@@ -90,22 +63,13 @@ class JuntoDenState extends State<JuntoDen> {
         bio: 'hellooo',
         parent: 'parent-address',
         verified: true,
+        username: 'sunyata',
       ),
-      subExpressions: <Expression>[],
-      resonations: <dynamic>[],
-      timestamp: '18',
-      channels: <Channel>[
-        Channel(
-          address: 'channel-address',
-          value: 'design',
-          attributeType: 'Channel',
-        ),
-        Channel(
-          address: 'channel-address',
-          value: 'tech',
-          attributeType: 'Channel',
-        ),
-      ],
+      expressionData: CentralizedPhotoFormExpression(
+        image: 'assets/images/junto-mobile__photo--one.png',
+        caption:
+            'Went surfing for the first time! :) Got my ass handed to me...',
+      ),
     ),
   ];
 
@@ -145,7 +109,7 @@ class JuntoDenState extends State<JuntoDen> {
   //   }
   // }
 
-  _togglePublicDomain(domain) {
+  void _togglePublicDomain(String domain) {
     if (domain == 'expressions') {
       setState(() {
         publicExpressionsActive = true;
@@ -158,6 +122,7 @@ class JuntoDenState extends State<JuntoDen> {
       });
     }
   }
+
 
   _togglePrivateDomain(domain) {
     if (domain == 'expressions') {
@@ -177,17 +142,17 @@ class JuntoDenState extends State<JuntoDen> {
     if (publicExpressionsActive) {
       return ListView(
         shrinkWrap: true,
-        physics: ClampingScrollPhysics(),
-        children: <Widget>[SizedBox()],
+        physics: const ClampingScrollPhysics(),
+        children: const <Widget>[SizedBox()],
       );
     } else if (publicCollectionActive == true) {
       return ListView(
         shrinkWrap: true,
-        physics: ClampingScrollPhysics(),
+        physics: const ClampingScrollPhysics(),
         children: <Widget>[DenCollectionPreview()],
       );
     } else {
-      return SizedBox();
+      return const SizedBox();
     }
   }
 
@@ -385,10 +350,12 @@ class JuntoDenState extends State<JuntoDen> {
           body: TabBarView(
               // These are the contents of the tab views, below the tabs.
               children: [_buildOpenDen(), _buildPrivateDen()]),
+
         ),
       ),
     );
   }
+
 
   _buildOpenDen() {
     if (publicExpressionsActive) {
@@ -425,11 +392,11 @@ class JuntoDenState extends State<JuntoDen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Container(
-                padding: EdgeInsets.all(2.5),
+                padding: const EdgeInsets.all(2.5),
                 height: 30,
                 width: 80,
                 decoration: BoxDecoration(
-                  color: Color(0xfffeeeeee),
+                  color: const Color(0xffeeeeee),
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: Row(
@@ -445,15 +412,15 @@ class JuntoDenState extends State<JuntoDen> {
                         decoration: BoxDecoration(
                           color: publicExpressionsActive
                               ? Colors.white
-                              : Color(0xffeeeeee),
+                              : const Color(0xffeeeeee),
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Icon(
                           CustomIcons.half_lotus,
                           size: 12,
                           color: publicExpressionsActive
-                              ? Color(0xff555555)
-                              : Color(0xff999999),
+                              ? const Color(0xff555555)
+                              : const Color(0xff999999),
                         ),
                       ),
                     ),
@@ -468,15 +435,15 @@ class JuntoDenState extends State<JuntoDen> {
                         decoration: BoxDecoration(
                           color: publicCollectionActive
                               ? Colors.white
-                              : Color(0xffeeeeee),
+                              : const Color(0xffeeeeee),
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Icon(
                           Icons.collections,
                           size: 12,
                           color: publicCollectionActive
-                              ? Color(0xff555555)
-                              : Color(0xff999999),
+                              ? const Color(0xff555555)
+                              : const Color(0xff999999),
                         ),
                       ),
                     ),
@@ -488,8 +455,9 @@ class JuntoDenState extends State<JuntoDen> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          CupertinoPageRoute(
-                            builder: (context) => DenCreateCollection(),
+                          CupertinoPageRoute<dynamic>(
+                            builder: (BuildContext context) =>
+                                DenCreateCollection(),
                           ),
                         );
                       },
@@ -499,11 +467,11 @@ class JuntoDenState extends State<JuntoDen> {
                         child: Icon(
                           Icons.add,
                           size: 20,
-                          color: Color(0xff555555),
+                          color: const Color(0xff555555),
                         ),
                       ),
                     )
-                  : SizedBox()
+                  : const SizedBox()
             ],
           )
         ],

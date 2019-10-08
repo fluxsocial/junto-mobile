@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/palette.dart';
 
 /// Allows the user to create a short form expression.
@@ -21,6 +22,14 @@ class CreateShortformState extends State<CreateShortform> {
   // ignore: unused_field
   String _currentBackground = 'none';
   TextEditingController _bodyController;
+
+  /// Creates a [CentralizedShortFormExpression] from the given data entered
+  /// by the user.
+  CentralizedShortFormExpression createExpression() {
+    return CentralizedShortFormExpression(
+        body: _bodyController.value.text,
+        background: gradientOne.value.toRadixString(16));
+  }
 
   @override
   void initState() {

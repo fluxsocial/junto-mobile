@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/providers/provider.dart';
 import 'package:junto_beta_mobile/screens/collective/degrees/degrees.dart';
-import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/widgets/expression_preview/expression_preview.dart';
 import 'package:provider/provider.dart';
 
@@ -28,7 +28,8 @@ class JuntoCollective extends StatefulWidget {
 class JuntoCollectiveState extends State<JuntoCollective> {
   String currentScreen = 'collective';
   bool isLoading = false;
-  List<Expression> initialData = <Expression>[];
+  List<CentralizedExpressionResponse> initialData =
+      <CentralizedExpressionResponse>[];
   @override
   void initState() {
     super.initState();

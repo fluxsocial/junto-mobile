@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_appbar.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_bottom.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_top.dart';
-import 'package:junto_beta_mobile/screens/expression_open/expressions/longform_open.dart';
-import 'package:junto_beta_mobile/screens/expression_open/expressions/shortform_open.dart';
-import 'package:junto_beta_mobile/screens/expression_open/expressions/photo_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/event_open.dart';
-import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/screens/expression_open/expressions/longform_open.dart';
+import 'package:junto_beta_mobile/screens/expression_open/expressions/photo_open.dart';
+import 'package:junto_beta_mobile/screens/expression_open/expressions/shortform_open.dart';
 import 'package:junto_beta_mobile/styles.dart';
 import 'package:junto_beta_mobile/widgets/comment_preview/comment_preview.dart';
 
 class ExpressionOpen extends StatefulWidget {
   const ExpressionOpen(this.expression);
 
-  final Expression expression;
+  final CentralizedExpressionResponse expression;
 
   @override
   State<StatefulWidget> createState() {
@@ -54,7 +54,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
 
   /// Builds an expression for the given type. IE: Longform or shortform
   Widget _buildExpression() {
-    final String expressionType = widget.expression.expression.expressionType;
+    final String expressionType = widget.expression.type;
     if (expressionType == 'longform') {
       return LongformOpen(widget.expression);
     } else if (expressionType == 'shortform') {
@@ -102,68 +102,68 @@ class ExpressionOpenState extends State<ExpressionOpen> {
     await showModalBottomSheet(
       context: context,
       builder: (context) => Container(
-            color: const Color(0xff737373),
-            child: Container(
-              height: 240,
-              padding: const EdgeInsets.all(10),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10),
-                  topRight: Radius.circular(10),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  SizedBox(height: 10),
-                  ListTile(
-                    onTap: () {
-                      setState(() {
-                        _commentPrivacy = 'public';
-                      });
-                      Navigator.pop(context);
-                    },
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          'Public',
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w700),
-                        ),
-                        const SizedBox(height: 5),
-                        const Text(
-                            'Your comment will visible to everyone who can see this expression.')
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  ListTile(
-                    onTap: () {
-                      setState(() {
-                        _commentPrivacy = 'private';
-                      });
-                      Navigator.pop(context);
-                    },
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          'Private',
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w700),
-                        ),
-                        const SizedBox(height: 5),
-                        const Text(
-                            'Your comment will only be visible to the creator of this expression.')
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+        color: const Color(0xff737373),
+        child: Container(
+          height: 240,
+          padding: const EdgeInsets.all(10),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10),
+              topRight: Radius.circular(10),
             ),
           ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(height: 10),
+              ListTile(
+                onTap: () {
+                  setState(() {
+                    _commentPrivacy = 'public';
+                  });
+                  Navigator.pop(context);
+                },
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      'Public',
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+                    ),
+                    const SizedBox(height: 5),
+                    const Text(
+                        'Your comment will visible to everyone who can see this expression.')
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+              ListTile(
+                onTap: () {
+                  setState(() {
+                    _commentPrivacy = 'private';
+                  });
+                  Navigator.pop(context);
+                },
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      'Private',
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+                    ),
+                    const SizedBox(height: 5),
+                    const Text(
+                        'Your comment will only be visible to the creator of this expression.')
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
 
     _focusTextField();

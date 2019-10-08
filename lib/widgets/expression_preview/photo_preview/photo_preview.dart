@@ -8,7 +8,7 @@ class PhotoPreview extends StatelessWidget {
     @required this.expression,
   }) : super(key: key);
 
-  final Expression expression;
+  final CentralizedExpressionResponse expression;
 
   // Widget _generateCaption() {
   //   if (imageCaption == '' || imageCaption == null) {
@@ -32,14 +32,14 @@ class PhotoPreview extends StatelessWidget {
       children: <Widget>[
         Container(
           width: MediaQuery.of(context).size.width,
-          child: Image.asset(expression.expression.expressionContent['image'],
+          child: Image.asset(expression.expressionData.image,
               fit: BoxFit.fitWidth),
         ),
         SizedBox(height: 10),
         Container(
           padding: EdgeInsets.symmetric(horizontal: 10),
           child: Text(
-            expression.expression.expressionContent['caption'],
+            expression.expressionData.caption,
             style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
           ),
         )

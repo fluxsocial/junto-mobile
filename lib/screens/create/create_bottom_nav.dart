@@ -24,7 +24,7 @@ class CreateBottomNav extends StatelessWidget {
                     children: <Widget>[
                       GestureDetector(
                         onTap: () {
-                          switchTemplate('longform');
+                          switchTemplate('LongForm');
                         },
                         child: Container(
                           color: Colors.white,
@@ -38,7 +38,7 @@ class CreateBottomNav extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap: () {
-                          switchTemplate('shortform');
+                          switchTemplate('ShortForm');
                         },
                         child: Container(
                           color: Colors.white,
@@ -52,7 +52,7 @@ class CreateBottomNav extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap: () {
-                          switchTemplate('photo');
+                          switchTemplate('PhotoForm');
                         },
                         child: Container(
                           color: Colors.white,
@@ -66,7 +66,7 @@ class CreateBottomNav extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap: () {
-                          switchTemplate('events');
+                          switchTemplate('EventForm');
                         },
                         child: Container(
                           color: Colors.white,
@@ -103,7 +103,7 @@ class CreateBottomNav extends StatelessWidget {
 
 // GestureDetector(
 //   onTap: () {
-//     switchTemplate('bullet');
+//     switchTemplate('BulletForm');
 //   },
 //   child: Container(
 //     // color: Colors.orange,

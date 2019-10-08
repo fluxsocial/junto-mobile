@@ -7,8 +7,8 @@ import 'package:junto_beta_mobile/styles.dart';
 class ShortformPreview extends StatefulWidget {
   const ShortformPreview(this.expression);
 
-  /// [ExpressionResult] to be displayed
-  final Expression expression;
+  /// [CentralizedExpressionResponse] to be displayed
+  final CentralizedExpressionResponse expression;
 
   @override
   State<StatefulWidget> createState() => ShortformPreviewState();
@@ -23,12 +23,12 @@ class ShortformPreviewState extends State<ShortformPreview> {
   void initState() {
     super.initState();
     _buildBackground();
-    shortformBody = widget.expression.expression.expressionContent['body'];
+    shortformBody = widget.expression.expressionData.body;
   }
 
   void _buildBackground() {
     final String shortformBackground =
-        widget.expression.expression.expressionContent['background'];
+        widget.expression.expressionData.background;
 
     if (shortformBackground == 'zero') {
       setState(() {
@@ -59,6 +59,11 @@ class ShortformPreviewState extends State<ShortformPreview> {
       setState(() {
         _gradientOne = JuntoPalette.juntoGreen;
         _gradientTwo = JuntoPalette.juntoSecondary;
+      });
+    } else {
+      setState(() {
+        _gradientOne = JuntoPalette.juntoWhite;
+        _gradientTwo = JuntoPalette.juntoWhite;
       });
     }
   }

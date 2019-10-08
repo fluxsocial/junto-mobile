@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/API.dart';
+import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/utils/form-validation.dart';
-// import 'package:google_maps_webservice/places.dart';
-// import 'package:flutter_google_places/flutter_google_places.dart';
+import 'package:junto_beta_mobile/utils/utils.dart';
 
 const kGoogleApiKey = 'AIzaSyAhV0-bpFqLYSV8xmFJ7JAR5bupoLfTaO8';
 
@@ -17,10 +17,10 @@ class CreateEvent extends StatefulWidget {
   final GlobalKey<FormState> formKey;
 
   @override
-  _CreateEventState createState() => _CreateEventState();
+  CreateEventState createState() => CreateEventState();
 }
 
-class _CreateEventState extends State<CreateEvent> {
+class CreateEventState extends State<CreateEvent> with DateParser {
   TextEditingController titleController;
   TextEditingController dateController;
   TextEditingController locationController;
@@ -57,6 +57,31 @@ class _CreateEventState extends State<CreateEvent> {
     startYear = DateTime.now().year.toString();
     startHour = transformHour(DateTime.now().hour, 'start').toString();
     startMinute = transformMinute(DateTime.now().minute);
+  }
+
+  /// Creates a [CentralizedLongFormExpression] from the given data entered
+  /// by the user.
+  CentralizedEventFormExpression createExpression() {
+    return CentralizedEventFormExpression(
+      startTime: DateTime(
+        int.parse(startYear),
+        transformMonthToInt(startMonth),
+        int.parse(startDay),
+        int.parse(startHour),
+        int.parse(startMinute),
+      ).toIso8601String(),
+      endTime: DateTime(
+        int.parse(endYear),
+        transformMonthToInt(endMonth),
+        int.parse(endDay),
+        int.parse(endHour),
+        int.parse(endMinute),
+      ).toIso8601String(),
+      description: detailsController.value.text,
+      location: locationController.value.text,
+      photo: '',
+      title: titleController.value.text,
+    );
   }
 
   @override
@@ -117,58 +142,7 @@ class _CreateEventState extends State<CreateEvent> {
     return 0;
   }
 
-  String transformMinute(int minute) {
-    if (minute < 10) {
-      return '0' + minute.toString();
-    } else {
-      return minute.toString();
-    }
-  }
-
-  String transformMonth(int month) {
-    switch (month) {
-      case 1:
-        return 'Jan';
-        break;
-      case 2:
-        return 'Feb';
-        break;
-      case 3:
-        return 'Mar';
-        break;
-      case 4:
-        return 'Apr';
-        break;
-      case 5:
-        return 'May';
-        break;
-      case 6:
-        return 'Jun';
-        break;
-      case 7:
-        return 'Jul';
-        break;
-      case 8:
-        return 'Aug';
-        break;
-      case 9:
-        return 'Sep';
-        break;
-      case 10:
-        return 'Oct';
-        break;
-      case 11:
-        return 'Nov';
-        break;
-      case 12:
-        return 'Dec';
-        break;
-    }
-    return '';
-  }
-
   void _updateDate(DateTime date, String period) {
-    print(DateTime.now());
     setState(() {
       if (period == 'start') {
         startDay = date.day.toString();
