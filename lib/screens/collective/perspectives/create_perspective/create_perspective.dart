@@ -248,7 +248,7 @@ class _CreatePerspectiveState extends State<CreatePerspective>
                             key: ValueKey<UserProfile>(_profile),
                             background: Material(color: Colors.redAccent),
                             onDismissed: (_) => _removeSelectedItem(_profile),
-                            child: UserPreview(
+                            child: UserPreview( 
                               userProfile: _profile,
                               onTap: _removeSelectedItem,
                               showSelectionIndicator: false,

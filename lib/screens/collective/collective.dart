@@ -80,7 +80,7 @@ class JuntoCollectiveState extends State<JuntoCollective> {
         ),
       ),
     );
-  }
+  } 
 
   @override
   Widget build(BuildContext context) {
