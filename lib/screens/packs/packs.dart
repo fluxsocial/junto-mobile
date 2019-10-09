@@ -13,7 +13,7 @@ class JuntoPacks extends StatefulWidget {
 class JuntoPacksState extends State<JuntoPacks> {
   String _handle;
   String _name;
-  String _profilePicture;
+  String _profilePicture; 
   String _bio;
 
   @override
