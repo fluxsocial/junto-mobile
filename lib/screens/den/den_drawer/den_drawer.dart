@@ -42,10 +42,12 @@ class _DenDrawerState extends State<DenDrawer> {
       context,
       CupertinoPageRoute<dynamic>(
         builder: (BuildContext context) => const PackOpen(
-            'The Gnarly '
-                'Nomads',
-            'Eric Yang',
-            'assets/images/junto-mobile__eric.png'),
+          'The Gnarly '
+              'Nomads',
+          'Eric Yang',
+          'assets/images/junto-mobile__eric.png',
+          '',
+        ),
       ),
     );
   }

@@ -53,13 +53,13 @@ class Group {
       };
 
   @override
-  bool operator == (Object other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
-          other is Group &&
-              address == other.address &&
-              createdAt == other.createdAt &&
-              privacy == other.privacy &&
-              groupType == other.groupType;
+      other is Group &&
+          address == other.address &&
+          createdAt == other.createdAt &&
+          privacy == other.privacy &&
+          groupType == other.groupType;
 
   @override
   int get hashCode =>
@@ -69,7 +69,6 @@ class Group {
       privacy.hashCode ^
       groupType.hashCode ^
       groupData.hashCode;
-
 }
 
 /// Returned when [Group.groupType] == `Pack`.
