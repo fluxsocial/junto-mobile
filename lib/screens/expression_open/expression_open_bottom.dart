@@ -47,9 +47,10 @@ class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
                     _buildResonationModal();
                   },
                   child: Image.asset(
-                      'assets/images/junto-mobile__resonation.png',
-                      height: 17,
-                      color: Color(0xff999999)),
+                    'assets/images/junto-mobile__resonation.png',
+                    height: 17,
+                    color: Color(0xff999999),
+                  ),
                 ),
               ]),
         ],
@@ -133,7 +134,9 @@ class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
                 width: MediaQuery.of(context).size.width,
                 child: FlatButton(
                     padding: EdgeInsets.symmetric(vertical: 15),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
                     child: Text(
                       'Cancel',
                       style:
