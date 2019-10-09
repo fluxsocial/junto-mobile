@@ -118,7 +118,7 @@ class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
                       Navigator.push(
                         context,
                         CupertinoPageRoute(
-                          builder: (context) => CreateResonation(),
+                          builder: (context) => CreateResonation(expression: widget.expression),
                         ),
                       );
                     },

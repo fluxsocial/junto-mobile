@@ -6,6 +6,10 @@ import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 
 class CreateResonation extends StatefulWidget {
+  CreateResonation({Key key, @required this.expression}) : super(key: key);
+
+  final expression;
+
   @override
   State<StatefulWidget> createState() {
     return CreateResonationState();
@@ -13,28 +17,6 @@ class CreateResonation extends StatefulWidget {
 }
 
 class CreateResonationState extends State<CreateResonation> {
-  List expressions = [
-    CentralizedExpressionResponse(
-      address: '0xfee32zokie8',
-      type: 'LongForm',
-      comments: <Comment>[],
-      context: '',
-      createdAt: DateTime.now(),
-      creator: UserProfile(
-        bio: 'hellooo',
-        firstName: 'Eric',
-        lastName: 'Yang',
-        username: 'sunyata',
-        profilePicture: 'assets/images/junto-mobile__eric.png',
-        verified: true,
-      ),
-      expressionData: CentralizedLongFormExpression(
-        title: 'Dynamic form is in motion!',
-        body: "Hey! Eric here. We're currently working with a London-based dev "
-            "agency called DevAngels to build out our dynamic, rich text editor. Soon, you'll be able to create short or longform expressions that contain text, links, images complemented with features such as bullet points, horiozntal lines, bold and italic font, and much more. This should be done in the next 1 or 2 weeks so stay tuned!",
-      ),
-    ),
-  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,7 +49,7 @@ class CreateResonationState extends State<CreateResonation> {
                     textInputAction: TextInputAction.done,
                   ),
                 ),
-                ExpressionPreviewEmbed(expression: expressions[0]),
+                ExpressionPreviewEmbed(expression: widget.expression),
               ],
             )),
           ],

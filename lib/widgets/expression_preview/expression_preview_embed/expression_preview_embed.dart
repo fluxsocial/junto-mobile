@@ -18,6 +18,7 @@ class ExpressionPreviewEmbed extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(color: Color(0xffeeeeee), width: 1),
