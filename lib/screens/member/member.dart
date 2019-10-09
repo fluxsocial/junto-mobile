@@ -1,27 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/member/member_appbar.dart';
 import 'package:junto_beta_mobile/screens/member/member_expanded.dart';
 import 'package:junto_beta_mobile/palette.dart';
 
-class JuntoMember extends StatelessWidget {
-  // placeholder member details
-  final String memberHandle = 'sunyata';
-  final String memberName = 'Eric Yang';
-  final String memberProfilePicture = 'assets/images/junto-mobile__eric.png';
-  final String memberBio = 'on the vibe';
-  final String memberLocation = 'Spirit';
-  final String memberWebsite = 'junto.foundation';
+class JuntoMember extends StatefulWidget {
+  const JuntoMember({
+    Key key,
+    @required this.profile,
+  }) : super(key: key);
 
+  static Route<dynamic> route(UserProfile profile) {
+    return CupertinoPageRoute<dynamic>(
+      builder: (BuildContext context) {
+        return JuntoMember(
+          profile: profile,
+        );
+      },
+    );
+  }
+
+  final UserProfile profile;
+
+  @override
+  _JuntoMemberState createState() => _JuntoMemberState();
+}
+
+class _JuntoMemberState extends State<JuntoMember> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(45),
-        child: MemberAppbar('sunyata'),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(45),
+        child: MemberAppbar(widget.profile.username),
       ),
       backgroundColor: Colors.white,
       body: ListView(
@@ -65,10 +80,13 @@ class JuntoMember extends StatelessWidget {
                               CupertinoPageRoute<dynamic>(
                                 builder: (BuildContext context) =>
                                     MemberExpanded(
-                                        handle: memberHandle,
-                                        name: memberName,
-                                        profilePicture: memberProfilePicture,
-                                        bio: memberBio),
+                                  handle: widget.profile.username,
+                                  name: '${widget.profile.firstName} '
+                                      '${widget.profile.lastName}',
+                                  profilePicture:
+                                      'assets/images/junto-mobile__logo.png',
+                                  bio: widget.profile.bio,
+                                ),
                               ),
                             );
                           },
@@ -85,7 +103,7 @@ class JuntoMember extends StatelessWidget {
                             ),
                             child: ClipOval(
                               child: Image.asset(
-                                memberProfilePicture,
+                                'assets/images/junto-mobile__logo.png',
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -174,59 +192,56 @@ class JuntoMember extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          memberName,
+                          '${widget.profile.firstName} ${widget.profile.lastName}',
                           style: const TextStyle(
                               fontSize: 20, fontWeight: FontWeight.w700),
                         ),
                         const SizedBox(height: 10),
-                        Text(memberBio, style: const TextStyle(fontSize: 15)),
+                        Text(widget.profile.bio,
+                            style: const TextStyle(fontSize: 15)),
                         const SizedBox(height: 10),
                         Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Container(
-                                margin: const EdgeInsets.only(right: 15),
-                                child: Row(
-                                  children: <Widget>[
-                                    Image.asset(
-                                      'assets/images/junto-mobile__location.png',
-                                      height: 17,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              margin: const EdgeInsets.only(right: 15),
+                              child: Row(
+                                children: <Widget>[
+                                  Image.asset(
+                                    'assets/images/junto-mobile__location.png',
+                                    height: 17,
+                                    color: JuntoPalette.juntoSleek,
+                                  ),
+                                  const SizedBox(width: 5),
+                                  const Text(
+                                    'Somewhere cool',
+                                    style: TextStyle(
                                       color: JuntoPalette.juntoSleek,
                                     ),
-                                    const SizedBox(width: 5),
-                                    Text(
-                                      memberLocation,
-                                      style: const TextStyle(
-                                        color: JuntoPalette.juntoSleek,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                              const SizedBox(height: 10),
-                              Container(
-                                child: Row(
-                                  children: <Widget>[
-                                    Image.asset(
-                                      'assets/images/junto-mobile__link.png',
-                                      height: 17,
-                                      color: JuntoPalette.juntoSleek,
-                                    ),
-                                    const SizedBox(width: 5),
-                                    Text(
-                                      memberWebsite,
-                                      style: const TextStyle(
-                                          color: JuntoPalette.juntoPrimary),
-                                    )
-                                  ],
-                                ),
+                            ),
+                            const SizedBox(height: 10),
+                            Container(
+                              child: Row(
+                                children: <Widget>[
+                                  Image.asset(
+                                    'assets/images/junto-mobile__link.png',
+                                    height: 17,
+                                    color: JuntoPalette.juntoSleek,
+                                  ),
+                                  const SizedBox(width: 5),
+                                  const Text(
+                                    'junto.foundation',
+                                    style: TextStyle(
+                                        color: JuntoPalette.juntoPrimary),
+                                  )
+                                ],
                               ),
-                              Container(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 25),
-                                  child: const Text(
-                                      '// This is what a profile/den looks like when you are viewing someone else. You will be able to see both their public expressions and collections. Will be fully built / dynamic in a few days..')),
-                            ]),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
