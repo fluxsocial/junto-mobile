@@ -46,7 +46,7 @@ class MemberAppbar extends StatelessWidget {
                 onTap: () {
                   MemberActionItems().buildMemberActionItems(context);
                 },
-                child: Icon(CustomIcons.more),
+                child: const Icon(CustomIcons.more),
               )
             ],
           ),

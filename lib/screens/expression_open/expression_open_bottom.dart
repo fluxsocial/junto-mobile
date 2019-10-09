@@ -42,11 +42,11 @@ class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
                       color: const Color(0xff999999),
                     ),
                     const SizedBox(width: 5),
-                    Text(
+                    const Text(
                       'Resonate',
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
-                        color: const Color(0xff999999),
+                        color: Color(0xff999999),
                       ),
                     )
                   ],

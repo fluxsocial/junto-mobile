@@ -68,11 +68,11 @@ class ExpressionOpenState extends State<ExpressionOpen> {
     }
   }
 
-  _createCommentIcon(bool createComment) {
+  Widget _createCommentIcon(bool createComment) {
     if (createComment == true) {
       return GestureDetector(
         onTap: () {},
-        child: Icon(
+        child: const Icon(
           Icons.send,
           size: 20,
           color: JuntoPalette.juntoPrimary,
@@ -88,20 +88,20 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   }
 
   // Swipe down to dismiss keyboard
-  _onDragDown(DragDownDetails details) {
-    FocusScope.of(context).requestFocus(new FocusNode());
+  void _onDragDown(DragDownDetails details) {
+    FocusScope.of(context).requestFocus(FocusNode());
   }
 
   // Bring the focus back to the TextField
-  _focusTextField() {
+  void _focusTextField() {
     FocusScope.of(context).requestFocus(_focusNode);
   }
 
   // Open modal bottom sheet and refocus TextField after dismissed
-  _showPrivacyModalSheet() async {
+  Future<void> _showPrivacyModalSheet() async {
     await showModalBottomSheet(
       context: context,
-      builder: (context) => Container(
+      builder: (BuildContext context) => Container(
         color: const Color(0xff737373),
         child: Container(
           height: 240,
@@ -116,7 +116,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               ListTile(
                 onTap: () {
                   setState(() {
@@ -126,15 +126,17 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                 },
                 title: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
+                  children: const <Widget>[
                     Text(
                       'Public',
                       style:
                           TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
                     ),
-                    const SizedBox(height: 5),
-                    const Text(
-                        'Your comment will visible to everyone who can see this expression.')
+                    SizedBox(height: 5),
+                    Text(
+                      'Your comment will visible to everyone who can see '
+                      'this expression.',
+                    )
                   ],
                 ),
               ),
@@ -148,15 +150,17 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                 },
                 title: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
+                  children: const <Widget>[
                     Text(
                       'Private',
                       style:
                           TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
                     ),
-                    const SizedBox(height: 5),
-                    const Text(
-                        'Your comment will only be visible to the creator of this expression.')
+                    SizedBox(height: 5),
+                    Text(
+                      'Your comment will only be visible to the creator of '
+                      'this expression.',
+                    )
                   ],
                 ),
               ),
@@ -171,7 +175,6 @@ class ExpressionOpenState extends State<ExpressionOpen> {
 
   @override
   Widget build(BuildContext context) {
-    final double bottomInsets = MediaQuery.of(context).viewInsets.bottom;
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(45.0),
@@ -213,7 +216,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                         color: Colors.white,
                         child: Row(
                           children: <Widget>[
-                            Text(
+                            const Text(
                               'Show replies (9)',
                               style: TextStyle(fontWeight: FontWeight.w500),
                             ),
@@ -296,7 +299,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                             ),
                           ),
                           Container(
-                            padding: EdgeInsets.only(left: 15),
+                            padding: const EdgeInsets.only(left: 15),
                             decoration: BoxDecoration(
                               color: const Color(0xfff9f9f9),
                               borderRadius: BorderRadius.circular(10),
@@ -314,7 +317,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                                   child: TextField(
                                     focusNode: _focusNode,
                                     controller: commentController,
-                                    onChanged: (value) {
+                                    onChanged: (String value) {
                                       if (value == '') {
                                         setState(() {
                                           createComment = false;
@@ -325,7 +328,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                                         });
                                       }
                                     },
-                                    decoration: InputDecoration(
+                                    decoration: const InputDecoration(
                                       border: InputBorder.none,
                                       // hintText: 'reply',
                                     ),
@@ -347,12 +350,12 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                     ),
                     _focusNode.hasFocus
                         ? _createCommentIcon(createComment)
-                        : SizedBox()
+                        : const SizedBox()
                   ],
                 ),
                 _focusNode.hasFocus
                     ? Container(
-                        padding: EdgeInsets.symmetric(vertical: 10),
+                        padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Row(
                           children: <Widget>[
                             GestureDetector(
@@ -366,8 +369,8 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                                   children: <Widget>[
                                     Text(
                                       _commentPrivacy,
-                                      style: TextStyle(
-                                          color: const Color(0xff333333),
+                                      style: const TextStyle(
+                                          color: Color(0xff333333),
                                           fontWeight: FontWeight.w500),
                                     ),
                                     Icon(Icons.keyboard_arrow_down, size: 14)
@@ -378,7 +381,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                           ],
                         ),
                       )
-                    : SizedBox()
+                    : const SizedBox()
               ],
             ),
           ),

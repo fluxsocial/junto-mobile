@@ -16,7 +16,7 @@ void main() {
       CollectiveProviderCentralized();
 
   setUpAll(() {
-    SharedPreferences.setMockInitialValues({
+    SharedPreferences.setMockInitialValues(<String, String>{
       'flutter.auth': kMockCookie,
     });
   });

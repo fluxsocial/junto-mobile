@@ -3,13 +3,18 @@ import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/palette.dart';
 
 class MemberExpanded extends StatelessWidget {
-  MemberExpanded(
-      {Key key, this.handle, this.name, this.profilePicture, this.bio})
-      : super(key: key);
-  String handle;
-  String name;
-  String profilePicture;
-  String bio;
+  const MemberExpanded({
+    Key key,
+    this.handle,
+    this.name,
+    this.profilePicture,
+    this.bio,
+  }) : super(key: key);
+  final String handle;
+  final String name;
+  final String profilePicture;
+  final String bio;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +42,7 @@ class MemberExpanded extends StatelessWidget {
                 ),
                 Text(
                   handle,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
                     color: Color(0xff333333),
@@ -79,17 +84,17 @@ class MemberExpanded extends StatelessWidget {
                       const SizedBox(height: 5),
                       Text(
                         name,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 28, fontWeight: FontWeight.w700),
                       ),
                       const SizedBox(height: 5),
                       Text(
                         bio,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 17, fontWeight: FontWeight.w500),
                       ),
                       const SizedBox(height: 25),
-                      Text(
+                      const Text(
                         'This is the expanded version of a den/profile. The image will be full size as well as a bio, which will have a much larger character limit to enable people to express themseleves in more depth vs other platforms.',
                         style: TextStyle(
                             fontSize: 15, fontWeight: FontWeight.w500),

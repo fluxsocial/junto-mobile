@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/palette.dart';
-import 'package:junto_beta_mobile/styles.dart';
 import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open_action_items.dart';
 
 class SphereOpenAppbar extends StatelessWidget {
@@ -31,7 +30,7 @@ class SphereOpenAppbar extends StatelessWidget {
                 color: Colors.white,
                 width: 38,
                 alignment: Alignment.centerLeft,
-                child: Icon(
+                child: const Icon(
                   CustomIcons.back_arrow_left,
                   color: JuntoPalette.juntoSleek,
                   size: 28,
@@ -42,7 +41,7 @@ class SphereOpenAppbar extends StatelessWidget {
               margin: const EdgeInsets.only(right: 5),
               child: Text(
                 '/s/' + sphereHandle,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
                   color: Color(0xff333333),

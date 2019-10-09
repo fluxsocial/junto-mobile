@@ -53,7 +53,7 @@ class CollectiveFilterScreen extends StatelessWidget {
                         bool isFocused,
                       }) =>
                           null,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: 'filter by channel',
                       ),

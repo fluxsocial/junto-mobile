@@ -70,7 +70,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
       ),
       expressionData: CentralizedShortFormExpression(
           body:
-              "Have you heard of Paradym sound healing meditation? Join us for a transformational session this Friday!",
+              'Have you heard of Paradym sound healing meditation? Join us for a transformational session this Friday!',
           background: 'four'),
     ),
     CentralizedExpressionResponse(

@@ -41,9 +41,7 @@ class _CreateSphereNextState extends State<CreateSphereNext> {
       privacy: _selectedType,
     );
     try {
-      final CentralizedSphereResponse _response =
-          await Provider.of<SpheresProvider>(context)
-              .createSphere(updatedSphere);
+      await Provider.of<SpheresProvider>(context).createSphere(updatedSphere);
       JuntoOverlay.hide();
       Navigator.pushAndRemoveUntil(
           context,
@@ -93,7 +91,7 @@ class _CreateSphereNextState extends State<CreateSphereNext> {
                       color: Colors.white,
                       width: 38,
                       alignment: Alignment.centerLeft,
-                      child: Icon(
+                      child: const Icon(
                         CustomIcons.back_arrow_left,
                         color: JuntoPalette.juntoSleek,
                         size: 28,
@@ -229,11 +227,11 @@ class _SelectionTileState extends State<_SelectionTile> {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                     colors: widget.isSelected
-                        ? [
+                        ? <Color>[
                             JuntoPalette.juntoSecondary,
                             JuntoPalette.juntoPrimary
                           ]
-                        : [Colors.white, Colors.white],
+                        : <Color>[Colors.white, Colors.white],
                     begin: Alignment.bottomLeft,
                     end: Alignment.topRight),
                 // color: widget.isSelected ? JuntoPalette.juntoPrimary : null,

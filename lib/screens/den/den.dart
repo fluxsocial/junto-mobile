@@ -124,8 +124,7 @@ class JuntoDenState extends State<JuntoDen> {
     }
   }
 
-
-  _togglePrivateDomain(domain) {
+  void _togglePrivateDomain(String domain) {
     if (domain == 'expressions') {
       setState(() {
         privateExpressionsActive = true;
@@ -139,7 +138,7 @@ class JuntoDenState extends State<JuntoDen> {
     }
   }
 
-  _buildDenList() {
+  Widget _buildDenList() {
     if (publicExpressionsActive) {
       return ListView(
         shrinkWrap: true,
@@ -157,7 +156,7 @@ class JuntoDenState extends State<JuntoDen> {
     }
   }
 
-  List _tabs = ['Open Den', 'Private Den'];
+  final List<String> _tabs = <String>['Open Den', 'Private Den'];
 
   @override
   Widget build(BuildContext context) {
@@ -166,14 +165,14 @@ class JuntoDenState extends State<JuntoDen> {
       child: DefaultTabController(
         length: _tabs.length,
         child: NestedScrollView(
-          physics: ClampingScrollPhysics(),
+          physics: const ClampingScrollPhysics(),
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               SliverAppBar(
                 brightness: Brightness.light,
                 automaticallyImplyLeading: false,
                 primary: false,
-                actions: <Widget>[SizedBox(height: 0, width: 0)],
+                actions: const <Widget>[SizedBox(height: 0, width: 0)],
                 backgroundColor: Colors.white,
                 pinned: false,
                 flexibleSpace: FlexibleSpaceBar(
@@ -261,14 +260,16 @@ class JuntoDenState extends State<JuntoDen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Text(
+                              const Text(
                                 'Eric Yang',
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: 20, fontWeight: FontWeight.w700),
                               ),
                               const SizedBox(height: 10),
-                              Text('on the vibe',
-                                  style: const TextStyle(fontSize: 15)),
+                              const Text(
+                                'on the vibe',
+                                style: TextStyle(fontSize: 15),
+                              ),
                               const SizedBox(height: 10),
                               Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -325,18 +326,18 @@ class JuntoDenState extends State<JuntoDen> {
               SliverPersistentHeader(
                 delegate: _SliverAppBarDelegate(
                   TabBar(
-                    labelPadding: EdgeInsets.all(0),
+                    labelPadding: const EdgeInsets.all(0),
                     isScrollable: true,
-                    labelColor: Color(0xff333333),
-                    labelStyle: TextStyle(
+                    labelColor: const Color(0xff333333),
+                    labelStyle: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
                       color: Color(0xff333333),
                     ),
                     indicatorWeight: 0.0001,
                     tabs: _tabs
-                        .map((name) => Container(
-                            margin: EdgeInsets.only(right: 24),
+                        .map((String name) => Container(
+                            margin: const EdgeInsets.only(right: 24),
                             color: Colors.white,
                             child: Tab(
                               text: name,
@@ -350,15 +351,13 @@ class JuntoDenState extends State<JuntoDen> {
           },
           body: TabBarView(
               // These are the contents of the tab views, below the tabs.
-              children: [_buildOpenDen(), _buildPrivateDen()]),
-
+              children: <Widget>[_buildOpenDen(), _buildPrivateDen()]),
         ),
       ),
     );
   }
 
-
-  _buildOpenDen() {
+  Widget _buildOpenDen() {
     if (publicExpressionsActive) {
       return ListView(
         children: <Widget>[
@@ -382,9 +381,10 @@ class JuntoDenState extends State<JuntoDen> {
         children: <Widget>[_buildOpenDenToggle(), _buildDenList()],
       );
     }
+    return Container();
   }
 
-  _buildOpenDenToggle() {
+  Widget _buildOpenDenToggle() {
     return Container(
       padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 10),
       child: Column(
@@ -480,7 +480,7 @@ class JuntoDenState extends State<JuntoDen> {
     );
   }
 
-  _buildPrivateDen() {
+  Widget _buildPrivateDen() {
     if (privateExpressionsActive) {
       return ListView(
         children: <Widget>[
@@ -504,9 +504,10 @@ class JuntoDenState extends State<JuntoDen> {
         children: <Widget>[_buildPrivateDenToggle(), _buildDenList()],
       );
     }
+    return Container();
   }
 
-  _buildPrivateDenToggle() {
+  Widget _buildPrivateDenToggle() {
     return Container(
       padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 10),
       child: Column(
@@ -515,11 +516,11 @@ class JuntoDenState extends State<JuntoDen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Container(
-                padding: EdgeInsets.all(2.5),
+                padding: const EdgeInsets.all(2.5),
                 height: 30,
                 width: 80,
                 decoration: BoxDecoration(
-                  color: Color(0xfffeeeeee),
+                  color: const Color(0xffeeeeee),
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: Row(
@@ -535,15 +536,15 @@ class JuntoDenState extends State<JuntoDen> {
                         decoration: BoxDecoration(
                           color: privateExpressionsActive
                               ? Colors.white
-                              : Color(0xffeeeeee),
+                              : const Color(0xffeeeeee),
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Icon(
                           CustomIcons.half_lotus,
                           size: 12,
                           color: privateExpressionsActive
-                              ? Color(0xff555555)
-                              : Color(0xff999999),
+                              ? const Color(0xff555555)
+                              : const Color(0xff999999),
                         ),
                       ),
                     ),
@@ -558,15 +559,15 @@ class JuntoDenState extends State<JuntoDen> {
                         decoration: BoxDecoration(
                           color: privateCollectionActive
                               ? Colors.white
-                              : Color(0xffeeeeee),
+                              : const Color(0xffeeeeee),
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Icon(
                           Icons.collections,
                           size: 12,
                           color: privateCollectionActive
-                              ? Color(0xff555555)
-                              : Color(0xff999999),
+                              ? const Color(0xff555555)
+                              : const Color(0xff999999),
                         ),
                       ),
                     ),
@@ -578,8 +579,9 @@ class JuntoDenState extends State<JuntoDen> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          CupertinoPageRoute(
-                            builder: (context) => DenCreateCollection(),
+                          CupertinoPageRoute<dynamic>(
+                            builder: (BuildContext context) =>
+                                DenCreateCollection(),
                           ),
                         );
                       },
@@ -589,11 +591,11 @@ class JuntoDenState extends State<JuntoDen> {
                         child: Icon(
                           Icons.add,
                           size: 20,
-                          color: Color(0xff555555),
+                          color: const Color(0xff555555),
                         ),
                       ),
                     )
-                  : SizedBox()
+                  : const SizedBox()
             ],
           )
         ],
@@ -605,19 +607,20 @@ class JuntoDenState extends State<JuntoDen> {
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   _SliverAppBarDelegate(this._tabBar);
 
-  final _tabBar;
+  final TabBar _tabBar;
 
   @override
   double get minExtent => _tabBar.preferredSize.height + .5;
+
   @override
   double get maxExtent => _tabBar.preferredSize.height + .5;
 
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return new Container(
-        padding: EdgeInsets.symmetric(horizontal: 10),
-        decoration: BoxDecoration(
+    return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        decoration: const BoxDecoration(
           color: Colors.white,
           border: Border(
             bottom: BorderSide(color: Color(0xffeeeeee), width: .5),

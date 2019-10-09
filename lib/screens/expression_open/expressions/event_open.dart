@@ -65,7 +65,7 @@ class EventOpen extends StatelessWidget {
                     Row(
                       children: <Widget>[
                         Icon(Icons.timer),
-                        SizedBox(width: 5),
+                        const SizedBox(width: 5),
                         Text(
                           eventTime,
                           style: const TextStyle(
@@ -77,7 +77,7 @@ class EventOpen extends StatelessWidget {
                     Row(
                       children: <Widget>[
                         Icon(Icons.location_searching),
-                        SizedBox(width: 5),
+                        const SizedBox(width: 5),
                         Text(
                           eventLocation,
                           style: const TextStyle(

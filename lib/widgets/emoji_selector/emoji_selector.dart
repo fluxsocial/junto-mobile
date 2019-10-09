@@ -18,7 +18,7 @@ class EmojiSelector extends StatelessWidget {
       margin: const EdgeInsets.all(12.0),
       child: GridView.builder(
         scrollDirection: Axis.horizontal,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 6,
           crossAxisSpacing: 6.0,
           mainAxisSpacing: 6.0,

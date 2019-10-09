@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
 import 'package:junto_beta_mobile/palette.dart';
 
 class CreateBullet extends StatefulWidget {
@@ -48,6 +47,7 @@ class CreateBulletState extends State<CreateBullet> {
     super.initState();
   }
 
+//ignore: unused_field
   final Map<String, dynamic> _bulletExpression = <String, dynamic>{
     'expression': <String, dynamic>{
       'expression_type': 'bulletform',
@@ -87,7 +87,7 @@ class CreateBulletState extends State<CreateBullet> {
                             bool isFocused,
                           }) =>
                               null,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             border: InputBorder.none,
                             hintText: 'Title (optional)',
                           ),
@@ -120,68 +120,68 @@ class CreateBulletState extends State<CreateBullet> {
                       children: _bullets
                           .map(
                             (Map<String, dynamic> bullet) => Container(
-                                  margin: const EdgeInsets.only(right: 10),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(
-                                      color: const Color(0xffdddddd),
-                                      width: 1,
+                              margin: const EdgeInsets.only(right: 10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(
+                                  color: const Color(0xffdddddd),
+                                  width: 1,
+                                ),
+                              ),
+                              height: 200,
+                              width: MediaQuery.of(context).size.width - 20,
+                              child: Column(
+                                children: <Widget>[
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                      vertical: 10,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Text(
+                                          bullet['key'].toString() +
+                                              '/' +
+                                              _bullets.length.toString(),
+                                          style: const TextStyle(
+                                            color: Color(
+                                              0xff333333,
+                                            ),
+                                          ),
+                                        ),
+                                        bullet['key'] > 1
+                                            ? _removeBulletWidget()
+                                            : Container()
+                                      ],
                                     ),
                                   ),
-                                  height: 200,
-                                  width: MediaQuery.of(context).size.width - 20,
-                                  child: Column(
-                                    children: <Widget>[
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 10,
-                                          vertical: 10,
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            Text(
-                                              bullet['key'].toString() +
-                                                  '/' +
-                                                  _bullets.length.toString(),
-                                              style: const TextStyle(
-                                                color: Color(
-                                                  0xff333333,
-                                                ),
-                                              ),
-                                            ),
-                                            bullet['key'] > 1
-                                                ? _removeBulletWidget()
-                                                : Container()
-                                          ],
-                                        ),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
+                                    margin: const EdgeInsets.only(top: 20),
+                                    child: TextField(
+                                      buildCounter: (
+                                        BuildContext context, {
+                                        int currentLength,
+                                        int maxLength,
+                                        bool isFocused,
+                                      }) =>
+                                          null,
+                                      decoration: const InputDecoration(
+                                        border: InputBorder.none,
                                       ),
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 10),
-                                        margin: const EdgeInsets.only(top: 20),
-                                        child: TextField(
-                                          buildCounter: (
-                                            BuildContext context, {
-                                            int currentLength,
-                                            int maxLength,
-                                            bool isFocused,
-                                          }) =>
-                                              null,
-                                          decoration: InputDecoration(
-                                            border: InputBorder.none,
-                                          ),
-                                          cursorColor: JuntoPalette.juntoGrey,
-                                          cursorWidth: 2,
-                                          maxLines: null,
-                                          maxLength: 220,
-                                          textInputAction: TextInputAction.done,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
+                                      cursorColor: JuntoPalette.juntoGrey,
+                                      cursorWidth: 2,
+                                      maxLines: null,
+                                      maxLength: 220,
+                                      textInputAction: TextInputAction.done,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
                           )
                           .toList(),
                     ))

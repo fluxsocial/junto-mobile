@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
-import 'package:junto_beta_mobile/models/pack.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/providers/provider.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_preview/pack_preview.dart';
@@ -16,10 +15,6 @@ class JuntoPacks extends StatefulWidget {
 }
 
 class JuntoPacksState extends State<JuntoPacks> with ListDistinct {
-  String _handle;
-  String _name;
-  String _profilePicture; 
-  String _bio;
   UserProvider _userProvider;
   final AsyncMemoizer<UserGroupsResponse> _memoizer =
       AsyncMemoizer<UserGroupsResponse>();

@@ -24,7 +24,10 @@ class CreateActions extends StatefulWidget {
 }
 
 class CreateActionsState extends State<CreateActions> {
+  //ignore: unused_field
   final List<String> _channels = <String>[];
+
+  //ignore: unused_field
   final String _selectedType = 'Collective';
 
   // instantiate TextEditingController to pass to TextField widget
@@ -133,9 +136,9 @@ class CreateActionsState extends State<CreateActions> {
           child: Container(
             height: MediaQuery.of(context).size.height * .9,
             padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.white,
-              borderRadius: const BorderRadius.only(
+              borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(10),
                 topRight: Radius.circular(10),
               ),
@@ -208,9 +211,9 @@ class CreateActionsState extends State<CreateActions> {
           child: Container(
             height: MediaQuery.of(context).size.height * .9,
             padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.white,
-              borderRadius: const BorderRadius.only(
+              borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(10),
                 topRight: Radius.circular(10),
               ),

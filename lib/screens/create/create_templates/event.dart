@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:junto_beta_mobile/API.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/utils/form-validation.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 
-const kGoogleApiKey = 'AIzaSyAhV0-bpFqLYSV8xmFJ7JAR5bupoLfTaO8';
+const String kGoogleApiKey = 'AIzaSyAhV0-bpFqLYSV8xmFJ7JAR5bupoLfTaO8';
 
 // GoogleMapsPlaces _places = GoogleMapsPlaces(apiKey: kGoogleApiKey);
 
@@ -213,8 +212,8 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                     color: const Color(0xfffbfbfb),
                     height: 200,
                     width: MediaQuery.of(context).size.width,
-                    child: Center(
-                      child: const Text('Add a cover photo (optional)'),
+                    child: const Center(
+                      child: Text('Add a cover photo (optional)'),
                     ),
                   ),
                   GestureDetector(
@@ -365,12 +364,12 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                       decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Location',
-                        hintStyle: const TextStyle(
+                        hintStyle: TextStyle(
                             color: Color(0xff999999),
                             fontSize: 17,
                             fontWeight: FontWeight.w700),
                       ),
-                      cursorColor: Color(0xff333333),
+                      cursorColor: const Color(0xff333333),
                       cursorWidth: 2,
                       maxLines: null,
                       style: const TextStyle(
@@ -394,12 +393,12 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                       decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Details',
-                        hintStyle: const TextStyle(
+                        hintStyle: TextStyle(
                             color: Color(0xff999999),
                             fontSize: 17,
                             fontWeight: FontWeight.w700),
                       ),
-                      cursorColor: Color(0xff333333),
+                      cursorColor: const Color(0xff333333),
                       cursorWidth: 2,
                       maxLines: null,
                       style: const TextStyle(

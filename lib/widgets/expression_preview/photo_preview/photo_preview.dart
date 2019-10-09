@@ -35,12 +35,12 @@ class PhotoPreview extends StatelessWidget {
           child: Image.asset(expression.expressionData.image,
               fit: BoxFit.fitWidth),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         Container(
-          padding: EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Text(
             expression.expressionData.caption,
-            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
+            style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
           ),
         )
       ],

@@ -23,7 +23,7 @@ class PhotoOpen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Text(
               photoCaption,
-              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
+              style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
             ),
           )
         ],

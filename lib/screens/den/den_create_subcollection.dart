@@ -5,17 +5,14 @@ import 'package:junto_beta_mobile/custom_icons.dart';
 
 class DenCreateSubcollection extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return DenCreateSubcollectionState();
-  }
+  State<StatefulWidget> createState() => DenCreateSubcollectionState();
 }
 
 class DenCreateSubcollectionState extends State<DenCreateSubcollection> {
   bool _subcollectionPublic = true;
   bool _subcollectionPrivate = false;
 
-  _toggleSubcollectionPrivacy(privacy) {
+  void _toggleSubcollectionPrivacy(String privacy) {
     if (privacy == 'public') {
       setState(() {
         _subcollectionPublic = true;
@@ -61,7 +58,7 @@ class DenCreateSubcollectionState extends State<DenCreateSubcollection> {
                     size: 24,
                   ),
                 ),
-                Text(
+                const Text(
                   'Create subcollection',
                   style: TextStyle(
                       fontSize: 14,
@@ -93,14 +90,14 @@ class DenCreateSubcollectionState extends State<DenCreateSubcollection> {
             child: ListView(
               children: <Widget>[
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Container(
                         // padding: EdgeInsets.symmetric(vertical: 15),
                         width: MediaQuery.of(context).size.width - 20,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           border: Border(
                             bottom: BorderSide(
                               color: Color(0xffeeeeee),
@@ -119,12 +116,12 @@ class DenCreateSubcollectionState extends State<DenCreateSubcollection> {
                           decoration: const InputDecoration(
                             border: InputBorder.none,
                             hintText: 'Name your subcollection',
-                            hintStyle: const TextStyle(
+                            hintStyle: TextStyle(
                                 color: Color(0xff999999),
                                 fontSize: 20,
                                 fontWeight: FontWeight.w700),
                           ),
-                          cursorColor: Color(0xff333333),
+                          cursorColor: const Color(0xff333333),
                           cursorWidth: 2,
                           maxLines: null,
                           style: const TextStyle(
@@ -136,8 +133,8 @@ class DenCreateSubcollectionState extends State<DenCreateSubcollection> {
                         ),
                       ),
                       Container(
-                        padding: EdgeInsets.symmetric(vertical: 15),
-                        decoration: BoxDecoration(
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        decoration: const BoxDecoration(
                           border: Border(
                             bottom: BorderSide(
                               color: Color(0xffeeeeee),
@@ -150,10 +147,10 @@ class DenCreateSubcollectionState extends State<DenCreateSubcollection> {
                             Icon(
                               CustomIcons.half_lotus,
                               size: 17,
-                              color: Color(0xff333333),
+                              color: const Color(0xff333333),
                             ),
-                            SizedBox(width: 20),
-                            Text(
+                            const SizedBox(width: 20),
+                            const Text(
                               'add expressions',
                               style: TextStyle(
                                   fontSize: 14, fontWeight: FontWeight.w500),
@@ -162,8 +159,8 @@ class DenCreateSubcollectionState extends State<DenCreateSubcollection> {
                         ),
                       ),
                       Container(
-                        padding: EdgeInsets.symmetric(vertical: 15),
-                        decoration: BoxDecoration(
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        decoration: const BoxDecoration(
                           border: Border(
                             bottom: BorderSide(
                               color: Color(0xffeeeeee),
@@ -174,7 +171,7 @@ class DenCreateSubcollectionState extends State<DenCreateSubcollection> {
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text(
+                              const Text(
                                 'Keep subcollection private',
                                 style: TextStyle(
                                     fontSize: 14, fontWeight: FontWeight.w500),
@@ -182,16 +179,16 @@ class DenCreateSubcollectionState extends State<DenCreateSubcollection> {
                               Row(
                                 children: <Widget>[
                                   Container(
-                                    padding: EdgeInsets.all(2.5),
+                                    padding: const EdgeInsets.all(2.5),
                                     height: 28,
                                     width: 60,
                                     decoration: BoxDecoration(
                                       color: _subcollectionPublic
-                                          ? Color(0xfffeeeeee)
+                                          ? const Color(0xffeeeeee)
                                           : null,
                                       gradient: _subcollectionPrivate
-                                          ? LinearGradient(
-                                              colors: [
+                                          ? const LinearGradient(
+                                              colors: <Color>[
                                                 JuntoPalette.juntoSecondary,
                                                 JuntoPalette.juntoPrimary
                                               ],
@@ -235,7 +232,7 @@ class DenCreateSubcollectionState extends State<DenCreateSubcollection> {
                                             decoration: BoxDecoration(
                                               color: _subcollectionPrivate
                                                   ? Colors.white
-                                                  : Color(0xffeeeeee),
+                                                  : const Color(0xffeeeeee),
                                               borderRadius:
                                                   BorderRadius.circular(25),
                                             ),

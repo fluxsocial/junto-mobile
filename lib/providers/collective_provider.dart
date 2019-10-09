@@ -237,7 +237,7 @@ List<CentralizedExpressionResponse> sampleExpressions =
       title: 'Welcome to Junto!',
       body: "Hey! I'm Nash. Over the past few weeks, I've been working with"
           " Eric and the rest of the Junto team to prepare for Junto's "
-          "upcoming release. I also just finished a project for the "
+          'upcoming release. I also just finished a project for the '
           "government of Trinidad and Tobago (where i'm from) and I'm stoked to say we won first place! Anyway, really looking forward to watching this g,o live. Can't wait to meet you all!",
     ),
   ),

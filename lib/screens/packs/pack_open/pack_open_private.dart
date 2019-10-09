@@ -43,12 +43,12 @@ class _PackOpenPrivateState extends State<PackOpenPrivate> with HideFab {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        SizedBox(height: 15),
-        Text(
+        const SizedBox(height: 15),
+        const Text(
           'Placeholder - this will contain private expressions of pack owner..',
           textAlign: TextAlign.center,
         ),
-        SizedBox(height: 15),
+        const SizedBox(height: 15),
         Expanded(
           child: ListView(
             controller: _packOpenClosedController,

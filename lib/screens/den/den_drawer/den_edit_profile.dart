@@ -3,10 +3,10 @@ import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/palette.dart';
 
 class DenEditProfile extends StatelessWidget {
-  String name = 'Eric Yang';
-  String bio = '"To a mind that is still, the whole universe surrenders"';
-  String location = 'Spirit';
-  String website = 'junto.foundation';
+  final String name = 'Eric Yang';
+  final String bio = '"To a mind that is still, the whole universe surrenders"';
+  final String location = 'Spirit';
+  final String website = 'junto.foundation';
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +89,7 @@ class DenEditProfile extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 10),
-                      Text(
+                      const Text(
                         'Edit profile picture',
                         style: TextStyle(fontWeight: FontWeight.w500),
                       )
@@ -106,7 +106,7 @@ class DenEditProfile extends StatelessWidget {
                   ),
                   child: TextFormField(
                       initialValue: name,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           border: InputBorder.none, hintText: 'name'),
                       maxLines: null,
                       style: const TextStyle(
@@ -123,7 +123,7 @@ class DenEditProfile extends StatelessWidget {
                   ),
                   child: TextFormField(
                       initialValue: bio,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           border: InputBorder.none, hintText: 'bio'),
                       maxLines: null,
                       style: const TextStyle(
@@ -140,7 +140,7 @@ class DenEditProfile extends StatelessWidget {
                   ),
                   child: TextFormField(
                       initialValue: location,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           border: InputBorder.none, hintText: 'location'),
                       maxLines: null,
                       style: const TextStyle(
@@ -157,7 +157,7 @@ class DenEditProfile extends StatelessWidget {
                   ),
                   child: TextFormField(
                     initialValue: website,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         border: InputBorder.none, hintText: 'website'),
                     maxLines: null,
                     style: const TextStyle(fontSize: 14),

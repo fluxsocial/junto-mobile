@@ -27,7 +27,7 @@ class LongformPreview extends StatelessWidget {
             textAlign: TextAlign.left,
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(
+            style: const TextStyle(
                 fontSize: 15, height: 1.4, fontWeight: FontWeight.w500),
           ),
         ],

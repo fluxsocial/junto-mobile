@@ -189,7 +189,6 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
         });
         break;
       case 3:
-
         setState(() {
           _currentScreen = 'den';
           _appbarTitle = 'sunyata';
@@ -213,15 +212,15 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
   void _buildFilterChannelModal(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      builder: (context) => Container(
-        color: Color(0xff737373),
+      builder: (BuildContext context) => Container(
+        color: const Color(0xff737373),
         child: Container(
           height: 280,
-          padding: EdgeInsets.all(10),
-          decoration: BoxDecoration(
+          padding: const EdgeInsets.all(10),
+          decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
-              topLeft: const Radius.circular(10),
+              topLeft: Radius.circular(10),
               topRight: Radius.circular(10),
             ),
           ),
@@ -233,7 +232,7 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
                 children: <Widget>[
                   Container(
                     width: MediaQuery.of(context).size.width - 60,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       border: Border(
                         bottom: BorderSide(
                           color: Color(0xffeeeeee),
@@ -253,12 +252,12 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
                       decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Filter by channel',
-                        hintStyle: const TextStyle(
+                        hintStyle: TextStyle(
                             color: Color(0xff999999),
                             fontSize: 17,
                             fontWeight: FontWeight.w500),
                       ),
-                      cursorColor: Color(0xff333333),
+                      cursorColor: const Color(0xff333333),
                       cursorWidth: 2,
                       maxLines: null,
                       style: const TextStyle(
@@ -282,6 +281,7 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
   }
 
   // Update the list of channels in state
+  //ignore: unused_element
   void _updateChannels(StateSetter updateState, String channel) {
     updateState(
       () {
@@ -295,16 +295,12 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
   }
 
   // Remove a channel from the list of channels in state
+  //ignore: unused_element
   void _removeChannel(StateSetter updateState, String channel) {
     updateState(
       () {
         _channels.remove(channel);
       },
     );
-  }
-
-  // Called when channels.length > x
-  void _nullChannels() {
-    return;
   }
 }

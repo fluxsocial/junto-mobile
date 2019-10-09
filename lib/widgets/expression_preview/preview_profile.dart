@@ -16,7 +16,9 @@ class PreviewProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //ignore: unused_local_variable
     final String firstName = expression.creator.firstName;
+    //ignore: unused_local_variable
     final String lastName = expression.creator.lastName;
     final String username = expression.creator.username;
     final String profilePicture = expression.creator.profilePicture;
@@ -54,13 +56,13 @@ class PreviewProfile extends StatelessWidget {
                     ),
                   ),
                   Container(
-
                     margin: const EdgeInsets.only(left: 7.5),
                     child: Text(
                       username,
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
-
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   )
 

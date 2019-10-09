@@ -15,7 +15,7 @@ class DenCreateCollectionState extends State<DenCreateCollection> {
   bool _collectionPublic = true;
   bool _collectionPrivate = false;
 
-  _toggleCollectionPrivacy(privacy) {
+  void _toggleCollectionPrivacy(String privacy) {
     if (privacy == 'public') {
       setState(() {
         _collectionPublic = true;
@@ -57,25 +57,26 @@ class DenCreateCollectionState extends State<DenCreateCollection> {
                     color: Colors.white,
                     width: 38,
                     alignment: Alignment.centerLeft,
-                    child: Icon(
+                    child: const Icon(
                       CustomIcons.back_arrow_left,
                       color: JuntoPalette.juntoSleek,
                       size: 28,
                     ),
                   ),
                 ),
-                Text(
+                const Text(
                   'Create collection',
                   style: TextStyle(
-                      fontSize: 14,
-                      color: Color(0xff333333),
-                      fontWeight: FontWeight.w700),
+                    fontSize: 14,
+                    color: Color(0xff333333),
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
                 Container(
                   // width: 38,
                   color: Colors.white,
                   alignment: Alignment.centerRight,
-                  child: Text(
+                  child: const Text(
                     'create',
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
@@ -103,14 +104,14 @@ class DenCreateCollectionState extends State<DenCreateCollection> {
             child: ListView(
               children: <Widget>[
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Container(
                         // padding: EdgeInsets.symmetric(vertical: 15),
                         width: MediaQuery.of(context).size.width - 20,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           border: Border(
                             bottom: BorderSide(
                               color: Color(0xffeeeeee),
@@ -129,12 +130,12 @@ class DenCreateCollectionState extends State<DenCreateCollection> {
                           decoration: const InputDecoration(
                             border: InputBorder.none,
                             hintText: 'Name your collection',
-                            hintStyle: const TextStyle(
+                            hintStyle: TextStyle(
                                 color: Color(0xff999999),
                                 fontSize: 20,
                                 fontWeight: FontWeight.w700),
                           ),
-                          cursorColor: Color(0xff333333),
+                          cursorColor: const Color(0xff333333),
                           cursorWidth: 2,
                           maxLines: null,
                           style: const TextStyle(
@@ -150,70 +151,74 @@ class DenCreateCollectionState extends State<DenCreateCollection> {
                           showModalBottomSheet(
                             isScrollControlled: true,
                             context: context,
-                            builder: (context) => Container(
-                                  color: Color(0xff737373),
-                                  child: Container(
-                                    height:
-                                        MediaQuery.of(context).size.height * .9,
-                                    padding: EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: const Radius.circular(10),
-                                        topRight: Radius.circular(10),
-                                      ),
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        SizedBox(height: 10),
-                                        Row(
-                                          children: <Widget>[
-                                            Text(
-                                              'Expressions',
-                                              style: TextStyle(
-                                                fontSize: 17,
-                                                fontWeight: FontWeight.w700,
-                                                color: Color(0xff333333),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(height: 10),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width -
-                                                  60,
-                                              decoration: BoxDecoration(
-                                                border: Border(
-                                                  bottom: BorderSide(
-                                                    color: Color(0xffeeeeee),
-                                                    width: .75,
-                                                  ),
-                                                ),
-                                              ),
-                                              child: Text(
-                                                  'This will be a feed of all of the expressions (both public and private) a member has created in addition to those that they save from other people. Therefore, collections will be a culmination of any expression a member wants, including from othere people. '),
-                                            ),
-                                          ],
+                            builder: (BuildContext context) => Container(
+                              color: const Color(0xff737373),
+                              child: Container(
+                                height: MediaQuery.of(context).size.height * .9,
+                                padding: const EdgeInsets.all(10),
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10),
+                                  ),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    const SizedBox(height: 10),
+                                    Row(
+                                      children: const <Widget>[
+                                        Text(
+                                          'Expressions',
+                                          style: TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w700,
+                                            color: Color(0xff333333),
+                                          ),
                                         ),
                                       ],
                                     ),
-                                  ),
+                                    const SizedBox(height: 10),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width -
+                                              60,
+                                          decoration: const BoxDecoration(
+                                            border: Border(
+                                              bottom: BorderSide(
+                                                color: Color(0xffeeeeee),
+                                                width: .75,
+                                              ),
+                                            ),
+                                          ),
+                                          child: const Text(
+                                            'This will be a feed of all of the'
+                                            ' expressions (both public '
+                                            'and private) a member has created in addition to '
+                                            'those that they save from other people. Therefore, collections'
+                                            ' will be a culmination of '
+                                            'any expression a member wants, including from othere people. ',
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
+                              ),
+                            ),
                           );
                         },
                         child: Container(
-                          padding: EdgeInsets.symmetric(vertical: 15),
-                          decoration: BoxDecoration(
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                          decoration: const BoxDecoration(
                             border: Border(
                               bottom: BorderSide(
                                 color: Color(0xffeeeeee),
@@ -226,10 +231,10 @@ class DenCreateCollectionState extends State<DenCreateCollection> {
                               Icon(
                                 CustomIcons.half_lotus,
                                 size: 17,
-                                color: Color(0xff333333),
+                                color: const Color(0xff333333),
                               ),
-                              SizedBox(width: 20),
-                              Text(
+                              const SizedBox(width: 20),
+                              const Text(
                                 'add expressions',
                                 style: TextStyle(
                                     fontSize: 14, fontWeight: FontWeight.w500),
@@ -239,8 +244,8 @@ class DenCreateCollectionState extends State<DenCreateCollection> {
                         ),
                       ),
                       Container(
-                        padding: EdgeInsets.symmetric(vertical: 15),
-                        decoration: BoxDecoration(
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        decoration: const BoxDecoration(
                           border: Border(
                             bottom: BorderSide(
                               color: Color(0xffeeeeee),
@@ -251,7 +256,7 @@ class DenCreateCollectionState extends State<DenCreateCollection> {
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text(
+                              const Text(
                                 'Keep collection private',
                                 style: TextStyle(
                                     fontSize: 14, fontWeight: FontWeight.w500),
@@ -259,16 +264,16 @@ class DenCreateCollectionState extends State<DenCreateCollection> {
                               Row(
                                 children: <Widget>[
                                   Container(
-                                    padding: EdgeInsets.all(2.5),
+                                    padding: const EdgeInsets.all(2.5),
                                     height: 28,
                                     width: 60,
                                     decoration: BoxDecoration(
                                       color: _collectionPublic
-                                          ? Color(0xfffeeeeee)
+                                          ? const Color(0xffeeeeee)
                                           : null,
                                       gradient: _collectionPrivate
-                                          ? LinearGradient(
-                                              colors: [
+                                          ? const LinearGradient(
+                                              colors: <Color>[
                                                 JuntoPalette.juntoSecondary,
                                                 JuntoPalette.juntoPrimary
                                               ],
@@ -310,7 +315,7 @@ class DenCreateCollectionState extends State<DenCreateCollection> {
                                             decoration: BoxDecoration(
                                               color: _collectionPrivate
                                                   ? Colors.white
-                                                  : Color(0xffeeeeee),
+                                                  : const Color(0xffeeeeee),
                                               borderRadius:
                                                   BorderRadius.circular(25),
                                             ),

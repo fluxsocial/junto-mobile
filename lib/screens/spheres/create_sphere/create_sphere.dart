@@ -140,7 +140,7 @@ class _CreateSphereState extends State<CreateSphere>
                   child: Container(
                     width: 38,
                     alignment: Alignment.centerRight,
-                    child: Text('next', style: JuntoStyles.body),
+                    child: const Text('next', style: JuntoStyles.body),
                   ),
                 )
               ],

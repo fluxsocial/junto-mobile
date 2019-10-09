@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
-import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/palette.dart';
-import 'package:junto_beta_mobile/providers/provider.dart';
-import 'package:provider/provider.dart';
 
 class CreateActionsAppbar extends StatelessWidget {
   const CreateActionsAppbar({
