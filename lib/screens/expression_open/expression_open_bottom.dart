@@ -66,7 +66,7 @@ class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
       builder: (context) => Container(
         color: Color(0xff737373),
         child: Container(
-          height: MediaQuery.of(context).size.height * .25,
+          height: MediaQuery.of(context).size.height * .3,
           padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
             color: Colors.white,

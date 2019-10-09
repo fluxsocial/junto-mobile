@@ -6,8 +6,8 @@ import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/styles.dart';
 import 'package:junto_beta_mobile/widgets/expression_action_items/expression_action_items.dart';
 
-class PreviewProfile extends StatelessWidget {
-  const PreviewProfile({
+class ExpressionPreviewTop extends StatelessWidget {
+  const ExpressionPreviewTop({
     Key key,
     this.expression,
   }) : super(key: key);
