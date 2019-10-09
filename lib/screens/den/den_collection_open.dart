@@ -101,10 +101,10 @@ class DenCollectionOpenState extends State<DenCollectionOpen> {
                   onTap: () {
                     // create collection
                   },
-                  child: Icon(
+                  child: const Icon(
                     CustomIcons.more,
                     size: 20,
-                    color: const Color(0xff333333),
+                    color: Color(0xff333333),
                   ),
                 )
               ],
