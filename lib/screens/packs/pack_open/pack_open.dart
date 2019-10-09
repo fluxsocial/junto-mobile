@@ -8,14 +8,15 @@ import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open_public.dart'
 import 'package:junto_beta_mobile/widgets/create_fab/create_fab.dart';
 
 class PackOpen extends StatefulWidget {
-  const PackOpen(this.packTitle, this.packUser, this.packImage);
+  const PackOpen (this.packTitle, this.packUser, this.packImage, this.address);
 
-  final dynamic packTitle;
-  final dynamic packUser;
-  final dynamic packImage;
+  final String packTitle;
+  final String packUser;
+  final String packImage;
+  final String address;
 
   @override
-  State<StatefulWidget> createState() {
+  State<StatefulWidget> createState () {
     return PackOpenState();
   }
 }
@@ -27,19 +28,19 @@ class PackOpenState extends State<PackOpen> {
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
 
   @override
-  void initState() {
+  void initState () {
     super.initState();
     controller = PageController(initialPage: 0);
   }
 
   @override
-  void dispose() {
+  void dispose () {
     super.dispose();
     controller.dispose();
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build (BuildContext context) {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -49,7 +50,7 @@ class PackOpenState extends State<PackOpen> {
           child: PackOpenAppbar(
             packTitle: widget.packTitle,
             packUser: widget.packUser,
-            packImage: widget.packImage,
+            packImage: 'assets/images/junto-mobile__logo.png',
           ),
         ),
         floatingActionButton: ValueListenableBuilder<bool>(
@@ -66,6 +67,7 @@ class PackOpenState extends State<PackOpen> {
             child: CreateFAB(
               sphereHandle: widget.packTitle,
               isVisible: _isVisible,
+              address: widget.address,
             ),
           ),
         ),
@@ -92,7 +94,10 @@ class PackOpenState extends State<PackOpen> {
                       },
                       child: Container(
                         padding: const EdgeInsets.only(bottom: 20),
-                        width: MediaQuery.of(context).size.width * .5,
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width * .5,
                         child: Icon(
                           CustomIcons.half_lotus,
                           size: 17,
@@ -108,7 +113,10 @@ class PackOpenState extends State<PackOpen> {
                       },
                       child: Container(
                         padding: const EdgeInsets.only(bottom: 20),
-                        width: MediaQuery.of(context).size.width * .5,
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width * .5,
                         child: RotatedBox(
                           quarterTurns: 2,
                           child: Icon(

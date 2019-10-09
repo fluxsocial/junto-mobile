@@ -6,11 +6,13 @@ import 'package:junto_beta_mobile/styles.dart';
 
 // This class renders a pack preview (usually shown in a list of packs)
 class PackPreview extends StatelessWidget {
-  const PackPreview(this.packTitle, this.packUser, this.packImage);
+  const PackPreview(
+      this.packTitle, this.packUser, this.packImage, this.address);
 
   final String packTitle;
   final String packUser;
   final String packImage;
+  final String address;
 
   @override
   Widget build(BuildContext context) {
@@ -20,10 +22,11 @@ class PackPreview extends StatelessWidget {
           context,
           CupertinoPageRoute<dynamic>(
             builder: (BuildContext context) => PackOpen(
-                  packTitle,
-                  packUser,
-                  packImage,
-                ),
+              packTitle,
+              packUser,
+              packImage,
+              address
+            ),
           ),
         );
       },
@@ -34,7 +37,7 @@ class PackPreview extends StatelessWidget {
           children: <Widget>[
             ClipOval(
               child: Image.asset(
-                packImage,
+                'assets/images/junto-mobile__logo.png',
                 height: 45.0,
                 width: 45.0,
                 fit: BoxFit.cover,
