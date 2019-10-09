@@ -11,11 +11,13 @@ class CreateActions extends StatefulWidget {
     @required this.expressionLayer,
     @required this.expressionType,
     @required this.expression,
+    @required this.address,
   }) : super(key: key);
 
   final String expressionLayer;
   final String expressionType;
   final dynamic expression;
+  final String address;
 
   @override
   State<StatefulWidget> createState() => CreateActionsState();
@@ -44,9 +46,7 @@ class CreateActionsState extends State<CreateActions> {
     final CentralizedExpression _expression = CentralizedExpression(
       type: widget.expressionType,
       context: <String, dynamic>{
-        'Group': <String, dynamic>{
-          'address': '2ea8ab27-c86e-4621-9a3d-c00b97a37e72'
-        }
+        'Group': <String, dynamic>{'address': widget.address}
       },
       expressionData: widget.expression.toMap(),
     );

@@ -9,10 +9,12 @@ class CreateFAB extends StatelessWidget {
     Key key,
     @required this.sphereHandle,
     @required this.isVisible,
+    this.address,
   }) : super(key: key);
 
   final String sphereHandle;
   final ValueNotifier<bool> isVisible;
+  final String address;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,10 @@ class CreateFAB extends StatelessWidget {
                       Animation<double> animation,
                       Animation<double> secondaryAnimation,
                     ) {
-                      return JuntoCreate(sphereHandle);
+                      return JuntoCreate(
+                        sphereHandle,
+                        address: address,
+                      );
                     },
                     transitionsBuilder: (
                       BuildContext context,

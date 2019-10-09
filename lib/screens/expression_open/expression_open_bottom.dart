@@ -12,15 +12,6 @@ class ExpressionOpenBottom extends StatefulWidget {
 }
 
 class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
-  String timestamp;
-
-  @override
-  void initState() {
-    super.initState();
-    //FIXME(Nash):Prettify date
-    timestamp = widget.expression.createdAt.toIso8601String();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -37,20 +28,25 @@ class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  timestamp + 'm',
+                  MaterialLocalizations.of(context).formatFullDate(
+                    widget.expression.createdAt ?? DateTime.now(),
+                  ),
                   style: const TextStyle(
                       fontSize: 10, color: JuntoPalette.juntoSleek),
                 ),
                 Row(
                   children: <Widget>[
-                    Image.asset('assets/images/junto-mobile__resonation.png',
-                        height: 17, color: Color(0xff999999)),
-                    SizedBox(width: 5),
+                    Image.asset(
+                      'assets/images/junto-mobile__resonation.png',
+                      height: 17,
+                      color: const Color(0xff999999),
+                    ),
+                    const SizedBox(width: 5),
                     Text(
                       'Resonate',
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
-                        color: Color(0xff999999),
+                        color: const Color(0xff999999),
                       ),
                     )
                   ],

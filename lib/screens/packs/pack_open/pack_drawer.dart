@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/models/group_model.dart';
 
 class PackDrawer extends StatelessWidget {
+  const PackDrawer({
+    Key key,
+    @required this.pack,
+  }) : super(key: key);
+
+  final Group pack;
+
   @override
   Widget build(BuildContext context) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;

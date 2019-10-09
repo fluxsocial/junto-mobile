@@ -10,8 +10,6 @@ import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/den/den_drawer/den_drawer.dart';
 import 'package:junto_beta_mobile/screens/packs/packs.dart';
 import 'package:junto_beta_mobile/screens/spheres/spheres.dart';
-import 'package:junto_beta_mobile/palette.dart';
-import 'package:junto_beta_mobile/styles.dart';
 import 'package:junto_beta_mobile/widgets/appbar.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
@@ -156,7 +154,9 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
             controller: _hideFABController,
             currentPerspective: _currentPerspective);
       case 'spheres':
-        return JuntoSpheres();
+        return JuntoSpheres(
+          userProfile: profile,
+        );
       case 'packs':
         return JuntoPacks();
       case 'den':

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/providers/provider.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open.dart';
@@ -36,16 +37,19 @@ class _DenDrawerState extends State<DenDrawer> {
       debugPrint('Error occured in _retrieveUserInfo: $error');
     }
   }
-
-  void _onPackPress() {
+// FIXME(Nash): Look up the address and retrieve the user pack
+//  see: https://github.com/juntofoundation/junto-mobile/issues/170
+  Future<void> _onPackPress() async {
+    final UserGroupsResponse _userPack =
+        await Provider.of<UserProvider>(context).getUserGroups(profile.address);
     Navigator.push(
       context,
       CupertinoPageRoute<dynamic>(
-        builder: (BuildContext context) => const PackOpen(
-            'The Gnarly '
-                'Nomads',
-            'Eric Yang',
-            'assets/images/junto-mobile__eric.png'),
+        builder: (BuildContext context) {
+          return PackOpen(
+            pack: _userPack.owned.first,
+          );
+        },
       ),
     );
   }

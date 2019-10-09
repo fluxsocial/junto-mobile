@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
+import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_drawer.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open_appbar.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open_private.dart';
@@ -9,11 +10,12 @@ import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open_public.dart'
 import 'package:junto_beta_mobile/widgets/create_fab/create_fab.dart';
 
 class PackOpen extends StatefulWidget {
-  const PackOpen(this.packTitle, this.packUser, this.packImage);
+  const PackOpen({
+    Key key,
+    @required this.pack,
+  }) : super(key: key);
 
-  final dynamic packTitle;
-  final dynamic packUser;
-  final dynamic packImage;
+  final Group pack;
 
   @override
   State<StatefulWidget> createState() {
@@ -48,9 +50,9 @@ class PackOpenState extends State<PackOpen> {
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(45),
           child: PackOpenAppbar(
-            packTitle: widget.packTitle,
-            packUser: widget.packUser,
-            packImage: widget.packImage,
+            packTitle: widget.pack.groupData.name,
+            packUser: widget.pack.creator,
+            packImage: 'assets/images/junto-mobile__logo.png',
           ),
         ),
         floatingActionButton: ValueListenableBuilder<bool>(
@@ -65,13 +67,16 @@ class PackOpenState extends State<PackOpen> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: CreateFAB(
-              sphereHandle: widget.packTitle,
+              sphereHandle: widget.pack.groupData.name,
               isVisible: _isVisible,
+              address: widget.pack.address,
             ),
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        endDrawer: PackDrawer(),
+        endDrawer: PackDrawer(
+          pack: widget.pack,
+        ),
         body: Column(
           children: <Widget>[
             Container(

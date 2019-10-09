@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/styles.dart';
 
 // This class renders a pack preview (usually shown in a list of packs)
 class PackPreview extends StatelessWidget {
-  const PackPreview(this.packTitle, this.packUser, this.packImage);
+  const PackPreview({Key key, @required this.group}) : super(key: key);
 
-  final String packTitle;
-  final String packUser;
-  final String packImage;
+  final Group group;
 
   @override
   Widget build(BuildContext context) {
@@ -20,10 +19,8 @@ class PackPreview extends StatelessWidget {
           context,
           CupertinoPageRoute<dynamic>(
             builder: (BuildContext context) => PackOpen(
-                  packTitle,
-                  packUser,
-                  packImage,
-                ),
+              pack: group,
+            ),
           ),
         );
       },
@@ -34,7 +31,7 @@ class PackPreview extends StatelessWidget {
           children: <Widget>[
             ClipOval(
               child: Image.asset(
-                packImage,
+                'assets/images/junto-mobile__logo.png',
                 height: 45.0,
                 width: 45.0,
                 fit: BoxFit.cover,
@@ -53,9 +50,9 @@ class PackPreview extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(packTitle,
+                  Text(group.groupData.name,
                       textAlign: TextAlign.start, style: JuntoStyles.title),
-                  Text(packUser,
+                  Text(group.creator,
                       textAlign: TextAlign.start, style: JuntoStyles.body),
                 ],
               ),
