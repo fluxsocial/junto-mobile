@@ -83,10 +83,7 @@ class JuntoPacksState extends State<JuntoPacks> with ListDistinct {
             children: <Widget>[
               for (Group group in userGroups)
                 PackPreview(
-                  group.groupData.name,
-                  group.creator,
-                  '',
-                  group.address,
+                  group: group,
                 ),
             ],
           );
