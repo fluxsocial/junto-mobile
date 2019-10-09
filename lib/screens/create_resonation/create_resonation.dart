@@ -17,6 +17,8 @@ class CreateResonation extends StatefulWidget {
 }
 
 class CreateResonationState extends State<CreateResonation> {
+  FocusNode resonationCommentFocusNode = FocusNode();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,32 +28,55 @@ class CreateResonationState extends State<CreateResonation> {
       ),
       backgroundColor: Colors.white,
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10),
         child: Column(
           children: <Widget>[
             Expanded(
-                child: ListView(
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 10),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'Add a comment',
+              child: ListView(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    margin: EdgeInsets.symmetric(vertical: 10),
+                    child: TextField(
+                      focusNode: resonationCommentFocusNode,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Add a comment',
+                      ),
+                      maxLines: null,
+                      cursorColor: JuntoPalette.juntoGrey,
+                      cursorWidth: 2,
+                      style: const TextStyle(
+                        fontSize: 17,
+                        color: JuntoPalette.juntoGrey,
+                      ),
+                      textInputAction: TextInputAction.done,
                     ),
-                    maxLines: null,
-                    cursorColor: JuntoPalette.juntoGrey,
-                    cursorWidth: 2,
-                    style: const TextStyle(
-                      fontSize: 17,
-                      color: JuntoPalette.juntoGrey,
-                    ),
-                    textInputAction: TextInputAction.done,
                   ),
-                ),
-                ExpressionPreviewEmbed(expression: widget.expression),
-              ],
-            )),
+                  Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: ExpressionPreviewEmbed(
+                          expression: widget.expression)),
+                ],
+              ),
+            ),
+            resonationCommentFocusNode.hasFocus
+                ? Container(
+                    height: 50,
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border(
+                        top: BorderSide(color: Color(0xffeeeeee), width: 1),
+                      ),
+                    ),
+                    child: Row(
+                      children: <Widget>[
+                        Text('Stickers'),
+                        SizedBox(width: 10),
+                        Text('GIF')
+                      ],
+                    ))
+                : SizedBox()
           ],
         ),
       ),
