@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/palette.dart';
@@ -31,7 +32,17 @@ class CommentPreview extends StatelessWidget {
               Navigator.push(
                 context,
                 CupertinoPageRoute<dynamic>(
-                  builder: (BuildContext context) => JuntoMember(),
+                  builder: (BuildContext context) => JuntoMember(
+                    profile: UserProfile(
+                      address: '',
+                      firstName: 'Eric',
+                      lastName: 'Yang',
+                      bio: 'This is a test',
+                      profilePicture: 'assets/images/junto-mobile__logo.png',
+                      username: 'Gmail',
+                      verified: false,
+                    ),
+                  ),
                 ),
               );
             },
@@ -69,7 +80,18 @@ class CommentPreview extends StatelessWidget {
                           Navigator.push(
                             context,
                             CupertinoPageRoute<dynamic>(
-                              builder: (BuildContext context) => JuntoMember(),
+                              builder: (BuildContext context) => JuntoMember(
+                                profile: UserProfile(
+                                  address: '',
+                                  firstName: 'Eric',
+                                  lastName: 'Yang',
+                                  bio: 'This is a test',
+                                  profilePicture:
+                                      'assets/images/junto-mobile__logo.png',
+                                  username: 'Gmail',
+                                  verified: false,
+                                ),
+                              ),
                             ),
                           );
                         },

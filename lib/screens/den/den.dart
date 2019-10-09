@@ -244,7 +244,7 @@ class JuntoDenState extends State<JuntoDen> {
                                   onTap: () {
                                     Scaffold.of(context).openEndDrawer();
                                   },
-                                  child: Icon(CustomIcons.more, size: 24),
+                                  child: const Icon(CustomIcons.more, size: 24),
                                 ),
                               )
                             ],

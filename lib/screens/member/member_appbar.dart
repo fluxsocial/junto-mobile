@@ -31,15 +31,12 @@ class MemberAppbar extends StatelessWidget {
                   size: 24,
                 ),
               ),
-              GestureDetector(
-                onTap: () {},
-                child: const Text(
-                  'sunyata',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xff333333),
-                  ),
+              Text(
+                memberHandle,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xff333333),
                 ),
               ),
               GestureDetector(

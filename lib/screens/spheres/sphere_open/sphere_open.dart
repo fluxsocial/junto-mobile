@@ -2,13 +2,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
+import 'package:junto_beta_mobile/models/sphere.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/providers/provider.dart';
+import 'package:junto_beta_mobile/screens/spheres/sphere_members.dart';
 import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open_appbar.dart';
 import 'package:junto_beta_mobile/styles.dart';
+import 'package:junto_beta_mobile/utils/junto_dialog.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/create_fab/create_fab.dart';
 import 'package:junto_beta_mobile/widgets/expression_preview/expression_preview.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
+import 'package:provider/provider.dart';
 
 class SphereOpen extends StatefulWidget {
   const SphereOpen({
@@ -145,6 +151,31 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     super.dispose();
   }
 
+  Future<void> _navigateToMembers() async {
+    try {
+      JuntoOverlay.showLoader(context);
+      final List<Users> _members =
+          await Provider.of<SpheresProvider>(context).getGroupMembers(
+        widget.group.address,
+      );
+      JuntoOverlay.hide();
+      Navigator.of(context).push(SphereMembers.route(_members));
+    } catch (error) {
+      JuntoOverlay.hide();
+      JuntoDialog.showJuntoDialog(
+        context,
+        'Unable to get Sphere members. '
+        'Error ${error.message}',
+        <Widget>[
+          FlatButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Ok'),
+          ),
+        ],
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -241,101 +272,11 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                         fontWeight: FontWeight.w700),
                   ),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            ClipOval(
-                              child: Image.asset(
-                                'assets/images/junto-mobile__eric.png',
-                                height: 28.0,
-                                width: 28.0,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            const SizedBox(width: 5),
-                            ClipOval(
-                              child: Image.asset(
-                                'assets/images/junto-mobile__riley.png',
-                                height: 28.0,
-                                width: 28.0,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            const SizedBox(width: 5),
-                            ClipOval(
-                              child: Image.asset(
-                                'assets/images/junto-mobile__yaz.png',
-                                height: 28.0,
-                                width: 28.0,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            const SizedBox(width: 5),
-                            ClipOval(
-                              child: Image.asset(
-                                'assets/images/junto-mobile__josh.png',
-                                height: 28.0,
-                                width: 28.0,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            const SizedBox(width: 5),
-                            ClipOval(
-                              child: Image.asset(
-                                'assets/images/junto-mobile__dora.png',
-                                height: 28.0,
-                                width: 28.0,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            const SizedBox(width: 5),
-                            ClipOval(
-                              child: Image.asset(
-                                'assets/images/junto-mobile__tomis.png',
-                                height: 28.0,
-                                width: 28.0,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            const SizedBox(width: 5),
-                            ClipOval(
-                              child: Image.asset(
-                                'assets/images/junto-mobile__drea.png',
-                                height: 28.0,
-                                width: 28.0,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            const SizedBox(width: 5),
-                            ClipOval(
-                              child: Image.asset(
-                                'assets/images/junto-mobile__leif.png',
-                                height: 28.0,
-                                width: 28.0,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 5),
-                        Container(
-                          child: Text('Nash members', style: JuntoStyles.title),
-                        ),
-                        const SizedBox(height: 10),
-                        Container(
-                          child: Text(widget.group.groupData.description,
-                              textAlign: TextAlign.start,
-                              style:
-                                  const TextStyle(fontSize: 15, height: 1.4)),
-                        ),
-                      ],
-                    ),
-                  ],
+                InkWell(
+                  onTap: _navigateToMembers,
+                  child: MemberRow(
+                    description: widget.group.groupData.description,
+                  ),
                 )
               ],
             ),
@@ -411,6 +352,109 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
           )
         ],
       ),
+    );
+  }
+}
+
+class MemberRow extends StatelessWidget {
+  const MemberRow({
+    Key key,
+    @required this.description,
+  }) : super(key: key);
+
+  final String description;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Row(
+          children: <Widget>[
+            ClipOval(
+              child: Image.asset(
+                'assets/images/junto-mobile__eric.png',
+                height: 28.0,
+                width: 28.0,
+                fit: BoxFit.cover,
+              ),
+            ),
+            const SizedBox(width: 5),
+            ClipOval(
+              child: Image.asset(
+                'assets/images/junto-mobile__riley.png',
+                height: 28.0,
+                width: 28.0,
+                fit: BoxFit.cover,
+              ),
+            ),
+            const SizedBox(width: 5),
+            ClipOval(
+              child: Image.asset(
+                'assets/images/junto-mobile__yaz.png',
+                height: 28.0,
+                width: 28.0,
+                fit: BoxFit.cover,
+              ),
+            ),
+            const SizedBox(width: 5),
+            ClipOval(
+              child: Image.asset(
+                'assets/images/junto-mobile__josh.png',
+                height: 28.0,
+                width: 28.0,
+                fit: BoxFit.cover,
+              ),
+            ),
+            const SizedBox(width: 5),
+            ClipOval(
+              child: Image.asset(
+                'assets/images/junto-mobile__dora.png',
+                height: 28.0,
+                width: 28.0,
+                fit: BoxFit.cover,
+              ),
+            ),
+            const SizedBox(width: 5),
+            ClipOval(
+              child: Image.asset(
+                'assets/images/junto-mobile__tomis.png',
+                height: 28.0,
+                width: 28.0,
+                fit: BoxFit.cover,
+              ),
+            ),
+            const SizedBox(width: 5),
+            ClipOval(
+              child: Image.asset(
+                'assets/images/junto-mobile__drea.png',
+                height: 28.0,
+                width: 28.0,
+                fit: BoxFit.cover,
+              ),
+            ),
+            const SizedBox(width: 5),
+            ClipOval(
+              child: Image.asset(
+                'assets/images/junto-mobile__leif.png',
+                height: 28.0,
+                width: 28.0,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 5),
+        Container(
+          child: Text('Nash members', style: JuntoStyles.title),
+        ),
+        const SizedBox(height: 10),
+        Container(
+          child: Text(description,
+              textAlign: TextAlign.start,
+              style: const TextStyle(fontSize: 15, height: 1.4)),
+        ),
+      ],
     );
   }
 }
