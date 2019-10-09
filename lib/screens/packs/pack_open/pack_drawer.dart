@@ -33,10 +33,10 @@ class PackDrawer extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const <Widget>[
+                  children: <Widget>[
                     Text(
-                      'The Gnarly Nomads',
-                      style: TextStyle(
+                      pack.groupData.name,
+                      style: const TextStyle(
                           fontSize: 17,
                           color: Color(0xff333333),
                           fontWeight: FontWeight.w700),
