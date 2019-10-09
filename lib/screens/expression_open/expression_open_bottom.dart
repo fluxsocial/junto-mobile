@@ -114,11 +114,14 @@ class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
                   ),
                   ListTile(
                     contentPadding: EdgeInsets.all(0),
-                    onTap: () {                      
+                    onTap: () {
+                      Navigator.pop(context);
+
                       Navigator.push(
                         context,
                         CupertinoPageRoute(
-                          builder: (context) => CreateResonation(expression: widget.expression),
+                          builder: (context) =>
+                              CreateResonation(expression: widget.expression),
                         ),
                       );
                     },

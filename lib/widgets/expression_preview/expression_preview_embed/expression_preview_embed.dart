@@ -42,7 +42,7 @@ class ExpressionPreviewEmbed extends StatelessWidget {
                       // profile picture
                       ClipOval(
                         child: Image.asset(
-                          'assets/images/junto-mobile__eric.png',
+                          expression.creator.profilePicture,
                           height: 36.0,
                           width: 36.0,
                           fit: BoxFit.cover,
@@ -51,7 +51,7 @@ class ExpressionPreviewEmbed extends StatelessWidget {
                       Container(
                         margin: const EdgeInsets.only(left: 7.5),
                         child: Text(
-                          'sunyata',
+                          expression.creator.username,
                           style: TextStyle(
                               fontSize: 14, fontWeight: FontWeight.w700),
                         ),
@@ -87,7 +87,7 @@ class ExpressionPreviewEmbed extends StatelessWidget {
                     children: <Widget>[
                       Container(
                         child: Text(
-                          '2m',
+                          expression.createdAt.toString(),
                           textAlign: TextAlign.start,
                           style: JuntoStyles.expressionTimestamp,
                         ),
