@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/palette.dart';
-import 'package:junto_beta_mobile/styles.dart';
-import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open_action_items.dart';
+
 class CreateResonationAppbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -15,7 +14,7 @@ class CreateResonationAppbar extends StatelessWidget {
       elevation: 0,
       titleSpacing: 0,
       title: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
@@ -32,18 +31,17 @@ class CreateResonationAppbar extends StatelessWidget {
                 ),
               ),
             ),
-
             GestureDetector(
-              onTap: () {
-                SphereOpenActionItems().buildSphereOpenActionItems(context);
-              },
-              child: Container(
-                width: 38,
-                color: Colors.white,
-                alignment: Alignment.centerRight,
-                child: Text('resonate')
-              ),
-            )
+                onTap: () {
+                  // resonate expression
+                },
+                child: Text(
+                  'resonate',
+                  style: TextStyle(
+                      color: Color(0xff333333),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500),
+                ))
           ],
         ),
       ),
