@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
@@ -125,6 +126,7 @@ class PackOpenState extends State<PackOpen> {
                 )),
             Expanded(
               child: PageView(
+                physics: PageScrollPhysics(),
                 controller: controller,
                 onPageChanged: (int index) {
                   if (index == 0) {
