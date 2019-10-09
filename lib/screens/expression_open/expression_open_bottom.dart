@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
+import 'package:junto_beta_mobile/screens/create_resonation/create_resonation.dart';
 
 class ExpressionOpenBottom extends StatefulWidget {
   const ExpressionOpenBottom(this.expression);
@@ -112,6 +114,14 @@ class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
                   ),
                   ListTile(
                     contentPadding: EdgeInsets.all(0),
+                    onTap: () {                      
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => CreateResonation(),
+                        ),
+                      );
+                    },
                     title: Row(
                       children: <Widget>[
                         Icon(
