@@ -55,16 +55,18 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   /// Builds an expression for the given type. IE: Longform or shortform
   Widget _buildExpression() {
     final String expressionType = widget.expression.type;
-    if (expressionType == 'longform') {
+    if (expressionType == 'LongForm') {
       return LongformOpen(widget.expression);
-    } else if (expressionType == 'shortform') {
+    } else if (expressionType == 'ShortForm') {
       return ShortformOpen(widget.expression);
-    } else if (expressionType == 'photo') {
+    } else if (expressionType == 'PhotoForm') {
       return PhotoOpen(widget.expression);
-    } else if (expressionType == 'event') {
+    } else if (expressionType == 'EventForm') {
       return EventOpen(widget.expression);
     } else {
-      return const SizedBox();
+            print(widget.expression.type);
+
+      return const Text('no expressions!');
     }
   }
 
