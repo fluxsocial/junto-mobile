@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/styles.dart';
 
-class PreviewBottom extends StatelessWidget {
-  const PreviewBottom({Key key, this.expression}) : super(key: key);
+class ExpressionPreviewBottom extends StatelessWidget {
+  const ExpressionPreviewBottom({Key key, this.expression}) : super(key: key);
   final CentralizedExpressionResponse expression;
 
   @override

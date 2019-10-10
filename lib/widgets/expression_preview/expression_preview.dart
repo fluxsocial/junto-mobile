@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open.dart';
-import 'package:junto_beta_mobile/widgets/expression_preview/event_preview/event_preview.dart';
-import 'package:junto_beta_mobile/widgets/expression_preview/longform_preview/longform_preview.dart';
-import 'package:junto_beta_mobile/widgets/expression_preview/photo_preview/photo_preview.dart';
-import 'package:junto_beta_mobile/widgets/expression_preview/preview_bottom.dart';
-import 'package:junto_beta_mobile/widgets/expression_preview/preview_profile.dart';
-import 'package:junto_beta_mobile/widgets/expression_preview/shortform_preview/shortform_preview.dart';
+import 'package:junto_beta_mobile/widgets/expression_preview/expression_preview_types/event_preview.dart';
+import 'package:junto_beta_mobile/widgets/expression_preview/expression_preview_types/longform_preview.dart';
+import 'package:junto_beta_mobile/widgets/expression_preview/expression_preview_types/photo_preview.dart';
+import 'package:junto_beta_mobile/widgets/expression_preview/expression_preview_bottom.dart';
+import 'package:junto_beta_mobile/widgets/expression_preview/expression_preview_top.dart';
+import 'package:junto_beta_mobile/widgets/expression_preview/expression_preview_types/shortform_preview.dart';
 
 /// Renders a concise overview of one given [ExpressionResult].
 class ExpressionPreview extends StatelessWidget {
@@ -36,13 +36,13 @@ class ExpressionPreview extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             // expression preview profile
-            PreviewProfile(expression: expression),
+            ExpressionPreviewTop(expression: expression),
 
             // expression preview body
             _returnExpression(),
 
             // expression preview channels, resonation, and comments
-            PreviewBottom(expression: expression)
+            ExpressionPreviewBottom(expression: expression)
           ],
         ),
       ),
