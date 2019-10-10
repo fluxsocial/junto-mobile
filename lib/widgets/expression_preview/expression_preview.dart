@@ -31,7 +31,7 @@ class ExpressionPreview extends StatelessWidget {
       },
       child: Container(
         color: Colors.white,
-        margin: const EdgeInsets.only(bottom: 10.0),
+        margin: const EdgeInsets.only(bottom: 15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
