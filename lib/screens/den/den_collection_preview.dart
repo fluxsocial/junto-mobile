@@ -6,7 +6,6 @@ import 'package:junto_beta_mobile/screens/den/den_collection_open.dart';
 class DenCollectionPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return GestureDetector(
       onTap: () {
         Navigator.push(

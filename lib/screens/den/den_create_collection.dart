@@ -5,10 +5,7 @@ import 'package:junto_beta_mobile/custom_icons.dart';
 
 class DenCreateCollection extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return DenCreateCollectionState();
-  }
+  State<StatefulWidget> createState() => DenCreateCollectionState();
 }
 
 class DenCreateCollectionState extends State<DenCreateCollection> {

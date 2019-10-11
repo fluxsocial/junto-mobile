@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
-import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/styles.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/widgets/expression_preview/expression_preview_types/event_preview.dart';
 import 'package:junto_beta_mobile/widgets/expression_preview/expression_preview_types/longform_preview.dart';
 import 'package:junto_beta_mobile/widgets/expression_preview/expression_preview_types/photo_preview.dart';
@@ -13,15 +11,15 @@ class ExpressionPreviewEmbed extends StatelessWidget {
   const ExpressionPreviewEmbed({Key key, @required this.expression})
       : super(key: key);
 
-  final expression;
+  final CentralizedExpressionResponse expression;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border.all(color: Color(0xffeeeeee), width: 1),
+        border: Border.all(color: const Color(0xffeeeeee), width: 1),
         borderRadius: BorderRadius.circular(5),
       ),
       child: Column(
@@ -52,8 +50,10 @@ class ExpressionPreviewEmbed extends StatelessWidget {
                         margin: const EdgeInsets.only(left: 7.5),
                         child: Text(
                           expression.creator.username,
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w700),
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       )
                     ],
@@ -61,7 +61,7 @@ class ExpressionPreviewEmbed extends StatelessWidget {
                 ),
                 Row(
                   children: <Widget>[
-                    const Icon(
+                    Icon(
                       CustomIcons.more,
                       size: 20,
                     ),
@@ -103,7 +103,7 @@ class ExpressionPreviewEmbed extends StatelessWidget {
     );
   }
 
-  Widget _returnExpression(expression) {
+  Widget _returnExpression(CentralizedExpressionResponse expression) {
     if (expression.type == 'LongForm') {
       return LongformPreview(expression: expression);
     } else if (expression.type == 'ShortForm') {
