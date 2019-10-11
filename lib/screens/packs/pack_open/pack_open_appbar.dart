@@ -56,9 +56,6 @@ class PackOpenAppbar extends StatelessWidget {
                 ),
               ),
             )
-            // GestureDetector(
-            //   child: Icon(CustomIcons.more),
-            // )
           ],
         ),
       ),
