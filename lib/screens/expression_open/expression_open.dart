@@ -64,7 +64,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
     } else if (expressionType == 'EventForm') {
       return EventOpen(widget.expression);
     } else {
-            print(widget.expression.type);
+      print(widget.expression.type);
 
       return const Text('no expressions!');
     }
@@ -193,41 +193,39 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                   ExpressionOpenTop(expression: widget.expression),
                   _buildExpression(),
                   ExpressionOpenBottom(widget.expression),
-                  Container(
-                    decoration: const BoxDecoration(
-                      border: Border(
-                        bottom:
-                            BorderSide(color: Color(0xffeeeeee), width: .75),
-                      ),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 15),
-                    child: GestureDetector(
-                      onTap: () {
-                        if (commentsVisible == false) {
-                          setState(() {
-                            commentsVisible = true;
-                          });
-                        } else if (commentsVisible == true) {
-                          setState(() {
-                            commentsVisible = false;
-                          });
-                        }
-                      },
-                      child: Container(
+                  GestureDetector(
+                    onTap: () {
+                      if (commentsVisible == false) {
+                        setState(() {
+                          commentsVisible = true;
+                        });
+                      } else if (commentsVisible == true) {
+                        setState(() {
+                          commentsVisible = false;
+                        });
+                      }
+                    },
+                    child: Container(
+                      decoration: const BoxDecoration(
                         color: Colors.white,
-                        child: Row(
-                          children: <Widget>[
-                            const Text(
-                              'Show replies (9)',
-                              style: TextStyle(fontWeight: FontWeight.w500),
-                            ),
-                            const SizedBox(width: 5),
-                            commentsVisible == false
-                                ? Icon(Icons.keyboard_arrow_down, size: 17)
-                                : Icon(Icons.keyboard_arrow_up, size: 17)
-                          ],
+                        border: Border(
+                          bottom:
+                              BorderSide(color: Color(0xffeeeeee), width: .75),
                         ),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 15),
+                      child: Row(
+                        children: <Widget>[
+                          const Text(
+                            'Show replies (9)',
+                            style: TextStyle(fontWeight: FontWeight.w500),
+                          ),
+                          const SizedBox(width: 5),
+                          commentsVisible == false
+                              ? Icon(Icons.keyboard_arrow_down, size: 17)
+                              : Icon(Icons.keyboard_arrow_up, size: 17)
+                        ],
                       ),
                     ),
                   ),

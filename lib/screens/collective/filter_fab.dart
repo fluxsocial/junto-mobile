@@ -50,6 +50,7 @@ class CollectiveFilterFAB extends StatelessWidget {
                   '#',
                   style: TextStyle(
                     color: JuntoPalette.juntoWhite,
+                    fontSize: 17
                   ),
                 ),
               ),

@@ -215,7 +215,6 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
       builder: (BuildContext context) => Container(
         color: const Color(0xff737373),
         child: Container(
-          height: 280,
           padding: const EdgeInsets.all(10),
           decoration: const BoxDecoration(
             color: Colors.white,
