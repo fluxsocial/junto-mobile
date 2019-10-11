@@ -5,16 +5,22 @@ import 'package:junto_beta_mobile/screens/collective/perspectives/create_perspec
 import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/styles.dart';
 
-class SphereMembers extends StatelessWidget {
-  const SphereMembers({Key key, @required this.users}) : super(key: key);
+class GroupMembers extends StatelessWidget {
+  const GroupMembers({
+    Key key,
+    @required this.users,
+    this.groupName = 'Sphere Members',
+  }) : super(key: key);
 
   final List<Users> users;
+  final String groupName;
 
-  static Route<dynamic> route(List<Users> users) {
+  static Route<dynamic> route(List<Users> users, {String name}) {
     return CupertinoPageRoute<dynamic>(
       builder: (BuildContext context) {
-        return SphereMembers(
+        return GroupMembers(
           users: users,
+          groupName: name,
         );
       },
     );
@@ -28,8 +34,8 @@ class SphereMembers extends StatelessWidget {
         leading: BackButton(
           color: Colors.black,
         ),
-        title: const Text(
-          'Sphere Members',
+        title: Text(
+          groupName,
           style: JuntoStyles.appbarTitle,
         ),
         backgroundColor: Colors.white,
@@ -47,9 +53,7 @@ class SphereMembers extends StatelessWidget {
                 name: '${user.user.firstName}  ${user.user.lastName}',
                 username: user.user.username,
                 showIndicator: true,
-                indicatorColor: user.permissionLevel == 'Admin'
-                    ? Colors.greenAccent
-                    : Colors.white,
+                indicatorColor: user.permissionLevel == 'Admin' ? Colors.greenAccent : Colors.white,
                 onTap: () => Navigator.of(context).push(
                   JuntoMember.route(user.user),
                 ),

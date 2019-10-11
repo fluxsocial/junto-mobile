@@ -159,7 +159,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
         widget.group.address,
       );
       JuntoOverlay.hide();
-      Navigator.of(context).push(SphereMembers.route(_members));
+      Navigator.of(context).push(GroupMembers.route(_members));
     } catch (error) {
       JuntoOverlay.hide();
       JuntoDialog.showJuntoDialog(
