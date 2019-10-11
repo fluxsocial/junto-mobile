@@ -15,7 +15,7 @@ import 'package:junto_beta_mobile/widgets/search_members_modal.dart';
 import 'package:junto_beta_mobile/widgets/user_preview.dart';
 import 'package:provider/provider.dart';
 
-class SelectedUsers extends ChangeNotifier{
+class SelectedUsers extends ChangeNotifier {
   List<UserProfile> selection = <UserProfile>[];
 }
 
@@ -131,20 +131,22 @@ class _CreatePerspectiveState extends State<CreatePerspective>
                       color: Color(0xff333333),
                       fontWeight: FontWeight.w700),
                 ),
-                InkWell(
-                  onTap: () {
-                    if (controller.value.text != '') {
-                      createPerspective();
-                    } else {
-                      return;
-                    }
-                  },
-                  enableFeedback: false,
-                  child: const Text(
-                    'create',
-                    style: TextStyle(
-                      color: Color(0xff333333),
-                      fontSize: 14,
+                SizedBox(
+                  width: 34.0,
+                  child: FlatButton(
+                    onPressed: () {
+                      if (controller.value.text != '') {
+                        createPerspective();
+                      } else {
+                        return;
+                      }
+                    },
+                    child: const Text(
+                      'create',
+                      style: TextStyle(
+                        color: Color(0xff333333),
+                        fontSize: 14,
+                      ),
                     ),
                   ),
                 ),
@@ -248,7 +250,7 @@ class _CreatePerspectiveState extends State<CreatePerspective>
                             key: ValueKey<UserProfile>(_profile),
                             background: Material(color: Colors.redAccent),
                             onDismissed: (_) => _removeSelectedItem(_profile),
-                            child: UserPreview( 
+                            child: UserPreview(
                               userProfile: _profile,
                               onTap: _removeSelectedItem,
                               showSelectionIndicator: false,

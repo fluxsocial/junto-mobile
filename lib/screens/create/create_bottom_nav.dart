@@ -19,64 +19,31 @@ class CreateBottomNav extends StatelessWidget {
               ? Container(
                   alignment: Alignment.center,
                   height: 45.0,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
+                  child: Row(
                     children: <Widget>[
-                      GestureDetector(
-                        onTap: () {
+                      _CreateExpressionButton(
+                        onButtonPressed: () {
                           switchTemplate('LongForm');
                         },
-                        child: Container(
-                          color: Colors.white,
-                          width: MediaQuery.of(context).size.width * .25,
-                          child: const Icon(
-                            CustomIcons.longform,
-                            size: 20,
-                            color: JuntoPalette.juntoBlack,
-                          ),
-                        ),
+                        icon: CustomIcons.longform,
                       ),
-                      GestureDetector(
-                        onTap: () {
+                      _CreateExpressionButton(
+                        onButtonPressed: () {
                           switchTemplate('ShortForm');
                         },
-                        child: Container(
-                          color: Colors.white,
-                          width: MediaQuery.of(context).size.width * .25,
-                          child: const Icon(
-                            CustomIcons.feather,
-                            size: 20,
-                            color: JuntoPalette.juntoBlack,
-                          ),
-                        ),
+                        icon: CustomIcons.feather,
                       ),
-                      GestureDetector(
-                        onTap: () {
+                      _CreateExpressionButton(
+                        onButtonPressed: () {
                           switchTemplate('PhotoForm');
                         },
-                        child: Container(
-                          color: Colors.white,
-                          width: MediaQuery.of(context).size.width * .25,
-                          child: const Icon(
-                            CustomIcons.camera,
-                            size: 20,
-                            color: JuntoPalette.juntoBlack,
-                          ),
-                        ),
+                        icon: CustomIcons.camera,
                       ),
-                      GestureDetector(
-                        onTap: () {
+                      _CreateExpressionButton(
+                        onButtonPressed: () {
                           switchTemplate('EventForm');
                         },
-                        child: Container(
-                          color: Colors.white,
-                          width: MediaQuery.of(context).size.width * .25,
-                          child: const Icon(
-                            CustomIcons.event,
-                            size: 20,
-                            color: JuntoPalette.juntoBlack,
-                          ),
-                        ),
+                        icon: CustomIcons.event,
                       ),
                     ],
                   ),
@@ -112,3 +79,31 @@ class CreateBottomNav extends StatelessWidget {
 //         size: 20, color: JuntoPalette.juntoGrey),
 //   ),
 // ),
+
+class _CreateExpressionButton extends StatelessWidget {
+  const _CreateExpressionButton({
+    Key key,
+    @required this.onButtonPressed,
+    @required this.icon,
+  }) : super(key: key);
+  final VoidCallback onButtonPressed;
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: onButtonPressed,
+        child: Container(
+          color: Colors.white,
+          width: MediaQuery.of(context).size.width * .25,
+          child: Icon(
+            icon,
+            size: 20,
+            color: JuntoPalette.juntoBlack,
+          ),
+        ),
+      ),
+    );
+  }
+}

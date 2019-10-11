@@ -47,7 +47,7 @@ class Perspectives extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       child: SizedBox(
                         height: 32,
-                        width: 32,
+                        width: 64,
                         child: FlatButton(
                           onPressed: () {
                             Navigator.push(
@@ -58,11 +58,9 @@ class Perspectives extends StatelessWidget {
                               ),
                             );
                           },
-                          child: const Center(
-                            child: Text(
-                              '+',
-                              style: TextStyle(fontSize: 20),
-                            ),
+                          child: const Text(
+                            '+',
+                            style: TextStyle(fontSize: 20),
                           ),
                         ),
                       ),
