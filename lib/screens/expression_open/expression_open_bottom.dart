@@ -45,7 +45,7 @@ class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
                   child: Image.asset(
                     'assets/images/junto-mobile__resonation.png',
                     height: 17,
-                    color: Color(0xff999999),
+                    color: Color(0xff555555),
                   ),
                 ),
               ]),

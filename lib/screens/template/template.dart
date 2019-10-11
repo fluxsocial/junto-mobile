@@ -97,6 +97,7 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
   @override
   Widget build(BuildContext context) {
     return Stack(children: <Widget>[
+      Scaffold(appBar: AppBar(), body: Center(child: Text('yo'))),
       Scaffold(
         key: _juntoTemplateKey,
         backgroundColor: Colors.white,
@@ -175,6 +176,15 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
           _currentScreen = 'collective';
           _appbarTitle = 'JUNTO';
         });
+
+        if (_hideFABController.offset != 0.0) {
+          _hideFABController.animateTo(
+            0.0,
+            curve: Curves.easeIn,
+            duration: const Duration(milliseconds: 200),
+          );
+        }
+
         break;
       case 1:
         setState(() {
