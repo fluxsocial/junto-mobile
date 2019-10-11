@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/palette.dart';
-import 'package:junto_beta_mobile/custom_icons.dart';
-import 'package:junto_beta_mobile/screens/create_resonation/create_resonation.dart';
+import 'package:junto_beta_mobile/widgets/resonate_bottom_sheet.dart';
 
 class ExpressionOpenBottom extends StatefulWidget {
   const ExpressionOpenBottom(this.expression);
@@ -37,7 +36,6 @@ class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
                   style: const TextStyle(
                       fontSize: 10, color: JuntoPalette.juntoSleek),
                 ),
-
                 GestureDetector(
                   onTap: () {
                     _buildResonationModal();
@@ -45,7 +43,7 @@ class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
                   child: Image.asset(
                     'assets/images/junto-mobile__resonation.png',
                     height: 17,
-                    color: Color(0xff999999),
+                    color: const Color(0xff999999),
                   ),
                 ),
               ]),
@@ -54,110 +52,17 @@ class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
     );
   }
 
-  _buildResonationModal() {
+  void _buildResonationModal() {
     showModalBottomSheet(
       context: context,
-      builder: (context) => Container(
-        color: Color(0xff737373),
-        child: Container(
-          height: MediaQuery.of(context).size.height * .3,
-          padding: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: const Radius.circular(10),
-              topRight: Radius.circular(10),
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        height: 5,
-                        width: MediaQuery.of(context).size.width * .1,
-                        decoration: BoxDecoration(
-                            color: Color(0xffeeeeee),
-                            borderRadius: BorderRadius.circular(100)),
-                      ),
-                    ],
-                  ),
-                  ListTile(
-                    contentPadding: EdgeInsets.all(0),
-                    title: Row(
-                      children: <Widget>[
-                        Image.asset(
-                          'assets/images/junto-mobile__resonation.png',
-                          height: 17,
-                          color: Color(0xff555555),
-                        ),
-                        SizedBox(width: 10),
-                        Text(
-                          'Resonate',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 17),
-                        ),
-                      ],
-                    ),
-                  ),
-                  ListTile(
-                    contentPadding: EdgeInsets.all(0),
-                    onTap: () {
-                      Navigator.pop(context);
-
-                      Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                          builder: (context) =>
-                              CreateResonation(expression: widget.expression),
-                        ),
-                      );
-                    },
-                    title: Row(
-                      children: <Widget>[
-                        Icon(
-                          Icons.edit,
-                          size: 17,
-                          color: Color(0xff555555),
-                        ),
-                        SizedBox(width: 10),
-                        Text(
-                          'Resonate with comment',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 17),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                child: FlatButton(
-                    padding: EdgeInsets.symmetric(vertical: 15),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(
-                      'Cancel',
-                      style:
-                          TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
-                    ),
-                    color: Color(0xffeeeeee),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25),
-                    )),
-              )
-            ],
-          ),
-        ),
-      ),
+      builder: (BuildContext context) {
+        return SafeArea(
+          top: false,
+          left: false,
+          right: false,
+          child: ResonateBottomSheet(expression: widget.expression),
+        );
+      },
     );
   }
 }

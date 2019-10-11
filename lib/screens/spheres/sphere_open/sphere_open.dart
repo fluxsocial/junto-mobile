@@ -445,16 +445,12 @@ class MemberRow extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 5),
-        Container(
-          child: Text('Nash members', style: JuntoStyles.title),
-        ),
+        const Text('Nash members', style: JuntoStyles.title),
         const SizedBox(height: 10),
-        Container(
-          child: Text(
-            description,
-            textAlign: TextAlign.start,
-            style: const TextStyle(fontSize: 15, height: 1.4),
-          ),
+        Text(
+          description,
+          textAlign: TextAlign.start,
+          style: const TextStyle(fontSize: 15, height: 1.4),
         ),
       ],
     );
