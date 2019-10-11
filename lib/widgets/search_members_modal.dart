@@ -122,7 +122,7 @@ class _SearchMembersModalState extends State<SearchMembersModal> {
                       builder:
                           (BuildContext context, List<UserProfile> query, _) {
                         return ListView.builder(
-                          itemCount: query.length,
+                          itemCount: query?.length,
                           shrinkWrap: true,
                           itemBuilder: (BuildContext context, int index) {
                             final UserProfile _user = query[index];

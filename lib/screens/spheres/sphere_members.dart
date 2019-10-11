@@ -42,18 +42,16 @@ class SphereMembers extends StatelessWidget {
             itemCount: users.length,
             itemBuilder: (BuildContext context, int index) {
               final Users user = users[index];
-              return InkWell(
+              return PerspectiveMemberPreview(
+                key: Key(user.user.address),
+                name: '${user.user.firstName}  ${user.user.lastName}',
+                username: user.user.username,
+                showIndicator: true,
+                indicatorColor: user.permissionLevel == 'Admin'
+                    ? Colors.greenAccent
+                    : Colors.white,
                 onTap: () => Navigator.of(context).push(
                   JuntoMember.route(user.user),
-                ),
-                child: PerspectiveMemberPreview(
-                  key: Key(user.user.address),
-                  name: '${user.user.firstName}  ${user.user.lastName}',
-                  username: user.user.username,
-                  showIndicator: true,
-                  indicatorColor: user.permissionLevel == 'Admin'
-                      ? Colors.greenAccent
-                      : Colors.white,
                 ),
               );
             },
