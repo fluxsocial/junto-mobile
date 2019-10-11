@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
 
-class PackDrawer extends StatelessWidget {
+class PackDrawer extends StatefulWidget {
   const PackDrawer({
     Key key,
     @required this.pack,
@@ -10,9 +10,15 @@ class PackDrawer extends StatelessWidget {
   final Group pack;
 
   @override
+  _PackDrawerState createState() => _PackDrawerState();
+}
+
+class _PackDrawerState extends State<PackDrawer> with ChangeNotifier {
+  void _addPackMember() {}
+
+  @override
   Widget build(BuildContext context) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
-
     return SizedBox(
       width: MediaQuery.of(context).size.width * .9,
       child: Drawer(
@@ -35,7 +41,7 @@ class PackDrawer extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      pack.groupData.name,
+                      widget.pack.groupData.name,
                       style: const TextStyle(
                           fontSize: 17,
                           color: Color(0xff333333),
@@ -103,42 +109,57 @@ class PackDrawer extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Container(
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: Color(0xffeeeeee),
-                            width: .75,
-                          ),
-                        ),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 15),
-                      child: const Text(
-                        'Edit Pack',
-                        style: TextStyle(fontWeight: FontWeight.w500),
-                      ),
+                    PackDrawerItem(
+                      itemName: 'Add Member',
+                      onTap: () {},
                     ),
-                    Container(
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: Color(0xffeeeeee),
-                            width: .75,
-                          ),
-                        ),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 15),
-                      child: const Text(
-                        'Leave Pack',
-                        style: TextStyle(fontWeight: FontWeight.w500),
-                      ),
+                    PackDrawerItem(
+                      itemName: 'Edit Pack',
+                      onTap: _addPackMember,
+                    ),
+                    PackDrawerItem(
+                      itemName: 'Leave Pack',
+                      onTap: () {},
                     ),
                   ],
                 ),
               )
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class PackDrawerItem extends StatelessWidget {
+  const PackDrawerItem({
+    Key key,
+    @required this.itemName,
+    @required this.onTap,
+  }) : super(key: key);
+
+  final String itemName;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
+          decoration: const BoxDecoration(
+            border: Border(
+              bottom: BorderSide(
+                color: Color(0xffeeeeee),
+                width: .75,
+              ),
+            ),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+          child: Text(
+            itemName,
+            style: const TextStyle(fontWeight: FontWeight.w500),
           ),
         ),
       ),
