@@ -120,6 +120,45 @@ class CreateActionsState extends State<CreateActions> {
               ),
             ),
           ),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            decoration: const BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: Color(0xffeeeeee),
+                  width: 1,
+                ),
+              ),
+            ),
+            padding: EdgeInsets.symmetric(  horizontal: 10, vertical: 5),
+            child: TextField(
+              buildCounter: (
+                BuildContext context, {
+                int currentLength,
+                int maxLength,
+                bool isFocused,
+              }) =>
+                  null,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintStyle: const TextStyle(
+                  color: Color(0xff333333),
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                ),
+                hintText: 'set an intention (optional)'
+              ),
+              cursorColor: const Color(0xff333333),
+              cursorWidth: 2,
+              maxLines: null,
+              style: const TextStyle(
+                  color: Color(0xff333333),
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500),
+              maxLength: 240,
+              textInputAction: TextInputAction.done,
+            ),
+          ),
         ],
       ),
     );

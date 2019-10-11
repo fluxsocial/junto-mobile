@@ -24,81 +24,83 @@ class BottomNav extends StatefulWidget {
 class BottomNavState extends State<BottomNav> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 48.0,
-      child: Material(
-        color: Colors.white,
-        shape: const Border(
-          top: BorderSide(
-            color: JuntoPalette.juntoFade,
-            width: .75,
+    return SafeArea(
+          child: SizedBox(
+        height: 48.0,
+        child: Material(
+          color: Colors.white,
+          shape: const Border(
+            top: BorderSide(
+              color: JuntoPalette.juntoFade,
+              width: .75,
+            ),
           ),
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            _BottomNavButton(
-              index: 0,
-              selectedIndex: widget.currentIndex,
-              icon: CustomIcons.home,
-              onTap: widget.setIndex,
-            ),
-            _BottomNavButton(
-              index: 1,
-              selectedIndex: widget.currentIndex,
-              icon: CustomIcons.circle,
-              onTap: widget.setIndex,
-            ),
-            Expanded(
-              child: InkWell(
-                onTap: () {
-                  Navigator.of(context).push(
-                    PageRouteBuilder<dynamic>(
-                      pageBuilder: (
-                        BuildContext context,
-                        Animation<double> animation,
-                        Animation<double> secondaryAnimation,
-                      ) {
-                        return const JuntoCreate(
-                          'collective',
-                        );
-                      },
-                      transitionsBuilder: (
-                        BuildContext context,
-                        Animation<double> animation,
-                        Animation<double> secondaryAnimation,
-                        Widget child,
-                      ) {
-                        return FadeTransition(
-                          opacity: animation,
-                          child: child,
-                        );
-                      },
-                      transitionDuration: const Duration(
-                        milliseconds: 200,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              _BottomNavButton(
+                index: 0,
+                selectedIndex: widget.currentIndex,
+                icon: CustomIcons.home,
+                onTap: widget.setIndex,
+              ),
+              _BottomNavButton(
+                index: 1,
+                selectedIndex: widget.currentIndex,
+                icon: CustomIcons.circle,
+                onTap: widget.setIndex,
+              ),
+              Expanded(
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      PageRouteBuilder<dynamic>(
+                        pageBuilder: (
+                          BuildContext context,
+                          Animation<double> animation,
+                          Animation<double> secondaryAnimation,
+                        ) {
+                          return const JuntoCreate(
+                            'collective',
+                          );
+                        },
+                        transitionsBuilder: (
+                          BuildContext context,
+                          Animation<double> animation,
+                          Animation<double> secondaryAnimation,
+                          Widget child,
+                        ) {
+                          return FadeTransition(
+                            opacity: animation,
+                            child: child,
+                          );
+                        },
+                        transitionDuration: const Duration(
+                          milliseconds: 200,
+                        ),
                       ),
-                    ),
-                  );
-                },
-                child: Icon(
-                  CustomIcons.lotus,
-                  color: JuntoPalette.juntoGreyLight,
+                    );
+                  },
+                  child: Icon(
+                    CustomIcons.lotus,
+                    color: JuntoPalette.juntoGreyLight,
+                  ),
                 ),
               ),
-            ),
-            _BottomNavButton(
-              index: 2,
-              selectedIndex: widget.currentIndex,
-              icon: CustomIcons.triangle,
-              onTap: widget.setIndex,
-            ),
-            _BottomNavButton(
-              index: 3,
-              selectedIndex: widget.currentIndex,
-              icon: CustomIcons.profile,
-              onTap: widget.setIndex,
-            ),
-          ],
+              _BottomNavButton(
+                index: 2,
+                selectedIndex: widget.currentIndex,
+                icon: CustomIcons.triangle,
+                onTap: widget.setIndex,
+              ),
+              _BottomNavButton(
+                index: 3,
+                selectedIndex: widget.currentIndex,
+                icon: CustomIcons.profile,
+                onTap: widget.setIndex,
+              ),
+            ],
+          ),
         ),
       ),
     );
