@@ -103,70 +103,21 @@ class _JuntoAppBarState extends State<JuntoAppBar>
           children: <Widget>[
             Builder(
               builder: (BuildContext context) {
-                return Row(
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: () {
-                        Scaffold.of(context).openDrawer();
-                      },
-                      child: Image.asset('assets/images/junto-mobile__logo.png',
+                return GestureDetector(
+                  onTap: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                  child: Row(
+                    children: <Widget>[
+                      Image.asset('assets/images/junto-mobile__logo.png',
                           height: 22.0, width: 22.0),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        showModalBottomSheet(
-                          isScrollControlled: true,
-                          context: context,
-                          builder: (BuildContext context) => Container(
-                            color: const Color(0xff737373),
-                            child: Container(
-                              height: MediaQuery.of(context).size.height * .9,
-                              padding: const EdgeInsets.all(10),
-                              decoration: const BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  topRight: Radius.circular(10),
-                                ),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  const SizedBox(height: 10),
-                                  Row(
-                                    children: const <Widget>[
-                                      Text(
-                                        'Edit Perspective',
-                                        style: TextStyle(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w700,
-                                          color: Color(0xff333333),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 10),
-                                  const Text(
-                                    'This modal will enable you to edit your'
-                                    ' perspective. This includes '
-                                    'adding/removing members, changing'
-                                    ' the name, deleting the perspective,'
-                                    ' and so on. You will also be able to '
-                                    'view the list of members, etc.',
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                      child: Container(
+                      Container(
                         margin: const EdgeInsets.only(left: 7.5),
                         child: Text(widget.juntoAppBarTitle,
                             style: JuntoStyles.appbarTitle),
                       ),
-                    )
-                  ],
+                    ],
+                  ),
                 );
               },
             ),
@@ -174,37 +125,27 @@ class _JuntoAppBarState extends State<JuntoAppBar>
               children: <Widget>[
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute<dynamic>(
-                        builder: (BuildContext context) => GlobalSearch(),
-                      ),
+                    showModalBottomSheet(
+                      isScrollControlled: true,
+                      context: context,
+                      builder: (BuildContext context) {
+                        return ListenableProvider<
+                            ValueNotifier<SelectedUsers>>.value(
+                          value: _users,
+                          child: _SearchBottomSheet(
+                            results: queriedUsers,
+                            onProfileSelected: _onUserSelected,
+                            onTextChange: _onTextChange,
+                          ),
+                        );
+                      },
                     );
                   },
-                  child: GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet(
-                        isScrollControlled: true,
-                        context: context,
-                        builder: (BuildContext context) {
-                          return ListenableProvider<
-                              ValueNotifier<SelectedUsers>>.value(
-                            value: _users,
-                            child: _SearchBottomSheet(
-                              results: queriedUsers,
-                              onProfileSelected: _onUserSelected,
-                              onTextChange: _onTextChange,
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    child: Container(
-                      child: Icon(
-                        Icons.search,
-                        color: JuntoPalette.juntoSleek,
-                        size: JuntoStyles.appbarIcon,
-                      ),
+                  child: Container(
+                    child: Icon(
+                      Icons.search,
+                      color: JuntoPalette.juntoSleek,
+                      size: JuntoStyles.appbarIcon,
                     ),
                   ),
                 ),
@@ -288,6 +229,20 @@ class _SearchBottomSheet extends StatefulWidget {
 }
 
 class __SearchBottomSheetState extends State<_SearchBottomSheet> {
+  PageController pageController = PageController(
+    initialPage: 0,
+  );
+
+  bool searchMembersPage = true;
+  bool searchSpheresPage = false;
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    pageController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final ValueNotifier<SelectedUsers> _selectedUsers =
@@ -310,94 +265,188 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
           children: <Widget>[
             const SizedBox(height: 10),
             Row(
-              children: const <Widget>[
-                Text(
-                  'Members',
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xff333333),
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () {
+                    pageController.jumpToPage(0);
+                  },
+                  child: Text(
+                    'Members',
+                    style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700,
+                        color: searchMembersPage
+                            ? const Color(0xff333333)
+                            : const Color(0xff999999)),
                   ),
                 ),
                 SizedBox(width: 25),
-                Text(
-                  'Spheres',
-                  style: TextStyle(
+                GestureDetector(
+                  onTap: () {
+                    pageController.jumpToPage(1);
+                  },
+                  child: Text(
+                    'Spheres',
+                    style: TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xff999999)),
+                      color: searchSpheresPage
+                          ? Color(0xff333333)
+                          : Color(0xff999999),
+                    ),
+                  ),
                 )
               ],
             ),
             const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  width: MediaQuery.of(context).size.width - 20,
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: Color(0xffeeeeee),
-                        width: .75,
+            Expanded(
+              child: PageView(
+                controller: pageController,
+                onPageChanged: (index) {
+                  if (index == 0) {
+                    setState(() {
+                      searchMembersPage = true;
+                      searchSpheresPage = false;
+                    });
+                  } else if (index == 1) {
+                    setState(() {
+                      searchMembersPage = false;
+                      searchSpheresPage = true;
+                    });
+                  }
+                },
+                children: <Widget>[
+                  Column(
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            width: MediaQuery.of(context).size.width - 20,
+                            decoration: const BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: Color(0xffeeeeee),
+                                  width: .75,
+                                ),
+                              ),
+                            ),
+                            child: TextField(
+                              buildCounter: (
+                                BuildContext context, {
+                                int currentLength,
+                                int maxLength,
+                                bool isFocused,
+                              }) =>
+                                  null,
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Search members',
+                                hintStyle: TextStyle(
+                                    color: Color(0xff999999),
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              cursorColor: const Color(0xff333333),
+                              cursorWidth: 2,
+                              maxLines: null,
+                              style: const TextStyle(
+                                  color: Color(0xff333333),
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w500),
+                              maxLength: 80,
+                              textInputAction: TextInputAction.done,
+                              onChanged: widget.onTextChange,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
+                      const SizedBox(height: 10),
+                      ValueListenableBuilder<List<UserProfile>>(
+                        valueListenable: widget.results,
+                        builder:
+                            (BuildContext context, List<UserProfile> query, _) {
+                          return ListView.builder(
+                            itemCount: query.length,
+                            shrinkWrap: true,
+                            itemBuilder: (BuildContext context, int index) {
+                              final UserProfile _user = query[index];
+                              return ValueListenableBuilder<SelectedUsers>(
+                                valueListenable: _selectedUsers,
+                                builder: (BuildContext context,
+                                    SelectedUsers selectedUser, _) {
+                                  return UserPreview(
+                                    onTap: widget.onProfileSelected,
+                                    userProfile: _user,
+                                    isSelected:
+                                        selectedUser.selection.contains(_user),
+                                  );
+                                },
+                              );
+                            },
+                          );
+                        },
+                      )
+                    ],
                   ),
-                  child: TextField(
-                    buildCounter: (
-                      BuildContext context, {
-                      int currentLength,
-                      int maxLength,
-                      bool isFocused,
-                    }) =>
-                        null,
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'Search members',
-                      hintStyle: TextStyle(
-                          color: Color(0xff999999),
-                          fontSize: 17,
-                          fontWeight: FontWeight.w500),
-                    ),
-                    cursorColor: const Color(0xff333333),
-                    cursorWidth: 2,
-                    maxLines: null,
-                    style: const TextStyle(
-                        color: Color(0xff333333),
-                        fontSize: 17,
-                        fontWeight: FontWeight.w500),
-                    maxLength: 80,
-                    textInputAction: TextInputAction.done,
-                    onChanged: widget.onTextChange,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            ValueListenableBuilder<List<UserProfile>>(
-              valueListenable: widget.results,
-              builder: (BuildContext context, List<UserProfile> query, _) {
-                return ListView.builder(
-                  itemCount: query.length,
-                  shrinkWrap: true,
-                  itemBuilder: (BuildContext context, int index) {
-                    final UserProfile _user = query[index];
-                    return ValueListenableBuilder<SelectedUsers>(
-                      valueListenable: _selectedUsers,
-                      builder: (BuildContext context,
-                          SelectedUsers selectedUser, _) {
-                        return UserPreview(
-                          onTap: widget.onProfileSelected,
-                          userProfile: _user,
-                          isSelected: selectedUser.selection.contains(_user),
-                        );
-                      },
-                    );
-                  },
-                );
-              },
-            ),
+
+                  // search spheres
+                  Column(
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            width: MediaQuery.of(context).size.width - 20,
+                            decoration: const BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: Color(0xffeeeeee),
+                                  width: .75,
+                                ),
+                              ),
+                            ),
+                            child: TextField(
+                              buildCounter: (
+                                BuildContext context, {
+                                int currentLength,
+                                int maxLength,
+                                bool isFocused,
+                              }) =>
+                                  null,
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Search spheres',
+                                hintStyle: TextStyle(
+                                    color: Color(0xff999999),
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              cursorColor: const Color(0xff333333),
+                              cursorWidth: 2,
+                              maxLines: null,
+                              style: const TextStyle(
+                                  color: Color(0xff333333),
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w500),
+                              maxLength: 80,
+                              textInputAction: TextInputAction.done,
+                              onChanged: widget.onTextChange,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Expanded(
+                        child: ListView(),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            )
           ],
         ),
       ),
