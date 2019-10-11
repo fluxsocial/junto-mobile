@@ -172,8 +172,8 @@ class _JuntoAppBarState extends State<JuntoAppBar>
             ),
             Row(
               children: <Widget>[
-                GestureDetector(
-                  onTap: () {
+                FlatButton(
+                  onPressed: () {
                     Navigator.push(
                       context,
                       CupertinoPageRoute<dynamic>(
