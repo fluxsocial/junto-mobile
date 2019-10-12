@@ -34,22 +34,16 @@ class CreateActionsState extends State<CreateActions> {
   // instantiate TextEditingController to pass to TextField widget
   TextEditingController _channelController;
 
-  PageController _pageController;
-  bool _chooseBase = true;
-  bool _chooseSpheres = false;
-
   @override
   void initState() {
     super.initState();
     _channelController = TextEditingController();
-    _pageController = PageController(initialPage: 0);
   }
 
   @override
   void dispose() {
     super.dispose();
     _channelController.dispose();
-    _pageController.dispose();
   }
 
   Future<void> _createExpression() async {
@@ -97,7 +91,13 @@ class CreateActionsState extends State<CreateActions> {
           ),
           GestureDetector(
             onTap: () {
-              _buildLayersModal(context);
+              showModalBottomSheet(
+                isScrollControlled: true,
+                context: context,
+                builder: (BuildContext context) {
+                  return _ExpressionLayerBottomSheet();
+                },
+              );
             },
             child: Container(
               width: MediaQuery.of(context).size.width,
@@ -257,115 +257,138 @@ class CreateActionsState extends State<CreateActions> {
       },
     );
   }
+}
 
-  // Build bottom modal to choose layer to share expression
-  void _buildLayersModal(BuildContext context) {
-    showModalBottomSheet(
-      isScrollControlled: true,
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          color: const Color(0xff737373),
-          child: Container(
-            height: MediaQuery.of(context).size.height * .6,
-            padding: const EdgeInsets.all(10),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10),
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+class _ExpressionLayerBottomSheet extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return _ExpressionLayerBottomSheetState();
+  }
+}
+
+class _ExpressionLayerBottomSheetState
+    extends State<_ExpressionLayerBottomSheet> {
+  PageController _pageController;
+  bool _chooseBase = true;
+  bool _chooseSpheres = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(initialPage: 0);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _pageController.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: const Color(0xff737373),
+      child: Container(
+        height: MediaQuery.of(context).size.height * .6,
+        padding: const EdgeInsets.all(10),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10),
+            topRight: Radius.circular(10),
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      height: 5,
-                      width: MediaQuery.of(context).size.width * .1,
-                      decoration: BoxDecoration(
-                          color: Color(0xffeeeeee),
-                          borderRadius: BorderRadius.circular(100)),
-                    ),
-                  ],
+                Container(
+                  height: 5,
+                  width: MediaQuery.of(context).size.width * .1,
+                  decoration: BoxDecoration(
+                      color: const Color(0xffeeeeee),
+                      borderRadius: BorderRadius.circular(100)),
                 ),
-                SizedBox(height: 15),
-                Row(
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: () {
-                        _pageController.jumpToPage(0);
-                      },
-                      child: Text(
-                        'Base',
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w700,
-                          color: _chooseBase
-                              ? const Color(0xff333333)
-                              : const Color(0xff999999),
-                        ),
-                      ),
+              ],
+            ),
+            const SizedBox(height: 15),
+            Row(
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () {
+                    _pageController.jumpToPage(0);
+                  },
+                  child: Text(
+                    'Base',
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w700,
+                      color: _chooseBase
+                          ? const Color(0xff333333)
+                          : const Color(0xff999999),
                     ),
-                    SizedBox(width: 25),
-                    GestureDetector(
-                      onTap: () {
-                        _pageController.jumpToPage(1);
-                      },
-                      child: Text(
-                        'Spheres',
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w700,
-                          color: _chooseSpheres
-                              ? Color(0xff333333)
-                              : Color(0xff999999),
-                        ),
-                      ),
-                    )
-                  ],
+                  ),
                 ),
-                const SizedBox(height: 20),
-                Expanded(
-                  child: PageView(
-                    controller: _pageController,
-                    onPageChanged: (int index) {
-                      if (index == 0) {
-                        setState(() {
-                          _chooseBase = true;
-                          _chooseSpheres = false;
-                        });
-                      } else if (index == 1) {
-                        setState(() {
-                          _chooseBase = false;
-                          _chooseSpheres = true;
-                        });
-                      }
-                    },
-                    children: <Widget>[
-                      Column(
-                        children: <Widget>[
-                          Expanded(
-                              child: ListView(
-                            children: <Widget>[
-                              _expressionLayerWidget('Collective'),
-                              _expressionLayerWidget('My Pack'),
-                              _expressionLayerWidget('Private Den'),
-                            ],
-                          )),
-                        ],
-                      ),
-                      Center(child: Text('spheres'))
-                    ],
+                const SizedBox(width: 25),
+                GestureDetector(
+                  onTap: () {
+                    _pageController.jumpToPage(1);
+                  },
+                  child: Text(
+                    'Spheres',
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w700,
+                      color: _chooseSpheres
+                          ? const Color(0xff333333)
+                          : const Color(0xff999999),
+                    ),
                   ),
                 )
               ],
             ),
-          ),
-        );
-      },
+            const SizedBox(height: 20),
+            Expanded(
+              child: PageView(
+                controller: _pageController,
+                onPageChanged: (int index) {
+                  if (index == 0) {
+                    setState(() {
+                      _chooseBase = true;
+                      _chooseSpheres = false;
+                    });
+                  } else if (index == 1) {
+                    setState(() {
+                      _chooseBase = false;
+                      _chooseSpheres = true;
+                    });
+                  }
+                },
+                children: <Widget>[
+                  Column(
+                    children: <Widget>[
+                      Expanded(
+                          child: ListView(
+                        children: <Widget>[
+                          _expressionLayerWidget('Collective'),
+                          _expressionLayerWidget('My Pack'),
+                          _expressionLayerWidget('Private Den'),
+                        ],
+                      )),
+                    ],
+                  ),
+                  const Center(
+                    child: Text('spheres'),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 
@@ -381,18 +404,18 @@ class CreateActionsState extends State<CreateActions> {
     }
 
     return ListTile(
-      contentPadding: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
       title: Row(
         children: <Widget>[
           Icon(
             expressionLayerIcon,
             size: 17,
-            color: Color(0xff555555),
+            color: const Color(0xff555555),
           ),
-          SizedBox(width: 20),
+          const SizedBox(width: 20),
           Text(
             layer,
-            style: TextStyle(
+            style: const TextStyle(
                 fontSize: 17,
                 color: Color(0xff333333),
                 fontWeight: FontWeight.w500),
