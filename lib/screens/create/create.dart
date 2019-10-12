@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/bullet/bullet.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
-import 'package:junto_beta_mobile/screens/create/create_bottom_nav.dart';
+import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/event.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/longform.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/photo.dart';
@@ -28,7 +28,9 @@ class JuntoCreateState extends State<JuntoCreate> {
   bool _bullet = false;
   bool _photo = false;
   bool _events = false;
-  bool _bottomNavVisible = true;
+
+  Icon _currentIcon = Icon(CustomIcons.longform, color: Colors.white, size: 20);
+
   ValueNotifier<bool> isEditing;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -53,18 +55,6 @@ class JuntoCreateState extends State<JuntoCreate> {
     super.dispose();
   }
 
-  void _toggleBottomNavVisibility() {
-    if (_bottomNavVisible) {
-      setState(() {
-        _bottomNavVisible = false;
-      });
-    } else {
-      setState(() {
-        _bottomNavVisible = true;
-      });
-    }
-  }
-
   // Build expression template based off state
   Widget _buildTemplate() {
     if (_longform) {
@@ -82,7 +72,7 @@ class JuntoCreateState extends State<JuntoCreate> {
     } else if (_photo) {
       return CreatePhoto(
         key: _photoFormKey,
-        toggleBottomNavVisibility: _toggleBottomNavVisibility,
+        toggleBottomNavVisibility: () {},
         isEditing: isEditing,
       );
     } else if (_events) {
@@ -106,40 +96,6 @@ class JuntoCreateState extends State<JuntoCreate> {
     });
   }
 
-  /// Ask for user confirmation to switch between expressions if field is no
-  /// empty
-  // void confirmSwitch(String templateType) {
-  //   if (isEditing.value == true || formKey.currentState?.validate() == true) {
-  //     JuntoDialog.showJuntoDialog(
-  //       context,
-  //       'Are you sure you want to switch expressions?',
-  //       <Widget>[
-  //         FlatButton(
-  //           child: const Text(
-  //             'Yes',
-  //           ),
-  //           onPressed: () {
-  //             Navigator.of(context).pop();
-  //             switchTemplate(templateType);
-  //           },
-  //         ),
-  //         FlatButton(
-  //           child: const Text(
-  //             'No',
-  //           ),
-  //           onPressed: () => Navigator.of(context).pop(),
-  //         ),
-  //       ],
-  //     );
-  //   } else {
-  //     switchTemplate(templateType);
-  //   }
-  // }
-
-  void confirmSwitch(String templateType) {
-    switchTemplate(templateType);
-  }
-
 // Switch between different expression templates
   void switchTemplate(String templateType) {
     // Reset State
@@ -152,10 +108,13 @@ class JuntoCreateState extends State<JuntoCreate> {
     if (templateType == 'LongForm' || templateType == 'dynamic') {
       setState(() {
         _longform = true;
+        _currentIcon =
+            Icon(CustomIcons.longform, color: Colors.white, size: 20);
       });
     } else if (templateType == 'ShortForm') {
       setState(() {
         _shortform = true;
+        _currentIcon = Icon(CustomIcons.feather, color: Colors.white, size: 20);
       });
     } else if (templateType == 'BulletForm') {
       setState(() {
@@ -164,14 +123,18 @@ class JuntoCreateState extends State<JuntoCreate> {
     } else if (templateType == 'PhotoForm') {
       setState(() {
         _photo = true;
+        _currentIcon = Icon(CustomIcons.camera, color: Colors.white, size: 20);
       });
     } else if (templateType == 'EventForm') {
       setState(() {
         _events = true;
+        _currentIcon = Icon(CustomIcons.event, color: Colors.white, size: 20);
       });
     } else {
       print('not an expresion type');
     }
+
+    Navigator.pop(context);
   }
 
   void _onNextClick() {
@@ -212,7 +175,6 @@ class JuntoCreateState extends State<JuntoCreate> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(45),
@@ -230,29 +192,13 @@ class JuntoCreateState extends State<JuntoCreate> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    ClipOval(
-                      child: Image.asset(
-                        'assets/images/junto-mobile__eric.png',
-                        height: 30.0,
-                        width: 30.0,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Text(
-                      _expressionType == 'LongForm'
-                          ? 'dynamic'
-                          : _expressionType.toLowerCase(),
-                      textAlign: TextAlign.start,
-                      style: const TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xff333333),
-                      ),
-                    ),
-                  ],
+                Text(
+                  'cancel',
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xff333333),
+                  ),
                 ),
                 GestureDetector(
                   onTap: _onNextClick,
@@ -270,12 +216,216 @@ class JuntoCreateState extends State<JuntoCreate> {
           ),
         ),
       ),
+      floatingActionButton: Opacity(
+        opacity: .8,
+        child: GestureDetector(
+          onTap: () {
+            _openExpressionCenter();
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              Container(
+                height: 48,
+                width: 48,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100),
+                  border: Border.all(color: Colors.white, width: 2),
+                  gradient: const LinearGradient(
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
+                    stops: <double>[0.1, 0.9],
+                    colors: <Color>[
+                      JuntoPalette.juntoSecondary,
+                      JuntoPalette.juntoPrimary,
+                    ],
+                  ),
+                ),
+                child: _currentIcon,
+              ),
+            ],
+          ),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: Column(
         children: <Widget>[
           _buildTemplate(),
         ],
       ),
-      bottomNavigationBar: CreateBottomNav(confirmSwitch, _bottomNavVisible),
+    );
+  }
+
+  _openExpressionCenter() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => Container(
+        color: Color(0xff737373),
+        child: Container(
+          height: MediaQuery.of(context).size.height * .3,
+          padding: EdgeInsets.symmetric(vertical: 10),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(10),
+              topRight: Radius.circular(10),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        height: 5,
+                        width: MediaQuery.of(context).size.width * .1,
+                        decoration: BoxDecoration(
+                            color: Color(0xffeeeeee),
+                            borderRadius: BorderRadius.circular(100)),
+                      ),
+                    ],
+                  ),
+                  ListTile(
+                    contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                    title: Text(
+                      'Expression Center',
+                      style:
+                          TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    width: 180,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border(
+                        top: BorderSide(color: Color(0xffeeeeee), width: 1),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Container(
+                    padding: EdgeInsets.only(top: 10),
+                    height: 70,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: <Widget>[
+                        GestureDetector(
+                          onTap: () {
+                            switchTemplate('LongForm');
+                          },
+                          child: Container(
+                            color: Colors.white,
+                            alignment: Alignment.bottomCenter,
+                            width: MediaQuery.of(context).size.width * .25,
+                            child: Column(
+                              children: <Widget>[
+                                const Icon(
+                                  CustomIcons.longform,
+                                  size: 20,
+                                  color: JuntoPalette.juntoBlack,
+                                ),
+                                SizedBox(height: 5),
+                                Text(
+                                  'dynamic',
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            switchTemplate('ShortForm');
+                          },
+                          child: Container(
+                            color: Colors.white,
+                            width: MediaQuery.of(context).size.width * .25,
+                            child: Column(
+                              children: <Widget>[
+                                const Icon(
+                                  CustomIcons.feather,
+                                  size: 20,
+                                  color: JuntoPalette.juntoBlack,
+                                ),
+                                SizedBox(height: 5),
+                                Text(
+                                  'shortform',
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            switchTemplate('PhotoForm');
+                          },
+                          child: Container(
+                            color: Colors.white,
+                            width: MediaQuery.of(context).size.width * .25,
+                            child: Column(
+                              children: <Widget>[
+                                const Icon(
+                                  CustomIcons.camera,
+                                  size: 20,
+                                  color: JuntoPalette.juntoBlack,
+                                ),
+                                SizedBox(height: 5),
+                                Text(
+                                  'photo',
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            switchTemplate('EventForm');
+                          },
+                          child: Container(
+                            color: Colors.white,
+                            width: MediaQuery.of(context).size.width * .25,
+                            child: Column(
+                              children: <Widget>[
+                                const Icon(
+                                  CustomIcons.event,
+                                  size: 20,
+                                  color: JuntoPalette.juntoBlack,
+                                ),
+                                SizedBox(height: 5),
+                                Text(
+                                  'event',
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

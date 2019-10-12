@@ -103,7 +103,7 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
         backgroundColor: Colors.white,
         appBar: JuntoAppBar(
           juntoAppBarTitle: _appbarTitle,
-        ),
+        ),        
         floatingActionButton: _currentScreen == 'collective'
             ? CollectiveFilterFAB(
                 isVisible: _isVisible,
