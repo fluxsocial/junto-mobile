@@ -300,7 +300,7 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
             ),
             const SizedBox(height: 10),
             Expanded(
-              child: PageView(
+              child: PageView(              
                 controller: pageController,
                 onPageChanged: (index) {
                   if (index == 0) {

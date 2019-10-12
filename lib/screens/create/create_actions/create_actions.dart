@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/providers/provider.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions_appbar.dart';
+import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:provider/provider.dart';
 
@@ -33,16 +34,22 @@ class CreateActionsState extends State<CreateActions> {
   // instantiate TextEditingController to pass to TextField widget
   TextEditingController _channelController;
 
+  PageController _pageController;
+  bool _chooseBase = true;
+  bool _chooseSpheres = false;
+
   @override
   void initState() {
     super.initState();
     _channelController = TextEditingController();
+    _pageController = PageController(initialPage: 0);
   }
 
   @override
   void dispose() {
     super.dispose();
     _channelController.dispose();
+    _pageController.dispose();
   }
 
   Future<void> _createExpression() async {
@@ -130,7 +137,7 @@ class CreateActionsState extends State<CreateActions> {
                 ),
               ),
             ),
-            padding: EdgeInsets.symmetric(  horizontal: 10, vertical: 5),
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             child: TextField(
               buildCounter: (
                 BuildContext context, {
@@ -140,14 +147,13 @@ class CreateActionsState extends State<CreateActions> {
               }) =>
                   null,
               decoration: InputDecoration(
-                border: InputBorder.none,
-                hintStyle: const TextStyle(
-                  color: Color(0xff333333),
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                ),
-                hintText: 'set an intention (optional)'
-              ),
+                  border: InputBorder.none,
+                  hintStyle: const TextStyle(
+                    color: Color(0xff333333),
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  hintText: 'set an intention (optional)'),
               cursorColor: const Color(0xff333333),
               cursorWidth: 2,
               maxLines: null,
@@ -173,7 +179,7 @@ class CreateActionsState extends State<CreateActions> {
         return Container(
           color: const Color(0xff737373),
           child: Container(
-            height: MediaQuery.of(context).size.height * .9,
+            height: MediaQuery.of(context).size.height * .6,
             padding: const EdgeInsets.all(10),
             decoration: const BoxDecoration(
               color: Colors.white,
@@ -185,6 +191,19 @@ class CreateActionsState extends State<CreateActions> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      height: 5,
+                      width: MediaQuery.of(context).size.width * .1,
+                      decoration: BoxDecoration(
+                          color: Color(0xffeeeeee),
+                          borderRadius: BorderRadius.circular(100)),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -239,7 +258,7 @@ class CreateActionsState extends State<CreateActions> {
     );
   }
 
-  // Build bottom modal to add channels to expression
+  // Build bottom modal to choose layer to share expression
   void _buildLayersModal(BuildContext context) {
     showModalBottomSheet(
       isScrollControlled: true,
@@ -248,7 +267,7 @@ class CreateActionsState extends State<CreateActions> {
         return Container(
           color: const Color(0xff737373),
           child: Container(
-            height: MediaQuery.of(context).size.height * .9,
+            height: MediaQuery.of(context).size.height * .6,
             padding: const EdgeInsets.all(10),
             decoration: const BoxDecoration(
               color: Colors.white,
@@ -259,26 +278,127 @@ class CreateActionsState extends State<CreateActions> {
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const <Widget>[
-                SizedBox(height: 10),
-                Text(
-                  'Where would you like to share?',
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xff333333),
-                  ),
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      height: 5,
+                      width: MediaQuery.of(context).size.width * .1,
+                      decoration: BoxDecoration(
+                          color: Color(0xffeeeeee),
+                          borderRadius: BorderRadius.circular(100)),
+                    ),
+                  ],
                 ),
-                SizedBox(height: 10),
-                Text(
-                  'Will build when API is 100%.. members can choose between collective, any spheres they belong to, pack, and den',
-                  style: TextStyle(fontSize: 15),
+                SizedBox(height: 15),
+                Row(
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: () {
+                        _pageController.jumpToPage(0);
+                      },
+                      child: Text(
+                        'Base',
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w700,
+                          color: _chooseBase
+                              ? const Color(0xff333333)
+                              : const Color(0xff999999),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 25),
+                    GestureDetector(
+                      onTap: () {
+                        _pageController.jumpToPage(1);
+                      },
+                      child: Text(
+                        'Spheres',
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w700,
+                          color: _chooseSpheres
+                              ? Color(0xff333333)
+                              : Color(0xff999999),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Expanded(
+                  child: PageView(
+                    controller: _pageController,
+                    onPageChanged: (int index) {
+                      if (index == 0) {
+                        setState(() {
+                          _chooseBase = true;
+                          _chooseSpheres = false;
+                        });
+                      } else if (index == 1) {
+                        setState(() {
+                          _chooseBase = false;
+                          _chooseSpheres = true;
+                        });
+                      }
+                    },
+                    children: <Widget>[
+                      Column(
+                        children: <Widget>[
+                          Expanded(
+                              child: ListView(
+                            children: <Widget>[
+                              _expressionLayerWidget('Collective'),
+                              _expressionLayerWidget('My Pack'),
+                              _expressionLayerWidget('Private Den'),
+                            ],
+                          )),
+                        ],
+                      ),
+                      Center(child: Text('spheres'))
+                    ],
+                  ),
                 )
               ],
             ),
           ),
         );
       },
+    );
+  }
+
+  _expressionLayerWidget(layer) {
+    var expressionLayerIcon;
+
+    if (layer == 'Collective') {
+      expressionLayerIcon = CustomIcons.home;
+    } else if (layer == 'My Pack') {
+      expressionLayerIcon = CustomIcons.packs;
+    } else if (layer == 'Private Den') {
+      expressionLayerIcon = CustomIcons.profile;
+    }
+
+    return ListTile(
+      contentPadding: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+      title: Row(
+        children: <Widget>[
+          Icon(
+            expressionLayerIcon,
+            size: 17,
+            color: Color(0xff555555),
+          ),
+          SizedBox(width: 20),
+          Text(
+            layer,
+            style: TextStyle(
+                fontSize: 17,
+                color: Color(0xff333333),
+                fontWeight: FontWeight.w500),
+          )
+        ],
+      ),
     );
   }
 }
@@ -350,7 +470,6 @@ class _SelectionTileState extends State<_SelectionTile> {
                           ],
                     begin: Alignment.bottomLeft,
                     end: Alignment.topRight),
-                // color: widget.isSelected ? JuntoPalette.juntoPrimary : null,
                 border: Border.all(
                   color: widget.isSelected
                       ? Colors.white
