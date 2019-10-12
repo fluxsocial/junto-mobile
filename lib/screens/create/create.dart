@@ -192,12 +192,17 @@ class JuntoCreateState extends State<JuntoCreate> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Text(
-                  'cancel',
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xff333333),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    'cancel',
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xff333333),
+                    ),
                   ),
                 ),
                 GestureDetector(
@@ -216,6 +221,7 @@ class JuntoCreateState extends State<JuntoCreate> {
           ),
         ),
       ),
+      bottomNavigationBar: SafeArea(child: SizedBox()),
       floatingActionButton: Opacity(
         opacity: .8,
         child: GestureDetector(
