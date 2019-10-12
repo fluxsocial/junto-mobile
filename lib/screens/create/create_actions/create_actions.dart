@@ -299,93 +299,147 @@ class _ExpressionLayerBottomSheetState
             topRight: Radius.circular(10),
           ),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Stack(
+          alignment: Alignment.center,
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Container(
-                  height: 5,
-                  width: MediaQuery.of(context).size.width * .1,
-                  decoration: BoxDecoration(
-                      color: const Color(0xffeeeeee),
-                      borderRadius: BorderRadius.circular(100)),
-                ),
-              ],
-            ),
-            const SizedBox(height: 15),
-            Row(
-              children: <Widget>[
-                GestureDetector(
-                  onTap: () {
-                    _pageController.jumpToPage(0);
-                  },
-                  child: Text(
-                    'Base',
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w700,
-                      color: _chooseBase
-                          ? const Color(0xff333333)
-                          : const Color(0xff999999),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      height: 5,
+                      width: MediaQuery.of(context).size.width * .1,
+                      decoration: BoxDecoration(
+                          color: const Color(0xffeeeeee),
+                          borderRadius: BorderRadius.circular(100)),
                     ),
-                  ),
+                  ],
                 ),
-                const SizedBox(width: 25),
-                GestureDetector(
-                  onTap: () {
-                    _pageController.jumpToPage(1);
-                  },
-                  child: Text(
-                    'Spheres',
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w700,
-                      color: _chooseSpheres
-                          ? const Color(0xff333333)
-                          : const Color(0xff999999),
+                const SizedBox(height: 15),
+                Row(
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: () {
+                        _pageController.jumpToPage(0);
+                      },
+                      child: Text(
+                        'Base',
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w700,
+                          color: _chooseBase
+                              ? const Color(0xff333333)
+                              : const Color(0xff999999),
+                        ),
+                      ),
                     ),
-                  ),
-                )
-              ],
-            ),
-            const SizedBox(height: 20),
-            Expanded(
-              child: PageView(
-                controller: _pageController,
-                onPageChanged: (int index) {
-                  if (index == 0) {
-                    setState(() {
-                      _chooseBase = true;
-                      _chooseSpheres = false;
-                    });
-                  } else if (index == 1) {
-                    setState(() {
-                      _chooseBase = false;
-                      _chooseSpheres = true;
-                    });
-                  }
-                },
-                children: <Widget>[
-                  Column(
+                    const SizedBox(width: 25),
+                    GestureDetector(
+                      onTap: () {
+                        _pageController.jumpToPage(1);
+                      },
+                      child: Text(
+                        'Spheres',
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w700,
+                          color: _chooseSpheres
+                              ? const Color(0xff333333)
+                              : const Color(0xff999999),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Expanded(
+                  child: PageView(
+                    controller: _pageController,
+                    onPageChanged: (int index) {
+                      if (index == 0) {
+                        setState(() {
+                          _chooseBase = true;
+                          _chooseSpheres = false;
+                        });
+                      } else if (index == 1) {
+                        setState(() {
+                          _chooseBase = false;
+                          _chooseSpheres = true;
+                        });
+                      }
+                    },
                     children: <Widget>[
-                      Expanded(
-                          child: ListView(
+                      Column(
                         children: <Widget>[
-                          _expressionLayerWidget('Collective'),
-                          _expressionLayerWidget('My Pack'),
-                          _expressionLayerWidget('Private Den'),
+                          Expanded(
+                              child: ListView(
+                            children: <Widget>[
+                              _expressionLayerWidget('Collective'),
+                              _expressionLayerWidget('My Pack'),
+                              _expressionLayerWidget('Private Den'),
+                            ],
+                          )),
                         ],
-                      )),
+                      ),
+                      const Center(
+                        child: Text('spheres'),
+                      )
                     ],
                   ),
-                  const Center(
-                    child: Text('spheres'),
-                  )
-                ],
+                )
+
+                // Container(height: 50, color: Colors.green)
+              ],
+            ),
+            Positioned(
+              bottom: 15,
+              child: Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      height: 9,
+                      width: 9,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        gradient: _chooseBase
+                            ? LinearGradient(
+                                colors: [
+                                  JuntoPalette.juntoSecondary,
+                                  JuntoPalette.juntoPrimary
+                                ],
+                                begin: Alignment.bottomLeft,
+                                end: Alignment.topRight,
+                                stops: [0.1, 0.9])
+                            : null,
+                        color: _chooseBase ? null : Color(0xffeeeeee),
+                      ),
+                    ),
+                    SizedBox(width: 6),
+                    Container(
+                      height: 9,
+                      width: 9,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        gradient: _chooseSpheres
+                            ? LinearGradient(
+                                colors: [
+                                  JuntoPalette.juntoSecondary,
+                                  JuntoPalette.juntoPrimary
+                                ],
+                                begin: Alignment.bottomLeft,
+                                end: Alignment.topRight,
+                                stops: [0.1, 0.9])
+                            : null,
+                        color: _chooseSpheres ? null : Color(0xffeeeeee),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            )
+            ),
           ],
         ),
       ),
