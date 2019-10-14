@@ -120,68 +120,68 @@ class CreateBulletState extends State<CreateBullet> {
                       children: _bullets
                           .map(
                             (Map<String, dynamic> bullet) => Container(
-                              margin: const EdgeInsets.only(right: 10),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                border: Border.all(
-                                  color: const Color(0xffdddddd),
-                                  width: 1,
-                                ),
-                              ),
-                              height: 200,
-                              width: MediaQuery.of(context).size.width - 20,
-                              child: Column(
-                                children: <Widget>[
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 10,
-                                      vertical: 10,
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Text(
-                                          bullet['key'].toString() +
-                                              '/' +
-                                              _bullets.length.toString(),
-                                          style: const TextStyle(
-                                            color: Color(
-                                              0xff333333,
-                                            ),
-                                          ),
-                                        ),
-                                        bullet['key'] > 1
-                                            ? _removeBulletWidget()
-                                            : Container()
-                                      ],
+                                  margin: const EdgeInsets.only(right: 10),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    border: Border.all(
+                                      color: const Color(0xffdddddd),
+                                      width: 1,
                                     ),
                                   ),
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
-                                    margin: const EdgeInsets.only(top: 20),
-                                    child: TextField(
-                                      buildCounter: (
-                                        BuildContext context, {
-                                        int currentLength,
-                                        int maxLength,
-                                        bool isFocused,
-                                      }) =>
-                                          null,
-                                      decoration: const InputDecoration(
-                                        border: InputBorder.none,
+                                  height: 200,
+                                  width: MediaQuery.of(context).size.width - 20,
+                                  child: Column(
+                                    children: <Widget>[
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 10,
+                                          vertical: 10,
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Text(
+                                              bullet['key'].toString() +
+                                                  '/' +
+                                                  _bullets.length.toString(),
+                                              style: const TextStyle(
+                                                color: Color(
+                                                  0xff333333,
+                                                ),
+                                              ),
+                                            ),
+                                            bullet['key'] > 1
+                                                ? _removeBulletWidget()
+                                                : Container()
+                                          ],
+                                        ),
                                       ),
-                                      cursorColor: JuntoPalette.juntoGrey,
-                                      cursorWidth: 2,
-                                      maxLines: null,
-                                      maxLength: 220,
-                                      textInputAction: TextInputAction.done,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10),
+                                        margin: const EdgeInsets.only(top: 20),
+                                        child: TextField(
+                                          buildCounter: (
+                                            BuildContext context, {
+                                            int currentLength,
+                                            int maxLength,
+                                            bool isFocused,
+                                          }) =>
+                                              null,
+                                          decoration: const InputDecoration(
+                                            border: InputBorder.none,
+                                          ),
+                                          cursorColor: JuntoPalette.juntoGrey,
+                                          cursorWidth: 2,
+                                          maxLines: null,
+                                          maxLength: 220,
+                                          textInputAction: TextInputAction.done,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
                           )
                           .toList(),
                     ))

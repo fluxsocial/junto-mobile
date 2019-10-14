@@ -118,46 +118,48 @@ class _JuntoAppBarState extends State<JuntoAppBar>
                           isScrollControlled: true,
                           context: context,
                           builder: (BuildContext context) => Container(
-                            color: const Color(0xff737373),
-                            child: Container(
-                              height: MediaQuery.of(context).size.height * .9,
-                              padding: const EdgeInsets.all(10),
-                              decoration: const BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  topRight: Radius.circular(10),
-                                ),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  const SizedBox(height: 10),
-                                  Row(
-                                    children: const <Widget>[
-                                      Text(
-                                        'Edit Perspective',
-                                        style: TextStyle(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w700,
-                                          color: Color(0xff333333),
-                                        ),
+                                color: const Color(0xff737373),
+                                child: Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * .9,
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      topRight: Radius.circular(10),
+                                    ),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      const SizedBox(height: 10),
+                                      Row(
+                                        children: const <Widget>[
+                                          Text(
+                                            'Edit Perspective',
+                                            style: TextStyle(
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.w700,
+                                              color: Color(0xff333333),
+                                            ),
+                                          ),
+                                        ],
                                       ),
+                                      const SizedBox(height: 10),
+                                      const Text(
+                                        'This modal will enable you to edit your'
+                                        ' perspective. This includes '
+                                        'adding/removing members, changing'
+                                        ' the name, deleting the perspective,'
+                                        ' and so on. You will also be able to '
+                                        'view the list of members, etc.',
+                                      )
                                     ],
                                   ),
-                                  const SizedBox(height: 10),
-                                  const Text(
-                                    'This modal will enable you to edit your'
-                                    ' perspective. This includes '
-                                    'adding/removing members, changing'
-                                    ' the name, deleting the perspective,'
-                                    ' and so on. You will also be able to '
-                                    'view the list of members, etc.',
-                                  )
-                                ],
+                                ),
                               ),
-                            ),
-                          ),
                         );
                       },
                       child: Container(
@@ -214,46 +216,48 @@ class _JuntoAppBarState extends State<JuntoAppBar>
                       isScrollControlled: true,
                       context: context,
                       builder: (BuildContext context) => Container(
-                        color: const Color(0xff737373),
-                        child: Container(
-                          height: MediaQuery.of(context).size.height * .9,
-                          padding: const EdgeInsets.all(10),
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              topRight: Radius.circular(10),
-                            ),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              const SizedBox(height: 10),
-                              Row(
-                                children: const <Widget>[
-                                  Text(
-                                    'Notifications',
-                                    style: TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w700,
-                                      color: Color(0xff333333),
-                                    ),
+                            color: const Color(0xff737373),
+                            child: Container(
+                              height: MediaQuery.of(context).size.height * .9,
+                              padding: const EdgeInsets.all(10),
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  topRight: Radius.circular(10),
+                                ),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  const SizedBox(height: 10),
+                                  Row(
+                                    children: const <Widget>[
+                                      Text(
+                                        'Notifications',
+                                        style: TextStyle(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w700,
+                                          color: Color(0xff333333),
+                                        ),
+                                      ),
+                                    ],
                                   ),
+                                  const SizedBox(height: 10),
+                                  const Text('building this last...')
                                 ],
                               ),
-                              const SizedBox(height: 10),
-                              const Text('building this last...')
-                            ],
+                            ),
                           ),
-                        ),
-                      ),
                     );
                   },
                   child: Container(
                     margin: const EdgeInsets.only(left: 7.5),
-                    child: Icon(CustomIcons.moon,
-                        color: JuntoPalette.juntoSleek,
-                        size: JuntoStyles.appbarIcon),
+                    child: const Icon(
+                      CustomIcons.moon,
+                      color: JuntoPalette.juntoSleek,
+                      size: JuntoStyles.appbarIcon,
+                    ),
                   ),
                 )
               ],

@@ -80,7 +80,7 @@ class BottomNavState extends State<BottomNav> {
                     ),
                   );
                 },
-                child: Icon(
+                child: const Icon(
                   CustomIcons.lotus,
                   color: JuntoPalette.juntoGreyLight,
                 ),

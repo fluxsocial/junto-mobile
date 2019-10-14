@@ -39,16 +39,17 @@ class ExpressionPreviewTop extends StatelessWidget {
                     BuildContext context,
                   ) =>
                       JuntoMember(
-                    profile: UserProfile(
-                      address: '',
-                      firstName: 'Eric',
-                      lastName: 'Yang',
-                      bio: 'This is a test',
-                      profilePicture: 'assets/images/junto-mobile__logo.png',
-                      username: 'Gmail',
-                      verified: false,
-                    ),
-                  ),
+                        profile: UserProfile(
+                          address: '',
+                          firstName: 'Eric',
+                          lastName: 'Yang',
+                          bio: 'This is a test',
+                          profilePicture:
+                              'assets/images/junto-mobile__logo.png',
+                          username: 'Gmail',
+                          verified: false,
+                        ),
+                      ),
                 ),
               );
             },

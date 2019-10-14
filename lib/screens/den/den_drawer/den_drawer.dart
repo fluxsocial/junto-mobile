@@ -37,6 +37,7 @@ class _DenDrawerState extends State<DenDrawer> {
       debugPrint('Error occured in _retrieveUserInfo: $error');
     }
   }
+
 // FIXME(Nash): Look up the address and retrieve the user pack
 //  see: https://github.com/juntofoundation/junto-mobile/issues/170
   Future<void> _onPackPress() async {

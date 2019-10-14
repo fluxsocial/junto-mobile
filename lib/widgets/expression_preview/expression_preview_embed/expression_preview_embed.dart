@@ -60,7 +60,7 @@ class ExpressionPreviewEmbed extends StatelessWidget {
                   ),
                 ),
                 Row(
-                  children: <Widget>[
+                  children: const <Widget>[
                     Icon(
                       CustomIcons.more,
                       size: 20,

@@ -81,7 +81,7 @@ class ExpressionOpenAppbar extends StatelessWidget {
                 width: 32,
                 alignment: Alignment.centerRight,
                 padding: const EdgeInsets.only(right: 10),
-                child: Icon(CustomIcons.half_lotus, size: 14),
+                child: const Icon(CustomIcons.half_lotus, size: 14),
               ),
             )
           ],

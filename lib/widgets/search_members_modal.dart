@@ -153,14 +153,14 @@ class _SearchMembersModalState extends State<SearchMembersModal> {
       child: Container(
         color: Colors.white,
         child: Row(
-          children: <Widget>[
+          children: const <Widget>[
             Icon(
               CustomIcons.half_lotus,
               size: 17,
-              color: const Color(0xff333333),
+              color: Color(0xff333333),
             ),
-            const SizedBox(width: 20),
-            const Text(
+            SizedBox(width: 20),
+            Text(
               'add members',
               style: TextStyle(
                 fontSize: 14,

@@ -26,7 +26,8 @@ class _PackDrawerState extends State<PackDrawer> {
   }
 
   Future<void> getPackUsers() async {
-    final List<Users> _members = await Provider.of<SpheresProvider>(context).getGroupMembers(
+    final List<Users> _members =
+        await Provider.of<SpheresProvider>(context).getGroupMembers(
       widget.pack.address,
     );
     if (_members != null && _members.isNotEmpty) {
@@ -38,9 +39,9 @@ class _PackDrawerState extends State<PackDrawer> {
     Navigator.of(context).push(
       MaterialPageRoute<dynamic>(
         builder: (BuildContext context) => GroupMembers(
-          users: users,
-          groupName: 'Pack Members',
-        ),
+              users: users,
+              groupName: 'Pack Members',
+            ),
       ),
     );
   }
@@ -71,7 +72,10 @@ class _PackDrawerState extends State<PackDrawer> {
                   children: <Widget>[
                     Text(
                       widget.pack.groupData.name,
-                      style: const TextStyle(fontSize: 17, color: Color(0xff333333), fontWeight: FontWeight.w700),
+                      style: const TextStyle(
+                          fontSize: 17,
+                          color: Color(0xff333333),
+                          fontWeight: FontWeight.w700),
                     ),
                   ],
                 ),
@@ -93,7 +97,8 @@ class _PackDrawerState extends State<PackDrawer> {
                             ),
                           ),
                         ),
-                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 10),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -130,7 +135,8 @@ class _PackDrawerState extends State<PackDrawer> {
                             const SizedBox(height: 5),
                             const Text(
                               '50 pack members',
-                              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700, fontSize: 14),
                             ),
                           ],
                         ),

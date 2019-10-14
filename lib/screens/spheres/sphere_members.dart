@@ -53,10 +53,12 @@ class GroupMembers extends StatelessWidget {
                 name: '${user.user.firstName}  ${user.user.lastName}',
                 username: user.user.username,
                 showIndicator: true,
-                indicatorColor: user.permissionLevel == 'Admin' ? Colors.greenAccent : Colors.white,
+                indicatorColor: user.permissionLevel == 'Admin'
+                    ? Colors.greenAccent
+                    : Colors.white,
                 onTap: () => Navigator.of(context).push(
-                  JuntoMember.route(user.user),
-                ),
+                      JuntoMember.route(user.user),
+                    ),
               );
             },
           ),

@@ -50,7 +50,7 @@ class CreateResonationState extends State<CreateResonation> {
                     margin: const EdgeInsets.symmetric(vertical: 10),
                     child: TextField(
                       focusNode: resonationCommentFocusNode,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Add a comment',
                       ),
