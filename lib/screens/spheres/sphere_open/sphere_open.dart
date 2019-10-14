@@ -198,6 +198,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
       body: DefaultTabController(
         length: _tabs.length,
         child: NestedScrollView(
+          controller: _hideFABController,
           physics: const ClampingScrollPhysics(),
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
@@ -317,7 +318,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   _buildAboutView() {
     return ListView(
       physics: ClampingScrollPhysics(),
-      controller: _hideFABController,
       children: <Widget>[
         Container(
           padding: const EdgeInsets.symmetric(
@@ -439,7 +439,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   _buildEventsView() {
     return ListView(
       physics: ClampingScrollPhysics(),
-      // controller: _hideFABController,
       children: <Widget>[
         ExpressionPreview(
           expression: expressions[3],
