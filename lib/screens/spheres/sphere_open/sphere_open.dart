@@ -368,9 +368,11 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
         GestureDetector(
           onTap: () {
             Navigator.push(
-                context,
-                CupertinoPageRoute(
-                    builder: (context) => SphereOpenFacilitators()));
+              context,
+              CupertinoPageRoute(
+                builder: (context) => SphereOpenFacilitators(),
+              ),
+            );
           },
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -413,8 +415,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
         ),
         principles.length > 0
             ? Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -427,12 +428,17 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                 ),
               )
             : SizedBox(),
-
-        // Container(
-        //     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        //     child: Text(
-        //       widget.group.groupData.description,
-        //     )),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text('Bio / Purpose', style: JuntoStyles.header),
+              SizedBox(height: 10),
+              Text(widget.group.groupData.description)
+            ],
+          ),
+        ),
       ],
     );
   }
