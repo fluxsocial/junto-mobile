@@ -224,14 +224,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                           horizontal: JuntoStyles.horizontalPadding,
                           vertical: 15,
                         ),
-                        // decoration: const BoxDecoration(
-                        //   border: Border(
-                        //     bottom: BorderSide(
-                        //       color: JuntoPalette.juntoFade,
-                        //       width: .75,
-                        //     ),
-                        //   ),
-                        // ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -324,6 +316,8 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
 
   _buildAboutView() {
     return ListView(
+      physics: ClampingScrollPhysics(),
+      controller: _hideFABController,
       children: <Widget>[
         Container(
           padding: const EdgeInsets.symmetric(
@@ -424,6 +418,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
 
   _buildExpressionView() {
     return ListView(
+      physics: ClampingScrollPhysics(),
       children: <Widget>[
         ExpressionPreview(
           expression: expressions[0],
@@ -443,6 +438,8 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
 
   _buildEventsView() {
     return ListView(
+      physics: ClampingScrollPhysics(),
+      // controller: _hideFABController,
       children: <Widget>[
         ExpressionPreview(
           expression: expressions[3],
