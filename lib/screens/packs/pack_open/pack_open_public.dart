@@ -221,15 +221,7 @@ class _PackOpenPublicState extends State<PackOpenPublic> with HideFab {
   @override
   void didChangeDependencies() {
     _userProvider = Provider.of<UserProvider>(context);
-    printPackResponse();
     super.didChangeDependencies();
-  }
-
-  Future<void> printPackResponse() async {
-    final UserProfile userProfile = await _userProvider.readLocalUser();
-    final UserGroupsResponse response =
-        await _userProvider.getUserGroups(userProfile.address);
-    print(response.toString());
   }
 
   @override
