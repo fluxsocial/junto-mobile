@@ -152,7 +152,7 @@ class JuntoDenState extends State<JuntoDen> {
         children: <Widget>[DenCollectionPreview()],
       );
     } else {
-      return const SizedBox();
+      return const SizedBox(); 
     }
   }
 
