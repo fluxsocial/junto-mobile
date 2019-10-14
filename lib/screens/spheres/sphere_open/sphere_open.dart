@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/sphere.dart';
@@ -7,6 +8,7 @@ import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/providers/provider.dart';
 import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open_members.dart';
+import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open_facilitators.dart';
 import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open_appbar.dart';
 import 'package:junto_beta_mobile/styles.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
@@ -164,6 +166,20 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   }
 
   final List<String> _tabs = <String>['About', 'Discussion', 'Events'];
+  var principles = [
+    {
+      'title': 'Be a nice person because nice people get chocolate',
+      'body':
+          'Engage with empathy and respect for one another. We are more than viewpoints that may oppose each other at times. We are human beings :)'
+    },
+    {
+      'title': 'All walks of life',
+      'body':
+          'This is a communal space where people from all walks of life are welcome'
+    },
+  ];
+
+  bool _principlesFullView = false;
 
   @override
   Widget build(BuildContext context) {
@@ -349,71 +365,184 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
             ],
           ),
         ),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          decoration: const BoxDecoration(
-            border: Border(
-              bottom: BorderSide(
-                color: JuntoPalette.juntoFade,
-                width: .75,
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+                context,
+                CupertinoPageRoute(
+                    builder: (context) => SphereOpenFacilitators()));
+          },
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              border: Border(
+                bottom: BorderSide(
+                  color: JuntoPalette.juntoFade,
+                  width: .75,
+                ),
               ),
             ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text('Facilitators', style: JuntoStyles.header),
-                        const SizedBox(height: 10),
-                        const Text('Eric Yang and 7 others'),
-                      ]),
-                  ClipOval(
-                    child: Image.asset(
-                      'assets/images/junto-mobile__eric.png',
-                      height: 45.0,
-                      width: 45.0,
-                      fit: BoxFit.cover,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text('Facilitators', style: JuntoStyles.header),
+                          const SizedBox(height: 10),
+                          const Text('Eric Yang and 7 others'),
+                        ]),
+                    ClipOval(
+                      child: Image.asset(
+                        'assets/images/junto-mobile__eric.png',
+                        height: 45.0,
+                        width: 45.0,
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
+        principles.length > 0
+            ? Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Principles', style: JuntoStyles.header),
+                    _principlesFullView
+                        ? _getPrinciples(principles)
+                        : _getPrinciplesPreview(principles),
+                    _principlesSeeMore()
+                  ],
+                ),
+              )
+            : SizedBox(),
+
+        // Container(
+        //     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        //     child: Text(
+        //       widget.group.groupData.description,
+        //     )),
+      ],
+    );
+  }
+
+  _getPrinciplesPreview(principles) {
+    List<Widget> list = new List();
+
+    for (var i = 0; i < principles.length; i++) {
+      list.add(
+        _buildPrinciple(i, principles[i]['title'], principles[i]['body']),
+      );
+    }
+    return Column(children: [list[0]]);
+  }
+
+  _getPrinciples(principles) {
+    List<Widget> list = new List();
+
+    for (var i = 0; i < principles.length; i++) {
+      list.add(
+        _buildPrinciple(i, principles[i]['title'], principles[i]['body']),
+      );
+    }
+    return Column(children: list);
+  }
+
+  _principlesSeeMore() {
+    if (principles.length > 1) {
+      return GestureDetector(
+        onTap: () {
+          setState(() {
+            if (_principlesFullView == false) {
+              _principlesFullView = true;
+            } else {
+              _principlesFullView = false;
+            }
+          });
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          alignment: Alignment.centerLeft,
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
+            ),
+          ),
+          child: Row(
+            children: <Widget>[
+              _principlesFullView ? Text('collapse') : Text('see more'),
+              SizedBox(width: 5),
+              Icon(
+                _principlesFullView
+                    ? Icons.keyboard_arrow_up
+                    : Icons.keyboard_arrow_down,
+                size: 17,
+                color: Color(0xff555555),
               )
             ],
           ),
         ),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          decoration: const BoxDecoration(
-            border: Border(
-              bottom: BorderSide(
-                color: JuntoPalette.juntoFade,
-                width: .75,
-              ),
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text('Principles', style: JuntoStyles.header),
-              const SizedBox(height: 10),
-              Container(
-                  width: MediaQuery.of(context).size.width * .88,
-                  child: Text('Help maintain a respectful atmosphere')),
-            ],
+      );
+    } else {
+      return SizedBox();
+    }
+  }
+
+  _buildPrinciple(index, title, body) {
+    return Container(
+        padding: EdgeInsets.symmetric(vertical: 10),
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
           ),
         ),
-        Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-            child: Text(
-              widget.group.groupData.description,
-            )),
-      ],
-    );
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              (index + 1).toString(),
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                color: Color(0xff999999),
+              ),
+            ),
+            SizedBox(width: 15),
+            Container(
+              height: 17,
+              decoration: BoxDecoration(
+                border: Border(
+                  right: BorderSide(color: Color(0xffeeeeee), width: 2),
+                ),
+              ),
+            ),
+            SizedBox(width: 15),
+            Flexible(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    title,
+                    style: JuntoStyles.title,
+                    textAlign: TextAlign.left,
+                  ),
+                  SizedBox(height: 10),
+                  Text(body)
+                ],
+              ),
+            )
+          ],
+        ));
   }
 
   _buildExpressionView() {
