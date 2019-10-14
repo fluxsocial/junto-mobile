@@ -166,7 +166,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   }
 
   final List<String> _tabs = <String>['About', 'Discussion', 'Events'];
-  var principles = [
+  List principles = [
     {
       'title': 'Be a nice person because nice people get chocolate',
       'body':
@@ -333,7 +333,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
 
   _buildAboutView() {
     return ListView(
-      physics: ClampingScrollPhysics(),
+      physics: const ClampingScrollPhysics(),
       children: <Widget>[
         Container(
           padding: const EdgeInsets.symmetric(
@@ -355,8 +355,8 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                 onTap: () {
                   Navigator.push(
                     context,
-                    CupertinoPageRoute(
-                      builder: (context) => SphereOpenMembers(users: _members),
+                    CupertinoPageRoute<dynamic>(
+                      builder: (BuildContext context) => SphereOpenMembers(users: _members),
                     ),
                   );
                 },
@@ -369,8 +369,8 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
           onTap: () {
             Navigator.push(
               context,
-              CupertinoPageRoute(
-                builder: (context) => SphereOpenFacilitators(),
+              CupertinoPageRoute<dynamic>(
+                builder: (BuildContext context) => const SphereOpenFacilitators(),
               ),
             );
           },
@@ -413,12 +413,12 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
             ),
           ),
         ),
-        principles.length > 0
+        principles.isNotEmpty
             ? Container(
                 padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  children: <Widget> [
                     Text('Principles', style: JuntoStyles.header),
                     _principlesFullView
                         ? _getPrinciples(principles)
@@ -427,14 +427,14 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                   ],
                 ),
               )
-            : SizedBox(),
+            : const SizedBox(),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text('Bio / Purpose', style: JuntoStyles.header),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text(widget.group.groupData.description)
             ],
           ),
@@ -443,18 +443,18 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     );
   }
 
-  _getPrinciplesPreview(principles) {
+  _getPrinciplesPreview(List principles) {
     List<Widget> list = new List();
 
-    for (var i = 0; i < principles.length; i++) {
+    for (int i = 0; i < principles.length; i++) {
       list.add(
         _buildPrinciple(i, principles[i]['title'], principles[i]['body']),
       );
     }
-    return Column(children: [list[0]]);
+    return Column(children: <Widget>[list[0]]);
   }
 
-  _getPrinciples(principles) {
+  _getPrinciples(List principles) {
     List<Widget> list = new List();
 
     for (var i = 0; i < principles.length; i++) {
@@ -480,35 +480,37 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 10),
           alignment: Alignment.centerLeft,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
             ),
           ),
           child: Row(
             children: <Widget>[
-              _principlesFullView ? Text('collapse') : Text('see more'),
-              SizedBox(width: 5),
+              _principlesFullView
+                  ? const Text('collapse')
+                  : const Text('see more'),
+              const SizedBox(width: 5),
               Icon(
                 _principlesFullView
                     ? Icons.keyboard_arrow_up
                     : Icons.keyboard_arrow_down,
                 size: 17,
-                color: Color(0xff555555),
+                color: const Color(0xff555555),
               )
             ],
           ),
         ),
       );
     } else {
-      return SizedBox();
+      return const SizedBox();
     }
   }
 
-  _buildPrinciple(index, title, body) {
+  _buildPrinciple(int index, String title, String body) {
     return Container(
-        padding: EdgeInsets.symmetric(vertical: 10),
-        decoration: BoxDecoration(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        decoration: const BoxDecoration(
           border: Border(
             bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
           ),
@@ -520,19 +522,19 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
               (index + 1).toString(),
               style: TextStyle(
                 fontWeight: FontWeight.w500,
-                color: Color(0xff999999),
+                color: const Color(0xff999999),
               ),
             ),
-            SizedBox(width: 15),
+            const SizedBox(width: 15),
             Container(
               height: 17,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 border: Border(
                   right: BorderSide(color: Color(0xffeeeeee), width: 2),
                 ),
               ),
             ),
-            SizedBox(width: 15),
+            const SizedBox(width: 15),
             Flexible(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -542,7 +544,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                     style: JuntoStyles.title,
                     textAlign: TextAlign.left,
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text(body)
                 ],
               ),
@@ -553,7 +555,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
 
   _buildExpressionView() {
     return ListView(
-      physics: ClampingScrollPhysics(),
+      physics: const ClampingScrollPhysics(),
       children: <Widget>[
         ExpressionPreview(
           expression: expressions[0],
@@ -573,7 +575,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
 
   _buildEventsView() {
     return ListView(
-      physics: ClampingScrollPhysics(),
+      physics: const ClampingScrollPhysics(),
       children: <Widget>[
         ExpressionPreview(
           expression: expressions[3],

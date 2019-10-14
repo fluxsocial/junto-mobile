@@ -64,7 +64,7 @@ class SpherePreview extends StatelessWidget {
                         style: JuntoStyles.title,
                       ),
                       Text(
-                        '/s/' + group.groupData.sphereHandle,
+                        's/' + group.groupData.sphereHandle,
                         textAlign: TextAlign.start,
                         style: JuntoStyles.body,
                       )
