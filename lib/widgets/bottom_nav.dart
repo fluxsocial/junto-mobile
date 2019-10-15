@@ -50,43 +50,43 @@ class BottomNavState extends State<BottomNav> {
                 icon: CustomIcons.circle,
                 onTap: widget.setIndex,
               ),
-              Expanded(
-                child: InkWell(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      PageRouteBuilder<dynamic>(
-                        pageBuilder: (
-                          BuildContext context,
-                          Animation<double> animation,
-                          Animation<double> secondaryAnimation,
-                        ) {
-                          return const JuntoCreate(
-                            'collective',
-                          );
-                        },
-                        transitionsBuilder: (
-                          BuildContext context,
-                          Animation<double> animation,
-                          Animation<double> secondaryAnimation,
-                          Widget child,
-                        ) {
-                          return FadeTransition(
-                            opacity: animation,
-                            child: child,
-                          );
-                        },
-                        transitionDuration: const Duration(
-                          milliseconds: 200,
-                        ),
-                      ),
-                    );
-                  },
-                  child: Icon(
-                    CustomIcons.lotus,
-                    color: JuntoPalette.juntoGreyLight,
-                  ),
-                ),
-              ),
+              // Expanded(
+              //   child: InkWell(
+              //     onTap: () {
+              //       Navigator.of(context).push(
+              //         PageRouteBuilder<dynamic>(
+              //           pageBuilder: (
+              //             BuildContext context,
+              //             Animation<double> animation,
+              //             Animation<double> secondaryAnimation,
+              //           ) {
+              //             return const JuntoCreate(
+              //               'collective',
+              //             );
+              //           },
+              //           transitionsBuilder: (
+              //             BuildContext context,
+              //             Animation<double> animation,
+              //             Animation<double> secondaryAnimation,
+              //             Widget child,
+              //           ) {
+              //             return FadeTransition(
+              //               opacity: animation,
+              //               child: child,
+              //             );
+              //           },
+              //           transitionDuration: const Duration(
+              //             milliseconds: 200,
+              //           ),
+              //         ),
+              //       );
+              //     },
+              //     child: Icon(
+              //       CustomIcons.lotus,
+              //       color: JuntoPalette.juntoGreyLight,
+              //     ),
+              //   ),
+              // ),
               _BottomNavButton(
                 index: 2,
                 selectedIndex: widget.currentIndex,

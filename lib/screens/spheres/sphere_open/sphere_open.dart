@@ -14,7 +14,7 @@ import 'package:junto_beta_mobile/styles.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
-import 'package:junto_beta_mobile/widgets/create_fab/create_fab.dart';
+import 'package:junto_beta_mobile/widgets/create_fab.dart';
 import 'package:junto_beta_mobile/widgets/expression_preview/expression_preview.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
@@ -201,16 +201,10 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
             child: child,
           );
         },
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: CreateFAB(
-            address: widget.group.address,
-            sphereHandle: widget.group.groupData.sphereHandle,
-            isVisible: _isVisible,
-          ),
+        child: CreateFAB(
+          isVisible: _isVisible,
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: DefaultTabController(
         length: _tabs.length,
         child: NestedScrollView(
@@ -356,7 +350,8 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                   Navigator.push(
                     context,
                     CupertinoPageRoute<dynamic>(
-                      builder: (BuildContext context) => SphereOpenMembers(users: _members),
+                      builder: (BuildContext context) =>
+                          SphereOpenMembers(users: _members),
                     ),
                   );
                 },
@@ -370,7 +365,8 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
             Navigator.push(
               context,
               CupertinoPageRoute<dynamic>(
-                builder: (BuildContext context) => const SphereOpenFacilitators(),
+                builder: (BuildContext context) =>
+                    const SphereOpenFacilitators(),
               ),
             );
           },
@@ -418,7 +414,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                 padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget> [
+                  children: <Widget>[
                     Text('Principles', style: JuntoStyles.header),
                     _principlesFullView
                         ? _getPrinciples(principles)

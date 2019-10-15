@@ -63,12 +63,11 @@ class ExpressionOpenTop extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(firstName + ' ' + lastName,
-                          style: JuntoStyles.title),
+                      Text(username ?? '', style: JuntoStyles.title),
                       Text(
-                        username ?? '',
+                        firstName + ' ' + lastName,
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 12,
                           fontWeight: FontWeight.w500,
                           color: Color(0xff555555),
                         ),

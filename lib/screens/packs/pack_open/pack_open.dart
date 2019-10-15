@@ -6,7 +6,7 @@ import 'package:junto_beta_mobile/screens/packs/pack_open/pack_drawer.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open_appbar.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open_private.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open_public.dart';
-import 'package:junto_beta_mobile/widgets/create_fab/create_fab.dart';
+import 'package:junto_beta_mobile/widgets/create_fab.dart';
 
 class PackOpen extends StatefulWidget {
   const PackOpen({
@@ -63,16 +63,10 @@ class PackOpenState extends State<PackOpen> {
               child: child,
             );
           },
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CreateFAB(
-              sphereHandle: widget.pack.groupData.name,
-              isVisible: _isVisible,
-              address: widget.pack.address,
-            ),
+          child: CreateFAB(
+            isVisible: _isVisible,
           ),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         endDrawer: PackDrawer(
           pack: widget.pack,
         ),

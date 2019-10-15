@@ -8,6 +8,7 @@ import 'package:junto_beta_mobile/screens/create/create_templates/longform.dart'
 import 'package:junto_beta_mobile/screens/create/create_templates/photo.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/shortform.dart';
 import 'package:junto_beta_mobile/styles.dart';
+import 'package:junto_beta_mobile/widgets/create_fab.dart';
 
 class JuntoCreate extends StatefulWidget {
   const JuntoCreate(this.expressionLayer, {this.address});
@@ -29,7 +30,7 @@ class JuntoCreateState extends State<JuntoCreate> {
   bool _photo = false;
   bool _events = false;
 
-  Icon _currentIcon = Icon(CustomIcons.longform, color: Colors.white, size: 20);
+  Icon _currentIcon = Icon(CustomIcons.longform, color: Colors.white);
 
   ValueNotifier<bool> isEditing;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -38,6 +39,8 @@ class JuntoCreateState extends State<JuntoCreate> {
   GlobalKey<CreateShortformState> _shortFormKey;
   GlobalKey<CreatePhotoState> _photoFormKey;
   GlobalKey<CreateEventState> _eventKey;
+
+  final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
 
   @override
   void initState() {
@@ -221,40 +224,33 @@ class JuntoCreateState extends State<JuntoCreate> {
           ),
         ),
       ),
-      bottomNavigationBar: SafeArea(child: SizedBox()),
       floatingActionButton: Opacity(
         opacity: .8,
         child: GestureDetector(
           onTap: () {
             _openExpressionCenter();
           },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Container(
-                height: 48,
-                width: 48,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                  border: Border.all(color: Colors.white, width: 2),
-                  gradient: const LinearGradient(
-                    begin: Alignment.bottomLeft,
-                    end: Alignment.topRight,
-                    stops: <double>[0.1, 0.9],
-                    colors: <Color>[
-                      JuntoPalette.juntoSecondary,
-                      JuntoPalette.juntoPrimary,
-                    ],
-                  ),
-                ),
-                child: _currentIcon,
+          child: Container(
+            height: 50,
+            width: 50,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(25),
+              border: Border.all(color: Colors.white, width: 2),
+              gradient: const LinearGradient(
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
+                stops: <double>[0.1, 0.9],
+                colors: <Color>[
+                  JuntoPalette.juntoSecondary,
+                  JuntoPalette.juntoPrimary,
+                ],
               ),
-            ],
+            ),
+            child: _currentIcon,
           ),
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: Column(
         children: <Widget>[
           _buildTemplate(),

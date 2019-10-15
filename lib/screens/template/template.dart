@@ -4,7 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/providers/provider.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
-import 'package:junto_beta_mobile/screens/collective/filter_fab.dart';
+import 'package:junto_beta_mobile/widgets/create_fab.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspectives.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/den/den_drawer/den_drawer.dart';
@@ -93,7 +93,7 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
     _channelController.dispose();
     super.dispose();
   }
-
+ 
   @override
   Widget build(BuildContext context) {
     return Stack(children: <Widget>[
@@ -103,13 +103,10 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
         backgroundColor: Colors.white,
         appBar: JuntoAppBar(
           juntoAppBarTitle: _appbarTitle,
-        ),        
-        floatingActionButton: _currentScreen == 'collective'
-            ? CollectiveFilterFAB(
-                isVisible: _isVisible,
-                toggleFilter: _buildFilterChannelModal,
-              )
-            : null,
+        ),
+        floatingActionButton: CreateFAB(
+          isVisible: _isVisible,
+        ),
         // only enable drawer if current screen is collective
         drawer: _currentScreen == 'collective'
             ? WillPopScope(
@@ -214,101 +211,6 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
       () {
         _currentPerspective = perspective;
         _appbarTitle = perspective;
-      },
-    );
-  }
-
-  // Build bottom modal to filter by channel
-  void _buildFilterChannelModal(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) => Container(
-        color: const Color(0xff737373),
-        child: Container(
-          padding: const EdgeInsets.all(10),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(10),
-              topRight: Radius.circular(10),
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
-                    width: MediaQuery.of(context).size.width - 60,
-                    decoration: const BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Color(0xffeeeeee),
-                          width: .75,
-                        ),
-                      ),
-                    ),
-                    child: TextField(
-                      controller: _channelController,
-                      buildCounter: (
-                        BuildContext context, {
-                        int currentLength,
-                        int maxLength,
-                        bool isFocused,
-                      }) =>
-                          null,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Filter by channel',
-                        hintStyle: TextStyle(
-                            color: Color(0xff999999),
-                            fontSize: 17,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      cursorColor: const Color(0xff333333),
-                      cursorWidth: 2,
-                      maxLines: null,
-                      style: const TextStyle(
-                          color: Color(0xff333333),
-                          fontSize: 17,
-                          fontWeight: FontWeight.w500),
-                      maxLength: 80,
-                      textInputAction: TextInputAction.done,
-                    ),
-                  ),
-                  Container(
-                    child: Icon(Icons.add, size: 20),
-                  )
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  // Update the list of channels in state
-  //ignore: unused_element
-  void _updateChannels(StateSetter updateState, String channel) {
-    updateState(
-      () {
-        if (channel != '') {
-          _channels.add(channel);
-          print(_channels);
-          _channelController.text = '';
-        }
-      },
-    );
-  }
-
-  // Remove a channel from the list of channels in state
-  //ignore: unused_element
-  void _removeChannel(StateSetter updateState, String channel) {
-    updateState(
-      () {
-        _channels.remove(channel);
       },
     );
   }
