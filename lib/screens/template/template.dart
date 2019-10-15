@@ -69,14 +69,19 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   @override
   Widget build(BuildContext context) {
     return Stack(children: <Widget>[
-      Scaffold(appBar: AppBar(), body: Center(child: Text('yo'))),
+      Scaffold(
+        appBar: AppBar(),
+        body: const Center(
+          child: Text('yo'),
+        ),
+      ),
       Scaffold(
         key: _juntoTemplateKey,
         backgroundColor: Colors.white,
         appBar: JuntoAppBar(
           juntoAppBarTitle: _appbarTitle,
         ),
-        floatingActionButton: CreateFAB(),
+        floatingActionButton: const CreateFAB(expressionLayer: 'collective'),
         // only enable drawer if current screen is collective
         drawer: _currentScreen == 'collective'
             ? WillPopScope(
