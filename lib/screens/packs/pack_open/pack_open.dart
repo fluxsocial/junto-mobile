@@ -63,9 +63,7 @@ class PackOpenState extends State<PackOpen> {
               child: child,
             );
           },
-          child: CreateFAB(
-            isVisible: _isVisible,
-          ),
+          child: CreateFAB(),
         ),
         endDrawer: PackDrawer(
           pack: widget.pack,

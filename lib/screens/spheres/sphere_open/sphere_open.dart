@@ -201,9 +201,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
             child: child,
           );
         },
-        child: CreateFAB(
-          isVisible: _isVisible,
-        ),
+        child: CreateFAB(),
       ),
       body: DefaultTabController(
         length: _tabs.length,

@@ -15,10 +15,7 @@ import 'package:async/async.dart' show AsyncMemoizer;
 /// create
 /// a screen as well as a ListView of all the sphere previews
 class JuntoSpheres extends StatefulWidget {
-  const JuntoSpheres({
-    Key key,
-    @required this.userProfile,
-  }) : super(key: key);
+  const JuntoSpheres({Key key, @required this.userProfile}) : super(key: key);
 
   final UserProfile userProfile;
 

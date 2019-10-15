@@ -11,6 +11,7 @@ import 'package:junto_beta_mobile/widgets/expression_preview/expression_preview.
 
 /// Displays the user's DEN or "profile screen"
 class JuntoDen extends StatefulWidget {
+
   @override
   State<StatefulWidget> createState() => JuntoDenState();
 }

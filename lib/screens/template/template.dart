@@ -12,7 +12,6 @@ import 'package:junto_beta_mobile/screens/packs/packs.dart';
 import 'package:junto_beta_mobile/screens/spheres/spheres.dart';
 import 'package:junto_beta_mobile/widgets/appbar.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
-import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
 
 // This class is a template screen that contains the navbar, bottom bar,
@@ -30,7 +29,7 @@ class JuntoTemplate extends StatefulWidget {
   State<StatefulWidget> createState() => JuntoTemplateState();
 }
 
-class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
+class JuntoTemplateState extends State<JuntoTemplate> {
   final GlobalKey<ScaffoldState> _juntoTemplateKey = GlobalKey<ScaffoldState>();
 
   // Default values for collective screen / JUNTO perspective - change dynamically.
@@ -39,33 +38,14 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
   String _appbarTitle = 'JUNTO';
 
   ValueNotifier<int> _bottomNavIndex;
+  final controller = ScrollController();
 
-  //
-  final List<String> _channels = <String>[];
-  TextEditingController _channelController;
-
-  // Controller for scroll
-  ScrollController _hideFABController;
-  ValueNotifier<bool> _isVisible;
   UserProfile profile;
 
   @override
   void initState() {
     super.initState();
-    _hideFABController = ScrollController();
     _bottomNavIndex = ValueNotifier<int>(0);
-    _channelController = TextEditingController();
-    _isVisible = ValueNotifier<bool>(true);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _hideFABController.addListener(_onScrollingHasChanged);
-      _hideFABController.position.isScrollingNotifier.addListener(
-        _onScrollingHasChanged,
-      );
-    });
-  }
-
-  void _onScrollingHasChanged() {
-    super.hideFabOnScroll(_hideFABController, _isVisible);
   }
 
   @override
@@ -87,14 +67,6 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
   }
 
   @override
-  void dispose() {
-    _hideFABController.removeListener(_onScrollingHasChanged);
-    _hideFABController.dispose();
-    _channelController.dispose();
-    super.dispose();
-  }
- 
-  @override
   Widget build(BuildContext context) {
     return Stack(children: <Widget>[
       Scaffold(appBar: AppBar(), body: Center(child: Text('yo'))),
@@ -104,9 +76,7 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
         appBar: JuntoAppBar(
           juntoAppBarTitle: _appbarTitle,
         ),
-        floatingActionButton: CreateFAB(
-          isVisible: _isVisible,
-        ),
+        floatingActionButton: CreateFAB(),
         // only enable drawer if current screen is collective
         drawer: _currentScreen == 'collective'
             ? WillPopScope(
@@ -149,8 +119,7 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
     switch (_currentScreen) {
       case 'collective':
         return JuntoCollective(
-            controller: _hideFABController,
-            currentPerspective: _currentPerspective);
+            currentPerspective: _currentPerspective, controller: controller);
       case 'spheres':
         return JuntoSpheres(
           userProfile: profile,
@@ -173,15 +142,6 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
           _currentScreen = 'collective';
           _appbarTitle = 'JUNTO';
         });
-
-        if (_hideFABController.offset != 0.0) {
-          _hideFABController.animateTo(
-            0.0,
-            curve: Curves.easeIn,
-            duration: const Duration(milliseconds: 200),
-          );
-        }
-
         break;
       case 1:
         setState(() {
