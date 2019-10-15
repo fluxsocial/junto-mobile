@@ -41,11 +41,11 @@ class ExpressionPreviewTop extends StatelessWidget {
                       JuntoMember(
                     profile: UserProfile(
                       address: '',
-                      firstName: 'Eric',
-                      lastName: 'Yang',
+                      firstName: firstName,
+                      lastName: lastName,
                       bio: 'This is a test',
-                      profilePicture: 'assets/images/junto-mobile__logo.png',
-                      username: 'Gmail',
+                      profilePicture: profilePicture,
+                      username: username,
                       verified: false,
                     ),
                   ),
@@ -53,7 +53,6 @@ class ExpressionPreviewTop extends StatelessWidget {
               );
             },
             child: Container(
-              color: Colors.white,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
@@ -61,13 +60,13 @@ class ExpressionPreviewTop extends StatelessWidget {
                   ClipOval(
                     child: Image.asset(
                       profilePicture,
-                      height: 36.0,
-                      width: 36.0,
+                      height: 38.0,
+                      width: 38.0,
                       fit: BoxFit.cover,
                     ),
                   ),
+                  const SizedBox(width: 10),
                   Container(
-                    margin: const EdgeInsets.only(left: 7.5),
                     child: Text(
                       username,
                       style: const TextStyle(
@@ -76,19 +75,6 @@ class ExpressionPreviewTop extends StatelessWidget {
                       ),
                     ),
                   )
-
-                  // profile name and handle
-                  // Container(
-                  //   margin: const EdgeInsets.only(left: 10.0),
-                  //   child: Column(
-                  //     crossAxisAlignment: CrossAxisAlignment.start,
-                  //     children: <Widget>[
-                  //       Text(firstName + ' ' + lastName,
-                  //           style: JuntoStyles.title),
-                  //       Text(username, style: JuntoStyles.body)
-                  //     ],
-                  //   ),
-                  // ),
                 ],
               ),
             ),
@@ -100,7 +86,8 @@ class ExpressionPreviewTop extends StatelessWidget {
                   ExpressionActionItems().buildExpressionActionItems(context);
                 },
                 child: const Icon(
-                  CustomIcons.more,
+                  Icons.keyboard_arrow_down,
+                  color: Color(0xff555555),
                   size: 20,
                 ),
               )

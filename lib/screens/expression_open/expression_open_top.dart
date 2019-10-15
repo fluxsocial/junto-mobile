@@ -51,21 +51,28 @@ class ExpressionOpenTop extends StatelessWidget {
                 ClipOval(
                   child: Image.asset(
                     profilePicture,
-                    height: 36.0,
-                    width: 36.0,
+                    height: 38.0,
+                    width: 38.0,
                     fit: BoxFit.cover,
                   ),
                 ),
+                const SizedBox(width: 10),
 
                 // profile name and handle
                 Container(
-                  margin: const EdgeInsets.only(left: 10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(firstName + ' ' + lastName,
                           style: JuntoStyles.title),
-                      Text(username ?? '', style: JuntoStyles.body),
+                      Text(
+                        username ?? '',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xff555555),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -77,7 +84,8 @@ class ExpressionOpenTop extends StatelessWidget {
               ExpressionActionItems().buildExpressionActionItems(context);
             },
             child: const Icon(
-              CustomIcons.more,
+              Icons.keyboard_arrow_down,
+              color: Color(0xff555555),
               size: 20,
             ),
           ),
