@@ -11,7 +11,6 @@ import 'package:junto_beta_mobile/widgets/expression_preview/expression_preview.
 
 /// Displays the user's DEN or "profile screen"
 class JuntoDen extends StatefulWidget {
-
   @override
   State<StatefulWidget> createState() => JuntoDenState();
 }
@@ -153,7 +152,7 @@ class JuntoDenState extends State<JuntoDen> {
         children: <Widget>[DenCollectionPreview()],
       );
     } else {
-      return const SizedBox(); 
+      return const SizedBox();
     }
   }
 
@@ -361,8 +360,9 @@ class JuntoDenState extends State<JuntoDen> {
   Widget _buildOpenDen() {
     if (publicExpressionsActive) {
       return ListView(
+        physics: const ClampingScrollPhysics(),
         children: <Widget>[
-          _buildOpenDenToggle(),
+          // _buildOpenDenToggle(),
           ExpressionPreview(
             expression: expressions[0],
           ),
@@ -379,7 +379,11 @@ class JuntoDenState extends State<JuntoDen> {
       );
     } else if (publicCollectionActive) {
       return ListView(
-        children: <Widget>[_buildOpenDenToggle(), _buildDenList()],
+        physics: const ClampingScrollPhysics(),
+        children: <Widget>[
+          // _buildOpenDenToggle(),
+          _buildDenList()
+        ],
       );
     }
     return Container();
@@ -484,8 +488,9 @@ class JuntoDenState extends State<JuntoDen> {
   Widget _buildPrivateDen() {
     if (privateExpressionsActive) {
       return ListView(
+        physics: const ClampingScrollPhysics(),
         children: <Widget>[
-          _buildPrivateDenToggle(),
+          // _buildPrivateDenToggle(),
           ExpressionPreview(
             expression: expressions[0],
           ),
