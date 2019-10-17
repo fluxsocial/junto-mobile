@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
-import 'package:junto_beta_mobile/screens/create/create.dart';
 import 'package:junto_beta_mobile/palette.dart';
 
 // This widget is the bottom navigation on all of the main screens. Members can
@@ -25,7 +24,7 @@ class BottomNavState extends State<BottomNav> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-          child: SizedBox(
+      child: SizedBox(
         height: 48.0,
         child: Material(
           color: Colors.white,
@@ -50,43 +49,6 @@ class BottomNavState extends State<BottomNav> {
                 icon: CustomIcons.circle,
                 onTap: widget.setIndex,
               ),
-              // Expanded(
-              //   child: InkWell(
-              //     onTap: () {
-              //       Navigator.of(context).push(
-              //         PageRouteBuilder<dynamic>(
-              //           pageBuilder: (
-              //             BuildContext context,
-              //             Animation<double> animation,
-              //             Animation<double> secondaryAnimation,
-              //           ) {
-              //             return const JuntoCreate(
-              //               'collective',
-              //             );
-              //           },
-              //           transitionsBuilder: (
-              //             BuildContext context,
-              //             Animation<double> animation,
-              //             Animation<double> secondaryAnimation,
-              //             Widget child,
-              //           ) {
-              //             return FadeTransition(
-              //               opacity: animation,
-              //               child: child,
-              //             );
-              //           },
-              //           transitionDuration: const Duration(
-              //             milliseconds: 200,
-              //           ),
-              //         ),
-              //       );
-              //     },
-              //     child: Icon(
-              //       CustomIcons.lotus,
-              //       color: JuntoPalette.juntoGreyLight,
-              //     ),
-              //   ),
-              // ),
               _BottomNavButton(
                 index: 2,
                 selectedIndex: widget.currentIndex,
