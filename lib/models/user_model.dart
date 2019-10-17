@@ -179,7 +179,11 @@ class UserAuthRegistrationDetails implements UserAuthDetails {
   final String bio;
 
   @override
-  bool get isComplete => email != null && password != null && firstName != null && lastName != null;
+  bool get isComplete =>
+      email != null &&
+      password != null &&
+      firstName != null &&
+      lastName != null;
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -203,8 +207,12 @@ class UserData {
 
   factory UserData.fromMap(Map<String, dynamic> map) {
     return UserData(
-      privateDen: map['private_den'] != null ? CentralizedDen.fromMap(map['private_den']) : null,
-      publicDen: map['private_den'] != null ? CentralizedDen.fromMap(map['public_den']) : null,
+      privateDen: map['private_den'] != null
+          ? CentralizedDen.fromMap(map['private_den'])
+          : null,
+      publicDen: map['private_den'] != null
+          ? CentralizedDen.fromMap(map['public_den'])
+          : null,
       pack: CentralizedPack.fromMap(map['pack']),
       user: UserProfile.fromMap(map['user']),
       userPerspective: CentralizedPerspective.fromMap(

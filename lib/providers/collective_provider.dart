@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:http/io_client.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/resonation_model.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
@@ -51,6 +52,10 @@ abstract class CollectiveProvider {
 
 /// Concrete implementation of [CollectiveProvider]
 class CollectiveProviderCentralized implements CollectiveProvider {
+  CollectiveProviderCentralized([http.Client _client]) {
+    client = JuntoHttp(httpClient: _client ?? IOClient());
+  }
+  JuntoHttp client;
   @override
   List<CentralizedExpressionResponse> get collectiveExpressions =>
       sampleExpressions;
@@ -60,7 +65,7 @@ class CollectiveProviderCentralized implements CollectiveProvider {
       CentralizedExpression expression) async {
     final Map<String, dynamic> _postBody = expression.toMap();
     final http.Response _serverResponse =
-        await JuntoHttp().postWithoutEncoding('/expressions', body: _postBody);
+        await client.postWithoutEncoding('/expressions', body: _postBody);
     final Map<String, dynamic> parseData =
         JuntoHttp.handleResponse(_serverResponse);
     final CentralizedExpressionResponse response =
@@ -76,7 +81,7 @@ class CollectiveProviderCentralized implements CollectiveProvider {
       'type': type,
       'expression_data': data
     };
-    final http.Response _serverResponse = await JuntoHttp().post(
+    final http.Response _serverResponse = await client.post(
       '/expressions/$expressionAddress/comments',
       body: _postBody,
     );
@@ -89,7 +94,7 @@ class CollectiveProviderCentralized implements CollectiveProvider {
   Future<Resonation> postResonation(
     String expressionAddress,
   ) async {
-    final http.Response _serverResponse = await JuntoHttp().post(
+    final http.Response _serverResponse = await client.post(
       '/expressions/$expressionAddress/resonations',
     );
     return Resonation.fromMap(JuntoHttp.handleResponse(_serverResponse));
@@ -100,7 +105,7 @@ class CollectiveProviderCentralized implements CollectiveProvider {
     String expressionAddress,
   ) async {
     final http.Response _response =
-        await JuntoHttp().get('/expressions/$expressionAddress');
+        await client.get('/expressions/$expressionAddress');
     final Map<String, dynamic> _decodedResponse =
         JuntoHttp.handleResponse(_response);
     return CentralizedExpressionResponse.withCommentsAndResonations(
@@ -110,7 +115,7 @@ class CollectiveProviderCentralized implements CollectiveProvider {
   @override
   Future<List<Comment>> getExpressionsComments(String expressionAddress) async {
     final http.Response response =
-        await JuntoHttp().get('/expressions/$expressionAddress/comments');
+        await client.get('/expressions/$expressionAddress/comments');
     final List<dynamic> _listData = json.decode(response.body);
     final List<Comment> _results = _listData
         .map((dynamic data) => Comment.fromMap(data))
@@ -122,7 +127,7 @@ class CollectiveProviderCentralized implements CollectiveProvider {
   Future<List<UserProfile>> getExpressionsResonation(
       String expressionAddress) async {
     final http.Response response =
-        await JuntoHttp().get('/expressions/$expressionAddress/resonations');
+        await client.get('/expressions/$expressionAddress/resonations');
     final List<dynamic> _listData = json.decode(response.body);
     final List<UserProfile> _results = _listData
         .map((dynamic data) => UserProfile.fromMap(data))

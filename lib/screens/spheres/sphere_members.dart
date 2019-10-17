@@ -35,7 +35,7 @@ class GroupMembers extends StatelessWidget {
           color: Colors.black,
         ),
         title: Text(
-          groupName,
+          groupName ?? '',
           style: JuntoStyles.appbarTitle,
         ),
         backgroundColor: Colors.white,

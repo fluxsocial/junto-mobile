@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:http/io_client.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/pack.dart';
 import 'package:junto_beta_mobile/models/sphere.dart';
@@ -31,6 +32,10 @@ abstract class SpheresProvider {
 }
 
 class SphereProviderCentralized implements SpheresProvider {
+  SphereProviderCentralized([http.Client _client]) {
+    client = JuntoHttp(httpClient: _client ?? IOClient());
+  }
+  JuntoHttp client;
   final List<Pack> _packs = Pack.fetchAll();
 
   @override
@@ -43,7 +48,7 @@ class SphereProviderCentralized implements SpheresProvider {
     CentralizedSphere sphere,
   ) async {
     final Map<String, dynamic> _postBody = sphere.toMap();
-    final http.Response _serverResponse = await JuntoHttp().postWithoutEncoding(
+    final http.Response _serverResponse = await client.postWithoutEncoding(
       '/groups',
       body: _postBody,
     );
@@ -55,7 +60,7 @@ class SphereProviderCentralized implements SpheresProvider {
   @override
   Future<Group> getGroup(String groupAddress) async {
     final http.Response _serverResponse =
-        await JuntoHttp().get('/groups/$groupAddress');
+        await client.get('/groups/$groupAddress');
     final Map<String, dynamic> _data =
         JuntoHttp.handleResponse(_serverResponse);
     return Group.fromMap(_data);
@@ -71,7 +76,7 @@ class SphereProviderCentralized implements SpheresProvider {
       'user_address': userAddress,
       'permission_level': perms
     };
-    final http.Response _serverResponse = await JuntoHttp().post(
+    final http.Response _serverResponse = await client.post(
       '/groups/$groupAddress/members',
       body: _postBody,
     );
@@ -84,7 +89,7 @@ class SphereProviderCentralized implements SpheresProvider {
     final Map<String, String> _postBody = <String, String>{
       'user_address': userAddress,
     };
-    final http.Response _serverResponse = await JuntoHttp().delete(
+    final http.Response _serverResponse = await client.delete(
       '/groups/$groupAddress/members',
       body: _postBody,
     );
@@ -97,7 +102,7 @@ class SphereProviderCentralized implements SpheresProvider {
   @override
   Future<List<Users>> getGroupMembers(String groupAddress) async {
     final http.Response _serverResponse =
-        await JuntoHttp().get('/groups/$groupAddress/members');
+        await client.get('/groups/$groupAddress/members');
     final List<dynamic> items = json.decode(_serverResponse.body);
     return items
         .map(
