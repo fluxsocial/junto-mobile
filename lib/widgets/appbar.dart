@@ -233,8 +233,11 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
     initialPage: 0,
   );
 
-  bool searchMembersPage = true;
+  bool searchChannelsPage = true;
+  bool searchMembersPage = false;
   bool searchSpheresPage = false;
+
+  FocusNode textFieldFocusNode = FocusNode();
 
   @override
   void dispose() {
@@ -265,34 +268,107 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
           children: <Widget>[
             const SizedBox(height: 10),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Container(
+                  width: MediaQuery.of(context).size.width * .8,
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Color(0xffeeeeee),
+                        width: .75,
+                      ),
+                    ),
+                  ),
+                  child: TextField(
+                    focusNode: textFieldFocusNode,
+                    buildCounter: (
+                      BuildContext context, {
+                      int currentLength,
+                      int maxLength,
+                      bool isFocused,
+                    }) =>
+                        null,
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      icon: Icon(
+                        Icons.search,
+                        size: 20,
+                        color: Color(0xff999999),
+                      ),
+                      hintStyle: TextStyle(
+                          color: Color(0xff999999),
+                          fontSize: 17,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    cursorColor: const Color(0xff333333),
+                    cursorWidth: 2,
+                    maxLines: null,
+                    style: const TextStyle(
+                        color: Color(0xff333333),
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500),
+                    maxLength: 80,
+                    textInputAction: TextInputAction.done,
+                    onChanged: widget.onTextChange,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text(
+                    'cancel',
+                    style: TextStyle(fontWeight: FontWeight.w500),
+                  ),
+                )
+              ],
+            ),
+            const SizedBox(height: 10),
+            Row(
               children: <Widget>[
                 GestureDetector(
                   onTap: () {
                     pageController.jumpToPage(0);
                   },
                   child: Text(
-                    'Members',
+                    'CHANNELS',
                     style: TextStyle(
-                        fontSize: 17,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        color: searchChannelsPage
+                            ? const Color(0xff333333)
+                            : const Color(0xff999999)),
+                  ),
+                ),
+                const SizedBox(width: 25),
+                GestureDetector(
+                  onTap: () {
+                    pageController.jumpToPage(1);
+                  },
+                  child: Text(
+                    'MEMBERS',
+                    style: TextStyle(
+                        fontSize: 14,
                         fontWeight: FontWeight.w700,
                         color: searchMembersPage
                             ? const Color(0xff333333)
                             : const Color(0xff999999)),
                   ),
                 ),
-                SizedBox(width: 25),
+                const SizedBox(width: 25),
                 GestureDetector(
                   onTap: () {
-                    pageController.jumpToPage(1);
+                    pageController.jumpToPage(2);
                   },
                   child: Text(
-                    'Spheres',
+                    'SPHERES',
                     style: TextStyle(
-                      fontSize: 17,
+                      fontSize: 14,
                       fontWeight: FontWeight.w700,
                       color: searchSpheresPage
-                          ? Color(0xff333333)
-                          : Color(0xff999999),
+                          ? const Color(0xff333333)
+                          : const Color(0xff999999),
                     ),
                   ),
                 )
@@ -300,145 +376,81 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
             ),
             const SizedBox(height: 10),
             Expanded(
-              child: PageView(              
+              child: PageView(
                 controller: pageController,
                 onPageChanged: (index) {
                   if (index == 0) {
                     setState(() {
-                      searchMembersPage = true;
+                      searchChannelsPage = true;
+                      searchMembersPage = false;
                       searchSpheresPage = false;
                     });
                   } else if (index == 1) {
                     setState(() {
+                      searchChannelsPage = false;
+                      searchMembersPage = true;
+                      searchSpheresPage = false;
+                    });
+                  } else if (index == 2) {
+                    setState(() {
+                      searchChannelsPage = false;
                       searchMembersPage = false;
                       searchSpheresPage = true;
                     });
                   }
                 },
                 children: <Widget>[
+                  // search members
                   Column(
                     children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            width: MediaQuery.of(context).size.width - 20,
-                            decoration: const BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: Color(0xffeeeeee),
-                                  width: .75,
-                                ),
-                              ),
-                            ),
-                            child: TextField(
-                              buildCounter: (
-                                BuildContext context, {
-                                int currentLength,
-                                int maxLength,
-                                bool isFocused,
-                              }) =>
-                                  null,
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Search members',
-                                hintStyle: TextStyle(
-                                    color: Color(0xff999999),
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              cursorColor: const Color(0xff333333),
-                              cursorWidth: 2,
-                              maxLines: null,
-                              style: const TextStyle(
-                                  color: Color(0xff333333),
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w500),
-                              maxLength: 80,
-                              textInputAction: TextInputAction.done,
-                              onChanged: widget.onTextChange,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      ValueListenableBuilder<List<UserProfile>>(
-                        valueListenable: widget.results,
-                        builder:
-                            (BuildContext context, List<UserProfile> query, _) {
-                          return ListView.builder(
-                            itemCount: query.length,
-                            shrinkWrap: true,
-                            itemBuilder: (BuildContext context, int index) {
-                              final UserProfile _user = query[index];
-                              return ValueListenableBuilder<SelectedUsers>(
-                                valueListenable: _selectedUsers,
-                                builder: (BuildContext context,
-                                    SelectedUsers selectedUser, _) {
-                                  return UserPreview(
-                                    onTap: widget.onProfileSelected,
-                                    userProfile: _user,
-                                    isSelected:
-                                        selectedUser.selection.contains(_user),
-                                  );
-                                },
-                              );
-                            },
-                          );
-                        },
+                      Expanded(
+                        child: ListView(),
+                      )
+                    ],
+                  ),
+                  // search members
+                  Column(
+                    children: <Widget>[
+                      Expanded(
+                        child: ListView(),
                       )
                     ],
                   ),
 
+                  // Column(
+                  //   children: <Widget>[
+                  //     const SizedBox(height: 10),
+                  //     ValueListenableBuilder<List<UserProfile>>(
+                  //       valueListenable: widget.results,
+                  //       builder:
+                  //           (BuildContext context, List<UserProfile> query, _) {
+                  //         return ListView.builder(
+                  //           itemCount: query.length,
+                  //           shrinkWrap: true,
+                  //           itemBuilder: (BuildContext context, int index) {
+                  //             final UserProfile _user = query[index];
+                  //             return ValueListenableBuilder<SelectedUsers>(
+                  //               valueListenable: _selectedUsers,
+                  //               builder: (BuildContext context,
+                  //                   SelectedUsers selectedUser, _) {
+                  //                 return UserPreview(
+                  //                   onTap: widget.onProfileSelected,
+                  //                   userProfile: _user,
+                  //                   isSelected:
+                  //                       selectedUser.selection.contains(_user),
+                  //                 );
+                  //               },
+                  //             );
+                  //           },
+                  //         );
+                  //       },
+                  //     )
+                  //   ],
+                  // ),
+
                   // search spheres
                   Column(
                     children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            width: MediaQuery.of(context).size.width - 20,
-                            decoration: const BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: Color(0xffeeeeee),
-                                  width: .75,
-                                ),
-                              ),
-                            ),
-                            child: TextField(
-                              buildCounter: (
-                                BuildContext context, {
-                                int currentLength,
-                                int maxLength,
-                                bool isFocused,
-                              }) =>
-                                  null,
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Search spheres',
-                                hintStyle: TextStyle(
-                                    color: Color(0xff999999),
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              cursorColor: const Color(0xff333333),
-                              cursorWidth: 2,
-                              maxLines: null,
-                              style: const TextStyle(
-                                  color: Color(0xff333333),
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w500),
-                              maxLength: 80,
-                              textInputAction: TextInputAction.done,
-                              onChanged: widget.onTextChange,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
                       Expanded(
                         child: ListView(),
                       )
