@@ -5,7 +5,7 @@ import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/styles.dart';
-import 'package:junto_beta_mobile/widgets/expression_action_items/expression_action_items.dart';
+import 'package:junto_beta_mobile/widgets/expression_action_items.dart';
 
 class ExpressionOpenTop extends StatelessWidget {
   const ExpressionOpenTop({Key key, this.expression}) : super(key: key);
