@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
+import 'package:http/io_client.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_http.dart';
@@ -23,9 +24,13 @@ abstract class AuthenticationProvider {
 }
 
 class AuthenticationCentralized implements AuthenticationProvider {
+  AuthenticationCentralized([http.Client _client]) {
+    client = JuntoHttp(httpClient: _client ?? IOClient());
+  }
+  JuntoHttp client;
   @override
   Future<UserProfile> loginUser(UserAuthLoginDetails details) async {
-    final http.Response response = await JuntoHttp().post(
+    final http.Response response = await client.post(
       '/auth',
       body: <String, String>{
         'email': details.email,
@@ -34,7 +39,8 @@ class AuthenticationCentralized implements AuthenticationProvider {
     );
     if (response.statusCode == 200) {
       // Decodes the server cookie.
-      final Cookie responseCookie = Cookie.fromSetCookieValue(response.headers['set-cookie']);
+      final Cookie responseCookie =
+          Cookie.fromSetCookieValue(response.headers['set-cookie']);
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('auth', responseCookie.value);
 
@@ -43,7 +49,8 @@ class AuthenticationCentralized implements AuthenticationProvider {
       await _setLocalUserProfile(_userData);
       return _userData;
     } else {
-      final Map<String, dynamic> errorResponse = JuntoHttp.handleResponse(response);
+      final Map<String, dynamic> errorResponse =
+          JuntoHttp.handleResponse(response);
       throw JuntoException('Unable to login: ${errorResponse['error']}');
     }
   }
@@ -68,11 +75,12 @@ class AuthenticationCentralized implements AuthenticationProvider {
       'profile_picture': details.profileImage ?? ''
     };
 
-    final http.Response response = await JuntoHttp().post(
+    final http.Response response = await client.post(
       '/users',
       body: _body,
     );
-    final Map<String, dynamic> _responseMap = JuntoHttp.handleResponse(response);
+    final Map<String, dynamic> _responseMap =
+        JuntoHttp.handleResponse(response);
     final UserData _userData = UserData.fromMap(_responseMap);
     // We need to manually login a user after their account has been create
     // to obtain an auth cookie.

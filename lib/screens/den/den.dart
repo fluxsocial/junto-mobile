@@ -20,8 +20,8 @@ class JuntoDen extends StatefulWidget {
 
 class JuntoDenState extends State<JuntoDen> {
   String profilePicture = 'assets/images/junto-mobile__eric.png';
-  final ValueNotifier<UserProfile> _profile =
-      ValueNotifier<UserProfile>(UserProfile(username: '', bio: '', firstName: '', lastName: ''));
+  final ValueNotifier<UserProfile> _profile = ValueNotifier<UserProfile>(
+      UserProfile(username: '', bio: '', firstName: '', lastName: ''));
   bool publicExpressionsActive = true;
   bool publicCollectionActive = false;
   bool privateExpressionsActive = true;
@@ -48,12 +48,14 @@ class JuntoDenState extends State<JuntoDen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _retrieveUserInfo();
-    expressions = Provider.of<CollectiveProvider>(context).collectiveExpressions;
+    expressions =
+        Provider.of<CollectiveProvider>(context).collectiveExpressions;
   }
 
   Future<void> _retrieveUserInfo() async {
     final UserProvider _userProvider = Provider.of<UserProvider>(context);
-    final UserProfile _results = await userMemoizer.runOnce(() => _userProvider.readLocalUser());
+    final UserProfile _results =
+        await userMemoizer.runOnce(() => _userProvider.readLocalUser());
     _profile.value = _results;
   }
 
@@ -211,13 +213,17 @@ class JuntoDenState extends State<JuntoDen> {
                         // half width of parent container minus horizontal padding
                         width: 37.5,
                         decoration: BoxDecoration(
-                          color: publicExpressionsActive ? Colors.white : const Color(0xffeeeeee),
+                          color: publicExpressionsActive
+                              ? Colors.white
+                              : const Color(0xffeeeeee),
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Icon(
                           CustomIcons.half_lotus,
                           size: 12,
-                          color: publicExpressionsActive ? const Color(0xff555555) : const Color(0xff999999),
+                          color: publicExpressionsActive
+                              ? const Color(0xff555555)
+                              : const Color(0xff999999),
                         ),
                       ),
                     ),
@@ -230,13 +236,17 @@ class JuntoDenState extends State<JuntoDen> {
                         // half width of parent container minus horizontal padding
                         width: 37.5,
                         decoration: BoxDecoration(
-                          color: publicCollectionActive ? Colors.white : const Color(0xffeeeeee),
+                          color: publicCollectionActive
+                              ? Colors.white
+                              : const Color(0xffeeeeee),
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Icon(
                           Icons.collections,
                           size: 12,
-                          color: publicCollectionActive ? const Color(0xff555555) : const Color(0xff999999),
+                          color: publicCollectionActive
+                              ? const Color(0xff555555)
+                              : const Color(0xff999999),
                         ),
                       ),
                     ),
@@ -249,7 +259,8 @@ class JuntoDenState extends State<JuntoDen> {
                         Navigator.push(
                           context,
                           CupertinoPageRoute<dynamic>(
-                            builder: (BuildContext context) => DenCreateCollection(),
+                            builder: (BuildContext context) =>
+                                DenCreateCollection(),
                           ),
                         );
                       },
@@ -325,13 +336,17 @@ class JuntoDenState extends State<JuntoDen> {
                         // half width of parent container minus horizontal padding
                         width: 37.5,
                         decoration: BoxDecoration(
-                          color: privateExpressionsActive ? Colors.white : const Color(0xffeeeeee),
+                          color: privateExpressionsActive
+                              ? Colors.white
+                              : const Color(0xffeeeeee),
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Icon(
                           CustomIcons.half_lotus,
                           size: 12,
-                          color: privateExpressionsActive ? const Color(0xff555555) : const Color(0xff999999),
+                          color: privateExpressionsActive
+                              ? const Color(0xff555555)
+                              : const Color(0xff999999),
                         ),
                       ),
                     ),
@@ -344,13 +359,17 @@ class JuntoDenState extends State<JuntoDen> {
                         // half width of parent container minus horizontal padding
                         width: 37.5,
                         decoration: BoxDecoration(
-                          color: privateCollectionActive ? Colors.white : const Color(0xffeeeeee),
+                          color: privateCollectionActive
+                              ? Colors.white
+                              : const Color(0xffeeeeee),
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Icon(
                           Icons.collections,
                           size: 12,
-                          color: privateCollectionActive ? const Color(0xff555555) : const Color(0xff999999),
+                          color: privateCollectionActive
+                              ? const Color(0xff555555)
+                              : const Color(0xff999999),
                         ),
                       ),
                     ),
@@ -363,7 +382,8 @@ class JuntoDenState extends State<JuntoDen> {
                         Navigator.push(
                           context,
                           CupertinoPageRoute<dynamic>(
-                            builder: (BuildContext context) => DenCreateCollection(),
+                            builder: (BuildContext context) =>
+                                DenCreateCollection(),
                           ),
                         );
                       },
@@ -419,8 +439,14 @@ class _JuntoDenAppbar extends StatelessWidget {
                 gradient: LinearGradient(
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
-                    stops: <double>[0.1, 0.9],
-                    colors: <Color>[JuntoPalette.juntoSecondary, JuntoPalette.juntoPrimary]),
+                    stops: <double>[
+                      0.1,
+                      0.9
+                    ],
+                    colors: <Color>[
+                      JuntoPalette.juntoSecondary,
+                      JuntoPalette.juntoPrimary
+                    ]),
               ),
             ),
             Transform.translate(
@@ -437,8 +463,11 @@ class _JuntoDenAppbar extends StatelessWidget {
                         Navigator.push(
                           context,
                           CupertinoPageRoute<dynamic>(
-                            builder: (BuildContext context) =>
-                                DenExpanded(handle: handle, name: name, profilePicture: profilePicture, bio: bio),
+                            builder: (BuildContext context) => DenExpanded(
+                                handle: handle,
+                                name: name,
+                                profilePicture: profilePicture,
+                                bio: bio),
                           ),
                         );
                       },
@@ -478,14 +507,16 @@ class _JuntoDenAppbar extends StatelessWidget {
             Transform.translate(
               offset: const Offset(0.0, -18.0),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 width: MediaQuery.of(context).size.width,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
                       name,
-                      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                      style: const TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.w700),
                     ),
                     const SizedBox(height: 10),
                     Text(
@@ -493,44 +524,47 @@ class _JuntoDenAppbar extends StatelessWidget {
                       style: const TextStyle(fontSize: 15),
                     ),
                     const SizedBox(height: 10),
-                    Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-                      Container(
-                        margin: const EdgeInsets.only(right: 15),
-                        child: Row(
-                          children: <Widget>[
-                            Image.asset(
-                              'assets/images/junto-mobile__location.png',
-                              height: 17,
-                              color: JuntoPalette.juntoSleek,
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            margin: const EdgeInsets.only(right: 15),
+                            child: Row(
+                              children: <Widget>[
+                                Image.asset(
+                                  'assets/images/junto-mobile__location.png',
+                                  height: 17,
+                                  color: JuntoPalette.juntoSleek,
+                                ),
+                                const SizedBox(width: 5),
+                                const Text(
+                                  'Spirit',
+                                  style: TextStyle(
+                                    color: JuntoPalette.juntoSleek,
+                                  ),
+                                ),
+                              ],
                             ),
-                            const SizedBox(width: 5),
-                            const Text(
-                              'Spirit',
-                              style: TextStyle(
-                                color: JuntoPalette.juntoSleek,
-                              ),
+                          ),
+                          const SizedBox(height: 10),
+                          Container(
+                            child: Row(
+                              children: <Widget>[
+                                Image.asset(
+                                  'assets/images/junto-mobile__link.png',
+                                  height: 17,
+                                  color: JuntoPalette.juntoSleek,
+                                ),
+                                const SizedBox(width: 5),
+                                const Text(
+                                  'junto.foundation',
+                                  style: TextStyle(
+                                      color: JuntoPalette.juntoPrimary),
+                                )
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      Container(
-                        child: Row(
-                          children: <Widget>[
-                            Image.asset(
-                              'assets/images/junto-mobile__link.png',
-                              height: 17,
-                              color: JuntoPalette.juntoSleek,
-                            ),
-                            const SizedBox(width: 5),
-                            const Text(
-                              'junto.foundation',
-                              style: TextStyle(color: JuntoPalette.juntoPrimary),
-                            )
-                          ],
-                        ),
-                      ),
-                    ]),
+                          ),
+                        ]),
                   ],
                 ),
               ),
@@ -556,7 +590,8 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   double get maxExtent => _tabBar.preferredSize.height + .5;
 
   @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         decoration: const BoxDecoration(

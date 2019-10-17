@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:http/io_client.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
@@ -68,6 +69,11 @@ abstract class UserProvider {
 }
 
 class UserProviderCentralized implements UserProvider {
+  UserProviderCentralized([http.Client _client]) {
+    client = JuntoHttp(httpClient: _client ?? IOClient());
+  }
+  JuntoHttp client;
+
   /// Creates a [Perspective] on the server. Function takes a single argument.
   @override
   Future<CentralizedPerspective> createPerspective(
@@ -76,7 +82,7 @@ class UserProviderCentralized implements UserProvider {
       'name': perspective.name,
       'members': perspective.members
     };
-    final http.Response _serverResponse = await JuntoHttp().postWithoutEncoding(
+    final http.Response _serverResponse = await client.postWithoutEncoding(
       '/perspectives',
       body: _postBody,
     );
@@ -94,7 +100,7 @@ class UserProviderCentralized implements UserProvider {
   @override
   Future<UserData> getUser(String userAddress) async {
     final http.Response _serverResponse =
-        await JuntoHttp().get('/users/$userAddress');
+        await client.get('/users/$userAddress');
     final Map<String, dynamic> _resultMap =
         JuntoHttp.handleResponse(_serverResponse);
     final UserData _userData = UserData.fromMap(_resultMap);
@@ -134,7 +140,7 @@ class UserProviderCentralized implements UserProvider {
   Future<List<CentralizedPerspective>> getUserPerspective(
       String userAddress) async {
     final http.Response response =
-        await JuntoHttp().get('/users/$userAddress/perspectives');
+        await client.get('/users/$userAddress/perspectives');
     final List<dynamic> _listData = json.decode(response.body);
     final List<CentralizedPerspective> _results = _listData
         .map((dynamic data) => CentralizedPerspective.fromMap(data))
@@ -145,7 +151,7 @@ class UserProviderCentralized implements UserProvider {
   @override
   Future<UserGroupsResponse> getUserGroups(String userAddress) async {
     final http.Response response =
-        await JuntoHttp().get('/users/$userAddress/groups');
+        await client.get('/users/$userAddress/groups');
     final Map<String, dynamic> _responseMap =
         JuntoHttp.handleResponse(response);
     return UserGroupsResponse.fromMap(_responseMap);
@@ -156,7 +162,7 @@ class UserProviderCentralized implements UserProvider {
     String userAddress,
   ) async {
     final http.Response response =
-        await JuntoHttp().get('/users/$userAddress/resonations');
+        await client.get('/users/$userAddress/resonations');
     final List<dynamic> _responseMap = JuntoHttp.handleResponse(response);
     return _responseMap
         .map(
@@ -171,7 +177,7 @@ class UserProviderCentralized implements UserProvider {
     String userAddress,
   ) async {
     final http.Response response =
-        await JuntoHttp().get('/users/$userAddress/expressions');
+        await client.get('/users/$userAddress/expressions');
     final List<dynamic> _responseMap = JuntoHttp.handleResponse(response);
     return _responseMap
         .map(
@@ -196,7 +202,7 @@ class UserProviderCentralized implements UserProvider {
   Future<List<CentralizedPerspective>> userPerspectives(
       String userAddress) async {
     final http.Response _serverResponse =
-        await JuntoHttp().get('/users/$userAddress/perspectives');
+        await client.get('/users/$userAddress/perspectives');
     final List<Map<String, dynamic>> items =
         JuntoHttp.handleResponse(_serverResponse);
     return items.map(
@@ -212,7 +218,7 @@ class UserProviderCentralized implements UserProvider {
     final Map<String, dynamic> _postBody = <String, dynamic>{
       'user_address': userAddress
     };
-    final http.Response _serverResponse = await JuntoHttp()
+    final http.Response _serverResponse = await client
         .post('/perspectives/$perspectiveAddress/users', body: _postBody);
     final Map<String, dynamic> _decodedResponse =
         JuntoHttp.handleResponse(_serverResponse);
@@ -225,7 +231,7 @@ class UserProviderCentralized implements UserProvider {
     String perspectiveAddress,
   ) async {
     final http.Response _serverResponse =
-        await JuntoHttp().delete('/perspectives/$perspectiveAddress/users');
+        await client.delete('/perspectives/$perspectiveAddress/users');
     JuntoHttp.handleResponse(_serverResponse);
   }
 
@@ -234,7 +240,7 @@ class UserProviderCentralized implements UserProvider {
     String perspectiveAddress,
   ) async {
     final http.Response _serverResponse =
-        await JuntoHttp().get('/perspectives/$perspectiveAddress/users');
+        await client.get('/perspectives/$perspectiveAddress/users');
     final List<dynamic> items = json.decode(_serverResponse.body);
     return items
         .map(
