@@ -20,20 +20,6 @@ abstract class AuthenticationProvider {
 
   /// Logs out a user and removes their auth token from the device.
   Future<void> logoutUser();
-
-  /// Returns a map containing the username of the user with the given address.
-  /// Result Map contains `{ 'address': 'address-of-profile', entry: { parent: 'parent object (user address)',`
-  /// `first_name: 'first_name', 'last_name: 'last_name', bio: 'bio', profile_picture: 'profile_picture',verified: true/false} }`
-  Future<Map<String, dynamic>> retrieveUsernameFromAddress(String address);
-
-  /// Retrieves the username associated with the current agent.
-  /// Map contains the following `{ 'address': 'address-of-username', 'entry': { 'username': 'username' } }`
-  Future<Map<String, dynamic>> retrieveUsernameByAgent();
-
-  /// Retrieves the user's profile associated with the given address.
-  /// Resulting map contains `{ 'address': 'address-of-profile', entry: { parent: 'parent object (user address)',`
-  /// `first_name: 'first_name', last_name: 'last_name', bio: 'bio', profile_picture: 'profile_picture',verified: true/false} }`
-  Future<Map<String, dynamic>> retrieveProfileByAgent();
 }
 
 class AuthenticationCentralized implements AuthenticationProvider {
@@ -48,8 +34,7 @@ class AuthenticationCentralized implements AuthenticationProvider {
     );
     if (response.statusCode == 200) {
       // Decodes the server cookie.
-      final Cookie responseCookie =
-          Cookie.fromSetCookieValue(response.headers['set-cookie']);
+      final Cookie responseCookie = Cookie.fromSetCookieValue(response.headers['set-cookie']);
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('auth', responseCookie.value);
 
@@ -58,8 +43,7 @@ class AuthenticationCentralized implements AuthenticationProvider {
       await _setLocalUserProfile(_userData);
       return _userData;
     } else {
-      final Map<String, dynamic> errorResponse =
-          JuntoHttp.handleResponse(response);
+      final Map<String, dynamic> errorResponse = JuntoHttp.handleResponse(response);
       throw JuntoException('Unable to login: ${errorResponse['error']}');
     }
   }
@@ -88,8 +72,7 @@ class AuthenticationCentralized implements AuthenticationProvider {
       '/users',
       body: _body,
     );
-    final Map<String, dynamic> _responseMap =
-        JuntoHttp.handleResponse(response);
+    final Map<String, dynamic> _responseMap = JuntoHttp.handleResponse(response);
     final UserData _userData = UserData.fromMap(_responseMap);
     // We need to manually login a user after their account has been create
     // to obtain an auth cookie.
@@ -101,24 +84,6 @@ class AuthenticationCentralized implements AuthenticationProvider {
     );
     await _setLocalUserProfile(_userData.user);
     return _userData;
-  }
-
-  @override
-  Future<Map<String, dynamic>> retrieveUsernameByAgent() {
-    throw UnimplementedError('This function is not supported by the '
-        'centralized api.');
-  }
-
-  @override
-  Future<Map<String, dynamic>> retrieveUsernameFromAddress(String address) {
-    throw UnimplementedError('This function is not supported by the '
-        'centralized api.');
-  }
-
-  @override
-  Future<Map<String, dynamic>> retrieveProfileByAgent() {
-    throw UnimplementedError('This function is not supported by the '
-        'centralized api.');
   }
 
   /// Private function which returns the [UserProfile] for the given email
