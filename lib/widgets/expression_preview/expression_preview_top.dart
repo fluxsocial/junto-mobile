@@ -61,7 +61,7 @@ class ExpressionPreviewTop extends StatelessWidget {
                   // profile picture
                   ClipOval(
                     child: Image.asset(
-                      profilePicture,
+                      'assets/images/junto-mobile__logo.png',
                       height: 36.0,
                       width: 36.0,
                       fit: BoxFit.cover,

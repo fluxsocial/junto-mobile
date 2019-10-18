@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/providers/provider.dart';
 import 'package:junto_beta_mobile/screens/den/den_collection_preview.dart';
 import 'package:junto_beta_mobile/screens/den/den_create_collection.dart';
-import 'package:junto_beta_mobile/screens/den/den_expanded.dart';
 import 'package:junto_beta_mobile/widgets/expression_preview/expression_preview.dart';
+import 'package:junto_beta_mobile/widgets/junto_app_delegate.dart';
 import 'package:provider/provider.dart';
 import 'package:async/async.dart' show AsyncMemoizer;
 
@@ -20,8 +19,8 @@ class JuntoDen extends StatefulWidget {
 
 class JuntoDenState extends State<JuntoDen> {
   String profilePicture = 'assets/images/junto-mobile__eric.png';
-  final ValueNotifier<UserProfile> _profile = ValueNotifier<UserProfile>(
-      UserProfile(username: '', bio: '', firstName: '', lastName: ''));
+  final ValueNotifier<UserProfile> _profile =
+      ValueNotifier<UserProfile>(UserProfile(username: '', bio: '', firstName: '', lastName: ''));
   bool publicExpressionsActive = true;
   bool publicCollectionActive = false;
   bool privateExpressionsActive = true;
@@ -48,14 +47,12 @@ class JuntoDenState extends State<JuntoDen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _retrieveUserInfo();
-    expressions =
-        Provider.of<CollectiveProvider>(context).collectiveExpressions;
+    expressions = Provider.of<CollectiveProvider>(context).collectiveExpressions;
   }
 
   Future<void> _retrieveUserInfo() async {
     final UserProvider _userProvider = Provider.of<UserProvider>(context);
-    final UserProfile _results =
-        await userMemoizer.runOnce(() => _userProvider.readLocalUser());
+    final UserProfile _results = await userMemoizer.runOnce(() => _userProvider.readLocalUser());
     _profile.value = _results;
   }
 
@@ -118,7 +115,7 @@ class JuntoDenState extends State<JuntoDen> {
             ValueListenableBuilder<UserProfile>(
               valueListenable: _profile,
               builder: (BuildContext context, UserProfile snapshot, _) {
-                return _JuntoDenAppbar(
+                return JuntoDenAppbar(
                   handle: snapshot.username,
                   name: '${snapshot.firstName} ${snapshot.lastName}',
                   profilePicture: profilePicture,
@@ -127,7 +124,7 @@ class JuntoDenState extends State<JuntoDen> {
               },
             ),
             SliverPersistentHeader(
-              delegate: _SliverAppBarDelegate(
+              delegate: JuntoAppBarDelegate(
                 TabBar(
                   labelPadding: const EdgeInsets.all(0),
                   isScrollable: true,
@@ -153,8 +150,19 @@ class JuntoDenState extends State<JuntoDen> {
           ];
         },
         body: TabBarView(
-            // These are the contents of the tab views, below the tabs.
-            children: <Widget>[_buildOpenDen(), _buildPrivateDen()]),
+          children: <Widget>[
+            ValueListenableBuilder<UserProfile>(
+              valueListenable: _profile,
+              builder: (BuildContext context, UserProfile snapshot, _) {
+                return PrivateUserEpxression(
+                  userProfile: snapshot,
+                );
+              },
+            ),
+            // _buildOpenDen(),
+            _buildPrivateDen(),
+          ],
+        ),
       ),
     );
   }
@@ -213,17 +221,13 @@ class JuntoDenState extends State<JuntoDen> {
                         // half width of parent container minus horizontal padding
                         width: 37.5,
                         decoration: BoxDecoration(
-                          color: publicExpressionsActive
-                              ? Colors.white
-                              : const Color(0xffeeeeee),
+                          color: publicExpressionsActive ? Colors.white : const Color(0xffeeeeee),
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Icon(
                           CustomIcons.half_lotus,
                           size: 12,
-                          color: publicExpressionsActive
-                              ? const Color(0xff555555)
-                              : const Color(0xff999999),
+                          color: publicExpressionsActive ? const Color(0xff555555) : const Color(0xff999999),
                         ),
                       ),
                     ),
@@ -236,17 +240,13 @@ class JuntoDenState extends State<JuntoDen> {
                         // half width of parent container minus horizontal padding
                         width: 37.5,
                         decoration: BoxDecoration(
-                          color: publicCollectionActive
-                              ? Colors.white
-                              : const Color(0xffeeeeee),
+                          color: publicCollectionActive ? Colors.white : const Color(0xffeeeeee),
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Icon(
                           Icons.collections,
                           size: 12,
-                          color: publicCollectionActive
-                              ? const Color(0xff555555)
-                              : const Color(0xff999999),
+                          color: publicCollectionActive ? const Color(0xff555555) : const Color(0xff999999),
                         ),
                       ),
                     ),
@@ -259,8 +259,7 @@ class JuntoDenState extends State<JuntoDen> {
                         Navigator.push(
                           context,
                           CupertinoPageRoute<dynamic>(
-                            builder: (BuildContext context) =>
-                                DenCreateCollection(),
+                            builder: (BuildContext context) => DenCreateCollection(),
                           ),
                         );
                       },
@@ -336,17 +335,13 @@ class JuntoDenState extends State<JuntoDen> {
                         // half width of parent container minus horizontal padding
                         width: 37.5,
                         decoration: BoxDecoration(
-                          color: privateExpressionsActive
-                              ? Colors.white
-                              : const Color(0xffeeeeee),
+                          color: privateExpressionsActive ? Colors.white : const Color(0xffeeeeee),
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Icon(
                           CustomIcons.half_lotus,
                           size: 12,
-                          color: privateExpressionsActive
-                              ? const Color(0xff555555)
-                              : const Color(0xff999999),
+                          color: privateExpressionsActive ? const Color(0xff555555) : const Color(0xff999999),
                         ),
                       ),
                     ),
@@ -359,17 +354,13 @@ class JuntoDenState extends State<JuntoDen> {
                         // half width of parent container minus horizontal padding
                         width: 37.5,
                         decoration: BoxDecoration(
-                          color: privateCollectionActive
-                              ? Colors.white
-                              : const Color(0xffeeeeee),
+                          color: privateCollectionActive ? Colors.white : const Color(0xffeeeeee),
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Icon(
                           Icons.collections,
                           size: 12,
-                          color: privateCollectionActive
-                              ? const Color(0xff555555)
-                              : const Color(0xff999999),
+                          color: privateCollectionActive ? const Color(0xff555555) : const Color(0xff999999),
                         ),
                       ),
                     ),
@@ -382,8 +373,7 @@ class JuntoDenState extends State<JuntoDen> {
                         Navigator.push(
                           context,
                           CupertinoPageRoute<dynamic>(
-                            builder: (BuildContext context) =>
-                                DenCreateCollection(),
+                            builder: (BuildContext context) => DenCreateCollection(),
                           ),
                         );
                       },
@@ -406,206 +396,60 @@ class JuntoDenState extends State<JuntoDen> {
   }
 }
 
-class _JuntoDenAppbar extends StatelessWidget {
-  const _JuntoDenAppbar({
-    Key key,
-    @required this.handle,
-    @required this.name,
-    @required this.profilePicture,
-    @required this.bio,
-  }) : super(key: key);
+class PrivateUserEpxression extends StatefulWidget {
+  const PrivateUserEpxression({Key key, this.userProfile}) : super(key: key);
+  final UserProfile userProfile;
 
-  final String handle;
-  final String name;
-  final String profilePicture;
-  final String bio;
+  @override
+  _PrivateUserEpxressionState createState() => _PrivateUserEpxressionState();
+}
+
+class _PrivateUserEpxressionState extends State<PrivateUserEpxression> {
+  UserProvider _userProvider;
+  AsyncMemoizer<List<CentralizedExpressionResponse>> memoizer = AsyncMemoizer<List<CentralizedExpressionResponse>>();
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _userProvider = Provider.of<UserProvider>(context);
+  }
+
+  Future<List<CentralizedExpressionResponse>> getExpressions() {
+    return memoizer.runOnce(() => _userProvider.getUsersExpressions('85235b21-1725-4e89-b6fa-305df7978e52'));
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SliverAppBar(
-      brightness: Brightness.light,
-      automaticallyImplyLeading: false,
-      primary: false,
-      actions: const <Widget>[SizedBox(height: 0, width: 0)],
-      backgroundColor: Colors.white,
-      pinned: false,
-      flexibleSpace: FlexibleSpaceBar(
-        collapseMode: CollapseMode.pin,
-        background: Column(
-          children: <Widget>[
-            Container(
-              height: MediaQuery.of(context).size.height * .2,
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    stops: <double>[
-                      0.1,
-                      0.9
-                    ],
-                    colors: <Color>[
-                      JuntoPalette.juntoSecondary,
-                      JuntoPalette.juntoPrimary
-                    ]),
-              ),
+    final MediaQueryData media = MediaQuery.of(context);
+    return FutureBuilder<List<CentralizedExpressionResponse>>(
+      future: getExpressions(),
+      builder: (BuildContext context, AsyncSnapshot<List<CentralizedExpressionResponse>> snapshot) {
+        if (snapshot.hasData) {
+          return ListView.builder(
+            itemCount: snapshot.data.length,
+            itemBuilder: (BuildContext context, int index) {
+              return ExpressionPreview(
+                expression: snapshot.data[index],
+              );
+            },
+          );
+        }
+        if (snapshot.hasError) {
+          return Container(
+            height: media.size.height,
+            width: media.size.width,
+            child: const Center(
+              child: Text('Error occured :('),
             ),
-            Transform.translate(
-              offset: const Offset(0.0, -18.0),
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    // SizedBox(width: 20),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          CupertinoPageRoute<dynamic>(
-                            builder: (BuildContext context) => DenExpanded(
-                                handle: handle,
-                                name: name,
-                                profilePicture: profilePicture,
-                                bio: bio),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        width: 72,
-                        height: 72,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.blue,
-                          border: Border.all(
-                            width: 2.0,
-                            color: Colors.white,
-                          ),
-                        ),
-                        child: ClipOval(
-                          child: Image.asset(
-                            'assets/images/junto-mobile__eric.png',
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    Transform.translate(
-                      offset: const Offset(0.0, 9.0),
-                      child: GestureDetector(
-                        onTap: () {
-                          Scaffold.of(context).openEndDrawer();
-                        },
-                        child: const Icon(CustomIcons.more, size: 24),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            Transform.translate(
-              offset: const Offset(0.0, -18.0),
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                width: MediaQuery.of(context).size.width,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      name,
-                      style: const TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.w700),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      bio,
-                      style: const TextStyle(fontSize: 15),
-                    ),
-                    const SizedBox(height: 10),
-                    Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            margin: const EdgeInsets.only(right: 15),
-                            child: Row(
-                              children: <Widget>[
-                                Image.asset(
-                                  'assets/images/junto-mobile__location.png',
-                                  height: 17,
-                                  color: JuntoPalette.juntoSleek,
-                                ),
-                                const SizedBox(width: 5),
-                                const Text(
-                                  'Spirit',
-                                  style: TextStyle(
-                                    color: JuntoPalette.juntoSleek,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          Container(
-                            child: Row(
-                              children: <Widget>[
-                                Image.asset(
-                                  'assets/images/junto-mobile__link.png',
-                                  height: 17,
-                                  color: JuntoPalette.juntoSleek,
-                                ),
-                                const SizedBox(width: 5),
-                                const Text(
-                                  'junto.foundation',
-                                  style: TextStyle(
-                                      color: JuntoPalette.juntoPrimary),
-                                )
-                              ],
-                            ),
-                          ),
-                        ]),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      expandedHeight: MediaQuery.of(context).size.height * .2 + 191,
-      forceElevated: false,
-    );
-  }
-}
-
-class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  _SliverAppBarDelegate(this._tabBar);
-
-  final TabBar _tabBar;
-
-  @override
-  double get minExtent => _tabBar.preferredSize.height + .5;
-
-  @override
-  double get maxExtent => _tabBar.preferredSize.height + .5;
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          border: Border(
-            bottom: BorderSide(color: Color(0xffeeeeee), width: .5),
+          );
+        }
+        return Container(
+          height: media.size.height,
+          width: media.size.width,
+          child: const Center(
+            child: CircularProgressIndicator(),
           ),
-        ),
-        width: MediaQuery.of(context).size.width,
-        child: _tabBar);
-  }
-
-  @override
-  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
-    return false;
+        );
+      },
+    );
   }
 }
