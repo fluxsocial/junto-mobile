@@ -39,6 +39,8 @@ class JuntoTemplateState extends State<JuntoTemplate> {
 
   ValueNotifier<int> _bottomNavIndex;
   final controller = ScrollController();
+  var _dx = 0.0;
+  var _scrollDirection;
 
   UserProfile profile;
 
@@ -75,45 +77,97 @@ class JuntoTemplateState extends State<JuntoTemplate> {
           child: Text('yo'),
         ),
       ),
-      Scaffold(
-        key: _juntoTemplateKey,
-        backgroundColor: Colors.white,
-        appBar: JuntoAppBar(
-          juntoAppBarTitle: _appbarTitle,
-        ),
-        floatingActionButton: const CreateFAB(expressionLayer: 'collective'),
-        // only enable drawer if current screen is collective
-        drawer: _currentScreen == 'collective'
-            ? WillPopScope(
-                onWillPop: () async {
-                  return false;
-                },
-                child: Perspectives(
-                  changePerspective: _changePerspective,
-                  profile: profile,
-                ),
-              )
-            : null,
-        // only enable end drawer if current screen is den
-        endDrawer: _currentScreen == 'den'
-            ? WillPopScope(
-                onWillPop: () async {
-                  return false;
-                },
-                child: DenDrawer())
-            : null,
+      GestureDetector(
+        onPanUpdate: (DragUpdateDetails details) {
+          if (details.globalPosition.dx > 0 &&
+              details.globalPosition.dx <
+                  MediaQuery.of(context).size.width * .9) {
+            setState(() {
+              _dx = details.globalPosition.dx;
+              if (details.delta.direction > 0) {
+                setState(() {
+                  _scrollDirection = 'left';
+                });
+              } else if (details.delta.direction < 0) {
+                setState(() {
+                  _scrollDirection = 'right';
+                });
+              }
+            });
+          }
+        },
+        onPanEnd: (details) {
+          if (_scrollDirection == 'right') {
+            if (_dx >= MediaQuery.of(context).size.width * .2) {
+              setState(() {
+                _dx = MediaQuery.of(context).size.width * .9;
+              });
+            } else if (_dx < MediaQuery.of(context).size.width * .2) {
+              _dx = 0.0;
+            }
+          } else if (_scrollDirection == 'left') {
+            if (_dx < MediaQuery.of(context).size.width * .7) {
+              setState(() {
+                _dx = 0.0;
+              });
+            } else if (_dx >= MediaQuery.of(context).size.width * .7) {
+              setState(() {
+                _dx = MediaQuery.of(context).size.width * .9;
+              });
+            }
+          }
+        },
+        child: Transform.translate(
+          offset: Offset(_dx, 0.0),
+          child: Stack(children: [
+            Scaffold(
+              key: _juntoTemplateKey,
+              backgroundColor: Colors.white,
+              appBar: JuntoAppBar(
+                juntoAppBarTitle: _appbarTitle,
+              ),
+              floatingActionButton:
+                  const CreateFAB(expressionLayer: 'collective'),
+              // only enable drawer if current screen is collective
+              // drawer: _currentScreen == 'collective'
+              //     ? WillPopScope(
+              //         onWillPop: () async {
+              //           return false;
+              //         },
+              //         child: Perspectives(
+              //           changePerspective: _changePerspective,
+              //           profile: profile,
+              //         ),
+              //       )
+              //     : null,
+              // only enable end drawer if current screen is den
+              endDrawer: _currentScreen == 'den'
+                  ? WillPopScope(
+                      onWillPop: () async {
+                        return false;
+                      },
+                      child: DenDrawer())
+                  : null,
 
-        // dynamically render body
-        body: _renderBody(),
+              // dynamically render body
+              body: _renderBody(),
 
-        bottomNavigationBar: ValueListenableBuilder<int>(
-          valueListenable: _bottomNavIndex,
-          builder: (BuildContext context, int index, _) {
-            return BottomNav(
-              currentIndex: index,
-              setIndex: _switchScreen,
-            );
-          },
+              bottomNavigationBar: ValueListenableBuilder<int>(
+                valueListenable: _bottomNavIndex,
+                builder: (BuildContext context, int index, _) {
+                  return BottomNav(
+                    currentIndex: index,
+                    setIndex: _switchScreen,
+                  );
+                },
+              ),
+            ),
+            _dx > MediaQuery.of(context).size.width * .2
+                ? Container(
+                    color: Colors.white.withOpacity(.5),
+                  )
+                : SizedBox()
+          ]),
         ),
       ),
     ]);

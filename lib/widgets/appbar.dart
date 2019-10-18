@@ -271,7 +271,7 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Container(
-                  width: MediaQuery.of(context).size.width * .8,
+                  width: MediaQuery.of(context).size.width * .84,
                   decoration: const BoxDecoration(
                     border: Border(
                       bottom: BorderSide(
@@ -317,9 +317,10 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                   onTap: () {
                     Navigator.pop(context);
                   },
-                  child: const Text(
-                    'cancel',
-                    style: TextStyle(fontWeight: FontWeight.w500),
+                  child: Icon(
+                    Icons.keyboard_arrow_down,
+                    size: 24,
+                    color: Color(0xff999999),
                   ),
                 )
               ],
