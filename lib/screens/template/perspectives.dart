@@ -101,7 +101,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                 Expanded(
                   child: ListView(
                     children: <Widget>[
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 10),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: Row(
@@ -131,7 +131,6 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 10),
                       _buildPerspective('JUNTO', 'all'),
                       _buildPerspective('Connections', '99'),
                       _buildPerspective('Subscriptions', '220'),
@@ -141,60 +140,6 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
               ],
             ),
           )),
-    );
-  }
-
-  _buildPerspective(String name, String members) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              Container(
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                      height: 30,
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          left:
-                              BorderSide(color: Color(0xffeeeeee), width: 1.5),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          name,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 15,
-                              letterSpacing: 1.2,
-                              color: Colors.white),
-                        ),
-                        const SizedBox(height: 5),
-                        Text(
-                          members + ' members',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 15,
-                              letterSpacing: 1.2,
-                              color: Colors.white),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          Icon(Icons.keyboard_arrow_down, size: 20, color: Colors.white)
-        ],
-      ),
     );
   }
 
@@ -326,6 +271,110 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                   ],
                 ),
               ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  _buildPerspective(String name, String members) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Container(
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      height: 30,
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          left:
+                              BorderSide(color: Color(0xffeeeeee), width: 1.5),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          name,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 15,
+                              letterSpacing: 1.2,
+                              color: Colors.white),
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          members + ' members',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 15,
+                              letterSpacing: 1.2,
+                              color: Colors.white),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          GestureDetector(
+              onTap: () {
+                _openPerspectiveBottomSheet();
+              },
+              child: Icon(Icons.keyboard_arrow_down,
+                  size: 20, color: Colors.white))
+        ],
+      ),
+    );
+  }
+
+  _openPerspectiveBottomSheet() {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (BuildContext context) => Container(
+        color: const Color(0xff737373),
+        child: Container(
+          height: MediaQuery.of(context).size.height * .9,
+          padding: const EdgeInsets.all(10),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10),
+              topRight: Radius.circular(10),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const <Widget>[
+                  // Text('cancel'),
+                  Text(
+                    'JUNTO',
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xff333333),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Container(
+                  child: Text(
+                      'The Junto perspective contains all public expressions from every member of Junto. Expressions are displayed in chronological order.'))
             ],
           ),
         ),
