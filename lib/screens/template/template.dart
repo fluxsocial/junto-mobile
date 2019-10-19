@@ -75,24 +75,30 @@ class JuntoTemplateState extends State<JuntoTemplate> {
       JuntoPerspectives(),
       GestureDetector(
         onPanUpdate: (DragUpdateDetails details) {
-          if (details.globalPosition.dx > 0 &&
-              details.globalPosition.dx <
-                  MediaQuery.of(context).size.width * .9) {
-            setState(() {
-              _dx = details.globalPosition.dx;
-              if (details.delta.direction > 0) {
-                setState(() {
-                  _scrollDirection = 'left';
-                });
-              } else if (details.delta.direction < 0) {
-                setState(() {
-                  _scrollDirection = 'right';
-                });
-              }
-            });
+          if (_dx == 0.0 &&
+              details.globalPosition.dy != 0.0 &&
+              details.delta.direction > 0) {
+            return;
+          } else {
+            if (details.globalPosition.dx > 0 &&
+                details.globalPosition.dx <
+                    MediaQuery.of(context).size.width * .9) {
+              setState(() {
+                _dx = details.globalPosition.dx;
+                if (details.delta.direction > 0) {
+                  setState(() {
+                    _scrollDirection = 'left';
+                  });
+                } else if (details.delta.direction < 0) {
+                  setState(() {
+                    _scrollDirection = 'right';
+                  });
+                }
+              });
+            }
           }
         },
-        onPanEnd: (details) {
+        onPanEnd: (DragEndDetails details) {
           if (_scrollDirection == 'right') {
             if (_dx >= MediaQuery.of(context).size.width * .2) {
               setState(() {
@@ -120,22 +126,29 @@ class JuntoTemplateState extends State<JuntoTemplate> {
               key: _juntoTemplateKey,
               backgroundColor: Colors.white,
               appBar: JuntoAppBar(
+                openPerspectivesDrawer: () {
+                  if(_dx == 0) {
+                    setState(() {
+                      _dx = MediaQuery.of(context).size.width * .9;
+                    });
+                  }
+                },
                 juntoAppBarTitle: _appbarTitle,
               ),
               floatingActionButton:
                   const CreateFAB(expressionLayer: 'collective'),
               // only enable drawer if current screen is collective
-              drawer: _currentScreen == 'collective'
-                  ? WillPopScope(
-                      onWillPop: () async {
-                        return false;
-                      },
-                      child: Perspectives(
-                        changePerspective: _changePerspective,
-                        profile: profile,
-                      ),
-                    )
-                  : null,
+              // drawer: _currentScreen == 'collective'
+              //     ? WillPopScope(
+              //         onWillPop: () async {
+              //           return false;
+              //         },
+              //         child: Perspectives(
+              //           changePerspective: _changePerspective,
+              //           profile: profile,
+              //         ),
+              //       )
+              //     : null,
               // only enable end drawer if current screen is den
               endDrawer: _currentScreen == 'den'
                   ? WillPopScope(
@@ -158,11 +171,21 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                 },
               ),
             ),
-            _dx > MediaQuery.of(context).size.width * .2
-                ? Container(
-                    color: Colors.white.withOpacity(.5),
-                  )
-                : SizedBox()
+            GestureDetector(
+              onTap: () {
+                if(_dx == MediaQuery.of(context).size.width * .9) {
+                  setState(() {
+                    _dx = 0;
+                  });
+                }
+
+              },
+              child: _dx > MediaQuery.of(context).size.width * .2
+                  ? Container(
+                      color: Colors.white.withOpacity(.5),
+                    )
+                  : const SizedBox(),
+            )
           ]),
         ),
       ),
