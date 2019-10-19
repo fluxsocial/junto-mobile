@@ -13,6 +13,7 @@ import 'package:junto_beta_mobile/screens/spheres/spheres.dart';
 import 'package:junto_beta_mobile/widgets/appbar.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/screens/template/perspectives.dart';
 
 // This class is a template screen that contains the navbar, bottom bar,
 // and screen (collective, spheres, pack, etc) depending on condition.
@@ -71,12 +72,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   @override
   Widget build(BuildContext context) {
     return Stack(children: <Widget>[
-      Scaffold(
-        appBar: AppBar(),
-        body: const Center(
-          child: Text('yo'),
-        ),
-      ),
+      JuntoPerspectives(),
       GestureDetector(
         onPanUpdate: (DragUpdateDetails details) {
           if (details.globalPosition.dx > 0 &&
