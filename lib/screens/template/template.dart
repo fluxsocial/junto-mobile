@@ -125,17 +125,17 @@ class JuntoTemplateState extends State<JuntoTemplate> {
               floatingActionButton:
                   const CreateFAB(expressionLayer: 'collective'),
               // only enable drawer if current screen is collective
-              // drawer: _currentScreen == 'collective'
-              //     ? WillPopScope(
-              //         onWillPop: () async {
-              //           return false;
-              //         },
-              //         child: Perspectives(
-              //           changePerspective: _changePerspective,
-              //           profile: profile,
-              //         ),
-              //       )
-              //     : null,
+              drawer: _currentScreen == 'collective'
+                  ? WillPopScope(
+                      onWillPop: () async {
+                        return false;
+                      },
+                      child: Perspectives(
+                        changePerspective: _changePerspective,
+                        profile: profile,
+                      ),
+                    )
+                  : null,
               // only enable end drawer if current screen is den
               endDrawer: _currentScreen == 'den'
                   ? WillPopScope(

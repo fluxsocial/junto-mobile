@@ -116,7 +116,18 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                                 color: Colors.white,
                               ),
                             ),
-                            Icon(Icons.add, color: Colors.white, size: 17)
+                            GestureDetector(
+                              onTap: () {
+                                _createPerspectiveBottomSheet();
+                              },
+                              child: Container(
+                                  height: 38,
+                                  width: 38,
+                                  color: Colors.transparent,
+                                  alignment: Alignment.centerRight,
+                                  child: Icon(Icons.add,
+                                      color: Colors.white, size: 17)),
+                            )
                           ],
                         ),
                       ),
@@ -183,6 +194,141 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
           ),
           Icon(Icons.keyboard_arrow_down, size: 20, color: Colors.white)
         ],
+      ),
+    );
+  }
+
+  _createPerspectiveBottomSheet() {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (BuildContext context) => Container(
+        color: const Color(0xff737373),
+        child: Container(
+          height: MediaQuery.of(context).size.height * .9,
+          padding: const EdgeInsets.all(10),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10),
+              topRight: Radius.circular(10),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const <Widget>[
+                  // Text('cancel'),
+                  Text(
+                    'New Perspective',
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xff333333),
+                    ),
+                  ),
+                  Text(
+                    'create',
+                    style: TextStyle(fontWeight: FontWeight.w500),
+                  )
+                ],
+              ),
+              const SizedBox(height: 20),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                child: TextField(
+                  buildCounter: (
+                    BuildContext context, {
+                    int currentLength,
+                    int maxLength,
+                    bool isFocused,
+                  }) =>
+                      null,
+                  decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.all(0),
+                      border: InputBorder.none,
+                      hintText: 'Name your perspective',
+                      hintStyle: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xff999999),
+                      )),
+                  cursorColor: const Color(0xff333333),
+                  cursorWidth: 2,
+                  maxLines: 1,
+                  style: const TextStyle(
+                      color: Color(0xff333333),
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500),
+                  maxLength: 80,
+                  textInputAction: TextInputAction.done,
+                ),
+              ),
+              const SizedBox(height: 10),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                padding: const EdgeInsets.only(bottom: 10),
+                decoration: const BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: Color(0xffeeeeee),
+                      width: 1,
+                    ),
+                  ),
+                ),
+                child: Row(
+                  children: <Widget>[
+                    Icon(
+                      Icons.search,
+                      size: 20,
+                      color: const Color(0xff999999),
+                    ),
+                    const SizedBox(width: 5),
+                    Transform.translate(
+                      offset: Offset(
+                        0.0,
+                        5,
+                      ),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * .8,
+                        child: TextField(
+                          buildCounter: (
+                            BuildContext context, {
+                            int currentLength,
+                            int maxLength,
+                            bool isFocused,
+                          }) =>
+                              null,
+                          decoration: const InputDecoration(
+                              contentPadding: EdgeInsets.all(0),
+                              border: InputBorder.none,
+                              hintText: 'Add members',
+                              hintStyle: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w700,
+                                color: Color(0xff999999),
+                              )),
+                          cursorColor: const Color(0xff333333),
+                          cursorWidth: 2,
+                          maxLines: 1,
+                          style: const TextStyle(
+                              color: Color(0xff333333),
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500),
+                          maxLength: 80,
+                          textInputAction: TextInputAction.done,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
