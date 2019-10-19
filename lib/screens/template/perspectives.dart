@@ -38,14 +38,14 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                 Container(
                   height: 45,
                   padding: const EdgeInsets.symmetric(horizontal: 10),
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: Color(0xff4263A3),
-                        width: .75,
-                      ),
-                    ),
-                  ),
+                  // decoration: const BoxDecoration(
+                  //   border: Border(
+                  //     bottom: BorderSide(
+                  //       color: Color(0xff4263A3),
+                  //       width: .75,
+                  //     ),
+                  //   ),
+                  // ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
@@ -102,42 +102,50 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                     ],
                   ),
                 ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Color(0xff4263A3),
+                        width: .75,
+                      ),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        'PERSPECTIVES',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 12,
+                          letterSpacing: 1.2,
+                          color: Colors.white,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          _createPerspectiveBottomSheet();
+                        },
+                        child: Container(
+                            height: 38,
+                            width: 38,
+                            color: Colors.transparent,
+                            alignment: Alignment.centerRight,
+                            child:
+                                Icon(Icons.add, color: Colors.white, size: 17)),
+                      )
+                    ],
+                  ),
+                ),
                 Expanded(
                   child: ListView(
                     children: <Widget>[
-                      const SizedBox(height: 10),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              'PERSPECTIVES',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 12,
-                                letterSpacing: 1.2,
-                                color: Colors.white,
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                _createPerspectiveBottomSheet();
-                              },
-                              child: Container(
-                                  height: 38,
-                                  width: 38,
-                                  color: Colors.transparent,
-                                  alignment: Alignment.centerRight,
-                                  child: Icon(Icons.add,
-                                      color: Colors.white, size: 17)),
-                            )
-                          ],
-                        ),
-                      ),
                       _buildPerspective('JUNTO', 'all'),
                       _buildPerspective('Connections', '99'),
                       _buildPerspective('Subscriptions', '220'),
+                      _buildPerspective('Degrees of separation', 'all'),
                     ],
                   ),
                 )
@@ -298,16 +306,16 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                 Container(
                   child: Row(
                     children: <Widget>[
-                      Container(
-                        height: 30,
-                        decoration: const BoxDecoration(
-                          border: Border(
-                            left: BorderSide(
-                                color: Color(0xffeeeeee), width: 1.5),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
+                      // Container(
+                      //   height: 30,
+                      //   decoration: const BoxDecoration(
+                      //     border: Border(
+                      //       left: BorderSide(
+                      //           color: Color(0xffeeeeee), width: 1.5),
+                      //     ),
+                      //   ),
+                      // ),
+                      // const SizedBox(width: 10),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[

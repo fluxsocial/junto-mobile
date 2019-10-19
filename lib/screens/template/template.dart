@@ -127,7 +127,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
               backgroundColor: Colors.white,
               appBar: JuntoAppBar(
                 openPerspectivesDrawer: () {
-                  if(_dx == 0) {
+                  if (_dx == 0) {
                     setState(() {
                       _dx = MediaQuery.of(context).size.width * .9;
                     });
@@ -173,12 +173,11 @@ class JuntoTemplateState extends State<JuntoTemplate> {
             ),
             GestureDetector(
               onTap: () {
-                if(_dx == MediaQuery.of(context).size.width * .9) {
+                if (_dx == MediaQuery.of(context).size.width * .9) {
                   setState(() {
                     _dx = 0;
                   });
                 }
-
               },
               child: _dx > MediaQuery.of(context).size.width * .2
                   ? Container(
@@ -198,6 +197,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
       case 'collective':
         return JuntoCollective(
             currentPerspective: _currentPerspective, controller: controller);
+
       case 'spheres':
         return JuntoSpheres(
           userProfile: profile,
