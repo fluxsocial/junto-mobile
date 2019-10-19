@@ -4,6 +4,10 @@ import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/styles.dart';
 
 class JuntoPerspectives extends StatefulWidget {
+  const JuntoPerspectives({Key key, @required this.changePerspective})
+      : super(key: key);
+
+  final Function changePerspective;
   @override
   State<StatefulWidget> createState() {
     return JuntoPerspectivesState();
@@ -279,60 +283,66 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
   }
 
   _buildPerspective(String name, String members) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              Container(
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                      height: 30,
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          left:
-                              BorderSide(color: Color(0xffeeeeee), width: 1.5),
+    return GestureDetector(
+      onTap: () {
+        widget.changePerspective(name);
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+        color: Colors.transparent,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Container(
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        height: 30,
+                        decoration: const BoxDecoration(
+                          border: Border(
+                            left: BorderSide(
+                                color: Color(0xffeeeeee), width: 1.5),
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(width: 10),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          name,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 15,
-                              letterSpacing: 1.2,
-                              color: Colors.white),
-                        ),
-                        const SizedBox(height: 5),
-                        Text(
-                          members + ' members',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 15,
-                              letterSpacing: 1.2,
-                              color: Colors.white),
-                        )
-                      ],
-                    ),
-                  ],
+                      const SizedBox(width: 10),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            name,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 15,
+                                letterSpacing: 1.2,
+                                color: Colors.white),
+                          ),
+                          const SizedBox(height: 5),
+                          Text(
+                            members + ' members',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 15,
+                                letterSpacing: 1.2,
+                                color: Colors.white),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-          GestureDetector(
-              onTap: () {
-                _openPerspectiveBottomSheet();
-              },
-              child: Icon(Icons.keyboard_arrow_down,
-                  size: 20, color: Colors.white))
-        ],
+              ],
+            ),
+            GestureDetector(
+                onTap: () {
+                  _openPerspectiveBottomSheet();
+                },
+                child: Icon(Icons.keyboard_arrow_down,
+                    size: 20, color: Colors.white))
+          ],
+        ),
       ),
     );
   }

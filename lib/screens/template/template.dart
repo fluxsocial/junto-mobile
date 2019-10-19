@@ -72,7 +72,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   @override
   Widget build(BuildContext context) {
     return Stack(children: <Widget>[
-      JuntoPerspectives(),
+      JuntoPerspectives(changePerspective: _changePerspective),
       GestureDetector(
         onPanUpdate: (DragUpdateDetails details) {
           if (_dx == 0.0 &&
@@ -249,6 +249,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
       () {
         _currentPerspective = perspective;
         _appbarTitle = perspective;
+        _dx = 0;
       },
     );
   }
