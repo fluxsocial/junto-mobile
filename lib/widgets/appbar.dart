@@ -18,10 +18,12 @@ import 'package:provider/provider.dart';
 class JuntoAppBar extends StatefulWidget implements PreferredSizeWidget {
   const JuntoAppBar({
     Key key,
+    this.appContext,
     this.openPerspectivesDrawer,
     @required this.juntoAppBarTitle,
   }) : super(key: key);
 
+  final String appContext;
   final Function openPerspectivesDrawer;
   final String juntoAppBarTitle;
 
@@ -108,7 +110,11 @@ class _JuntoAppBarState extends State<JuntoAppBar>
                 return GestureDetector(
                   onTap: () {
                     // Scaffold.of(context).openDrawer();
-                    widget.openPerspectivesDrawer();
+                    if (widget.appContext == 'collective') {
+                      widget.openPerspectivesDrawer();
+                    } else {
+                      return;
+                    }
                   },
                   child: Row(
                     children: <Widget>[
@@ -120,11 +126,13 @@ class _JuntoAppBarState extends State<JuntoAppBar>
                             style: JuntoStyles.appbarTitle),
                       ),
                       const SizedBox(width: 2.5),
-                      Icon(
-                        Icons.keyboard_arrow_down,
-                        size: 17,
-                        color: const Color(0xff999999),
-                      )
+                      widget.appContext == 'collective'
+                          ? Icon(
+                              Icons.keyboard_arrow_down,
+                              size: 17,
+                              color: const Color(0xff999999),
+                            )
+                          : SizedBox()
                     ],
                   ),
                 );

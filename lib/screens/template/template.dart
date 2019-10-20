@@ -128,6 +128,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
               key: _juntoTemplateKey,
               backgroundColor: Colors.white,
               appBar: JuntoAppBar(
+                appContext: _currentScreen,
                 openPerspectivesDrawer: () {
                   if (_dx == 0) {
                     setState(() {
