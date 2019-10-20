@@ -75,26 +75,28 @@ class JuntoTemplateState extends State<JuntoTemplate> {
       JuntoPerspectives(changePerspective: _changePerspective),
       GestureDetector(
         onPanUpdate: (DragUpdateDetails details) {
-          if (_dx == 0.0 &&
-              details.globalPosition.dy != 0.0 &&
-              details.delta.direction > 0) {
-            return;
-          } else {
-            if (details.globalPosition.dx > 0 &&
-                details.globalPosition.dx <
-                    MediaQuery.of(context).size.width * .9) {
-              setState(() {
-                _dx = details.globalPosition.dx;
-                if (details.delta.direction > 0) {
-                  setState(() {
-                    _scrollDirection = 'left';
-                  });
-                } else if (details.delta.direction < 0) {
-                  setState(() {
-                    _scrollDirection = 'right';
-                  });
-                }
-              });
+          if (_currentScreen == 'collective') {
+            if (_dx == 0.0 &&
+                details.globalPosition.dy != 0.0 &&
+                details.delta.direction > 0) {
+              return;
+            } else {
+              if (details.globalPosition.dx > 0 &&
+                  details.globalPosition.dx <
+                      MediaQuery.of(context).size.width * .9) {
+                setState(() {
+                  _dx = details.globalPosition.dx;
+                  if (details.delta.direction > 0) {
+                    setState(() {
+                      _scrollDirection = 'left';
+                    });
+                  } else if (details.delta.direction < 0) {
+                    setState(() {
+                      _scrollDirection = 'right';
+                    });
+                  }
+                });
+              }
             }
           }
         },
