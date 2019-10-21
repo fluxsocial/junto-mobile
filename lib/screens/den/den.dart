@@ -19,8 +19,9 @@ class JuntoDen extends StatefulWidget {
 
 class JuntoDenState extends State<JuntoDen> {
   String profilePicture = 'assets/images/junto-mobile__eric.png';
-  final ValueNotifier<UserProfile> _profile =
-      ValueNotifier<UserProfile>(UserProfile(username: '', bio: '', firstName: '', lastName: ''));
+  final ValueNotifier<UserProfile> _profile = ValueNotifier<UserProfile>(
+    UserProfile(username: '', bio: '', firstName: '', lastName: ''),
+  );
   bool publicExpressionsActive = true;
   bool publicCollectionActive = false;
   bool privateExpressionsActive = true;
@@ -154,13 +155,25 @@ class JuntoDenState extends State<JuntoDen> {
             ValueListenableBuilder<UserProfile>(
               valueListenable: _profile,
               builder: (BuildContext context, UserProfile snapshot, _) {
-                return PrivateUserEpxression(
+                return UserExpressions(
+                  key: const PageStorageKey<String>('public-user-expressions'),
+                  privacy: 'Public',
+                  userProfile: snapshot,
+                );
+              },
+            ),
+            ValueListenableBuilder<UserProfile>(
+              valueListenable: _profile,
+              builder: (BuildContext context, UserProfile snapshot, _) {
+                return UserExpressions(
+                  key: const PageStorageKey<String>('private-user-expressions'),
+                  privacy: 'Private',
                   userProfile: snapshot,
                 );
               },
             ),
             // _buildOpenDen(),
-            _buildPrivateDen(),
+            // _buildPrivateDen(),
           ],
         ),
       ),
@@ -396,15 +409,25 @@ class JuntoDenState extends State<JuntoDen> {
   }
 }
 
-class PrivateUserEpxression extends StatefulWidget {
-  const PrivateUserEpxression({Key key, this.userProfile}) : super(key: key);
+/// Linear list of expressions created by the given [userProfile].
+class UserExpressions extends StatefulWidget {
+  const UserExpressions({
+    Key key,
+    @required this.userProfile,
+    @required this.privacy,
+  }) : super(key: key);
+
+  /// [UserProfile] of the user
   final UserProfile userProfile;
 
+  /// Either Public or Private;
+  final String privacy;
+
   @override
-  _PrivateUserEpxressionState createState() => _PrivateUserEpxressionState();
+  _UserExpressionsState createState() => _UserExpressionsState();
 }
 
-class _PrivateUserEpxressionState extends State<PrivateUserEpxression> {
+class _UserExpressionsState extends State<UserExpressions> {
   UserProvider _userProvider;
   AsyncMemoizer<List<CentralizedExpressionResponse>> memoizer = AsyncMemoizer<List<CentralizedExpressionResponse>>();
   @override
@@ -414,7 +437,11 @@ class _PrivateUserEpxressionState extends State<PrivateUserEpxression> {
   }
 
   Future<List<CentralizedExpressionResponse>> getExpressions() {
-    return memoizer.runOnce(() => _userProvider.getUsersExpressions('85235b21-1725-4e89-b6fa-305df7978e52'));
+    return memoizer.runOnce(
+      () => _userProvider.getUsersExpressions(
+        widget.userProfile.address,
+      ),
+    );
   }
 
   @override
@@ -424,11 +451,14 @@ class _PrivateUserEpxressionState extends State<PrivateUserEpxression> {
       future: getExpressions(),
       builder: (BuildContext context, AsyncSnapshot<List<CentralizedExpressionResponse>> snapshot) {
         if (snapshot.hasData) {
+          final List<CentralizedExpressionResponse> _data = snapshot.data
+              .where((CentralizedExpressionResponse expression) => expression.privacy == widget.privacy)
+              .toList(growable: false);
           return ListView.builder(
-            itemCount: snapshot.data.length,
+            itemCount: _data.length,
             itemBuilder: (BuildContext context, int index) {
               return ExpressionPreview(
-                expression: snapshot.data[index],
+                expression: _data[index],
               );
             },
           );
