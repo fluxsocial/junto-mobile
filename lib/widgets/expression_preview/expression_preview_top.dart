@@ -22,7 +22,6 @@ class ExpressionPreviewTop extends StatelessWidget {
     //ignore: unused_local_variable
     final String lastName = expression.creator.lastName;
     final String username = expression.creator.username;
-    final String profilePicture = expression.creator.profilePicture;
 
     return Container(
       padding: const EdgeInsets.symmetric(
@@ -61,7 +60,7 @@ class ExpressionPreviewTop extends StatelessWidget {
                   // profile picture
                   ClipOval(
                     child: Image.asset(
-                      profilePicture,
+                      'assets/images/junto-mobile__logo.png',
                       height: 36.0,
                       width: 36.0,
                       fit: BoxFit.cover,

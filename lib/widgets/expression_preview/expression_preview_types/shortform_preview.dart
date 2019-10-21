@@ -62,8 +62,8 @@ class ShortformPreviewState extends State<ShortformPreview> {
       });
     } else {
       setState(() {
-        _gradientOne = JuntoPalette.juntoWhite;
-        _gradientTwo = JuntoPalette.juntoWhite;
+        _gradientOne = JuntoPalette.juntoBlack;
+        _gradientTwo = JuntoPalette.juntoBlack;
       });
     }
   }

@@ -30,11 +30,9 @@ class JuntoAppBar extends StatefulWidget implements PreferredSizeWidget {
   _JuntoAppBarState createState() => _JuntoAppBarState();
 }
 
-class _JuntoAppBarState extends State<JuntoAppBar>
-    with AddUserToList<UserProfile> {
+class _JuntoAppBarState extends State<JuntoAppBar> with AddUserToList<UserProfile> {
   Timer debounceTimer;
-  ValueNotifier<List<UserProfile>> queriedUsers =
-      ValueNotifier<List<UserProfile>>(<UserProfile>[]);
+  ValueNotifier<List<UserProfile>> queriedUsers = ValueNotifier<List<UserProfile>>(<UserProfile>[]);
   final ValueNotifier<SelectedUsers> _users = ValueNotifier<SelectedUsers>(
     SelectedUsers(),
   );
@@ -45,8 +43,7 @@ class _JuntoAppBarState extends State<JuntoAppBar>
     }
     debounceTimer = Timer(const Duration(milliseconds: 500), () async {
       if (mounted) {
-        final List<UserProfile> result =
-            await Provider.of<SearchProvider>(context).searchMember(value);
+        final List<UserProfile> result = await Provider.of<SearchProvider>(context).searchMember(value);
         if (result != null && result.isNotEmpty) {
           queriedUsers.value = result;
         }
@@ -81,14 +78,8 @@ class _JuntoAppBarState extends State<JuntoAppBar>
             gradient: LinearGradient(
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
-                stops: <double>[
-                  0.1,
-                  0.9
-                ],
-                colors: <Color>[
-                  JuntoPalette.juntoSecondary,
-                  JuntoPalette.juntoPrimary
-                ]),
+                stops: <double>[0.1, 0.9],
+                colors: <Color>[JuntoPalette.juntoSecondary, JuntoPalette.juntoPrimary]),
           ),
         ),
       ),
@@ -96,8 +87,7 @@ class _JuntoAppBarState extends State<JuntoAppBar>
       elevation: 0,
       titleSpacing: 0.0,
       title: Container(
-        padding: const EdgeInsets.symmetric(
-            horizontal: JuntoStyles.horizontalPadding),
+        padding: const EdgeInsets.symmetric(horizontal: JuntoStyles.horizontalPadding),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
@@ -109,8 +99,7 @@ class _JuntoAppBarState extends State<JuntoAppBar>
                       onTap: () {
                         Scaffold.of(context).openDrawer();
                       },
-                      child: Image.asset('assets/images/junto-mobile__logo.png',
-                          height: 22.0, width: 22.0),
+                      child: Image.asset('assets/images/junto-mobile__logo.png', height: 22.0, width: 22.0),
                     ),
                     GestureDetector(
                       onTap: () {
@@ -118,54 +107,54 @@ class _JuntoAppBarState extends State<JuntoAppBar>
                           isScrollControlled: true,
                           context: context,
                           builder: (BuildContext context) => Container(
-                                color: const Color(0xff737373),
-                                child: Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * .9,
-                                  padding: const EdgeInsets.all(10),
-                                  decoration: const BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(10),
-                                      topRight: Radius.circular(10),
-                                    ),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      const SizedBox(height: 10),
-                                      Row(
-                                        children: const <Widget>[
-                                          Text(
-                                            'Edit Perspective',
-                                            style: TextStyle(
-                                              fontSize: 17,
-                                              fontWeight: FontWeight.w700,
-                                              color: Color(0xff333333),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 10),
-                                      const Text(
-                                        'This modal will enable you to edit your'
-                                        ' perspective. This includes '
-                                        'adding/removing members, changing'
-                                        ' the name, deleting the perspective,'
-                                        ' and so on. You will also be able to '
-                                        'view the list of members, etc.',
-                                      )
-                                    ],
-                                  ),
+                            color: const Color(0xff737373),
+                            child: Container(
+                              height: MediaQuery.of(context).size.height * .9,
+                              padding: const EdgeInsets.all(10),
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  topRight: Radius.circular(10),
                                 ),
                               ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  const SizedBox(height: 10),
+                                  Row(
+                                    children: const <Widget>[
+                                      Text(
+                                        'Edit Perspective',
+                                        style: TextStyle(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w700,
+                                          color: Color(0xff333333),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 10),
+                                  const Text(
+                                    'This modal will enable you to edit your'
+                                    ' perspective. This includes '
+                                    'adding/removing members, changing'
+                                    ' the name, deleting the perspective,'
+                                    ' and so on. You will also be able to '
+                                    'view the list of members, etc.',
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
                         );
                       },
                       child: Container(
                         margin: const EdgeInsets.only(left: 7.5),
-                        child: Text(widget.juntoAppBarTitle,
-                            style: JuntoStyles.appbarTitle),
+                        child: Text(
+                          widget.juntoAppBarTitle,
+                          style: JuntoStyles.appbarTitle,
+                        ),
                       ),
                     )
                   ],
@@ -189,8 +178,7 @@ class _JuntoAppBarState extends State<JuntoAppBar>
                         isScrollControlled: true,
                         context: context,
                         builder: (BuildContext context) {
-                          return ListenableProvider<
-                              ValueNotifier<SelectedUsers>>.value(
+                          return ListenableProvider<ValueNotifier<SelectedUsers>>.value(
                             value: _users,
                             child: _SearchBottomSheet(
                               results: queriedUsers,
@@ -216,39 +204,39 @@ class _JuntoAppBarState extends State<JuntoAppBar>
                       isScrollControlled: true,
                       context: context,
                       builder: (BuildContext context) => Container(
-                            color: const Color(0xff737373),
-                            child: Container(
-                              height: MediaQuery.of(context).size.height * .9,
-                              padding: const EdgeInsets.all(10),
-                              decoration: const BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  topRight: Radius.circular(10),
-                                ),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  const SizedBox(height: 10),
-                                  Row(
-                                    children: const <Widget>[
-                                      Text(
-                                        'Notifications',
-                                        style: TextStyle(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w700,
-                                          color: Color(0xff333333),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 10),
-                                  const Text('building this last...')
-                                ],
-                              ),
+                        color: const Color(0xff737373),
+                        child: Container(
+                          height: MediaQuery.of(context).size.height * .9,
+                          padding: const EdgeInsets.all(10),
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10),
                             ),
                           ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              const SizedBox(height: 10),
+                              Row(
+                                children: const <Widget>[
+                                  Text(
+                                    'Notifications',
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w700,
+                                      color: Color(0xff333333),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              const Text('building this last...')
+                            ],
+                          ),
+                        ),
+                      ),
                     );
                   },
                   child: Container(
@@ -294,8 +282,7 @@ class _SearchBottomSheet extends StatefulWidget {
 class __SearchBottomSheetState extends State<_SearchBottomSheet> {
   @override
   Widget build(BuildContext context) {
-    final ValueNotifier<SelectedUsers> _selectedUsers =
-        Provider.of<ValueNotifier<SelectedUsers>>(context);
+    final ValueNotifier<SelectedUsers> _selectedUsers = Provider.of<ValueNotifier<SelectedUsers>>(context);
 
     return Container(
       color: const Color(0xff737373),
@@ -326,10 +313,7 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                 SizedBox(width: 25),
                 Text(
                   'Spheres',
-                  style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xff999999)),
+                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700, color: Color(0xff999999)),
                 )
               ],
             ),
@@ -359,18 +343,12 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                     decoration: const InputDecoration(
                       border: InputBorder.none,
                       hintText: 'Search members',
-                      hintStyle: TextStyle(
-                          color: Color(0xff999999),
-                          fontSize: 17,
-                          fontWeight: FontWeight.w500),
+                      hintStyle: TextStyle(color: Color(0xff999999), fontSize: 17, fontWeight: FontWeight.w500),
                     ),
                     cursorColor: const Color(0xff333333),
                     cursorWidth: 2,
                     maxLines: null,
-                    style: const TextStyle(
-                        color: Color(0xff333333),
-                        fontSize: 17,
-                        fontWeight: FontWeight.w500),
+                    style: const TextStyle(color: Color(0xff333333), fontSize: 17, fontWeight: FontWeight.w500),
                     maxLength: 80,
                     textInputAction: TextInputAction.done,
                     onChanged: widget.onTextChange,
@@ -389,8 +367,7 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                     final UserProfile _user = query[index];
                     return ValueListenableBuilder<SelectedUsers>(
                       valueListenable: _selectedUsers,
-                      builder: (BuildContext context,
-                          SelectedUsers selectedUser, _) {
+                      builder: (BuildContext context, SelectedUsers selectedUser, _) {
                         return UserPreview(
                           onTap: widget.onProfileSelected,
                           userProfile: _user,

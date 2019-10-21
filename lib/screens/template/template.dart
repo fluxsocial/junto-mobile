@@ -191,8 +191,7 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
       case 3:
         setState(() {
           _currentScreen = 'den';
-          _appbarTitle = 'sunyata';
-          // _appbarTitle = profile?.username ?? 'Junto';
+          _appbarTitle = profile?.username ?? 'Junto';
         });
         break;
     }

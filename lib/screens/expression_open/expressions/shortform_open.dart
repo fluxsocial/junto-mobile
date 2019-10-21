@@ -50,6 +50,11 @@ class ShortformOpenState extends State<ShortformOpen> {
         _gradientOne = JuntoPalette.juntoGreen;
         _gradientTwo = JuntoPalette.juntoSecondary;
       });
+    } else {
+      setState(() {
+        _gradientOne = JuntoPalette.juntoBlack;
+        _gradientTwo = JuntoPalette.juntoBlack;
+      });
     }
   }
 
