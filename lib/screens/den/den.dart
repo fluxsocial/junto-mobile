@@ -4,7 +4,6 @@ import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/providers/provider.dart';
-import 'package:junto_beta_mobile/screens/den/den_collection_preview.dart';
 import 'package:junto_beta_mobile/screens/den/den_create_collection.dart';
 import 'package:junto_beta_mobile/widgets/expression_preview/expression_preview.dart';
 import 'package:junto_beta_mobile/widgets/junto_app_delegate.dart';
@@ -18,237 +17,116 @@ class JuntoDen extends StatefulWidget {
 }
 
 class JuntoDenState extends State<JuntoDen> {
-  String profilePicture = 'assets/images/junto-mobile__eric.png';
-  final ValueNotifier<UserProfile> _profile = ValueNotifier<UserProfile>(
-    UserProfile(username: '', bio: '', firstName: '', lastName: ''),
-  );
+  String profilePicture = 'assets/images/junto-mobile__logo.png';
+  final List<String> _tabs = <String>['Open Den', 'Private Den'];
+
   bool publicExpressionsActive = true;
   bool publicCollectionActive = false;
   bool privateExpressionsActive = true;
   bool privateCollectionActive = false;
 
   PageController controller;
-  AsyncMemoizer<UserProfile> userMemoizer;
+  AsyncMemoizer<UserProfile> userMemoizer = AsyncMemoizer<UserProfile>();
   List<CentralizedExpressionResponse> expressions;
   @override
   void initState() {
     super.initState();
     controller = PageController(initialPage: 0);
-    userMemoizer = AsyncMemoizer<UserProfile>();
   }
 
   @override
   void dispose() {
     super.dispose();
     controller.dispose();
-    userMemoizer = null;
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _retrieveUserInfo();
-    expressions = Provider.of<CollectiveProvider>(context).collectiveExpressions;
-  }
-
-  Future<void> _retrieveUserInfo() async {
+  Future<UserProfile> _retrieveUserInfo() async {
     final UserProvider _userProvider = Provider.of<UserProvider>(context);
-    final UserProfile _results = await userMemoizer.runOnce(() => _userProvider.readLocalUser());
-    _profile.value = _results;
+    return userMemoizer.runOnce(() => _userProvider.readLocalUser());
   }
-
-  void _togglePublicDomain(String domain) {
-    if (domain == 'expressions') {
-      setState(() {
-        publicExpressionsActive = true;
-        publicCollectionActive = false;
-      });
-    } else if (domain == 'collection') {
-      setState(() {
-        publicExpressionsActive = false;
-        publicCollectionActive = true;
-      });
-    }
-  }
-
-  void _togglePrivateDomain(String domain) {
-    if (domain == 'expressions') {
-      setState(() {
-        privateExpressionsActive = true;
-        privateCollectionActive = false;
-      });
-    } else if (domain == 'collection') {
-      setState(() {
-        privateExpressionsActive = false;
-        privateCollectionActive = true;
-      });
-    }
-  }
-
-  Widget _buildDenList() {
-    if (publicExpressionsActive) {
-      return ListView(
-        shrinkWrap: true,
-        physics: const ClampingScrollPhysics(),
-        children: const <Widget>[SizedBox()],
-      );
-    } else if (publicCollectionActive == true) {
-      return ListView(
-        shrinkWrap: true,
-        physics: const ClampingScrollPhysics(),
-        children: <Widget>[DenCollectionPreview()],
-      );
-    } else {
-      return const SizedBox();
-    }
-  }
-
-  final List<String> _tabs = <String>['Open Den', 'Private Den'];
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: _tabs.length,
-      child: NestedScrollView(
-        physics: const ClampingScrollPhysics(),
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return <Widget>[
-            ValueListenableBuilder<UserProfile>(
-              valueListenable: _profile,
-              builder: (BuildContext context, UserProfile snapshot, _) {
-                return JuntoDenAppbar(
-                  handle: snapshot.username,
-                  name: '${snapshot.firstName} ${snapshot.lastName}',
+    final MediaQueryData media = MediaQuery.of(context);
+    return FutureBuilder<UserProfile>(
+      future: _retrieveUserInfo(),
+      builder: (BuildContext context, AsyncSnapshot<UserProfile> snapshot) {
+        if (!snapshot.hasData) {
+          return Container(
+            height: media.size.height,
+            width: media.size.width,
+            child: const Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+        if (snapshot.hasError) {
+          return Container(
+            height: media.size.height,
+            width: media.size.width,
+            child: Center(
+              child: Text('Unable to load user ${snapshot.error}'),
+            ),
+          );
+        }
+        return DefaultTabController(
+          length: _tabs.length,
+          child: NestedScrollView(
+            physics: const ClampingScrollPhysics(),
+            headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+              return <Widget>[
+                JuntoDenAppbar(
+                  handle: snapshot.data.username,
+                  name: '${snapshot.data.firstName} ${snapshot.data.lastName}',
                   profilePicture: profilePicture,
-                  bio: snapshot.bio,
-                );
-              },
-            ),
-            SliverPersistentHeader(
-              delegate: JuntoAppBarDelegate(
-                TabBar(
-                  labelPadding: const EdgeInsets.all(0),
-                  isScrollable: true,
-                  labelColor: const Color(0xff333333),
-                  labelStyle: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xff333333),
-                  ),
-                  indicatorWeight: 0.0001,
-                  tabs: _tabs
-                      .map((String name) => Container(
-                          margin: const EdgeInsets.only(right: 24),
-                          color: Colors.white,
-                          child: Tab(
-                            text: name,
-                          )))
-                      .toList(),
+                  bio: snapshot.data.bio,
                 ),
-              ),
-              pinned: true,
-            ),
-          ];
-        },
-        body: TabBarView(
-          children: <Widget>[
-            ValueListenableBuilder<UserProfile>(
-              valueListenable: _profile,
-              builder: (BuildContext context, UserProfile snapshot, _) {
-                return UserExpressions(
+                SliverPersistentHeader(
+                  delegate: JuntoAppBarDelegate(
+                    TabBar(
+                      labelPadding: const EdgeInsets.all(0),
+                      isScrollable: true,
+                      labelColor: const Color(0xff333333),
+                      labelStyle: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xff333333),
+                      ),
+                      indicatorWeight: 0.0001,
+                      tabs: <Widget>[
+                        for (String name in _tabs)
+                          Container(
+                            margin: const EdgeInsets.only(right: 24),
+                            color: Colors.white,
+                            child: Tab(
+                              text: name,
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                  pinned: true,
+                ),
+              ];
+            },
+            body: TabBarView(
+              children: <Widget>[
+                UserExpressions(
                   key: const PageStorageKey<String>('public-user-expressions'),
                   privacy: 'Public',
-                  userProfile: snapshot,
-                );
-              },
-            ),
-            ValueListenableBuilder<UserProfile>(
-              valueListenable: _profile,
-              builder: (BuildContext context, UserProfile snapshot, _) {
-                return UserExpressions(
+                  userProfile: snapshot.data,
+                ),
+                UserExpressions(
                   key: const PageStorageKey<String>('private-user-expressions'),
                   privacy: 'Private',
-                  userProfile: snapshot,
-                );
-              },
+                  userProfile: snapshot.data,
+                )
+              ],
             ),
-            // _buildOpenDen(),
-            // _buildPrivateDen(),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
-  }
-
-  Widget _buildOpenDen() {
-    if (publicExpressionsActive) {
-      return ListView(
-        children: <Widget>[
-          DenToggle(
-            onLotusTap: () => _togglePublicDomain('expressions'),
-            onCollectionsTap: () => _togglePublicDomain('collection'),
-            active: publicCollectionActive,
-          ),
-          ExpressionPreview(
-            expression: expressions[0],
-          ),
-          ExpressionPreview(
-            expression: expressions[1],
-          ),
-          ExpressionPreview(
-            expression: expressions[0],
-          ),
-          ExpressionPreview(
-            expression: expressions[1],
-          ),
-        ],
-      );
-    } else if (publicCollectionActive) {
-      return ListView(
-        children: <Widget>[
-          DenToggle(
-            onLotusTap: () => _togglePublicDomain('expressions'),
-            onCollectionsTap: () => _togglePublicDomain('collection'),
-            active: publicCollectionActive,
-          ),
-          _buildDenList()
-        ],
-      );
-    }
-    return Container();
-  }
-
-  Widget _buildPrivateDen() {
-    if (privateExpressionsActive) {
-      return ListView(
-        children: <Widget>[
-          ExpressionPreview(
-            expression: expressions[0],
-          ),
-          ExpressionPreview(
-            expression: expressions[1],
-          ),
-          ExpressionPreview(
-            expression: expressions[0],
-          ),
-          ExpressionPreview(
-            expression: expressions[1],
-          ),
-        ],
-      );
-    } else if (privateCollectionActive) {
-      return ListView(
-        children: <Widget>[
-          DenToggle(
-            onCollectionsTap: () => _togglePrivateDomain('expressions'),
-            onLotusTap: () => _togglePrivateDomain('collection'),
-            active: privateCollectionActive,
-          ),
-          _buildDenList()
-        ],
-      );
-    }
-    return Container();
   }
 }
 
@@ -280,11 +158,7 @@ class _UserExpressionsState extends State<UserExpressions> {
   }
 
   Future<List<CentralizedExpressionResponse>> getExpressions() {
-    return memoizer.runOnce(
-      () => _userProvider.getUsersExpressions(
-        widget.userProfile.address,
-      ),
-    );
+    return memoizer.runOnce(() => _userProvider.getUsersExpressions(widget.userProfile.address));
   }
 
   @override
@@ -310,8 +184,8 @@ class _UserExpressionsState extends State<UserExpressions> {
           return Container(
             height: media.size.height,
             width: media.size.width,
-            child: const Center(
-              child: Text('Error occured :('),
+            child: Center(
+              child: Text('Error occured ${snapshot.error}'),
             ),
           );
         }
