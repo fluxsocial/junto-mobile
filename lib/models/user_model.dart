@@ -101,34 +101,6 @@ class UserProfile {
       username.hashCode;
 }
 
-/// The username of the user.
-class Username {
-  Username({
-    this.address,
-    this.username,
-  });
-
-  /// Creates an [Username] from the map data.
-  factory Username.fromMap(Map<String, dynamic> json) => Username(
-        address: json['address'],
-        username: json['entry']['username'],
-      );
-
-  /// Location
-  final String address;
-
-  /// Username of the user
-  final String username;
-
-  /// Converts the object to a map
-  Map<String, dynamic> toMap() => <String, dynamic>{
-        'address': address,
-        'entry': <String, String>{
-          'username': username,
-        },
-      };
-}
-
 /// Detials used during user authentication.
 abstract class UserAuthDetails {
   String get email;
