@@ -61,6 +61,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
     final UserProvider _userProvider = Provider.of<UserProvider>(context);
     try {
       final UserProfile _profile = await _userProvider.readLocalUser();
+      print(_profile);
       setState(() {
         profile = _profile;
       });
