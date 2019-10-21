@@ -184,7 +184,11 @@ class JuntoDenState extends State<JuntoDen> {
     if (publicExpressionsActive) {
       return ListView(
         children: <Widget>[
-          _buildOpenDenToggle(),
+          DenToggle(
+            onLotusTap: () => _togglePublicDomain('expressions'),
+            onCollectionsTap: () => _togglePublicDomain('collection'),
+            active: publicCollectionActive,
+          ),
           ExpressionPreview(
             expression: expressions[0],
           ),
@@ -201,104 +205,23 @@ class JuntoDenState extends State<JuntoDen> {
       );
     } else if (publicCollectionActive) {
       return ListView(
-        children: <Widget>[_buildOpenDenToggle(), _buildDenList()],
+        children: <Widget>[
+          DenToggle(
+            onLotusTap: () => _togglePublicDomain('expressions'),
+            onCollectionsTap: () => _togglePublicDomain('collection'),
+            active: publicCollectionActive,
+          ),
+          _buildDenList()
+        ],
       );
     }
     return Container();
-  }
-
-  Widget _buildOpenDenToggle() {
-    return Container(
-      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 10),
-      child: Column(
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Container(
-                padding: const EdgeInsets.all(2.5),
-                height: 30,
-                width: 80,
-                decoration: BoxDecoration(
-                  color: const Color(0xffeeeeee),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Row(
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: () {
-                        _togglePublicDomain('expressions');
-                      },
-                      child: Container(
-                        height: 30,
-                        // half width of parent container minus horizontal padding
-                        width: 37.5,
-                        decoration: BoxDecoration(
-                          color: publicExpressionsActive ? Colors.white : const Color(0xffeeeeee),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Icon(
-                          CustomIcons.half_lotus,
-                          size: 12,
-                          color: publicExpressionsActive ? const Color(0xff555555) : const Color(0xff999999),
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        _togglePublicDomain('collection');
-                      },
-                      child: Container(
-                        height: 30,
-                        // half width of parent container minus horizontal padding
-                        width: 37.5,
-                        decoration: BoxDecoration(
-                          color: publicCollectionActive ? Colors.white : const Color(0xffeeeeee),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Icon(
-                          Icons.collections,
-                          size: 12,
-                          color: publicCollectionActive ? const Color(0xff555555) : const Color(0xff999999),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              publicCollectionActive
-                  ? GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          CupertinoPageRoute<dynamic>(
-                            builder: (BuildContext context) => DenCreateCollection(),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        width: 38,
-                        alignment: Alignment.centerRight,
-                        child: Icon(
-                          Icons.add,
-                          size: 20,
-                          color: const Color(0xff555555),
-                        ),
-                      ),
-                    )
-                  : const SizedBox()
-            ],
-          )
-        ],
-      ),
-    );
   }
 
   Widget _buildPrivateDen() {
     if (privateExpressionsActive) {
       return ListView(
         children: <Widget>[
-          _buildPrivateDenToggle(),
           ExpressionPreview(
             expression: expressions[0],
           ),
@@ -315,97 +238,17 @@ class JuntoDenState extends State<JuntoDen> {
       );
     } else if (privateCollectionActive) {
       return ListView(
-        children: <Widget>[_buildPrivateDenToggle(), _buildDenList()],
+        children: <Widget>[
+          DenToggle(
+            onCollectionsTap: () => _togglePrivateDomain('expressions'),
+            onLotusTap: () => _togglePrivateDomain('collection'),
+            active: privateCollectionActive,
+          ),
+          _buildDenList()
+        ],
       );
     }
     return Container();
-  }
-
-  Widget _buildPrivateDenToggle() {
-    return Container(
-      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 10),
-      child: Column(
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Container(
-                padding: const EdgeInsets.all(2.5),
-                height: 30,
-                width: 80,
-                decoration: BoxDecoration(
-                  color: const Color(0xffeeeeee),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Row(
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: () {
-                        _togglePrivateDomain('expressions');
-                      },
-                      child: Container(
-                        height: 30,
-                        // half width of parent container minus horizontal padding
-                        width: 37.5,
-                        decoration: BoxDecoration(
-                          color: privateExpressionsActive ? Colors.white : const Color(0xffeeeeee),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Icon(
-                          CustomIcons.half_lotus,
-                          size: 12,
-                          color: privateExpressionsActive ? const Color(0xff555555) : const Color(0xff999999),
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        _togglePrivateDomain('collection');
-                      },
-                      child: Container(
-                        height: 30,
-                        // half width of parent container minus horizontal padding
-                        width: 37.5,
-                        decoration: BoxDecoration(
-                          color: privateCollectionActive ? Colors.white : const Color(0xffeeeeee),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Icon(
-                          Icons.collections,
-                          size: 12,
-                          color: privateCollectionActive ? const Color(0xff555555) : const Color(0xff999999),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              privateCollectionActive
-                  ? GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          CupertinoPageRoute<dynamic>(
-                            builder: (BuildContext context) => DenCreateCollection(),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        width: 38,
-                        alignment: Alignment.centerRight,
-                        child: Icon(
-                          Icons.add,
-                          size: 20,
-                          color: const Color(0xff555555),
-                        ),
-                      ),
-                    )
-                  : const SizedBox()
-            ],
-          )
-        ],
-      ),
-    );
   }
 }
 
@@ -480,6 +323,103 @@ class _UserExpressionsState extends State<UserExpressions> {
           ),
         );
       },
+    );
+  }
+}
+
+class DenToggle extends StatelessWidget {
+  const DenToggle({
+    Key key,
+    @required this.onCollectionsTap,
+    @required this.onLotusTap,
+    @required this.active,
+  }) : super(key: key);
+
+  final VoidCallback onCollectionsTap;
+  final VoidCallback onLotusTap;
+  final bool active;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 10),
+      child: Column(
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                padding: const EdgeInsets.all(2.5),
+                height: 30,
+                width: 80,
+                decoration: BoxDecoration(
+                  color: const Color(0xffeeeeee),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Row(
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: onLotusTap,
+                      child: Container(
+                        height: 30,
+                        // half width of parent container minus horizontal padding
+                        width: 37.5,
+                        decoration: BoxDecoration(
+                          color: active ? Colors.white : const Color(0xffeeeeee),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Icon(
+                          CustomIcons.half_lotus,
+                          size: 12,
+                          color: active ? const Color(0xff555555) : const Color(0xff999999),
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: onCollectionsTap,
+                      child: Container(
+                        height: 30,
+                        // half width of parent container minus horizontal padding
+                        width: 37.5,
+                        decoration: BoxDecoration(
+                          color: active ? Colors.white : const Color(0xffeeeeee),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Icon(
+                          Icons.collections,
+                          size: 12,
+                          color: active ? const Color(0xff555555) : const Color(0xff999999),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              active
+                  ? GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute<dynamic>(
+                            builder: (BuildContext context) => DenCreateCollection(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        width: 38,
+                        alignment: Alignment.centerRight,
+                        child: Icon(
+                          Icons.add,
+                          size: 20,
+                          color: const Color(0xff555555),
+                        ),
+                      ),
+                    )
+                  : const SizedBox()
+            ],
+          )
+        ],
+      ),
     );
   }
 }
