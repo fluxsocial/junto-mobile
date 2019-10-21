@@ -59,8 +59,10 @@ class BottomNavState extends State<BottomNav> {
                         Animation<double> animation,
                         Animation<double> secondaryAnimation,
                       ) {
+                        //FIXME: This address should be replaced with the Junto Collective address once it is created.
                         return const JuntoCreate(
                           'collective',
+                          address: 'd7f5186b-0281-4723-b5d4-1ff24eb0beb2',
                         );
                       },
                       transitionsBuilder: (
