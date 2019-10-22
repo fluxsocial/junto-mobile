@@ -60,11 +60,11 @@ class JuntoDenAppbar extends StatelessWidget {
                           context,
                           CupertinoPageRoute<dynamic>(
                             builder: (BuildContext context) => DenExpanded(
-                              handle: handle,
-                              name: name,
-                              profilePicture: profilePicture,
-                              bio: bio,
-                            ),
+                                  handle: handle,
+                                  name: name,
+                                  profilePicture: profilePicture,
+                                  bio: bio,
+                                ),
                           ),
                         );
                       },
@@ -104,14 +104,16 @@ class JuntoDenAppbar extends StatelessWidget {
             Transform.translate(
               offset: const Offset(0.0, -18.0),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 width: MediaQuery.of(context).size.width,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
                       name,
-                      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                      style: const TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.w700),
                     ),
                     const SizedBox(height: 10),
                     Text(
@@ -119,44 +121,47 @@ class JuntoDenAppbar extends StatelessWidget {
                       style: const TextStyle(fontSize: 15),
                     ),
                     const SizedBox(height: 10),
-                    Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-                      Container(
-                        margin: const EdgeInsets.only(right: 15),
-                        child: Row(
-                          children: <Widget>[
-                            Image.asset(
-                              'assets/images/junto-mobile__location.png',
-                              height: 17,
-                              color: JuntoPalette.juntoSleek,
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            margin: const EdgeInsets.only(right: 15),
+                            child: Row(
+                              children: <Widget>[
+                                Image.asset(
+                                  'assets/images/junto-mobile__location.png',
+                                  height: 17,
+                                  color: JuntoPalette.juntoSleek,
+                                ),
+                                const SizedBox(width: 5),
+                                const Text(
+                                  'Spirit',
+                                  style: TextStyle(
+                                    color: JuntoPalette.juntoSleek,
+                                  ),
+                                ),
+                              ],
                             ),
-                            const SizedBox(width: 5),
-                            const Text(
-                              'Spirit',
-                              style: TextStyle(
-                                color: JuntoPalette.juntoSleek,
-                              ),
+                          ),
+                          const SizedBox(height: 10),
+                          Container(
+                            child: Row(
+                              children: <Widget>[
+                                Image.asset(
+                                  'assets/images/junto-mobile__link.png',
+                                  height: 17,
+                                  color: JuntoPalette.juntoSleek,
+                                ),
+                                const SizedBox(width: 5),
+                                const Text(
+                                  'junto.foundation',
+                                  style: TextStyle(
+                                      color: JuntoPalette.juntoPrimary),
+                                )
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      Container(
-                        child: Row(
-                          children: <Widget>[
-                            Image.asset(
-                              'assets/images/junto-mobile__link.png',
-                              height: 17,
-                              color: JuntoPalette.juntoSleek,
-                            ),
-                            const SizedBox(width: 5),
-                            const Text(
-                              'junto.foundation',
-                              style: TextStyle(color: JuntoPalette.juntoPrimary),
-                            )
-                          ],
-                        ),
-                      ),
-                    ]),
+                          ),
+                        ]),
                   ],
                 ),
               ),
@@ -183,7 +188,8 @@ class JuntoAppBarDelegate extends SliverPersistentHeaderDelegate {
   double get maxExtent => _tabBar.preferredSize.height + .5;
 
   @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: const BoxDecoration(

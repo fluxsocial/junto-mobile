@@ -5,7 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/styles.dart';
 
 class JuntoDialog {
-  static void showJuntoDialog(BuildContext context, String body, List<Widget> actions) {
+  static void showJuntoDialog(
+      BuildContext context, String body, List<Widget> actions) {
     showDialog(
       context: context,
       barrierDismissible: false,

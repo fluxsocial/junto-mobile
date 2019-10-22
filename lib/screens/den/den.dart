@@ -73,7 +73,8 @@ class JuntoDenState extends State<JuntoDen> {
           length: _tabs.length,
           child: NestedScrollView(
             physics: const ClampingScrollPhysics(),
-            headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            headerSliverBuilder:
+                (BuildContext context, bool innerBoxIsScrolled) {
               return <Widget>[
                 JuntoDenAppbar(
                   handle: snapshot.data.username,
@@ -150,7 +151,8 @@ class UserExpressions extends StatefulWidget {
 
 class _UserExpressionsState extends State<UserExpressions> {
   UserProvider _userProvider;
-  AsyncMemoizer<List<CentralizedExpressionResponse>> memoizer = AsyncMemoizer<List<CentralizedExpressionResponse>>();
+  AsyncMemoizer<List<CentralizedExpressionResponse>> memoizer =
+      AsyncMemoizer<List<CentralizedExpressionResponse>>();
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -158,7 +160,8 @@ class _UserExpressionsState extends State<UserExpressions> {
   }
 
   Future<List<CentralizedExpressionResponse>> getExpressions() {
-    return memoizer.runOnce(() => _userProvider.getUsersExpressions(widget.userProfile.address));
+    return memoizer.runOnce(
+        () => _userProvider.getUsersExpressions(widget.userProfile.address));
   }
 
   @override
@@ -166,10 +169,12 @@ class _UserExpressionsState extends State<UserExpressions> {
     final MediaQueryData media = MediaQuery.of(context);
     return FutureBuilder<List<CentralizedExpressionResponse>>(
       future: getExpressions(),
-      builder: (BuildContext context, AsyncSnapshot<List<CentralizedExpressionResponse>> snapshot) {
+      builder: (BuildContext context,
+          AsyncSnapshot<List<CentralizedExpressionResponse>> snapshot) {
         if (snapshot.hasData) {
           final List<CentralizedExpressionResponse> _data = snapshot.data
-              .where((CentralizedExpressionResponse expression) => expression.privacy == widget.privacy)
+              .where((CentralizedExpressionResponse expression) =>
+                  expression.privacy == widget.privacy)
               .toList(growable: false);
           return ListView.builder(
             itemCount: _data.length,
@@ -239,13 +244,16 @@ class DenToggle extends StatelessWidget {
                         // half width of parent container minus horizontal padding
                         width: 37.5,
                         decoration: BoxDecoration(
-                          color: active ? Colors.white : const Color(0xffeeeeee),
+                          color:
+                              active ? Colors.white : const Color(0xffeeeeee),
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Icon(
                           CustomIcons.half_lotus,
                           size: 12,
-                          color: active ? const Color(0xff555555) : const Color(0xff999999),
+                          color: active
+                              ? const Color(0xff555555)
+                              : const Color(0xff999999),
                         ),
                       ),
                     ),
@@ -256,13 +264,16 @@ class DenToggle extends StatelessWidget {
                         // half width of parent container minus horizontal padding
                         width: 37.5,
                         decoration: BoxDecoration(
-                          color: active ? Colors.white : const Color(0xffeeeeee),
+                          color:
+                              active ? Colors.white : const Color(0xffeeeeee),
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Icon(
                           Icons.collections,
                           size: 12,
-                          color: active ? const Color(0xff555555) : const Color(0xff999999),
+                          color: active
+                              ? const Color(0xff555555)
+                              : const Color(0xff999999),
                         ),
                       ),
                     ),
@@ -275,7 +286,8 @@ class DenToggle extends StatelessWidget {
                         Navigator.push(
                           context,
                           CupertinoPageRoute<dynamic>(
-                            builder: (BuildContext context) => DenCreateCollection(),
+                            builder: (BuildContext context) =>
+                                DenCreateCollection(),
                           ),
                         );
                       },
