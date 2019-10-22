@@ -3,6 +3,9 @@ import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/providers/provider.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions_appbar.dart';
 import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/screens/template/template.dart';
+import 'package:junto_beta_mobile/utils/junto_dialog.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
 
 class CreateActions extends StatefulWidget {
@@ -53,10 +56,43 @@ class CreateActionsState extends State<CreateActions> {
       },
       expressionData: widget.expression.toMap(),
     );
-    final CentralizedExpressionResponse result =
-        await Provider.of<CollectiveProvider>(context)
-            .createExpression(_expression);
-    print(result.address);
+    JuntoOverlay.showLoader(context);
+    try {
+      await Provider.of<CollectiveProvider>(context).createExpression(_expression);
+      JuntoOverlay.hide();
+      JuntoDialog.showJuntoDialog(
+        context,
+        'Expression Created!',
+        <Widget>[
+          FlatButton(
+            onPressed: () {
+              Navigator.of(context).pushAndRemoveUntil(
+                JuntoTemplate.route(),
+                (_) => false,
+              );
+            },
+            child: const Text('Ok'),
+          )
+        ],
+      );
+    } catch (error) {
+      JuntoOverlay.hide();
+      JuntoDialog.showJuntoDialog(
+        context,
+        'Something went wrong ${error?.code}',
+        <Widget>[
+          FlatButton(
+            onPressed: () {
+              Navigator.of(context).pushAndRemoveUntil(
+                JuntoTemplate.route(),
+                (_) => false,
+              );
+            },
+            child: const Text('Ok'),
+          )
+        ],
+      );
+    }
   }
 
   @override
@@ -84,8 +120,7 @@ class CreateActionsState extends State<CreateActions> {
                 ),
               ),
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-              child: const Text('# add channels',
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500)),
+              child: const Text('# add channels', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500)),
             ),
           ),
           GestureDetector(
@@ -110,12 +145,10 @@ class CreateActionsState extends State<CreateActions> {
                 children: <Widget>[
                   Text(
                     'sharing to ' + widget.expressionLayer,
-                    style: const TextStyle(
-                        fontSize: 15, fontWeight: FontWeight.w500),
+                    style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
                   ),
                   const SizedBox(width: 1),
-                  Icon(Icons.keyboard_arrow_down,
-                      color: const Color(0xff333333), size: 17)
+                  Icon(Icons.keyboard_arrow_down, color: const Color(0xff333333), size: 17)
                 ],
               ),
             ),
@@ -171,18 +204,12 @@ class CreateActionsState extends State<CreateActions> {
                         decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Add up to five channels',
-                          hintStyle: TextStyle(
-                              color: Color(0xff999999),
-                              fontSize: 17,
-                              fontWeight: FontWeight.w500),
+                          hintStyle: TextStyle(color: Color(0xff999999), fontSize: 17, fontWeight: FontWeight.w500),
                         ),
                         cursorColor: const Color(0xff333333),
                         cursorWidth: 2,
                         maxLines: null,
-                        style: const TextStyle(
-                            color: Color(0xff333333),
-                            fontSize: 17,
-                            fontWeight: FontWeight.w500),
+                        style: const TextStyle(color: Color(0xff333333), fontSize: 17, fontWeight: FontWeight.w500),
                         maxLength: 80,
                         textInputAction: TextInputAction.done,
                       ),
@@ -301,10 +328,7 @@ class _SelectionTileState extends State<_SelectionTile> {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                     colors: widget.isSelected
-                        ? <Color>[
-                            JuntoPalette.juntoSecondary,
-                            JuntoPalette.juntoPrimary
-                          ]
+                        ? <Color>[JuntoPalette.juntoSecondary, JuntoPalette.juntoPrimary]
                         : <Color>[
                             Colors.white,
                             Colors.white,
@@ -313,9 +337,7 @@ class _SelectionTileState extends State<_SelectionTile> {
                     end: Alignment.topRight),
                 // color: widget.isSelected ? JuntoPalette.juntoPrimary : null,
                 border: Border.all(
-                  color: widget.isSelected
-                      ? Colors.white
-                      : const Color(0xffeeeeee),
+                  color: widget.isSelected ? Colors.white : const Color(0xffeeeeee),
                   width: 2,
                 ),
                 borderRadius: BorderRadius.circular(25),
