@@ -2,6 +2,7 @@ import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/backend/services/auth_service.dart';
 import 'package:junto_beta_mobile/backend/services/collective_provider.dart';
+import 'package:junto_beta_mobile/backend/services/expression_provider.dart';
 import 'package:junto_beta_mobile/backend/services/search_provider.dart';
 import 'package:junto_beta_mobile/backend/services/spheres_provider.dart';
 import 'package:junto_beta_mobile/backend/services/user_service.dart';
@@ -18,6 +19,7 @@ class Backend {
     this.userProvider,
     this.collectiveProvider,
     this.spheresProvider,
+    this.expressionProvider,
   });
 
   static Future<Backend> init() async {
@@ -30,6 +32,7 @@ class Backend {
       userProvider: userService,
       collectiveProvider: CollectiveProviderCentralized(client),
       spheresProvider: SphereProviderCentralized(client),
+      expressionProvider: ExpressionProviderCentralized(client),
     );
   }
 
@@ -38,4 +41,5 @@ class Backend {
   final UserService userProvider;
   final CollectiveProvider collectiveProvider;
   final SpheresProvider spheresProvider;
+  final ExpressionProvider expressionProvider;
 }

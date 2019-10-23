@@ -36,6 +36,7 @@ class JuntoAppState extends State<JuntoApp> {
         Provider<UserService>.value(value: backend.userProvider),
         Provider<CollectiveProvider>.value(value: backend.collectiveProvider),
         Provider<SpheresProvider>.value(value: backend.spheresProvider),
+        Provider<ExpressionProvider>.value(value: backend.expressionProvider),
       ],
       child: MaterialApp(
         theme: JuntoThemes().juntoLightTheme,
