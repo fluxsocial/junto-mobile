@@ -9,7 +9,7 @@ import 'package:junto_beta_mobile/utils/junto_http.dart';
 
 /// Interface which defines the roles and functionality of the
 /// CollectiveProvider.
-abstract class CollectiveProvider {
+abstract class ExpressionProvider {
   /// Creates an expression on the server.
   /// Method requires [CentralizedExpression] as it's only arg.
   Future<CentralizedExpressionResponse> createExpression(
@@ -50,9 +50,9 @@ abstract class CollectiveProvider {
   List<CentralizedExpressionResponse> get collectiveExpressions;
 }
 
-/// Concrete implementation of [CollectiveProvider]
-class CollectiveProviderCentralized implements CollectiveProvider {
-  CollectiveProviderCentralized([http.Client _client]) {
+/// Concrete implementation of [ExpressionProvider]
+class ExpressionProviderCentralized implements ExpressionProvider {
+  ExpressionProviderCentralized([http.Client _client]) {
     client = JuntoHttp(httpClient: _client ?? IOClient());
   }
   JuntoHttp client;

@@ -46,7 +46,7 @@ class JuntoCollectiveState extends State<JuntoCollective> {
   @override
   void didChangeDependencies() {
     initialData
-        .addAll(Provider.of<CollectiveProvider>(context).collectiveExpressions);
+        .addAll(Provider.of<ExpressionProvider>(context).collectiveExpressions);
     super.didChangeDependencies();
   }
 
@@ -66,7 +66,7 @@ class JuntoCollectiveState extends State<JuntoCollective> {
     setState(() {
       isLoading = true;
       initialData.addAll(
-          Provider.of<CollectiveProvider>(context).collectiveExpressions);
+          Provider.of<ExpressionProvider>(context).collectiveExpressions);
     });
   }
 

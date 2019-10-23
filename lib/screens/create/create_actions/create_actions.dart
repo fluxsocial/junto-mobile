@@ -58,7 +58,7 @@ class CreateActionsState extends State<CreateActions> {
     );
     JuntoOverlay.showLoader(context);
     try {
-      await Provider.of<CollectiveProvider>(context)
+      await Provider.of<ExpressionProvider>(context)
           .createExpression(_expression);
       JuntoOverlay.hide();
       JuntoDialog.showJuntoDialog(
