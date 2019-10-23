@@ -36,8 +36,8 @@ class JuntoAppState extends State<JuntoApp> {
         Provider<UserProvider>(
           builder: (BuildContext context) => UserProviderCentralized(),
         ),
-        Provider<CollectiveProvider>(
-          builder: (BuildContext context) => CollectiveProviderCentralized(),
+        Provider<ExpressionProvider>(
+          builder: (BuildContext context) => ExpressionProviderCentralized(),
         ),
         Provider<SpheresProvider>(
           builder: (BuildContext context) => SphereProviderCentralized(),
