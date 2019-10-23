@@ -21,11 +21,22 @@ class Collective {
         parent: json['parent'],
       );
 
+  /// Address of the [Collective] on the server
   final String address;
+
+  /// UUID of the [Collective] creator
   final String creator;
+
+  /// Date [Collective] was created.
   final DateTime createdAt;
+
+  /// Privacy setting of the given [Collective]. Public, Private, Shared
   final String privacy;
+
+  /// [Collective] name
   final String name;
+
+  /// Parent Collection address if any. Only applies to nest collections.
   final String parent;
 
   Map<String, dynamic> toMap() {
@@ -69,6 +80,8 @@ class NestedCollections {
       };
 }
 
+/// Object containg the [collective], list of nested collections, [nestedCollections]
+/// and list of [expressions] associated with the given collection.
 class CollectionResponse {
   CollectionResponse._({
     @required this.collective,
@@ -86,7 +99,13 @@ class CollectionResponse {
       ),
     );
   }
+
+  /// Collective
   final Collective collective;
+
+  /// List of [Collective]
   final NestedCollections nestedCollections;
+
+  /// List of [CentralizedExpressionResponse]
   final List<CentralizedExpressionResponse> expressions;
 }
