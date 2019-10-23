@@ -41,8 +41,6 @@ class _SignInState extends State<SignIn> {
     JuntoOverlay.showLoader(context);
     try {
       await Provider.of<AuthRepo>(context).loginUser(loginDetails);
-      await SharedPreferences.getInstance()
-        ..setBool('isLoggedIn', true);
       JuntoOverlay.hide();
       Navigator.pushReplacement(
         context,

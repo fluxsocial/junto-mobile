@@ -12,7 +12,7 @@ abstract class AuthenticationService {
   /// Authenticates a registered user. Returns the [UserProfile]  for the
   /// given user. Their cookie is stored locally on device and is used for
   /// all future request.
-  Future<UserProfile> loginUser(UserAuthLoginDetails details);
+  Future<void> loginUser(UserAuthLoginDetails details);
 
   /// Logs out a user and removes their auth token from the device.
   Future<void> logoutUser();
