@@ -30,6 +30,7 @@ class JuntoCollectiveState extends State<JuntoCollective> {
   bool isLoading = false;
   List<CentralizedExpressionResponse> initialData =
       <CentralizedExpressionResponse>[];
+
   @override
   void initState() {
     super.initState();
@@ -63,11 +64,12 @@ class JuntoCollectiveState extends State<JuntoCollective> {
     }
     await Future<void>.delayed(const Duration(seconds: 2), () {});
     isLoading = false;
-    setState(() {
-      isLoading = true;
-      initialData.addAll(
-          Provider.of<ExpressionProvider>(context).collectiveExpressions);
-    });
+    if (mounted)
+      setState(() {
+        isLoading = true;
+        initialData.addAll(
+            Provider.of<ExpressionProvider>(context).collectiveExpressions);
+      });
   }
 
   Widget _buildProgressIndicator() {

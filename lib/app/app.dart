@@ -40,7 +40,7 @@ class JuntoAppState extends State<JuntoApp> {
       ],
       child: MaterialApp(
         theme: JuntoThemes().juntoLightTheme,
-        home: JuntoLoading(),
+        home:  JuntoLoading(),
         debugShowCheckedModeBanner: false,
         title: 'Junto Alpha',
         color: JuntoPalette.juntoPrimary,

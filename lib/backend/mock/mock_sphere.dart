@@ -8,9 +8,6 @@ class MockSphere with ChangeNotifier implements SpheresProvider {
   final List<Sphere> _spheres = Sphere.fetchAll();
 
   @override
-  List<Pack> get packs => const <Pack>[];
-
-  @override
   List<Sphere> get spheres {
     return _spheres;
   }

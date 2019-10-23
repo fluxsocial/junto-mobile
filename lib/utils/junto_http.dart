@@ -2,7 +2,7 @@ import 'dart:convert' as convert;
 
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
-import 'package:junto_beta_mobile/app/api.dart';
+import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';

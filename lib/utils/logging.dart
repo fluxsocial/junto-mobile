@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/api.dart';
+import 'package:junto_beta_mobile/api.dart';
 import 'package:sentry/sentry.dart';
 
 final SentryClient _sentry = SentryClient(dsn: kSentryDSN);
