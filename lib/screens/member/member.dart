@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/member/member_appbar.dart';
 import 'package:junto_beta_mobile/screens/member/member_expanded.dart';
-import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 
 class JuntoMember extends StatefulWidget {
   const JuntoMember({

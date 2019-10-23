@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/providers/provider.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:provider/provider.dart';
 import 'create_perspective/create_perspective.dart';
 
@@ -99,7 +99,7 @@ class Perspectives extends StatelessWidget {
 
   Widget _buildUserPerspectives(BuildContext context) {
     return FutureBuilder<List<CentralizedPerspective>>(
-      future: Provider.of<UserProvider>(context)
+      future: Provider.of<UserService>(context)
           .getUserPerspective(profile?.address),
       builder: (
         BuildContext context,

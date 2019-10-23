@@ -1,13 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/palette.dart';
+import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/form-validation.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
-
-const String kGoogleApiKey = 'AIzaSyAhV0-bpFqLYSV8xmFJ7JAR5bupoLfTaO8';
-
-// GoogleMapsPlaces _places = GoogleMapsPlaces(apiKey: kGoogleApiKey);
 
 /// Allows the user to create an event
 class CreateEvent extends StatefulWidget {
@@ -170,8 +166,7 @@ class CreateEventState extends State<CreateEvent> with DateParser {
           children: <Widget>[
             Expanded(
               child: ListView(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 children: <Widget>[
                   Container(
                     // color: Colors.blue,
@@ -198,10 +193,7 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                       cursorWidth: 2,
                       maxLines: null,
                       maxLength: 140,
-                      style: const TextStyle(
-                          fontSize: 20,
-                          color: Color(0xff333333),
-                          fontWeight: FontWeight.w700),
+                      style: const TextStyle(fontSize: 20, color: Color(0xff333333), fontWeight: FontWeight.w700),
                     ),
                   ),
                   // Container(
@@ -260,8 +252,7 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                                     startMinute +
                                     ' ' +
                                     startPeriod,
-                                style: const TextStyle(
-                                    fontSize: 17, fontWeight: FontWeight.w500),
+                                style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
                               )
                             ],
                           )
@@ -329,9 +320,7 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                                           endMinute +
                                           ' ' +
                                           endPeriod,
-                                      style: const TextStyle(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w500),
+                                      style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
                                     )
                                   ],
                                 )
@@ -365,17 +354,15 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                         border: InputBorder.none,
                         hintText: 'Location',
                         hintStyle: TextStyle(
-                            color: Color(0xff999999),
-                            fontSize: 17,
-                            fontWeight: FontWeight.w700),
+                          color: Color(0xff999999),
+                          fontSize: 17,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                       cursorColor: const Color(0xff333333),
                       cursorWidth: 2,
                       maxLines: null,
-                      style: const TextStyle(
-                          color: Color(0xff333333),
-                          fontSize: 17,
-                          fontWeight: FontWeight.w700),
+                      style: const TextStyle(color: Color(0xff333333), fontSize: 17, fontWeight: FontWeight.w700),
                       maxLength: 80,
                       textInputAction: TextInputAction.done,
                     ),
@@ -394,17 +381,15 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                         border: InputBorder.none,
                         hintText: 'Details',
                         hintStyle: TextStyle(
-                            color: Color(0xff999999),
-                            fontSize: 17,
-                            fontWeight: FontWeight.w700),
+                          color: Color(0xff999999),
+                          fontSize: 17,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                       cursorColor: const Color(0xff333333),
                       cursorWidth: 2,
                       maxLines: null,
-                      style: const TextStyle(
-                          color: Color(0xff333333),
-                          fontSize: 17,
-                          fontWeight: FontWeight.w700),
+                      style: const TextStyle(color: Color(0xff333333), fontSize: 17, fontWeight: FontWeight.w700),
                       maxLength: 80,
                       textInputAction: TextInputAction.done,
                     ),

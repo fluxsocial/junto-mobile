@@ -1,8 +1,8 @@
-import 'dart:convert';
+import 'dart:convert' as convert;
 
 import 'package:http/http.dart' as http;
-import 'package:http/io_client.dart' show IOClient;
-import 'package:junto_beta_mobile/API.dart';
+import 'package:http/io_client.dart';
+import 'package:junto_beta_mobile/app/api.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -90,7 +90,7 @@ class JuntoHttp {
     return httpClient.post(
       _encodeUrl(resource),
       headers: await _withPersistentHeaders(headers),
-      body: json.encode(body),
+      body: convert.json.encode(body),
     );
   }
 
@@ -107,7 +107,7 @@ class JuntoHttp {
   /// status code.
   static dynamic handleResponse(http.Response response) {
     if (response.statusCode == 200) {
-      final dynamic responseBody = json.decode(response.body);
+      final dynamic responseBody = convert.json.decode(response.body);
       if (responseBody != null) {
         return responseBody;
       }
@@ -117,13 +117,13 @@ class JuntoHttp {
       throw const JuntoException('Error occured parsing response');
     }
     if (response.statusCode == 400) {
-      final Map<String, dynamic> results = json.decode(response?.body);
+      final Map<String, dynamic> results = convert.json.decode(response?.body);
       throw JuntoException('Forbidden ${results['error']}');
     }
     if (response.statusCode == 500) {
       throw const JuntoException("Ooh no, our server isn't feeling so good");
     }
     throw JuntoException(
-        "Oops something went wrong ${json.decode(response.body)['error']}");
+        "Oops something went wrong ${convert.json.decode(response.body)['error']}");
   }
 }

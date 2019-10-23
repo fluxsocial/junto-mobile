@@ -1,14 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/models/group_model.dart';
-import 'package:junto_beta_mobile/models/sphere.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/palette.dart';
-import 'package:junto_beta_mobile/providers/provider.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/spheres/sphere_members.dart';
 import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open_appbar.dart';
-import 'package:junto_beta_mobile/styles.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/create_fab/create_fab.dart';
@@ -294,7 +292,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text('Principles', style: JuntoStyles.header),
+                const Text('Principles', style: JuntoStyles.header),
                 const SizedBox(height: 10),
                 Container(
                   width: MediaQuery.of(context).size.width * .88,
@@ -322,10 +320,10 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                   children: <Widget>[
                     Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
+                        children: const <Widget>[
                           Text('Facilitators', style: JuntoStyles.header),
-                          const SizedBox(height: 10),
-                          const Text('Eric Yang and 7 others'),
+                          SizedBox(height: 10),
+                          Text('Eric Yang and 7 others'),
                         ]),
                     ClipOval(
                       child: Image.asset(

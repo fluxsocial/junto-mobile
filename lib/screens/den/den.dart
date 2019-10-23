@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/custom_icons.dart';
-import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/providers/provider.dart';
+import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/den/den_create_collection.dart';
 import 'package:junto_beta_mobile/widgets/expression_preview/expression_preview.dart';
 import 'package:junto_beta_mobile/widgets/junto_app_delegate.dart';
@@ -41,7 +41,7 @@ class JuntoDenState extends State<JuntoDen> {
   }
 
   Future<UserProfile> _retrieveUserInfo() async {
-    final UserProvider _userProvider = Provider.of<UserProvider>(context);
+    final UserService _userProvider = Provider.of<UserService>(context);
     return userMemoizer.runOnce(() => _userProvider.readLocalUser());
   }
 
@@ -150,13 +150,13 @@ class UserExpressions extends StatefulWidget {
 }
 
 class _UserExpressionsState extends State<UserExpressions> {
-  UserProvider _userProvider;
+  UserService _userProvider;
   AsyncMemoizer<List<CentralizedExpressionResponse>> memoizer =
       AsyncMemoizer<List<CentralizedExpressionResponse>>();
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _userProvider = Provider.of<UserProvider>(context);
+    _userProvider = Provider.of<UserService>(context);
   }
 
   Future<List<CentralizedExpressionResponse>> getExpressions() {

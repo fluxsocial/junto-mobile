@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/custom_icons.dart';
-import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/screens/den/den_expanded.dart';
 
 class JuntoDenAppbar extends StatelessWidget {
@@ -33,11 +33,11 @@ class JuntoDenAppbar extends StatelessWidget {
           children: <Widget>[
             Container(
               height: MediaQuery.of(context).size.height * .2,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
-                  stops: const <double>[0.1, 0.9],
+                  stops: <double>[0.1, 0.9],
                   colors: <Color>[
                     JuntoPalette.juntoSecondary,
                     JuntoPalette.juntoPrimary,

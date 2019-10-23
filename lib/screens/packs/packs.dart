@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/models/group_model.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/providers/provider.dart';
+import 'package:junto_beta_mobile/app/styles.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_preview/pack_preview.dart';
-import 'package:junto_beta_mobile/styles.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:async/async.dart' show AsyncMemoizer;
@@ -15,14 +14,14 @@ class JuntoPacks extends StatefulWidget {
 }
 
 class JuntoPacksState extends State<JuntoPacks> with ListDistinct {
-  UserProvider _userProvider;
+  UserService _userProvider;
   final AsyncMemoizer<UserGroupsResponse> _memoizer =
       AsyncMemoizer<UserGroupsResponse>();
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _userProvider = Provider.of<UserProvider>(context);
+    _userProvider = Provider.of<UserService>(context);
   }
 
   Future<UserGroupsResponse> getUserPacks() async {

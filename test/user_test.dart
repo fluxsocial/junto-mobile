@@ -1,12 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:junto_beta_mobile/API.dart';
+import 'package:junto_beta_mobile/app/api.dart';
+import 'package:junto_beta_mobile/backend/services.dart';
+import 'package:junto_beta_mobile/backend/services/user_service.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/providers/provider.dart';
+import 'package:junto_beta_mobile/utils/junto_http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 //TODO(Nash): For server testing, test currently make live http calls. Once
@@ -14,7 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = null;
-  final UserProvider _userProvider = UserProviderCentralized();
+  final UserService _userProvider = UserServiceCentralized(JuntoHttp());
 
   setUpAll(() {
     SharedPreferences.setMockInitialValues(<String, String>{

@@ -3,13 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/sphere.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/providers/provider.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/create_perspective/create_perspective.dart'
     show SelectedUsers;
 import 'package:junto_beta_mobile/screens/spheres/create_sphere/create_sphere_next.dart';
-import 'package:junto_beta_mobile/custom_icons.dart';
-import 'package:junto_beta_mobile/palette.dart';
-import 'package:junto_beta_mobile/styles.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/utils/utils.dart' show AddUserToList;
 import 'package:junto_beta_mobile/widgets/search_members_modal.dart';
 import 'package:junto_beta_mobile/widgets/user_preview.dart';
@@ -68,7 +68,7 @@ class _CreateSphereState extends State<CreateSphere>
 
   Future<void> _createSphere() async {
     final UserProfile _profile =
-        await Provider.of<UserProvider>(context).readLocalUser();
+        await Provider.of<UserService>(context).readLocalUser();
     final String sphereName = _nameController.value.text;
     final String sphereDescription = _descriptionController.value.text;
     final CentralizedSphere sphere = CentralizedSphere(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/providers/provider.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open.dart';
 import 'package:junto_beta_mobile/screens/den/den_drawer/den_connections.dart';
 import 'package:junto_beta_mobile/screens/den/den_drawer/den_followers.dart';
@@ -25,7 +25,7 @@ class _DenDrawerState extends State<DenDrawer> {
   }
 
   Future<void> _retrieveUserInfo() async {
-    final UserProvider _userProvider = Provider.of<UserProvider>(context);
+    final UserService _userProvider = Provider.of<UserService>(context);
     try {
       final UserProfile _profile = await _userProvider.readLocalUser();
       if (mounted) {
@@ -42,7 +42,7 @@ class _DenDrawerState extends State<DenDrawer> {
 //  see: https://github.com/juntofoundation/junto-mobile/issues/170
   Future<void> _onPackPress() async {
     final UserGroupsResponse _userPack =
-        await Provider.of<UserProvider>(context).getUserGroups(profile.address);
+        await Provider.of<UserService>(context).getUserGroups(profile.address);
     Navigator.push(
       context,
       CupertinoPageRoute<dynamic>(
@@ -177,8 +177,7 @@ class _DenDrawerState extends State<DenDrawer> {
                     DenDrawerItem(
                       title: 'Logout',
                       onTap: () async {
-                        await Provider.of<AuthenticationProvider>(context)
-                            .logoutUser();
+                        await Provider.of<AuthRepo>(context).logoutUser();
                         Navigator.of(context).pushReplacement(
                           CupertinoPageRoute<dynamic>(
                             builder: (BuildContext context) {

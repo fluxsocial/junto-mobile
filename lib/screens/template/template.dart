@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/providers/provider.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/collective/filter_fab.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspectives.dart';
@@ -75,7 +75,7 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
   }
 
   Future<void> _retrieveUserInfo() async {
-    final UserProvider _userProvider = Provider.of<UserProvider>(context);
+    final UserService _userProvider = Provider.of<UserService>(context);
     try {
       final UserProfile _profile = await _userProvider.readLocalUser();
       setState(() {

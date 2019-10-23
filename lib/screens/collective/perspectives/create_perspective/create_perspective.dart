@@ -1,12 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/custom_icons.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/palette.dart';
-import 'package:junto_beta_mobile/providers/provider.dart';
-import 'package:junto_beta_mobile/providers/user_provider.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
@@ -70,7 +69,7 @@ class _CreatePerspectiveState extends State<CreatePerspective>
     final String name = controller.value.text;
     JuntoOverlay.showLoader(context);
     try {
-      await Provider.of<UserProvider>(context)
+      await Provider.of<UserService>(context)
           .createPerspective(Perspective(name: name));
       JuntoOverlay.hide();
       Navigator.pop(context);

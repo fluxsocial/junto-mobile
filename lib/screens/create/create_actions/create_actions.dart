@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/providers/provider.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions_appbar.dart';
-import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/screens/template/template.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:provider/provider.dart';
 
 class CreateActions extends StatefulWidget {

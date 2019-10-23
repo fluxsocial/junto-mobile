@@ -1,33 +1,21 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
-import 'package:http/io_client.dart';
+import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_http.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// Abstract class which defines the functionality of the Authentication Provider
-abstract class AuthenticationProvider {
-  /// Registers a user on the server and creates their profile.
-  Future<UserData> registerUser(UserAuthRegistrationDetails details);
+@immutable
+class AuthenticationServiceCentralized implements AuthenticationService {
+  const AuthenticationServiceCentralized(this.client);
 
-  /// Authenticates a registered user. Returns the [UserProfile]  for the
-  /// given user. Their cookie is stored locally on device and is used for
-  /// all future request.
-  Future<UserProfile> loginUser(UserAuthLoginDetails details);
+  final JuntoHttp client;
 
-  /// Logs out a user and removes their auth token from the device.
-  Future<void> logoutUser();
-}
-
-class AuthenticationCentralized implements AuthenticationProvider {
-  AuthenticationCentralized([http.Client _client]) {
-    client = JuntoHttp(httpClient: _client ?? IOClient());
-  }
-  JuntoHttp client;
   @override
   Future<UserProfile> loginUser(UserAuthLoginDetails details) async {
     final http.Response response = await client.post(
@@ -44,13 +32,13 @@ class AuthenticationCentralized implements AuthenticationProvider {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('auth', responseCookie.value);
 
+      // FIXME: response should contain userAddress so that we can fetch wit that
       // Once we authenticate the user, we can get their [UserProfile].
       final UserProfile _userData = await _retrieveUserByEmail(details.email);
       await _setLocalUserProfile(_userData);
       return _userData;
     } else {
-      final Map<String, dynamic> errorResponse =
-          JuntoHttp.handleResponse(response);
+      final Map<String, dynamic> errorResponse = JuntoHttp.handleResponse(response);
       throw JuntoException('Unable to login: ${errorResponse['error']}');
     }
   }
@@ -79,8 +67,7 @@ class AuthenticationCentralized implements AuthenticationProvider {
       '/users',
       body: _body,
     );
-    final Map<String, dynamic> _responseMap =
-        JuntoHttp.handleResponse(response);
+    final Map<String, dynamic> _responseMap = JuntoHttp.handleResponse(response);
     final UserData _userData = UserData.fromMap(_responseMap);
     // We need to manually login a user after their account has been create
     // to obtain an auth cookie.

@@ -1,75 +1,28 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:http/io_client.dart';
-import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/models/resonation_model.dart';
+import 'package:junto_beta_mobile/backend/services.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/utils/junto_http.dart';
-
-/// Interface which defines the roles and functionality of the
-/// CollectiveProvider.
-abstract class ExpressionProvider {
-  /// Creates an expression on the server.
-  /// Method requires [CentralizedExpression] as it's only arg.
-  Future<CentralizedExpressionResponse> createExpression(
-    CentralizedExpression expression,
-  );
-
-  /// Returns a [CentralizedExpressionResponse] for the given address.
-  Future<CentralizedExpressionResponse> getExpression(
-    String expressionAddress,
-  );
-
-  /// Allows a user to resonate with the given expression.
-  /// [expressionAddress] must not be null or empty.
-  Future<Resonation> postResonation(
-    String expressionAddress,
-  );
-
-  /// Allows the user to comment under the supplied expression.
-  /// [parentAddress], [type] and [data] must be passed.
-  Future<CentralizedExpressionResponse> postCommentExpression(
-    String parentAddress,
-    String type,
-    Map<String, dynamic> data,
-  );
-
-  /// Returns a list of [UserProfile] for the users who resonated with the
-  /// given [expressionAddress].
-  Future<List<UserProfile>> getExpressionsResonation(
-    String expressionAddress,
-  );
-
-  /// Returns a list of [Comment]s for the given [expressionAddress].
-  Future<List<Comment>> getExpressionsComments(
-    String expressionAddress,
-  );
-
-  /// Returns mock expression data.
-  List<CentralizedExpressionResponse> get collectiveExpressions;
-}
+import 'package:meta/meta.dart';
 
 /// Concrete implementation of [ExpressionProvider]
+@immutable
 class ExpressionProviderCentralized implements ExpressionProvider {
-  ExpressionProviderCentralized([http.Client _client]) {
-    client = JuntoHttp(httpClient: _client ?? IOClient());
-  }
-  JuntoHttp client;
-  @override
-  List<CentralizedExpressionResponse> get collectiveExpressions =>
-      sampleExpressions;
+  const ExpressionProviderCentralized(this.client);
+
+  final JuntoHttp client;
 
   @override
-  Future<CentralizedExpressionResponse> createExpression(
-      CentralizedExpression expression) async {
+  List<CentralizedExpressionResponse> get collectiveExpressions => sampleExpressions;
+
+  @override
+  Future<CentralizedExpressionResponse> createExpression(CentralizedExpression expression) async {
     final Map<String, dynamic> _postBody = expression.toMap();
-    final http.Response _serverResponse =
-        await client.postWithoutEncoding('/expressions', body: _postBody);
-    final Map<String, dynamic> parseData =
-        JuntoHttp.handleResponse(_serverResponse);
-    final CentralizedExpressionResponse response =
-        CentralizedExpressionResponse.fromMap(parseData);
+    final http.Response _serverResponse = await client.postWithoutEncoding('/expressions', body: _postBody);
+    final Map<String, dynamic> parseData = JuntoHttp.handleResponse(_serverResponse);
+    final CentralizedExpressionResponse response = CentralizedExpressionResponse.fromMap(parseData);
     return response;
   }
 
@@ -85,8 +38,7 @@ class ExpressionProviderCentralized implements ExpressionProvider {
       '/expressions/$expressionAddress/comments',
       body: _postBody,
     );
-    final Map<String, dynamic> _parseResponse =
-        JuntoHttp.handleResponse(_serverResponse);
+    final Map<String, dynamic> _parseResponse = JuntoHttp.handleResponse(_serverResponse);
     return CentralizedExpressionResponse.fromMap(_parseResponse);
   }
 
@@ -104,40 +56,30 @@ class ExpressionProviderCentralized implements ExpressionProvider {
   Future<CentralizedExpressionResponse> getExpression(
     String expressionAddress,
   ) async {
-    final http.Response _response =
-        await client.get('/expressions/$expressionAddress');
-    final Map<String, dynamic> _decodedResponse =
-        JuntoHttp.handleResponse(_response);
-    return CentralizedExpressionResponse.withCommentsAndResonations(
-        _decodedResponse);
+    final http.Response _response = await client.get('/expressions/$expressionAddress');
+    final Map<String, dynamic> _decodedResponse = JuntoHttp.handleResponse(_response);
+    return CentralizedExpressionResponse.withCommentsAndResonations(_decodedResponse);
   }
 
   @override
   Future<List<Comment>> getExpressionsComments(String expressionAddress) async {
-    final http.Response response =
-        await client.get('/expressions/$expressionAddress/comments');
+    final http.Response response = await client.get('/expressions/$expressionAddress/comments');
     final List<dynamic> _listData = json.decode(response.body);
-    final List<Comment> _results = _listData
-        .map((dynamic data) => Comment.fromMap(data))
-        .toList(growable: false);
+    final List<Comment> _results = _listData.map((dynamic data) => Comment.fromMap(data)).toList(growable: false);
     return _results;
   }
 
   @override
-  Future<List<UserProfile>> getExpressionsResonation(
-      String expressionAddress) async {
-    final http.Response response =
-        await client.get('/expressions/$expressionAddress/resonations');
+  Future<List<UserProfile>> getExpressionsResonation(String expressionAddress) async {
+    final http.Response response = await client.get('/expressions/$expressionAddress/resonations');
     final List<dynamic> _listData = json.decode(response.body);
-    final List<UserProfile> _results = _listData
-        .map((dynamic data) => UserProfile.fromMap(data))
-        .toList(growable: false);
+    final List<UserProfile> _results =
+        _listData.map((dynamic data) => UserProfile.fromMap(data)).toList(growable: false);
     return _results;
   }
 }
 
-List<CentralizedExpressionResponse> sampleExpressions =
-    <CentralizedExpressionResponse>[
+List<CentralizedExpressionResponse> sampleExpressions = <CentralizedExpressionResponse>[
   CentralizedExpressionResponse(
     address: '0xfee32zokie8',
     type: 'LongForm',

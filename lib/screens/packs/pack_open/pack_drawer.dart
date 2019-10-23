@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/sphere.dart';
-import 'package:junto_beta_mobile/providers/provider.dart';
 import 'package:junto_beta_mobile/screens/spheres/sphere_members.dart';
 import 'package:provider/provider.dart';
 

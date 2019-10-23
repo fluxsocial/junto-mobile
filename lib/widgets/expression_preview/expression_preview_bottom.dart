@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/styles.dart';
+import 'package:junto_beta_mobile/app/styles.dart';
 
 class ExpressionPreviewBottom extends StatelessWidget {
   const ExpressionPreviewBottom({Key key, this.expression}) : super(key: key);
