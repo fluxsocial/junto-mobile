@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
@@ -41,7 +41,7 @@ class JuntoDenState extends State<JuntoDen> {
   }
 
   Future<UserProfile> _retrieveUserInfo() async {
-    final UserService _userProvider = Provider.of<UserService>(context);
+    final UserRepo _userProvider = Provider.of<UserRepo>(context);
     return userMemoizer.runOnce(() => _userProvider.readLocalUser());
   }
 
@@ -150,13 +150,13 @@ class UserExpressions extends StatefulWidget {
 }
 
 class _UserExpressionsState extends State<UserExpressions> {
-  UserService _userProvider;
+  UserRepo _userProvider;
   AsyncMemoizer<List<CentralizedExpressionResponse>> memoizer =
       AsyncMemoizer<List<CentralizedExpressionResponse>>();
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _userProvider = Provider.of<UserService>(context);
+    _userProvider = Provider.of<UserRepo>(context);
   }
 
   Future<List<CentralizedExpressionResponse>> getExpressions() {

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
 import 'package:junto_beta_mobile/models/sphere.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
@@ -68,7 +69,7 @@ class _CreateSphereState extends State<CreateSphere>
 
   Future<void> _createSphere() async {
     final UserProfile _profile =
-        await Provider.of<UserService>(context).readLocalUser();
+        await Provider.of<UserRepo>(context).readLocalUser();
     final String sphereName = _nameController.value.text;
     final String sphereDescription = _descriptionController.value.text;
     final CentralizedSphere sphere = CentralizedSphere(

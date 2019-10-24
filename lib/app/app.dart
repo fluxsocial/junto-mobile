@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/themes.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
 import 'package:junto_beta_mobile/screens/loading_screen/junto_loading_screen.dart';
@@ -33,7 +34,7 @@ class JuntoAppState extends State<JuntoApp> {
       providers: <SingleChildCloneableWidget>[
         Provider<SearchProvider>.value(value: backend.searchProvider),
         Provider<AuthRepo>.value(value: backend.authRepo),
-        Provider<UserService>.value(value: backend.userProvider),
+        Provider<UserRepo>.value(value: backend.userRepo),
         Provider<CollectiveProvider>.value(value: backend.collectiveProvider),
         Provider<SpheresProvider>.value(value: backend.spheresProvider),
         Provider<ExpressionProvider>.value(value: backend.expressionProvider),

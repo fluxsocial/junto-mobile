@@ -1,4 +1,5 @@
 import 'package:junto_beta_mobile/backend/repositories.dart';
+import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/backend/services/auth_service.dart';
 import 'package:junto_beta_mobile/backend/services/collective_provider.dart';
@@ -16,7 +17,7 @@ class Backend {
   const Backend._({
     this.searchProvider,
     this.authRepo,
-    this.userProvider,
+    this.userRepo,
     this.collectiveProvider,
     this.spheresProvider,
     this.expressionProvider,
@@ -29,7 +30,7 @@ class Backend {
     return Backend._(
       searchProvider: SearchProviderCentralized(client),
       authRepo: AuthRepo(authService, userService),
-      userProvider: userService,
+      userRepo: UserRepo(userService),
       collectiveProvider: CollectiveProviderCentralized(client),
       spheresProvider: SphereProviderCentralized(client),
       expressionProvider: ExpressionProviderCentralized(client),
@@ -38,7 +39,7 @@ class Backend {
 
   final SearchProvider searchProvider;
   final AuthRepo authRepo;
-  final UserService userProvider;
+  final UserRepo userRepo;
   final CollectiveProvider collectiveProvider;
   final SpheresProvider spheresProvider;
   final ExpressionProvider expressionProvider;

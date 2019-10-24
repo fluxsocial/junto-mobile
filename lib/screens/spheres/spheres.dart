@@ -2,8 +2,8 @@ import 'package:async/async.dart' show AsyncMemoizer;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/screens/spheres/create_sphere/create_sphere.dart';
 import 'package:junto_beta_mobile/screens/spheres/sphere_preview.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
@@ -27,14 +27,14 @@ class JuntoSpheres extends StatefulWidget {
 }
 
 class JuntoSpheresState extends State<JuntoSpheres> with ListDistinct {
-  UserService _userProvider;
+  UserRepo _userProvider;
   final AsyncMemoizer<UserGroupsResponse> _memoizer =
       AsyncMemoizer<UserGroupsResponse>();
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _userProvider = Provider.of<UserService>(context);
+    _userProvider = Provider.of<UserRepo>(context);
   }
 
   Widget buildError() {
