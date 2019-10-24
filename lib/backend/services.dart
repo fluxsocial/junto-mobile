@@ -102,8 +102,8 @@ abstract class UserService {
 
   /// Adds the given user to a perspective. The perspective address and user
   /// address must be supplied.
-  Future<String> addUserToPerspective(
-      String perspectiveAddress, String userAddress);
+  Future<UserProfile> addUserToPerspective(
+      String perspectiveAddress, List<String> userAddress);
 
   /// Gets the user
   Future<UserData> getUser(String userAddress);

@@ -19,25 +19,45 @@ class UserServiceCentralized implements UserService {
 
   /// Creates a [Perspective] on the server. Function takes a single argument.
   @override
-  Future<CentralizedPerspective> createPerspective(Perspective perspective) async {
-    final Map<String, dynamic> _postBody = <String, dynamic>{'name': perspective.name, 'members': perspective.members};
+  Future<CentralizedPerspective> createPerspective(
+      Perspective perspective) async {
+    final Map<String, dynamic> _postBody = <String, dynamic>{
+      'name': perspective.name,
+      'members': perspective.members
+    };
     final http.Response _serverResponse = await client.postWithoutEncoding(
       '/perspectives',
       body: _postBody,
     );
-    final Map<String, dynamic> _body = JuntoHttp.handleResponse(_serverResponse);
+    final Map<String, dynamic> _body =
+        JuntoHttp.handleResponse(_serverResponse);
     return CentralizedPerspective.fromMap(_body);
   }
 
   @override
-  Future<String> addUserToPerspective(String perspectiveAddress, String userAddress) async {
-    throw UnimplementedError('Not implemented in centralized API');
+  Future<UserProfile> addUserToPerspective(
+      String perspectiveAddress, List<String> userAddress) async {
+    final List<dynamic> users = <dynamic>[];
+    userAddress.map(
+      (String uid) => users.add(
+        <String, dynamic>{'user_address': uid},
+      ),
+    );
+    final http.Response _serverResponse = await client.postWithoutEncoding(
+      '/perspectives/$perspectiveAddress/users',
+      body: users,
+    );
+    final Map<String, dynamic> _body =
+        JuntoHttp.handleResponse(_serverResponse);
+    return UserProfile.fromMap(_body);
   }
 
   @override
   Future<UserData> getUser(String userAddress) async {
-    final http.Response _serverResponse = await client.get('/users/$userAddress');
-    final Map<String, dynamic> _resultMap = JuntoHttp.handleResponse(_serverResponse);
+    final http.Response _serverResponse =
+        await client.get('/users/$userAddress');
+    final Map<String, dynamic> _resultMap =
+        JuntoHttp.handleResponse(_serverResponse);
     final UserData _userData = UserData.fromMap(_resultMap);
     return _userData;
   }
@@ -72,18 +92,23 @@ class UserServiceCentralized implements UserService {
   }
 
   @override
-  Future<List<CentralizedPerspective>> getUserPerspective(String userAddress) async {
-    final http.Response response = await client.get('/users/$userAddress/perspectives');
+  Future<List<CentralizedPerspective>> getUserPerspective(
+      String userAddress) async {
+    final http.Response response =
+        await client.get('/users/$userAddress/perspectives');
     final List<dynamic> _listData = json.decode(response.body);
-    final List<CentralizedPerspective> _results =
-        _listData.map((dynamic data) => CentralizedPerspective.fromMap(data)).toList(growable: false);
+    final List<CentralizedPerspective> _results = _listData
+        .map((dynamic data) => CentralizedPerspective.fromMap(data))
+        .toList(growable: false);
     return _results;
   }
 
   @override
   Future<UserGroupsResponse> getUserGroups(String userAddress) async {
-    final http.Response response = await client.get('/users/$userAddress/groups');
-    final Map<String, dynamic> _responseMap = JuntoHttp.handleResponse(response);
+    final http.Response response =
+        await client.get('/users/$userAddress/groups');
+    final Map<String, dynamic> _responseMap =
+        JuntoHttp.handleResponse(response);
     return UserGroupsResponse.fromMap(_responseMap);
   }
 
@@ -91,11 +116,13 @@ class UserServiceCentralized implements UserService {
   Future<List<CentralizedExpressionResponse>> getUsersResonations(
     String userAddress,
   ) async {
-    final http.Response response = await client.get('/users/$userAddress/resonations');
+    final http.Response response =
+        await client.get('/users/$userAddress/resonations');
     final List<dynamic> _responseMap = JuntoHttp.handleResponse(response);
     return _responseMap
         .map(
-          (dynamic data) => CentralizedExpressionResponse.withCommentsAndResonations(data),
+          (dynamic data) =>
+              CentralizedExpressionResponse.withCommentsAndResonations(data),
         )
         .toList();
   }
@@ -104,7 +131,8 @@ class UserServiceCentralized implements UserService {
   Future<List<CentralizedExpressionResponse>> getUsersExpressions(
     String userAddress,
   ) async {
-    final http.Response response = await client.get('/users/$userAddress/expressions');
+    final http.Response response =
+        await client.get('/users/$userAddress/expressions');
     final List<dynamic> _responseMap = JuntoHttp.handleResponse(response);
     return _responseMap
         .map(
@@ -126,9 +154,12 @@ class UserServiceCentralized implements UserService {
   }
 
   @override
-  Future<List<CentralizedPerspective>> userPerspectives(String userAddress) async {
-    final http.Response _serverResponse = await client.get('/users/$userAddress/perspectives');
-    final List<Map<String, dynamic>> items = JuntoHttp.handleResponse(_serverResponse);
+  Future<List<CentralizedPerspective>> userPerspectives(
+      String userAddress) async {
+    final http.Response _serverResponse =
+        await client.get('/users/$userAddress/perspectives');
+    final List<Map<String, dynamic>> items =
+        JuntoHttp.handleResponse(_serverResponse);
     return items.map(
       (Map<String, dynamic> data) => CentralizedPerspective.fromMap(data),
     );
@@ -139,9 +170,13 @@ class UserServiceCentralized implements UserService {
     String userAddress,
     String perspectiveAddress,
   ) async {
-    final Map<String, dynamic> _postBody = <String, dynamic>{'user_address': userAddress};
-    final http.Response _serverResponse = await client.post('/perspectives/$perspectiveAddress/users', body: _postBody);
-    final Map<String, dynamic> _decodedResponse = JuntoHttp.handleResponse(_serverResponse);
+    final Map<String, dynamic> _postBody = <String, dynamic>{
+      'user_address': userAddress
+    };
+    final http.Response _serverResponse = await client
+        .post('/perspectives/$perspectiveAddress/users', body: _postBody);
+    final Map<String, dynamic> _decodedResponse =
+        JuntoHttp.handleResponse(_serverResponse);
     return UserProfile.fromMap(_decodedResponse);
   }
 
@@ -150,7 +185,8 @@ class UserServiceCentralized implements UserService {
     String userAddress,
     String perspectiveAddress,
   ) async {
-    final http.Response _serverResponse = await client.delete('/perspectives/$perspectiveAddress/users');
+    final http.Response _serverResponse =
+        await client.delete('/perspectives/$perspectiveAddress/users');
     JuntoHttp.handleResponse(_serverResponse);
   }
 
@@ -158,7 +194,8 @@ class UserServiceCentralized implements UserService {
   Future<List<UserProfile>> getPerspectiveUsers(
     String perspectiveAddress,
   ) async {
-    final http.Response _serverResponse = await client.get('/perspectives/$perspectiveAddress/users');
+    final http.Response _serverResponse =
+        await client.get('/perspectives/$perspectiveAddress/users');
     final List<dynamic> items = json.decode(_serverResponse.body);
     return items
         .map(
