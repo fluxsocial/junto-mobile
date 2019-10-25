@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/models/sphere.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/providers/provider.dart';
+
+import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/screens/spheres/create_sphere/create_sphere.dart';
 import 'package:junto_beta_mobile/screens/spheres/sphere_preview.dart';
 import 'package:junto_beta_mobile/styles.dart';
@@ -156,6 +159,75 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
   // add facilitators
   int _searchFacilitatorsIndex = 0;
 
+  TextEditingController _nameController;
+  TextEditingController _handleController;
+  TextEditingController _descriptionController;
+
+  TextEditingController _principleTitle;
+  TextEditingController _principleBody;
+  TextEditingController _principleTitleTwo;
+  TextEditingController _principleBodyTwo;
+  TextEditingController _principleTitleThree;
+  TextEditingController _principleBodyThree;
+  TextEditingController _principleTitleFour;
+  TextEditingController _principleBodyFour;
+  TextEditingController _principleTitleFive;
+  TextEditingController _principleBodyFive;
+  TextEditingController _principleTitleSix;
+  TextEditingController _principleBodySix;
+  TextEditingController _principleTitleSeven;
+  TextEditingController _principleBodySeven;
+
+  List<Map> principles = [
+    {"title": "", "body": ""}
+  ];
+
+  @override
+  void initState() {
+    _nameController = TextEditingController();
+    _handleController = TextEditingController();
+    _descriptionController = TextEditingController();
+    _principleTitle = TextEditingController();
+    _principleBody = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _handleController.dispose();
+    _descriptionController.dispose();
+    _principleTitle.dispose();
+    _principleBody.dispose();
+    super.dispose();
+  }
+
+  _createSphere() async {
+    final UserProfile _profile =
+        await Provider.of<UserProvider>(context).readLocalUser();
+    final sphereName = _nameController.value.text;
+    final sphereHandle = _handleController.value.text;
+    final sphereDescription = _descriptionController.value.text;
+    final CentralizedSphere sphere = CentralizedSphere(
+      name: sphereName,
+      description: sphereDescription,
+      facilitators: <String>[
+        _profile.address,
+      ],
+      photo: '',
+      members: [],
+      principles: "",
+      sphereHandle: sphereHandle,
+      privacy: 'Public',
+    );
+
+    try {
+      await Provider.of<SpheresProvider>(context).createSphere(sphere);
+    } on JuntoException catch (error) {
+      print(error);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -200,8 +272,13 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                         ),
                       ),
                     ),
-              _currentPage == 3
-                  ? GestureDetector(child: Text('create'))
+              _currentPage == 4
+                  ? GestureDetector(
+                      onTap: () {
+                        _createSphere();
+                      },
+                      child: Text('create'),
+                    )
                   : GestureDetector(
                       onTap: () {
                         _createSphereController.nextPage(
@@ -232,6 +309,7 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
               },
               children: <Widget>[
                 _createSphereDetails(),
+                _createSpherePrinciples(),
                 _createSphereMembers(),
                 _createSphereFacilitators(),
                 _createSpherePrivacy()
@@ -244,12 +322,22 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
   }
 
   _createSphereDetails() {
-    return Column(
+    return ListView(
       children: <Widget>[
         const SizedBox(height: 25),
         Container(
+          height: 200,
+          decoration: BoxDecoration(
+            color: Color(0xfff2f2f2),
+          ),
+          alignment: Alignment.center,
+          child: Text('add a cover photo'),
+        ),
+        const SizedBox(height: 15),
+        Container(
           width: MediaQuery.of(context).size.width,
           child: TextField(
+            controller: _nameController,
             buildCounter: (
               BuildContext context, {
               int currentLength,
@@ -260,7 +348,7 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
             decoration: const InputDecoration(
                 contentPadding: EdgeInsets.all(0),
                 border: InputBorder.none,
-                hintText: 'Name your sphere',
+                hintText: 'Name your sphere*',
                 hintStyle: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
@@ -281,6 +369,40 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
         Container(
           width: MediaQuery.of(context).size.width,
           child: TextField(
+            controller: _handleController,
+            buildCounter: (
+              BuildContext context, {
+              int currentLength,
+              int maxLength,
+              bool isFocused,
+            }) =>
+                null,
+            decoration: const InputDecoration(
+                contentPadding: EdgeInsets.all(0),
+                border: InputBorder.none,
+                hintText: 'Give your sphere a unique username*',
+                hintStyle: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xff999999),
+                )),
+            cursorColor: const Color(0xff333333),
+            cursorWidth: 2,
+            maxLines: 1,
+            style: const TextStyle(
+                color: Color(0xff333333),
+                fontSize: 15,
+                fontWeight: FontWeight.w700),
+            maxLength: 80,
+            textInputAction: TextInputAction.done,
+          ),
+        ),
+        const SizedBox(height: 15),
+        Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: TextField(
+            controller: _descriptionController,
             buildCounter: (
               BuildContext context, {
               int currentLength,
@@ -305,10 +427,276 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                 fontSize: 15,
                 fontWeight: FontWeight.w500),
             maxLength: 240,
-            textInputAction: TextInputAction.done,
+            textInputAction: TextInputAction.newline,
           ),
         ),
       ],
+    );
+  }
+
+  _spherePrinciple(
+    index,
+  ) {
+    var title;
+    var body;
+    if (index == 1) {
+      title = _principleTitle;
+      body = _principleBody;
+    } else if (index == 2) {
+      title = _principleTitleTwo;
+      body = _principleTitleTwo;
+    } else if (index == 3) {
+      title = _principleTitleThree;
+      body = _principleTitleThree;
+    } else if (index == 4) {
+      title = _principleTitleFour;
+      body = _principleTitleFour;
+    } else if (index == 5) {
+      title = _principleTitleFive;
+      body = _principleTitleFive;
+    } else if (index == 6) {
+      title = _principleTitleSix;
+      body = _principleTitleSix;
+    } else if (index == 7) {
+      title = _principleTitleSeven;
+      body = _principleTitleSeven;
+    }
+
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
+        ),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            index.toString(),
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              color: const Color(0xff999999),
+            ),
+          ),
+          const SizedBox(width: 15),
+          Container(
+            height: 17,
+            decoration: const BoxDecoration(
+              border: Border(
+                right: BorderSide(color: Color(0xffeeeeee), width: 2),
+              ),
+            ),
+          ),
+          const SizedBox(width: 15),
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  child: TextField(
+                    controller: title,
+                    buildCounter: (
+                      BuildContext context, {
+                      int currentLength,
+                      int maxLength,
+                      bool isFocused,
+                    }) =>
+                        null,
+                    decoration: const InputDecoration(
+                        contentPadding: EdgeInsets.all(0),
+                        border: InputBorder.none,
+                        hintText: 'Principle title',
+                        hintStyle: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xff999999),
+                        )),
+                    cursorColor: const Color(0xff333333),
+                    cursorWidth: 2,
+                    maxLines: 1,
+                    style: const TextStyle(
+                        color: Color(0xff333333),
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700),
+                    maxLength: 80,
+                    textInputAction: TextInputAction.done,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  child: TextField(
+                    controller: body,
+                    buildCounter: (
+                      BuildContext context, {
+                      int currentLength,
+                      int maxLength,
+                      bool isFocused,
+                    }) =>
+                        null,
+                    decoration: const InputDecoration(
+                        contentPadding: EdgeInsets.all(0),
+                        border: InputBorder.none,
+                        hintText: 'Describe this principle',
+                        hintStyle: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xff999999),
+                        )),
+                    cursorColor: const Color(0xff333333),
+                    cursorWidth: 2,
+                    maxLines: 1,
+                    style: const TextStyle(
+                        color: Color(0xff333333),
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700),
+                    maxLength: 80,
+                    textInputAction: TextInputAction.done,
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  _createSpherePrinciples() {
+    return ListView(
+      children: [
+        const SizedBox(height: 15),
+        for (var i = 0; i < principles.length; i++) _spherePrinciple(i + 1),
+        GestureDetector(
+          onTap: () {
+            if (principles.length < 7) {
+              if (principles.length == 2) {
+                setState(() {
+                  _principleTitleTwo = TextEditingController();
+                  _principleTitleTwo = TextEditingController();
+                });
+              } else if (principles.length == 3) {
+                setState(() {
+                  _principleTitleThree = TextEditingController();
+                  _principleTitleThree = TextEditingController();
+                });
+              } else if (principles.length == 4) {
+                setState(() {
+                  _principleTitleFour = TextEditingController();
+                  _principleTitleFour = TextEditingController();
+                });
+              } else if (principles.length == 5) {
+                setState(() {
+                  _principleTitleFive = TextEditingController();
+                  _principleTitleFive = TextEditingController();
+                });
+              } else if (principles.length == 6) {
+                setState(() {
+                  _principleTitleSix = TextEditingController();
+                  _principleTitleSix = TextEditingController();
+                });
+              } else if (principles.length == 7) {
+                setState(() {
+                  _principleTitleSeven = TextEditingController();
+                  _principleTitleSeven = TextEditingController();
+                });
+              }
+
+              setState(() {
+                principles.add({"title": "", "body": ""});
+                print(principles.length);
+              });
+            }
+          },
+          child: Container(
+              padding: EdgeInsets.symmetric(vertical: 15),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    'New Principle',
+                    style: TextStyle(
+                        fontSize: 15,
+                        color: Color(0xff999999),
+                        fontWeight: FontWeight.w700),
+                  ),
+                  SizedBox(width: 5),
+                  Icon(
+                    Icons.add,
+                    size: 17,
+                    color: Color(0xff999999),
+                  )
+                ],
+              )),
+        ),
+        GestureDetector(onTap: () {
+          print(principles);
+        }, child: Text('test'))
+      ],
+    );
+  }
+
+  _memberPreview(photo, username, name) {
+    return Container(
+      color: Colors.white,
+      child: Row(
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              ClipOval(
+                child: Image.asset(
+                  photo,
+                  height: 38.0,
+                  width: 38.0,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width - 68,
+                padding: const EdgeInsets.symmetric(
+                  vertical: 15,
+                ),
+                decoration: const BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      width: .5,
+                      color: JuntoPalette.juntoFade,
+                    ),
+                  ),
+                ),
+                margin: const EdgeInsets.only(left: 10.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      username,
+                      textAlign: TextAlign.start,
+                      style: JuntoStyles.title,
+                    ),
+                    Text(
+                      name,
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xff555555),
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -436,9 +824,28 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                   });
                 },
                 children: <Widget>[
-                  Text('render list of connections'),
-                  Text('render list of subscriptions'),
-                  Text('render list of all members (pagination tbd)')
+                  ListView(
+                    children: <Widget>[
+                      _memberPreview('assets/images/junto-mobile__eric.png',
+                          'sunyata', 'Eric Yang'),
+                      _memberPreview('assets/images/junto-mobile__riley.png',
+                          'wags', 'Riley Wagner'),
+                      _memberPreview('assets/images/junto-mobile__dora.png',
+                          'wingedmessenger', 'Dora Czovek'),
+                      _memberPreview('assets/images/junto-mobile__josh.png',
+                          'jdeepee', 'Josh David Livingston Parkin'),
+                    ],
+                  ),
+                  ListView(
+                    children: <Widget>[
+                      // _memberPreview(),
+                    ],
+                  ),
+                  ListView(
+                    children: <Widget>[
+                      // _memberPreview(),
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -659,8 +1066,8 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                           fontWeight: FontWeight.w700,
                         ),
                       ),
-                      Text('Anyone can join this sphere, read its, '
-                          'expressions and share to it')
+                      Text('Only members can read expressions '
+                          'and share to it. Facilitators can invite members or accept their request to join.')
                     ],
                   ),
                 ),
@@ -708,8 +1115,8 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                           fontWeight: FontWeight.w700,
                         ),
                       ),
-                      Text('Anyone can join this sphere, read its, '
-                          'expressions and share to it')
+                      Text(
+                          'Members must be invited into this sphere. This sphere is only searchable by members.')
                     ],
                   ),
                 ),
@@ -733,7 +1140,7 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
               ],
             ),
           ),
-        )                
+        )
       ],
     );
   }

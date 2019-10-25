@@ -503,48 +503,49 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
 
   _buildPrinciple(int index, String title, String body) {
     return Container(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        decoration: const BoxDecoration(
-          border: Border(
-            bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
-          ),
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
         ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              (index + 1).toString(),
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                color: const Color(0xff999999),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            (index + 1).toString(),
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              color: const Color(0xff999999),
+            ),
+          ),
+          const SizedBox(width: 15),
+          Container(
+            height: 17,
+            decoration: const BoxDecoration(
+              border: Border(
+                right: BorderSide(color: Color(0xffeeeeee), width: 2),
               ),
             ),
-            const SizedBox(width: 15),
-            Container(
-              height: 17,
-              decoration: const BoxDecoration(
-                border: Border(
-                  right: BorderSide(color: Color(0xffeeeeee), width: 2),
+          ),
+          const SizedBox(width: 15),
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  title,
+                  style: JuntoStyles.title,
+                  textAlign: TextAlign.left,
                 ),
-              ),
+                const SizedBox(height: 10),
+                Text(body)
+              ],
             ),
-            const SizedBox(width: 15),
-            Flexible(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    title,
-                    style: JuntoStyles.title,
-                    textAlign: TextAlign.left,
-                  ),
-                  const SizedBox(height: 10),
-                  Text(body)
-                ],
-              ),
-            )
-          ],
-        ));
+          )
+        ],
+      ),
+    );
   }
 
   _buildExpressionView() {

@@ -40,7 +40,7 @@ class BottomNavState extends State<BottomNav> {
               _BottomNavButton(
                 index: 0,
                 selectedIndex: widget.currentIndex,
-                icon: CustomIcons.home,
+                icon: CustomIcons.lotus,
                 onTap: widget.setIndex,
               ),
               _BottomNavButton(

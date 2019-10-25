@@ -35,7 +35,7 @@ class CreateSphereNext extends StatefulWidget {
 class _CreateSphereNextState extends State<CreateSphereNext> {
   String _selectedType = 'Public';
 
-  Future<void> _createSphere() async {
+  Future<void> _createSphere() async { 
     JuntoOverlay.showLoader(context);
     final CentralizedSphere updatedSphere = widget.sphere.copyWith(
       privacy: _selectedType,

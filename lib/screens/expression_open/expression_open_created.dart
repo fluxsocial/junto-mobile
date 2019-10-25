@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_appbar.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_bottom.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_top.dart';
@@ -11,18 +12,18 @@ import 'package:junto_beta_mobile/screens/expression_open/expressions/shortform_
 import 'package:junto_beta_mobile/styles.dart';
 import 'package:junto_beta_mobile/widgets/comment_preview/comment_preview.dart';
 
-class ExpressionOpen extends StatefulWidget {
-  const ExpressionOpen(this.expression);
+class ExpressionOpenCreated extends StatefulWidget {
+  const ExpressionOpenCreated(this.expression);
 
   final CentralizedExpressionResponse expression;
 
   @override
   State<StatefulWidget> createState() {
-    return ExpressionOpenState();
+    return ExpressionOpenCreatedState();
   }
 }
 
-class ExpressionOpenState extends State<ExpressionOpen> {
+class ExpressionOpenCreatedState extends State<ExpressionOpenCreated> {
   //  whether the comments are visible or not
   bool commentsVisible = false;
 
@@ -43,6 +44,8 @@ class ExpressionOpenState extends State<ExpressionOpen> {
     super.initState();
     commentController = TextEditingController();
     _focusNode = FocusNode();
+
+    WidgetsBinding.instance.addPostFrameCallback(_getFlexibleSpaceSize);
   }
 
   @override
@@ -175,6 +178,21 @@ class ExpressionOpenState extends State<ExpressionOpen> {
     _focusTextField();
   }
 
+  GlobalKey _keyFlexibleSpace = GlobalKey();
+  var _flexibleHeightSpace = null;
+
+  void _getFlexibleSpaceSize(_) {
+    final RenderBox renderBoxFlexibleSpace =
+        _keyFlexibleSpace.currentContext.findRenderObject();
+    final sizeFlexibleSpace = renderBoxFlexibleSpace.size;
+    final heightFlexibleSpace = sizeFlexibleSpace.height;
+    print(heightFlexibleSpace);
+
+    setState(() {
+      _flexibleHeightSpace = heightFlexibleSpace;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -183,92 +201,151 @@ class ExpressionOpenState extends State<ExpressionOpen> {
         child: ExpressionOpenAppbar(),
       ),
       backgroundColor: Colors.white,
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: GestureDetector(
-              onVerticalDragDown: _onDragDown,
-              child: ListView(
-                children: <Widget>[
-                  ExpressionOpenTop(expression: widget.expression),
-                  _buildExpression(),
-                  ExpressionOpenBottom(widget.expression),
-                  GestureDetector(
-                    onTap: () {
-                      if (commentsVisible == false) {
-                        setState(() {
-                          commentsVisible = true;
-                        });
-                      } else if (commentsVisible == true) {
-                        setState(() {
-                          commentsVisible = false;
-                        });
-                      }
-                    },
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        border: Border(
-                          bottom:
-                              BorderSide(color: Color(0xffeeeeee), width: .75),
-                        ),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 15),
-                      child: Row(
-                        children: <Widget>[
-                          const Text(
-                            'Show replies (9)',
-                            style: TextStyle(fontWeight: FontWeight.w500),
-                          ),
-                          const SizedBox(width: 5),
-                          commentsVisible == false
-                              ? Icon(Icons.keyboard_arrow_down, size: 17)
-                              : Icon(Icons.keyboard_arrow_up, size: 17)
-                        ],
-                      ),
+      body: Stack(children: [
+        DefaultTabController(
+          length: 2,
+          child: NestedScrollView(
+            physics: const ClampingScrollPhysics(),
+            headerSliverBuilder:
+                (BuildContext context, bool innerBoxIsScrolled) {
+              return <Widget>[
+                SliverAppBar(
+                  brightness: Brightness.light,
+                  automaticallyImplyLeading: false,
+                  primary: false,
+                  actions: const <Widget>[SizedBox(height: 0, width: 0)],
+                  backgroundColor: Colors.white,
+                  pinned: false,
+                  flexibleSpace: FlexibleSpaceBar(
+                    collapseMode: CollapseMode.pin,
+                    background: Column(
+                      children: <Widget>[
+                        ExpressionOpenTop(expression: widget.expression),
+                        Container(
+                            key: _keyFlexibleSpace, child: _buildExpression()),
+                        ExpressionOpenBottom(widget.expression),
+                      ],
                     ),
                   ),
-                  commentsVisible
-                      ? ListView(
-                          shrinkWrap: true,
-                          physics: const ClampingScrollPhysics(),
-                          children: const <Widget>[
-                            CommentPreview(
-                              commentText:
-                                  'Hey there! This is what a comment preview looks like.',
-                            ),
-                            CommentPreview(
-                              commentText:
-                                  'All comments are hidden initially so the viewer can have complete independence of thought while viewing expressions.',
-                            ),
-                            CommentPreview(
-                              commentText:
-                                  'In Junto, comments are treated like expressions. You can resonate them or reply to a comment (nested comments). This is quite complex so we are tacklign this once the rest of the core functionality is finished.',
-                            ),
-                            CommentPreview(
-                              commentText:
-                                  "And yes, I know what you're thinking. 'Comments??' We need a new semantic!",
-                            ),
-                            CommentPreview(
-                              commentText:
-                                  "Let's leave that to Fri to discuss :)",
-                            ),
-                            CommentPreview(
-                              commentText: 'Much',
-                            ),
-                            CommentPreview(
-                              commentText: 'love <3',
-                            ),
-                          ],
-                        )
-                      : const SizedBox()
-                ],
-              ),
+                  expandedHeight: _flexibleHeightSpace == null
+                      ? 100000
+                      : _flexibleHeightSpace + 116,
+                  forceElevated: false,
+                ),
+                SliverPersistentHeader(
+                  delegate: _SliverAppBarDelegate(
+                    TabBar(
+                      labelPadding: const EdgeInsets.all(0),
+                      isScrollable: true,
+                      labelColor: const Color(0xff333333),
+                      labelStyle: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xff333333),
+                      ),
+                      indicatorWeight: 0.0001,
+                      tabs: [
+                        Container(
+                          margin: const EdgeInsets.only(right: 24),
+                          color: Colors.white,
+                          child: Tab(
+                            text: 'Public replies',
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(right: 24),
+                          color: Colors.white,
+                          child: Tab(
+                            text: 'Private replies',
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  pinned: true,
+                ),
+              ];
+            },
+            body: Column(
+              children: <Widget>[
+                Expanded(
+                  child: TabBarView(
+                    children: <Widget>[
+                      ListView(
+                        shrinkWrap: true,
+                        physics: ClampingScrollPhysics(),
+                        children: <Widget>[
+                          CommentPreview(
+                            commentText:
+                                'Hey there! This is what a comment preview looks like.',
+                          ),
+                          CommentPreview(
+                            commentText:
+                                'All comments are hidden initially so the viewer can have complete independence of thought while viewing expressions.',
+                          ),
+                          CommentPreview(
+                            commentText:
+                                'In Junto, comments are treated like expressions. You can resonate them or reply to a comment (nested comments). This is quite complex so we are tacklign this once the rest of the core functionality is finished.',
+                          ),
+                          CommentPreview(
+                            commentText:
+                                "And yes, I know what you're thinking. 'Comments??' We need a new semantic!",
+                          ),
+                          CommentPreview(
+                            commentText:
+                                "Let's leave that to Fri to discuss :)",
+                          ),
+                          CommentPreview(
+                            commentText: 'Much',
+                          ),
+                          CommentPreview(
+                            commentText: 'love <3',
+                          ),
+                        ],
+                      ),
+                      ListView(
+                        shrinkWrap: true,
+                        physics: ClampingScrollPhysics(),
+                        children: <Widget>[
+                          CommentPreview(
+                            commentText:
+                                'Hey there! This is what a comment preview looks like.',
+                          ),
+                          CommentPreview(
+                            commentText:
+                                'All comments are hidden initially so the viewer can have complete independence of thought while viewing expressions.',
+                          ),
+                          CommentPreview(
+                            commentText:
+                                'In Junto, comments are treated like expressions. You can resonate them or reply to a comment (nested comments). This is quite complex so we are tacklign this once the rest of the core functionality is finished.',
+                          ),
+                          CommentPreview(
+                            commentText:
+                                "And yes, I know what you're thinking. 'Comments??' We need a new semantic!",
+                          ),
+                          CommentPreview(
+                            commentText:
+                                "Let's leave that to Fri to discuss :)",
+                          ),
+                          CommentPreview(
+                            commentText: 'Much',
+                          ),
+                          CommentPreview(
+                            commentText: 'love <3',
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
-
-          Container(
+        ),
+        Positioned(
+          bottom: 0,
+          child: Container(
+            width: MediaQuery.of(context).size.width,
             decoration: const BoxDecoration(
               color: Colors.white,
               border: Border(
@@ -281,6 +358,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
             padding: const EdgeInsets.symmetric(
                 horizontal: JuntoStyles.horizontalPadding, vertical: 5),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -386,8 +464,40 @@ class ExpressionOpenState extends State<ExpressionOpen> {
               ],
             ),
           ),
-        ],
-      ),
+        ),
+      ]),
     );
+  }
+}
+
+class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
+  _SliverAppBarDelegate(this._tabBar);
+
+  final TabBar _tabBar;
+
+  @override
+  double get minExtent => _tabBar.preferredSize.height + .5;
+
+  @override
+  double get maxExtent => _tabBar.preferredSize.height + .5;
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          border: Border(
+            bottom: BorderSide(color: Color(0xffeeeeee), width: .5),
+          ),
+        ),
+        width: MediaQuery.of(context).size.width,
+        child: _tabBar);
+  }
+
+  @override
+  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
+    return false;
   }
 }
