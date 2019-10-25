@@ -62,7 +62,7 @@ class CreateFAB extends StatelessWidget {
           borderRadius: BorderRadius.circular(25),
         ),
         alignment: Alignment.center,
-        child: const Icon(CustomIcons.lotus, color: Colors.white),
+        child: const Icon(CustomIcons.enso, color: Colors.white)
       ),
     );
   }
