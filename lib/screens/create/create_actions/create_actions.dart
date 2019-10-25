@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions_appbar.dart';
 import 'package:junto_beta_mobile/screens/template/template.dart';
@@ -58,7 +58,7 @@ class CreateActionsState extends State<CreateActions> {
     );
     JuntoOverlay.showLoader(context);
     try {
-      await Provider.of<ExpressionProvider>(context)
+      await Provider.of<ExpressionRepo>(context)
           .createExpression(_expression);
       JuntoOverlay.hide();
       JuntoDialog.showJuntoDialog(
