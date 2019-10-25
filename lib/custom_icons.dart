@@ -14,8 +14,8 @@ class CustomIcons {
   static const IconData more = IconData(0xe908, fontFamily: 'j_home');
   static const IconData back_arrow_left =
       IconData(0xe909, fontFamily: 'j_home');
-  static const IconData packs = IconData(0xe90d, fontFamily: 'j_home');
-  static const IconData spheres = IconData(0xe90e, fontFamily: 'j_home');
+  static const IconData packs = IconData(0xe916, fontFamily: 'j_home');
+  static const IconData spheres = IconData(0xe915, fontFamily: 'j_home');
   static const IconData profile = IconData(0xe90c, fontFamily: 'j_home');
   static const IconData feather = IconData(0xe912, fontFamily: 'j_home');
   static const IconData pen = IconData(0xe911, fontFamily: 'j_home');
