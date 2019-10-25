@@ -1,4 +1,5 @@
 import 'package:junto_beta_mobile/backend/repositories.dart';
+import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/backend/services/auth_service.dart';
 import 'package:junto_beta_mobile/backend/services/collective_provider.dart';
@@ -19,20 +20,21 @@ class Backend {
     this.userProvider,
     this.collectiveProvider,
     this.spheresProvider,
-    this.expressionProvider,
+    this.expressionRepo,
   });
 
   static Future<Backend> init() async {
     final JuntoHttp client = JuntoHttp(httpClient: IOClient());
     final AuthenticationServiceCentralized authService = AuthenticationServiceCentralized(client);
     final UserServiceCentralized userService = UserServiceCentralized(client);
+    final ExpressionService expressionService = ExpressionServiceCentralized(client);
     return Backend._(
       searchProvider: SearchProviderCentralized(client),
       authRepo: AuthRepo(authService, userService),
       userProvider: userService,
       collectiveProvider: CollectiveProviderCentralized(client),
       spheresProvider: SphereProviderCentralized(client),
-      expressionProvider: ExpressionProviderCentralized(client),
+      expressionRepo: ExpressionRepo(expressionService),
     );
   }
 
@@ -41,5 +43,5 @@ class Backend {
   final UserService userProvider;
   final CollectiveProvider collectiveProvider;
   final SpheresProvider spheresProvider;
-  final ExpressionProvider expressionProvider;
+  final ExpressionRepo expressionRepo;
 }

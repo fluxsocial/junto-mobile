@@ -31,7 +31,7 @@ abstract class CollectiveProvider {
 
 /// Interface which defines the roles and functionality of the
 /// CollectiveProvider.
-abstract class ExpressionProvider {
+abstract class ExpressionService {
   /// Creates an expression on the server.
   /// Method requires [CentralizedExpression] as it's only arg.
   Future<CentralizedExpressionResponse> createExpression(

@@ -7,10 +7,10 @@ import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/utils/junto_http.dart';
 import 'package:meta/meta.dart';
 
-/// Concrete implementation of [ExpressionProvider]
+/// Concrete implementation of [ExpressionService]
 @immutable
-class ExpressionProviderCentralized implements ExpressionProvider {
-  const ExpressionProviderCentralized(this.client);
+class ExpressionServiceCentralized implements ExpressionService {
+  const ExpressionServiceCentralized(this.client);
 
   final JuntoHttp client;
 
