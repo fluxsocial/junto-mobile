@@ -450,7 +450,7 @@ class _ExpressionLayerBottomSheetState
     var expressionLayerIcon;
 
     if (layer == 'Collective') {
-      expressionLayerIcon = CustomIcons.home;
+      expressionLayerIcon = CustomIcons.lotus;
     } else if (layer == 'My Pack') {
       expressionLayerIcon = CustomIcons.packs;
     } else if (layer == 'Private Den') {

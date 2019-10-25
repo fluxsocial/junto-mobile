@@ -91,8 +91,8 @@ class PackOpenState extends State<PackOpen> {
                         padding: const EdgeInsets.only(bottom: 20),
                         width: MediaQuery.of(context).size.width * .5,
                         child: Icon(
-                          CustomIcons.half_lotus,
-                          size: 17,
+                          CustomIcons.lotus,
+                          size: 20,
                           color: publicActive
                               ? const Color(0xff333333)
                               : const Color(0xff999999),
@@ -106,15 +106,12 @@ class PackOpenState extends State<PackOpen> {
                       child: Container(
                         padding: const EdgeInsets.only(bottom: 20),
                         width: MediaQuery.of(context).size.width * .5,
-                        child: RotatedBox(
-                          quarterTurns: 2,
-                          child: Icon(
-                            CustomIcons.triangle,
-                            size: 17,
-                            color: publicActive
-                                ? const Color(0xff999999)
-                                : const Color(0xff333333),
-                          ),
+                        child: Icon(
+                          CustomIcons.packs,
+                          size: 17,
+                          color: publicActive
+                              ? const Color(0xff999999)
+                              : const Color(0xff333333),
                         ),
                       ),
                     )

@@ -35,7 +35,7 @@ class BottomNavState extends State<BottomNav> {
             ),
           ),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            // crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               _BottomNavButton(
                 index: 0,
@@ -55,12 +55,29 @@ class BottomNavState extends State<BottomNav> {
                 icon: CustomIcons.packs,
                 onTap: widget.setIndex,
               ),
-              _BottomNavButton(
-                index: 3,
-                selectedIndex: widget.currentIndex,
-                icon: CustomIcons.profile,
-                onTap: widget.setIndex,
+              GestureDetector(
+                onTap: () => widget.setIndex(3),
+                child: Container(
+                  width: MediaQuery.of(context).size.width * .25,
+                  color: Colors.transparent,
+                  alignment: Alignment.center,
+                  child: ClipOval(
+                    child: Image.asset(
+                      'assets/images/junto-mobile__eric.png',
+                      height: 30.0,
+                      width: 30.0,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
               ),
+
+              // _BottomNavButton(
+              //   index: 3,
+              //   selectedIndex: widget.currentIndex,
+              //   icon: CustomIcons.profile,
+              //   onTap: widget.setIndex,
+              // ),
             ],
           ),
         ),
@@ -85,7 +102,8 @@ class _BottomNavButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return Container(
+      width: MediaQuery.of(context).size.width * .25,
       child: InkWell(
         onTap: () => onTap(index),
         child: RotatedBox(
