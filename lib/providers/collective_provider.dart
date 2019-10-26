@@ -8,7 +8,7 @@ import 'package:junto_beta_mobile/utils/junto_http.dart';
 
 /// Interface which defines the roles and functionality of the
 /// CollectiveProvider.
-abstract class CollectiveProvider {
+abstract class CollectiveProvider { 
   /// Creates an expression on the server.
   /// Method requires [CentralizedExpression] as it's only arg.
   Future<CentralizedExpressionResponse> createExpression(
@@ -30,7 +30,7 @@ abstract class CollectiveProvider {
   /// [parentAddress], [type] and [data] must be passed.
   Future<CentralizedExpressionResponse> postCommentExpression(
     String parentAddress,
-    String type,
+    String type, 
     Map<String, dynamic> data,
   );
 

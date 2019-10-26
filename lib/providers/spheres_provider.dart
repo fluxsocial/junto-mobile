@@ -21,7 +21,7 @@ abstract class SpheresProvider {
   /// level.
   Future<List<Users>> getGroupMembers(String groupAddress);
 
-  /// Adds the given user address to a group
+  /// Adds the given user address to a group 
   Future<void> addGroupMember(
       String groupAddress, String userAddress, String perms);
 

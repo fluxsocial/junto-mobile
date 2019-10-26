@@ -65,7 +65,7 @@ class JuntoCollectiveState extends State<JuntoCollective> {
     }
     await Future<void>.delayed(const Duration(seconds: 2), () {});
     isLoading = false;
-    setState(() {
+    setState(() { 
       isLoading = true;
       initialData.addAll(
           Provider.of<CollectiveProvider>(context).collectiveExpressions);

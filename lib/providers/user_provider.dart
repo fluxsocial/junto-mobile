@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/models/expression.dart'; 
 import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
 import 'package:http/http.dart' as http;
