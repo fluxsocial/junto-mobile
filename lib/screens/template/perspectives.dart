@@ -177,16 +177,6 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                 Container(
                   child: Row(
                     children: <Widget>[
-                      // Container(
-                      //   height: 30,
-                      //   decoration: const BoxDecoration(
-                      //     border: Border(
-                      //       left: BorderSide(
-                      //           color: Color(0xffeeeeee), width: 1.5),
-                      //     ),
-                      //   ),
-                      // ),
-                      // const SizedBox(width: 10),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[

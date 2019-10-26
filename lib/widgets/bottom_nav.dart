@@ -52,12 +52,14 @@ class BottomNavState extends State<BottomNav> {
                 icon: CustomIcons.spheres,
                 onTap: widget.setIndex,
               ),
+            
               _BottomNavButton(
                 index: 2,
                 selectedIndex: widget.currentIndex,
                 icon: CustomIcons.packs,
                 onTap: widget.setIndex,
               ),
+              
               GestureDetector(
                 onTap: () => widget.setIndex(3),
                 child: Container(
