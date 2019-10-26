@@ -104,18 +104,20 @@ class _CreateSphereNextState extends State<CreateSphereNext> {
                       fontWeight: FontWeight.w700,
                       fontSize: 15),
                 ),
-                GestureDetector(
-                    onTap: _createSphere,
-                    child: Container(
-                      color: Colors.white,
-                      width: 38,
-                      alignment: Alignment.centerRight,
-                      child: const Text(
-                        'create',
-                        style:
-                            TextStyle(color: Color(0xff333333), fontSize: 14),
-                      ),
-                    ))
+                Expanded(
+                  child: GestureDetector(
+                      onTap: _createSphere,
+                      child: Container(
+                        color: Colors.white,
+                        width: 38,
+                        alignment: Alignment.centerRight,
+                        child: const Text(
+                          'create',
+                          style:
+                              TextStyle(color: Color(0xff333333), fontSize: 14),
+                        ),
+                      )),
+                )
               ],
             ),
           ),
