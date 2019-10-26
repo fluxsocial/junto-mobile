@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/spheres/sphere_members.dart';
@@ -153,7 +153,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     try {
       JuntoOverlay.showLoader(context);
       final List<Users> _members =
-          await Provider.of<SpheresProvider>(context).getGroupMembers(
+          await Provider.of<GroupRepo>(context).getGroupMembers(
         widget.group.address,
       );
       JuntoOverlay.hide();

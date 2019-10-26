@@ -80,13 +80,13 @@ class _JuntoMemberState extends State<JuntoMember> {
                               CupertinoPageRoute<dynamic>(
                                 builder: (BuildContext context) =>
                                     MemberExpanded(
-                                      handle: widget.profile.username,
-                                      name: '${widget.profile.firstName} '
-                                          '${widget.profile.lastName}',
-                                      profilePicture:
-                                          'assets/images/junto-mobile__logo.png',
-                                      bio: widget.profile.bio,
-                                    ),
+                                  handle: widget.profile.username,
+                                  name: '${widget.profile.firstName} '
+                                      '${widget.profile.lastName}',
+                                  profilePicture:
+                                      'assets/images/junto-mobile__logo.png',
+                                  bio: widget.profile.bio,
+                                ),
                               ),
                             );
                           },
@@ -116,49 +116,46 @@ class _JuntoMemberState extends State<JuntoMember> {
                               showModalBottomSheet(
                                 context: context,
                                 builder: (BuildContext context) => Container(
-                                      color: const Color(0xff737373),
-                                      child: Container(
-                                        height: 240,
-                                        padding: const EdgeInsets.all(10),
-                                        decoration: const BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(10),
-                                            topRight: Radius.circular(10),
-                                          ),
-                                        ),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: const <Widget>[
-                                            ListTile(
-                                              title: Text(
-                                                'Subscribe',
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                            ),
-                                            ListTile(
-                                              title: Text(
-                                                'Connect',
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                            ),
-                                            ListTile(
-                                              title: Text(
-                                                'Join Pack',
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
+                                  color: const Color(0xff737373),
+                                  child: Container(
+                                    height: 240,
+                                    padding: const EdgeInsets.all(10),
+                                    decoration: const BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(10),
+                                        topRight: Radius.circular(10),
                                       ),
                                     ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: const <Widget>[
+                                        ListTile(
+                                          title: Text(
+                                            'Subscribe',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                        ),
+                                        ListTile(
+                                          title: Text(
+                                            'Connect',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                        ),
+                                        ListTile(
+                                          title: Text(
+                                            'Join Pack',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
                               );
                             },
                             child: Container(

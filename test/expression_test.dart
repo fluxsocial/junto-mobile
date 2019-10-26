@@ -13,7 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = null;
-  final ExpressionProvider _collectiveProvider = ExpressionProviderCentralized(JuntoHttp());
+  final ExpressionService _collectiveProvider = ExpressionServiceCentralized(JuntoHttp());
 
   setUpAll(() {
     SharedPreferences.setMockInitialValues(<String, String>{

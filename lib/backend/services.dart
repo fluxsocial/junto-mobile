@@ -18,20 +18,22 @@ abstract class AuthenticationService {
   Future<void> logoutUser();
 }
 
-abstract class CollectiveProvider {
+abstract class CollectiveService {
   /// Creates a collection with the given arguments.
-  Future<Collective> createCollection(String name, String privacy, [String parent]);
+  Future<Collective> createCollection(String name, String privacy,
+      [String parent]);
 
   /// Returns the [CollectionResponse] for the given [collectionAddress]
   Future<CollectionResponse> getCollection(String collectionAddress);
 
   /// Adds the given [expressionAddress] to the collective [collectionAddress]
-  Future<void> postCollectiveExpression(String collectionAddress, String expressionAddress);
+  Future<void> postCollectiveExpression(
+      String collectionAddress, String expressionAddress);
 }
 
 /// Interface which defines the roles and functionality of the
 /// CollectiveProvider.
-abstract class ExpressionProvider {
+abstract class ExpressionService {
   /// Creates an expression on the server.
   /// Method requires [CentralizedExpression] as it's only arg.
   Future<CentralizedExpressionResponse> createExpression(
@@ -72,7 +74,7 @@ abstract class ExpressionProvider {
   List<CentralizedExpressionResponse> get collectiveExpressions;
 }
 
-abstract class SpheresProvider {
+abstract class GroupService {
   List<Sphere> get spheres;
 
   /// Allows an authenticated user to create a sphere.

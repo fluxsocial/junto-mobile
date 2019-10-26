@@ -19,8 +19,8 @@ class PackPreview extends StatelessWidget {
           context,
           CupertinoPageRoute<dynamic>(
             builder: (BuildContext context) => PackOpen(
-                  pack: group,
-                ),
+              pack: group,
+            ),
           ),
         );
       },

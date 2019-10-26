@@ -11,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = null;
-  final CollectiveProvider _collectiveProvider = CollectiveProviderCentralized(JuntoHttp());
+  final CollectiveService _collectiveProvider = CollectiveProviderCentralized(JuntoHttp());
 
   setUpAll(() {
     SharedPreferences.setMockInitialValues(<String, String>{

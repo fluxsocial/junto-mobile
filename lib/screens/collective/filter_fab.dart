@@ -21,40 +21,40 @@ class CollectiveFilterFAB extends StatelessWidget {
     return ValueListenableBuilder<bool>(
       valueListenable: isVisible,
       builder: (BuildContext context, bool value, _) => AnimatedOpacity(
-            duration: const Duration(milliseconds: 200),
-            opacity: value ? 1.0 : 0.0,
-            child: GestureDetector(
-              onTap: () => toggleFilter(context),
-              child: Container(
-                height: 44,
-                width: 44,
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    begin: Alignment.bottomLeft,
-                    end: Alignment.topRight,
-                    stops: <double>[0.1, 0.9],
-                    colors: <Color>[
-                      JuntoPalette.juntoSecondary,
-                      JuntoPalette.juntoPrimary,
-                    ],
-                  ),
-                  color: JuntoPalette.juntoWhite.withOpacity(.7),
-                  border: Border.all(
-                    color: JuntoPalette.juntoWhite,
-                    width: 1.5,
-                  ),
-                  borderRadius: BorderRadius.circular(25),
-                ),
-                alignment: Alignment.center,
-                child: const Text(
-                  '#',
-                  style: TextStyle(
-                    color: JuntoPalette.juntoWhite,
-                  ),
-                ),
+        duration: const Duration(milliseconds: 200),
+        opacity: value ? 1.0 : 0.0,
+        child: GestureDetector(
+          onTap: () => toggleFilter(context),
+          child: Container(
+            height: 44,
+            width: 44,
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
+                stops: <double>[0.1, 0.9],
+                colors: <Color>[
+                  JuntoPalette.juntoSecondary,
+                  JuntoPalette.juntoPrimary,
+                ],
+              ),
+              color: JuntoPalette.juntoWhite.withOpacity(.7),
+              border: Border.all(
+                color: JuntoPalette.juntoWhite,
+                width: 1.5,
+              ),
+              borderRadius: BorderRadius.circular(25),
+            ),
+            alignment: Alignment.center,
+            child: const Text(
+              '#',
+              style: TextStyle(
+                color: JuntoPalette.juntoWhite,
               ),
             ),
           ),
+        ),
+      ),
     );
   }
 }

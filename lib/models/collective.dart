@@ -94,7 +94,8 @@ class CollectionResponse {
       nestedCollections: NestedCollections.fromMap(json['nested_collections']),
       expressions: List<CentralizedExpressionResponse>.from(
         json['expressions'].map(
-          (Map<String, dynamic> expression) => CentralizedExpressionResponse.fromMap(expression),
+          (Map<String, dynamic> expression) =>
+              CentralizedExpressionResponse.fromMap(expression),
         ),
       ),
     );

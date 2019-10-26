@@ -149,70 +149,68 @@ class DenCreateCollectionState extends State<DenCreateCollection> {
                             isScrollControlled: true,
                             context: context,
                             builder: (BuildContext context) => Container(
-                                  color: const Color(0xff737373),
-                                  child: Container(
-                                    height:
-                                        MediaQuery.of(context).size.height * .9,
-                                    padding: const EdgeInsets.all(10),
-                                    decoration: const BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(10),
-                                        topRight: Radius.circular(10),
-                                      ),
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        const SizedBox(height: 10),
-                                        Row(
-                                          children: const <Widget>[
-                                            Text(
-                                              'Expressions',
-                                              style: TextStyle(
-                                                fontSize: 17,
-                                                fontWeight: FontWeight.w700,
-                                                color: Color(0xff333333),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(height: 10),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width -
-                                                  60,
-                                              decoration: const BoxDecoration(
-                                                border: Border(
-                                                  bottom: BorderSide(
-                                                    color: Color(0xffeeeeee),
-                                                    width: .75,
-                                                  ),
-                                                ),
-                                              ),
-                                              child: const Text(
-                                                'This will be a feed of all of the'
-                                                ' expressions (both public '
-                                                'and private) a member has created in addition to '
-                                                'those that they save from other people. Therefore, collections'
-                                                ' will be a culmination of '
-                                                'any expression a member wants, including from othere people. ',
-                                              ),
-                                            ),
-                                          ],
+                              color: const Color(0xff737373),
+                              child: Container(
+                                height: MediaQuery.of(context).size.height * .9,
+                                padding: const EdgeInsets.all(10),
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10),
+                                  ),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    const SizedBox(height: 10),
+                                    Row(
+                                      children: const <Widget>[
+                                        Text(
+                                          'Expressions',
+                                          style: TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w700,
+                                            color: Color(0xff333333),
+                                          ),
                                         ),
                                       ],
                                     ),
-                                  ),
+                                    const SizedBox(height: 10),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width -
+                                              60,
+                                          decoration: const BoxDecoration(
+                                            border: Border(
+                                              bottom: BorderSide(
+                                                color: Color(0xffeeeeee),
+                                                width: .75,
+                                              ),
+                                            ),
+                                          ),
+                                          child: const Text(
+                                            'This will be a feed of all of the'
+                                            ' expressions (both public '
+                                            'and private) a member has created in addition to '
+                                            'those that they save from other people. Therefore, collections'
+                                            ' will be a culmination of '
+                                            'any expression a member wants, including from othere people. ',
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
+                              ),
+                            ),
                           );
                         },
                         child: Container(

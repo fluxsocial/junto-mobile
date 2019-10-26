@@ -60,11 +60,11 @@ class JuntoDenAppbar extends StatelessWidget {
                           context,
                           CupertinoPageRoute<dynamic>(
                             builder: (BuildContext context) => DenExpanded(
-                                  handle: handle,
-                                  name: name,
-                                  profilePicture: profilePicture,
-                                  bio: bio,
-                                ),
+                              handle: handle,
+                              name: name,
+                              profilePicture: profilePicture,
+                              bio: bio,
+                            ),
                           ),
                         );
                       },
