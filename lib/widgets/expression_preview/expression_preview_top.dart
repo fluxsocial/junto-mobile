@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
-import 'package:junto_beta_mobile/app/styles.dart';
-import 'package:junto_beta_mobile/widgets/expression_action_items/expression_action_items.dart';
+import 'package:junto_beta_mobile/widgets/expression_action_items.dart';
 
 class ExpressionPreviewTop extends StatelessWidget {
   const ExpressionPreviewTop({
@@ -22,6 +21,7 @@ class ExpressionPreviewTop extends StatelessWidget {
     //ignore: unused_local_variable
     final String lastName = expression.creator.lastName;
     final String username = expression.creator.username;
+    const String profilePicture = 'assets/images/junto-mobile__eric.png';
 
     return Container(
       padding: const EdgeInsets.symmetric(
@@ -82,6 +82,7 @@ class ExpressionPreviewTop extends StatelessWidget {
             children: <Widget>[
               GestureDetector(
                 onTap: () {
+                  //FIXME: Refactor into widget
                   ExpressionActionItems().buildExpressionActionItems(context);
                 },
                 child: const Icon(

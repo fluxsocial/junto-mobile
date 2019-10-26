@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:junto_beta_mobile/palette.dart';
-import 'package:junto_beta_mobile/custom_icons.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
 
 /// Gradient [FloatingActionButton] used for filtering
@@ -45,7 +45,7 @@ class CreateFAB extends StatelessWidget {
         height: 50,
         width: 50,
         decoration: BoxDecoration(
-          gradient: const LinearGradient(
+          gradient:  LinearGradient(
             begin: Alignment.bottomLeft,
             end: Alignment.topRight,
             stops: <double>[0.1, 0.9],

@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
-import 'package:junto_beta_mobile/widgets/expression_action_items/expression_action_items.dart';
+import 'package:junto_beta_mobile/widgets/expression_action_items.dart';
 
 class ExpressionOpenTop extends StatelessWidget {
   const ExpressionOpenTop({Key key, this.expression}) : super(key: key);
@@ -68,7 +67,7 @@ class ExpressionOpenTop extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
-                          color: Color(0xff555555),
+                          color: const Color(0xff555555),
                         ),
                       ),
                     ],
@@ -79,6 +78,7 @@ class ExpressionOpenTop extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
+              // FIXME: Refactor to widgets folder
               ExpressionActionItems().buildExpressionActionItems(context);
             },
             child: const Icon(

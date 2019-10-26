@@ -1,14 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/spheres/sphere_members.dart';
 import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open_appbar.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
-import 'package:junto_beta_mobile/app/styles.dart';
-import 'package:junto_beta_mobile/utils/junto_dialog.dart';
-import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open_facilitators.dart';
+import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open_members.dart';
 import 'package:junto_beta_mobile/widgets/create_fab.dart';
 import 'package:junto_beta_mobile/widgets/expression_preview/expression_preview.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
@@ -128,6 +127,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
 
   @override
   void initState() {
+    super.initState();
     _hideFABController = ScrollController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _hideFABController.addListener(_onScrollingHasChanged);
@@ -136,9 +136,12 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
       );
     });
     _isVisible = ValueNotifier<bool>(true);
-    _getMembers();
+  }
 
-    super.initState();
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _getMembers();
   }
 
   void _onScrollingHasChanged() {
@@ -152,39 +155,24 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     super.dispose();
   }
 
-  Future<void> _navigateToMembers() async {
-    try {
-      JuntoOverlay.showLoader(context);
-      final List<Users> _members =
-          await Provider.of<GroupRepo>(context).getGroupMembers(
-        widget.group.address,
-      );
-      JuntoOverlay.hide();
-      Navigator.of(context).push(GroupMembers.route(_members));
-    } catch (error) {
-      JuntoOverlay.hide();
-      JuntoDialog.showJuntoDialog(
-        context,
-        'Unable to get Sphere members. '
-        'Error ${error.message}',
-        <Widget>[
-          FlatButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Ok'),
-          ),
-        ],
-      );
-    }
+  Future<void> _getMembers() async {
+    final List<Users> results =
+        await Provider.of<GroupRepo>(context).getGroupMembers(
+      widget.group.address,
+    );
+    setState(() => _members = results);
   }
 
   final List<String> _tabs = <String>['About', 'Discussion', 'Events'];
-  List principles = [
-    {
+
+  //FIXME: Refactor to object/class
+  List<Map<String, dynamic>> principles = <Map<String, dynamic>>[
+    <String, dynamic>{
       'title': 'Be a nice person because nice people get chocolate',
       'body':
           'Engage with empathy and respect for one another. We are more than viewpoints that may oppose each other at times. We are human beings :)'
     },
-    {
+    <String, dynamic>{
       'title': 'All walks of life',
       'body':
           'This is a communal space where people from all walks of life are welcome'
@@ -335,7 +323,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     );
   }
 
-  _buildAboutView() {
+  Widget _buildAboutView() {
     return ListView(
       physics: const ClampingScrollPhysics(),
       children: <Widget>[
@@ -425,10 +413,8 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text('Principles', style: JuntoStyles.header),
-                    _principlesFullView
-                        ? _getPrinciples(principles)
-                        : _getPrinciplesPreview(principles),
+                    const Text('Principles', style: JuntoStyles.header),
+                    _getPrinciples(principles, _principlesFullView),
                     _principlesSeeMore()
                   ],
                 ),
@@ -439,7 +425,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('Bio / Purpose', style: JuntoStyles.header),
+              const Text('Bio / Purpose', style: JuntoStyles.header),
               const SizedBox(height: 10),
               Text(widget.group.groupData.description)
             ],
@@ -449,29 +435,21 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     );
   }
 
-  _getPrinciplesPreview(List principles) {
-    List<Widget> list = new List();
+//FIXME: Refactor to ListView.builder
+  Widget _getPrinciples(List principles, bool showFirst) {
+    final List<Widget> list = <Widget>[];
 
     for (int i = 0; i < principles.length; i++) {
       list.add(
         _buildPrinciple(i, principles[i]['title'], principles[i]['body']),
       );
     }
-    return Column(children: <Widget>[list[0]]);
+    return showFirst
+        ? Column(children: list)
+        : Column(children: <Widget>[list.first]);
   }
 
-  _getPrinciples(List principles) {
-    List<Widget> list = new List();
-
-    for (var i = 0; i < principles.length; i++) {
-      list.add(
-        _buildPrinciple(i, principles[i]['title'], principles[i]['body']),
-      );
-    }
-    return Column(children: list);
-  }
-
-  _principlesSeeMore() {
+  Widget _principlesSeeMore() {
     if (principles.length > 1) {
       return GestureDetector(
         onTap: () {
@@ -513,7 +491,8 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     }
   }
 
-  _buildPrinciple(int index, String title, String body) {
+//FIXME:  Refactor to contained Widget
+  Widget _buildPrinciple(int index, String title, String body) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10),
       decoration: const BoxDecoration(
@@ -560,7 +539,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     );
   }
 
-  _buildExpressionView() {
+  Widget _buildExpressionView() {
     return ListView(
       physics: const ClampingScrollPhysics(),
       children: <Widget>[
@@ -580,7 +559,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     );
   }
 
-  _buildEventsView() {
+  Widget _buildEventsView() {
     return ListView(
       physics: const ClampingScrollPhysics(),
       children: <Widget>[

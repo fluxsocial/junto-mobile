@@ -1,11 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/models/sphere.dart';
-import 'package:junto_beta_mobile/screens/collective/perspectives/create_perspective/perspective_member_preview/perspective_member_preview.dart';
-import 'package:junto_beta_mobile/screens/member/member.dart';
-import 'package:junto_beta_mobile/styles.dart';
-import 'package:junto_beta_mobile/custom_icons.dart';
-import 'package:junto_beta_mobile/palette.dart';
 
 class SphereOpenFacilitators extends StatelessWidget {
   const SphereOpenFacilitators({
@@ -15,7 +12,7 @@ class SphereOpenFacilitators extends StatelessWidget {
   static Route<dynamic> route(List<Users> users) {
     return CupertinoPageRoute<dynamic>(
       builder: (BuildContext context) {
-        return SphereOpenFacilitators();
+        return const SphereOpenFacilitators();
       },
     );
   }
@@ -52,9 +49,9 @@ class SphereOpenFacilitators extends StatelessWidget {
                   ),
                   Container(
                     margin: const EdgeInsets.only(right: 5),
-                    child: Text(
+                    child: const Text(
                       'Facilitators',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
                         color: Color(0xff333333),
@@ -100,7 +97,7 @@ class SphereOpenFacilitators extends StatelessWidget {
           children: <Widget>[
             Expanded(
               child: ListView(
-                children: <Widget>[],
+                children: const <Widget>[],
               ),
             ),
           ],

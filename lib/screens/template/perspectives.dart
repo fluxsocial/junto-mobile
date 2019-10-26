@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/app/styles.dart';
 
-import 'package:junto_beta_mobile/palette.dart';
-import 'package:junto_beta_mobile/screens/create/create_templates/event.dart';
-import 'package:junto_beta_mobile/styles.dart';
 
 class JuntoPerspectives extends StatefulWidget {
   const JuntoPerspectives({Key key, @required this.changePerspective})
@@ -560,7 +559,7 @@ class _CreatePerspectiveBottomSheetState
                     Text(
                       name,
                       textAlign: TextAlign.start,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                         color: Color(0xff555555),

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions_appbar.dart';
 import 'package:junto_beta_mobile/screens/template/template.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:provider/provider.dart';
 
 class CreateActions extends StatefulWidget {
@@ -172,7 +173,7 @@ class CreateActionsState extends State<CreateActions> {
                 ),
               ),
             ),
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             child: TextField(
               buildCounter: (
                 BuildContext context, {
@@ -181,14 +182,15 @@ class CreateActionsState extends State<CreateActions> {
                 bool isFocused,
               }) =>
                   null,
-              decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintStyle: const TextStyle(
-                    color: Color(0xff333333),
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  hintText: 'set an intention (optional)'),
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+                hintStyle: TextStyle(
+                  color: Color(0xff333333),
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                ),
+                hintText: 'set an intention (optional)',
+              ),
               cursorColor: const Color(0xff333333),
               cursorWidth: 2,
               maxLines: null,
@@ -233,12 +235,12 @@ class CreateActionsState extends State<CreateActions> {
                       height: 5,
                       width: MediaQuery.of(context).size.width * .1,
                       decoration: BoxDecoration(
-                          color: Color(0xffeeeeee),
+                          color: const Color(0xffeeeeee),
                           borderRadius: BorderRadius.circular(100)),
                     ),
                   ],
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -441,18 +443,19 @@ class _ExpressionLayerBottomSheetState
                         borderRadius: BorderRadius.circular(100),
                         gradient: _chooseBase
                             ? LinearGradient(
-                                colors: [
+                                colors: <Color>[
                                   JuntoPalette.juntoSecondary,
                                   JuntoPalette.juntoPrimary
                                 ],
                                 begin: Alignment.bottomLeft,
                                 end: Alignment.topRight,
-                                stops: [0.1, 0.9])
+                                stops: const <double>[0.1, 0.9],
+                              )
                             : null,
-                        color: _chooseBase ? null : Color(0xffeeeeee),
+                        color: _chooseBase ? null : const Color(0xffeeeeee),
                       ),
                     ),
-                    SizedBox(width: 6),
+                    const SizedBox(width: 6),
                     Container(
                       height: 9,
                       width: 9,
@@ -460,15 +463,15 @@ class _ExpressionLayerBottomSheetState
                         borderRadius: BorderRadius.circular(100),
                         gradient: _chooseSpheres
                             ? LinearGradient(
-                                colors: [
+                                colors: <Color>[
                                   JuntoPalette.juntoSecondary,
                                   JuntoPalette.juntoPrimary
                                 ],
                                 begin: Alignment.bottomLeft,
                                 end: Alignment.topRight,
-                                stops: [0.1, 0.9])
+                                stops: const <double>[0.1, 0.9])
                             : null,
-                        color: _chooseSpheres ? null : Color(0xffeeeeee),
+                        color: _chooseSpheres ? null : const Color(0xffeeeeee),
                       ),
                     ),
                   ],
@@ -481,8 +484,8 @@ class _ExpressionLayerBottomSheetState
     );
   }
 
-  _expressionLayerWidget(layer) {
-    var expressionLayerIcon;
+  Widget _expressionLayerWidget(String layer) {
+    IconData expressionLayerIcon;
 
     if (layer == 'Collective') {
       expressionLayerIcon = CustomIcons.lotus;

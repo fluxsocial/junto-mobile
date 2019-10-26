@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_appbar.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_bottom.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_top.dart';
@@ -8,7 +9,6 @@ import 'package:junto_beta_mobile/screens/expression_open/expressions/event_open
 import 'package:junto_beta_mobile/screens/expression_open/expressions/longform_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/photo_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/shortform_open.dart';
-import 'package:junto_beta_mobile/styles.dart';
 import 'package:junto_beta_mobile/widgets/comment_preview/comment_preview.dart';
 
 class ExpressionOpenCreated extends StatefulWidget {
@@ -23,6 +23,9 @@ class ExpressionOpenCreated extends StatefulWidget {
 }
 
 class ExpressionOpenCreatedState extends State<ExpressionOpenCreated> {
+  final GlobalKey<ExpressionOpenCreatedState> _keyFlexibleSpace =
+      GlobalKey<ExpressionOpenCreatedState>();
+
   //  whether the comments are visible or not
   bool commentsVisible = false;
 
@@ -177,8 +180,7 @@ class ExpressionOpenCreatedState extends State<ExpressionOpenCreated> {
     _focusTextField();
   }
 
-  GlobalKey _keyFlexibleSpace = GlobalKey();
-  var _flexibleHeightSpace = null;
+  double _flexibleHeightSpace;
 
   void _getFlexibleSpaceSize(_) {
     final RenderBox renderBoxFlexibleSpace =
@@ -200,7 +202,7 @@ class ExpressionOpenCreatedState extends State<ExpressionOpenCreated> {
         child: ExpressionOpenAppbar(),
       ),
       backgroundColor: Colors.white,
-      body: Stack(children: [
+      body: Stack(children: <Widget>[
         DefaultTabController(
           length: 2,
           child: GestureDetector(
@@ -276,31 +278,31 @@ class ExpressionOpenCreatedState extends State<ExpressionOpenCreated> {
                         ListView(
                           shrinkWrap: true,
                           physics: const ClampingScrollPhysics(),
-                          children: <Widget>[
-                            const CommentPreview(
+                          children: const <Widget>[
+                            CommentPreview(
                               commentText:
                                   'Hey there! This is what a comment preview looks like.',
                             ),
-                            const CommentPreview(
+                            CommentPreview(
                               commentText:
                                   'All comments are hidden initially so the viewer can have complete independence of thought while viewing expressions.',
                             ),
-                            const CommentPreview(
+                            CommentPreview(
                               commentText:
                                   'In Junto, comments are treated like expressions. You can resonate them or reply to a comment (nested comments). This is quite complex so we are tacklign this once the rest of the core functionality is finished.',
                             ),
-                            const CommentPreview(
+                            CommentPreview(
                               commentText:
                                   "And yes, I know what you're thinking. 'Comments??' We need a new semantic!",
                             ),
-                            const CommentPreview(
+                            CommentPreview(
                               commentText:
                                   "Let's leave that to Fri to discuss :)",
                             ),
-                            const CommentPreview(
+                            CommentPreview(
                               commentText: 'Much',
                             ),
-                            const CommentPreview(
+                            CommentPreview(
                               commentText: 'love <3',
                             ),
                           ],
@@ -308,31 +310,31 @@ class ExpressionOpenCreatedState extends State<ExpressionOpenCreated> {
                         ListView(
                           shrinkWrap: true,
                           physics: const ClampingScrollPhysics(),
-                          children: <Widget>[
-                            const CommentPreview(
+                          children: const <Widget>[
+                            CommentPreview(
                               commentText:
                                   'Hey there! This is what a comment preview looks like.',
                             ),
-                            const CommentPreview(
+                            CommentPreview(
                               commentText:
                                   'All comments are hidden initially so the viewer can have complete independence of thought while viewing expressions.',
                             ),
-                            const CommentPreview(
+                            CommentPreview(
                               commentText:
                                   'In Junto, comments are treated like expressions. You can resonate them or reply to a comment (nested comments). This is quite complex so we are tacklign this once the rest of the core functionality is finished.',
                             ),
-                            const CommentPreview(
+                            CommentPreview(
                               commentText:
                                   "And yes, I know what you're thinking. 'Comments??' We need a new semantic!",
                             ),
-                            const CommentPreview(
+                            CommentPreview(
                               commentText:
                                   "Let's leave that to Fri to discuss :)",
                             ),
-                            const CommentPreview(
+                            CommentPreview(
                               commentText: 'Much',
                             ),
-                            const CommentPreview(
+                            CommentPreview(
                               commentText: 'love <3',
                             ),
                           ],

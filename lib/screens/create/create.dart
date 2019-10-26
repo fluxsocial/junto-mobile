@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
-import 'package:junto_beta_mobile/screens/create/create_templates/bullet/bullet.dart';
+import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
-import 'package:junto_beta_mobile/custom_icons.dart';
+import 'package:junto_beta_mobile/screens/create/create_templates/bullet/bullet.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/event.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/longform.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/photo.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/shortform.dart';
-import 'package:junto_beta_mobile/app/styles.dart';
 
 class JuntoCreate extends StatefulWidget {
   const JuntoCreate(this.expressionLayer, {this.address});
@@ -203,7 +203,7 @@ class JuntoCreateState extends State<JuntoCreate> {
                     style: TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.w500,
-                      color: Color(0xff333333),
+                      color: const Color(0xff333333),
                     ),
                   ),
                 ),
@@ -258,18 +258,19 @@ class JuntoCreateState extends State<JuntoCreate> {
     );
   }
 
-  _openExpressionCenter() {
+  //FIXME: Refactor to Stateless Widget
+  void _openExpressionCenter() {
     showModalBottomSheet(
       context: context,
-      builder: (context) => Container(
-        color: Color(0xff737373),
+      builder: (BuildContext context) => Container(
+        color: const Color(0xff737373),
         child: Container(
           height: MediaQuery.of(context).size.height * .3,
-          padding: EdgeInsets.symmetric(vertical: 10),
+          padding: const EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: const Radius.circular(10),
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(10),
               topRight: Radius.circular(10),
             ),
           ),
@@ -287,13 +288,13 @@ class JuntoCreateState extends State<JuntoCreate> {
                         height: 5,
                         width: MediaQuery.of(context).size.width * .1,
                         decoration: BoxDecoration(
-                            color: Color(0xffeeeeee),
+                            color: const Color(0xffeeeeee),
                             borderRadius: BorderRadius.circular(100)),
                       ),
                     ],
                   ),
                   ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 10),
                     title: Text(
                       'Expression Center',
                       style:
@@ -301,18 +302,18 @@ class JuntoCreateState extends State<JuntoCreate> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
                     width: 180,
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      border: Border(
+                      border: const Border(
                         top: BorderSide(color: Color(0xffeeeeee), width: 1),
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Container(
-                    padding: EdgeInsets.only(top: 10),
+                    padding: const EdgeInsets.only(top: 10),
                     height: 70,
                     child: ListView(
                       scrollDirection: Axis.horizontal,
@@ -332,7 +333,7 @@ class JuntoCreateState extends State<JuntoCreate> {
                                   size: 20,
                                   color: JuntoPalette.juntoBlack,
                                 ),
-                                SizedBox(height: 5),
+                                const SizedBox(height: 5),
                                 Text(
                                   'dynamic',
                                   style: TextStyle(
@@ -357,7 +358,7 @@ class JuntoCreateState extends State<JuntoCreate> {
                                   size: 20,
                                   color: JuntoPalette.juntoBlack,
                                 ),
-                                SizedBox(height: 5),
+                                const SizedBox(height: 5),
                                 Text(
                                   'shortform',
                                   style: TextStyle(
@@ -382,7 +383,7 @@ class JuntoCreateState extends State<JuntoCreate> {
                                   size: 20,
                                   color: JuntoPalette.juntoBlack,
                                 ),
-                                SizedBox(height: 5),
+                                const SizedBox(height: 5),
                                 Text(
                                   'photo',
                                   style: TextStyle(
@@ -407,7 +408,7 @@ class JuntoCreateState extends State<JuntoCreate> {
                                   size: 20,
                                   color: JuntoPalette.juntoBlack,
                                 ),
-                                SizedBox(height: 5),
+                                const SizedBox(height: 5),
                                 Text(
                                   'event',
                                   style: TextStyle(

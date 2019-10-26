@@ -1,15 +1,13 @@
 import 'package:async/async.dart' show AsyncMemoizer;
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/screens/spheres/create_sphere/create_sphere.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/spheres/sphere_preview.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
-import 'package:junto_beta_mobile/app/styles.dart';
 
 /// This class renders the main screen for Spheres. It includes a widget to
 /// create a screen as well as a ListView of all the sphere previews
@@ -199,9 +197,9 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
     super.dispose();
   }
 
-  _createSphere() async {
+  void _createSphere() async {
     final UserProfile _profile =
-        await Provider.of<UserProvider>(context).readLocalUser();
+        await Provider.of<UserService>(context).readLocalUser();
     final sphereName = _nameController.value.text;
     final sphereHandle = _handleController.value.text;
     final sphereDescription = _descriptionController.value.text;
@@ -219,8 +217,8 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
     );
 
     try {
-      await Provider.of<SpheresProvider>(context).createSphere(sphere);
-    } on JuntoException catch (error) {
+      await Provider.of<GroupRepo>(context).createSphere(sphere);
+    } catch (error) {
       print(error);
     }
   }
