@@ -10,59 +10,64 @@ class CreateBottomNav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: bottomNavVisible ? 90 : 45,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          bottomNavVisible
-              ? Container(
-                  alignment: Alignment.center,
-                  height: 45.0,
-                  child: Row(
-                    children: <Widget>[
-                      _CreateExpressionButton(
-                        onButtonPressed: () {
-                          switchTemplate('LongForm');
-                        },
-                        icon: CustomIcons.longform,
-                      ),
-                      _CreateExpressionButton(
-                        onButtonPressed: () {
-                          switchTemplate('ShortForm');
-                        },
-                        icon: CustomIcons.feather,
-                      ),
-                      _CreateExpressionButton(
-                        onButtonPressed: () {
-                          switchTemplate('PhotoForm');
-                        },
-                        icon: CustomIcons.camera,
-                      ),
-                      _CreateExpressionButton(
-                        onButtonPressed: () {
-                          switchTemplate('EventForm');
-                        },
-                        icon: CustomIcons.event,
-                      ),
-                    ],
+    return SafeArea(
+      top: false,
+      left: false,
+      right: false,
+      child: Container(
+        height: bottomNavVisible ? 90 : 45,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            if (bottomNavVisible)
+              Container(
+                alignment: Alignment.center,
+                height: 45.0,
+                child: Row(
+                  children: <Widget>[
+                    _CreateExpressionButton(
+                      onButtonPressed: () {
+                        switchTemplate('LongForm');
+                      },
+                      icon: CustomIcons.longform,
+                    ),
+                    _CreateExpressionButton(
+                      onButtonPressed: () {
+                        switchTemplate('ShortForm');
+                      },
+                      icon: CustomIcons.feather,
+                    ),
+                    _CreateExpressionButton(
+                      onButtonPressed: () {
+                        switchTemplate('PhotoForm');
+                      },
+                      icon: CustomIcons.camera,
+                    ),
+                    _CreateExpressionButton(
+                      onButtonPressed: () {
+                        switchTemplate('EventForm');
+                      },
+                      icon: CustomIcons.event,
+                    ),
+                  ],
+                ),
+              ),
+            if (!bottomNavVisible) const SizedBox(),
+            Expanded(
+              child: Ink(
+                child: IconButton(
+                  alignment: Alignment.bottomCenter,
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Icon(
+                    CustomIcons.lotus,
+                    color: JuntoPalette.juntoPrimary,
+                    size: 30,
                   ),
-                )
-              : const SizedBox(),
-          Container(
-            alignment: Alignment.center,
-            height: 45,
-            color: Colors.white,
-            child: IconButton(
-              onPressed: () => Navigator.pop(context),
-              icon: const Icon(
-                CustomIcons.lotus,
-                color: JuntoPalette.juntoPrimary,
-                size: 30,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -24,83 +24,88 @@ class BottomNav extends StatefulWidget {
 class BottomNavState extends State<BottomNav> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 48.0,
-      child: Material(
-        color: Colors.white,
-        shape: const Border(
-          top: BorderSide(
-            color: JuntoPalette.juntoFade,
-            width: .75,
+    return SafeArea(
+      top: false,
+      left: false,
+      right: false,
+      child: SizedBox(
+        height: 48.0,
+        child: Material(
+          color: Colors.white,
+          shape: const Border(
+            top: BorderSide(
+              color: JuntoPalette.juntoFade,
+              width: .75,
+            ),
           ),
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            _BottomNavButton(
-              index: 0,
-              selectedIndex: widget.currentIndex,
-              icon: CustomIcons.home,
-              onTap: widget.setIndex,
-            ),
-            _BottomNavButton(
-              index: 1,
-              selectedIndex: widget.currentIndex,
-              icon: CustomIcons.circle,
-              onTap: widget.setIndex,
-            ),
-            Expanded(
-              child: InkWell(
-                onTap: () {
-                  Navigator.of(context).push(
-                    PageRouteBuilder<dynamic>(
-                      pageBuilder: (
-                        BuildContext context,
-                        Animation<double> animation,
-                        Animation<double> secondaryAnimation,
-                      ) {
-                        //FIXME: This address should be replaced with the Junto Collective address once it is created.
-                        return const JuntoCreate(
-                          'collective',
-                          address: 'd7f5186b-0281-4723-b5d4-1ff24eb0beb2',
-                        );
-                      },
-                      transitionsBuilder: (
-                        BuildContext context,
-                        Animation<double> animation,
-                        Animation<double> secondaryAnimation,
-                        Widget child,
-                      ) {
-                        return FadeTransition(
-                          opacity: animation,
-                          child: child,
-                        );
-                      },
-                      transitionDuration: const Duration(
-                        milliseconds: 200,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              _BottomNavButton(
+                index: 0,
+                selectedIndex: widget.currentIndex,
+                icon: CustomIcons.home,
+                onTap: widget.setIndex,
+              ),
+              _BottomNavButton(
+                index: 1,
+                selectedIndex: widget.currentIndex,
+                icon: CustomIcons.circle,
+                onTap: widget.setIndex,
+              ),
+              Expanded(
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      PageRouteBuilder<dynamic>(
+                        pageBuilder: (
+                          BuildContext context,
+                          Animation<double> animation,
+                          Animation<double> secondaryAnimation,
+                        ) {
+                          //FIXME: This address should be replaced with the Junto Collective address once it is created.
+                          return const JuntoCreate(
+                            'collective',
+                            address: 'd7f5186b-0281-4723-b5d4-1ff24eb0beb2',
+                          );
+                        },
+                        transitionsBuilder: (
+                          BuildContext context,
+                          Animation<double> animation,
+                          Animation<double> secondaryAnimation,
+                          Widget child,
+                        ) {
+                          return FadeTransition(
+                            opacity: animation,
+                            child: child,
+                          );
+                        },
+                        transitionDuration: const Duration(
+                          milliseconds: 200,
+                        ),
                       ),
-                    ),
-                  );
-                },
-                child: const Icon(
-                  CustomIcons.lotus,
-                  color: JuntoPalette.juntoGreyLight,
+                    );
+                  },
+                  child: const Icon(
+                    CustomIcons.lotus,
+                    color: JuntoPalette.juntoGreyLight,
+                  ),
                 ),
               ),
-            ),
-            _BottomNavButton(
-              index: 2,
-              selectedIndex: widget.currentIndex,
-              icon: CustomIcons.triangle,
-              onTap: widget.setIndex,
-            ),
-            _BottomNavButton(
-              index: 3,
-              selectedIndex: widget.currentIndex,
-              icon: CustomIcons.profile,
-              onTap: widget.setIndex,
-            ),
-          ],
+              _BottomNavButton(
+                index: 2,
+                selectedIndex: widget.currentIndex,
+                icon: CustomIcons.triangle,
+                onTap: widget.setIndex,
+              ),
+              _BottomNavButton(
+                index: 3,
+                selectedIndex: widget.currentIndex,
+                icon: CustomIcons.profile,
+                onTap: widget.setIndex,
+              ),
+            ],
+          ),
         ),
       ),
     );
