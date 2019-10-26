@@ -6,7 +6,7 @@ import 'package:junto_beta_mobile/screens/packs/pack_open/pack_drawer.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open_appbar.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open_private.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open_public.dart';
-import 'package:junto_beta_mobile/widgets/create_fab/create_fab.dart';
+import 'package:junto_beta_mobile/widgets/create_fab.dart';
 
 class PackOpen extends StatefulWidget {
   const PackOpen({
@@ -63,16 +63,8 @@ class PackOpenState extends State<PackOpen> {
               child: child,
             );
           },
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CreateFAB(
-              sphereHandle: widget.pack.groupData.name,
-              isVisible: _isVisible,
-              address: widget.pack.address,
-            ),
-          ),
+          child: CreateFAB(expressionLayer: 'my pack'),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         endDrawer: PackDrawer(
           pack: widget.pack,
         ),
@@ -99,8 +91,8 @@ class PackOpenState extends State<PackOpen> {
                         padding: const EdgeInsets.only(bottom: 20),
                         width: MediaQuery.of(context).size.width * .5,
                         child: Icon(
-                          CustomIcons.half_lotus,
-                          size: 17,
+                          CustomIcons.lotus,
+                          size: 20,
                           color: publicActive
                               ? const Color(0xff333333)
                               : const Color(0xff999999),
@@ -114,15 +106,12 @@ class PackOpenState extends State<PackOpen> {
                       child: Container(
                         padding: const EdgeInsets.only(bottom: 20),
                         width: MediaQuery.of(context).size.width * .5,
-                        child: RotatedBox(
-                          quarterTurns: 2,
-                          child: Icon(
-                            CustomIcons.triangle,
-                            size: 17,
-                            color: publicActive
-                                ? const Color(0xff999999)
-                                : const Color(0xff333333),
-                          ),
+                        child: Icon(
+                          CustomIcons.packs,
+                          size: 17,
+                          color: publicActive
+                              ? const Color(0xff999999)
+                              : const Color(0xff333333),
                         ),
                       ),
                     )

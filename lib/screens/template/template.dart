@@ -4,7 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
-import 'package:junto_beta_mobile/screens/collective/filter_fab.dart';
+import 'package:junto_beta_mobile/widgets/create_fab.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspectives.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/den/den_drawer/den_drawer.dart';
@@ -12,8 +12,8 @@ import 'package:junto_beta_mobile/screens/packs/packs.dart';
 import 'package:junto_beta_mobile/screens/spheres/spheres.dart';
 import 'package:junto_beta_mobile/widgets/appbar.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
-import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/screens/template/perspectives.dart';
 
 // This class is a template screen that contains the navbar, bottom bar,
 // and screen (collective, spheres, pack, etc) depending on condition.
@@ -30,7 +30,7 @@ class JuntoTemplate extends StatefulWidget {
   State<StatefulWidget> createState() => JuntoTemplateState();
 }
 
-class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
+class JuntoTemplateState extends State<JuntoTemplate> {
   final GlobalKey<ScaffoldState> _juntoTemplateKey = GlobalKey<ScaffoldState>();
 
   // Default values for collective screen / JUNTO perspective - change dynamically.
@@ -39,33 +39,16 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
   String _appbarTitle = 'JUNTO';
 
   ValueNotifier<int> _bottomNavIndex;
+  final controller = ScrollController();
+  var _dx = 0.0;
+  var _scrollDirection;
 
-  //
-  final List<String> _channels = <String>[];
-  TextEditingController _channelController;
-
-  // Controller for scroll
-  ScrollController _hideFABController;
-  ValueNotifier<bool> _isVisible;
   UserProfile profile;
 
   @override
   void initState() {
     super.initState();
-    _hideFABController = ScrollController();
     _bottomNavIndex = ValueNotifier<int>(0);
-    _channelController = TextEditingController();
-    _isVisible = ValueNotifier<bool>(true);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _hideFABController.addListener(_onScrollingHasChanged);
-      _hideFABController.position.isScrollingNotifier.addListener(
-        _onScrollingHasChanged,
-      );
-    });
-  }
-
-  void _onScrollingHasChanged() {
-    super.hideFabOnScroll(_hideFABController, _isVisible);
   }
 
   @override
@@ -78,6 +61,7 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
     final UserService _userProvider = Provider.of<UserService>(context);
     try {
       final UserProfile _profile = await _userProvider.readLocalUser();
+      print(_profile);
       setState(() {
         profile = _profile;
       });
@@ -87,60 +71,129 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
   }
 
   @override
-  void dispose() {
-    _hideFABController.removeListener(_onScrollingHasChanged);
-    _hideFABController.dispose();
-    _channelController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Stack(children: <Widget>[
-      Scaffold(
-        key: _juntoTemplateKey,
-        backgroundColor: Colors.white,
-        appBar: JuntoAppBar(
-          juntoAppBarTitle: _appbarTitle,
-        ),
-        floatingActionButton: _currentScreen == 'collective'
-            ? CollectiveFilterFAB(
-                isVisible: _isVisible,
-                toggleFilter: _buildFilterChannelModal,
-              )
-            : null,
-        // only enable drawer if current screen is collective
-        drawer: _currentScreen == 'collective'
-            ? WillPopScope(
-                onWillPop: () async {
-                  return false;
+      JuntoPerspectives(changePerspective: _changePerspective),
+      GestureDetector(
+        onTap: () {
+          print('yo');
+        },
+        onHorizontalDragUpdate: (DragUpdateDetails details) {
+          // only enable drag on collective screen
+          if (_currentScreen == 'collective') {
+            if (_dx == 0.0 &&
+                details.globalPosition.dy != 0.0 &&
+                details.delta.direction > 0) {
+              return;
+            } else {
+              if (details.globalPosition.dx > 0 &&
+                  details.globalPosition.dx <
+                      MediaQuery.of(context).size.width * .9) {
+                setState(() {
+                  _dx = details.globalPosition.dx;
+                  if (details.delta.direction > 0) {
+                    setState(() {
+                      _scrollDirection = 'left';
+                    });
+                  } else if (details.delta.direction < 0) {
+                    setState(() {
+                      _scrollDirection = 'right';
+                    });
+                  }
+                });
+              }
+            }
+          }
+        },
+        onHorizontalDragEnd: (DragEndDetails details) {
+          if (_scrollDirection == 'right') {
+            if (_dx >= MediaQuery.of(context).size.width * .2) {
+              setState(() {
+                _dx = MediaQuery.of(context).size.width * .9;
+              });
+            } else if (_dx < MediaQuery.of(context).size.width * .2) {
+              _dx = 0.0;
+            }
+          } else if (_scrollDirection == 'left') {
+            if (_dx < MediaQuery.of(context).size.width * .7) {
+              setState(() {
+                _dx = 0.0;
+              });
+            } else if (_dx >= MediaQuery.of(context).size.width * .7) {
+              setState(() {
+                _dx = MediaQuery.of(context).size.width * .9;
+              });
+            }
+          }
+        },
+        child: Transform.translate(
+          offset: Offset(_dx, 0.0),
+          child: Stack(children: [
+            Scaffold(
+              key: _juntoTemplateKey,
+              backgroundColor: Colors.white,
+              appBar: JuntoAppBar(
+                appContext: _currentScreen,
+                openPerspectivesDrawer: () {
+                  if (_dx == 0) {
+                    setState(() {
+                      _dx = MediaQuery.of(context).size.width * .9;
+                    });
+                  }
                 },
-                child: Perspectives(
-                  changePerspective: _changePerspective,
-                  profile: profile,
-                ),
-              )
-            : null,
-        // only enable end drawer if current screen is den
-        endDrawer: _currentScreen == 'den'
-            ? WillPopScope(
-                onWillPop: () async {
-                  return false;
+                juntoAppBarTitle: _appbarTitle,
+              ),
+              floatingActionButton:
+                  const CreateFAB(expressionLayer: 'collective'),
+              // only enable drawer if current screen is collective
+              // drawer: _currentScreen == 'collective'
+              //     ? WillPopScope(
+              //         onWillPop: () async {
+              //           return false;
+              //         },
+              //         child: Perspectives(
+              //           changePerspective: _changePerspective,
+              //           profile: profile,
+              //         ),
+              //       )
+              //     : null,
+              // only enable end drawer if current screen is den
+              endDrawer: _currentScreen == 'den'
+                  ? WillPopScope(
+                      onWillPop: () async {
+                        return false;
+                      },
+                      child: DenDrawer())
+                  : null,
+
+              // dynamically render body
+              body: _renderBody(),
+
+              bottomNavigationBar: ValueListenableBuilder<int>(
+                valueListenable: _bottomNavIndex,
+                builder: (BuildContext context, int index, _) {
+                  return BottomNav(
+                    currentIndex: index,
+                    setIndex: _switchScreen,
+                  );
                 },
-                child: DenDrawer())
-            : null,
-
-        // dynamically render body
-        body: _renderBody(),
-
-        bottomNavigationBar: ValueListenableBuilder<int>(
-          valueListenable: _bottomNavIndex,
-          builder: (BuildContext context, int index, _) {
-            return BottomNav(
-              currentIndex: index,
-              setIndex: _switchScreen,
-            );
-          },
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                if (_dx == MediaQuery.of(context).size.width * .9) {
+                  setState(() {
+                    _dx = 0;
+                  });
+                }
+              },
+              child: _dx > 0
+                  ? Container(
+                      color: Colors.white.withOpacity(.5),
+                    )
+                  : const SizedBox(),
+            )
+          ]),
         ),
       ),
     ]);
@@ -151,8 +204,8 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
     switch (_currentScreen) {
       case 'collective':
         return JuntoCollective(
-            controller: _hideFABController,
-            currentPerspective: _currentPerspective);
+            currentPerspective: _currentPerspective, controller: controller);
+
       case 'spheres':
         return JuntoSpheres(
           userProfile: profile,
@@ -203,102 +256,7 @@ class JuntoTemplateState extends State<JuntoTemplate> with HideFab {
       () {
         _currentPerspective = perspective;
         _appbarTitle = perspective;
-      },
-    );
-  }
-
-  // Build bottom modal to filter by channel
-  void _buildFilterChannelModal(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) => Container(
-        color: const Color(0xff737373),
-        child: Container(
-          height: 280,
-          padding: const EdgeInsets.all(10),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(10),
-              topRight: Radius.circular(10),
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
-                    width: MediaQuery.of(context).size.width - 60,
-                    decoration: const BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Color(0xffeeeeee),
-                          width: .75,
-                        ),
-                      ),
-                    ),
-                    child: TextField(
-                      controller: _channelController,
-                      buildCounter: (
-                        BuildContext context, {
-                        int currentLength,
-                        int maxLength,
-                        bool isFocused,
-                      }) =>
-                          null,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Filter by channel',
-                        hintStyle: TextStyle(
-                            color: Color(0xff999999),
-                            fontSize: 17,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      cursorColor: const Color(0xff333333),
-                      cursorWidth: 2,
-                      maxLines: null,
-                      style: const TextStyle(
-                          color: Color(0xff333333),
-                          fontSize: 17,
-                          fontWeight: FontWeight.w500),
-                      maxLength: 80,
-                      textInputAction: TextInputAction.done,
-                    ),
-                  ),
-                  Container(
-                    child: Icon(Icons.add, size: 20),
-                  )
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  // Update the list of channels in state
-  //ignore: unused_element
-  void _updateChannels(StateSetter updateState, String channel) {
-    updateState(
-      () {
-        if (channel != '') {
-          _channels.add(channel);
-          print(_channels);
-          _channelController.text = '';
-        }
-      },
-    );
-  }
-
-  // Remove a channel from the list of channels in state
-  //ignore: unused_element
-  void _removeChannel(StateSetter updateState, String channel) {
-    updateState(
-      () {
-        _channels.remove(channel);
+        _dx = 0;
       },
     );
   }

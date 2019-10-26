@@ -39,71 +39,50 @@ class BottomNavState extends State<BottomNav> {
             ),
           ),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            // crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               _BottomNavButton(
                 index: 0,
                 selectedIndex: widget.currentIndex,
-                icon: CustomIcons.home,
+                icon: CustomIcons.lotus,
                 onTap: widget.setIndex,
               ),
               _BottomNavButton(
                 index: 1,
                 selectedIndex: widget.currentIndex,
-                icon: CustomIcons.circle,
+                icon: CustomIcons.spheres,
                 onTap: widget.setIndex,
-              ),
-              Expanded(
-                child: InkWell(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      PageRouteBuilder<dynamic>(
-                        pageBuilder: (
-                          BuildContext context,
-                          Animation<double> animation,
-                          Animation<double> secondaryAnimation,
-                        ) {
-                          //FIXME: This address should be replaced with the Junto Collective address once it is created.
-                          return const JuntoCreate(
-                            'collective',
-                            address: 'd7f5186b-0281-4723-b5d4-1ff24eb0beb2',
-                          );
-                        },
-                        transitionsBuilder: (
-                          BuildContext context,
-                          Animation<double> animation,
-                          Animation<double> secondaryAnimation,
-                          Widget child,
-                        ) {
-                          return FadeTransition(
-                            opacity: animation,
-                            child: child,
-                          );
-                        },
-                        transitionDuration: const Duration(
-                          milliseconds: 200,
-                        ),
-                      ),
-                    );
-                  },
-                  child: const Icon(
-                    CustomIcons.lotus,
-                    color: JuntoPalette.juntoGreyLight,
-                  ),
-                ),
               ),
               _BottomNavButton(
                 index: 2,
                 selectedIndex: widget.currentIndex,
-                icon: CustomIcons.triangle,
+                icon: CustomIcons.packs,
                 onTap: widget.setIndex,
               ),
-              _BottomNavButton(
-                index: 3,
-                selectedIndex: widget.currentIndex,
-                icon: CustomIcons.profile,
-                onTap: widget.setIndex,
+              GestureDetector(
+                onTap: () => widget.setIndex(3),
+                child: Container(
+                  width: MediaQuery.of(context).size.width * .25,
+                  height: 48,
+                  color: Colors.transparent,
+                  alignment: Alignment.center,
+                  child: ClipOval(
+                    child: Image.asset(
+                      'assets/images/junto-mobile__eric.png',
+                      height: 30.0,
+                      width: 30.0,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
               ),
+
+              // _BottomNavButton(
+              //   index: 3,
+              //   selectedIndex: widget.currentIndex,
+              //   icon: CustomIcons.profile,
+              //   onTap: widget.setIndex,
+              // ),
             ],
           ),
         ),
@@ -128,9 +107,12 @@ class _BottomNavButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: InkWell(
-        onTap: () => onTap(index),
+    return GestureDetector(
+      onTap: () => onTap(index),
+      child: Container(
+        width: MediaQuery.of(context).size.width * .25,
+        height: 48,
+        color: Colors.transparent,
         child: RotatedBox(
           quarterTurns: icon == CustomIcons.triangle ? 2 : 0,
           child: AnimatedSwitcher(

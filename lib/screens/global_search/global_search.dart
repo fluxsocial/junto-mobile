@@ -1,12 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/screens/global_search/member_preview/member_preview.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
-import 'package:provider/provider.dart';
 
 class GlobalSearch extends StatefulWidget {
   @override
@@ -15,7 +11,7 @@ class GlobalSearch extends StatefulWidget {
 
 class GlobalSearchState extends State<GlobalSearch> {
   String searchedTerm;
-  Timer _delay;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +43,7 @@ class GlobalSearchState extends State<GlobalSearch> {
                 child: Transform.translate(
                   offset: const Offset(0, 7),
                   child: TextField(
-                    onChanged: onTextChanged,
+                    // onChanged: onTextChanged,
                     buildCounter: (
                       BuildContext context, {
                       int currentLength,
@@ -91,52 +87,54 @@ class GlobalSearchState extends State<GlobalSearch> {
               ],
             ),
           ),
-          Expanded(
-            child: FutureBuilder<List<UserProfile>>(
-              future: Provider.of<SearchProvider>(context)
-                  .searchMember(searchedTerm),
-              builder: (
-                BuildContext context,
-                AsyncSnapshot<List<UserProfile>> snapshot,
-              ) {
-                if (!snapshot.hasData) {
-                  return Container();
-                }
-                if (snapshot.hasError) {
-                  return Container(color: Colors.red);
-                }
+          // Expanded(
+          //   child: FutureBuilder<List<UserProfile>>(
+          //     future: Provider.of<SearchProvider>(context)
+          //         .searchMember(searchedTerm),
+          //     builder: (
+          //       BuildContext context,
+          //       AsyncSnapshot<List<UserProfile>> snapshot,
+          //     ) {
+          //       if (!snapshot.hasData) {
+          //         return Container();
+          //       }
+          //       if (snapshot.hasError) {
+          //         return Container(color: Colors.red);
+          //       }
 
-                final List<UserProfile> items = snapshot.data;
-                if (items.isEmpty) {
-                  return Container(
-                    child: const Text('Is Empty'),
-                  );
-                }
+          //       final List<UserProfile> items = snapshot.data;
+          //       if (items.isEmpty) {
+          //         return Container(
+          //           child: const Text('Is Empty'),
+          //         );
+          //       }
 
-                return ListView.builder(
-                  itemCount: items.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return SearchMemberPreview(
-                      member: items[index],
-                    );
-                  },
-                );
-              },
-            ),
-          ),
+          //       return ListView.builder(
+          //         itemCount: items.length,
+          //         itemBuilder: (BuildContext context, int index) {
+          //           return SearchMemberPreview(
+          //             member: items[index],
+          //           );
+          //         },
+          //       );
+          //     },
+          //   ),
+          // ),
+
+
         ],
       ),
     );
   }
 
-  void onTextChanged(String value) {
-    _delay?.cancel();
-    _delay = Timer(const Duration(milliseconds: 500), () {
-      setState(() {
-        searchedTerm = value;
-      });
-    });
-  }
+  // void onTextChanged(String value) {
+  //   _delay?.cancel();
+  //   _delay = Timer(const Duration(milliseconds: 500), () {
+  //     setState(() {
+  //       searchedTerm = value;
+  //     });
+  //   });
+  // }
 }
 
 // Save search term, wait for 1 second, after 1 sec give the treamBuilder the stream with the entered/saved search term.

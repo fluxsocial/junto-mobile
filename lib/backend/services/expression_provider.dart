@@ -197,7 +197,8 @@ List<CentralizedExpressionResponse> sampleExpressions =
       username: 'Nash',
     ),
     expressionData: CentralizedLongFormExpression(
-      title: 'Welcome to Junto!',
+      // title: 'Welcome to Junto!',
+      title: '',
       body: "Hey! I'm Nash. Over the past few weeks, I've been working with"
           " Eric and the rest of the Junto team to prepare for Junto's "
           'upcoming release. I also just finished a project for the '

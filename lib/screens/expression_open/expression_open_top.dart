@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
-import 'package:junto_beta_mobile/widgets/expression_action_items/expression_action_items.dart';
+import 'package:junto_beta_mobile/widgets/expression_action_items.dart';
 
 class ExpressionOpenTop extends StatelessWidget {
   const ExpressionOpenTop({Key key, this.expression}) : super(key: key);
@@ -55,16 +54,22 @@ class ExpressionOpenTop extends StatelessWidget {
                     fit: BoxFit.cover,
                   ),
                 ),
+                const SizedBox(width: 10),
 
                 // profile name and handle
                 Container(
-                  margin: const EdgeInsets.only(left: 10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(firstName + ' ' + lastName,
-                          style: JuntoStyles.title),
-                      Text(username ?? '', style: JuntoStyles.body),
+                      Text(username ?? '', style: JuntoStyles.title),
+                      Text(
+                        firstName + ' ' + lastName,
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: const Color(0xff555555),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -73,10 +78,12 @@ class ExpressionOpenTop extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
+              // FIXME: Refactor to widgets folder
               ExpressionActionItems().buildExpressionActionItems(context);
             },
             child: const Icon(
-              CustomIcons.more,
+              Icons.keyboard_arrow_down,
+              color: Color(0xff555555),
               size: 20,
             ),
           ),

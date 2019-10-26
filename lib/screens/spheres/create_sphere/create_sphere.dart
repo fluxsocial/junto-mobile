@@ -78,7 +78,7 @@ class _CreateSphereState extends State<CreateSphere>
     final CentralizedSphere sphere = CentralizedSphere(
       name: sphereName,
       description: sphereDescription,
-      facilitators: <String>[
+      facilitators: <String>[ 
         _profile.address,
       ],
       photo: '',

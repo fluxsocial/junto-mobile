@@ -18,9 +18,13 @@ import 'package:provider/provider.dart';
 class JuntoAppBar extends StatefulWidget implements PreferredSizeWidget {
   const JuntoAppBar({
     Key key,
+    this.appContext,
+    this.openPerspectivesDrawer,
     @required this.juntoAppBarTitle,
   }) : super(key: key);
 
+  final String appContext;
+  final Function openPerspectivesDrawer;
   final String juntoAppBarTitle;
 
   @override
@@ -103,110 +107,64 @@ class _JuntoAppBarState extends State<JuntoAppBar>
           children: <Widget>[
             Builder(
               builder: (BuildContext context) {
-                return Row(
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: () {
-                        Scaffold.of(context).openDrawer();
-                      },
-                      child: Image.asset('assets/images/junto-mobile__logo.png',
+                return GestureDetector(
+                  onTap: () {
+                    // Scaffold.of(context).openDrawer();
+                    if (widget.appContext == 'collective') {
+                      widget.openPerspectivesDrawer();
+                    } else {
+                      return;
+                    }
+                  },
+                  child: Row(
+                    children: <Widget>[
+                      Image.asset('assets/images/junto-mobile__logo.png',
                           height: 22.0, width: 22.0),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        showModalBottomSheet(
-                          isScrollControlled: true,
-                          context: context,
-                          builder: (BuildContext context) => Container(
-                            color: const Color(0xff737373),
-                            child: Container(
-                              height: MediaQuery.of(context).size.height * .9,
-                              padding: const EdgeInsets.all(10),
-                              decoration: const BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  topRight: Radius.circular(10),
-                                ),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  const SizedBox(height: 10),
-                                  Row(
-                                    children: const <Widget>[
-                                      Text(
-                                        'Edit Perspective',
-                                        style: TextStyle(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w700,
-                                          color: Color(0xff333333),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 10),
-                                  const Text(
-                                    'This modal will enable you to edit your'
-                                    ' perspective. This includes '
-                                    'adding/removing members, changing'
-                                    ' the name, deleting the perspective,'
-                                    ' and so on. You will also be able to '
-                                    'view the list of members, etc.',
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                      child: Container(
+                      Container(
                         margin: const EdgeInsets.only(left: 7.5),
                         child: Text(
                           widget.juntoAppBarTitle,
                           style: JuntoStyles.appbarTitle,
                         ),
                       ),
-                    )
-                  ],
+                      const SizedBox(width: 2.5),
+                      widget.appContext == 'collective'
+                          ? Icon(
+                              Icons.keyboard_arrow_down,
+                              size: 17,
+                              color: const Color(0xff999999),
+                            )
+                          : SizedBox()
+                    ],
+                  ),
                 );
               },
             ),
             Row(
               children: <Widget>[
-                FlatButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute<dynamic>(
-                        builder: (BuildContext context) => GlobalSearch(),
-                      ),
+                GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet(
+                      isScrollControlled: true,
+                      context: context,
+                      builder: (BuildContext context) {
+                        return ListenableProvider<
+                            ValueNotifier<SelectedUsers>>.value(
+                          value: _users,
+                          child: _SearchBottomSheet(
+                            results: queriedUsers,
+                            onProfileSelected: _onUserSelected,
+                            onTextChange: _onTextChange,
+                          ),
+                        );
+                      },
                     );
                   },
-                  child: GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet(
-                        isScrollControlled: true,
-                        context: context,
-                        builder: (BuildContext context) {
-                          return ListenableProvider<
-                              ValueNotifier<SelectedUsers>>.value(
-                            value: _users,
-                            child: _SearchBottomSheet(
-                              results: queriedUsers,
-                              onProfileSelected: _onUserSelected,
-                              onTextChange: _onTextChange,
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    child: Container(
-                      child: Icon(
-                        Icons.search,
-                        color: JuntoPalette.juntoSleek,
-                        size: JuntoStyles.appbarIcon,
-                      ),
+                  child: Container(
+                    child: Icon(
+                      Icons.search,
+                      color: JuntoPalette.juntoSleek,
+                      size: JuntoStyles.appbarIcon,
                     ),
                   ),
                 ),
@@ -292,6 +250,23 @@ class _SearchBottomSheet extends StatefulWidget {
 }
 
 class __SearchBottomSheetState extends State<_SearchBottomSheet> {
+  PageController pageController = PageController(
+    initialPage: 0,
+  );
+
+  bool searchChannelsPage = true;
+  bool searchMembersPage = false;
+  bool searchSpheresPage = false;
+
+  FocusNode textFieldFocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    pageController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final ValueNotifier<SelectedUsers> _selectedUsers =
@@ -314,32 +289,10 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
           children: <Widget>[
             const SizedBox(height: 10),
             Row(
-              children: const <Widget>[
-                Text(
-                  'Members',
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xff333333),
-                  ),
-                ),
-                SizedBox(width: 25),
-                Text(
-                  'Spheres',
-                  style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xff999999)),
-                )
-              ],
-            ),
-            const SizedBox(height: 10),
-            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
-                  width: MediaQuery.of(context).size.width - 20,
+                  width: MediaQuery.of(context).size.width * .84,
                   decoration: const BoxDecoration(
                     border: Border(
                       bottom: BorderSide(
@@ -349,6 +302,7 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                     ),
                   ),
                   child: TextField(
+                    focusNode: textFieldFocusNode,
                     buildCounter: (
                       BuildContext context, {
                       int currentLength,
@@ -358,7 +312,11 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                         null,
                     decoration: const InputDecoration(
                       border: InputBorder.none,
-                      hintText: 'Search members',
+                      icon: Icon(
+                        Icons.search,
+                        size: 20,
+                        color: Color(0xff999999),
+                      ),
                       hintStyle: TextStyle(
                           color: Color(0xff999999),
                           fontSize: 17,
@@ -376,32 +334,153 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                     onChanged: widget.onTextChange,
                   ),
                 ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Icon(
+                    Icons.keyboard_arrow_down,
+                    size: 24,
+                    color: Color(0xff999999),
+                  ),
+                )
               ],
             ),
             const SizedBox(height: 10),
-            ValueListenableBuilder<List<UserProfile>>(
-              valueListenable: widget.results,
-              builder: (BuildContext context, List<UserProfile> query, _) {
-                return ListView.builder(
-                  itemCount: query.length,
-                  shrinkWrap: true,
-                  itemBuilder: (BuildContext context, int index) {
-                    final UserProfile _user = query[index];
-                    return ValueListenableBuilder<SelectedUsers>(
-                      valueListenable: _selectedUsers,
-                      builder: (BuildContext context,
-                          SelectedUsers selectedUser, _) {
-                        return UserPreview(
-                          onTap: widget.onProfileSelected,
-                          userProfile: _user,
-                          isSelected: selectedUser.selection.contains(_user),
-                        );
-                      },
-                    );
+            Row(
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () {
+                    pageController.jumpToPage(0);
                   },
-                );
-              },
+                  child: Text(
+                    'CHANNELS',
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        color: searchChannelsPage
+                            ? const Color(0xff333333)
+                            : const Color(0xff999999)),
+                  ),
+                ),
+                const SizedBox(width: 25),
+                GestureDetector(
+                  onTap: () {
+                    pageController.jumpToPage(1);
+                  },
+                  child: Text(
+                    'MEMBERS',
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        color: searchMembersPage
+                            ? const Color(0xff333333)
+                            : const Color(0xff999999)),
+                  ),
+                ),
+                const SizedBox(width: 25),
+                GestureDetector(
+                  onTap: () {
+                    pageController.jumpToPage(2);
+                  },
+                  child: Text(
+                    'SPHERES',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      color: searchSpheresPage
+                          ? const Color(0xff333333)
+                          : const Color(0xff999999),
+                    ),
+                  ),
+                )
+              ],
             ),
+            const SizedBox(height: 10),
+            Expanded(
+              child: PageView(
+                controller: pageController,
+                onPageChanged: (index) {
+                  if (index == 0) {
+                    setState(() {
+                      searchChannelsPage = true;
+                      searchMembersPage = false;
+                      searchSpheresPage = false;
+                    });
+                  } else if (index == 1) {
+                    setState(() {
+                      searchChannelsPage = false;
+                      searchMembersPage = true;
+                      searchSpheresPage = false;
+                    });
+                  } else if (index == 2) {
+                    setState(() {
+                      searchChannelsPage = false;
+                      searchMembersPage = false;
+                      searchSpheresPage = true;
+                    });
+                  }
+                },
+                children: <Widget>[
+                  // search members
+                  Column(
+                    children: <Widget>[
+                      Expanded(
+                        child: ListView(),
+                      )
+                    ],
+                  ),
+                  // search members
+                  Column(
+                    children: <Widget>[
+                      Expanded(
+                        child: ListView(),
+                      )
+                    ],
+                  ),
+
+                  // Column(
+                  //   children: <Widget>[
+                  //     const SizedBox(height: 10),
+                  //     ValueListenableBuilder<List<UserProfile>>(
+                  //       valueListenable: widget.results,
+                  //       builder:
+                  //           (BuildContext context, List<UserProfile> query, _) {
+                  //         return ListView.builder(
+                  //           itemCount: query.length,
+                  //           shrinkWrap: true,
+                  //           itemBuilder: (BuildContext context, int index) {
+                  //             final UserProfile _user = query[index];
+                  //             return ValueListenableBuilder<SelectedUsers>(
+                  //               valueListenable: _selectedUsers,
+                  //               builder: (BuildContext context,
+                  //                   SelectedUsers selectedUser, _) {
+                  //                 return UserPreview(
+                  //                   onTap: widget.onProfileSelected,
+                  //                   userProfile: _user,
+                  //                   isSelected:
+                  //                       selectedUser.selection.contains(_user),
+                  //                 );
+                  //               },
+                  //             );
+                  //           },
+                  //         );
+                  //       },
+                  //     )
+                  //   ],
+                  // ),
+
+                  // search spheres
+                  Column(
+                    children: <Widget>[
+                      Expanded(
+                        child: ListView(),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            )
           ],
         ),
       ),

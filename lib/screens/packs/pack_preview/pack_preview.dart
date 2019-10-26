@@ -31,7 +31,7 @@ class PackPreview extends StatelessWidget {
           children: <Widget>[
             ClipOval(
               child: Image.asset(
-                'assets/images/junto-mobile__logo.png',
+                'assets/images/junto-mobile__eric.png',
                 height: 45.0,
                 width: 45.0,
                 fit: BoxFit.cover,
@@ -55,7 +55,7 @@ class PackPreview extends StatelessWidget {
                   Text(group.creator,
                       textAlign: TextAlign.start, style: JuntoStyles.body),
                 ],
-              ),
+              ),  
             )
           ],
         ),

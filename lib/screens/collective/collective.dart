@@ -9,13 +9,13 @@ import 'package:provider/provider.dart';
 /// This screen shows a list of public expressions that can be filtered
 /// by channel or perspective
 class JuntoCollective extends StatefulWidget {
-  const JuntoCollective({
+  JuntoCollective({
     Key key,
     this.currentPerspective,
     this.controller,
   }) : super(key: key);
 
-  final String currentPerspective;
+  var currentPerspective;
 
   /// This controller is used to detect the scroll of the ListView
   /// to render the FAB dynamically
@@ -26,14 +26,16 @@ class JuntoCollective extends StatefulWidget {
 }
 
 class JuntoCollectiveState extends State<JuntoCollective> {
-  String currentScreen = 'collective';
+  var _perspective;
   bool isLoading = false;
   List<CentralizedExpressionResponse> initialData =
       <CentralizedExpressionResponse>[];
 
   @override
   void initState() {
-    super.initState();
+    super.initState();    
+    print('init');
+    widget.currentPerspective = 'collective';
 
     widget.controller.addListener(scollListener);
   }
@@ -84,6 +86,22 @@ class JuntoCollectiveState extends State<JuntoCollective> {
     );
   }
 
+  _displayDegrees() {
+    if (widget.currentPerspective == 'Degrees of separation') {
+      return DegreesOfSeparation(
+        _changeDegree,
+        _oneDegreeColor,
+        _twoDegreesColor,
+        _threeDegreesColor,
+        _fourDegreesColor,
+        _fiveDegreesColor,
+        _sixDegreesColor,
+      );
+    } else {
+      return SizedBox();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -93,17 +111,7 @@ class JuntoCollectiveState extends State<JuntoCollective> {
         children: <Widget>[
           /// Degrees of Separation Widget rendered only when on the 'Degrees of separation'
           /// perspective
-          widget.currentPerspective == 'Degrees of separation'
-              ? DegreesOfSeparation(
-                  _changeDegree,
-                  _oneDegreeColor,
-                  _twoDegreesColor,
-                  _threeDegreesColor,
-                  _fourDegreesColor,
-                  _fiveDegreesColor,
-                  _sixDegreesColor,
-                )
-              : const SizedBox(),
+          _displayDegrees(),
 
           for (int index = 0; index < initialData.length + 1; index++)
             if (index == initialData.length)

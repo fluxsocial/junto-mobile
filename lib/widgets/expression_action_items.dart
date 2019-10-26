@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-
+//FIXME: Refactor into Stateless Widget
 // This component is used in ExpressionPreview and ExpressionOpen
 // as the 'more' icon is pressed to view the action items
 // available for each expression
-class MemberActionItems {
-  void buildMemberActionItems(BuildContext context) {
+class ExpressionActionItems {
+  void buildExpressionActionItems(BuildContext context) {
+
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) => Container(
@@ -40,24 +41,24 @@ class MemberActionItems {
                     ],
                   ),
                   const SizedBox(height: 10),
-                  // ListTile(
-                  //   contentPadding: const EdgeInsets.all(0),
-                  //   title: Row(
-                  //     children: <Widget>[
-                  //       Icon(
-                  //         Icons.visibility_off,
-                  //         size: 17,
-                  //         color: const Color(0xff555555),
-                  //       ),
-                  //       const SizedBox(width: 15),
-                  //       Text(
-                  //         'Hide Expression',
-                  //         style: TextStyle(
-                  //             fontWeight: FontWeight.w500, fontSize: 17),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
+                  ListTile(
+                    contentPadding: const EdgeInsets.all(0),
+                    title: Row(
+                      children: <Widget>[
+                        Icon(
+                          Icons.visibility_off,
+                          size: 17,
+                          color: const Color(0xff555555),
+                        ),
+                        const SizedBox(width: 15),
+                        Text(
+                          'Hide Expression',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500, fontSize: 17),
+                        ),
+                      ],
+                    ),
+                  ),
                   ListTile(
                     contentPadding: const EdgeInsets.all(0),
                     onTap: () {},

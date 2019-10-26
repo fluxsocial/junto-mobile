@@ -9,6 +9,7 @@ import 'package:async/async.dart' show AsyncMemoizer;
 
 // This class renders the screen of packs a user belongs to
 class JuntoPacks extends StatefulWidget {
+
   @override
   State<StatefulWidget> createState() => JuntoPacksState();
 }
@@ -72,8 +73,6 @@ class JuntoPacksState extends State<JuntoPacks> with ListDistinct {
                   .where((Group group) => group.groupType == 'Pack')
                   .toList();
           return ListView(
-            shrinkWrap: true,
-            physics: const ClampingScrollPhysics(),
             children: <Widget>[
               for (Group group in userGroups)
                 PackPreview(

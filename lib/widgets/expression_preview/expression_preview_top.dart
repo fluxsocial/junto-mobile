@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
-import 'package:junto_beta_mobile/app/styles.dart';
-import 'package:junto_beta_mobile/widgets/expression_action_items/expression_action_items.dart';
+import 'package:junto_beta_mobile/widgets/expression_action_items.dart';
 
 class ExpressionPreviewTop extends StatelessWidget {
   const ExpressionPreviewTop({
@@ -22,6 +21,7 @@ class ExpressionPreviewTop extends StatelessWidget {
     //ignore: unused_local_variable
     final String lastName = expression.creator.lastName;
     final String username = expression.creator.username;
+    const String profilePicture = 'assets/images/junto-mobile__eric.png';
 
     return Container(
       padding: const EdgeInsets.symmetric(
@@ -40,11 +40,11 @@ class ExpressionPreviewTop extends StatelessWidget {
                       JuntoMember(
                     profile: UserProfile(
                       address: '',
-                      firstName: 'Eric',
-                      lastName: 'Yang',
+                      firstName: firstName,
+                      lastName: lastName,
                       bio: 'This is a test',
-                      profilePicture: 'assets/images/junto-mobile__logo.png',
-                      username: 'Gmail',
+                      profilePicture: profilePicture,
+                      username: username,
                       verified: false,
                     ),
                   ),
@@ -52,21 +52,20 @@ class ExpressionPreviewTop extends StatelessWidget {
               );
             },
             child: Container(
-              color: Colors.white,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   // profile picture
                   ClipOval(
                     child: Image.asset(
-                      'assets/images/junto-mobile__logo.png',
-                      height: 36.0,
-                      width: 36.0,
+                      profilePicture,
+                      height: 38.0,
+                      width: 38.0,
                       fit: BoxFit.cover,
                     ),
                   ),
+                  const SizedBox(width: 10),
                   Container(
-                    margin: const EdgeInsets.only(left: 7.5),
                     child: Text(
                       username,
                       style: const TextStyle(
@@ -75,19 +74,6 @@ class ExpressionPreviewTop extends StatelessWidget {
                       ),
                     ),
                   )
-
-                  // profile name and handle
-                  // Container(
-                  //   margin: const EdgeInsets.only(left: 10.0),
-                  //   child: Column(
-                  //     crossAxisAlignment: CrossAxisAlignment.start,
-                  //     children: <Widget>[
-                  //       Text(firstName + ' ' + lastName,
-                  //           style: JuntoStyles.title),
-                  //       Text(username, style: JuntoStyles.body)
-                  //     ],
-                  //   ),
-                  // ),
                 ],
               ),
             ),
@@ -96,10 +82,12 @@ class ExpressionPreviewTop extends StatelessWidget {
             children: <Widget>[
               GestureDetector(
                 onTap: () {
+                  //FIXME: Refactor into widget
                   ExpressionActionItems().buildExpressionActionItems(context);
                 },
                 child: const Icon(
-                  CustomIcons.more,
+                  Icons.keyboard_arrow_down,
+                  color: Color(0xff555555),
                   size: 20,
                 ),
               )

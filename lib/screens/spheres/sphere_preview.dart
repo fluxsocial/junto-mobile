@@ -34,7 +34,7 @@ class SpherePreview extends StatelessWidget {
               children: <Widget>[
                 ClipOval(
                   child: Image.asset(
-                    'assets/images/junto-mobile__logo.png',
+                    'assets/images/junto-mobile__stillmind.png',
                     height: 45.0,
                     width: 45.0,
                     fit: BoxFit.cover,
@@ -64,7 +64,7 @@ class SpherePreview extends StatelessWidget {
                         style: JuntoStyles.title,
                       ),
                       Text(
-                        '/s/' + group.groupData.sphereHandle,
+                        's/' + group.groupData.sphereHandle,
                         textAlign: TextAlign.start,
                         style: JuntoStyles.body,
                       )

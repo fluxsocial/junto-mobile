@@ -40,7 +40,7 @@ class SphereOpenAppbar extends StatelessWidget {
             Container(
               margin: const EdgeInsets.only(right: 5),
               child: Text(
-                '/s/' + sphereHandle,
+                's/' + sphereHandle,
                 style: const TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
