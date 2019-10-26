@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/screens/create/create.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 
 // This widget is the bottom navigation on all of the main screens. Members can

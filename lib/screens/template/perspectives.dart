@@ -20,7 +20,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
     return Scaffold(
       body: Container(
           width: MediaQuery.of(context).size.width * .9,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.bottomLeft,
               end: Alignment.topRight,
@@ -115,7 +115,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text(
+                      const Text(
                         'PERSPECTIVES',
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
@@ -161,7 +161,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
     );
   }
 
-  _buildPerspective(String name, String members) {
+  Widget _buildPerspective(String name, String members) {
     return GestureDetector(
       onTap: () {
         widget.changePerspective(name);
@@ -192,7 +192,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                         children: <Widget>[
                           Text(
                             name,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontWeight: FontWeight.w700,
                                 fontSize: 15,
                                 letterSpacing: 1.2,
@@ -378,7 +378,7 @@ class _CreatePerspectiveBottomSheetState
                 const SizedBox(width: 5),
                 Expanded(
                   child: Transform.translate(
-                    offset: Offset(
+                    offset: const Offset(
                       0.0,
                       5,
                     ),
@@ -468,7 +468,7 @@ class _CreatePerspectiveBottomSheetState
               )
             ],
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Expanded(
             child: PageView(
               controller: _searchMembersController,
@@ -501,12 +501,12 @@ class _CreatePerspectiveBottomSheetState
                   ],
                 ),
                 ListView(
-                  children: <Widget>[
+                  children: const <Widget>[
                     // _memberPreview(),
                   ],
                 ),
                 ListView(
-                  children: <Widget>[
+                  children: const <Widget>[
                     // _memberPreview(),
                   ],
                 ),
@@ -518,7 +518,7 @@ class _CreatePerspectiveBottomSheetState
     );
   }
 
-  _memberPreview(photo, username, name) {
+  Widget _memberPreview(String photo, String username, String name) {
     return Container(
       color: Colors.white,
       child: Row(

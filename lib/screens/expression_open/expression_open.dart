@@ -223,8 +223,8 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                           ),
                           const SizedBox(width: 5),
                           commentsVisible == false
-                              ? Icon(Icons.keyboard_arrow_down, size: 17)
-                              : Icon(Icons.keyboard_arrow_up, size: 17)
+                              ? const Icon(Icons.keyboard_arrow_down, size: 17)
+                              : const Icon(Icons.keyboard_arrow_up, size: 17)
                         ],
                       ),
                     ),
@@ -374,7 +374,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                                           color: Color(0xff333333),
                                           fontWeight: FontWeight.w500),
                                     ),
-                                    Icon(Icons.keyboard_arrow_down, size: 14)
+                                    const Icon(Icons.keyboard_arrow_down, size: 14)
                                   ],
                                 ),
                               ),

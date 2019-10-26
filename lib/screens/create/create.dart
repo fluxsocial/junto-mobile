@@ -39,7 +39,7 @@ class JuntoCreateState extends State<JuntoCreate> {
   GlobalKey<CreatePhotoState> _photoFormKey;
   GlobalKey<CreateEventState> _eventKey;
 
-  final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
+  // final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
 
   @override
   void initState() {
@@ -352,13 +352,13 @@ class JuntoCreateState extends State<JuntoCreate> {
                             color: Colors.white,
                             width: MediaQuery.of(context).size.width * .25,
                             child: Column(
-                              children: <Widget>[
-                                const Icon(
+                              children: const <Widget>[
+                                Icon(
                                   CustomIcons.feather,
                                   size: 20,
                                   color: JuntoPalette.juntoBlack,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: 5),
                                 Text(
                                   'shortform',
                                   style: TextStyle(
@@ -377,13 +377,13 @@ class JuntoCreateState extends State<JuntoCreate> {
                             color: Colors.white,
                             width: MediaQuery.of(context).size.width * .25,
                             child: Column(
-                              children: <Widget>[
-                                const Icon(
+                              children: const <Widget>[
+                                Icon(
                                   CustomIcons.camera,
                                   size: 20,
                                   color: JuntoPalette.juntoBlack,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: 5),
                                 Text(
                                   'photo',
                                   style: TextStyle(
@@ -402,13 +402,13 @@ class JuntoCreateState extends State<JuntoCreate> {
                             color: Colors.white,
                             width: MediaQuery.of(context).size.width * .25,
                             child: Column(
-                              children: <Widget>[
-                                const Icon(
+                              children: const <Widget>[
+                                Icon(
                                   CustomIcons.event,
                                   size: 20,
                                   color: JuntoPalette.juntoBlack,
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: 5),
                                 Text(
                                   'event',
                                   style: TextStyle(

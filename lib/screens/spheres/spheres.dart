@@ -606,8 +606,8 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
             }
           },
           child: Container(
-              padding: EdgeInsets.symmetric(vertical: 15),
-              decoration: BoxDecoration(
+              padding: const EdgeInsets.symmetric(vertical: 15),
+              decoration: const BoxDecoration(
                 border: Border(
                   bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
                 ),
@@ -615,18 +615,18 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text(
+                  const Text(
                     'New Principle',
                     style: TextStyle(
                         fontSize: 15,
                         color: Color(0xff999999),
                         fontWeight: FontWeight.w700),
                   ),
-                  SizedBox(width: 5),
+                  const SizedBox(width: 5),
                   Icon(
                     Icons.add,
                     size: 17,
-                    color: Color(0xff999999),
+                    color: const Color(0xff999999),
                   )
                 ],
               )),
@@ -635,12 +635,12 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
             onTap: () {
               print(principles);
             },
-            child: Text('test'))
+            child: const Text('test'))
       ],
     );
   }
 
-  _memberPreview(photo, username, name) {
+  Widget _memberPreview(String photo, String username, String name) {
     return Container(
       color: Colors.white,
       child: Row(
@@ -681,7 +681,7 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                     Text(
                       name,
                       textAlign: TextAlign.start,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                         color: Color(0xff555555),
@@ -697,7 +697,7 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
     );
   }
 
-  _createSphereMembers() {
+  Widget _createSphereMembers() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -715,12 +715,12 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
               Icon(
                 Icons.search,
                 size: 20,
-                color: Color(0xff999999),
+                color: const Color(0xff999999),
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               Expanded(
                 child: Transform.translate(
-                  offset: Offset(0.0, 2.5),
+                  offset: const Offset(0.0, 2.5),
                   child: TextField(
                     buildCounter: (
                       BuildContext context, {
@@ -807,7 +807,7 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
             )
           ],
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         Expanded(
           child: PageView(
             controller: _searchMembersController,
@@ -856,7 +856,7 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
     );
   }
 
-  _createSphereFacilitators() {
+  Widget _createSphereFacilitators() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -874,12 +874,12 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
               Icon(
                 Icons.search,
                 size: 20,
-                color: Color(0xff999999),
+                color: const Color(0xff999999),
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               Expanded(
                 child: Transform.translate(
-                  offset: Offset(0.0, 2.5),
+                  offset: const Offset(0.0, 2.5),
                   child: TextField(
                     buildCounter: (
                       BuildContext context, {
@@ -966,7 +966,7 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
             )
           ],
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         Expanded(
           child: PageView(
             controller: _searchFacilitatorsController,
@@ -975,7 +975,7 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                 _searchFacilitatorsIndex = index;
               });
             },
-            children: <Widget>[
+            children: const <Widget>[
               Text('render list of connections'),
               Text('render list of subscriptions'),
               Text('render list of all members (pagination tbd)')
@@ -986,10 +986,10 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
     );
   }
 
-  _createSpherePrivacy() {
+  Widget _createSpherePrivacy() {
     return Column(
       children: <Widget>[
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         Container(
           decoration: const BoxDecoration(
             border: Border(
@@ -1005,10 +1005,10 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                   width: MediaQuery.of(context).size.width * .75,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
+                    children: const <Widget>[
                       Text(
                         'Public',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.w700,
                         ),
@@ -1054,10 +1054,10 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                   width: MediaQuery.of(context).size.width * .75,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
+                    children: const <Widget>[
                       Text(
                         'Shared',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.w700,
                         ),
@@ -1103,10 +1103,10 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                   width: MediaQuery.of(context).size.width * .75,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
+                    children: const <Widget>[
                       Text(
                         'Private',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.w700,
                         ),

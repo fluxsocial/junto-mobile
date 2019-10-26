@@ -15,7 +15,7 @@ class JuntoCollective extends StatefulWidget {
     this.controller,
   }) : super(key: key);
 
-  var currentPerspective;
+  String currentPerspective;
 
   /// This controller is used to detect the scroll of the ListView
   /// to render the FAB dynamically
@@ -26,7 +26,7 @@ class JuntoCollective extends StatefulWidget {
 }
 
 class JuntoCollectiveState extends State<JuntoCollective> {
-  var _perspective;
+  // String _perspective;
   bool isLoading = false;
   List<CentralizedExpressionResponse> initialData =
       <CentralizedExpressionResponse>[];
@@ -86,7 +86,7 @@ class JuntoCollectiveState extends State<JuntoCollective> {
     );
   }
 
-  _displayDegrees() {
+  Widget _displayDegrees() {
     if (widget.currentPerspective == 'Degrees of separation') {
       return DegreesOfSeparation(
         _changeDegree,
@@ -98,7 +98,7 @@ class JuntoCollectiveState extends State<JuntoCollective> {
         _sixDegreesColor,
       );
     } else {
-      return SizedBox();
+      return const SizedBox();
     }
   }
 

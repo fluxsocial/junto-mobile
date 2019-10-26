@@ -5,7 +5,6 @@ import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/widgets/create_fab.dart';
-import 'package:junto_beta_mobile/screens/collective/perspectives/perspectives.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/den/den_drawer/den_drawer.dart';
 import 'package:junto_beta_mobile/screens/packs/packs.dart';
@@ -39,9 +38,9 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   String _appbarTitle = 'JUNTO';
 
   ValueNotifier<int> _bottomNavIndex;
-  final controller = ScrollController();
-  var _dx = 0.0;
-  var _scrollDirection;
+  final ScrollController controller = ScrollController();
+  double _dx = 0.0;
+  String _scrollDirection;
 
   UserProfile profile;
 
@@ -128,7 +127,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
         },
         child: Transform.translate(
           offset: Offset(_dx, 0.0),
-          child: Stack(children: [
+          child: Stack(children: <Widget>[
             Scaffold(
               key: _juntoTemplateKey,
               backgroundColor: Colors.white,

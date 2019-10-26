@@ -172,7 +172,7 @@ class _JuntoMemberState extends State<JuntoMember> {
                                                         const Color(0xff555555),
                                                   ),
                                                   const SizedBox(width: 15),
-                                                  Text(
+                                                  const Text(
                                                     'Subscribe',
                                                     style: TextStyle(
                                                         fontWeight:
@@ -194,7 +194,7 @@ class _JuntoMemberState extends State<JuntoMember> {
                                                         const Color(0xff555555),
                                                   ),
                                                   const SizedBox(width: 15),
-                                                  Text(
+                                                  const Text(
                                                     'Connect',
                                                     style: TextStyle(
                                                         fontWeight:
@@ -217,7 +217,7 @@ class _JuntoMemberState extends State<JuntoMember> {
                                                         const Color(0xff555555),
                                                   ),
                                                   const SizedBox(width: 15),
-                                                  Text(
+                                                  const Text(
                                                     'Join Pack',
                                                     style: TextStyle(
                                                         fontWeight:
@@ -238,7 +238,7 @@ class _JuntoMemberState extends State<JuntoMember> {
                                             onPressed: () {
                                               Navigator.of(context).pop();
                                             },
-                                            child: Text(
+                                            child: const Text(
                                               'Cancel',
                                               style: TextStyle(
                                                   fontSize: 17,
