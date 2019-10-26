@@ -59,6 +59,7 @@ class BottomNavState extends State<BottomNav> {
                 onTap: () => widget.setIndex(3),
                 child: Container(
                   width: MediaQuery.of(context).size.width * .25,
+                  height: 48,
                   color: Colors.transparent,
                   alignment: Alignment.center,
                   child: ClipOval(
@@ -102,10 +103,12 @@ class _BottomNavButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * .25,
-      child: InkWell(
-        onTap: () => onTap(index),
+    return GestureDetector(
+      onTap: () => onTap(index),
+      child: Container(
+        width: MediaQuery.of(context).size.width * .25,
+        height: 48,
+        color: Colors.transparent,
         child: RotatedBox(
           quarterTurns: icon == CustomIcons.triangle ? 2 : 0,
           child: AnimatedSwitcher(
