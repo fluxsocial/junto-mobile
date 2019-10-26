@@ -5,7 +5,7 @@ import 'package:junto_beta_mobile/utils/junto_http.dart';
 import 'package:meta/meta.dart';
 
 @immutable
-class CollectiveProviderCentralized implements CollectiveProvider {
+class CollectiveProviderCentralized implements CollectiveService {
   const CollectiveProviderCentralized(this.client);
 
   final JuntoHttp client;

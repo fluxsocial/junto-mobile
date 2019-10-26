@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
-import 'package:junto_beta_mobile/backend/services/spheres_provider.dart';
+import 'package:junto_beta_mobile/backend/services/group_service.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/sphere.dart';
 import 'package:junto_beta_mobile/utils/junto_http.dart';
@@ -12,7 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = null;
-  final SpheresProvider _sphereProvider = SphereProviderCentralized(JuntoHttp());
+  final GroupService _sphereProvider = GroupServiceCentralized(JuntoHttp());
 
   setUpAll(() {
     SharedPreferences.setMockInitialValues(<String, String>{

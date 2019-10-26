@@ -8,8 +8,8 @@ import 'package:junto_beta_mobile/utils/junto_http.dart';
 import 'package:meta/meta.dart';
 
 @immutable
-class SphereProviderCentralized implements SpheresProvider {
-  const SphereProviderCentralized(this.client);
+class GroupServiceCentralized implements GroupService {
+  const GroupServiceCentralized(this.client);
 
   final JuntoHttp client;
 
@@ -22,14 +22,17 @@ class SphereProviderCentralized implements SpheresProvider {
       '/groups',
       body: _postBody,
     );
-    final Map<String, dynamic> _decodedResponse = JuntoHttp.handleResponse(_serverResponse);
+    final Map<String, dynamic> _decodedResponse =
+        JuntoHttp.handleResponse(_serverResponse);
     return CentralizedSphereResponse.fromJson(_decodedResponse);
   }
 
   @override
   Future<Group> getGroup(String groupAddress) async {
-    final http.Response _serverResponse = await client.get('/groups/$groupAddress');
-    final Map<String, dynamic> _data = JuntoHttp.handleResponse(_serverResponse);
+    final http.Response _serverResponse =
+        await client.get('/groups/$groupAddress');
+    final Map<String, dynamic> _data =
+        JuntoHttp.handleResponse(_serverResponse);
     return Group.fromMap(_data);
   }
 
@@ -39,7 +42,10 @@ class SphereProviderCentralized implements SpheresProvider {
     String userAddress,
     String perms,
   ) async {
-    final Map<String, String> _postBody = <String, String>{'user_address': userAddress, 'permission_level': perms};
+    final Map<String, String> _postBody = <String, String>{
+      'user_address': userAddress,
+      'permission_level': perms,
+    };
     final http.Response _serverResponse = await client.post(
       '/groups/$groupAddress/members',
       body: _postBody,
@@ -48,7 +54,8 @@ class SphereProviderCentralized implements SpheresProvider {
   }
 
   @override
-  Future<void> removeGroupMember(String groupAddress, String userAddress) async {
+  Future<void> removeGroupMember(
+      String groupAddress, String userAddress) async {
     final Map<String, String> _postBody = <String, String>{
       'user_address': userAddress,
     };
@@ -64,7 +71,8 @@ class SphereProviderCentralized implements SpheresProvider {
 
   @override
   Future<List<Users>> getGroupMembers(String groupAddress) async {
-    final http.Response _serverResponse = await client.get('/groups/$groupAddress/members');
+    final http.Response _serverResponse =
+        await client.get('/groups/$groupAddress/members');
     final List<dynamic> items = convert.json.decode(_serverResponse.body);
     return items
         .map(

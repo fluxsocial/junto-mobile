@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/backend/repositories/repos.dart';
 import 'package:junto_beta_mobile/models/sphere.dart';
-import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/screens/template/template.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
@@ -41,7 +41,7 @@ class _CreateSphereNextState extends State<CreateSphereNext> {
       privacy: _selectedType,
     );
     try {
-      await Provider.of<SpheresProvider>(context).createSphere(updatedSphere);
+      await Provider.of<GroupRepo>(context).createSphere(updatedSphere);
       JuntoOverlay.hide();
       Navigator.pushAndRemoveUntil(
           context,

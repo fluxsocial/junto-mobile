@@ -18,7 +18,7 @@ abstract class AuthenticationService {
   Future<void> logoutUser();
 }
 
-abstract class CollectiveProvider {
+abstract class CollectiveService {
   /// Creates a collection with the given arguments.
   Future<Collective> createCollection(String name, String privacy, [String parent]);
 
@@ -72,7 +72,7 @@ abstract class ExpressionService {
   List<CentralizedExpressionResponse> get collectiveExpressions;
 }
 
-abstract class SpheresProvider {
+abstract class GroupService {
   List<Sphere> get spheres;
 
   /// Allows an authenticated user to create a sphere.

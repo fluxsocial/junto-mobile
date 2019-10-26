@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/backend/repositories/repos.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/sphere.dart';
 import 'package:junto_beta_mobile/screens/spheres/sphere_members.dart';
@@ -27,7 +27,7 @@ class _PackDrawerState extends State<PackDrawer> {
 
   Future<void> getPackUsers() async {
     final List<Users> _members =
-        await Provider.of<SpheresProvider>(context).getGroupMembers(
+        await Provider.of<GroupRepo>(context).getGroupMembers(
       widget.pack.address,
     );
     if (_members != null && _members.isNotEmpty) {
