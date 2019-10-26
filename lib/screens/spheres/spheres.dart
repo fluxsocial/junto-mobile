@@ -636,9 +636,11 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                 ],
               )),
         ),
-        GestureDetector(onTap: () {
-          print(principles);
-        }, child: Text('test'))
+        GestureDetector(
+            onTap: () {
+              print(principles);
+            },
+            child: Text('test'))
       ],
     );
   }
@@ -702,154 +704,158 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
 
   _createSphereMembers() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        // const SizedBox(height: 10),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        Container(
+          decoration: const BoxDecoration(
+            border: Border(
+              bottom: BorderSide(
+                color: Color(0xffeeeeee),
+                width: .75,
+              ),
+            ),
+          ),
+          child: Row(
+            children: <Widget>[
+              Icon(
+                Icons.search,
+                size: 20,
+                color: Color(0xff999999),
+              ),
+              SizedBox(width: 10),
+              Expanded(
+                child: Transform.translate(
+                  offset: Offset(0.0, 2.5),
+                  child: TextField(
+                    buildCounter: (
+                      BuildContext context, {
+                      int currentLength,
+                      int maxLength,
+                      bool isFocused,
+                    }) =>
+                        null,
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'add members to your sphere',
+                      hintStyle: TextStyle(
+                          color: Color(0xff999999),
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    cursorColor: const Color(0xff333333),
+                    cursorWidth: 2,
+                    maxLines: null,
+                    style: const TextStyle(
+                        color: Color(0xff333333),
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500),
+                    maxLength: 80,
+                    textInputAction: TextInputAction.done,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 10),
+        Row(
           children: <Widget>[
-            Container(
-              decoration: const BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: Color(0xffeeeeee),
-                    width: .75,
-                  ),
+            GestureDetector(
+              onTap: () {
+                _searchMembersController.jumpToPage(0);
+                _searchMembersIndex = 0;
+              },
+              child: Text(
+                'CONNECTIONS',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                  color: _searchMembersIndex == 0
+                      ? const Color(0xff333333)
+                      : const Color(0xff999999),
                 ),
               ),
-              child: Row(
-                children: <Widget>[
-                  Icon(
-                    Icons.search,
-                    size: 20,
-                    color: Color(0xff999999),
-                  ),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: Transform.translate(
-                      offset: Offset(0.0, 2.5),
-                      child: TextField(
-                        buildCounter: (
-                          BuildContext context, {
-                          int currentLength,
-                          int maxLength,
-                          bool isFocused,
-                        }) =>
-                            null,
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'add members to your sphere',
-                          hintStyle: TextStyle(
-                              color: Color(0xff999999),
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        cursorColor: const Color(0xff333333),
-                        cursorWidth: 2,
-                        maxLines: null,
-                        style: const TextStyle(
-                            color: Color(0xff333333),
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500),
-                        maxLength: 80,
-                        textInputAction: TextInputAction.done,
-                      ),
-                    ),
-                  ),
-                ],
+            ),
+            const SizedBox(width: 25),
+            GestureDetector(
+              onTap: () {
+                _searchMembersController.jumpToPage(1);
+                _searchMembersIndex = 1;
+              },
+              child: Text(
+                'SUBSCRIPTIONS',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                  color: _searchMembersIndex == 1
+                      ? const Color(0xff333333)
+                      : const Color(0xff999999),
+                ),
               ),
             ),
-            const SizedBox(height: 10),
-            Row(
-              children: <Widget>[
-                GestureDetector(
-                  onTap: () {
-                    _searchMembersController.jumpToPage(0);
-                    _searchMembersIndex = 0;
-                  },
-                  child: Text(
-                    'CONNECTIONS',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: _searchMembersIndex == 0
-                          ? const Color(0xff333333)
-                          : const Color(0xff999999),
-                    ),
-                  ),
+            const SizedBox(width: 25),
+            GestureDetector(
+              onTap: () {
+                _searchMembersController.jumpToPage(2);
+                _searchMembersIndex = 2;
+              },
+              child: Text(
+                'ALL',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                  color: _searchMembersIndex == 2
+                      ? const Color(0xff333333)
+                      : const Color(0xff999999),
                 ),
-                const SizedBox(width: 25),
-                GestureDetector(
-                  onTap: () {
-                    _searchMembersController.jumpToPage(1);
-                    _searchMembersIndex = 1;
-                  },
-                  child: Text(
-                    'SUBSCRIPTIONS',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: _searchMembersIndex == 1
-                          ? const Color(0xff333333)
-                          : const Color(0xff999999),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 25),
-                GestureDetector(
-                  onTap: () {
-                    _searchMembersController.jumpToPage(2);
-                    _searchMembersIndex = 2;
-                  },
-                  child: Text(
-                    'ALL',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: _searchMembersIndex == 2
-                          ? const Color(0xff333333)
-                          : const Color(0xff999999),
-                    ),
-                  ),
-                )
-              ],
-            ),
-            SizedBox(height: 10),
-            Container(
-              height: MediaQuery.of(context).size.height * .7,
-              child: PageView(
-                controller: _searchMembersController,
-                onPageChanged: (int index) {
-                  setState(() {
-                    _searchMembersIndex = index;
-                  });
-                },
-                children: <Widget>[
-                  ListView(
-                    children: <Widget>[
-                      _memberPreview('assets/images/junto-mobile__eric.png',
-                          'sunyata', 'Eric Yang'),
-                      _memberPreview('assets/images/junto-mobile__riley.png',
-                          'wags', 'Riley Wagner'),
-                      _memberPreview('assets/images/junto-mobile__dora.png',
-                          'wingedmessenger', 'Dora Czovek'),
-                      _memberPreview('assets/images/junto-mobile__josh.png',
-                          'jdeepee', 'Josh David Livingston Parkin'),
-                    ],
-                  ),
-                  ListView(
-                    children: <Widget>[
-                      // _memberPreview(),
-                    ],
-                  ),
-                  ListView(
-                    children: <Widget>[
-                      // _memberPreview(),
-                    ],
-                  ),
-                ],
               ),
-            ),
+            )
           ],
+        ),
+        SizedBox(height: 10),
+        Expanded(
+          child: PageView(
+            controller: _searchMembersController,
+            onPageChanged: (int index) {
+              setState(() {
+                _searchMembersIndex = index;
+              });
+            },
+            children: <Widget>[
+              ListView(
+                children: <Widget>[
+                  _memberPreview('assets/images/junto-mobile__eric.png',
+                      'sunyata', 'Eric Yang'),
+                  _memberPreview('assets/images/junto-mobile__riley.png',
+                      'wags', 'Riley Wagner'),
+                  _memberPreview('assets/images/junto-mobile__dora.png',
+                      'wingedmessenger', 'Dora Czovek'),
+                  _memberPreview('assets/images/junto-mobile__josh.png',
+                      'jdeepee', 'Josh David Livingston Parkin'),
+                  _memberPreview('assets/images/junto-mobile__josh.png',
+                      'jdeepee', 'Josh David Livingston Parkin'),
+                  _memberPreview('assets/images/junto-mobile__josh.png',
+                      'jdeepee', 'Josh David Livingston Parkin'),
+                  _memberPreview('assets/images/junto-mobile__josh.png',
+                      'jdeepee', 'Josh David Livingston Parkin'),
+                  _memberPreview('assets/images/junto-mobile__josh.png',
+                      'jdeepee', 'Josh David Livingston Parkin'),
+                  _memberPreview('assets/images/junto-mobile__josh.png',
+                      'jdeepee', 'Josh David Livingston Parkin'),
+                ],
+              ),
+              ListView(
+                children: <Widget>[
+                  // _memberPreview(),
+                ],
+              ),
+              ListView(
+                children: <Widget>[
+                  // _memberPreview(),
+                ],
+              ),
+            ],
+          ),
         ),
       ],
     );
@@ -857,134 +863,129 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
 
   _createSphereFacilitators() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        Container(
+          decoration: const BoxDecoration(
+            border: Border(
+              bottom: BorderSide(
+                color: Color(0xffeeeeee),
+                width: .75,
+              ),
+            ),
+          ),
+          child: Row(
+            children: <Widget>[
+              Icon(
+                Icons.search,
+                size: 20,
+                color: Color(0xff999999),
+              ),
+              SizedBox(width: 10),
+              Expanded(
+                child: Transform.translate(
+                  offset: Offset(0.0, 2.5),
+                  child: TextField(
+                    buildCounter: (
+                      BuildContext context, {
+                      int currentLength,
+                      int maxLength,
+                      bool isFocused,
+                    }) =>
+                        null,
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'add facilitators to your sphere',
+                      hintStyle: TextStyle(
+                          color: Color(0xff999999),
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    cursorColor: const Color(0xff333333),
+                    cursorWidth: 2,
+                    maxLines: null,
+                    style: const TextStyle(
+                        color: Color(0xff333333),
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500),
+                    maxLength: 80,
+                    textInputAction: TextInputAction.done,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 10),
+        Row(
           children: <Widget>[
-            Container(
-              decoration: const BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: Color(0xffeeeeee),
-                    width: .75,
-                  ),
+            GestureDetector(
+              onTap: () {
+                _searchFacilitatorsController.jumpToPage(0);
+                _searchFacilitatorsIndex = 0;
+              },
+              child: Text(
+                'CONNECTIONS',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                  color: _searchFacilitatorsIndex == 0
+                      ? const Color(0xff333333)
+                      : const Color(0xff999999),
                 ),
               ),
-              child: Row(
-                children: <Widget>[
-                  Icon(
-                    Icons.search,
-                    size: 20,
-                    color: Color(0xff999999),
-                  ),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: Transform.translate(
-                      offset: Offset(0.0, 2.5),
-                      child: TextField(
-                        buildCounter: (
-                          BuildContext context, {
-                          int currentLength,
-                          int maxLength,
-                          bool isFocused,
-                        }) =>
-                            null,
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'add facilitators to your sphere',
-                          hintStyle: TextStyle(
-                              color: Color(0xff999999),
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        cursorColor: const Color(0xff333333),
-                        cursorWidth: 2,
-                        maxLines: null,
-                        style: const TextStyle(
-                            color: Color(0xff333333),
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500),
-                        maxLength: 80,
-                        textInputAction: TextInputAction.done,
-                      ),
-                    ),
-                  ),
-                ],
+            ),
+            const SizedBox(width: 25),
+            GestureDetector(
+              onTap: () {
+                _searchFacilitatorsController.jumpToPage(1);
+                _searchFacilitatorsIndex = 1;
+              },
+              child: Text(
+                'SUBSCRIPTIONS',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                  color: _searchFacilitatorsIndex == 1
+                      ? const Color(0xff333333)
+                      : const Color(0xff999999),
+                ),
               ),
             ),
-            const SizedBox(height: 10),
-            Row(
-              children: <Widget>[
-                GestureDetector(
-                  onTap: () {
-                    _searchFacilitatorsController.jumpToPage(0);
-                    _searchFacilitatorsIndex = 0;
-                  },
-                  child: Text(
-                    'CONNECTIONS',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: _searchFacilitatorsIndex == 0
-                          ? const Color(0xff333333)
-                          : const Color(0xff999999),
-                    ),
-                  ),
+            const SizedBox(width: 25),
+            GestureDetector(
+              onTap: () {
+                _searchFacilitatorsController.jumpToPage(2);
+                _searchFacilitatorsIndex = 2;
+              },
+              child: Text(
+                'ALL',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                  color: _searchFacilitatorsIndex == 2
+                      ? const Color(0xff333333)
+                      : const Color(0xff999999),
                 ),
-                const SizedBox(width: 25),
-                GestureDetector(
-                  onTap: () {
-                    _searchFacilitatorsController.jumpToPage(1);
-                    _searchFacilitatorsIndex = 1;
-                  },
-                  child: Text(
-                    'SUBSCRIPTIONS',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: _searchFacilitatorsIndex == 1
-                          ? const Color(0xff333333)
-                          : const Color(0xff999999),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 25),
-                GestureDetector(
-                  onTap: () {
-                    _searchFacilitatorsController.jumpToPage(2);
-                    _searchFacilitatorsIndex = 2;
-                  },
-                  child: Text(
-                    'ALL',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: _searchFacilitatorsIndex == 2
-                          ? const Color(0xff333333)
-                          : const Color(0xff999999),
-                    ),
-                  ),
-                )
-              ],
-            ),
-            SizedBox(height: 10),
-            Container(
-              height: MediaQuery.of(context).size.height * .7,
-              child: PageView(
-                controller: _searchFacilitatorsController,
-                onPageChanged: (int index) {
-                  setState(() {
-                    _searchFacilitatorsIndex = index;
-                  });
-                },
-                children: <Widget>[
-                  Text('render list of connections'),
-                  Text('render list of subscriptions'),
-                  Text('render list of all members (pagination tbd)')
-                ],
               ),
-            ),
+            )
           ],
+        ),
+        SizedBox(height: 10),
+        Expanded(
+          child: PageView(
+            controller: _searchFacilitatorsController,
+            onPageChanged: (int index) {
+              setState(() {
+                _searchFacilitatorsIndex = index;
+              });
+            },
+            children: <Widget>[
+              Text('render list of connections'),
+              Text('render list of subscriptions'),
+              Text('render list of all members (pagination tbd)')
+            ],
+          ),
         ),
       ],
     );

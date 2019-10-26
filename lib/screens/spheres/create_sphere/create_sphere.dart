@@ -81,7 +81,7 @@ class _CreateSphereState extends State<CreateSphere>
       members: _users.value.selection
           .map((UserProfile _profile) => _profile.address)
           .toList(growable: false),
-      principles: "Don't be a horrible human being",
+      principles: "Be nice",
       sphereHandle: sphereName,
       privacy: '',
     );

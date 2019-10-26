@@ -75,7 +75,11 @@ class JuntoTemplateState extends State<JuntoTemplate> {
     return Stack(children: <Widget>[
       JuntoPerspectives(changePerspective: _changePerspective),
       GestureDetector(
-        onPanUpdate: (DragUpdateDetails details) {
+        onTap: () {
+          print('yo');
+        },
+        onHorizontalDragUpdate: (DragUpdateDetails details) {
+          // only enable drag on collective screen
           if (_currentScreen == 'collective') {
             if (_dx == 0.0 &&
                 details.globalPosition.dy != 0.0 &&
@@ -101,7 +105,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
             }
           }
         },
-        onPanEnd: (DragEndDetails details) {
+        onHorizontalDragEnd: (DragEndDetails details) {
           if (_scrollDirection == 'right') {
             if (_dx >= MediaQuery.of(context).size.width * .2) {
               setState(() {
@@ -183,7 +187,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                   });
                 }
               },
-              child: _dx > MediaQuery.of(context).size.width * .2
+              child: _dx > 0
                   ? Container(
                       color: Colors.white.withOpacity(.5),
                     )
