@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/custom_icons.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/sphere.dart';
-import 'package:junto_beta_mobile/providers/provider.dart';
 import 'package:junto_beta_mobile/screens/template/template.dart';
-import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
@@ -41,7 +41,7 @@ class _CreateSphereNextState extends State<CreateSphereNext> {
       privacy: _selectedType,
     );
     try {
-      await Provider.of<SpheresProvider>(context).createSphere(updatedSphere);
+      await Provider.of<GroupRepo>(context).createSphere(updatedSphere);
       JuntoOverlay.hide();
       Navigator.pushAndRemoveUntil(
           context,
@@ -104,18 +104,20 @@ class _CreateSphereNextState extends State<CreateSphereNext> {
                       fontWeight: FontWeight.w700,
                       fontSize: 15),
                 ),
-                GestureDetector(
-                    onTap: _createSphere,
-                    child: Container(
-                      color: Colors.white,
-                      width: 38,
-                      alignment: Alignment.centerRight,
-                      child: const Text(
-                        'create',
-                        style:
-                            TextStyle(color: Color(0xff333333), fontSize: 14),
-                      ),
-                    ))
+                Expanded(
+                  child: GestureDetector(
+                      onTap: _createSphere,
+                      child: Container(
+                        color: Colors.white,
+                        width: 38,
+                        alignment: Alignment.centerRight,
+                        child: const Text(
+                          'create',
+                          style:
+                              TextStyle(color: Color(0xff333333), fontSize: 14),
+                        ),
+                      )),
+                )
               ],
             ),
           ),

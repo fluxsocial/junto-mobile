@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 
 class ShortformOpen extends StatefulWidget {
   const ShortformOpen(this.expression);
@@ -49,6 +49,11 @@ class ShortformOpenState extends State<ShortformOpen> {
       setState(() {
         _gradientOne = JuntoPalette.juntoGreen;
         _gradientTwo = JuntoPalette.juntoSecondary;
+      });
+    } else {
+      setState(() {
+        _gradientOne = JuntoPalette.juntoBlack;
+        _gradientTwo = JuntoPalette.juntoBlack;
       });
     }
   }

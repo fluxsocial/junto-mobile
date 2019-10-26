@@ -2,14 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:junto_beta_mobile/custom_icons.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/providers/provider.dart';
+import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives'
     '/create_perspective/create_perspective.dart' show SelectedUsers;
 import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
-import 'package:junto_beta_mobile/palette.dart';
-import 'package:junto_beta_mobile/styles.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/user_preview.dart';
 import 'package:provider/provider.dart';
@@ -122,8 +122,10 @@ class _JuntoAppBarState extends State<JuntoAppBar>
                           height: 22.0, width: 22.0),
                       Container(
                         margin: const EdgeInsets.only(left: 7.5),
-                        child: Text(widget.juntoAppBarTitle,
-                            style: JuntoStyles.appbarTitle),
+                        child: Text(
+                          widget.juntoAppBarTitle,
+                          style: JuntoStyles.appbarTitle,
+                        ),
                       ),
                       const SizedBox(width: 2.5),
                       widget.appContext == 'collective'
@@ -209,9 +211,11 @@ class _JuntoAppBarState extends State<JuntoAppBar>
                   },
                   child: Container(
                     margin: const EdgeInsets.only(left: 7.5),
-                    child: Icon(CustomIcons.moon,
-                        color: JuntoPalette.juntoSleek,
-                        size: JuntoStyles.appbarIcon),
+                    child: const Icon(
+                      CustomIcons.moon,
+                      color: JuntoPalette.juntoSleek,
+                      size: JuntoStyles.appbarIcon,
+                    ),
                   ),
                 )
               ],

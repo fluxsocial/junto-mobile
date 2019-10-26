@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/custom_icons.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/app/styles.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
-import 'package:junto_beta_mobile/styles.dart';
-import 'package:junto_beta_mobile/widgets/expression_action_items.dart';
+import 'package:junto_beta_mobile/widgets/expression_action_items/expression_action_items.dart';
 
 class ExpressionOpenTop extends StatelessWidget {
   const ExpressionOpenTop({Key key, this.expression}) : super(key: key);
@@ -17,7 +17,6 @@ class ExpressionOpenTop extends StatelessWidget {
     final String username = expression.creator.username;
     final String firstName = expression.creator.firstName;
     final String lastName = expression.creator.lastName;
-    final String profilePicture = expression.creator.profilePicture;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
@@ -50,9 +49,9 @@ class ExpressionOpenTop extends StatelessWidget {
                 // profile picture
                 ClipOval(
                   child: Image.asset(
-                    profilePicture,
-                    height: 38.0,
-                    width: 38.0,
+                    'assets/images/junto-mobile__logo.png',
+                    height: 36.0,
+                    width: 36.0,
                     fit: BoxFit.cover,
                   ),
                 ),

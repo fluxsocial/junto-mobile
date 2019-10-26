@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/custom_icons.dart';
-import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/screens/create/create.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 
 // This widget is the bottom navigation on all of the main screens. Members can
 // navigate to the home, spheres, create, packs, and den screens.
@@ -24,6 +25,9 @@ class BottomNavState extends State<BottomNav> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      top: false,
+      left: false,
+      right: false,
       child: SizedBox(
         height: 48.0,
         child: Material(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/custom_icons.dart';
-import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 
 class ExpressionOpenAppbar extends StatelessWidget {
   @override
@@ -81,7 +81,7 @@ class ExpressionOpenAppbar extends StatelessWidget {
                 width: 32,
                 alignment: Alignment.centerRight,
                 padding: const EdgeInsets.only(right: 10),
-                child: Icon(CustomIcons.half_lotus, size: 14),
+                child: const Icon(CustomIcons.half_lotus, size: 14),
               ),
             )
           ],

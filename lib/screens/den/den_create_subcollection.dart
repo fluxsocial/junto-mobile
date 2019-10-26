@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/palette.dart';
-import 'package:junto_beta_mobile/styles.dart';
-import 'package:junto_beta_mobile/custom_icons.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/app/styles.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 
 class DenCreateSubcollection extends StatefulWidget {
   @override
@@ -143,17 +143,19 @@ class DenCreateSubcollectionState extends State<DenCreateSubcollection> {
                           ),
                         ),
                         child: Row(
-                          children: <Widget>[
+                          children: const <Widget>[
                             Icon(
                               CustomIcons.half_lotus,
                               size: 17,
-                              color: const Color(0xff333333),
+                              color: Color(0xff333333),
                             ),
-                            const SizedBox(width: 20),
-                            const Text(
+                            SizedBox(width: 20),
+                            Text(
                               'add expressions',
                               style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.w500),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ],
                         ),

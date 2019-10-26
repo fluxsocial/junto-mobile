@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/palette.dart';
-import 'package:junto_beta_mobile/providers/provider.dart';
 import 'package:junto_beta_mobile/screens/collective/degrees/degrees.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/widgets/expression_preview/expression_preview.dart';
 import 'package:provider/provider.dart';
 
@@ -30,6 +30,7 @@ class JuntoCollectiveState extends State<JuntoCollective> {
   bool isLoading = false;
   List<CentralizedExpressionResponse> initialData =
       <CentralizedExpressionResponse>[];
+
   @override
   void initState() {
     super.initState();    
@@ -48,7 +49,7 @@ class JuntoCollectiveState extends State<JuntoCollective> {
   @override
   void didChangeDependencies() {
     initialData
-        .addAll(Provider.of<CollectiveProvider>(context).collectiveExpressions);
+        .addAll(Provider.of<ExpressionRepo>(context).collectiveExpressions);
     super.didChangeDependencies();
   }
 
@@ -65,11 +66,12 @@ class JuntoCollectiveState extends State<JuntoCollective> {
     }
     await Future<void>.delayed(const Duration(seconds: 2), () {});
     isLoading = false;
-    setState(() { 
-      isLoading = true;
-      initialData.addAll(
-          Provider.of<CollectiveProvider>(context).collectiveExpressions);
-    });
+    if (mounted)
+      setState(() {
+        isLoading = true;
+        initialData
+            .addAll(Provider.of<ExpressionRepo>(context).collectiveExpressions);
+      });
   }
 
   Widget _buildProgressIndicator() {

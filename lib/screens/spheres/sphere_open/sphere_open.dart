@@ -1,17 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
+import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/models/group_model.dart';
-import 'package:junto_beta_mobile/models/sphere.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/palette.dart';
-import 'package:junto_beta_mobile/providers/provider.dart';
-import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open_members.dart';
-import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open_facilitators.dart';
+import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/screens/spheres/sphere_members.dart';
 import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open_appbar.dart';
-import 'package:junto_beta_mobile/styles.dart';
-import 'package:junto_beta_mobile/custom_icons.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/create_fab.dart';
@@ -157,12 +152,29 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     super.dispose();
   }
 
-  Future<void> _getMembers() async {
-    setState(() async {
-      _members = await Provider.of<SpheresProvider>(context).getGroupMembers(
+  Future<void> _navigateToMembers() async {
+    try {
+      JuntoOverlay.showLoader(context);
+      final List<Users> _members =
+          await Provider.of<GroupRepo>(context).getGroupMembers(
         widget.group.address,
       );
-    });
+      JuntoOverlay.hide();
+      Navigator.of(context).push(GroupMembers.route(_members));
+    } catch (error) {
+      JuntoOverlay.hide();
+      JuntoDialog.showJuntoDialog(
+        context,
+        'Unable to get Sphere members. '
+        'Error ${error.message}',
+        <Widget>[
+          FlatButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Ok'),
+          ),
+        ],
+      );
+    }
   }
 
   final List<String> _tabs = <String>['About', 'Discussion', 'Events'];
@@ -388,10 +400,10 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                   children: <Widget>[
                     Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
+                        children: const <Widget>[
                           Text('Facilitators', style: JuntoStyles.header),
-                          const SizedBox(height: 10),
-                          const Text('Eric Yang and 7 others'),
+                          SizedBox(height: 10),
+                          Text('Eric Yang and 7 others'),
                         ]),
                     ClipOval(
                       child: Image.asset(

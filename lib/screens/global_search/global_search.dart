@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/providers/provider.dart';
-import 'package:junto_beta_mobile/screens/global_search/member_preview.dart';
-import 'package:junto_beta_mobile/custom_icons.dart';
-import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/screens/global_search/member_preview/member_preview.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:provider/provider.dart';
 
 class GlobalSearch extends StatefulWidget {

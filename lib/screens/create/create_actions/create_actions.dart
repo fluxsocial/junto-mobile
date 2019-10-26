@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/providers/provider.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions_appbar.dart';
-import 'package:junto_beta_mobile/custom_icons.dart';
-import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/screens/template/template.dart';
+import 'package:junto_beta_mobile/utils/junto_dialog.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:provider/provider.dart';
 
 class CreateActions extends StatefulWidget {
@@ -54,10 +56,43 @@ class CreateActionsState extends State<CreateActions> {
       },
       expressionData: widget.expression.toMap(),
     );
-    final CentralizedExpressionResponse result =
-        await Provider.of<CollectiveProvider>(context)
-            .createExpression(_expression);
-    print(result.address);
+    JuntoOverlay.showLoader(context);
+    try {
+      await Provider.of<ExpressionRepo>(context).createExpression(_expression);
+      JuntoOverlay.hide();
+      JuntoDialog.showJuntoDialog(
+        context,
+        'Expression Created!',
+        <Widget>[
+          FlatButton(
+            onPressed: () {
+              Navigator.of(context).pushAndRemoveUntil(
+                JuntoTemplate.route(),
+                (_) => false,
+              );
+            },
+            child: const Text('Ok'),
+          )
+        ],
+      );
+    } catch (error) {
+      JuntoOverlay.hide();
+      JuntoDialog.showJuntoDialog(
+        context,
+        'Something went wrong ${error?.code}',
+        <Widget>[
+          FlatButton(
+            onPressed: () {
+              Navigator.of(context).pushAndRemoveUntil(
+                JuntoTemplate.route(),
+                (_) => false,
+              );
+            },
+            child: const Text('Ok'),
+          )
+        ],
+      );
+    }
   }
 
   @override

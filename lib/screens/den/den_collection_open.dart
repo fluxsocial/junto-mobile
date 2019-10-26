@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:junto_beta_mobile/palette.dart';
-import 'package:junto_beta_mobile/styles.dart';
-import 'package:junto_beta_mobile/custom_icons.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/app/styles.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/den/den_create_subcollection.dart';
 
 class DenCollectionOpen extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return DenCollectionOpenState();
-  }
+  State<StatefulWidget> createState() => DenCollectionOpenState();
 }
 
 class DenCollectionOpenState extends State<DenCollectionOpen> {

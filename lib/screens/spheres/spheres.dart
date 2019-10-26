@@ -1,18 +1,15 @@
+import 'package:async/async.dart' show AsyncMemoizer;
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/models/sphere.dart';
-import 'package:junto_beta_mobile/models/group_model.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/palette.dart';
-import 'package:junto_beta_mobile/providers/provider.dart';
-
-import 'package:junto_beta_mobile/utils/junto_exception.dart';
+import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/screens/spheres/create_sphere/create_sphere.dart';
 import 'package:junto_beta_mobile/screens/spheres/sphere_preview.dart';
-import 'package:junto_beta_mobile/styles.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:provider/provider.dart';
-import 'package:async/async.dart' show AsyncMemoizer;
+import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/app/styles.dart';
 
 /// This class renders the main screen for Spheres. It includes a widget to
 /// create a screen as well as a ListView of all the sphere previews
@@ -26,14 +23,14 @@ class JuntoSpheres extends StatefulWidget {
 }
 
 class JuntoSpheresState extends State<JuntoSpheres> with ListDistinct {
-  UserProvider _userProvider;
+  UserService _userProvider;
   final AsyncMemoizer<UserGroupsResponse> _memoizer =
       AsyncMemoizer<UserGroupsResponse>();
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _userProvider = Provider.of<UserProvider>(context);
+    _userProvider = Provider.of<UserService>(context);
   }
 
   Widget buildError() {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/custom_icons.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/create_perspective/create_perspective.dart';
 import 'package:junto_beta_mobile/widgets/user_preview.dart';
@@ -122,7 +122,7 @@ class _SearchMembersModalState extends State<SearchMembersModal> {
                       builder:
                           (BuildContext context, List<UserProfile> query, _) {
                         return ListView.builder(
-                          itemCount: query.length,
+                          itemCount: query?.length,
                           shrinkWrap: true,
                           itemBuilder: (BuildContext context, int index) {
                             final UserProfile _user = query[index];
@@ -153,14 +153,14 @@ class _SearchMembersModalState extends State<SearchMembersModal> {
       child: Container(
         color: Colors.white,
         child: Row(
-          children: <Widget>[
+          children: const <Widget>[
             Icon(
               CustomIcons.half_lotus,
               size: 17,
-              color: const Color(0xff333333),
+              color: Color(0xff333333),
             ),
-            const SizedBox(width: 20),
-            const Text(
+            SizedBox(width: 20),
+            Text(
               'add members',
               style: TextStyle(
                 fontSize: 14,

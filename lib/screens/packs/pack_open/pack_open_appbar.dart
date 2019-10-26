@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/custom_icons.dart';
-import 'package:junto_beta_mobile/palette.dart';
-import 'package:junto_beta_mobile/styles.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/app/styles.dart';
 
 class PackOpenAppbar extends StatelessWidget {
   const PackOpenAppbar({
@@ -56,9 +56,6 @@ class PackOpenAppbar extends StatelessWidget {
                 ),
               ),
             )
-            // GestureDetector(
-            //   child: Icon(CustomIcons.more),
-            // )
           ],
         ),
       ),

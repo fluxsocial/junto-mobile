@@ -35,10 +35,6 @@ class _JuntoLoadingState extends State<JuntoLoading>
 
   @override
   void didChangeDependencies() {
-    // Steps: Call secure storage
-    //  get the isLoggedIn key
-    // navigate to [Welcome] or home
-    // clean up?
     _checkAuthStatus();
     super.didChangeDependencies();
   }

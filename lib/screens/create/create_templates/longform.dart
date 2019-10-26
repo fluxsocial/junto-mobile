@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 
 class CreateLongform extends StatefulWidget {
   const CreateLongform({Key key, @required this.isEditing}) : super(key: key);

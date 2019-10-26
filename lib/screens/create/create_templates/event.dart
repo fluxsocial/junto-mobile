@@ -1,13 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/palette.dart';
+import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/form-validation.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
-
-const String kGoogleApiKey = 'AIzaSyAhV0-bpFqLYSV8xmFJ7JAR5bupoLfTaO8';
-
-// GoogleMapsPlaces _places = GoogleMapsPlaces(apiKey: kGoogleApiKey);
 
 /// Allows the user to create an event
 class CreateEvent extends StatefulWidget {
@@ -365,9 +361,10 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                         border: InputBorder.none,
                         hintText: 'Location',
                         hintStyle: TextStyle(
-                            color: Color(0xff999999),
-                            fontSize: 17,
-                            fontWeight: FontWeight.w700),
+                          color: Color(0xff999999),
+                          fontSize: 17,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                       cursorColor: const Color(0xff333333),
                       cursorWidth: 2,
@@ -394,9 +391,10 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                         border: InputBorder.none,
                         hintText: 'Details',
                         hintStyle: TextStyle(
-                            color: Color(0xff999999),
-                            fontSize: 17,
-                            fontWeight: FontWeight.w700),
+                          color: Color(0xff999999),
+                          fontSize: 17,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                       cursorColor: const Color(0xff333333),
                       cursorWidth: 2,

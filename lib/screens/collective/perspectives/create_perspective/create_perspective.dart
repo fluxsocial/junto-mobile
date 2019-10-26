@@ -1,12 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/custom_icons.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/palette.dart';
-import 'package:junto_beta_mobile/providers/provider.dart';
-import 'package:junto_beta_mobile/providers/user_provider.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
@@ -15,7 +14,7 @@ import 'package:junto_beta_mobile/widgets/search_members_modal.dart';
 import 'package:junto_beta_mobile/widgets/user_preview.dart';
 import 'package:provider/provider.dart';
 
-class SelectedUsers extends ChangeNotifier{
+class SelectedUsers extends ChangeNotifier {
   List<UserProfile> selection = <UserProfile>[];
 }
 
@@ -70,7 +69,7 @@ class _CreatePerspectiveState extends State<CreatePerspective>
     final String name = controller.value.text;
     JuntoOverlay.showLoader(context);
     try {
-      await Provider.of<UserProvider>(context)
+      await Provider.of<UserService>(context)
           .createPerspective(Perspective(name: name));
       JuntoOverlay.hide();
       Navigator.pop(context);
@@ -131,20 +130,22 @@ class _CreatePerspectiveState extends State<CreatePerspective>
                       color: Color(0xff333333),
                       fontWeight: FontWeight.w700),
                 ),
-                InkWell(
-                  onTap: () {
-                    if (controller.value.text != '') {
-                      createPerspective();
-                    } else {
-                      return;
-                    }
-                  },
-                  enableFeedback: false,
-                  child: const Text(
-                    'create',
-                    style: TextStyle(
-                      color: Color(0xff333333),
-                      fontSize: 14,
+                SizedBox(
+                  width: 34.0,
+                  child: FlatButton(
+                    onPressed: () {
+                      if (controller.value.text != '') {
+                        createPerspective();
+                      } else {
+                        return;
+                      }
+                    },
+                    child: const Text(
+                      'create',
+                      style: TextStyle(
+                        color: Color(0xff333333),
+                        fontSize: 14,
+                      ),
                     ),
                   ),
                 ),
@@ -248,7 +249,7 @@ class _CreatePerspectiveState extends State<CreatePerspective>
                             key: ValueKey<UserProfile>(_profile),
                             background: Material(color: Colors.redAccent),
                             onDismissed: (_) => _removeSelectedItem(_profile),
-                            child: UserPreview( 
+                            child: UserPreview(
                               userProfile: _profile,
                               onTap: _removeSelectedItem,
                               showSelectionIndicator: false,

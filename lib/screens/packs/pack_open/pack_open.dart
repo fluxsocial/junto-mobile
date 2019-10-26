@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:junto_beta_mobile/custom_icons.dart';
-import 'package:junto_beta_mobile/models/group_model.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_drawer.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open_appbar.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open_private.dart';

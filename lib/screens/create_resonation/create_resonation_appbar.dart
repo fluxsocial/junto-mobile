@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/custom_icons.dart';
-import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 
 class CreateResonationAppbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return AppBar(
       automaticallyImplyLeading: false,
       brightness: Brightness.light,
@@ -24,7 +23,7 @@ class CreateResonationAppbar extends StatelessWidget {
                 color: Colors.white,
                 width: 38,
                 alignment: Alignment.centerLeft,
-                child: Icon(
+                child: const Icon(
                   CustomIcons.back_arrow_left,
                   color: JuntoPalette.juntoSleek,
                   size: 28,
@@ -35,7 +34,7 @@ class CreateResonationAppbar extends StatelessWidget {
                 onTap: () {
                   // resonate expression
                 },
-                child: Text(
+                child: const Text(
                   'resonate',
                   style: TextStyle(
                       color: Color(0xff333333),

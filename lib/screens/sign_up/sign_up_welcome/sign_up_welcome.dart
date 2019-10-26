@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/providers/provider.dart';
 import 'package:junto_beta_mobile/screens/template/template.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
@@ -63,8 +63,7 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
     try {
       JuntoOverlay.showLoader(context);
       final UserData results =
-          await Provider.of<AuthenticationProvider>(context)
-              .registerUser(details);
+          await Provider.of<AuthRepo>(context).registerUser(details);
       await SharedPreferences.getInstance()
         ..setBool(
           'isLoggedIn',
@@ -84,9 +83,9 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
         <Widget>[
           FlatButton(
             onPressed: () => Navigator.of(context).pushAndRemoveUntil(
-                  Welcome.route(),
-                  (Route<dynamic> route) => false,
-                ),
+              Welcome.route(),
+              (Route<dynamic> route) => false,
+            ),
             child: const Text('OK'),
           ),
         ],

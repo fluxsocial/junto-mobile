@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:junto_beta_mobile/palette.dart';
-import 'package:junto_beta_mobile/custom_icons.dart';
-import 'package:junto_beta_mobile/screens/create/create.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 
 /// Gradient [FloatingActionButton] used for filtering
 /// Collectives.
@@ -27,36 +24,10 @@ class CollectiveFilterFAB extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         opacity: value ? 1.0 : 0.0,
         child: GestureDetector(
-          onTap: () => Navigator.of(context).push(
-            PageRouteBuilder<dynamic>(
-              pageBuilder: (
-                BuildContext context,
-                Animation<double> animation,
-                Animation<double> secondaryAnimation,
-              ) {
-                return const JuntoCreate(
-                  'collective',
-                );
-              },
-              transitionsBuilder: (
-                BuildContext context,
-                Animation<double> animation,
-                Animation<double> secondaryAnimation,
-                Widget child,
-              ) {
-                return FadeTransition(
-                  opacity: animation,
-                  child: child,
-                );
-              },
-              transitionDuration: const Duration(
-                milliseconds: 200,
-              ),
-            ),
-          ),
+          onTap: () => toggleFilter(context),
           child: Container(
-            height: 50,
-            width: 50,
+            height: 44,
+            width: 44,
             decoration: BoxDecoration(
               gradient: const LinearGradient(
                 begin: Alignment.bottomLeft,
@@ -67,15 +38,20 @@ class CollectiveFilterFAB extends StatelessWidget {
                   JuntoPalette.juntoPrimary,
                 ],
               ),
-              color: JuntoPalette.juntoWhite.withOpacity(.8),
+              color: JuntoPalette.juntoWhite.withOpacity(.7),
               border: Border.all(
                 color: JuntoPalette.juntoWhite,
-                width: 2,
+                width: 1.5,
               ),
               borderRadius: BorderRadius.circular(25),
             ),
             alignment: Alignment.center,
-            child: const Icon(CustomIcons.lotus, color: Colors.white),
+            child: const Text(
+              '#',
+              style: TextStyle(
+                color: JuntoPalette.juntoWhite,
+              ),
+            ),
           ),
         ),
       ),

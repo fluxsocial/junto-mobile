@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/bullet/bullet.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
 import 'package:junto_beta_mobile/custom_icons.dart';
@@ -7,8 +7,7 @@ import 'package:junto_beta_mobile/screens/create/create_templates/event.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/longform.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/photo.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/shortform.dart';
-import 'package:junto_beta_mobile/styles.dart';
-import 'package:junto_beta_mobile/widgets/create_fab.dart';
+import 'package:junto_beta_mobile/app/styles.dart';
 
 class JuntoCreate extends StatefulWidget {
   const JuntoCreate(this.expressionLayer, {this.address});

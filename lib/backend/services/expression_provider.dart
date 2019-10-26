@@ -1,56 +1,19 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/models/resonation_model.dart';
+import 'package:junto_beta_mobile/backend/services.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/utils/junto_http.dart';
+import 'package:meta/meta.dart';
 
-/// Interface which defines the roles and functionality of the
-/// CollectiveProvider.
-abstract class CollectiveProvider { 
-  /// Creates an expression on the server.
-  /// Method requires [CentralizedExpression] as it's only arg.
-  Future<CentralizedExpressionResponse> createExpression(
-    CentralizedExpression expression,
-  );
+/// Concrete implementation of [ExpressionService]
+@immutable
+class ExpressionServiceCentralized implements ExpressionService {
+  const ExpressionServiceCentralized(this.client);
 
-  /// Returns a [CentralizedExpressionResponse] for the given address.
-  Future<CentralizedExpressionResponse> getExpression(
-    String expressionAddress,
-  );
+  final JuntoHttp client;
 
-  /// Allows a user to resonate with the given expression.
-  /// [expressionAddress] must not be null or empty.
-  Future<Resonation> postResonation(
-    String expressionAddress,
-  );
-
-  /// Allows the user to comment under the supplied expression.
-  /// [parentAddress], [type] and [data] must be passed.
-  Future<CentralizedExpressionResponse> postCommentExpression(
-    String parentAddress,
-    String type, 
-    Map<String, dynamic> data,
-  );
-
-  /// Returns a list of [UserProfile] for the users who resonated with the
-  /// given [expressionAddress].
-  Future<List<UserProfile>> getExpressionsResonation(
-    String expressionAddress,
-  );
-
-  /// Returns a list of [Comment]s for the given [expressionAddress].
-  Future<List<Comment>> getExpressionsComments(
-    String expressionAddress,
-  );
-
-  /// Returns mock expression data.
-  List<CentralizedExpressionResponse> get collectiveExpressions;
-}
-
-/// Concrete implementation of [CollectiveProvider]
-class CollectiveProviderCentralized implements CollectiveProvider {
   @override
   List<CentralizedExpressionResponse> get collectiveExpressions =>
       sampleExpressions;
@@ -60,7 +23,7 @@ class CollectiveProviderCentralized implements CollectiveProvider {
       CentralizedExpression expression) async {
     final Map<String, dynamic> _postBody = expression.toMap();
     final http.Response _serverResponse =
-        await JuntoHttp().postWithoutEncoding('/expressions', body: _postBody);
+        await client.postWithoutEncoding('/expressions', body: _postBody);
     final Map<String, dynamic> parseData =
         JuntoHttp.handleResponse(_serverResponse);
     final CentralizedExpressionResponse response =
@@ -76,7 +39,7 @@ class CollectiveProviderCentralized implements CollectiveProvider {
       'type': type,
       'expression_data': data
     };
-    final http.Response _serverResponse = await JuntoHttp().post(
+    final http.Response _serverResponse = await client.post(
       '/expressions/$expressionAddress/comments',
       body: _postBody,
     );
@@ -89,7 +52,7 @@ class CollectiveProviderCentralized implements CollectiveProvider {
   Future<Resonation> postResonation(
     String expressionAddress,
   ) async {
-    final http.Response _serverResponse = await JuntoHttp().post(
+    final http.Response _serverResponse = await client.post(
       '/expressions/$expressionAddress/resonations',
     );
     return Resonation.fromMap(JuntoHttp.handleResponse(_serverResponse));
@@ -100,7 +63,7 @@ class CollectiveProviderCentralized implements CollectiveProvider {
     String expressionAddress,
   ) async {
     final http.Response _response =
-        await JuntoHttp().get('/expressions/$expressionAddress');
+        await client.get('/expressions/$expressionAddress');
     final Map<String, dynamic> _decodedResponse =
         JuntoHttp.handleResponse(_response);
     return CentralizedExpressionResponse.withCommentsAndResonations(
@@ -110,7 +73,7 @@ class CollectiveProviderCentralized implements CollectiveProvider {
   @override
   Future<List<Comment>> getExpressionsComments(String expressionAddress) async {
     final http.Response response =
-        await JuntoHttp().get('/expressions/$expressionAddress/comments');
+        await client.get('/expressions/$expressionAddress/comments');
     final List<dynamic> _listData = json.decode(response.body);
     final List<Comment> _results = _listData
         .map((dynamic data) => Comment.fromMap(data))
@@ -122,7 +85,7 @@ class CollectiveProviderCentralized implements CollectiveProvider {
   Future<List<UserProfile>> getExpressionsResonation(
       String expressionAddress) async {
     final http.Response response =
-        await JuntoHttp().get('/expressions/$expressionAddress/resonations');
+        await client.get('/expressions/$expressionAddress/resonations');
     final List<dynamic> _listData = json.decode(response.body);
     final List<UserProfile> _results = _listData
         .map((dynamic data) => UserProfile.fromMap(data))

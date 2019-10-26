@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/palette.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_appbar.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_bottom.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_top.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/event_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/longform_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/photo_open.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/shortform_open.dart';
-import 'package:junto_beta_mobile/styles.dart';
 import 'package:junto_beta_mobile/widgets/comment_preview/comment_preview.dart';
 
 class ExpressionOpen extends StatefulWidget {
