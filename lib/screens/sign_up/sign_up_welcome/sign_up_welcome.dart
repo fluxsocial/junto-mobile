@@ -62,7 +62,8 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
     );
     try {
       JuntoOverlay.showLoader(context);
-      final UserData results = await Provider.of<AuthRepo>(context).registerUser(details);
+      final UserData results =
+          await Provider.of<AuthRepo>(context).registerUser(details);
       await SharedPreferences.getInstance()
         ..setBool(
           'isLoggedIn',
@@ -82,9 +83,9 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
         <Widget>[
           FlatButton(
             onPressed: () => Navigator.of(context).pushAndRemoveUntil(
-                  Welcome.route(),
-                  (Route<dynamic> route) => false,
-                ),
+              Welcome.route(),
+              (Route<dynamic> route) => false,
+            ),
             child: const Text('OK'),
           ),
         ],

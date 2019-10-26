@@ -15,14 +15,19 @@ class ExpressionServiceCentralized implements ExpressionService {
   final JuntoHttp client;
 
   @override
-  List<CentralizedExpressionResponse> get collectiveExpressions => sampleExpressions;
+  List<CentralizedExpressionResponse> get collectiveExpressions =>
+      sampleExpressions;
 
   @override
-  Future<CentralizedExpressionResponse> createExpression(CentralizedExpression expression) async {
+  Future<CentralizedExpressionResponse> createExpression(
+      CentralizedExpression expression) async {
     final Map<String, dynamic> _postBody = expression.toMap();
-    final http.Response _serverResponse = await client.postWithoutEncoding('/expressions', body: _postBody);
-    final Map<String, dynamic> parseData = JuntoHttp.handleResponse(_serverResponse);
-    final CentralizedExpressionResponse response = CentralizedExpressionResponse.fromMap(parseData);
+    final http.Response _serverResponse =
+        await client.postWithoutEncoding('/expressions', body: _postBody);
+    final Map<String, dynamic> parseData =
+        JuntoHttp.handleResponse(_serverResponse);
+    final CentralizedExpressionResponse response =
+        CentralizedExpressionResponse.fromMap(parseData);
     return response;
   }
 
@@ -38,7 +43,8 @@ class ExpressionServiceCentralized implements ExpressionService {
       '/expressions/$expressionAddress/comments',
       body: _postBody,
     );
-    final Map<String, dynamic> _parseResponse = JuntoHttp.handleResponse(_serverResponse);
+    final Map<String, dynamic> _parseResponse =
+        JuntoHttp.handleResponse(_serverResponse);
     return CentralizedExpressionResponse.fromMap(_parseResponse);
   }
 
@@ -56,30 +62,40 @@ class ExpressionServiceCentralized implements ExpressionService {
   Future<CentralizedExpressionResponse> getExpression(
     String expressionAddress,
   ) async {
-    final http.Response _response = await client.get('/expressions/$expressionAddress');
-    final Map<String, dynamic> _decodedResponse = JuntoHttp.handleResponse(_response);
-    return CentralizedExpressionResponse.withCommentsAndResonations(_decodedResponse);
+    final http.Response _response =
+        await client.get('/expressions/$expressionAddress');
+    final Map<String, dynamic> _decodedResponse =
+        JuntoHttp.handleResponse(_response);
+    return CentralizedExpressionResponse.withCommentsAndResonations(
+        _decodedResponse);
   }
 
   @override
   Future<List<Comment>> getExpressionsComments(String expressionAddress) async {
-    final http.Response response = await client.get('/expressions/$expressionAddress/comments');
+    final http.Response response =
+        await client.get('/expressions/$expressionAddress/comments');
     final List<dynamic> _listData = json.decode(response.body);
-    final List<Comment> _results = _listData.map((dynamic data) => Comment.fromMap(data)).toList(growable: false);
+    final List<Comment> _results = _listData
+        .map((dynamic data) => Comment.fromMap(data))
+        .toList(growable: false);
     return _results;
   }
 
   @override
-  Future<List<UserProfile>> getExpressionsResonation(String expressionAddress) async {
-    final http.Response response = await client.get('/expressions/$expressionAddress/resonations');
+  Future<List<UserProfile>> getExpressionsResonation(
+      String expressionAddress) async {
+    final http.Response response =
+        await client.get('/expressions/$expressionAddress/resonations');
     final List<dynamic> _listData = json.decode(response.body);
-    final List<UserProfile> _results =
-        _listData.map((dynamic data) => UserProfile.fromMap(data)).toList(growable: false);
+    final List<UserProfile> _results = _listData
+        .map((dynamic data) => UserProfile.fromMap(data))
+        .toList(growable: false);
     return _results;
   }
 }
 
-List<CentralizedExpressionResponse> sampleExpressions = <CentralizedExpressionResponse>[
+List<CentralizedExpressionResponse> sampleExpressions =
+    <CentralizedExpressionResponse>[
   CentralizedExpressionResponse(
     address: '0xfee32zokie8',
     type: 'LongForm',

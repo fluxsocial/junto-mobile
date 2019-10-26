@@ -166,7 +166,8 @@ class CreateEventState extends State<CreateEvent> with DateParser {
           children: <Widget>[
             Expanded(
               child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 children: <Widget>[
                   Container(
                     // color: Colors.blue,
@@ -193,7 +194,10 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                       cursorWidth: 2,
                       maxLines: null,
                       maxLength: 140,
-                      style: const TextStyle(fontSize: 20, color: Color(0xff333333), fontWeight: FontWeight.w700),
+                      style: const TextStyle(
+                          fontSize: 20,
+                          color: Color(0xff333333),
+                          fontWeight: FontWeight.w700),
                     ),
                   ),
                   // Container(
@@ -252,7 +256,8 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                                     startMinute +
                                     ' ' +
                                     startPeriod,
-                                style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                                style: const TextStyle(
+                                    fontSize: 17, fontWeight: FontWeight.w500),
                               )
                             ],
                           )
@@ -320,7 +325,9 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                                           endMinute +
                                           ' ' +
                                           endPeriod,
-                                      style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                                      style: const TextStyle(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w500),
                                     )
                                   ],
                                 )
@@ -362,7 +369,10 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                       cursorColor: const Color(0xff333333),
                       cursorWidth: 2,
                       maxLines: null,
-                      style: const TextStyle(color: Color(0xff333333), fontSize: 17, fontWeight: FontWeight.w700),
+                      style: const TextStyle(
+                          color: Color(0xff333333),
+                          fontSize: 17,
+                          fontWeight: FontWeight.w700),
                       maxLength: 80,
                       textInputAction: TextInputAction.done,
                     ),
@@ -389,7 +399,10 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                       cursorColor: const Color(0xff333333),
                       cursorWidth: 2,
                       maxLines: null,
-                      style: const TextStyle(color: Color(0xff333333), fontSize: 17, fontWeight: FontWeight.w700),
+                      style: const TextStyle(
+                          color: Color(0xff333333),
+                          fontSize: 17,
+                          fontWeight: FontWeight.w700),
                       maxLength: 80,
                       textInputAction: TextInputAction.done,
                     ),

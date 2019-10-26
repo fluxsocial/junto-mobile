@@ -57,8 +57,8 @@ class GroupMembers extends StatelessWidget {
                     ? Colors.greenAccent
                     : Colors.white,
                 onTap: () => Navigator.of(context).push(
-                      JuntoMember.route(user.user),
-                    ),
+                  JuntoMember.route(user.user),
+                ),
               );
             },
           ),

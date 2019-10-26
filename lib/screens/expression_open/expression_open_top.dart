@@ -30,17 +30,16 @@ class ExpressionOpenTop extends StatelessWidget {
                 context,
                 CupertinoPageRoute<dynamic>(
                   builder: (BuildContext context) => JuntoMember(
-                        profile: UserProfile(
-                          address: '',
-                          firstName: firstName,
-                          lastName: lastName,
-                          bio: 'This is a test',
-                          profilePicture:
-                              'assets/images/junto-mobile__logo.png',
-                          username: 'Gmail',
-                          verified: false,
-                        ),
-                      ),
+                    profile: UserProfile(
+                      address: '',
+                      firstName: firstName,
+                      lastName: lastName,
+                      bio: 'This is a test',
+                      profilePicture: 'assets/images/junto-mobile__logo.png',
+                      username: 'Gmail',
+                      verified: false,
+                    ),
+                  ),
                 ),
               );
             },

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
+import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/collective/degrees/degrees.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
@@ -67,8 +67,8 @@ class JuntoCollectiveState extends State<JuntoCollective> {
     if (mounted)
       setState(() {
         isLoading = true;
-        initialData.addAll(
-            Provider.of<ExpressionRepo>(context).collectiveExpressions);
+        initialData
+            .addAll(Provider.of<ExpressionRepo>(context).collectiveExpressions);
       });
   }
 

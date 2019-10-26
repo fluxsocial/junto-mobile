@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/backend/repositories/repos.dart';
+import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/sphere.dart';
 import 'package:junto_beta_mobile/screens/spheres/sphere_members.dart';
@@ -39,9 +39,9 @@ class _PackDrawerState extends State<PackDrawer> {
     Navigator.of(context).push(
       MaterialPageRoute<dynamic>(
         builder: (BuildContext context) => GroupMembers(
-              users: users,
-              groupName: 'Pack Members',
-            ),
+          users: users,
+          groupName: 'Pack Members',
+        ),
       ),
     );
   }

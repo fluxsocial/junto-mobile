@@ -11,8 +11,10 @@ class CollectiveProviderCentralized implements CollectiveService {
   final JuntoHttp client;
 
   @override
-  Future<Collective> createCollection(String name, String privacy, [String parent]) async {
-    final http.Response _response = await client.postWithoutEncoding('/collection', body: <String, String>{
+  Future<Collective> createCollection(String name, String privacy,
+      [String parent]) async {
+    final http.Response _response =
+        await client.postWithoutEncoding('/collection', body: <String, String>{
       'name': name,
       'privacy': privacy,
       'parent': parent,
@@ -23,14 +25,17 @@ class CollectiveProviderCentralized implements CollectiveService {
 
   @override
   Future<CollectionResponse> getCollection(String collectionAddress) async {
-    final http.Response _response = await client.get('/collection/$collectionAddress');
+    final http.Response _response =
+        await client.get('/collection/$collectionAddress');
     final Map<String, dynamic> _map = JuntoHttp.handleResponse(_response);
     return CollectionResponse.fromMap(_map);
   }
 
   @override
-  Future<void> postCollectiveExpression(String collectionAddress, String expressionAddress) async {
-    final http.Response _response = await client.post('/collection/$collectionAddress/$expressionAddress');
+  Future<void> postCollectiveExpression(
+      String collectionAddress, String expressionAddress) async {
+    final http.Response _response =
+        await client.post('/collection/$collectionAddress/$expressionAddress');
     JuntoHttp.handleResponse(_response);
   }
 }

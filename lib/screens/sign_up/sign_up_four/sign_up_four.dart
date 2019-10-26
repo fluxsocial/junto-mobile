@@ -137,14 +137,14 @@ class SignUpFourState extends State<SignUpFour> {
                         context,
                         MaterialPageRoute<dynamic>(
                           builder: (BuildContext context) => SignUpWelcome(
-                                firstName: widget.firstName,
-                                lastName: widget.lastName,
-                                username: widget.username,
-                                password: widget.password,
-                                bio: bio,
-                                profilePicture: profilePicture,
-                                email: widget.email,
-                              ),
+                            firstName: widget.firstName,
+                            lastName: widget.lastName,
+                            username: widget.username,
+                            password: widget.password,
+                            bio: bio,
+                            profilePicture: profilePicture,
+                            email: widget.email,
+                          ),
                         ),
                       );
                     }

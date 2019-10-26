@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/themes.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
-import 'package:junto_beta_mobile/backend/repositories/group_repo.dart';
+import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
 import 'package:junto_beta_mobile/screens/loading_screen/junto_loading_screen.dart';
@@ -26,7 +25,6 @@ class JuntoApp extends StatefulWidget {
 }
 
 class JuntoAppState extends State<JuntoApp> {
-
   Backend get backend => widget.backend;
 
   @override
@@ -42,7 +40,7 @@ class JuntoAppState extends State<JuntoApp> {
       ],
       child: MaterialApp(
         theme: JuntoThemes().juntoLightTheme,
-        home:  JuntoLoading(),
+        home: JuntoLoading(),
         debugShowCheckedModeBanner: false,
         title: 'Junto Alpha',
         color: JuntoPalette.juntoPrimary,

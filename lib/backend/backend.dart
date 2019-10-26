@@ -1,7 +1,5 @@
 import 'package:http/io_client.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
-import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
-import 'package:junto_beta_mobile/backend/repositories/group_repo.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/backend/services/auth_service.dart';
 import 'package:junto_beta_mobile/backend/services/collective_provider.dart';
