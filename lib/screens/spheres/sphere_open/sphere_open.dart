@@ -165,18 +165,18 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
 
   final List<String> _tabs = <String>['About', 'Discussion', 'Events'];
 
-  //FIXME: Refactor to object/class
-  List<Map<String, dynamic>> principles = <Map<String, dynamic>>[
-    <String, dynamic>{
-      'title': 'Be a nice person because nice people get chocolate',
-      'body':
-          'Engage with empathy and respect for one another. We are more than viewpoints that may oppose each other at times. We are human beings :)'
-    },
-    <String, dynamic>{
-      'title': 'All walks of life',
-      'body':
-          'This is a communal space where people from all walks of life are welcome'
-    },
+  List<Principle> principles = <Principle>[
+    const Principle(
+      title: 'Be a nice person because nice people get chocolate',
+      body: 'Engage with empathy and respect for one another. We are more than '
+          'viewpoints that may oppose each other at times. We are human beings '
+          ':)',
+    ),
+    const Principle(
+      title: 'All walks of life',
+      body: 'This is a communal space where people from all walks of life are'
+          ' welcome',
+    ),
   ];
 
   bool _principlesFullView = false;
@@ -407,19 +407,22 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
             ),
           ),
         ),
-        principles.isNotEmpty
-            ? Container(
-                padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    const Text('Principles', style: JuntoStyles.header),
-                    _getPrinciples(principles, _principlesFullView),
-                    _principlesSeeMore()
-                  ],
+        if (principles.isNotEmpty)
+          Container(
+            padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                const Text('Principles', style: JuntoStyles.header),
+                _PrincipleListing(
+                  data: principles,
+                  showFirst: _principlesFullView,
                 ),
-              )
-            : const SizedBox(),
+                _principlesSeeMore()
+              ],
+            ),
+          ),
+        if (!principles.isNotEmpty) const SizedBox(),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child: Column(
@@ -433,20 +436,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
         ),
       ],
     );
-  }
-
-//FIXME: Refactor to ListView.builder
-  Widget _getPrinciples(List<Map<String, dynamic>> principles, bool showFirst) {
-    final List<Widget> list = <Widget>[];
-
-    for (int i = 0; i < principles.length; i++) {
-      list.add(
-        _buildPrinciple(i, principles[i]['title'], principles[i]['body']),
-      );
-    }
-    return showFirst
-        ? Column(children: list)
-        : Column(children: <Widget>[list.first]);
   }
 
   Widget _principlesSeeMore() {
@@ -472,13 +461,13 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
           child: Row(
             children: <Widget>[
               _principlesFullView
-                  ? const Text('collapse')
-                  : const Text('see more'),
+                  ? const Text('see more')
+                  : const Text('collapse'),
               const SizedBox(width: 5),
               Icon(
                 _principlesFullView
-                    ? Icons.keyboard_arrow_up
-                    : Icons.keyboard_arrow_down,
+                    ? Icons.keyboard_arrow_down
+                    : Icons.keyboard_arrow_up,
                 size: 17,
                 color: const Color(0xff555555),
               )
@@ -489,54 +478,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     } else {
       return const SizedBox();
     }
-  }
-
-//FIXME:  Refactor to contained Widget
-  Widget _buildPrinciple(int index, String title, String body) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      decoration: const BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
-        ),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            (index + 1).toString(),
-            style: const TextStyle(
-              fontWeight: FontWeight.w500,
-              color: Color(0xff999999),
-            ),
-          ),
-          const SizedBox(width: 15),
-          Container(
-            height: 17,
-            decoration: const BoxDecoration(
-              border: Border(
-                right: BorderSide(color: Color(0xffeeeeee), width: 2),
-              ),
-            ),
-          ),
-          const SizedBox(width: 15),
-          Flexible(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  title,
-                  style: JuntoStyles.title,
-                  textAlign: TextAlign.left,
-                ),
-                const SizedBox(height: 10),
-                Text(body)
-              ],
-            ),
-          )
-        ],
-      ),
-    );
   }
 
   Widget _buildExpressionView() {
@@ -697,5 +638,101 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   @override
   bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
     return false;
+  }
+}
+
+class _PrincipleListing extends StatefulWidget {
+  const _PrincipleListing({
+    Key key,
+    @required this.showFirst,
+    @required this.data,
+  }) : super(key: key);
+
+  final bool showFirst;
+  final List<Principle> data;
+
+  @override
+  __PrincipleListingState createState() => __PrincipleListingState();
+}
+
+class __PrincipleListingState extends State<_PrincipleListing> {
+  @override
+  Widget build(BuildContext context) {
+    if (widget.showFirst) {
+      return _PrincipleItem(item: widget.data.first, index: 0);
+    } else {
+      return ListView.builder(
+        shrinkWrap: true,
+        itemCount: widget.data.length,
+        itemBuilder: (BuildContext context, int index) {
+          return _PrincipleItem(
+            index: index,
+            item: widget.data[index],
+          );
+        },
+      );
+    }
+  }
+}
+
+class _PrincipleItem extends StatelessWidget {
+  const _PrincipleItem({
+    Key key,
+    @required this.item,
+    @required this.index,
+  }) : super(key: key);
+  final Principle item;
+  final int index;
+
+  String get title => item.title;
+
+  String get body => item.body;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
+        ),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            (index + 1).toString(),
+            style: const TextStyle(
+              fontWeight: FontWeight.w500,
+              color: Color(0xff999999),
+            ),
+          ),
+          const SizedBox(width: 15),
+          Container(
+            height: 17,
+            decoration: const BoxDecoration(
+              border: Border(
+                right: BorderSide(color: Color(0xffeeeeee), width: 2),
+              ),
+            ),
+          ),
+          const SizedBox(width: 15),
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  title,
+                  style: JuntoStyles.title,
+                  textAlign: TextAlign.left,
+                ),
+                const SizedBox(height: 10),
+                Text(body)
+              ],
+            ),
+          )
+        ],
+      ),
+    );
   }
 }

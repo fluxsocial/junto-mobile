@@ -214,7 +214,7 @@ class DenCollectionOpenState extends State<DenCollectionOpen> {
                                     child: const Icon(
                                       Icons.add,
                                       size: 20,
-                                      color:  Color(0xff555555),
+                                      color: Color(0xff555555),
                                     ),
                                   ),
                                 )

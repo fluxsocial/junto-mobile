@@ -64,10 +64,10 @@ class ExpressionOpenTop extends StatelessWidget {
                       Text(username ?? '', style: JuntoStyles.title),
                       Text(
                         firstName + ' ' + lastName,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
-                          color: const Color(0xff555555),
+                          color: Color(0xff555555),
                         ),
                       ),
                     ],

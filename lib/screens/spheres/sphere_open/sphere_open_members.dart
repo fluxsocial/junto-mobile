@@ -80,7 +80,7 @@ class SphereOpenMembers extends StatelessWidget {
               preferredSize: const Size.fromHeight(1),
               child: Container(
                 height: 1,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
                       width: 1,

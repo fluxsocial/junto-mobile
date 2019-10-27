@@ -55,7 +55,7 @@ class PackPreview extends StatelessWidget {
                   Text(group.creator,
                       textAlign: TextAlign.start, style: JuntoStyles.body),
                 ],
-              ),  
+              ),
             )
           ],
         ),

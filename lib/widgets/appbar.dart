@@ -127,10 +127,10 @@ class _JuntoAppBarState extends State<JuntoAppBar>
                       ),
                       const SizedBox(width: 2.5),
                       widget.appContext == 'collective'
-                          ? Icon(
+                          ? const Icon(
                               Icons.keyboard_arrow_down,
                               size: 17,
-                              color: const Color(0xff999999),
+                              color: Color(0xff999999),
                             )
                           : const SizedBox()
                     ],
@@ -337,10 +337,10 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                   onTap: () {
                     Navigator.pop(context);
                   },
-                  child: Icon(
+                  child: const Icon(
                     Icons.keyboard_arrow_down,
                     size: 24,
-                    color: const Color(0xff999999),
+                    color: Color(0xff999999),
                   ),
                 )
               ],
