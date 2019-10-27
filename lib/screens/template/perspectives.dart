@@ -9,6 +9,7 @@ class JuntoPerspectives extends StatefulWidget {
       : super(key: key);
 
   final Function changePerspective;
+
   @override
   State<StatefulWidget> createState() {
     return JuntoPerspectivesState();
@@ -170,16 +171,27 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                 Container(
                   child: Row(
                     children: <Widget>[
+                      // Container(
+                      //   height: 30,
+                      //   decoration: const BoxDecoration(
+                      //     border: Border(
+                      //       left: BorderSide(
+                      //           color: Color(0xffeeeeee), width: 1.5),
+                      //     ),
+                      //   ),
+                      // ),
+                      // const SizedBox(width: 10),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
                             name,
                             style: const TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 15,
-                                letterSpacing: 1.2,
-                                color: Colors.white),
+                              fontWeight: FontWeight.w700,
+                              fontSize: 15,
+                              letterSpacing: 1.2,
+                              color: Colors.white,
+                            ),
                           ),
                           const SizedBox(height: 5),
                           Text(
@@ -209,7 +221,8 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
     );
   }
 
-  _openPerspectiveBottomSheet() {
+// FIXME: Refactor to widget
+  void _openPerspectiveBottomSheet() {
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
@@ -245,8 +258,10 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
               ),
               const SizedBox(height: 20),
               Container(
-                  child: Text(
-                      'The Junto perspective contains all public expressions from every member of Junto. Expressions are displayed in chronological order.'))
+                child: const Text(
+                  'The Junto perspective contains all public expressions from every member of Junto. Expressions are displayed in chronological order.',
+                ),
+              )
             ],
           ),
         ),

@@ -156,8 +156,8 @@ class CreateActionsState extends State<CreateActions> {
                         fontSize: 15, fontWeight: FontWeight.w500),
                   ),
                   const SizedBox(width: 1),
-                  const Icon(Icons.keyboard_arrow_down,
-                      color: Color(0xff333333), size: 17)
+                  Icon(Icons.keyboard_arrow_down,
+                      color: const Color(0xff333333), size: 17)
                 ],
               ),
             ),
@@ -282,7 +282,7 @@ class CreateActionsState extends State<CreateActions> {
                       ),
                     ),
                     Container(
-                      child: const Icon(Icons.add, size: 20),
+                      child: Icon(Icons.add, size: 20),
                     )
                   ],
                 ),
@@ -297,7 +297,10 @@ class CreateActionsState extends State<CreateActions> {
 
 class _ExpressionLayerBottomSheet extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _ExpressionLayerBottomSheetState();
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return _ExpressionLayerBottomSheetState();
+  }
 }
 
 class _ExpressionLayerBottomSheetState
@@ -439,13 +442,13 @@ class _ExpressionLayerBottomSheetState
                         borderRadius: BorderRadius.circular(100),
                         gradient: _chooseBase
                             ? const LinearGradient(
-                                colors: <Color>[
+                                colors:  <Color>[
                                   JuntoPalette.juntoSecondary,
                                   JuntoPalette.juntoPrimary
                                 ],
                                 begin: Alignment.bottomLeft,
                                 end: Alignment.topRight,
-                                stops: <double>[0.1, 0.9],
+                                stops:  <double>[0.1, 0.9],
                               )
                             : null,
                         color:
@@ -460,13 +463,13 @@ class _ExpressionLayerBottomSheetState
                         borderRadius: BorderRadius.circular(100),
                         gradient: _chooseSpheres
                             ? const LinearGradient(
-                                colors: <Color>[
+                                colors:  <Color>[
                                   JuntoPalette.juntoSecondary,
                                   JuntoPalette.juntoPrimary
                                 ],
                                 begin: Alignment.bottomLeft,
                                 end: Alignment.topRight,
-                                stops: <double>[0.1, 0.9])
+                                stops:  <double>[0.1, 0.9])
                             : null,
                         color: _chooseSpheres
                             ? null

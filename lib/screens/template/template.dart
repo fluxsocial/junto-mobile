@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/widgets/fabs/filter_channel_fab.dart';
 import 'package:junto_beta_mobile/widgets/fabs/create_sphere_fab.dart';
@@ -10,10 +10,11 @@ import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/den/den_drawer/den_drawer.dart';
 import 'package:junto_beta_mobile/screens/packs/packs.dart';
 import 'package:junto_beta_mobile/screens/spheres/spheres.dart';
+import 'package:junto_beta_mobile/screens/template/perspectives.dart';
 import 'package:junto_beta_mobile/widgets/appbar.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
+import 'package:junto_beta_mobile/widgets/create_fab.dart';
 import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/screens/template/perspectives.dart';
 
 // This class is a template screen that contains the navbar, bottom bar,
 // and screen (collective, spheres, pack, etc) depending on condition.
@@ -59,6 +60,12 @@ class JuntoTemplateState extends State<JuntoTemplate> {
     _retrieveUserInfo();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    controller.dispose();
+  }
+
   Future<void> _retrieveUserInfo() async {
     final UserService _userProvider = Provider.of<UserService>(context);
     try {
@@ -82,57 +89,59 @@ class JuntoTemplateState extends State<JuntoTemplate> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: <Widget>[
-      JuntoPerspectives(changePerspective: _changePerspective),
-      GestureDetector(
-        onTap: () {
-          print('yo');
-        },
-        onHorizontalDragUpdate: (DragUpdateDetails details) {
-          // only enable drag on collective screen
-          if (_currentScreen == 'collective') {
-            if (_dx == 0.0 &&
-                details.globalPosition.dy != 0.0 &&
-                details.delta.direction > 0) {
-              return;
-            } else {
-              if (details.globalPosition.dx > 0 &&
-                  details.globalPosition.dx <
-                      MediaQuery.of(context).size.width * .9) {
-                setState(() {
-                  _dx = details.globalPosition.dx;
-                  if (details.delta.direction > 0) {
-                    setState(() {
-                      _scrollDirection = 'left';
-                    });
-                  } else if (details.delta.direction < 0) {
-                    setState(() {
-                      _scrollDirection = 'right';
-                    });
-                  }
-                });
+    return Stack(
+      children: <Widget>[
+        JuntoPerspectives(changePerspective: _changePerspective),
+        GestureDetector(
+          onTap: () {
+            print('testing ');
+          },
+          onHorizontalDragUpdate: (DragUpdateDetails details) {
+            // only enable drag on collective screen
+            if (_currentScreen == 'collective') {
+              if (_dx == 0.0 &&
+                  details.globalPosition.dy != 0.0 &&
+                  details.delta.direction > 0) {
+                return;
+              } else {
+                if (details.globalPosition.dx > 0 &&
+                    details.globalPosition.dx <
+                        MediaQuery.of(context).size.width * .9) {
+                  setState(() {
+                    _dx = details.globalPosition.dx;
+                    if (details.delta.direction > 0) {
+                      setState(() {
+                        _scrollDirection = 'left';
+                      });
+                    } else if (details.delta.direction < 0) {
+                      setState(() {
+                        _scrollDirection = 'right';
+                      });
+                    }
+                  });
+                }
               }
             }
-          }
-        },
-        onHorizontalDragEnd: (DragEndDetails details) {
-          if (_scrollDirection == 'right') {
-            if (_dx >= MediaQuery.of(context).size.width * .2) {
-              setState(() {
-                _dx = MediaQuery.of(context).size.width * .9;
-              });
-            } else if (_dx < MediaQuery.of(context).size.width * .2) {
-              _dx = 0.0;
-            }
-          } else if (_scrollDirection == 'left') {
-            if (_dx < MediaQuery.of(context).size.width * .7) {
-              setState(() {
+          },
+          onHorizontalDragEnd: (DragEndDetails details) {
+            if (_scrollDirection == 'right') {
+              if (_dx >= MediaQuery.of(context).size.width * .2) {
+                setState(() {
+                  _dx = MediaQuery.of(context).size.width * .9;
+                });
+              } else if (_dx < MediaQuery.of(context).size.width * .2) {
                 _dx = 0.0;
-              });
-            } else if (_dx >= MediaQuery.of(context).size.width * .7) {
-              setState(() {
-                _dx = MediaQuery.of(context).size.width * .9;
-              });
+              }
+            } else if (_scrollDirection == 'left') {
+              if (_dx < MediaQuery.of(context).size.width * .7) {
+                setState(() {
+                  _dx = 0.0;
+                });
+              } else if (_dx >= MediaQuery.of(context).size.width * .7) {
+                setState(() {
+                  _dx = MediaQuery.of(context).size.width * .9;
+                });
+              }
             }
           }
         },
@@ -177,18 +186,34 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                       child: DenDrawer())
                   : null,
 
-              // dynamically render body
-              body: _renderBody(),
+                  // dynamically render body
+                  body: _renderBody(),
 
-              bottomNavigationBar: ValueListenableBuilder<int>(
-                valueListenable: _bottomNavIndex,
-                builder: (BuildContext context, int index, _) {
-                  return BottomNav(
-                    currentIndex: index,
-                    setIndex: _switchScreen,
-                  );
-                },
-              ),
+                  bottomNavigationBar: ValueListenableBuilder<int>(
+                    valueListenable: _bottomNavIndex,
+                    builder: (BuildContext context, int index, _) {
+                      return BottomNav(
+                        currentIndex: index,
+                        setIndex: _switchScreen,
+                      );
+                    },
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    if (_dx == MediaQuery.of(context).size.width * .9) {
+                      setState(() {
+                        _dx = 0;
+                      });
+                    }
+                  },
+                  child: _dx > 0
+                      ? Container(
+                          color: Colors.white.withOpacity(.5),
+                        )
+                      : const SizedBox(),
+                )
+              ],
             ),
             GestureDetector(
               onTap: () {
@@ -206,8 +231,8 @@ class JuntoTemplateState extends State<JuntoTemplate> {
             )
           ]),
         ),
-      ),
-    ]);
+      ],
+    );
   }
 
   // render main body of template; i.e. collective, spheres, packs, or den

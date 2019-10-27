@@ -114,8 +114,7 @@ class JuntoCreateState extends State<JuntoCreate> {
     } else if (templateType == 'ShortForm') {
       setState(() {
         _shortform = true;
-        _currentIcon =
-            const Icon(CustomIcons.feather, color: Colors.white, size: 20);
+        _currentIcon = const Icon(CustomIcons.feather, color: Colors.white, size: 20);
       });
     } else if (templateType == 'BulletForm') {
       setState(() {
@@ -124,14 +123,12 @@ class JuntoCreateState extends State<JuntoCreate> {
     } else if (templateType == 'PhotoForm') {
       setState(() {
         _photo = true;
-        _currentIcon =
-            const Icon(CustomIcons.camera, color: Colors.white, size: 20);
+        _currentIcon = const Icon(CustomIcons.camera, color: Colors.white, size: 20);
       });
     } else if (templateType == 'EventForm') {
       setState(() {
         _events = true;
-        _currentIcon =
-            const Icon(CustomIcons.event, color: Colors.white, size: 20);
+        _currentIcon = const Icon(CustomIcons.event, color: Colors.white, size: 20);
       });
     } else {
       print('not an expresion type');
@@ -245,6 +242,7 @@ class JuntoCreateState extends State<JuntoCreate> {
     );
   }
 
+  //FIXME: Refactor to Stateless Widget
   void _openExpressionCenter() {
     showModalBottomSheet(
       context: context,
@@ -328,7 +326,7 @@ class JuntoCreateState extends State<JuntoCreate> {
                                   size: 20,
                                   color: Theme.of(context).primaryColor,
                                 ),
-                                SizedBox(height: 5),
+                                 SizedBox(height: 5),
                                 Text(
                                   'shortform',
                                   style: Theme.of(context).textTheme.subtitle,
@@ -351,7 +349,7 @@ class JuntoCreateState extends State<JuntoCreate> {
                                   size: 20,
                                   color: Theme.of(context).primaryColor,
                                 ),
-                                SizedBox(height: 5),
+                                 SizedBox(height: 5),
                                 Text(
                                   'photo',
                                   style: Theme.of(context).textTheme.subtitle,
@@ -374,7 +372,7 @@ class JuntoCreateState extends State<JuntoCreate> {
                                   size: 20,
                                   color: Theme.of(context).primaryColor,
                                 ),
-                                SizedBox(height: 5),
+                                 SizedBox(height: 5),
                                 Text(
                                   'event',
                                   style: Theme.of(context).textTheme.subtitle,
@@ -383,13 +381,13 @@ class JuntoCreateState extends State<JuntoCreate> {
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
