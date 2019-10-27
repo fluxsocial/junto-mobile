@@ -1,11 +1,12 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/member/member_appbar.dart';
 import 'package:junto_beta_mobile/screens/member/member_expanded.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
 
+//FIXME: Build method and bottom sheet should be broken up
 class JuntoMember extends StatefulWidget {
   const JuntoMember({
     Key key,
@@ -123,9 +124,9 @@ class _JuntoMemberState extends State<JuntoMember> {
                                         MediaQuery.of(context).size.height * .4,
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 15, vertical: 10),
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                       color: Colors.white,
-                                      borderRadius: const BorderRadius.only(
+                                      borderRadius: BorderRadius.only(
                                         topLeft: Radius.circular(10),
                                         topRight: Radius.circular(10),
                                       ),
@@ -151,11 +152,12 @@ class _JuntoMemberState extends State<JuntoMember> {
                                                           .width *
                                                       .1,
                                                   decoration: BoxDecoration(
-                                                      color: const Color(
-                                                          0xffeeeeee),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              100)),
+                                                    color:
+                                                        const Color(0xffeeeeee),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            100),
+                                                  ),
                                                 ),
                                               ],
                                             ),

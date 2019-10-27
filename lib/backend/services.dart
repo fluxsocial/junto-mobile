@@ -1,6 +1,7 @@
 import 'package:junto_beta_mobile/models/models.dart';
 
 abstract class SearchProvider {
+  /// Queries our API with the given [query].
   Future<List<UserProfile>> searchMember(String query);
 }
 

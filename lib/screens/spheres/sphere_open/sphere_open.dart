@@ -436,7 +436,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   }
 
 //FIXME: Refactor to ListView.builder
-  Widget _getPrinciples(List principles, bool showFirst) {
+  Widget _getPrinciples(List<Map<String, dynamic>> principles, bool showFirst) {
     final List<Widget> list = <Widget>[];
 
     for (int i = 0; i < principles.length; i++) {
@@ -505,9 +505,9 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
         children: <Widget>[
           Text(
             (index + 1).toString(),
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.w500,
-              color: const Color(0xff999999),
+              color: Color(0xff999999),
             ),
           ),
           const SizedBox(width: 15),
@@ -660,7 +660,7 @@ class MemberRow extends StatelessWidget {
           ),
           const SizedBox(height: 5),
           Container(
-            child: Text('49 members', style: JuntoStyles.title),
+            child: const Text('49 members', style: JuntoStyles.title),
           ),
         ],
       ),
