@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 
 class ChannelPreview extends StatelessWidget {
@@ -27,18 +28,15 @@ class ChannelPreview extends StatelessWidget {
                     stops: const <double>[0.3, 0.9],
                     colors: <Color>[
                       JuntoPalette.juntoSecondary,
-                      // JuntoPalette.juntoPrimary,
-                      Color(0xFFFFCF68)
+                      JuntoPalette.juntoPrimary,
                     ],
                   ),
                   borderRadius: BorderRadius.circular(100),
                 ),
-                child: Text(
-                  '#',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 17,
-                      fontWeight: FontWeight.w700),
+                child: Icon(
+                  CustomIcons.hash,
+                  color: Colors.white,
+                  size: 15,
                 ),
               ),
               Container(
