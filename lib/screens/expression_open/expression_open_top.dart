@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
+import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/widgets/expression_action_items.dart';
@@ -78,8 +78,12 @@ class ExpressionOpenTop extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              // FIXME: Refactor to widgets folder
-              ExpressionActionItems().buildExpressionActionItems(context);
+              showModalBottomSheet(
+                context: context,
+                builder: (BuildContext context) {
+                  return const ExpressionActionsItems();
+                },
+              );
             },
             child: const Icon(
               Icons.keyboard_arrow_down,

@@ -14,7 +14,6 @@ class SearchProviderCentralized implements SearchProvider {
 
   final JuntoHttp client;
 
-  // FIXME docs required
   @override
   Future<List<UserProfile>> searchMember(String query) async {
     final SharedPreferences _prefs = await SharedPreferences.getInstance();

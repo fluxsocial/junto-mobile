@@ -58,7 +58,9 @@ class ExpressionPreviewTop extends StatelessWidget {
                   // profile picture
                   ClipOval(
                     child: Image.asset(
-                      profilePicture,
+                      profilePicture.isEmpty
+                          ? 'assets/images/junto-mobile__junto.png'
+                          : profilePicture,
                       height: 38.0,
                       width: 38.0,
                       fit: BoxFit.cover,
@@ -82,8 +84,12 @@ class ExpressionPreviewTop extends StatelessWidget {
             children: <Widget>[
               GestureDetector(
                 onTap: () {
-                  //FIXME: Refactor into widget
-                  ExpressionActionItems().buildExpressionActionItems(context);
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return const ExpressionActionsItems();
+                    },
+                  );
                 },
                 child: const Icon(
                   Icons.keyboard_arrow_down,
