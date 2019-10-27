@@ -165,18 +165,18 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
 
   final List<String> _tabs = <String>['About', 'Discussion', 'Events'];
 
-  //FIXME: Refactor to object/class
-  List<Map<String, dynamic>> principles = <Map<String, dynamic>>[
-    <String, dynamic>{
-      'title': 'Be a nice person because nice people get chocolate',
-      'body':
-          'Engage with empathy and respect for one another. We are more than viewpoints that may oppose each other at times. We are human beings :)'
-    },
-    <String, dynamic>{
-      'title': 'All walks of life',
-      'body':
-          'This is a communal space where people from all walks of life are welcome'
-    },
+  List<Principle> principles = <Principle>[
+    const Principle(
+      title: 'Be a nice person because nice people get chocolate',
+      body: 'Engage with empathy and respect for one another. We are more than '
+          'viewpoints that may oppose each other at times. We are human beings '
+          ':)',
+    ),
+    const Principle(
+      title: 'All walks of life',
+      body: 'This is a communal space where people from all walks of life are'
+          ' welcome',
+    ),
   ];
 
   bool _principlesFullView = false;
