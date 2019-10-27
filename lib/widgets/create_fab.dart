@@ -48,8 +48,8 @@ class CreateFAB extends StatelessWidget {
           gradient: const LinearGradient(
             begin: Alignment.bottomLeft,
             end: Alignment.topRight,
-            stops:  <double>[0.1, 0.9],
-            colors:  <Color>[
+            stops: <double>[0.1, 0.9],
+            colors: <Color>[
               JuntoPalette.juntoSecondary,
               JuntoPalette.juntoPrimary,
             ],

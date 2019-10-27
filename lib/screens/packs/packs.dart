@@ -9,7 +9,6 @@ import 'package:async/async.dart' show AsyncMemoizer;
 
 // This class renders the screen of packs a user belongs to
 class JuntoPacks extends StatefulWidget {
-
   @override
   State<StatefulWidget> createState() => JuntoPacksState();
 }

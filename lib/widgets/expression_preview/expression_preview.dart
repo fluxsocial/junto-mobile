@@ -22,7 +22,7 @@ class ExpressionPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // pending - create conditional statement that renders ExpressionOpenCreated if 
+        // pending - create conditional statement that renders ExpressionOpenCreated if
         // the expression was created by the user. Otherwise display ExpressionOpen
         Navigator.push(
           context,
@@ -30,7 +30,6 @@ class ExpressionPreview extends StatelessWidget {
             builder: (BuildContext context) => ExpressionOpen(expression),
           ),
         );
-
       },
       child: Container(
         color: Colors.white,

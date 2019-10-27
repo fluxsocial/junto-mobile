@@ -36,7 +36,8 @@ class LongformOpen extends StatelessWidget {
             child: Text(
               longformBody,
               textAlign: TextAlign.start,
-              style: const TextStyle(fontSize: 17, height: 1.6, fontWeight: FontWeight.w500),
+              style: const TextStyle(
+                  fontSize: 17, height: 1.6, fontWeight: FontWeight.w500),
             ),
           ),
         ],

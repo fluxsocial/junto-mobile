@@ -78,7 +78,7 @@ class _CreateSphereState extends State<CreateSphere>
     final CentralizedSphere sphere = CentralizedSphere(
       name: sphereName,
       description: sphereDescription,
-      facilitators: <String>[ 
+      facilitators: <String>[
         _profile.address,
       ],
       photo: '',
@@ -184,7 +184,6 @@ class _CreateSphereState extends State<CreateSphere>
                         key: const Key('principle-field-create-sphere'),
                         controller: _principleController,
                         hintText: 'Sphere principles',
-
                       ),
                       Container(
                         padding: const EdgeInsets.symmetric(vertical: 15),

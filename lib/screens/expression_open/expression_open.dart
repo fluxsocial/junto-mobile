@@ -267,7 +267,6 @@ class ExpressionOpenState extends State<ExpressionOpen> {
               ),
             ),
           ),
-
           Container(
             decoration: const BoxDecoration(
               color: Colors.white,
@@ -374,7 +373,8 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                                           color: Color(0xff333333),
                                           fontWeight: FontWeight.w500),
                                     ),
-                                    const Icon(Icons.keyboard_arrow_down, size: 14)
+                                    const Icon(Icons.keyboard_arrow_down,
+                                        size: 14)
                                   ],
                                 ),
                               ),

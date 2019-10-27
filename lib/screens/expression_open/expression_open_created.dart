@@ -457,7 +457,8 @@ class ExpressionOpenCreatedState extends State<ExpressionOpenCreated> {
                                           color: Color(0xff333333),
                                           fontWeight: FontWeight.w500),
                                     ),
-                                    const Icon(Icons.keyboard_arrow_down, size: 14)
+                                    const Icon(Icons.keyboard_arrow_down,
+                                        size: 14)
                                   ],
                                 ),
                               ),
