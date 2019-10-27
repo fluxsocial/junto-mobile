@@ -442,14 +442,14 @@ class _ExpressionLayerBottomSheetState
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(100),
                         gradient: _chooseBase
-                            ? LinearGradient(
-                                colors: <Color>[
+                            ? const LinearGradient(
+                                colors:  <Color>[
                                   JuntoPalette.juntoSecondary,
                                   JuntoPalette.juntoPrimary
                                 ],
                                 begin: Alignment.bottomLeft,
                                 end: Alignment.topRight,
-                                stops: const <double>[0.1, 0.9],
+                                stops:  <double>[0.1, 0.9],
                               )
                             : null,
                         color: _chooseBase ? null : const Color(0xffeeeeee),
@@ -462,14 +462,14 @@ class _ExpressionLayerBottomSheetState
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(100),
                         gradient: _chooseSpheres
-                            ? LinearGradient(
-                                colors: <Color>[
+                            ? const LinearGradient(
+                                colors:  <Color>[
                                   JuntoPalette.juntoSecondary,
                                   JuntoPalette.juntoPrimary
                                 ],
                                 begin: Alignment.bottomLeft,
                                 end: Alignment.topRight,
-                                stops: const <double>[0.1, 0.9])
+                                stops:  <double>[0.1, 0.9])
                             : null,
                         color: _chooseSpheres ? null : const Color(0xffeeeeee),
                       ),

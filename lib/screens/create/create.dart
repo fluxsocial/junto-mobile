@@ -29,7 +29,7 @@ class JuntoCreateState extends State<JuntoCreate> {
   bool _photo = false;
   bool _events = false;
 
-  Icon _currentIcon = Icon(CustomIcons.longform, color: Colors.white);
+  Icon _currentIcon = const Icon(CustomIcons.longform, color: Colors.white);
 
   ValueNotifier<bool> isEditing;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -38,8 +38,6 @@ class JuntoCreateState extends State<JuntoCreate> {
   GlobalKey<CreateShortformState> _shortFormKey;
   GlobalKey<CreatePhotoState> _photoFormKey;
   GlobalKey<CreateEventState> _eventKey;
-
-  // final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
 
   @override
   void initState() {
@@ -111,12 +109,12 @@ class JuntoCreateState extends State<JuntoCreate> {
       setState(() {
         _longform = true;
         _currentIcon =
-            Icon(CustomIcons.longform, color: Colors.white, size: 20);
+            const Icon(CustomIcons.longform, color: Colors.white, size: 20);
       });
     } else if (templateType == 'ShortForm') {
       setState(() {
         _shortform = true;
-        _currentIcon = Icon(CustomIcons.feather, color: Colors.white, size: 20);
+        _currentIcon = const Icon(CustomIcons.feather, color: Colors.white, size: 20);
       });
     } else if (templateType == 'BulletForm') {
       setState(() {
@@ -125,12 +123,12 @@ class JuntoCreateState extends State<JuntoCreate> {
     } else if (templateType == 'PhotoForm') {
       setState(() {
         _photo = true;
-        _currentIcon = Icon(CustomIcons.camera, color: Colors.white, size: 20);
+        _currentIcon = const Icon(CustomIcons.camera, color: Colors.white, size: 20);
       });
     } else if (templateType == 'EventForm') {
       setState(() {
         _events = true;
-        _currentIcon = Icon(CustomIcons.event, color: Colors.white, size: 20);
+        _currentIcon = const Icon(CustomIcons.event, color: Colors.white, size: 20);
       });
     } else {
       print('not an expresion type');
@@ -198,12 +196,12 @@ class JuntoCreateState extends State<JuntoCreate> {
                   onTap: () {
                     Navigator.pop(context);
                   },
-                  child: Text(
+                  child: const Text(
                     'cancel',
                     style: TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.w500,
-                      color: const Color(0xff333333),
+                      color:  Color(0xff333333),
                     ),
                   ),
                 ),
@@ -267,9 +265,9 @@ class JuntoCreateState extends State<JuntoCreate> {
         child: Container(
           height: MediaQuery.of(context).size.height * .3,
           padding: const EdgeInsets.symmetric(vertical: 10),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Colors.white,
-            borderRadius: const BorderRadius.only(
+            borderRadius:  BorderRadius.only(
               topLeft: Radius.circular(10),
               topRight: Radius.circular(10),
             ),
@@ -293,8 +291,8 @@ class JuntoCreateState extends State<JuntoCreate> {
                       ),
                     ],
                   ),
-                  ListTile(
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+                  const ListTile(
+                    contentPadding:  EdgeInsets.symmetric(horizontal: 10),
                     title: Text(
                       'Expression Center',
                       style:
@@ -304,9 +302,9 @@ class JuntoCreateState extends State<JuntoCreate> {
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 10),
                     width: 180,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Colors.white,
-                      border: const Border(
+                      border:  Border(
                         top: BorderSide(color: Color(0xffeeeeee), width: 1),
                       ),
                     ),
@@ -327,13 +325,13 @@ class JuntoCreateState extends State<JuntoCreate> {
                             alignment: Alignment.bottomCenter,
                             width: MediaQuery.of(context).size.width * .25,
                             child: Column(
-                              children: <Widget>[
-                                const Icon(
+                              children: const <Widget>[
+                                 Icon(
                                   CustomIcons.longform,
                                   size: 20,
                                   color: JuntoPalette.juntoBlack,
                                 ),
-                                const SizedBox(height: 5),
+                                 SizedBox(height: 5),
                                 Text(
                                   'dynamic',
                                   style: TextStyle(
@@ -352,13 +350,13 @@ class JuntoCreateState extends State<JuntoCreate> {
                             color: Colors.white,
                             width: MediaQuery.of(context).size.width * .25,
                             child: Column(
-                              children: const <Widget>[
-                                Icon(
+                              children: const  <Widget>[
+                                  Icon(
                                   CustomIcons.feather,
                                   size: 20,
                                   color: JuntoPalette.juntoBlack,
                                 ),
-                                SizedBox(height: 5),
+                                 SizedBox(height: 5),
                                 Text(
                                   'shortform',
                                   style: TextStyle(
@@ -378,12 +376,12 @@ class JuntoCreateState extends State<JuntoCreate> {
                             width: MediaQuery.of(context).size.width * .25,
                             child: Column(
                               children: const <Widget>[
-                                Icon(
+                                 Icon(
                                   CustomIcons.camera,
                                   size: 20,
                                   color: JuntoPalette.juntoBlack,
                                 ),
-                                SizedBox(height: 5),
+                                 SizedBox(height: 5),
                                 Text(
                                   'photo',
                                   style: TextStyle(
@@ -403,12 +401,12 @@ class JuntoCreateState extends State<JuntoCreate> {
                             width: MediaQuery.of(context).size.width * .25,
                             child: Column(
                               children: const <Widget>[
-                                Icon(
+                                 Icon(
                                   CustomIcons.event,
                                   size: 20,
                                   color: JuntoPalette.juntoBlack,
                                 ),
-                                SizedBox(height: 5),
+                                 SizedBox(height: 5),
                                 Text(
                                   'event',
                                   style: TextStyle(

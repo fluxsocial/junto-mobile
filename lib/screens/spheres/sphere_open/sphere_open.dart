@@ -30,7 +30,7 @@ class SphereOpen extends StatefulWidget {
 class SphereOpenState extends State<SphereOpen> with HideFab {
   ScrollController _hideFABController;
   ValueNotifier<bool> _isVisible;
-  List _members;
+  List<Users> _members;
 
   List<CentralizedExpressionResponse> expressions =
       <CentralizedExpressionResponse>[

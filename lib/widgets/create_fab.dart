@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
@@ -59,11 +59,8 @@ class CreateFAB extends StatelessWidget {
             color: JuntoPalette.juntoWhite,
             width: 2,
           ),
-          borderRadius: BorderRadius.circular(25),
-        ),
-        alignment: Alignment.center,
-        child: const Icon(CustomIcons.enso, color: Colors.white)
-      ),
+          alignment: Alignment.center,
+          child: const Icon(CustomIcons.enso, color: Colors.white)),
     );
   }
 }

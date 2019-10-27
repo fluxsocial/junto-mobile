@@ -63,7 +63,7 @@ class PackOpenState extends State<PackOpen> {
               child: child,
             );
           },
-          child: CreateFAB(expressionLayer: 'my pack'),
+          child: const CreateFAB(expressionLayer: 'my pack'),
         ),
         endDrawer: PackDrawer(
           pack: widget.pack,

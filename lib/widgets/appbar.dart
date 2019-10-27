@@ -159,7 +159,7 @@ class _JuntoAppBarState extends State<JuntoAppBar>
                     );
                   },
                   child: Container(
-                    child: Icon(
+                    child: const Icon(
                       Icons.search,
                       color: JuntoPalette.juntoSleek,
                       size: JuntoStyles.appbarIcon,
@@ -339,7 +339,7 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                   child: Icon(
                     Icons.keyboard_arrow_down,
                     size: 24,
-                    color: Color(0xff999999),
+                    color: const Color(0xff999999),
                   ),
                 )
               ],
@@ -398,7 +398,7 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
             Expanded(
               child: PageView(
                 controller: pageController,
-                onPageChanged: (index) {
+                onPageChanged: (int index) {
                   if (index == 0) {
                     setState(() {
                       searchChannelsPage = true;

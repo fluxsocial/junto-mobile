@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/collective/degrees/degrees.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/widgets/expression_preview/expression_preview.dart';
 import 'package:provider/provider.dart';
 
 /// This screen shows a list of public expressions that can be filtered
 /// by channel or perspective
 class JuntoCollective extends StatefulWidget {
-  JuntoCollective({
+  const JuntoCollective({
     Key key,
     this.currentPerspective,
     this.controller,
   }) : super(key: key);
 
-  String currentPerspective;
+  final String currentPerspective;
 
   /// This controller is used to detect the scroll of the ListView
   /// to render the FAB dynamically
@@ -26,16 +26,15 @@ class JuntoCollective extends StatefulWidget {
 }
 
 class JuntoCollectiveState extends State<JuntoCollective> {
-  // String _perspective;
+  String _perspective;
   bool isLoading = false;
   List<CentralizedExpressionResponse> initialData =
       <CentralizedExpressionResponse>[];
 
   @override
   void initState() {
-    super.initState();    
-    print('init');
-    widget.currentPerspective = 'collective';
+    super.initState();
+    _perspective = widget.currentPerspective;
 
     widget.controller.addListener(scollListener);
   }
@@ -87,7 +86,7 @@ class JuntoCollectiveState extends State<JuntoCollective> {
   }
 
   Widget _displayDegrees() {
-    if (widget.currentPerspective == 'Degrees of separation') {
+    if (_perspective == 'Degrees of separation') {
       return DegreesOfSeparation(
         _changeDegree,
         _oneDegreeColor,
