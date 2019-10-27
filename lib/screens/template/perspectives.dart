@@ -291,6 +291,34 @@ class _CreatePerspectiveBottomSheetState
   // add members
   int _searchMembersIndex = 0;
 
+    List<UserProfile> profiles = <UserProfile>[
+    UserProfile(
+      firstName: 'Eric Yang',
+      username: 'sunyata',
+      profilePicture: 'assets/images/junto-mobile__eric.png'
+    ),
+    UserProfile(
+      firstName: 'Riley Wagner',
+      username: 'wags',
+      profilePicture: 'assets/images/junto-mobile__riley.png'
+    ),
+    UserProfile(
+      firstName: 'Dora Czovek',
+      username: 'wingedmessenger',
+      profilePicture: 'assets/images/junto-mobile__dora.png'
+    ), 
+    UserProfile(
+      firstName: 'Josh Parkin',
+      username: 'jdeepee',
+      profilePicture: 'assets/images/junto-mobile__josh.png'
+    ),
+    UserProfile(
+      firstName: 'Nash Ramdial',
+      username: 'nash',
+      profilePicture: 'assets/images/junto-mobile__nash.png'
+    )            
+  ];
+
   @override
   void dispose() {
     super.dispose();
@@ -484,24 +512,12 @@ class _CreatePerspectiveBottomSheetState
               children: <Widget>[
                 ListView(
                   children: <Widget>[
-                    _memberPreview('assets/images/junto-mobile__eric.png',
-                        'sunyata', 'Eric Yang'),
-                    _memberPreview('assets/images/junto-mobile__riley.png',
-                        'wags', 'Riley Wagner'),
-                    _memberPreview('assets/images/junto-mobile__dora.png',
-                        'wingedmessenger', 'Dora Czovek'),
-                    _memberPreview('assets/images/junto-mobile__josh.png',
-                        'jdeepee', 'Josh David Livingston Parkin'),
-                    _memberPreview('assets/images/junto-mobile__josh.png',
-                        'jdeepee', 'Josh David Livingston Parkin'),
-                    _memberPreview('assets/images/junto-mobile__josh.png',
-                        'jdeepee', 'Josh David Livingston Parkin'),
-                    _memberPreview('assets/images/junto-mobile__josh.png',
-                        'jdeepee', 'Josh David Livingston Parkin'),
-                    _memberPreview('assets/images/junto-mobile__josh.png',
-                        'jdeepee', 'Josh David Livingston Parkin'),
-                    _memberPreview('assets/images/junto-mobile__josh.png',
-                        'jdeepee', 'Josh David Livingston Parkin'),
+                    MemberPreviewSelect(profile: profiles[0]),
+                    MemberPreviewSelect(profile: profiles[1]),
+                    MemberPreviewSelect(profile: profiles[2]),
+                    MemberPreviewSelect(profile: profiles[3]),
+                    MemberPreviewSelect(profile: profiles[4]),
+
                   ],
                 ),
                 ListView(
@@ -516,63 +532,6 @@ class _CreatePerspectiveBottomSheetState
                 ),
               ],
             ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _memberPreview(String photo, String username, String name) {
-    return Container(
-      color: Colors.white,
-      child: Row(
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              ClipOval(
-                child: Image.asset(
-                  photo,
-                  height: 38.0,
-                  width: 38.0,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width - 68,
-                padding: const EdgeInsets.symmetric(
-                  vertical: 15,
-                ),
-                decoration: const BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      width: .5,
-                      color: JuntoPalette.juntoFade,
-                    ),
-                  ),
-                ),
-                margin: const EdgeInsets.only(left: 10.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      username,
-                      textAlign: TextAlign.start,
-                      style: JuntoStyles.title,
-                    ),
-                    Text(
-                      name,
-                      textAlign: TextAlign.start,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xff555555),
-                      ),
-                    )
-                  ],
-                ),
-              )
-            ],
           ),
         ],
       ),

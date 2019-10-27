@@ -6,6 +6,7 @@ import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/spheres/sphere_preview.dart';
+import 'package:junto_beta_mobile/widgets/member_preview/member_preview_select.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:provider/provider.dart';
 
@@ -56,6 +57,12 @@ class JuntoSpheresState extends State<JuntoSpheres> with ListDistinct {
           // Create sphere
           GestureDetector(
             onTap: () {
+              // Navigator.push(
+              //   context,
+              //   CupertinoPageRoute<dynamic>(
+              //     builder: (BuildContext context) => CreateSphere(),
+              //   ),
+              // );              
               showModalBottomSheet(
                 isScrollControlled: true,
                 context: context,
@@ -64,13 +71,6 @@ class JuntoSpheresState extends State<JuntoSpheres> with ListDistinct {
                   child: _CreateSphereBottomSheet(),
                 ),
               );
-
-              // Navigator.push(
-              //   context,
-              //   CupertinoPageRoute<dynamic>(
-              //     builder: (BuildContext context) => CreateSphere(),
-              //   ),
-              // );
             },
             child: Container(
               decoration: const BoxDecoration(
@@ -168,6 +168,24 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
 
   List<Map<String, dynamic>> principles = <Map<String, dynamic>>[
     <String, dynamic>{'title': '', 'body': ''}
+  ];
+
+  List<UserProfile> profiles = <UserProfile>[
+    UserProfile(
+      firstName: 'Eric Yang',
+      username: 'sunyata',
+      profilePicture: 'assets/images/junto-mobile__eric.png'
+    ),
+    UserProfile(
+      firstName: 'Riley Wagner',
+      username: 'wags',
+      profilePicture: 'assets/images/junto-mobile__riley.png'
+    ),
+    UserProfile(
+      firstName: 'Dora Czovek',
+      username: 'wingedmessenger',
+      profilePicture: 'assets/images/junto-mobile__dora.png'
+    )        
   ];
 
   @override
@@ -527,63 +545,6 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
     );
   }
 
-  Widget _memberPreview(String photo, String username, String name) {
-    return Container(
-      color: Colors.white,
-      child: Row(
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              ClipOval(
-                child: Image.asset(
-                  photo,
-                  height: 38.0,
-                  width: 38.0,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width - 68,
-                padding: const EdgeInsets.symmetric(
-                  vertical: 15,
-                ),
-                decoration: const BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      width: .5,
-                      color: JuntoPalette.juntoFade,
-                    ),
-                  ),
-                ),
-                margin: const EdgeInsets.only(left: 10.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      username,
-                      textAlign: TextAlign.start,
-                      style: JuntoStyles.title,
-                    ),
-                    Text(
-                      name,
-                      textAlign: TextAlign.start,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xff555555),
-                      ),
-                    )
-                  ],
-                ),
-              )
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _createSphereMembers() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -706,24 +667,11 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
             children: <Widget>[
               ListView(
                 children: <Widget>[
-                  _memberPreview('assets/images/junto-mobile__eric.png',
-                      'sunyata', 'Eric Yang'),
-                  _memberPreview('assets/images/junto-mobile__riley.png',
-                      'wags', 'Riley Wagner'),
-                  _memberPreview('assets/images/junto-mobile__dora.png',
-                      'wingedmessenger', 'Dora Czovek'),
-                  _memberPreview('assets/images/junto-mobile__josh.png',
-                      'jdeepee', 'Josh David Livingston Parkin'),
-                  _memberPreview('assets/images/junto-mobile__josh.png',
-                      'jdeepee', 'Josh David Livingston Parkin'),
-                  _memberPreview('assets/images/junto-mobile__josh.png',
-                      'jdeepee', 'Josh David Livingston Parkin'),
-                  _memberPreview('assets/images/junto-mobile__josh.png',
-                      'jdeepee', 'Josh David Livingston Parkin'),
-                  _memberPreview('assets/images/junto-mobile__josh.png',
-                      'jdeepee', 'Josh David Livingston Parkin'),
-                  _memberPreview('assets/images/junto-mobile__josh.png',
-                      'jdeepee', 'Josh David Livingston Parkin'),
+                  MemberPreviewSelect(profile: profiles[0]),
+                  MemberPreviewSelect(profile: profiles[1]),
+                  MemberPreviewSelect(profile: profiles[2]),
+
+   
                 ],
               ),
               ListView(

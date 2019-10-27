@@ -252,11 +252,22 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
     initialPage: 0,
   );
 
+  int currentIndex;
+
   bool searchChannelsPage = true;
   bool searchMembersPage = false;
   bool searchSpheresPage = false;
 
   FocusNode textFieldFocusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+
+    setState(() {
+      currentIndex = 0;
+    });
+  }
 
   @override
   void dispose() {
@@ -287,50 +298,57 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(
-                  width: MediaQuery.of(context).size.width * .84,
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: Color(0xffeeeeee),
-                        width: .75,
-                      ),
-                    ),
+            Container(
+              padding: EdgeInsets.only(bottom: 5),
+              decoration: const BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: Color(0xffeeeeee),
+                    width: .75,
                   ),
-                  child: TextField(
-                    focusNode: textFieldFocusNode,
-                    buildCounter: (
-                      BuildContext context, {
-                      int currentLength,
-                      int maxLength,
-                      bool isFocused,
-                    }) =>
-                        null,
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      icon: Icon(
-                        Icons.search,
-                        size: 20,
-                        color: Color(0xff999999),
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Icon(
+                    Icons.search,
+                    size: 20,
+                    color: const Color(0xff999999),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Transform.translate(
+                      offset: Offset(0.0, 2),
+                      child: TextField(
+                        focusNode: textFieldFocusNode,
+                        buildCounter: (
+                          BuildContext context, {
+                          int currentLength,
+                          int maxLength,
+                          bool isFocused,
+                        }) =>
+                            null,
+                        decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.all(0.0),
+                          border: InputBorder.none,
+                          hintStyle: TextStyle(
+                              color: Color(0xff999999),
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        cursorColor: const Color(0xff333333),
+                        cursorWidth: 1,
+                        maxLines: null,
+                        style: const TextStyle(
+                            color: Color(0xff333333),
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500),
+                        maxLength: 80,
+                        textInputAction: TextInputAction.done,
+                        onChanged: widget.onTextChange,
                       ),
-                      hintStyle: TextStyle(
-                          color: Color(0xff999999),
-                          fontSize: 17,
-                          fontWeight: FontWeight.w500),
                     ),
-                    cursorColor: const Color(0xff333333),
-                    cursorWidth: 2,
-                    maxLines: null,
-                    style: const TextStyle(
-                        color: Color(0xff333333),
-                        fontSize: 17,
-                        fontWeight: FontWeight.w500),
-                    maxLength: 80,
-                    textInputAction: TextInputAction.done,
-                    onChanged: widget.onTextChange,
                   ),
                 ),
                 GestureDetector(
@@ -355,11 +373,12 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                   child: Text(
                     'CHANNELS',
                     style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                        color: searchChannelsPage
-                            ? const Color(0xff333333)
-                            : const Color(0xff999999)),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      color: currentIndex == 0
+                          ? const Color(0xff333333)
+                          : const Color(0xff999999),
+                    ),
                   ),
                 ),
                 const SizedBox(width: 25),
@@ -372,7 +391,7 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                     style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
-                        color: searchMembersPage
+                        color: currentIndex == 1
                             ? const Color(0xff333333)
                             : const Color(0xff999999)),
                   ),
@@ -387,7 +406,7 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
-                      color: searchSpheresPage
+                      color: currentIndex == 2
                           ? const Color(0xff333333)
                           : const Color(0xff999999),
                     ),
@@ -414,11 +433,8 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                     });
                   } else if (index == 2) {
                     setState(() {
-                      searchChannelsPage = false;
-                      searchMembersPage = false;
-                      searchSpheresPage = true;
+                      currentIndex = index;
                     });
-                  }
                 },
                 children: <Widget>[
                   // search members
