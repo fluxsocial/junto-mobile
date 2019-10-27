@@ -1,9 +1,18 @@
 import 'package:flutter/cupertino.dart';
+<<<<<<< HEAD
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/member/member_appbar.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+=======
+import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/screens/member/member_appbar.dart';
+import 'package:junto_beta_mobile/screens/member/member_expanded.dart';
+>>>>>>> b6d7dab... Functions widget clean up (Sphere) (#188)
 
 //FIXME: Build method and bottom sheet should be broken up
 class JuntoMember extends StatefulWidget {
@@ -108,14 +117,25 @@ class _JuntoMemberState extends State<JuntoMember> {
                                   },
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(
+<<<<<<< HEAD
                                         horizontal: 10, vertical: 7.5),
                                     decoration: BoxDecoration(
                                       border: Border.all(
                                           color: Colors.white, width: 1.5),
                                       borderRadius: BorderRadius.circular(25),
+=======
+                                        horizontal: 15, vertical: 10),
+                                    decoration: const BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(10),
+                                        topRight: Radius.circular(10),
+                                      ),
+>>>>>>> b6d7dab... Functions widget clean up (Sphere) (#188)
                                     ),
                                     child: Row(
                                       children: <Widget>[
+<<<<<<< HEAD
                                         const SizedBox(width: 14),
                                         Image.asset(
                                             'assets/images/junto-mobile__infinity.png',
@@ -124,6 +144,124 @@ class _JuntoMemberState extends State<JuntoMember> {
                                         const SizedBox(width: 2),
                                         Icon(Icons.keyboard_arrow_down,
                                             size: 12, color: Colors.white)
+=======
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: <Widget>[
+                                                Container(
+                                                  height: 5,
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      .1,
+                                                  decoration: BoxDecoration(
+                                                    color:
+                                                        const Color(0xffeeeeee),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            100),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 10),
+                                            ListTile(
+                                              contentPadding:
+                                                  const EdgeInsets.all(0),
+                                              title: Row(
+                                                children: <Widget>[
+                                                  Icon(
+                                                    Icons.visibility,
+                                                    size: 17,
+                                                    color:
+                                                        const Color(0xff555555),
+                                                  ),
+                                                  const SizedBox(width: 15),
+                                                  const Text(
+                                                    'Subscribe',
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        fontSize: 17),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            ListTile(
+                                              contentPadding:
+                                                  const EdgeInsets.all(0),
+                                              title: Row(
+                                                children: <Widget>[
+                                                  Icon(
+                                                    CustomIcons.circle,
+                                                    size: 17,
+                                                    color:
+                                                        const Color(0xff555555),
+                                                  ),
+                                                  const SizedBox(width: 15),
+                                                  const Text(
+                                                    'Connect',
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        fontSize: 17),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            ListTile(
+                                              contentPadding:
+                                                  const EdgeInsets.all(0),
+                                              onTap: () {},
+                                              title: Row(
+                                                children: <Widget>[
+                                                  Icon(
+                                                    CustomIcons.packs,
+                                                    size: 17,
+                                                    color:
+                                                        const Color(0xff555555),
+                                                  ),
+                                                  const SizedBox(width: 15),
+                                                  const Text(
+                                                    'Join Pack',
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        fontSize: 17),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Container(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          child: FlatButton(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 10),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text(
+                                              'Cancel',
+                                              style: TextStyle(
+                                                  fontSize: 17,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                            color: const Color(0xffeeeeee),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(25),
+                                            ),
+                                          ),
+                                        )
+>>>>>>> b6d7dab... Functions widget clean up (Sphere) (#188)
                                       ],
                                     ),
                                   ),

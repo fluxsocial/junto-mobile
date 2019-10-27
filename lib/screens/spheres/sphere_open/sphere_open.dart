@@ -456,7 +456,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   }
 
 //FIXME: Refactor to ListView.builder
-  Widget _getPrinciples(List principles, bool showFirst) {
+  Widget _getPrinciples(List<Map<String, dynamic>> principles, bool showFirst) {
     final List<Widget> list = <Widget>[];
 
     for (int i = 0; i < principles.length; i++) {

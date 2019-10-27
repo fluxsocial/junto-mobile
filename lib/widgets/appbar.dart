@@ -1,10 +1,12 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives'
     '/create_perspective/create_perspective.dart' show SelectedUsers;
 import 'package:junto_beta_mobile/utils/utils.dart';
@@ -326,6 +328,7 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    //ignore:unused_local_variable
     final ValueNotifier<SelectedUsers> _selectedUsers =
         Provider.of<ValueNotifier<SelectedUsers>>(context);
 

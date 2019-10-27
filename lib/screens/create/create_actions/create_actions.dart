@@ -156,8 +156,8 @@ class CreateActionsState extends State<CreateActions> {
                         fontSize: 15, fontWeight: FontWeight.w500),
                   ),
                   const SizedBox(width: 1),
-                  Icon(Icons.keyboard_arrow_down,
-                      color: const Color(0xff333333), size: 17)
+                  const Icon(Icons.keyboard_arrow_down,
+                      color: Color(0xff333333), size: 17)
                 ],
               ),
             ),
@@ -442,13 +442,13 @@ class _ExpressionLayerBottomSheetState
                         borderRadius: BorderRadius.circular(100),
                         gradient: _chooseBase
                             ? const LinearGradient(
-                                colors:  <Color>[
+                                colors: <Color>[
                                   JuntoPalette.juntoSecondary,
                                   JuntoPalette.juntoPrimary
                                 ],
                                 begin: Alignment.bottomLeft,
                                 end: Alignment.topRight,
-                                stops:  <double>[0.1, 0.9],
+                                stops: <double>[0.1, 0.9],
                               )
                             : null,
                         color:
@@ -463,13 +463,13 @@ class _ExpressionLayerBottomSheetState
                         borderRadius: BorderRadius.circular(100),
                         gradient: _chooseSpheres
                             ? const LinearGradient(
-                                colors:  <Color>[
+                                colors: <Color>[
                                   JuntoPalette.juntoSecondary,
                                   JuntoPalette.juntoPrimary
                                 ],
                                 begin: Alignment.bottomLeft,
                                 end: Alignment.topRight,
-                                stops:  <double>[0.1, 0.9])
+                                stops: <double>[0.1, 0.9])
                             : null,
                         color: _chooseSpheres
                             ? null

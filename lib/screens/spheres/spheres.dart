@@ -114,7 +114,7 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
   int _searchMembersIndex = 0;
 
   // add facilitators
-  int _searchFacilitatorsIndex = 0;
+  final ValueNotifier<int> _searchFacilitatorsIndex = ValueNotifier<int>(0);
 
   TextEditingController _nameController;
   TextEditingController _handleController;
@@ -123,17 +123,11 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
   TextEditingController _principleTitle;
   TextEditingController _principleBody;
   TextEditingController _principleTitleTwo;
-  TextEditingController _principleBodyTwo;
   TextEditingController _principleTitleThree;
-  TextEditingController _principleBodyThree;
   TextEditingController _principleTitleFour;
-  TextEditingController _principleBodyFour;
   TextEditingController _principleTitleFive;
-  TextEditingController _principleBodyFive;
   TextEditingController _principleTitleSix;
-  TextEditingController _principleBodySix;
   TextEditingController _principleTitleSeven;
-  TextEditingController _principleBodySeven;
 
   List<Map<String, dynamic>> principles = <Map<String, dynamic>>[
     <String, dynamic>{'title': '', 'body': ''}
@@ -242,7 +236,7 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                             duration: const Duration(milliseconds: 200),
                             curve: Curves.easeIn);
                         _searchMembersIndex = 0;
-                        _searchFacilitatorsIndex = 0;
+                        _searchFacilitatorsIndex.value = 0;
                       },
                       child: Container(
                         alignment: Alignment.centerRight,
@@ -265,11 +259,18 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                 });
               },
               children: <Widget>[
-                _createSphereDetails(),
+                _CreateSphereDetails(
+                  nameController: _nameController,
+                  handleController: _handleController,
+                  descriptionController: _descriptionController,
+                ),
                 _createSpherePrinciples(),
                 _createSphereMembers(),
-                _createSphereFacilitators(),
-                _createSpherePrivacy()
+                _CreateFacilitators(
+                  searchFacilitatorsController: _searchFacilitatorsController,
+                  searchFacilitatorsIndex: _searchFacilitatorsIndex,
+                ),
+                const _SelectSpherePrivacy(),
               ],
             ),
           )
@@ -278,121 +279,6 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
     );
   }
 
-  /// FIXME: Refactor to widget
-  Widget _createSphereDetails() {
-    return ListView(
-      children: <Widget>[
-        const SizedBox(height: 25),
-        Container(
-          height: 200,
-          decoration: const BoxDecoration(
-            color: Color(0xfff2f2f2),
-          ),
-          alignment: Alignment.center,
-          child: const Text('add a cover photo'),
-        ),
-        const SizedBox(height: 15),
-        Container(
-          width: MediaQuery.of(context).size.width,
-          child: TextField(
-            controller: _nameController,
-            buildCounter: (
-              BuildContext context, {
-              int currentLength,
-              int maxLength,
-              bool isFocused,
-            }) =>
-                null,
-            decoration: const InputDecoration(
-                contentPadding: EdgeInsets.all(0),
-                border: InputBorder.none,
-                hintText: 'Name your sphere*',
-                hintStyle: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xff999999),
-                )),
-            cursorColor: const Color(0xff333333),
-            cursorWidth: 2,
-            maxLines: 1,
-            style: const TextStyle(
-                color: Color(0xff333333),
-                fontSize: 15,
-                fontWeight: FontWeight.w700),
-            maxLength: 80,
-            textInputAction: TextInputAction.done,
-          ),
-        ),
-        const SizedBox(height: 15),
-        Container(
-          width: MediaQuery.of(context).size.width,
-          child: TextField(
-            controller: _handleController,
-            buildCounter: (
-              BuildContext context, {
-              int currentLength,
-              int maxLength,
-              bool isFocused,
-            }) =>
-                null,
-            decoration: const InputDecoration(
-                contentPadding: EdgeInsets.all(0),
-                border: InputBorder.none,
-                hintText: 'Give your sphere a unique username*',
-                hintStyle: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xff999999),
-                )),
-            cursorColor: const Color(0xff333333),
-            cursorWidth: 2,
-            maxLines: 1,
-            style: const TextStyle(
-                color: Color(0xff333333),
-                fontSize: 15,
-                fontWeight: FontWeight.w700),
-            maxLength: 80,
-            textInputAction: TextInputAction.done,
-          ),
-        ),
-        const SizedBox(height: 15),
-        Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          child: TextField(
-            controller: _descriptionController,
-            buildCounter: (
-              BuildContext context, {
-              int currentLength,
-              int maxLength,
-              bool isFocused,
-            }) =>
-                null,
-            decoration: const InputDecoration(
-                contentPadding: EdgeInsets.all(0),
-                border: InputBorder.none,
-                hintText: 'Write your sphere bio / purpose',
-                hintStyle: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xff999999),
-                )),
-            cursorColor: const Color(0xff333333),
-            cursorWidth: 2,
-            maxLines: null,
-            style: const TextStyle(
-                color: Color(0xff333333),
-                fontSize: 15,
-                fontWeight: FontWeight.w500),
-            maxLength: 240,
-            textInputAction: TextInputAction.newline,
-          ),
-        ),
-      ],
-    );
-  }
-
-  /// FIXME: Refactor to widget
   Widget _spherePrinciple(int index) {
     TextEditingController title;
     TextEditingController body;
@@ -521,52 +407,54 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
     );
   }
 
+  void handlePrincipleController() {
+    if (principles.length < 7) {
+      if (principles.length == 2) {
+        setState(() {
+          _principleTitleTwo = TextEditingController();
+          _principleTitleTwo = TextEditingController();
+        });
+      } else if (principles.length == 3) {
+        setState(() {
+          _principleTitleThree = TextEditingController();
+          _principleTitleThree = TextEditingController();
+        });
+      } else if (principles.length == 4) {
+        setState(() {
+          _principleTitleFour = TextEditingController();
+          _principleTitleFour = TextEditingController();
+        });
+      } else if (principles.length == 5) {
+        setState(() {
+          _principleTitleFive = TextEditingController();
+          _principleTitleFive = TextEditingController();
+        });
+      } else if (principles.length == 6) {
+        setState(() {
+          _principleTitleSix = TextEditingController();
+          _principleTitleSix = TextEditingController();
+        });
+      } else if (principles.length == 7) {
+        setState(() {
+          _principleTitleSeven = TextEditingController();
+          _principleTitleSeven = TextEditingController();
+        });
+      }
+
+      setState(() {
+        principles.add(<String, String>{'title': '', 'body': ''});
+        print(principles.length);
+      });
+    }
+  }
+
   Widget _createSpherePrinciples() {
     return ListView(
       children: <Widget>[
         const SizedBox(height: 15),
         for (int i = 0; i < principles.length; i++) _spherePrinciple(i + 1),
         GestureDetector(
-          onTap: () {
-            if (principles.length < 7) {
-              if (principles.length == 2) {
-                setState(() {
-                  _principleTitleTwo = TextEditingController();
-                  _principleTitleTwo = TextEditingController();
-                });
-              } else if (principles.length == 3) {
-                setState(() {
-                  _principleTitleThree = TextEditingController();
-                  _principleTitleThree = TextEditingController();
-                });
-              } else if (principles.length == 4) {
-                setState(() {
-                  _principleTitleFour = TextEditingController();
-                  _principleTitleFour = TextEditingController();
-                });
-              } else if (principles.length == 5) {
-                setState(() {
-                  _principleTitleFive = TextEditingController();
-                  _principleTitleFive = TextEditingController();
-                });
-              } else if (principles.length == 6) {
-                setState(() {
-                  _principleTitleSix = TextEditingController();
-                  _principleTitleSix = TextEditingController();
-                });
-              } else if (principles.length == 7) {
-                setState(() {
-                  _principleTitleSeven = TextEditingController();
-                  _principleTitleSeven = TextEditingController();
-                });
-              }
-
-              setState(() {
-                principles.add(<String, String>{'title': '', 'body': ''});
-                print(principles.length);
-              });
-            }
-          },
+          onTap: handlePrincipleController,
           child: Container(
               padding: const EdgeInsets.symmetric(vertical: 15),
               decoration: const BoxDecoration(
@@ -674,10 +562,10 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
           ),
           child: Row(
             children: <Widget>[
-              Icon(
+              const Icon(
                 Icons.search,
                 size: 20,
-                color: const Color(0xff999999),
+                color: Color(0xff999999),
               ),
               const SizedBox(width: 10),
               Expanded(
@@ -817,139 +705,157 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
       ],
     );
   }
+}
 
-// FIXME: Refactor to stateless widget
-  Widget _createSphereFacilitators() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Container(
-          decoration: const BoxDecoration(
-            border: Border(
-              bottom: BorderSide(
-                color: Color(0xffeeeeee),
-                width: .75,
-              ),
-            ),
-          ),
-          child: Row(
-            children: <Widget>[
-              Icon(
-                Icons.search,
-                size: 20,
-                color: const Color(0xff999999),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Transform.translate(
-                  offset: const Offset(0.0, 2.5),
-                  child: TextField(
-                    buildCounter: (
-                      BuildContext context, {
-                      int currentLength,
-                      int maxLength,
-                      bool isFocused,
-                    }) =>
-                        null,
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'add facilitators to your sphere',
-                      hintStyle: TextStyle(
-                          color: Color(0xff999999),
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500),
-                    ),
-                    cursorColor: const Color(0xff333333),
-                    cursorWidth: 2,
-                    maxLines: null,
-                    style: const TextStyle(
-                        color: Color(0xff333333),
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500),
-                    maxLength: 80,
-                    textInputAction: TextInputAction.done,
+class _CreateFacilitators extends StatelessWidget {
+  const _CreateFacilitators({
+    Key key,
+    @required this.searchFacilitatorsController,
+    @required this.searchFacilitatorsIndex,
+  }) : super(key: key);
+  final PageController searchFacilitatorsController;
+  final ValueNotifier<int> searchFacilitatorsIndex;
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<int>(
+      valueListenable: searchFacilitatorsIndex,
+      builder: (BuildContext context, int index, _) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              decoration: const BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: Color(0xffeeeeee),
+                    width: .75,
                   ),
                 ),
               ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 10),
-        Row(
-          children: <Widget>[
-            GestureDetector(
-              onTap: () {
-                _searchFacilitatorsController.jumpToPage(0);
-                _searchFacilitatorsIndex = 0;
-              },
-              child: Text(
-                'CONNECTIONS',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                  color: _searchFacilitatorsIndex == 0
-                      ? const Color(0xff333333)
-                      : const Color(0xff999999),
-                ),
+              child: Row(
+                children: <Widget>[
+                  const Icon(
+                    Icons.search,
+                    size: 20,
+                    color: Color(0xff999999),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Transform.translate(
+                      offset: const Offset(0.0, 2.5),
+                      child: TextField(
+                        buildCounter: (
+                          BuildContext context, {
+                          int currentLength,
+                          int maxLength,
+                          bool isFocused,
+                        }) =>
+                            null,
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'add facilitators to your sphere',
+                          hintStyle: TextStyle(
+                              color: Color(0xff999999),
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        cursorColor: const Color(0xff333333),
+                        cursorWidth: 2,
+                        maxLines: null,
+                        style: const TextStyle(
+                            color: Color(0xff333333),
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500),
+                        maxLength: 80,
+                        textInputAction: TextInputAction.done,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(width: 25),
-            GestureDetector(
-              onTap: () {
-                _searchFacilitatorsController.jumpToPage(1);
-                _searchFacilitatorsIndex = 1;
-              },
-              child: Text(
-                'SUBSCRIPTIONS',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                  color: _searchFacilitatorsIndex == 1
-                      ? const Color(0xff333333)
-                      : const Color(0xff999999),
+            const SizedBox(height: 10),
+            Row(
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () {
+                    searchFacilitatorsController.jumpToPage(0);
+                    searchFacilitatorsIndex.value = 0;
+                  },
+                  child: Text(
+                    'CONNECTIONS',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      color: searchFacilitatorsIndex.value == 0
+                          ? const Color(0xff333333)
+                          : const Color(0xff999999),
+                    ),
+                  ),
                 ),
+                const SizedBox(width: 25),
+                GestureDetector(
+                  onTap: () {
+                    searchFacilitatorsController.jumpToPage(1);
+                    searchFacilitatorsIndex.value = 1;
+                  },
+                  child: Text(
+                    'SUBSCRIPTIONS',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      color: searchFacilitatorsIndex.value == 1
+                          ? const Color(0xff333333)
+                          : const Color(0xff999999),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 25),
+                GestureDetector(
+                  onTap: () {
+                    searchFacilitatorsController.jumpToPage(2);
+                    searchFacilitatorsIndex.value = 2;
+                  },
+                  child: Text(
+                    'ALL',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      color: searchFacilitatorsIndex.value == 2
+                          ? const Color(0xff333333)
+                          : const Color(0xff999999),
+                    ),
+                  ),
+                )
+              ],
+            ),
+            const SizedBox(height: 10),
+            Expanded(
+              child: PageView(
+                controller: searchFacilitatorsController,
+                onPageChanged: (int index) => searchFacilitatorsIndex.value = index,
+                children: const <Widget>[
+                  Text('render list of connections'),
+                  Text('render list of subscriptions'),
+                  Text('render list of all members (pagination tbd)')
+                ],
               ),
             ),
-            const SizedBox(width: 25),
-            GestureDetector(
-              onTap: () {
-                _searchFacilitatorsController.jumpToPage(2);
-                _searchFacilitatorsIndex = 2;
-              },
-              child: Text(
-                'ALL',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                  color: _searchFacilitatorsIndex == 2
-                      ? const Color(0xff333333)
-                      : const Color(0xff999999),
-                ),
-              ),
-            )
           ],
-        ),
-        const SizedBox(height: 10),
-        Expanded(
-          child: PageView(
-            controller: _searchFacilitatorsController,
-            onPageChanged: (int index) {
-              setState(() {
-                _searchFacilitatorsIndex = index;
-              });
-            },
-            children: const <Widget>[
-              Text('render list of connections'),
-              Text('render list of subscriptions'),
-              Text('render list of all members (pagination tbd)')
-            ],
-          ),
-        ),
-      ],
+        );
+      }
     );
   }
+}
 
-  Widget _createSpherePrivacy() {
+class _SelectSpherePrivacy extends StatelessWidget {
+  const _SelectSpherePrivacy({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
         const SizedBox(height: 10),
@@ -1100,6 +1006,135 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
             ),
           ),
         )
+      ],
+    );
+  }
+}
+
+class _CreateSphereDetails extends StatelessWidget {
+  const _CreateSphereDetails({
+    Key key,
+    @required this.nameController,
+    @required this.handleController,
+    @required this.descriptionController,
+  }) : super(key: key);
+
+  final TextEditingController nameController;
+
+  final TextEditingController handleController;
+
+  final TextEditingController descriptionController;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: <Widget>[
+        const SizedBox(height: 25),
+        Container(
+          height: 200,
+          decoration: const BoxDecoration(
+            color: Color(0xfff2f2f2),
+          ),
+          alignment: Alignment.center,
+          child: const Text('add a cover photo'),
+        ),
+        const SizedBox(height: 15),
+        Container(
+          width: MediaQuery.of(context).size.width,
+          child: TextField(
+            controller: nameController,
+            buildCounter: (
+              BuildContext context, {
+              int currentLength,
+              int maxLength,
+              bool isFocused,
+            }) =>
+                null,
+            decoration: const InputDecoration(
+                contentPadding: EdgeInsets.all(0),
+                border: InputBorder.none,
+                hintText: 'Name your sphere*',
+                hintStyle: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xff999999),
+                )),
+            cursorColor: const Color(0xff333333),
+            cursorWidth: 2,
+            maxLines: 1,
+            style: const TextStyle(
+                color: Color(0xff333333),
+                fontSize: 15,
+                fontWeight: FontWeight.w700),
+            maxLength: 80,
+            textInputAction: TextInputAction.done,
+          ),
+        ),
+        const SizedBox(height: 15),
+        Container(
+          width: MediaQuery.of(context).size.width,
+          child: TextField(
+            controller: handleController,
+            buildCounter: (
+              BuildContext context, {
+              int currentLength,
+              int maxLength,
+              bool isFocused,
+            }) =>
+                null,
+            decoration: const InputDecoration(
+                contentPadding: EdgeInsets.all(0),
+                border: InputBorder.none,
+                hintText: 'Give your sphere a unique username*',
+                hintStyle: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xff999999),
+                )),
+            cursorColor: const Color(0xff333333),
+            cursorWidth: 2,
+            maxLines: 1,
+            style: const TextStyle(
+                color: Color(0xff333333),
+                fontSize: 15,
+                fontWeight: FontWeight.w700),
+            maxLength: 80,
+            textInputAction: TextInputAction.done,
+          ),
+        ),
+        const SizedBox(height: 15),
+        Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: TextField(
+            controller: descriptionController,
+            buildCounter: (
+              BuildContext context, {
+              int currentLength,
+              int maxLength,
+              bool isFocused,
+            }) =>
+                null,
+            decoration: const InputDecoration(
+                contentPadding: EdgeInsets.all(0),
+                border: InputBorder.none,
+                hintText: 'Write your sphere bio / purpose',
+                hintStyle: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xff999999),
+                )),
+            cursorColor: const Color(0xff333333),
+            cursorWidth: 2,
+            maxLines: null,
+            style: const TextStyle(
+                color: Color(0xff333333),
+                fontSize: 15,
+                fontWeight: FontWeight.w500),
+            maxLength: 240,
+            textInputAction: TextInputAction.newline,
+          ),
+        ),
       ],
     );
   }
