@@ -5,15 +5,15 @@ import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview
 import 'package:junto_beta_mobile/models/models.dart';
 
 class JuntoPerspectives extends StatefulWidget {
-  const JuntoPerspectives({Key key, @required this.changePerspective})
-      : super(key: key);
+  const JuntoPerspectives({
+    Key key,
+    @required this.changePerspective,
+  }) : super(key: key);
 
   final Function changePerspective;
 
   @override
-  State<StatefulWidget> createState() {
-    return JuntoPerspectivesState();
-  }
+  State<StatefulWidget> createState() => JuntoPerspectivesState();
 }
 
 class JuntoPerspectivesState extends State<JuntoPerspectives> {
@@ -96,27 +96,34 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                     ],
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: Color(0xff4263A3),
-                        width: .75,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    const Text(
+                      'PERSPECTIVES',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 12,
+                        letterSpacing: 1.2,
+                        color: Colors.white,
                       ),
                     ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      const Text(
-                        'PERSPECTIVES',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 12,
-                          letterSpacing: 1.2,
-                          color: Colors.white,
-                        ),
+                    GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                          isScrollControlled: true,
+                          context: context,
+                          builder: (BuildContext context) => Container(
+                              color: const Color(0xff737373),
+                              child: _CreatePerspectiveBottomSheet()),
+                        );
+                      },
+                      child: Container(
+                        height: 38,
+                        width: 38,
+                        color: Colors.transparent,
+                        alignment: Alignment.centerRight,
+                        child: Icon(Icons.add, color: Colors.white, size: 17),
                       ),
                       GestureDetector(
                         onTap: () {
@@ -139,19 +146,21 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                     ],
                   ),
                 ),
-                Expanded(
-                  child: ListView(
-                    children: <Widget>[
-                      _buildPerspective('JUNTO', 'all'),
-                      _buildPerspective('Connections', '99'),
-                      _buildPerspective('Subscriptions', '220'),
-                      _buildPerspective('Degrees of separation', 'all'),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          )),
+              ),
+              Expanded(
+                child: ListView(
+                  children: <Widget>[
+                    _buildPerspective('JUNTO', 'all'),
+                    _buildPerspective('Connections', '99'),
+                    _buildPerspective('Subscriptions', '220'),
+                    _buildPerspective('Degrees of separation', 'all'),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 
@@ -171,16 +180,6 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                 Container(
                   child: Row(
                     children: <Widget>[
-                      // Container(
-                      //   height: 30,
-                      //   decoration: const BoxDecoration(
-                      //     border: Border(
-                      //       left: BorderSide(
-                      //           color: Color(0xffeeeeee), width: 1.5),
-                      //     ),
-                      //   ),
-                      // ),
-                      // const SizedBox(width: 10),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
@@ -210,18 +209,21 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
               ],
             ),
             GestureDetector(
-                onTap: () {
-                  _openPerspectiveBottomSheet();
-                },
-                child: Icon(Icons.keyboard_arrow_down,
-                    size: 20, color: Colors.white))
+              onTap: () {
+                _openPerspectiveBottomSheet();
+              },
+              child: Icon(
+                Icons.keyboard_arrow_down,
+                size: 20,
+                color: Colors.white,
+              ),
+            )
           ],
         ),
       ),
     );
   }
 
-// FIXME: Refactor to widget
   void _openPerspectiveBottomSheet() {
     showModalBottomSheet(
       isScrollControlled: true,
@@ -238,32 +240,34 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
               topRight: Radius.circular(10),
             ),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const <Widget>[
-                  // Text('cancel'),
-                  Text(
-                    'JUNTO',
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xff333333),
-                    ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const <Widget>[
+                // Text('cancel'),
+                Text(
+                  'JUNTO',
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xff333333),
                   ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              Container(
-                child: const Text(
-                  'The Junto perspective contains all public expressions from every member of Junto. Expressions are displayed in chronological order.',
                 ),
-              )
-            ],
-          ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            Container(
+              child: const Text(
+                'The Junto perspective contains all public expressions from '
+                'every member of Junto. Expressions are displayed in '
+                'chronological order.',
+              ),
+            )
+          ],
         ),
       ),
     );
