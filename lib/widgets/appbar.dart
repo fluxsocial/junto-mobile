@@ -11,6 +11,9 @@ import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/widgets/member_preview/member_preview.dart';
+import 'package:junto_beta_mobile/widgets/channel_preview/channel_preview.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 
 // Junto app bar used throughout the main screens. Rendered in JuntoTemplate.
 class JuntoAppBar extends StatefulWidget implements PreferredSizeWidget {
@@ -260,6 +263,21 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
 
   FocusNode textFieldFocusNode = FocusNode();
 
+  List<UserProfile> profiles = <UserProfile>[
+    UserProfile(
+        firstName: 'Eric Yang',
+        username: 'sunyata',
+        profilePicture: 'assets/images/junto-mobile__eric.png'),
+    UserProfile(
+        firstName: 'Riley Wagner',
+        username: 'wags',
+        profilePicture: 'assets/images/junto-mobile__riley.png'),
+    UserProfile(
+        firstName: 'Dora Czovek',
+        username: 'wingedmessenger',
+        profilePicture: 'assets/images/junto-mobile__dora.png'),
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -408,16 +426,21 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
               child: PageView(
                 controller: pageController,
                 onPageChanged: (index) {
-                    setState(() {
-                      currentIndex = index;
-                    });
+                  setState(() {
+                    currentIndex = index;
+                  });
                 },
                 children: <Widget>[
-                  // search members
+                  // search channels
                   Column(
                     children: <Widget>[
                       Expanded(
-                        child: ListView(),
+                        child: ListView(children: const <Widget>[
+                          ChannelPreview(channel: 'design'),
+                          ChannelPreview(channel: 'philosophy'),
+                          ChannelPreview(channel: 'zen'),
+                          ChannelPreview(channel: 'plant based'),
+                        ],)
                       )
                     ],
                   ),
@@ -425,42 +448,14 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                   Column(
                     children: <Widget>[
                       Expanded(
-                        child: ListView(),
+                        child: ListView(children: <Widget>[
+                          MemberPreview(profile: profiles[0]),
+                          MemberPreview(profile: profiles[1]),
+                          MemberPreview(profile: profiles[2]),
+                        ]),
                       )
                     ],
                   ),
-
-                  // Column(
-                  //   children: <Widget>[
-                  //     const SizedBox(height: 10),
-                  //     ValueListenableBuilder<List<UserProfile>>(
-                  //       valueListenable: widget.results,
-                  //       builder:
-                  //           (BuildContext context, List<UserProfile> query, _) {
-                  //         return ListView.builder(
-                  //           itemCount: query.length,
-                  //           shrinkWrap: true,
-                  //           itemBuilder: (BuildContext context, int index) {
-                  //             final UserProfile _user = query[index];
-                  //             return ValueListenableBuilder<SelectedUsers>(
-                  //               valueListenable: _selectedUsers,
-                  //               builder: (BuildContext context,
-                  //                   SelectedUsers selectedUser, _) {
-                  //                 return UserPreview(
-                  //                   onTap: widget.onProfileSelected,
-                  //                   userProfile: _user,
-                  //                   isSelected:
-                  //                       selectedUser.selection.contains(_user),
-                  //                 );
-                  //               },
-                  //             );
-                  //           },
-                  //         );
-                  //       },
-                  //     )
-                  //   ],
-                  // ),
-
                   // search spheres
                   Column(
                     children: <Widget>[

@@ -3,7 +3,6 @@ import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 
-
 class MemberPreviewSelect extends StatelessWidget {
   const MemberPreviewSelect({Key key, this.profile})
       : super(key: key);

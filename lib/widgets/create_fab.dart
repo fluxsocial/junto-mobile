@@ -42,27 +42,28 @@ class CreateFAB extends StatelessWidget {
         ),
       ),
       child: Container(
-        height: 50,
-        width: 50,
+        height: 60,
+        width: 60,
         decoration: BoxDecoration(
           gradient:  LinearGradient(
             begin: Alignment.bottomLeft,
             end: Alignment.topRight,
-            stops: const <double>[0.1, 0.9],
+            stops: const <double>[0.3, 0.9],
             colors: <Color>[
-              JuntoPalette.juntoSecondary,
+              // JuntoPalette.juntoSecondary,
               JuntoPalette.juntoPrimary,
+              Color(0xFFFFCF68)
             ],
           ),
-          color: JuntoPalette.juntoWhite.withOpacity(.8),
+          color: JuntoPalette.juntoWhite.withOpacity(.9),
           border: Border.all(
             color: JuntoPalette.juntoWhite,
             width: 2,
           ),
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(100),
         ),
         alignment: Alignment.center,
-        child: const Icon(CustomIcons.enso, color: Colors.white)
+        child: const Icon(CustomIcons.enso, color: Colors.white, size: 28)
       ),
     );
   }
