@@ -7,6 +7,7 @@ class CustomIcons {
   static const IconData lotus = IconData(0xe900, fontFamily: 'j_home');
   static const IconData half_lotus = IconData(0xe90a, fontFamily: 'j_home');
   static const IconData enso = IconData(0xe917, fontFamily: 'j_home');
+  static const IconData hash = IconData(0xe918, fontFamily: 'j_home');
   static const IconData circle = IconData(0xe904, fontFamily: 'j_home');
   static const IconData triangle = IconData(0xe903, fontFamily: 'j_home');
   static const IconData member = IconData(0xe905, fontFamily: 'j_home');

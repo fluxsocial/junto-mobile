@@ -13,6 +13,7 @@ import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/member_preview/member_preview.dart';
 import 'package:junto_beta_mobile/widgets/channel_preview/channel_preview.dart';
+import 'package:junto_beta_mobile/widgets/sphere_preview/sphere_preview.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 // Junto app bar used throughout the main screens. Rendered in JuntoTemplate.
@@ -278,6 +279,35 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
         profilePicture: 'assets/images/junto-mobile__dora.png'),
   ];
 
+  List<Sphere> spheres = <Sphere>[
+      const Sphere(
+        sphereTitle: 'Ecstatic Dance',
+        sphereMembers: '12000',
+        sphereImage: 'assets/images/junto-mobile__ecstatic.png',
+        sphereHandle: 'ecstaticdance',
+        sphereDescription:
+            'Ecstatic dance is a space for movement, rhythm, non-judgment, and '
+            'expression in its purest form. Come groove out with us!',
+      ),
+      const Sphere(
+        sphereTitle: 'Flutter NYC',
+        sphereMembers: '690',
+        sphereImage: 'assets/images/junto-mobile__flutter.png',
+        sphereHandle: 'flutternyc',
+        sphereDescription:
+            'Connect with other members in the Flutter NYC community and learn'
+            ' about this amazing technology!',
+      ),
+      const Sphere(
+        sphereTitle: 'Zen',
+        sphereMembers: '77',
+        sphereImage: 'assets/images/junto-mobile__stillmind.png',
+        sphereHandle: 'zen',
+        sphereDescription:
+            '"To a mind that is still, the whole universe surrenders"',
+      ),    
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -484,7 +514,13 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                   Column(
                     children: <Widget>[
                       Expanded(
-                        child: ListView(),
+                        child: ListView(children: <Widget>[
+                          SpherePreview(group: spheres[0]),
+                          SpherePreview(group: spheres[1]),
+                          SpherePreview(group: spheres[2])
+
+
+                        ],)
                       )
                     ],
                   )
