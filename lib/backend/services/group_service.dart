@@ -73,7 +73,7 @@ class GroupServiceCentralized implements GroupService {
   Future<List<Users>> getGroupMembers(String groupAddress) async {
     final http.Response _serverResponse =
         await client.get('/groups/$groupAddress/members');
-    final List<dynamic> items = convert.json.decode(_serverResponse.body);
+    final List<dynamic> items = JuntoHttp.handleResponse(_serverResponse);
     return items
         .map(
           (dynamic data) => Users.fromJson(data),

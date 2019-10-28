@@ -120,7 +120,7 @@ class JuntoHttp {
       final Map<String, dynamic> results = convert.json.decode(response?.body);
       throw JuntoException('Forbidden ${results['error']}');
     }
-    if (response.statusCode == 500) {
+    if (response.statusCode >= 500) {
       throw const JuntoException("Ooh no, our server isn't feeling so good");
     }
     throw JuntoException(

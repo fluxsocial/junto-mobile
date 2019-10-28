@@ -1,4 +1,5 @@
 import 'package:http/io_client.dart';
+import 'package:junto_beta_mobile/backend/mock/mock_expression.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/backend/services/auth_service.dart';
@@ -27,8 +28,7 @@ class Backend {
     final AuthenticationServiceCentralized authService =
         AuthenticationServiceCentralized(client);
     final UserServiceCentralized userService = UserServiceCentralized(client);
-    final ExpressionService expressionService =
-        ExpressionServiceCentralized(client);
+    final ExpressionService expressionService = MockExpressionService();
     final GroupService groupService = GroupServiceCentralized(client);
     return Backend._(
       searchProvider: SearchProviderCentralized(client),
