@@ -85,7 +85,7 @@ class _JuntoMemberState extends State<JuntoMember> {
                                   name: '${widget.profile.firstName} '
                                       '${widget.profile.lastName}',
                                   profilePicture:
-                                      'assets/images/junto-mobile__logo.png',
+                                      'assets/images/junto-mobile__placeholder--member.png',
                                   bio: widget.profile.bio,
                                 ),
                               ),
@@ -104,7 +104,7 @@ class _JuntoMemberState extends State<JuntoMember> {
                             ),
                             child: ClipOval(
                               child: Image.asset(
-                                'assets/images/junto-mobile__logo.png',
+                                'assets/images/junto-mobile__placeholder--member.png',
                                 fit: BoxFit.cover,
                               ),
                             ),

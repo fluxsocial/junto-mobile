@@ -14,27 +14,36 @@ class MemberAppbar extends StatelessWidget {
     return AppBar(
         automaticallyImplyLeading: false,
         brightness: Brightness.light,
-        iconTheme: const IconThemeData(color: Color(0xff555555)),
+        iconTheme: const IconThemeData(
+          color: Color(0xff555555),
+        ),
         backgroundColor: Colors.white,
         elevation: 0,
         titleSpacing: 0,
         title: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               GestureDetector(
                 onTap: () => Navigator.pop(context),
-                child: const Icon(
-                  CustomIcons.back_arrow_left,
-                  color: Color(0xff555555),
-                  size: 24,
+                child: Container(
+                  width: 42,
+                  color: Colors.transparent,
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.only(
+                    left: 10,
+                  ),
+                  child: const Icon(
+                    CustomIcons.back,
+                    color: Color(0xff333333),
+                    size: 17,
+                  ),
                 ),
               ),
               Text(
                 memberHandle,
                 style: const TextStyle(
-                  fontSize: 14,
+                  fontSize: 15,
                   fontWeight: FontWeight.w700,
                   color: Color(0xff333333),
                 ),
@@ -43,7 +52,13 @@ class MemberAppbar extends StatelessWidget {
                 onTap: () {
                   MemberActionItems().buildMemberActionItems(context);
                 },
-                child: const Icon(CustomIcons.more),
+                child: Container(
+                  width: 42,
+                  padding: const EdgeInsets.only(right: 10),
+                  alignment: Alignment.centerRight,
+                  color: Colors.transparent,
+                  child: const Icon(CustomIcons.more),
+                ),
               )
             ],
           ),

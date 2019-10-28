@@ -20,20 +20,20 @@ class SphereOpenAppbar extends StatelessWidget {
       elevation: 0,
       titleSpacing: 0,
       title: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 5),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             GestureDetector(
               onTap: () => Navigator.pop(context),
               child: Container(
+                padding: const EdgeInsets.only(left: 10),
                 color: Colors.white,
-                width: 38,
+                width: 42,
                 alignment: Alignment.centerLeft,
                 child: const Icon(
-                  CustomIcons.back_arrow_left,
+                  CustomIcons.back,
                   color: JuntoPalette.juntoSleek,
-                  size: 28,
+                  size: 17,
                 ),
               ),
             ),
@@ -53,8 +53,9 @@ class SphereOpenAppbar extends StatelessWidget {
                 SphereOpenActionItems().buildSphereOpenActionItems(context);
               },
               child: Container(
-                width: 38,
-                color: Colors.white,
+                width: 42,
+                padding: const EdgeInsets.only(right: 10),
+                color: Colors.transparent,
                 alignment: Alignment.centerRight,
                 child: const Icon(
                   CustomIcons.more,
