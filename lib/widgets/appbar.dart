@@ -277,39 +277,36 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
         firstName: 'Dora Czovek',
         username: 'wingedmessenger',
         profilePicture: 'assets/images/junto-mobile__dora.png'),
-    UserProfile(
-        firstName: 'Urk',
-        username: 'sunyata',
-        profilePicture: ''),        
+    UserProfile(firstName: 'Urk', username: 'sunyata', profilePicture: ''),
   ];
 
   List<Sphere> spheres = <Sphere>[
-      const Sphere(
-        sphereTitle: 'Ecstatic Dance',
-        sphereMembers: '12000',
-        sphereImage: 'assets/images/junto-mobile__ecstatic.png',
-        sphereHandle: 'ecstaticdance',
-        sphereDescription:
-            'Ecstatic dance is a space for movement, rhythm, non-judgment, and '
-            'expression in its purest form. Come groove out with us!',
-      ),
-      const Sphere(
-        sphereTitle: 'Flutter NYC',
-        sphereMembers: '690',
-        sphereImage: 'assets/images/junto-mobile__flutter.png',
-        sphereHandle: 'flutternyc',
-        sphereDescription:
-            'Connect with other members in the Flutter NYC community and learn'
-            ' about this amazing technology!',
-      ),
-      const Sphere(
-        sphereTitle: 'Zen',
-        sphereMembers: '77',
-        sphereImage: 'assets/images/junto-mobile__stillmind.png',
-        sphereHandle: 'zen',
-        sphereDescription:
-            '"To a mind that is still, the whole universe surrenders"',
-      ),    
+    const Sphere(
+      sphereTitle: 'Ecstatic Dance',
+      sphereMembers: '12000',
+      sphereImage: 'assets/images/junto-mobile__ecstatic.png',
+      sphereHandle: 'ecstaticdance',
+      sphereDescription:
+          'Ecstatic dance is a space for movement, rhythm, non-judgment, and '
+          'expression in its purest form. Come groove out with us!',
+    ),
+    const Sphere(
+      sphereTitle: 'Flutter NYC',
+      sphereMembers: '690',
+      sphereImage: 'assets/images/junto-mobile__flutter.png',
+      sphereHandle: 'flutternyc',
+      sphereDescription:
+          'Connect with other members in the Flutter NYC community and learn'
+          ' about this amazing technology!',
+    ),
+    const Sphere(
+      sphereTitle: 'Zen',
+      sphereMembers: '77',
+      sphereImage: 'assets/images/junto-mobile__stillmind.png',
+      sphereHandle: 'zen',
+      sphereDescription:
+          '"To a mind that is still, the whole universe surrenders"',
+    ),
   ];
 
   @override
@@ -412,14 +409,13 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                     pageController.jumpToPage(0);
                   },
                   child: Text(
-                    'CHANNELS',
+                    'MEMBERS',
                     style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: currentIndex == 0
-                          ? const Color(0xff333333)
-                          : const Color(0xff999999),
-                    ),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        color: currentIndex == 0
+                            ? const Color(0xff333333)
+                            : const Color(0xff999999)),
                   ),
                 ),
                 const SizedBox(width: 25),
@@ -428,26 +424,11 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                     pageController.jumpToPage(1);
                   },
                   child: Text(
-                    'MEMBERS',
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                        color: currentIndex == 1
-                            ? const Color(0xff333333)
-                            : const Color(0xff999999)),
-                  ),
-                ),
-                const SizedBox(width: 25),
-                GestureDetector(
-                  onTap: () {
-                    pageController.jumpToPage(2);
-                  },
-                  child: Text(
                     'SPHERES',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
-                      color: currentIndex == 2
+                      color: currentIndex == 1
                           ? const Color(0xff333333)
                           : const Color(0xff999999),
                     ),
@@ -459,25 +440,12 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
             Expanded(
               child: PageView(
                 controller: pageController,
-                onPageChanged: (index) {
+                onPageChanged: (int index) {
                   setState(() {
                     currentIndex = index;
                   });
                 },
                 children: <Widget>[
-                  // search channels
-                  Column(
-                    children: <Widget>[
-                      Expanded(
-                        child: ListView(children: const <Widget>[
-                          ChannelPreview(channel: 'design'),
-                          ChannelPreview(channel: 'philosophy'),
-                          ChannelPreview(channel: 'zen'),
-                          ChannelPreview(channel: 'plant based'),
-                        ],)
-                      )
-                    ],
-                  ),
                   // search members
                   Column(
                     children: <Widget>[
@@ -495,14 +463,13 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                   Column(
                     children: <Widget>[
                       Expanded(
-                        child: ListView(children: <Widget>[
+                          child: ListView(
+                        children: <Widget>[
                           // SpherePreviewSearch(group: spheres[0]),
                           // SpherePreviewSearch(group: spheres[1]),
                           // SpherePreviewSearch(group: spheres[2])
-
-
-                        ],)
-                      )
+                        ],
+                      ))
                     ],
                   )
                 ],
