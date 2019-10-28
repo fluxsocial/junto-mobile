@@ -331,3 +331,22 @@ class Comment {
         'context': context,
       };
 }
+
+class ExpressionQueryParams {
+  ExpressionQueryParams({
+    @required this.dos,
+    @required this.context,
+    @required this.channels,
+    @required this.contextType,
+  });
+  final int dos;
+  final int context;
+  final List<String> channels;
+  final ExpressionContextType contextType;
+}
+
+enum ExpressionContextType {
+  dos,
+  perspective,
+  random,
+}
