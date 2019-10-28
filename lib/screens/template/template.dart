@@ -4,6 +4,8 @@ import 'package:flutter/rendering.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
+import 'package:junto_beta_mobile/widgets/fabs/filter_channel_fab.dart';
+import 'package:junto_beta_mobile/widgets/create_fab.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/den/den_drawer/den_drawer.dart';
 import 'package:junto_beta_mobile/screens/packs/packs.dart';
@@ -76,6 +78,11 @@ class JuntoTemplateState extends State<JuntoTemplate> {
     }
   }
 
+  _displayFAB() {
+    if(_currentScreen == 'collective') {
+      return FilterChannelFAB();
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -132,47 +139,49 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                 });
               }
             }
-          },
-          child: Transform.translate(
-            offset: Offset(_dx, 0.0),
-            child: Stack(
-              children: <Widget>[
-                Scaffold(
-                  key: _juntoTemplateKey,
-                  backgroundColor: Colors.white,
-                  appBar: JuntoAppBar(
-                    appContext: _currentScreen,
-                    openPerspectivesDrawer: () {
-                      if (_dx == 0) {
-                        setState(() {
-                          _dx = MediaQuery.of(context).size.width * .9;
-                        });
-                      }
-                    },
-                    juntoAppBarTitle: _appbarTitle,
-                  ),
-                  floatingActionButton:
-                      const CreateFAB(expressionLayer: 'collective'),
-                  // only enable drawer if current screen is collective
-                  // drawer: _currentScreen == 'collective'
-                  //     ? WillPopScope(
-                  //         onWillPop: () async {
-                  //           return false;
-                  //         },
-                  //         child: Perspectives(
-                  //           changePerspective: _changePerspective,
-                  //           profile: profile,
-                  //         ),
-                  //       )
-                  //     : null,
-                  // only enable end drawer if current screen is den
-                  endDrawer: _currentScreen == 'den'
-                      ? WillPopScope(
-                          onWillPop: () async {
-                            return false;
-                          },
-                          child: DenDrawer())
-                      : null,
+          }
+        },
+        child: Transform.translate(
+          offset: Offset(_dx, 0.0),
+          child: Stack(children: <Widget>[
+            Scaffold(
+              key: _juntoTemplateKey,
+              backgroundColor: Colors.white,
+              appBar: JuntoAppBar(
+                appContext: _currentScreen,
+                openPerspectivesDrawer: () {
+                  if (_dx == 0) {
+                    setState(() {
+                      _dx = MediaQuery.of(context).size.width * .9;
+                    });
+                  }
+                },
+                juntoAppBarTitle: _appbarTitle,
+              ),
+              floatingActionButton: _displayFAB(),
+              // floatingActionButton: 
+              //     const CreateFAB(expressionLayer: 'collective'),
+
+              // only enable drawer if current screen is collective
+              // drawer: _currentScreen == 'collective'
+              //     ? WillPopScope(
+              //         onWillPop: () async {
+              //           return false;
+              //         },
+              //         child: Perspectives(
+              //           changePerspective: _changePerspective,
+              //           profile: profile,
+              //         ),
+              //       )
+              //     : null,
+              // only enable end drawer if current screen is den
+              endDrawer: _currentScreen == 'den'
+                  ? WillPopScope(
+                      onWillPop: () async {
+                        return false;
+                      },
+                      child: DenDrawer())
+                  : null,
 
                   // dynamically render body
                   body: _renderBody(),
@@ -244,7 +253,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
           _currentScreen = 'spheres';
           _appbarTitle = 'SPHERES';
         });
-        break;
+        break;      
       case 2:
         setState(() {
           _currentScreen = 'packs';
@@ -259,6 +268,9 @@ class JuntoTemplateState extends State<JuntoTemplate> {
         break;
     }
   }
+
+
+
 
   // Switch between perspectives; used in perspectives side drawer.
   void _changePerspective(String perspective) {
