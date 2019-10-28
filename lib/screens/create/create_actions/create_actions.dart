@@ -282,7 +282,7 @@ class CreateActionsState extends State<CreateActions> {
                       ),
                     ),
                     Container(
-                      child: Icon(Icons.add, size: 20),
+                      child: const Icon(Icons.add, size: 20),
                     )
                   ],
                 ),

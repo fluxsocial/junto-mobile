@@ -258,121 +258,130 @@ class ExpressionOpenState extends State<ExpressionOpen> {
               ),
             ),
           ),
-          Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.background,
-              border: Border(
-                top: BorderSide(
-                  width: .75,
-                  color: Theme.of(context).dividerColor,
+          SafeArea(
+            top: false,
+            child: Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: JuntoStyles.horizontalPadding,
+                vertical: 5,
+              ),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                border: Border(
+                  top: BorderSide(
+                    width: 1,
+                    color: JuntoPalette.juntoFade,
+                  ),
                 ),
               ),
-            ),
-            padding: const EdgeInsets.symmetric(
-                horizontal: JuntoStyles.horizontalPadding, vertical: 5),
-            child: Column(
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      child: Row(
-                        children: <Widget>[
-                          Container(
-                            margin: const EdgeInsets.only(right: 10),
-                            child: ClipOval(
-                              child: Image.asset(
-                                'assets/images/junto-mobile__eric.png',
-                                height: 38.0,
-                                width: 38.0,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.only(left: 15),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.surface,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            width: _focusNode.hasFocus
-                                ? MediaQuery.of(context).size.width - 100
-                                : MediaQuery.of(context).size.width - 68,
-                            constraints: const BoxConstraints(maxHeight: 180),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Container(
-                                  width:
-                                      MediaQuery.of(context).size.width - 140,
-                                  child: TextField(
-                                    focusNode: _focusNode,
-                                    controller: commentController,
-                                    onChanged: (String value) {
-                                      if (value == '') {
-                                        setState(() {
-                                          createComment = false;
-                                        });
-                                      } else if (value != '') {
-                                        setState(() {
-                                          createComment = true;
-                                        });
-                                      }
-                                    },
-                                    decoration: const InputDecoration(
-                                      border: InputBorder.none,
-                                      // hintText: 'reply',
-                                    ),
-                                    maxLines: null,
-                                    cursorColor: Theme.of(context).primaryColor,
-                                    cursorWidth: 2,
-                                    style: Theme.of(context).textTheme.caption,
-                                    textInputAction: TextInputAction.done,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    _focusNode.hasFocus
-                        ? _createCommentIcon(createComment)
-                        : const SizedBox()
-                  ],
-                ),
-                _focusNode.hasFocus
-                    ? Container(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
                         child: Row(
                           children: <Widget>[
-                            GestureDetector(
-                              onTap: () {
-                                _showPrivacyModalSheet();
-                              },
-                              child: Container(
-                                color: Colors.transparent,
-                                padding: EdgeInsets.symmetric(horizontal: 5),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    Text(
-                                      _commentPrivacy,
-                                      style: Theme.of(context).textTheme.body2,
-                                    ),
-                                    Icon(Icons.keyboard_arrow_down,
-                                        size: 14,
-                                        color:
-                                            Theme.of(context).primaryColorDark)
-                                  ],
+                            Container(
+                              margin: const EdgeInsets.only(right: 10),
+                              child: ClipOval(
+                                child: Image.asset(
+                                  'assets/images/junto-mobile__eric.png',
+                                  height: 36.0,
+                                  width: 36.0,
+                                  fit: BoxFit.cover,
                                 ),
                               ),
-                            )
+                            ),
+                            Container(
+                              padding: const EdgeInsets.only(left: 15),
+                              decoration: BoxDecoration(
+                                color: const Color(0xfff9f9f9),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              width: _focusNode.hasFocus
+                                  ? MediaQuery.of(context).size.width - 100
+                                  : MediaQuery.of(context).size.width - 66,
+                              constraints: const BoxConstraints(maxHeight: 180),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Container(
+                                    width:
+                                        MediaQuery.of(context).size.width - 140,
+                                    child: TextField(
+                                      focusNode: _focusNode,
+                                      controller: commentController,
+                                      onChanged: (String value) {
+                                        if (value == '') {
+                                          setState(() {
+                                            createComment = false;
+                                          });
+                                        } else if (value != '') {
+                                          setState(() {
+                                            createComment = true;
+                                          });
+                                        }
+                                      },
+                                      decoration: const InputDecoration(
+                                        border: InputBorder.none,
+                                        // hintText: 'reply',
+                                      ),
+                                      maxLines: null,
+                                      cursorColor: JuntoPalette.juntoGrey,
+                                      cursorWidth: 2,
+                                      style: const TextStyle(
+                                        fontSize: 17,
+                                        color: JuntoPalette.juntoGrey,
+                                      ),
+                                      textInputAction: TextInputAction.done,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
-                      )
-                    : const SizedBox()
-              ],
+                      ),
+                      _focusNode.hasFocus
+                          ? _createCommentIcon(createComment)
+                          : const SizedBox()
+                    ],
+                  ),
+                  _focusNode.hasFocus
+                      ? Container(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: Row(
+                            children: <Widget>[
+                              GestureDetector(
+                                onTap: () {
+                                  _showPrivacyModalSheet();
+                                },
+                                child: Container(
+                                  color: Colors.white,
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      Text(
+                                        _commentPrivacy,
+                                        style: const TextStyle(
+                                            color: Color(0xff333333),
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                      const Icon(Icons.keyboard_arrow_down,
+                                          size: 14)
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        )
+                      : const SizedBox()
+                ],
+              ),
             ),
           ),
         ],

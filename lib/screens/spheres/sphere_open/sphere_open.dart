@@ -32,98 +32,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   ValueNotifier<bool> _isVisible;
   List<Users> _members;
 
-  List<CentralizedExpressionResponse> expressions =
-      <CentralizedExpressionResponse>[
-    CentralizedExpressionResponse(
-      address: '0xfee32zokie8',
-      type: 'LongForm',
-      comments: <Comment>[],
-      context: '',
-      createdAt: DateTime.now(),
-      creator: UserProfile(
-        address: '0vefoiwiafjvkbr32r243r5',
-        parent: 'parent-address',
-        bio: 'hellooo',
-        firstName: 'Eric',
-        lastName: 'Yang',
-        profilePicture: 'assets/images/junto-mobile__eric.png',
-        verified: true,
-        username: 'Eric',
-      ),
-      expressionData: CentralizedLongFormExpression(
-        title: 'Dynamic form is in motion!',
-        body: "Hey! Eric here. We're currently working with a London-based dev "
-            "agency called DevAngels to build out our dynamic, rich text editor. Soon, you'll be able to create short or longform expressions that contain text, links, images complemented with features such as bullet points, horiozntal lines, bold and italic font, and much more. This should be done in the next 1 or 2 weeks so stay tuned!",
-      ),
-    ),
-    CentralizedExpressionResponse(
-      address: '0xfee32zokie8',
-      type: 'ShortForm',
-      comments: <Comment>[],
-      context: '',
-      createdAt: DateTime.now(),
-      creator: UserProfile(
-        address: '0vefoiwiafjvkbr32r243r5',
-        firstName: 'Dora',
-        lastName: 'Czovek',
-        profilePicture: 'assets/images/junto-mobile__dora.png',
-        bio: 'hellooo',
-        parent: 'parent-address',
-        verified: true,
-        username: 'wingedmessenger',
-      ),
-      expressionData: CentralizedShortFormExpression(
-          body:
-              'Have you heard of Paradym sound healing meditation? Join us for a transformational session this Friday!',
-          background: 'four'),
-    ),
-    CentralizedExpressionResponse(
-      address: '0xfee32zokie8',
-      type: 'LongForm',
-      comments: <Comment>[],
-      context: '',
-      createdAt: DateTime.now(),
-      creator: UserProfile(
-        address: '0vefoiwiafjvkbr32r243r5',
-        parent: 'parent-address',
-        firstName: 'Tomis',
-        lastName: 'Parker',
-        profilePicture: 'assets/images/junto-mobile__tomis.png',
-        verified: true,
-        bio: 'hellooo',
-        username: 'tomis',
-      ),
-      expressionData: CentralizedLongFormExpression(
-        title: 'The funny story about my name...',
-        body: "A question I get all the time is, 'Is that your real name?' "
-            "Well, I'm glad you asked. You see, it was a hot afternoon in Lexington, Kentucky. Feeling hangry, I swung by the closest Subway shop and...",
-      ),
-    ),
-    CentralizedExpressionResponse(
-      address: '0xfee32zokie8',
-      type: 'EventForm',
-      comments: <Comment>[],
-      context: '',
-      createdAt: DateTime.now(),
-      creator: UserProfile(
-        address: '0vefoiwiafjvkbr32r243r5',
-        parent: 'parent-address',
-        bio: "I'm Leif.",
-        firstName: 'Leif',
-        lastName: 'Lioness',
-        profilePicture: 'assets/images/junto-mobile__leif.png',
-        verified: true,
-        username: 'leifthelion',
-      ),
-      expressionData: CentralizedEventFormExpression(
-          title: 'Happiness is Your True Nature',
-          location: 'within',
-          startTime: 'ANYTIME',
-          photo: 'assets/images/junto-mobile__event--two.png',
-          description:
-              "Now, you may not be as muscular as this stud. But let me tell you - You. Are. Beautiful. Everything you need is within, so come book an appointmnet with Happy Leif and we're guarantee you some Happy Photos ;)"),
-    ),
-  ];
+  List<CentralizedExpressionResponse> expressions;
 
   final GlobalKey<SphereOpenState> _keyFlexibleSpace =
       GlobalKey<SphereOpenState>();
@@ -160,6 +69,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    expressions = Provider.of<ExpressionRepo>(context).collectiveExpressions;
     _getMembers();
   }
 
@@ -296,9 +206,11 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                             )
                           ],
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
+                  expandedHeight: MediaQuery.of(context).size.height * .2 + 158,
+                  forceElevated: false,
                 ),
                 expandedHeight: _flexibleHeightSpace == null
                     ? 100000
@@ -323,18 +235,18 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                             )))
                         .toList(),
                   ),
+                  pinned: true,
                 ),
-                pinned: true,
-              ),
-            ];
-          },
-          body: TabBarView(
-              // These are the contents of the tab views, below the tabs.
-              children: <Widget>[
-                _buildAboutView(),
-                _buildExpressionView(),
-                _buildEventsView()
-              ]),
+              ];
+            },
+            body: TabBarView(
+                // These are the contents of the tab views, below the tabs.
+                children: <Widget>[
+                  _buildAboutView(),
+                  _buildExpressionView(),
+                  _buildEventsView()
+                ]),
+          ),
         ),
       ),
     );

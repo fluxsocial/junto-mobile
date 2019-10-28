@@ -69,7 +69,7 @@ class MemberActionItems {
                           color: const Color(0xff555555),
                         ),
                         const SizedBox(width: 15),
-                        Text(
+                        const Text(
                           'Block Member',
                           style: TextStyle(
                               fontWeight: FontWeight.w500, fontSize: 17),
@@ -86,7 +86,7 @@ class MemberActionItems {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text(
+                  child: const Text(
                     'Cancel',
                     style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
                   ),
