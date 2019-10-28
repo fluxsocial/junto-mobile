@@ -1,14 +1,14 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
-import 'package:junto_beta_mobile/app/styles.dart';
-import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives'
     '/create_perspective/create_perspective.dart' show SelectedUsers;
+import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
@@ -131,10 +131,10 @@ class _JuntoAppBarState extends State<JuntoAppBar>
                       ),
                       const SizedBox(width: 2.5),
                       widget.appContext == 'collective'
-                          ? const Icon(
+                          ? Icon(
                               Icons.keyboard_arrow_down,
                               size: 17,
-                              color: Color(0xff999999),
+                              color: const Color(0xff999999),
                             )
                           : const SizedBox()
                     ],
@@ -163,7 +163,7 @@ class _JuntoAppBarState extends State<JuntoAppBar>
                     );
                   },
                   child: Container(
-                    child: const Icon(
+                    child: Icon(
                       Icons.search,
                       color: JuntoPalette.juntoSleek,
                       size: JuntoStyles.appbarIcon,
@@ -277,39 +277,36 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
         firstName: 'Dora Czovek',
         username: 'wingedmessenger',
         profilePicture: 'assets/images/junto-mobile__dora.png'),
-    UserProfile(
-        firstName: 'Urk',
-        username: 'sunyata',
-        profilePicture: ''),        
+    UserProfile(firstName: 'Urk', username: 'sunyata', profilePicture: ''),
   ];
 
   List<Sphere> spheres = <Sphere>[
-      const Sphere(
-        sphereTitle: 'Ecstatic Dance',
-        sphereMembers: '12000',
-        sphereImage: 'assets/images/junto-mobile__ecstatic.png',
-        sphereHandle: 'ecstaticdance',
-        sphereDescription:
-            'Ecstatic dance is a space for movement, rhythm, non-judgment, and '
-            'expression in its purest form. Come groove out with us!',
-      ),
-      const Sphere(
-        sphereTitle: 'Flutter NYC',
-        sphereMembers: '690',
-        sphereImage: 'assets/images/junto-mobile__flutter.png',
-        sphereHandle: 'flutternyc',
-        sphereDescription:
-            'Connect with other members in the Flutter NYC community and learn'
-            ' about this amazing technology!',
-      ),
-      const Sphere(
-        sphereTitle: 'Zen',
-        sphereMembers: '77',
-        sphereImage: 'assets/images/junto-mobile__stillmind.png',
-        sphereHandle: 'zen',
-        sphereDescription:
-            '"To a mind that is still, the whole universe surrenders"',
-      ),    
+    const Sphere(
+      sphereTitle: 'Ecstatic Dance',
+      sphereMembers: '12000',
+      sphereImage: 'assets/images/junto-mobile__ecstatic.png',
+      sphereHandle: 'ecstaticdance',
+      sphereDescription:
+          'Ecstatic dance is a space for movement, rhythm, non-judgment, and '
+          'expression in its purest form. Come groove out with us!',
+    ),
+    const Sphere(
+      sphereTitle: 'Flutter NYC',
+      sphereMembers: '690',
+      sphereImage: 'assets/images/junto-mobile__flutter.png',
+      sphereHandle: 'flutternyc',
+      sphereDescription:
+          'Connect with other members in the Flutter NYC community and learn'
+          ' about this amazing technology!',
+    ),
+    const Sphere(
+      sphereTitle: 'Zen',
+      sphereMembers: '77',
+      sphereImage: 'assets/images/junto-mobile__stillmind.png',
+      sphereHandle: 'zen',
+      sphereDescription:
+          '"To a mind that is still, the whole universe surrenders"',
+    ),
   ];
 
   @override
@@ -330,7 +327,6 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    //ignore:unused_local_variable
     final ValueNotifier<SelectedUsers> _selectedUsers =
         Provider.of<ValueNotifier<SelectedUsers>>(context);
 
@@ -402,18 +398,8 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                       ),
                     ),
                   ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Icon(
-                    Icons.keyboard_arrow_down,
-                    size: 24,
-                    color: Color(0xff999999),
-                  ),
-                )
-              ],
+                ],
+              ),
             ),
             const SizedBox(height: 10),
             Row(
@@ -423,14 +409,13 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                     pageController.jumpToPage(0);
                   },
                   child: Text(
-                    'CHANNELS',
+                    'MEMBERS',
                     style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: currentIndex == 0
-                          ? const Color(0xff333333)
-                          : const Color(0xff999999),
-                    ),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        color: currentIndex == 0
+                            ? const Color(0xff333333)
+                            : const Color(0xff999999)),
                   ),
                 ),
                 const SizedBox(width: 25),
@@ -439,26 +424,11 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                     pageController.jumpToPage(1);
                   },
                   child: Text(
-                    'MEMBERS',
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                        color: currentIndex == 1
-                            ? const Color(0xff333333)
-                            : const Color(0xff999999)),
-                  ),
-                ),
-                const SizedBox(width: 25),
-                GestureDetector(
-                  onTap: () {
-                    pageController.jumpToPage(2);
-                  },
-                  child: Text(
                     'SPHERES',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
-                      color: currentIndex == 2
+                      color: currentIndex == 1
                           ? const Color(0xff333333)
                           : const Color(0xff999999),
                     ),
@@ -471,37 +441,11 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
               child: PageView(
                 controller: pageController,
                 onPageChanged: (int index) {
-                  if (index == 0) {
-                    setState(() {
-                      searchChannelsPage = true;
-                      searchMembersPage = false;
-                      searchSpheresPage = false;
-                    });
-                  } else if (index == 1) {
-                    setState(() {
-                      searchChannelsPage = false;
-                      searchMembersPage = true;
-                      searchSpheresPage = false;
-                    });
-                  } else if (index == 2) {
-                    setState(() {
-                      currentIndex = index;
-                    });
+                  setState(() {
+                    currentIndex = index;
+                  });
                 },
                 children: <Widget>[
-                  // search channels
-                  Column(
-                    children: <Widget>[
-                      Expanded(
-                        child: ListView(children: const <Widget>[
-                          ChannelPreview(channel: 'design'),
-                          ChannelPreview(channel: 'philosophy'),
-                          ChannelPreview(channel: 'zen'),
-                          ChannelPreview(channel: 'plant based'),
-                        ],)
-                      )
-                    ],
-                  ),
                   // search members
                   Column(
                     children: <Widget>[
@@ -519,14 +463,13 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                   Column(
                     children: <Widget>[
                       Expanded(
-                        child: ListView(children: <Widget>[
+                          child: ListView(
+                        children: <Widget>[
                           // SpherePreviewSearch(group: spheres[0]),
                           // SpherePreviewSearch(group: spheres[1]),
                           // SpherePreviewSearch(group: spheres[2])
-
-
-                        ],)
-                      )
+                        ],
+                      ))
                     ],
                   )
                 ],
