@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
-import 'package:junto_beta_mobile/widgets/member_preview/member_preview_select.dart';
+import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview_select.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 class JuntoPerspectives extends StatefulWidget {

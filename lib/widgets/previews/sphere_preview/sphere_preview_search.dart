@@ -7,8 +7,8 @@ import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 
 // This class renders a preview of a sphere
-class SpherePreview extends StatelessWidget {
-  const SpherePreview({@required this.group});
+class SpherePreviewSearch extends StatelessWidget {
+  const SpherePreviewSearch({@required this.group});
 
   final Group group;
 
@@ -32,32 +32,32 @@ class SpherePreview extends StatelessWidget {
           children: <Widget>[
             Row(
               children: <Widget>[
-                Container(
-                  alignment: Alignment.center,
-                  height: 45.0,
-                  width: 45.0,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.bottomLeft,
-                      end: Alignment.topRight,
-                      stops: const <double>[0.3, 0.9],
-                      colors: <Color>[
-                        JuntoPalette.juntoSecondary,
-                        JuntoPalette.juntoPrimary,
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(100),
+              Container(
+                alignment: Alignment.center,
+                height: 38.0,
+                width: 38.0,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
+                    stops: const <double>[0.3, 0.9],
+                    colors: <Color>[
+                      JuntoPalette.juntoSecondary,
+                      JuntoPalette.juntoPrimary,
+                    ],
                   ),
-                  child: Icon(
-                    CustomIcons.spheres,
-                    color: Colors.white,
-                    size: 15,
-                  ),
+                  borderRadius: BorderRadius.circular(100),
                 ),
+                child: Icon(
+                  CustomIcons.spheres,
+                  color: Colors.white,
+                  size: 15,
+                ),
+              ),
                 Container(
-                  width: MediaQuery.of(context).size.width - 75,
+                  width: MediaQuery.of(context).size.width - 68,
                   padding: const EdgeInsets.symmetric(
-                    vertical: 20,
+                    vertical: 15,                    
                   ),
                   decoration: const BoxDecoration(
                     border: Border(
@@ -75,14 +75,13 @@ class SpherePreview extends StatelessWidget {
                       Text(
                         's/' + group.groupData.sphereHandle,
                         textAlign: TextAlign.start,
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.w700),
+                        style: JuntoStyles.title,
                       ),
                       Text(
                         group.groupData.name,
                         textAlign: TextAlign.start,
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 12,
                           color: const Color(0xff555555),
                           fontWeight: FontWeight.w500,
                         ),

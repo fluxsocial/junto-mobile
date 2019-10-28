@@ -13,7 +13,7 @@ import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
 import 'package:junto_beta_mobile/widgets/previews/channel_preview.dart';
-import 'package:junto_beta_mobile/widgets/previews/sphere_preview/sphere_preview.dart';
+import 'package:junto_beta_mobile/widgets/previews/sphere_preview/sphere_preview_search.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 // Junto app bar used throughout the main screens. Rendered in JuntoTemplate.
@@ -496,9 +496,9 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                     children: <Widget>[
                       Expanded(
                         child: ListView(children: <Widget>[
-                          // SpherePreview(group: spheres[0]),
-                          // SpherePreview(group: spheres[1]),
-                          // SpherePreview(group: spheres[2])
+                          // SpherePreviewSearch(group: spheres[0]),
+                          // SpherePreviewSearch(group: spheres[1]),
+                          // SpherePreviewSearch(group: spheres[2])
 
 
                         ],)
