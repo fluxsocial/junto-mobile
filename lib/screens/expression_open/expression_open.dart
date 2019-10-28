@@ -9,7 +9,7 @@ import 'package:junto_beta_mobile/screens/expression_open/expressions/photo_open
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/shortform_open.dart';
-import 'package:junto_beta_mobile/widgets/comment_preview/comment_preview.dart';
+import 'package:junto_beta_mobile/widgets/previews/comment_preview/comment_preview.dart';
 
 class ExpressionOpen extends StatefulWidget {
   const ExpressionOpen(this.expression);

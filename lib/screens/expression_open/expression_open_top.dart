@@ -34,7 +34,7 @@ class ExpressionOpenTop extends StatelessWidget {
                       firstName: firstName,
                       lastName: lastName,
                       bio: 'This is a test',
-                      profilePicture: 'assets/images/junto-mobile__logo.png',
+                      profilePicture: 'assets/images/junto-mobile__placeholder--member.png',
                       username: 'Gmail',
                       verified: false,
                     ),
@@ -48,7 +48,7 @@ class ExpressionOpenTop extends StatelessWidget {
                 // profile picture
                 ClipOval(
                   child: Image.asset(
-                    'assets/images/junto-mobile__logo.png',
+                    'assets/images/junto-mobile__placeholder--member.png',
                     height: 36.0,
                     width: 36.0,
                     fit: BoxFit.cover,

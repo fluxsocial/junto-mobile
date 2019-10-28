@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/widgets/expression_preview/expression_preview_types/event_preview.dart';
-import 'package:junto_beta_mobile/widgets/expression_preview/expression_preview_types/longform_preview.dart';
-import 'package:junto_beta_mobile/widgets/expression_preview/expression_preview_types/photo_preview.dart';
-import 'package:junto_beta_mobile/widgets/expression_preview/expression_preview_types/shortform_preview.dart';
+import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview_types/event_preview.dart';
+import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview_types/longform_preview.dart';
+import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview_types/photo_preview.dart';
+import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview_types/shortform_preview.dart';
 
 class ExpressionPreviewEmbed extends StatelessWidget {
   const ExpressionPreviewEmbed({Key key, @required this.expression})
