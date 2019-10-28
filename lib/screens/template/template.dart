@@ -4,6 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
+import 'package:junto_beta_mobile/widgets/fabs/filter_channel_fab.dart';
 import 'package:junto_beta_mobile/widgets/create_fab.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/den/den_drawer/den_drawer.dart';
@@ -69,6 +70,11 @@ class JuntoTemplateState extends State<JuntoTemplate> {
     }
   }
 
+  _displayFAB() {
+    if(_currentScreen == 'collective') {
+      return FilterChannelFAB();
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Stack(children: <Widget>[
@@ -142,8 +148,10 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                 },
                 juntoAppBarTitle: _appbarTitle,
               ),
-              floatingActionButton:
-                  const CreateFAB(expressionLayer: 'collective'),
+              floatingActionButton: _displayFAB(),
+              // floatingActionButton: 
+              //     const CreateFAB(expressionLayer: 'collective'),
+
               // only enable drawer if current screen is collective
               // drawer: _currentScreen == 'collective'
               //     ? WillPopScope(
@@ -233,7 +241,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
           _currentScreen = 'spheres';
           _appbarTitle = 'SPHERES';
         });
-        break;
+        break;      
       case 2:
         setState(() {
           _currentScreen = 'packs';
@@ -248,6 +256,9 @@ class JuntoTemplateState extends State<JuntoTemplate> {
         break;
     }
   }
+
+
+
 
   // Switch between perspectives; used in perspectives side drawer.
   void _changePerspective(String perspective) {
