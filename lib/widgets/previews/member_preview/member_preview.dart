@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 
 class MemberPreview extends StatelessWidget {
-  const MemberPreview({Key key, this.profile})
-      : super(key: key);
+  const MemberPreview({Key key, this.profile}) : super(key: key);
 
   final UserProfile profile;
 
@@ -17,14 +17,33 @@ class MemberPreview extends StatelessWidget {
         children: <Widget>[
           Row(
             children: <Widget>[
-              ClipOval(
-                child: Image.asset(
-                  profile.profilePicture,
-                  height: 38.0,
-                  width: 38.0,
-                  fit: BoxFit.cover,
-                ),
-              ),
+              profile.profilePicture != ''
+                  ? ClipOval(
+                      child: Image.asset(
+                        profile.profilePicture,
+                        height: 38.0,
+                        width: 38.0,
+                        fit: BoxFit.cover,
+                      ),
+                    )
+                  : Container(
+                      alignment: Alignment.center,
+                      height: 38.0,
+                      width: 38.0,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.bottomLeft,
+                          end: Alignment.topRight,
+                          stops: const <double>[0.3, 0.9],
+                          colors: <Color>[
+                            JuntoPalette.juntoSecondary,
+                            JuntoPalette.juntoPrimary,
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      child: Image.asset('assets/images/junto-mobile__logo--white.png', height: 15)
+                    ),
               Container(
                 width: MediaQuery.of(context).size.width - 68,
                 padding: const EdgeInsets.symmetric(

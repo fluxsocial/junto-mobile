@@ -4,6 +4,7 @@ import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 
 // This class renders a preview of a sphere
 class SpherePreview extends StatelessWidget {
@@ -26,24 +27,37 @@ class SpherePreview extends StatelessWidget {
         );
       },
       child: Container(
-        // margin: const EdgeInsets.only(left: 10.0),
         color: Colors.white,
         child: Row(
           children: <Widget>[
             Row(
               children: <Widget>[
-                ClipOval(
-                  child: Image.asset(
-                    'assets/images/junto-mobile__placeholder--sphere.png',
-                    height:38.0,
-                    width:38.0,
-                    fit: BoxFit.cover,
+              Container(
+                alignment: Alignment.center,
+                height: 38.0,
+                width: 38.0,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
+                    stops: const <double>[0.3, 0.9],
+                    colors: <Color>[
+                      JuntoPalette.juntoSecondary,
+                      JuntoPalette.juntoPrimary,
+                    ],
                   ),
+                  borderRadius: BorderRadius.circular(100),
                 ),
+                child: Icon(
+                  CustomIcons.spheres,
+                  color: Colors.white,
+                  size: 15,
+                ),
+              ),
                 Container(
-                  width: MediaQuery.of(context).size.width - 65,
+                  width: MediaQuery.of(context).size.width - 68,
                   padding: const EdgeInsets.symmetric(
-                    vertical: 20,
+                    vertical: 15,
                   ),
                   decoration: const BoxDecoration(
                     border: Border(

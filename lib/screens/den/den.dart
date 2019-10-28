@@ -5,7 +5,7 @@ import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/den/den_create_collection.dart';
-import 'package:junto_beta_mobile/widgets/expression_preview/expression_preview.dart';
+import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
 import 'package:junto_beta_mobile/widgets/junto_app_delegate.dart';
 import 'package:provider/provider.dart';
 import 'package:async/async.dart' show AsyncMemoizer;

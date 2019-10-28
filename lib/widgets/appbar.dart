@@ -11,9 +11,9 @@ import 'package:junto_beta_mobile/screens/collective/perspectives'
     '/create_perspective/create_perspective.dart' show SelectedUsers;
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/widgets/member_preview/member_preview.dart';
-import 'package:junto_beta_mobile/widgets/channel_preview/channel_preview.dart';
-import 'package:junto_beta_mobile/widgets/sphere_preview/sphere_preview.dart';
+import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
+import 'package:junto_beta_mobile/widgets/previews/channel_preview.dart';
+import 'package:junto_beta_mobile/widgets/previews/sphere_preview/sphere_preview.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 // Junto app bar used throughout the main screens. Rendered in JuntoTemplate.
@@ -277,6 +277,10 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
         firstName: 'Dora Czovek',
         username: 'wingedmessenger',
         profilePicture: 'assets/images/junto-mobile__dora.png'),
+    UserProfile(
+        firstName: 'Urk',
+        username: 'sunyata',
+        profilePicture: ''),        
   ];
 
   List<Sphere> spheres = <Sphere>[
@@ -506,6 +510,7 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                           MemberPreview(profile: profiles[0]),
                           MemberPreview(profile: profiles[1]),
                           MemberPreview(profile: profiles[2]),
+                          MemberPreview(profile: profiles[3]),
                         ]),
                       )
                     ],
