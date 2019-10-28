@@ -24,7 +24,8 @@ class ExpressionPreviewBottom extends StatelessWidget {
               children: <Widget>[
                 Container(
                   child: Text(
-                    expressionTime,
+                    // expressionTime,
+                    'today',
                     textAlign: TextAlign.start,
                     style: JuntoStyles.expressionTimestamp,
                   ),

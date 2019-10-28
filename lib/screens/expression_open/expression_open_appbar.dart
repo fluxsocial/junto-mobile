@@ -13,20 +13,21 @@ class ExpressionOpenAppbar extends StatelessWidget {
       elevation: 0,
       titleSpacing: 0,
       title: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
+        // padding: const EdgeInsets.only(right: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             GestureDetector(
                 onTap: () => Navigator.pop(context),
                 child: Container(
-                  color: Colors.white,
-                  width: 38,
+                  padding: EdgeInsets.only(left: 10),
+                  color: Colors.transparent,
+                  width: 42,
                   alignment: Alignment.centerLeft,
-                  child: const Icon(
-                    CustomIcons.back_arrow_left,
-                    color: JuntoPalette.juntoSleek,
-                    size: 28,
+                  child: Icon(
+                    CustomIcons.back,
+                    color: JuntoPalette.juntoGrey,
+                    size: 17,
                   ),
                 )),
             GestureDetector(
@@ -77,11 +78,15 @@ class ExpressionOpenAppbar extends StatelessWidget {
                 );
               },
               child: Container(
-                color: Colors.white,
-                width: 32,
+                color: Colors.transparent,
+                padding: EdgeInsets.only(right: 10),
+                width: 42,
                 alignment: Alignment.centerRight,
-                padding: const EdgeInsets.only(right: 10),
-                child: const Icon(CustomIcons.lotus, size: 20),
+                child: const Icon(
+                  CustomIcons.lotus,
+                  size: 20,
+                  color: Color(0xff333333),
+                ),
               ),
             )
           ],

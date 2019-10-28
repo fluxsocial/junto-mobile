@@ -218,8 +218,11 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                       child: Row(
                         children: <Widget>[
                           const Text(
-                            'Show replies (9)',
-                            style: TextStyle(fontWeight: FontWeight.w500),
+                            'Show Replies (9)',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xff333333),
+                            ),
                           ),
                           const SizedBox(width: 5),
                           commentsVisible == false
@@ -267,7 +270,6 @@ class ExpressionOpenState extends State<ExpressionOpen> {
               ),
             ),
           ),
-
           Container(
             decoration: const BoxDecoration(
               color: Colors.white,
@@ -374,7 +376,8 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                                           color: Color(0xff333333),
                                           fontWeight: FontWeight.w500),
                                     ),
-                                    const Icon(Icons.keyboard_arrow_down, size: 14)
+                                    const Icon(Icons.keyboard_arrow_down,
+                                        size: 14)
                                   ],
                                 ),
                               ),

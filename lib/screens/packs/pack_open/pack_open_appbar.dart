@@ -26,33 +26,69 @@ class PackOpenAppbar extends StatelessWidget {
       elevation: 0,
       titleSpacing: 0,
       title: Container(
-        padding: const EdgeInsets.symmetric(
-            horizontal: JuntoStyles.horizontalPadding),
+        padding: const EdgeInsets.only(right: JuntoStyles.horizontalPadding),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             GestureDetector(
               onTap: () => Navigator.pop(context),
-              child: const Icon(
-                CustomIcons.back_arrow_left,
-                color: JuntoPalette.juntoSleek,
-                size: 24,
+              child: Container(
+                color: Colors.transparent,
+                alignment: Alignment.centerLeft,
+                padding: const EdgeInsets.only(left: 10),
+                width: 42,
+                child: const Icon(
+                  CustomIcons.back,
+                  color: JuntoPalette.juntoGrey,
+                  size: 17,
+                ),
               ),
             ),
-            Container(
-              margin: const EdgeInsets.only(right: 10),
-              child: Text(packTitle, style: JuntoStyles.title),
+            Center(
+              child: Text(
+                packTitle,
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xff333333),
+                ),
+              ),
             ),
             GestureDetector(
               onTap: () {
                 Scaffold.of(context).openEndDrawer();
               },
-              child: ClipOval(
-                child: Image.asset(
-                  packImage,
-                  height: 28.0,
-                  width: 28.0,
-                  fit: BoxFit.cover,
+              // child: ClipOval(
+              //   child: Image.asset(
+              //     packImage,
+              //     height: 28.0,
+              //     width: 28.0,
+              //     fit: BoxFit.cover,
+              //   ),
+              // ),
+              child: Container(
+                alignment: Alignment.center,
+                height: 32.0,
+                width: 32.0,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
+                    stops: const <double>[0.3, 0.9],
+                    colors: <Color>[
+                      JuntoPalette.juntoSecondary,
+                      JuntoPalette.juntoPrimary,
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                child: Transform.translate(
+                  offset: Offset(-1.0, 0),
+                  child: Icon(
+                    CustomIcons.packs,
+                    color: Colors.white,
+                    size: 14,
+                  ),
                 ),
               ),
             )

@@ -14,6 +14,7 @@ class CustomIcons {
   static const IconData resonate = IconData(0xe906, fontFamily: 'j_home');
   static const IconData comment = IconData(0xe907, fontFamily: 'j_home');
   static const IconData more = IconData(0xe908, fontFamily: 'j_home');
+  static const IconData back = IconData(0xe90d, fontFamily: 'j_home');
   static const IconData back_arrow_left =
       IconData(0xe909, fontFamily: 'j_home');
   static const IconData packs = IconData(0xe916, fontFamily: 'j_home');

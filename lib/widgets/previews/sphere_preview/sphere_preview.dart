@@ -82,7 +82,7 @@ class SpherePreview extends StatelessWidget {
                         group.groupData.name,
                         textAlign: TextAlign.start,
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 13,
                           color: const Color(0xff555555),
                           fontWeight: FontWeight.w500,
                         ),
