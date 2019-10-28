@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/widgets/expression_action_items.dart';
@@ -34,7 +34,8 @@ class ExpressionOpenTop extends StatelessWidget {
                       firstName: firstName,
                       lastName: lastName,
                       bio: 'This is a test',
-                      profilePicture: 'assets/images/junto-mobile__placeholder--member.png',
+                      profilePicture:
+                          'assets/images/junto-mobile__placeholder--member.png',
                       username: 'Gmail',
                       verified: false,
                     ),
@@ -49,8 +50,8 @@ class ExpressionOpenTop extends StatelessWidget {
                 ClipOval(
                   child: Image.asset(
                     'assets/images/junto-mobile__placeholder--member.png',
-                    height: 36.0,
-                    width: 36.0,
+                    height: 45.0,
+                    width: 45.0,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -61,13 +62,17 @@ class ExpressionOpenTop extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(username ?? '', style: JuntoStyles.title),
+                      Text(
+                        username ?? '',
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.w700),
+                      ),
                       Text(
                         firstName + ' ' + lastName,
-                        style: const TextStyle(
-                          fontSize: 12,
+                        style: TextStyle(
+                          fontSize: 13,
                           fontWeight: FontWeight.w500,
-                          color: Color(0xff555555),
+                          color: const Color(0xff555555),
                         ),
                       ),
                     ],
@@ -80,9 +85,9 @@ class ExpressionOpenTop extends StatelessWidget {
             onTap: () {
               showModalBottomSheet(
                 context: context,
-                builder: (BuildContext context) {
-                  return const ExpressionActionsItems();
-                },
+                builder: (BuildContext context) => Container(
+                    color: const Color(0xff737373),
+                    child: ExpressionActionItems()),
               );
             },
             child: const Icon(

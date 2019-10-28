@@ -58,9 +58,7 @@ class ExpressionPreviewTop extends StatelessWidget {
                   // profile picture
                   ClipOval(
                     child: Image.asset(
-                      profilePicture.isEmpty
-                          ? 'assets/images/junto-mobile__junto.png'
-                          : profilePicture,
+                      profilePicture,
                       height: 38.0,
                       width: 38.0,
                       fit: BoxFit.cover,
@@ -71,7 +69,7 @@ class ExpressionPreviewTop extends StatelessWidget {
                     child: Text(
                       username,
                       style: const TextStyle(
-                        fontSize: 14,
+                        fontSize: 15,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -84,11 +82,20 @@ class ExpressionPreviewTop extends StatelessWidget {
             children: <Widget>[
               GestureDetector(
                 onTap: () {
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return const ExpressionActionsItems();
+                  GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (BuildContext context) => Container(
+                            color: const Color(0xff737373),
+                            child: ExpressionActionItems()),
+                      );
                     },
+                    child: const Icon(
+                      Icons.keyboard_arrow_down,
+                      color: Color(0xff555555),
+                      size: 20,
+                    ),
                   );
                 },
                 child: const Icon(

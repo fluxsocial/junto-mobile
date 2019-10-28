@@ -1,30 +1,21 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
+//FIXME: Refactor into Stateless Widget
 // This component is used in ExpressionPreview and ExpressionOpen
 // as the 'more' icon is pressed to view the action items
 // available for each expression
-class ExpressionActionsItems extends StatelessWidget {
-  const ExpressionActionsItems({
-    Key key,
-  }) : super(key: key);
-
+class ExpressionActionItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final MediaQueryData media = MediaQuery.of(context);
     return Container(
       color: const Color(0xff737373),
       child: Container(
         height: MediaQuery.of(context).size.height * .4,
-        padding: EdgeInsets.only(
-          bottom: media.viewInsets.bottom + 25,
-          top: 15,
-          left: 10,
-          right: 10,
-        ),
-        decoration: const BoxDecoration(
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(10),
             topRight: Radius.circular(10),
           ),
@@ -59,7 +50,7 @@ class ExpressionActionsItems extends StatelessWidget {
                         color: const Color(0xff555555),
                       ),
                       const SizedBox(width: 15),
-                      const Text(
+                      Text(
                         'Hide Expression',
                         style: TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 17),
@@ -78,7 +69,7 @@ class ExpressionActionsItems extends StatelessWidget {
                         color: const Color(0xff555555),
                       ),
                       const SizedBox(width: 15),
-                      const Text(
+                      Text(
                         'Block Member',
                         style: TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 17),
@@ -95,7 +86,7 @@ class ExpressionActionsItems extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: const Text(
+                child: Text(
                   'Cancel',
                   style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
                 ),
