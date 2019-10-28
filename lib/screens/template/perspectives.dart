@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
+import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview_select.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 
 class JuntoPerspectives extends StatefulWidget {
-  const JuntoPerspectives({
-    Key key,
-    @required this.changePerspective,
-  }) : super(key: key);
+  const JuntoPerspectives({Key key, @required this.changePerspective})
+      : super(key: key);
 
   final Function changePerspective;
-
   @override
-  State<StatefulWidget> createState() => JuntoPerspectivesState();
+  State<StatefulWidget> createState() {
+    return JuntoPerspectivesState();
+  }
 }
 
 class JuntoPerspectivesState extends State<JuntoPerspectives> {
@@ -19,137 +20,145 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        width: MediaQuery.of(context).size.width * .9,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.bottomLeft,
-            end: Alignment.topRight,
-            stops: <double>[0.1, 0.9],
-            colors: <Color>[
-              JuntoPalette.juntoSecondary,
-              JuntoPalette.juntoPrimary,
-            ],
+          width: MediaQuery.of(context).size.width * .9,
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.bottomLeft,
+              end: Alignment.topRight,
+              stops: <double>[0.1, 0.9],
+              colors: <Color>[
+                JuntoPalette.juntoSecondary,
+                JuntoPalette.juntoPrimary,
+              ],
+            ),
           ),
-        ),
-        child: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                height: 45,
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Image.asset('assets/images/junto-mobile__logo--white.png',
-                        height: 22.0, width: 22.0),
-                    const SizedBox(width: 15),
-                    Expanded(
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        height: 33,
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        decoration: BoxDecoration(
-                          color: const Color(0xff4263A3),
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        child: Row(
-                          children: <Widget>[
-                            const Icon(Icons.search, size: 17, color: Colors.white),
-                            const SizedBox(width: 5),
-                            Transform.translate(
-                              offset: const Offset(0.0, 2.5),
-                              child: Container(
-                                width: MediaQuery.of(context).size.width * .72 -
-                                    45,
-                                child: TextField(
-                                  buildCounter: (
-                                    BuildContext context, {
-                                    int currentLength,
-                                    int maxLength,
-                                    bool isFocused,
-                                  }) =>
-                                      null,
-                                  decoration: const InputDecoration(
-                                    contentPadding: EdgeInsets.all(0),
-                                    border: InputBorder.none,
+          child: SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  height: 45,
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  // decoration: const BoxDecoration(
+                  //   border: Border(
+                  //     bottom: BorderSide(
+                  //       color: Color(0xff4263A3),
+                  //       width: .75,
+                  //     ),
+                  //   ),
+                  // ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Image.asset('assets/images/junto-mobile__logo--white.png',
+                          height: 22.0, width: 22.0),
+                      const SizedBox(width: 15),
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          height: 33,
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          decoration: BoxDecoration(
+                            color: const Color(0xff4263A3),
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                          child: Row(
+                            children: <Widget>[
+                              Icon(Icons.search, size: 17, color: Colors.white),
+                              const SizedBox(width: 5),
+                              Transform.translate(
+                                offset: const Offset(0.0, 2.5),
+                                child: Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * .72 -
+                                          45,
+                                  child: TextField(
+                                    buildCounter: (
+                                      BuildContext context, {
+                                      int currentLength,
+                                      int maxLength,
+                                      bool isFocused,
+                                    }) =>
+                                        null,
+                                    decoration: const InputDecoration(
+                                      contentPadding: EdgeInsets.all(0),
+                                      border: InputBorder.none,
+                                    ),
+                                    cursorColor: Colors.white,
+                                    cursorWidth: 2,
+                                    maxLines: 1,
+                                    style: const TextStyle(
+                                        color: Color(0xffffffff),
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500),
+                                    maxLength: 80,
+                                    textInputAction: TextInputAction.done,
                                   ),
-                                  cursorColor: Colors.white,
-                                  cursorWidth: 2,
-                                  maxLines: 1,
-                                  style: const TextStyle(
-                                      color: Color(0xffffffff),
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500),
-                                  maxLength: 80,
-                                  textInputAction: TextInputAction.done,
                                 ),
-                              ),
-                            )
-                          ],
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                decoration: const BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: Color(0xff4263A3),
-                      width: .75,
-                    ),
+                      )
+                    ],
                   ),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    const Text(
-                      'PERSPECTIVES',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 12,
-                        letterSpacing: 1.2,
-                        color: Colors.white,
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Color(0xff4263A3),
+                        width: .75,
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        showModalBottomSheet(
-                          isScrollControlled: true,
-                          context: context,
-                          builder: (BuildContext context) => Container(
-                              color: const Color(0xff737373),
-                              child: _CreatePerspectiveBottomSheet()),
-                        );
-                      },
-                      child: Container(
-                        height: 38,
-                        width: 38,
-                        color: Colors.transparent,
-                        alignment: Alignment.centerRight,
-                        child: const Icon(Icons.add, color: Colors.white, size: 17),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      const Text(
+                        'PERSPECTIVES',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 12,
+                          letterSpacing: 1.2,
+                          color: Colors.white,
+                        ),
                       ),
-                    )
-                  ],
+                      GestureDetector(
+                        onTap: () {
+                          showModalBottomSheet(
+                            isScrollControlled: true,
+                            context: context,
+                            builder: (BuildContext context) => Container(
+                                color: const Color(0xff737373),
+                                child: _CreatePerspectiveBottomSheet()),
+                          );
+                        },
+                        child: Container(
+                          height: 38,
+                          width: 38,
+                          color: Colors.transparent,
+                          alignment: Alignment.centerRight,
+                          child: Icon(Icons.add, color: Colors.white, size: 17),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              Expanded(
-                child: ListView(
-                  children: <Widget>[
-                    _buildPerspective('JUNTO', 'all'),
-                    _buildPerspective('Connections', '99'),
-                    _buildPerspective('Subscriptions', '220'),
-                    _buildPerspective('Degrees of separation', 'all'),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
+                Expanded(
+                  child: ListView(
+                    children: <Widget>[
+                      _buildPerspective('JUNTO', 'all'),
+                      _buildPerspective('Connections', '99'),
+                      _buildPerspective('Subscriptions', '220'),
+                      _buildPerspective('Degrees of separation', 'all'),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          )),
     );
   }
 
@@ -175,11 +184,10 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                           Text(
                             name,
                             style: const TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 15,
-                              letterSpacing: 1.2,
-                              color: Colors.white,
-                            ),
+                                fontWeight: FontWeight.w700,
+                                fontSize: 15,
+                                letterSpacing: 1.2,
+                                color: Colors.white),
                           ),
                           const SizedBox(height: 5),
                           Text(
@@ -198,78 +206,57 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
               ],
             ),
             GestureDetector(
-              onTap: () {
-                _openPerspectiveBottomSheet();
-              },
-              child: const Icon(
-                Icons.keyboard_arrow_down,
-                size: 20,
-                color: Colors.white,
-              ),
-            )
+                onTap: () {
+                  _openPerspectiveBottomSheet();
+                },
+                child: Icon(Icons.keyboard_arrow_down,
+                    size: 20, color: Colors.white))
           ],
         ),
       ),
     );
   }
 
-  void _openPerspectiveBottomSheet() {
+  _openPerspectiveBottomSheet() {
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
-      builder: (BuildContext context) {
-        return const PerspectiveBottomSheet();
-      },
-    );
-  }
-}
-
-class PerspectiveBottomSheet extends StatelessWidget {
-  const PerspectiveBottomSheet({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: const Color(0xff737373),
-      child: Container(
-        height: MediaQuery.of(context).size.height * .9,
-        padding: const EdgeInsets.all(10),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(10),
-            topRight: Radius.circular(10),
-          ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const <Widget>[
-                // Text('cancel'),
-                Text(
-                  'JUNTO',
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xff333333),
-                  ),
-                ),
-              ],
+      builder: (BuildContext context) => Container(
+        color: const Color(0xff737373),
+        child: Container(
+          height: MediaQuery.of(context).size.height * .9,
+          padding: const EdgeInsets.all(10),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10),
+              topRight: Radius.circular(10),
             ),
-            const SizedBox(height: 20),
-            Container(
-              child: const Text(
-                'The Junto perspective contains all public expressions from '
-                'every member of Junto. Expressions are displayed in '
-                'chronological order.',
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const <Widget>[
+                  // Text('cancel'),
+                  Text(
+                    'JUNTO',
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xff333333),
+                    ),
+                  ),
+                ],
               ),
-            )
-          ],
+              const SizedBox(height: 20),
+              Container(
+                  child: Text(
+                      'The Junto perspective contains all public expressions from every member of Junto. Expressions are displayed in chronological order.'))
+            ],
+          ),
         ),
       ),
     );
@@ -402,10 +389,10 @@ class _CreatePerspectiveBottomSheetState
             ),
             child: Row(
               children: <Widget>[
-                const Icon(
+                Icon(
                   Icons.search,
                   size: 20,
-                  color: Color(0xff999999),
+                  color: const Color(0xff999999),
                 ),
                 const SizedBox(width: 5),
                 Expanded(

@@ -5,6 +5,7 @@ import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/screens/spheres/create_sphere/create_sphere.dart';
 import 'package:junto_beta_mobile/widgets/previews/sphere_preview/sphere_preview.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview_select.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
@@ -55,23 +56,24 @@ class JuntoSpheresState extends State<JuntoSpheres> with ListDistinct {
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: ListView(
         children: <Widget>[
+          
           // Create sphere
           GestureDetector(
             onTap: () {
-              // Navigator.push(
-              //   context,
-              //   CupertinoPageRoute<dynamic>(
-              //     builder: (BuildContext context) => CreateSphere(),
-              //   ),
-              // );              
-              showModalBottomSheet(
-                isScrollControlled: true,
-                context: context,
-                builder: (BuildContext context) => Container(
-                  color: const Color(0xff737373),
-                  child: _CreateSphereBottomSheet(),
+              Navigator.push(
+                context,
+                CupertinoPageRoute<dynamic>(
+                  builder: (BuildContext context) => CreateSphere(),
                 ),
-              );
+              );              
+              // showModalBottomSheet(
+              //   isScrollControlled: true,
+              //   context: context,
+              //   builder: (BuildContext context) => Container(
+              //     color: const Color(0xff737373),
+              //     child: _CreateSphereBottomSheet(),
+              //   ),
+              // );
             },
             child: Container(
               decoration: const BoxDecoration(
