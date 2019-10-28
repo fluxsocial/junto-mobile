@@ -24,8 +24,7 @@ class ExpressionPreviewTop extends StatelessWidget {
     final String profilePicture = expression.creator.profilePicture;
 
     return Container(
-      padding: const EdgeInsets.symmetric(
-          horizontal: JuntoStyles.horizontalPadding, vertical: 10.0),
+      padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -89,10 +88,14 @@ class ExpressionPreviewTop extends StatelessWidget {
                         child: ExpressionActionItems()),
                   );
                 },
-                child: const Icon(
-                  Icons.keyboard_arrow_down,
-                  color: Color(0xff555555),
-                  size: 20,
+                child: Container(
+                  padding: const EdgeInsets.all(5),
+                  color: Colors.transparent,
+                  child: const Icon(
+                    Icons.keyboard_arrow_down,
+                    color: Color(0xff777777),
+                    size: 24,
+                  ),
                 ),
               )
             ],
