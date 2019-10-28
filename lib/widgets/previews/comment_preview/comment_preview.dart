@@ -104,7 +104,7 @@ class CommentPreview extends StatelessWidget {
           ),
           const SizedBox(height: 5),
           const Text(
-            '5m',
+            'today',
             style: TextStyle(fontSize: 10, color: JuntoPalette.juntoSleek),
           ),
         ],
