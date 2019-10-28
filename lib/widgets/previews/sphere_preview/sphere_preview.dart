@@ -10,7 +10,7 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 class SpherePreview extends StatelessWidget {
   const SpherePreview({@required this.group});
 
-  final group;
+  final Group group;
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +57,7 @@ class SpherePreview extends StatelessWidget {
                 Container(
                   width: MediaQuery.of(context).size.width - 68,
                   padding: const EdgeInsets.symmetric(
-                    vertical: 15,
+                    vertical: 15,                    
                   ),
                   decoration: const BoxDecoration(
                     border: Border(
@@ -73,12 +73,12 @@ class SpherePreview extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        's/' + group.sphereHandle,
+                        's/' + group.groupData.sphereHandle,
                         textAlign: TextAlign.start,
                         style: JuntoStyles.title,
                       ),
                       Text(
-                        group.sphereTitle,
+                        group.groupData.name,
                         textAlign: TextAlign.start,
                         style: TextStyle(
                           fontSize: 12,

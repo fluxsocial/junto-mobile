@@ -520,9 +520,9 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                     children: <Widget>[
                       Expanded(
                         child: ListView(children: <Widget>[
-                          SpherePreview(group: spheres[0]),
-                          SpherePreview(group: spheres[1]),
-                          SpherePreview(group: spheres[2])
+                          // SpherePreview(group: spheres[0]),
+                          // SpherePreview(group: spheres[1]),
+                          // SpherePreview(group: spheres[2])
 
 
                         ],)
