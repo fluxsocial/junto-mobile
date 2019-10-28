@@ -85,9 +85,7 @@ class ExpressionOpenTop extends StatelessWidget {
             onTap: () {
               showModalBottomSheet(
                 context: context,
-                builder: (BuildContext context) => Container(
-                    color: const Color(0xff737373),
-                    child: ExpressionActionItems()),
+                builder: (BuildContext context) => ExpressionActionItems(),
               );
             },
             child: const Icon(

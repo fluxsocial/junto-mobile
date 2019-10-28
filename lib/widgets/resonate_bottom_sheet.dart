@@ -45,7 +45,8 @@ class ResonateBottomSheet extends StatelessWidget {
                   ],
                 ),
                 ListTile(
-                  contentPadding: const EdgeInsets.all(0),
+                  contentPadding:
+                      const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
                   title: Row(
                     children: <Widget>[
                       Image.asset(
@@ -63,7 +64,8 @@ class ResonateBottomSheet extends StatelessWidget {
                   ),
                 ),
                 ListTile(
-                  contentPadding: const EdgeInsets.all(0),
+                  contentPadding:
+                      const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
                   onTap: () {
                     Navigator.pop(context);
 
@@ -96,18 +98,19 @@ class ResonateBottomSheet extends StatelessWidget {
             Container(
               width: MediaQuery.of(context).size.width,
               child: FlatButton(
-                  padding: const EdgeInsets.symmetric(vertical: 15),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text(
-                    'Cancel',
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
-                  ),
-                  color: const Color(0xffeeeeee),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25),
-                  )),
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text(
+                  'Cancel',
+                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                ),
+                color: const Color(0xffeeeeee),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25),
+                ),
+              ),
             )
           ],
         ),
