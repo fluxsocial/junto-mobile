@@ -226,13 +226,13 @@ class MockExpressionService implements ExpressionService {
     resonations: 0,
     type: 'LongForm',
   );
-  
+
   static Resonation kResonation = Resonation(
     expressionAddress: '123e4567-e89b-12d3-a456-426655440000',
     groupAddress: null,
     linkType: 'Resonation',
   );
-  
+
   @override
   List<CentralizedExpressionResponse> get collectiveExpressions =>
       kSampleExpressions;
