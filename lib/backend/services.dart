@@ -71,6 +71,9 @@ abstract class ExpressionService {
     String expressionAddress,
   );
 
+  Future<List<CentralizedExpressionResponse>> queryExpression(
+      ExpressionQueryParams params);
+
   /// Returns mock expression data.
   List<CentralizedExpressionResponse> get collectiveExpressions;
 }

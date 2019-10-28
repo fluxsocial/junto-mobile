@@ -1,5 +1,3 @@
-import 'dart:convert' as convert;
-
 import 'package:http/http.dart' as http;
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
@@ -73,7 +71,7 @@ class GroupServiceCentralized implements GroupService {
   Future<List<Users>> getGroupMembers(String groupAddress) async {
     final http.Response _serverResponse =
         await client.get('/groups/$groupAddress/members');
-    final List<dynamic> items = convert.json.decode(_serverResponse.body);
+    final List<dynamic> items = JuntoHttp.handleResponse(_serverResponse);
     return items
         .map(
           (dynamic data) => Users.fromJson(data),
