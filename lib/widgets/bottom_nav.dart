@@ -140,7 +140,7 @@ class BottomNavState extends State<BottomNav> {
                   child: Container(
                     height: 30,
                     width: 30,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                       // border: Border.all(
                       //   width: 1.0,

@@ -34,7 +34,8 @@ class ExpressionOpenTop extends StatelessWidget {
                       firstName: firstName,
                       lastName: lastName,
                       bio: 'This is a test',
-                      profilePicture: 'assets/images/junto-mobile__placeholder--member.png',
+                      profilePicture:
+                          'assets/images/junto-mobile__placeholder--member.png',
                       username: 'Gmail',
                       verified: false,
                     ),
@@ -49,8 +50,8 @@ class ExpressionOpenTop extends StatelessWidget {
                 ClipOval(
                   child: Image.asset(
                     'assets/images/junto-mobile__placeholder--member.png',
-                    height: 36.0,
-                    width: 36.0,
+                    height: 45.0,
+                    width: 45.0,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -61,11 +62,15 @@ class ExpressionOpenTop extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(username ?? '', style: JuntoStyles.title),
+                      Text(
+                        username ?? '',
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.w700),
+                      ),
                       Text(
                         firstName + ' ' + lastName,
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 13,
                           fontWeight: FontWeight.w500,
                           color: const Color(0xff555555),
                         ),
@@ -78,8 +83,12 @@ class ExpressionOpenTop extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              // FIXME: Refactor to widgets folder
-              ExpressionActionItems().buildExpressionActionItems(context);
+              showModalBottomSheet(
+                context: context,
+                builder: (BuildContext context) => Container(
+                    color: const Color(0xff737373),
+                    child: ExpressionActionItems()),
+              );
             },
             child: const Icon(
               Icons.keyboard_arrow_down,

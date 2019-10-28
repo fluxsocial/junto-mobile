@@ -69,7 +69,7 @@ class ExpressionPreviewTop extends StatelessWidget {
                     child: Text(
                       username,
                       style: const TextStyle(
-                        fontSize: 14,
+                        fontSize: 15,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -82,8 +82,21 @@ class ExpressionPreviewTop extends StatelessWidget {
             children: <Widget>[
               GestureDetector(
                 onTap: () {
-                  //FIXME: Refactor into widget
-                  ExpressionActionItems().buildExpressionActionItems(context);
+                  GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (BuildContext context) => Container(
+                            color: const Color(0xff737373),
+                            child: ExpressionActionItems()),
+                      );
+                    },
+                    child: const Icon(
+                      Icons.keyboard_arrow_down,
+                      color: Color(0xff555555),
+                      size: 20,
+                    ),
+                  );
                 },
                 child: const Icon(
                   Icons.keyboard_arrow_down,

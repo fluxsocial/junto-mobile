@@ -40,7 +40,7 @@ class ExpressionPreview extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             // expression preview profile
-            ExpressionPreviewTop(expression: expression),
+            ExpressionPreviewTop(expression: expression), 
 
             // expression preview body
             _returnExpression(),
