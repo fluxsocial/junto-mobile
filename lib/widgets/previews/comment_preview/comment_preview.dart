@@ -18,13 +18,13 @@ class CommentPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
+      padding: const EdgeInsets.only(bottom: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           // comment preview top
           Container(
-            padding: const EdgeInsets.symmetric(vertical: 10),
+            padding: const EdgeInsets.only(top: 10, bottom: 10, left: 10),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -84,10 +84,15 @@ class CommentPreview extends StatelessWidget {
                       ),
                     );
                   },
-                  child: const Icon(
-                    Icons.keyboard_arrow_down,
-                    size: 20,
-                    color: Color(0xff555555),
+                  child: Container(
+                    color: Colors.transparent,
+                    alignment: Alignment.centerRight,
+                    padding: const EdgeInsets.all(5),
+                    child: const Icon(
+                      Icons.keyboard_arrow_down,
+                      size: 24,
+                      color: Color(0xff777777),
+                    ),
                   ),
                 ),
               ],
@@ -95,6 +100,7 @@ class CommentPreview extends StatelessWidget {
           ),
           // comment preview body
           Container(
+            padding: EdgeInsets.symmetric(horizontal: 10),
             child: Text(
               commentText,
               style: const TextStyle(
@@ -102,9 +108,12 @@ class CommentPreview extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 5),
-          const Text(
-            'today',
-            style: JuntoStyles.expressionTimestamp,
+          Padding(
+            padding: EdgeInsets.only(left: 10),
+            child: const Text(
+              'today',
+              style: JuntoStyles.expressionTimestamp,
+            ),
           ),
         ],
       ),
