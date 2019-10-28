@@ -5,8 +5,8 @@ import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/spheres/sphere_preview.dart';
-import 'package:junto_beta_mobile/widgets/member_preview/member_preview_select.dart';
+import 'package:junto_beta_mobile/widgets/previews/sphere_preview/sphere_preview.dart';
+import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview_select.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:provider/provider.dart';
 
@@ -52,6 +52,7 @@ class JuntoSpheresState extends State<JuntoSpheres> with ListDistinct {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10),
       child: ListView(
         children: <Widget>[
           // Create sphere
@@ -79,7 +80,7 @@ class JuntoSpheresState extends State<JuntoSpheres> with ListDistinct {
                 ),
               ),
               padding: const EdgeInsets.symmetric(
-                  vertical: 20, horizontal: JuntoStyles.horizontalPadding),
+                  vertical: 20,),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: const <Widget>[
