@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/widgets/resonate_bottom_sheet.dart';
 
 class ExpressionOpenBottom extends StatefulWidget {
@@ -30,11 +30,11 @@ class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  MaterialLocalizations.of(context).formatFullDate(
-                    widget.expression.createdAt ?? DateTime.now(),
-                  ),
-                  style: const TextStyle(
-                      fontSize: 10, color: JuntoPalette.juntoSleek),
+                  // MaterialLocalizations.of(context).formatFullDate(
+                  //   widget.expression.createdAt ?? DateTime.now(),
+                  // ),
+                  'today',
+                  style: JuntoStyles.expressionTimestamp,
                 ),
                 GestureDetector(
                   onTap: () {

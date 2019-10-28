@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/widgets/previews/comment_preview/comment_action_items.dart';
 
 /// Shows a preview of the comments. Takes a un-named [String] as a param.
@@ -18,8 +18,7 @@ class CommentPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -105,7 +104,7 @@ class CommentPreview extends StatelessWidget {
           const SizedBox(height: 5),
           const Text(
             'today',
-            style: TextStyle(fontSize: 10, color: JuntoPalette.juntoSleek),
+            style: JuntoStyles.expressionTimestamp,
           ),
         ],
       ),

@@ -233,34 +233,35 @@ class ExpressionOpenCreatedState extends State<ExpressionOpenCreated> {
                     ),
                     expandedHeight: _flexibleHeightSpace == null
                         ? 100000
-                        : _flexibleHeightSpace + 116,
+                        : _flexibleHeightSpace + 123,
                     forceElevated: false,
                   ),
                   SliverPersistentHeader(
                     delegate: _SliverAppBarDelegate(
                       TabBar(
                         labelPadding: const EdgeInsets.all(0),
+
                         isScrollable: true,
                         labelColor: const Color(0xff333333),
                         labelStyle: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w700,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
                           color: Color(0xff333333),
                         ),
                         indicatorWeight: 0.0001,
+
                         tabs: <Widget>[
                           Container(
-                            margin: const EdgeInsets.only(right: 24),
+                            margin: const EdgeInsets.only(right: 20),
                             color: Colors.white,
                             child: const Tab(
-                              text: 'Public replies',
+                              text: 'Public Replies',
                             ),
                           ),
                           Container(
-                            margin: const EdgeInsets.only(right: 24),
                             color: Colors.white,
                             child: const Tab(
-                              text: 'Private replies',
+                              text: 'Private Replies',
                             ),
                           ),
                         ],

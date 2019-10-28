@@ -72,7 +72,7 @@ class ExpressionOpenTop extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.w500,
-                          color: const Color(0xff555555),
+                          color: const Color(0xff555555), 
                         ),
                       ),
                     ],

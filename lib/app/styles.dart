@@ -37,7 +37,7 @@ class JuntoStyles {
     fontWeight: FontWeight.w500,
   );
   static const TextStyle expressionTimestamp = TextStyle(
-    fontSize: 10,
+    fontSize: 12,
     color: JuntoPalette.juntoGreyLight,
     fontWeight: FontWeight.w600,
   );
