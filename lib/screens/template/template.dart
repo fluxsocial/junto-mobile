@@ -5,7 +5,7 @@ import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/widgets/fabs/filter_channel_fab.dart';
-import 'package:junto_beta_mobile/widgets/create_fab.dart';
+import 'package:junto_beta_mobile/widgets/fabs/create_sphere_fab.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/den/den_drawer/den_drawer.dart';
 import 'package:junto_beta_mobile/screens/packs/packs.dart';
@@ -73,6 +73,8 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   _displayFAB() {
     if(_currentScreen == 'collective') {
       return FilterChannelFAB();
+    } else if (_currentScreen == 'spheres') {
+      return CreateSphereFAB();
     }
   }
   @override

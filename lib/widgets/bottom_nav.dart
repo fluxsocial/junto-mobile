@@ -137,12 +137,21 @@ class BottomNavState extends State<BottomNav> {
                   height: 48,
                   color: Colors.transparent,
                   alignment: Alignment.center,
-                  child: ClipOval(
-                    child: Image.asset(
-                      'assets/images/junto-mobile__eric.png',
-                      height: 30.0,
-                      width: 30.0,
-                      fit: BoxFit.cover,
+                  child: Container(
+                    height: 30,
+                    width: 30,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      // border: Border.all(
+                      //   width: 1.0,
+                      //   color: Color(0xffFFCF68),
+                      // ),
+                    ),
+                    child: ClipOval(
+                      child: Image.asset(
+                        'assets/images/junto-mobile__placeholder--member.png',
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),

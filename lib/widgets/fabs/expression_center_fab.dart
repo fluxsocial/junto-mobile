@@ -6,8 +6,9 @@ import 'package:junto_beta_mobile/screens/create/create.dart';
 
 /// Gradient [FloatingActionButton] used for filtering
 /// Collectives.
-class CreateFAB extends StatelessWidget {
-  const CreateFAB({Key key, @required this.expressionLayer}) : super(key: key);
+class ExpressionCenterFAB extends StatelessWidget {
+  const ExpressionCenterFAB({Key key, @required this.expressionLayer})
+      : super(key: key);
 
   final String expressionLayer;
 
@@ -42,29 +43,24 @@ class CreateFAB extends StatelessWidget {
         ),
       ),
       child: Container(
-        height: 60,
-        width: 60,
-        decoration: BoxDecoration(
-          gradient:  LinearGradient(
-            begin: Alignment.bottomLeft,
-            end: Alignment.topRight,
-            stops: const <double>[0.3, 0.9],
-            colors: <Color>[
-              // JuntoPalette.juntoSecondary,
-              JuntoPalette.juntoPrimary,
-              Color(0xFFFFCF68)
-            ],
+          height: 50,
+          width: 50,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.bottomLeft,
+              end: Alignment.topRight,
+              stops: const <double>[0.1, 0.9],
+              colors: <Color>[
+                JuntoPalette.juntoSecondary,
+                JuntoPalette.juntoPrimary,
+              ],
+            ),
+            color: JuntoPalette.juntoWhite.withOpacity(.9),
+            border: Border.all(color: JuntoPalette.juntoWhite, width: 2),
+            borderRadius: BorderRadius.circular(100),
           ),
-          color: JuntoPalette.juntoWhite.withOpacity(.9),
-          border: Border.all(
-            color: JuntoPalette.juntoWhite,
-            width: 2,
-          ),
-          borderRadius: BorderRadius.circular(100),
-        ),
-        alignment: Alignment.center,
-        child: const Icon(CustomIcons.enso, color: Colors.white, size: 28)
-      ),
+          alignment: Alignment.center,
+          child: const Icon(CustomIcons.enso, color: Colors.white, size: 20)),
     );
   }
 }
