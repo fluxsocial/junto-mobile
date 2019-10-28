@@ -67,6 +67,7 @@ class CommentPreview extends StatelessWidget {
                             'sunyata',
                             style: TextStyle(
                               fontWeight: FontWeight.w700,
+                              fontSize: 15,
                             ),
                           ),
                         ),
@@ -76,7 +77,13 @@ class CommentPreview extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    CommentActionItems().buildCommentActionItems(context);
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (BuildContext context) => Container(
+                        color: const Color(0xff737373),
+                        child: CommentActionItems(),
+                      ),
+                    );
                   },
                   child: const Icon(
                     Icons.keyboard_arrow_down,

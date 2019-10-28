@@ -41,7 +41,8 @@ class ExpressionActionItems extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 ListTile(
-                  contentPadding: const EdgeInsets.all(0),
+                  contentPadding:
+                      const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
                   title: Row(
                     children: <Widget>[
                       Icon(
@@ -59,7 +60,8 @@ class ExpressionActionItems extends StatelessWidget {
                   ),
                 ),
                 ListTile(
-                  contentPadding: const EdgeInsets.all(0),
+                  contentPadding:
+                      const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
                   onTap: () {},
                   title: Row(
                     children: <Widget>[
