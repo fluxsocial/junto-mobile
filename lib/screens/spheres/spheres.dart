@@ -79,7 +79,6 @@ class JuntoSpheresState extends State<JuntoSpheres> with ListDistinct {
                   ],
                 );
               }
-
               return Container(
                 height: 100.0,
                 width: 100.0,

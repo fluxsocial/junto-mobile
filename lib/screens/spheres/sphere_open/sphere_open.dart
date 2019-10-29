@@ -8,8 +8,11 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open_appbar.dart';
 import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open_facilitators.dart';
 import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open_members.dart';
-import 'package:junto_beta_mobile/widgets/fabs/expression_center_fab.dart';
-import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
+import 'package:junto_beta_mobile/utils/junto_dialog.dart';
+import 'package:junto_beta_mobile/utils/junto_exception.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:junto_beta_mobile/widgets/create_fab.dart';
+import 'package:junto_beta_mobile/widgets/expression_preview/expression_preview.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
 
@@ -30,7 +33,6 @@ class SphereOpen extends StatefulWidget {
 class SphereOpenState extends State<SphereOpen> with HideFab {
   ScrollController _hideFABController;
   ValueNotifier<bool> _isVisible;
-  List<Users> _members;
 
   List<CentralizedExpressionResponse> expressions;
 
@@ -70,7 +72,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   void didChangeDependencies() {
     super.didChangeDependencies();
     expressions = Provider.of<ExpressionRepo>(context).collectiveExpressions;
-    _getMembers();
   }
 
   void _onScrollingHasChanged() {
@@ -85,11 +86,37 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   }
 
   Future<void> _getMembers() async {
-    final List<Users> results =
-        await Provider.of<GroupRepo>(context).getGroupMembers(
-      widget.group.address,
-    );
-    setState(() => _members = results);
+    try {
+      JuntoOverlay.showLoader(context);
+      final List<Users> _members =
+          await Provider.of<GroupRepo>(context).getGroupMembers(
+        widget.group.address,
+      );
+      JuntoOverlay.hide();
+      Navigator.push(
+        context,
+        CupertinoPageRoute<dynamic>(
+          builder: (BuildContext context) {
+            return SphereOpenMembers(
+              group: widget.group,
+              users: _members,
+            );
+          },
+        ),
+      );
+    } on JuntoException catch (error) {
+      JuntoOverlay.hide();
+      JuntoDialog.showJuntoDialog(
+        context,
+        error.message,
+        <Widget>[
+          FlatButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Ok'),
+          )
+        ],
+      );
+    }
   }
 
   final List<String> _tabs = <String>['About', 'Discussion', 'Events'];
@@ -273,15 +300,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    CupertinoPageRoute<dynamic>(
-                      builder: (BuildContext context) =>
-                          SphereOpenMembers(users: _members),
-                    ),
-                  );
-                },
+                onTap: () => _getMembers(),
                 child: const MemberRow(),
               )
             ],
