@@ -102,8 +102,6 @@ class _JuntoAppBarState extends State<JuntoAppBar>
       elevation: 0,
       titleSpacing: 0.0,
       title: Container(
-        padding: const EdgeInsets.symmetric(
-            horizontal: JuntoStyles.horizontalPadding),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
@@ -118,26 +116,29 @@ class _JuntoAppBarState extends State<JuntoAppBar>
                       return;
                     }
                   },
-                  child: Row(
-                    children: <Widget>[
-                      Image.asset('assets/images/junto-mobile__logo.png',
-                          height: 22.0, width: 22.0),
-                      Container(
-                        margin: const EdgeInsets.only(left: 7.5),
-                        child: Text(
+                  child: Container(
+                    padding: const EdgeInsets.only(left: 10),
+                    color: Colors.transparent,
+                    height: 48,
+                    child: Row(
+                      children: <Widget>[
+                        Image.asset('assets/images/junto-mobile__logo.png',
+                            height: 22.0, width: 22.0),
+                        const SizedBox(width: 7.5),
+                        Text(
                           widget.juntoAppBarTitle,
                           style: JuntoStyles.appbarTitle,
                         ),
-                      ),
-                      const SizedBox(width: 2.5),
-                      widget.appContext == 'collective'
-                          ? Icon(
-                              Icons.keyboard_arrow_down,
-                              size: 17,
-                              color: const Color(0xff999999),
-                            )
-                          : const SizedBox()
-                    ],
+                        const SizedBox(width: 2.5),
+                        widget.appContext == 'collective'
+                            ? Icon(
+                                Icons.keyboard_arrow_down,
+                                size: 17,
+                                color: const Color(0xff999999),
+                              )
+                            : const SizedBox()
+                      ],
+                    ),
                   ),
                 );
               },
@@ -163,10 +164,14 @@ class _JuntoAppBarState extends State<JuntoAppBar>
                     );
                   },
                   child: Container(
+                    width: 42,
+                    padding: const EdgeInsets.only(right: 10),
+                    alignment: Alignment.centerRight,
+                    color: Colors.transparent,
                     child: Icon(
                       Icons.search,
                       color: JuntoPalette.juntoSleek,
-                      size: JuntoStyles.appbarIcon,
+                      size: 22,
                     ),
                   ),
                 ),
@@ -212,11 +217,14 @@ class _JuntoAppBarState extends State<JuntoAppBar>
                     );
                   },
                   child: Container(
-                    margin: const EdgeInsets.only(left: 7.5),
+                    width: 42,
+                    color: Colors.transparent,
+                    alignment: Alignment.centerRight,
+                    padding: const EdgeInsets.only(right: 10),
                     child: const Icon(
                       CustomIcons.moon,
                       color: JuntoPalette.juntoSleek,
-                      size: JuntoStyles.appbarIcon,
+                      size: 22,
                     ),
                   ),
                 )
