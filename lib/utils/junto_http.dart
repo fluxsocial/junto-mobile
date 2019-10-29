@@ -61,12 +61,16 @@ class JuntoHttp {
   Future<http.Response> delete(
     String resource, {
     Map<String, String> headers,
-    Map<String, dynamic> body,
+    dynamic body,
   }) async {
-    return httpClient.delete(
-      _encodeUrl(resource),
-      headers: await _withPersistentHeaders(headers),
+    final Map<String, String> header = await _withPersistentHeaders(null);
+    final http.StreamedResponse _streamedResponse = await httpClient.send(
+      http.Request('DELETE', Uri.parse('$_endPoint$resource'))
+        ..headers['cookie'] = header['cookie']
+        ..headers['Content-Type'] = header['Content-Type']
+        ..body = convert.json.encode(body),
     );
+    return http.Response.fromStream(_streamedResponse);
   }
 
   Future<http.Response> post(

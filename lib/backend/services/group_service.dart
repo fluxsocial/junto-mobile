@@ -59,9 +59,11 @@ class GroupServiceCentralized implements GroupService {
     };
     final http.Response _serverResponse = await client.delete(
       '/groups/$groupAddress/members',
-      body: _postBody,
+      body: <dynamic>[_postBody],
     );
-    JuntoHttp.handleResponse(_serverResponse);
+    if (_serverResponse.statusCode != 200) {
+      JuntoHttp.handleResponse(_serverResponse);
+    }
   }
 
   @override
