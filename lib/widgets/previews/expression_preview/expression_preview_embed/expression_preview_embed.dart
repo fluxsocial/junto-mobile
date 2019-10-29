@@ -87,7 +87,7 @@ class ExpressionPreviewEmbed extends StatelessWidget {
                     children: <Widget>[
                       Container(
                         child: Text(
-                          expression.createdAt.toString(),
+                          'today',
                           textAlign: TextAlign.start,
                           style: JuntoStyles.expressionTimestamp,
                         ),

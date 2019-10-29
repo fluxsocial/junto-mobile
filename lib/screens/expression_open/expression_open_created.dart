@@ -9,7 +9,7 @@ import 'package:junto_beta_mobile/screens/expression_open/expressions/event_open
 import 'package:junto_beta_mobile/screens/expression_open/expressions/longform_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/photo_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/shortform_open.dart';
-import 'package:junto_beta_mobile/widgets/previews/comment_preview/comment_preview.dart';
+import 'package:junto_beta_mobile/widgets/previews/comment_preview.dart';
 
 class ExpressionOpenCreated extends StatefulWidget {
   const ExpressionOpenCreated(this.expression);
@@ -240,7 +240,6 @@ class ExpressionOpenCreatedState extends State<ExpressionOpenCreated> {
                     delegate: _SliverAppBarDelegate(
                       TabBar(
                         labelPadding: const EdgeInsets.all(0),
-
                         isScrollable: true,
                         labelColor: const Color(0xff333333),
                         labelStyle: const TextStyle(
@@ -249,7 +248,6 @@ class ExpressionOpenCreatedState extends State<ExpressionOpenCreated> {
                           color: Color(0xff333333),
                         ),
                         indicatorWeight: 0.0001,
-
                         tabs: <Widget>[
                           Container(
                             margin: const EdgeInsets.only(right: 20),
@@ -279,64 +277,42 @@ class ExpressionOpenCreatedState extends State<ExpressionOpenCreated> {
                         ListView(
                           shrinkWrap: true,
                           physics: const ClampingScrollPhysics(),
-                          children: const <Widget>[
+                          children: <Widget>[
                             CommentPreview(
+                              parent: widget.expression,
                               commentText:
                                   'Hey there! This is what a comment preview looks like.',
                             ),
                             CommentPreview(
+                              parent: widget.expression,
                               commentText:
                                   'All comments are hidden initially so the viewer can have complete independence of thought while viewing expressions.',
                             ),
                             CommentPreview(
+                              parent: widget.expression,
                               commentText:
                                   'In Junto, comments are treated like expressions. You can resonate them or reply to a comment (nested comments). This is quite complex so we are tacklign this once the rest of the core functionality is finished.',
-                            ),
-                            CommentPreview(
-                              commentText:
-                                  "And yes, I know what you're thinking. 'Comments??' We need a new semantic!",
-                            ),
-                            CommentPreview(
-                              commentText:
-                                  "Let's leave that to Fri to discuss :)",
-                            ),
-                            CommentPreview(
-                              commentText: 'Much',
-                            ),
-                            CommentPreview(
-                              commentText: 'love <3',
                             ),
                           ],
                         ),
                         ListView(
                           shrinkWrap: true,
                           physics: const ClampingScrollPhysics(),
-                          children: const <Widget>[
+                          children: <Widget>[
                             CommentPreview(
+                              parent: widget.expression,
                               commentText:
                                   'Hey there! This is what a comment preview looks like.',
                             ),
                             CommentPreview(
+                              parent: widget.expression,
                               commentText:
                                   'All comments are hidden initially so the viewer can have complete independence of thought while viewing expressions.',
                             ),
                             CommentPreview(
+                              parent: widget.expression,
                               commentText:
                                   'In Junto, comments are treated like expressions. You can resonate them or reply to a comment (nested comments). This is quite complex so we are tacklign this once the rest of the core functionality is finished.',
-                            ),
-                            CommentPreview(
-                              commentText:
-                                  "And yes, I know what you're thinking. 'Comments??' We need a new semantic!",
-                            ),
-                            CommentPreview(
-                              commentText:
-                                  "Let's leave that to Fri to discuss :)",
-                            ),
-                            CommentPreview(
-                              commentText: 'Much',
-                            ),
-                            CommentPreview(
-                              commentText: 'love <3',
                             ),
                           ],
                         ),
