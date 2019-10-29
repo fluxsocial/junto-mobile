@@ -58,7 +58,8 @@ class CreateResonationState extends State<CreateResonation> {
                       cursorColor: JuntoPalette.juntoGrey,
                       cursorWidth: 2,
                       style: const TextStyle(
-                        fontSize: 17,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
                         color: JuntoPalette.juntoGrey,
                       ),
                       textInputAction: TextInputAction.done,
