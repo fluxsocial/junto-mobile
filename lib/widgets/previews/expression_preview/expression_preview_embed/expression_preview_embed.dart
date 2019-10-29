@@ -18,17 +18,18 @@ class ExpressionPreviewEmbed extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: const Color(0xffeeeeee), width: 1),
-        borderRadius: BorderRadius.circular(5),
-      ),
+          color: Colors.white,
+          border: Border.all(color: const Color(0xffeeeeee), width: 1),
+          borderRadius: BorderRadius.circular(5),
+          boxShadow: const <BoxShadow>[
+            BoxShadow(color: Color(0xffeeeeee), blurRadius: 7)
+          ]),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           // expression preview profile
           Container(
-            padding: const EdgeInsets.symmetric(
-                horizontal: JuntoStyles.horizontalPadding, vertical: 10.0),
+            padding: const EdgeInsets.only(top: 10, bottom: 10, left: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -41,8 +42,8 @@ class ExpressionPreviewEmbed extends StatelessWidget {
                       ClipOval(
                         child: Image.asset(
                           expression.creator.profilePicture,
-                          height: 36.0,
-                          width: 36.0,
+                          height: 38.0,
+                          width: 38.0,
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -51,7 +52,7 @@ class ExpressionPreviewEmbed extends StatelessWidget {
                         child: Text(
                           expression.creator.username,
                           style: const TextStyle(
-                            fontSize: 14,
+                            fontSize: 15,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -61,9 +62,13 @@ class ExpressionPreviewEmbed extends StatelessWidget {
                 ),
                 Row(
                   children: const <Widget>[
-                    Icon(
-                      CustomIcons.more,
-                      size: 20,
+                    Padding(
+                      padding: EdgeInsets.only(right: 5),
+                      child: Icon(
+                        Icons.keyboard_arrow_down,
+                        size: 24,
+                        color: Color(0xff777777),
+                      ),
                     ),
                   ],
                 )

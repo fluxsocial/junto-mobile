@@ -52,7 +52,12 @@ class CreateResonationState extends State<CreateResonation> {
                       focusNode: resonationCommentFocusNode,
                       decoration: const InputDecoration(
                         border: InputBorder.none,
-                        hintText: 'Add a comment',
+                        hintText: 'add a comment',
+                        hintStyle: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        color: JuntoPalette.juntoGreyLight,
+                      ),
                       ),
                       maxLines: null,
                       cursorColor: JuntoPalette.juntoGrey,
