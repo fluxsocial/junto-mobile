@@ -81,23 +81,7 @@ class ExpressionActionItems extends StatelessWidget {
                 ),
               ],
             ),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              child: FlatButton(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text(
-                  'Cancel',
-                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
-                ),
-                color: const Color(0xffeeeeee),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25),
-                ),
-              ),
-            )
+
           ],
         ),
       ),

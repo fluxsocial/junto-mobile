@@ -17,18 +17,20 @@ class ExpressionOpenAppbar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: Container(
-                  padding: const EdgeInsets.only(left: 10),
-                  color: Colors.transparent,
-                  width: 42,
-                  alignment: Alignment.centerLeft,
-                  child: Icon(
-                    CustomIcons.back,
-                    color: JuntoPalette.juntoGrey,
-                    size: 17,
-                  ),
-                )),
+              onTap: () => Navigator.pop(context),
+              child: Container(
+                padding: const EdgeInsets.only(left: 10),
+                color: Colors.transparent,
+                width: 42,
+                alignment: Alignment.centerLeft,
+                child: Icon(
+                  CustomIcons.back,
+                  color: JuntoPalette.juntoGrey,
+                  size: 17,
+                ),
+              ),
+            ),
+
             GestureDetector(
               onTap: () {
                 showModalBottomSheet(
