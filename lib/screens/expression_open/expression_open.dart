@@ -9,7 +9,7 @@ import 'package:junto_beta_mobile/screens/expression_open/expressions/photo_open
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/shortform_open.dart';
-import 'package:junto_beta_mobile/widgets/previews/comment_preview/comment_preview.dart';
+import 'package:junto_beta_mobile/widgets/previews/comment_preview.dart';
 
 class ExpressionOpen extends StatefulWidget {
   const ExpressionOpen(this.expression);
@@ -236,32 +236,20 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                       ? ListView(
                           shrinkWrap: true,
                           physics: const ClampingScrollPhysics(),
-                          children: const <Widget>[
+                          children: <Widget>[
                             CommentPreview(
-                              commentText:
-                                  'Hey there! This is what a comment preview looks like.',
-                            ),
+                                commentText:
+                                    'Hey there! This is what a comment preview looks like.',
+                                parent: widget.expression),
                             CommentPreview(
+                              parent: widget.expression,
                               commentText:
                                   'All comments are hidden initially so the viewer can have complete independence of thought while viewing expressions.',
                             ),
                             CommentPreview(
+                              parent: widget.expression,
                               commentText:
                                   'In Junto, comments are treated like expressions. You can resonate them or reply to a comment (nested comments). This is quite complex so we are tacklign this once the rest of the core functionality is finished.',
-                            ),
-                            CommentPreview(
-                              commentText:
-                                  "And yes, I know what you're thinking. 'Comments??' We need a new semantic!",
-                            ),
-                            CommentPreview(
-                              commentText:
-                                  "Let's leave that to Fri to discuss :)",
-                            ),
-                            CommentPreview(
-                              commentText: 'Much',
-                            ),
-                            CommentPreview(
-                              commentText: 'love <3',
                             ),
                           ],
                         )
