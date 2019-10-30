@@ -40,7 +40,6 @@ class JuntoTemplateState extends State<JuntoTemplate> {
 
   ValueNotifier<int> _bottomNavIndex;
   ScrollController collectiveController;
-  ScrollController denController;
 
   double _dx = 0.0;
   String _scrollDirection;
@@ -52,7 +51,6 @@ class JuntoTemplateState extends State<JuntoTemplate> {
     super.initState();
     _bottomNavIndex = ValueNotifier<int>(0);
     collectiveController = ScrollController();
-    denController = ScrollController();
   }
 
   @override
@@ -228,7 +226,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
       case 'packs':
         return JuntoPacks();
       case 'den':
-        return JuntoDen(controller: denController);
+        return JuntoDen();
     }
     return Container();
   }
@@ -265,8 +263,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
           _currentScreen = 'den';
           _appbarTitle = profile?.username ?? 'Junto';
         });
-        denController.animateTo(0.0,
-            duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
+
         break;
     }
   }

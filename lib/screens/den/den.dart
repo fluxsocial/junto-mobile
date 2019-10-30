@@ -12,9 +12,6 @@ import 'package:async/async.dart' show AsyncMemoizer;
 
 /// Displays the user's DEN or "profile screen"
 class JuntoDen extends StatefulWidget {
-  JuntoDen({this.controller});
-
-  ScrollController controller;
   @override
   State<StatefulWidget> createState() => JuntoDenState();
 }
@@ -41,7 +38,6 @@ class JuntoDenState extends State<JuntoDen> {
   void dispose() {
     super.dispose();
     controller.dispose();
-    widget.controller.dispose();
   }
 
   Future<UserProfile> _retrieveUserInfo() async {
@@ -76,7 +72,6 @@ class JuntoDenState extends State<JuntoDen> {
         return DefaultTabController(
           length: _tabs.length,
           child: NestedScrollView(
-            controller: widget.controller,
             physics: const ClampingScrollPhysics(),
             headerSliverBuilder:
                 (BuildContext context, bool innerBoxIsScrolled) {
