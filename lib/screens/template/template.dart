@@ -39,7 +39,9 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   String _appbarTitle = 'JUNTO';
 
   ValueNotifier<int> _bottomNavIndex;
-  final ScrollController controller = ScrollController();
+  ScrollController collectiveController;
+  ScrollController denController;
+
   double _dx = 0.0;
   String _scrollDirection;
 
@@ -49,6 +51,8 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   void initState() {
     super.initState();
     _bottomNavIndex = ValueNotifier<int>(0);
+    collectiveController = ScrollController();
+    denController = ScrollController();
   }
 
   @override
@@ -71,12 +75,13 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   }
 
   _displayFAB() {
-    if(_currentScreen == 'collective') {
+    if (_currentScreen == 'collective') {
       return FilterChannelFAB();
     } else if (_currentScreen == 'spheres') {
       return CreateSphereFAB();
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Stack(children: <Widget>[
@@ -151,7 +156,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                 juntoAppBarTitle: _appbarTitle,
               ),
               floatingActionButton: _displayFAB(),
-              // floatingActionButton: 
+              // floatingActionButton:
               //     const CreateFAB(expressionLayer: 'collective'),
 
               // only enable drawer if current screen is collective
@@ -213,7 +218,8 @@ class JuntoTemplateState extends State<JuntoTemplate> {
     switch (_currentScreen) {
       case 'collective':
         return JuntoCollective(
-            currentPerspective: _currentPerspective, controller: controller);
+            currentPerspective: _currentPerspective,
+            controller: collectiveController);
 
       case 'spheres':
         return JuntoSpheres(
@@ -222,7 +228,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
       case 'packs':
         return JuntoPacks();
       case 'den':
-        return JuntoDen();
+        return JuntoDen(controller: denController);
     }
     return Container();
   }
@@ -237,30 +243,33 @@ class JuntoTemplateState extends State<JuntoTemplate> {
           _currentScreen = 'collective';
           _appbarTitle = 'JUNTO';
         });
+        collectiveController.animateTo(0.0,
+            duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
         break;
       case 1:
         setState(() {
           _currentScreen = 'spheres';
           _appbarTitle = 'SPHERES';
         });
-        break;      
+
+        break;
       case 2:
         setState(() {
           _currentScreen = 'packs';
           _appbarTitle = 'PACKS';
         });
+
         break;
       case 3:
         setState(() {
           _currentScreen = 'den';
           _appbarTitle = profile?.username ?? 'Junto';
         });
+        denController.animateTo(0.0,
+            duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
         break;
     }
   }
-
-
-
 
   // Switch between perspectives; used in perspectives side drawer.
   void _changePerspective(String perspective) {

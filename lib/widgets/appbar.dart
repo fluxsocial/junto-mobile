@@ -426,7 +426,7 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                             : const Color(0xff999999)),
                   ),
                 ),
-                const SizedBox(width: 25),
+                const SizedBox(width: 20),
                 GestureDetector(
                   onTap: () {
                     pageController.jumpToPage(1);

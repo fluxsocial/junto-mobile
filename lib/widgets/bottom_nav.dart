@@ -69,7 +69,6 @@ class BottomNavState extends State<BottomNav> {
             ),
           ),
           child: Row(
-            // crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               _BottomNavButton(
                 index: 0,
