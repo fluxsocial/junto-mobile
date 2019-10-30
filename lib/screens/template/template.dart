@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/widgets/fabs/filter_channel_fab.dart';
 import 'package:junto_beta_mobile/widgets/fabs/create_sphere_fab.dart';
@@ -10,11 +10,10 @@ import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/den/den_drawer/den_drawer.dart';
 import 'package:junto_beta_mobile/screens/packs/packs.dart';
 import 'package:junto_beta_mobile/screens/spheres/spheres.dart';
-import 'package:junto_beta_mobile/screens/template/perspectives.dart';
 import 'package:junto_beta_mobile/widgets/appbar.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
-import 'package:junto_beta_mobile/widgets/create_fab.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/screens/template/perspectives.dart';
 
 // This class is a template screen that contains the navbar, bottom bar,
 // and screen (collective, spheres, pack, etc) depending on condition.
@@ -40,7 +39,9 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   String _appbarTitle = 'JUNTO';
 
   ValueNotifier<int> _bottomNavIndex;
-  ScrollController controller;
+  ScrollController collectiveController;
+  ScrollController denController;
+
   double _dx = 0.0;
   String _scrollDirection;
 
@@ -50,19 +51,14 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   void initState() {
     super.initState();
     _bottomNavIndex = ValueNotifier<int>(0);
-    controller = ScrollController();
+    collectiveController = ScrollController();
+    denController = ScrollController();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _retrieveUserInfo();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    controller.dispose();
   }
 
   Future<void> _retrieveUserInfo() async {
@@ -79,67 +75,66 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   }
 
   _displayFAB() {
-    if(_currentScreen == 'collective') {
+    if (_currentScreen == 'collective') {
       return FilterChannelFAB();
     } else if (_currentScreen == 'spheres') {
       return CreateSphereFAB();
     }
   }
+
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        JuntoPerspectives(changePerspective: _changePerspective),
-        GestureDetector(
-          onTap: () {
-            print('testing ');
-          },
-          onHorizontalDragUpdate: (DragUpdateDetails details) {
-            // only enable drag on collective screen
-            if (_currentScreen == 'collective') {
-              if (_dx == 0.0 &&
-                  details.globalPosition.dy != 0.0 &&
-                  details.delta.direction > 0) {
-                return;
-              } else {
-                if (details.globalPosition.dx > 0 &&
-                    details.globalPosition.dx <
-                        MediaQuery.of(context).size.width * .9) {
-                  setState(() {
-                    _dx = details.globalPosition.dx;
-                    if (details.delta.direction > 0) {
-                      setState(() {
-                        _scrollDirection = 'left';
-                      });
-                    } else if (details.delta.direction < 0) {
-                      setState(() {
-                        _scrollDirection = 'right';
-                      });
-                    }
-                  });
-                }
+    return Stack(children: <Widget>[
+      JuntoPerspectives(changePerspective: _changePerspective),
+      GestureDetector(
+        onTap: () {
+          print('yo');
+        },
+        onHorizontalDragUpdate: (DragUpdateDetails details) {
+          // only enable drag on collective screen
+          if (_currentScreen == 'collective') {
+            if (_dx == 0.0 &&
+                details.globalPosition.dy != 0.0 &&
+                details.delta.direction > 0) {
+              return;
+            } else {
+              if (details.globalPosition.dx > 0 &&
+                  details.globalPosition.dx <
+                      MediaQuery.of(context).size.width * .9) {
+                setState(() {
+                  _dx = details.globalPosition.dx;
+                  if (details.delta.direction > 0) {
+                    setState(() {
+                      _scrollDirection = 'left';
+                    });
+                  } else if (details.delta.direction < 0) {
+                    setState(() {
+                      _scrollDirection = 'right';
+                    });
+                  }
+                });
               }
             }
-          },
-          onHorizontalDragEnd: (DragEndDetails details) {
-            if (_scrollDirection == 'right') {
-              if (_dx >= MediaQuery.of(context).size.width * .2) {
-                setState(() {
-                  _dx = MediaQuery.of(context).size.width * .9;
-                });
-              } else if (_dx < MediaQuery.of(context).size.width * .2) {
+          }
+        },
+        onHorizontalDragEnd: (DragEndDetails details) {
+          if (_scrollDirection == 'right') {
+            if (_dx >= MediaQuery.of(context).size.width * .2) {
+              setState(() {
+                _dx = MediaQuery.of(context).size.width * .9;
+              });
+            } else if (_dx < MediaQuery.of(context).size.width * .2) {
+              _dx = 0.0;
+            }
+          } else if (_scrollDirection == 'left') {
+            if (_dx < MediaQuery.of(context).size.width * .7) {
+              setState(() {
                 _dx = 0.0;
-              }
-            } else if (_scrollDirection == 'left') {
-              if (_dx < MediaQuery.of(context).size.width * .7) {
-                setState(() {
-                  _dx = 0.0;
-                });
-              } else if (_dx >= MediaQuery.of(context).size.width * .7) {
-                setState(() {
-                  _dx = MediaQuery.of(context).size.width * .9;
-                });
-              }
+              });
+            } else if (_dx >= MediaQuery.of(context).size.width * .7) {
+              setState(() {
+                _dx = MediaQuery.of(context).size.width * .9;
+              });
             }
           }
         },
@@ -161,7 +156,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                 juntoAppBarTitle: _appbarTitle,
               ),
               floatingActionButton: _displayFAB(),
-              // floatingActionButton: 
+              // floatingActionButton:
               //     const CreateFAB(expressionLayer: 'collective'),
 
               // only enable drawer if current screen is collective
@@ -185,39 +180,37 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                       child: DenDrawer())
                   : null,
 
-                  // dynamically render body
-                  body: _renderBody(),
+              // dynamically render body
+              body: _renderBody(),
 
-                  bottomNavigationBar: ValueListenableBuilder<int>(
-                    valueListenable: _bottomNavIndex,
-                    builder: (BuildContext context, int index, _) {
-                      return BottomNav(
-                        currentIndex: index,
-                        setIndex: _switchScreen,
-                      );
-                    },
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    if (_dx == MediaQuery.of(context).size.width * .9) {
-                      setState(() {
-                        _dx = 0;
-                      });
-                    }
-                  },
-                  child: _dx > 0
-                      ? Container(
-                          color: Colors.white.withOpacity(.5),
-                        )
-                      : const SizedBox(),
-                )
-              ],
+              bottomNavigationBar: ValueListenableBuilder<int>(
+                valueListenable: _bottomNavIndex,
+                builder: (BuildContext context, int index, _) {
+                  return BottomNav(
+                    currentIndex: index,
+                    setIndex: _switchScreen,
+                  );
+                },
+              ),
             ),
-          ),
+            GestureDetector(
+              onTap: () {
+                if (_dx == MediaQuery.of(context).size.width * .9) {
+                  setState(() {
+                    _dx = 0;
+                  });
+                }
+              },
+              child: _dx > 0
+                  ? Container(
+                      color: Colors.white.withOpacity(.5),
+                    )
+                  : const SizedBox(),
+            )
+          ]),
         ),
-      ],
-    );
+      ),
+    ]);
   }
 
   // render main body of template; i.e. collective, spheres, packs, or den
@@ -225,7 +218,8 @@ class JuntoTemplateState extends State<JuntoTemplate> {
     switch (_currentScreen) {
       case 'collective':
         return JuntoCollective(
-            currentPerspective: _currentPerspective, controller: controller);
+            currentPerspective: _currentPerspective,
+            controller: collectiveController);
 
       case 'spheres':
         return JuntoSpheres(
@@ -234,7 +228,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
       case 'packs':
         return JuntoPacks();
       case 'den':
-        return JuntoDen();
+        return JuntoDen(controller: denController);
     }
     return Container();
   }
@@ -249,30 +243,33 @@ class JuntoTemplateState extends State<JuntoTemplate> {
           _currentScreen = 'collective';
           _appbarTitle = 'JUNTO';
         });
+        collectiveController.animateTo(0.0,
+            duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
         break;
       case 1:
         setState(() {
           _currentScreen = 'spheres';
           _appbarTitle = 'SPHERES';
         });
-        break;      
+
+        break;
       case 2:
         setState(() {
           _currentScreen = 'packs';
           _appbarTitle = 'PACKS';
         });
+
         break;
       case 3:
         setState(() {
           _currentScreen = 'den';
           _appbarTitle = profile?.username ?? 'Junto';
         });
+        denController.animateTo(0.0,
+            duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
         break;
     }
   }
-
-
-
 
   // Switch between perspectives; used in perspectives side drawer.
   void _changePerspective(String perspective) {

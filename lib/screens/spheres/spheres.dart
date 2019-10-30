@@ -11,7 +11,8 @@ import 'package:provider/provider.dart';
 /// This class renders the main screen for Spheres. It includes a widget to
 /// create a screen as well as a ListView of all the sphere previews
 class JuntoSpheres extends StatefulWidget {
-  const JuntoSpheres({Key key, @required this.userProfile}) : super(key: key);
+  const JuntoSpheres({Key key, @required this.userProfile,})
+      : super(key: key);
 
   final UserProfile userProfile;
 
