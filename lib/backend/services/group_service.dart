@@ -1,5 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'package:junto_beta_mobile/backend/services.dart';
+import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/sphere.dart';
 import 'package:junto_beta_mobile/utils/junto_http.dart';
@@ -79,5 +80,14 @@ class GroupServiceCentralized implements GroupService {
           (dynamic data) => Users.fromJson(data),
         )
         .toList();
+  }
+
+  @override
+  Future<List<CentralizedExpressionResponse>> getGroupExpressions(
+    ExpressionQueryParams params,
+  ) {
+    throw UnimplementedError(
+      'Querying is not currently supported by the server',
+    );
   }
 }
