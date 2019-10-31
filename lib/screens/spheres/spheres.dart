@@ -501,15 +501,15 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  const Text(
+                children: const <Widget>[
+                  Text(
                     'New Principle',
                     style: TextStyle(
                         fontSize: 15,
                         color: Color(0xff999999),
                         fontWeight: FontWeight.w700),
                   ),
-                  const SizedBox(width: 5),
+                  SizedBox(width: 5),
                   Icon(
                     Icons.add,
                     size: 17,
