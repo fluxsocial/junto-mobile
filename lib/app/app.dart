@@ -5,7 +5,6 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
-import 'package:junto_beta_mobile/screens/loading_screen/junto_loading_screen.dart';
 import 'package:junto_beta_mobile/screens/template/template.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:provider/provider.dart';
@@ -14,9 +13,11 @@ class JuntoApp extends StatefulWidget {
   const JuntoApp({
     Key key,
     @required this.backend,
+    @required this.loggedIn,
   }) : super(key: key);
 
   final Backend backend;
+  final bool loggedIn;
 
   @override
   State<StatefulWidget> createState() {
@@ -40,7 +41,7 @@ class JuntoAppState extends State<JuntoApp> {
       ],
       child: MaterialApp(
         theme: JuntoThemes().juntoLightTheme,
-        home: JuntoLoading(),
+        home: widget.loggedIn ? JuntoTemplate() : Welcome(),
         debugShowCheckedModeBanner: false,
         title: 'Junto Alpha',
         color: JuntoPalette.juntoPrimary,

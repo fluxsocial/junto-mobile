@@ -112,7 +112,7 @@ class JuntoHttp {
   static dynamic handleResponse(http.Response response) {
     if (response.statusCode == 200) {
       final dynamic responseBody = convert.json.decode(response.body);
-      if (responseBody != null) {
+      if (responseBody != null || responseBody == '') {
         return responseBody;
       }
       if (responseBody['error']) {
