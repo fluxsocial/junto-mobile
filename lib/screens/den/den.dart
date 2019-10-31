@@ -7,8 +7,9 @@ import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/den/den_create_collection.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
-import 'package:junto_beta_mobile/widgets/junto_app_delegate.dart';
+import 'package:junto_beta_mobile/widgets/den_appbar.dart';
 import 'package:provider/provider.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:async/async.dart' show AsyncMemoizer;
 
 /// Displays the user's DEN or "profile screen"
@@ -116,11 +117,28 @@ class JuntoDenState extends State<JuntoDen> {
                 ListView(
                   physics: const ClampingScrollPhysics(),
                   shrinkWrap: true,
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  padding: const EdgeInsets.only(left: 10),
                   children: <Widget>[
-                    Container(
-                      child:
-                          Image.asset('assets/images/junto-mobile__eric.png'),
+                    CarouselSlider(
+                      viewportFraction: 1.0,
+                      height: MediaQuery.of(context).size.width,
+                      enableInfiniteScroll: false,
+                      items: <Widget>[
+                        Container(
+                          padding: EdgeInsets.only(right: 10),
+                          width: MediaQuery.of(context).size.width,
+                          child: Image.asset(
+                              'assets/images/junto-mobile__eric.png',
+                              fit: BoxFit.cover),
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          padding: EdgeInsets.only(right: 10),
+                          child: Image.asset(
+                              'assets/images/junto-mobile__eric--qigong.png',
+                              fit: BoxFit.cover),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 15),
                     Row(
