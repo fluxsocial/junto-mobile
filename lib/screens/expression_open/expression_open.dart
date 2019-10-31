@@ -362,6 +362,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                       ? Container(
                           padding: const EdgeInsets.symmetric(vertical: 10),
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
                               GestureDetector(
                                 onTap: () {
@@ -384,7 +385,19 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                                     ],
                                   ),
                                 ),
-                              )
+                              ),
+                              GestureDetector(
+                                onTap: () async {
+                                  await showModalBottomSheet(
+                                    context: context,
+                                    backgroundColor: const Color(0xff737373),
+                                    builder: (BuildContext context) {
+                                      return _GiphyPanel();
+                                    },
+                                  );
+                                },
+                                child: const Text('Insert Gif 🤓'),
+                              ),
                             ],
                           ),
                         )
@@ -393,6 +406,54 @@ class ExpressionOpenState extends State<ExpressionOpen> {
               ),
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class _GiphyPanel extends StatefulWidget {
+  @override
+  _GiphyPanelState createState() => _GiphyPanelState();
+}
+
+class _GiphyPanelState extends State<_GiphyPanel> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height / 2,
+      padding: const EdgeInsets.all(10),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10),
+          topRight: Radius.circular(10),
+        ),
+      ),
+      child: CustomScrollView(
+        slivers: <Widget>[
+          const SliverPadding(
+            padding: EdgeInsets.all(12.0),
+            sliver: SliverToBoxAdapter(
+              child: TextField(
+                decoration: InputDecoration(hintText: 'Search Giphy...'),
+              ),
+            ),
+          ),
+          SliverGrid.count(
+            crossAxisCount: 2,
+            crossAxisSpacing: 5.0,
+            mainAxisSpacing: 4.0,
+            children:  <Widget>[
+             Image.asset('assets/images/junto-mobile__logo.png'),
+             Image.asset('assets/images/junto-mobile__logo.png'),
+             Image.asset('assets/images/junto-mobile__logo.png'),
+             Image.asset('assets/images/junto-mobile__logo.png'),
+             Image.asset('assets/images/junto-mobile__logo.png'),
+             Image.asset('assets/images/junto-mobile__logo.png'),
+             Image.asset('assets/images/junto-mobile__logo.png'),
+            ],
+          )
         ],
       ),
     );
