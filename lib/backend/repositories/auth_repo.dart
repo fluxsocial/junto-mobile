@@ -16,7 +16,11 @@ class AuthRepo {
 
   String get authKey => _authKey;
 
-  bool get isLoggedIn => _isLoggedIn;
+  Future<bool> isLoggedIn() async {
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    _isLoggedIn = preferences.getBool('isLoggedIn');
+    return _isLoggedIn;
+  }
 
   /// Registers a user on the server and creates their profile.
   Future<UserData> registerUser(UserAuthRegistrationDetails details) async {
@@ -34,23 +38,27 @@ class AuthRepo {
   /// given user. Their cookie is stored locally on device and is used for
   /// all future request.
   Future<UserProfile> loginUser(UserAuthLoginDetails details) async {
-    _authService.loginUser(details);
-    final UserProfile profile =
-        await _userService.queryUser(details.email, QueryType.email);
-    final LocalStorage _storage = LocalStorage('user-details');
-    final bool ready = await _storage.ready;
-    if (ready) {
-      _storage.setItem(
-        'data',
-        json.encode(
-          profile.toMap(),
-        ),
-      );
+    try {
+      await _authService.loginUser(details);
+      final UserProfile profile =
+          await _userService.queryUser(details.email, QueryType.email);
+      final LocalStorage _storage = LocalStorage('user-details');
+      final bool ready = await _storage.ready;
+      if (ready) {
+        _storage.setItem(
+          'data',
+          json.encode(
+            profile.toMap(),
+          ),
+        );
+      }
+      _isLoggedIn = true;
+      await SharedPreferences.getInstance()
+        ..setBool('isLoggedIn', true);
+      return profile;
+    } catch (error) {
+      rethrow;
     }
-    _isLoggedIn = true;
-    await SharedPreferences.getInstance()
-      ..setBool('isLoggedIn', true);
-    return profile;
   }
 
   /// Logs out a user and removes their auth token from the device.
