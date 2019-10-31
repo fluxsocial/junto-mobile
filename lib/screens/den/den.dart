@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/den/den_create_collection.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
@@ -18,7 +19,7 @@ class JuntoDen extends StatefulWidget {
 
 class JuntoDenState extends State<JuntoDen> {
   String profilePicture = 'assets/images/junto-mobile__logo.png';
-  final List<String> _tabs = <String>['Open Den', 'Private Den'];
+  final List<String> _tabs = <String>['About', 'Public', 'Private'];
 
   bool publicExpressionsActive = true;
   bool publicCollectionActive = false;
@@ -90,8 +91,8 @@ class JuntoDenState extends State<JuntoDen> {
                       labelColor: const Color(0xff333333),
                       labelStyle: const TextStyle(
                         fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xff333333),
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xff555555),
                       ),
                       indicatorWeight: 0.0001,
                       tabs: <Widget>[
@@ -112,6 +113,74 @@ class JuntoDenState extends State<JuntoDen> {
             },
             body: TabBarView(
               children: <Widget>[
+                ListView(
+                  physics: const ClampingScrollPhysics(),
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  children: <Widget>[
+                    Container(
+                      child:
+                          Image.asset('assets/images/junto-mobile__eric.png'),
+                    ),
+                    const SizedBox(height: 15),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          child: Row(
+                            children: <Widget>[
+                              Image.asset(
+                                  'assets/images/junto-mobile__location.png',
+                                  height: 14,
+                                  color: const Color(0xff999999)),
+                              const SizedBox(width: 5),
+                              const Text(
+                                'Spirit',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    color: Color(0xff999999),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Container(
+                          child: Row(
+                            children: <Widget>[
+                              Image.asset(
+                                'assets/images/junto-mobile__link.png',
+                                height: 14,
+                                color: const Color(0xff999999),
+                              ),
+                              const SizedBox(width: 5),
+                              Text(
+                                'junto.foundation',
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                style: TextStyle(
+                                    color: JuntoPalette.juntoPrimary,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Container(
+                      child: const Text(
+                        'Founder/Executive Director at Junto; Mr. Snack at Lunchbox; Student of QiGong',
+                        style: TextStyle(
+                            fontSize: 15,
+                            color: Color(0xff333333),
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ],
+                ),
                 UserExpressions(
                   key: const PageStorageKey<String>('public-user-expressions'),
                   privacy: 'Public',
