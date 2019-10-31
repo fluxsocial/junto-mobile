@@ -50,7 +50,13 @@ class MemberAppbar extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  MemberActionItems().buildMemberActionItems(context);
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext context) => Container(
+                      color: const Color(0xff737373),
+                      child: MemberActionItems(),
+                    ),
+                  );
                 },
                 child: Container(
                   width: 42,
@@ -77,5 +83,66 @@ class MemberAppbar extends StatelessWidget {
             ),
           ),
         ));
+  }
+}
+
+class MemberActionItems extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height * .4,
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10),
+          topRight: Radius.circular(10),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    height: 5,
+                    width: MediaQuery.of(context).size.width * .1,
+                    decoration: BoxDecoration(
+                        color: const Color(0xffeeeeee),
+                        borderRadius: BorderRadius.circular(100)),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              ListTile(
+                contentPadding: const EdgeInsets.all(0),
+                onTap: () {},
+                title: Row(
+                  children: <Widget>[
+                    Icon(
+                      Icons.block,
+                      size: 17,
+                      color: const Color(0xff555555),
+                    ),
+                    const SizedBox(width: 15),
+                    Text(
+                      'Block Member',
+                      style:
+                          TextStyle(fontWeight: FontWeight.w500, fontSize: 17),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+
+        ],
+      ),
+    );
   }
 }

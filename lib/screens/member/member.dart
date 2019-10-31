@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/member/member_appbar.dart';
-import 'package:junto_beta_mobile/screens/member/member_expanded.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 //FIXME: Build method and bottom sheet should be broken up
 class JuntoMember extends StatefulWidget {
@@ -31,6 +30,7 @@ class JuntoMember extends StatefulWidget {
 
 class _JuntoMemberState extends State<JuntoMember> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  final List<String> _tabs = <String>['About', 'Expressions'];
 
   @override
   Widget build(BuildContext context) {
@@ -41,312 +41,362 @@ class _JuntoMemberState extends State<JuntoMember> {
         child: MemberAppbar(widget.profile.username),
       ),
       backgroundColor: Colors.white,
-      body: ListView(
-        children: <Widget>[
-          Container(
-            constraints: BoxConstraints(
-              minHeight: MediaQuery.of(context).size.height,
-            ),
-            color: Colors.white,
-            child: Column(
-              children: <Widget>[
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * .2,
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                        begin: Alignment.bottomLeft,
-                        end: Alignment.topRight,
-                        stops: <double>[
-                          0.1,
-                          0.9
-                        ],
-                        colors: <Color>[
-                          JuntoPalette.juntoSecondary,
-                          JuntoPalette.juntoPrimary
-                        ]),
-                  ),
-                ),
-                Transform.translate(
-                  offset: const Offset(0.0, -18.0),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute<dynamic>(
-                                builder: (BuildContext context) =>
-                                    MemberExpanded(
-                                  handle: widget.profile.username,
-                                  name: '${widget.profile.firstName} '
-                                      '${widget.profile.lastName}',
-                                  profilePicture:
-                                      'assets/images/junto-mobile__placeholder--member.png',
-                                  bio: widget.profile.bio,
-                                ),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            width: 72,
-                            height: 72,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.blue,
-                              border: Border.all(
-                                width: 3,
-                                color: Colors.white,
-                              ),
-                            ),
-                            child: ClipOval(
-                              child: Image.asset(
-                                'assets/images/junto-mobile__placeholder--member.png',
-                                fit: BoxFit.cover,
-                              ),
-                            ),
+      body: DefaultTabController(
+        length: _tabs.length,
+        child: NestedScrollView(
+          physics: const ClampingScrollPhysics(),
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              SliverAppBar(
+                brightness: Brightness.light,
+                automaticallyImplyLeading: false,
+                primary: false,
+                actions: const <Widget>[SizedBox(height: 0, width: 0)],
+                backgroundColor: Colors.white,
+                pinned: false,
+                flexibleSpace: FlexibleSpaceBar(
+                  collapseMode: CollapseMode.pin,
+                  background: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        height: MediaQuery.of(context).size.height * .24,
+                        padding: const EdgeInsets.only(
+                            left: 10, right: 10, bottom: 10),
+                        alignment: Alignment.bottomLeft,
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            stops: <double>[0.1, 0.9],
+                            colors: <Color>[
+                              JuntoPalette.juntoSecondary,
+                              JuntoPalette.juntoPrimary,
+                            ],
                           ),
                         ),
-                        Transform.translate(
-                          offset: const Offset(0.0, 9.0),
-                          child: GestureDetector(
-                            onTap: () {
-                              showModalBottomSheet(
-                                context: context,
-                                builder: (BuildContext context) => Container(
-                                  color: const Color(0xff737373),
-                                  child: Container(
-                                    height:
-                                        MediaQuery.of(context).size.height * .4,
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 15, vertical: 10),
-                                    decoration: const BoxDecoration(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            const SizedBox(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: <Widget>[
+                                const Flexible(
+                                  child: Text(
+                                    // name,
+                                    'Eric Yang',
+                                    style: TextStyle(
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.w600,
                                       color: Colors.white,
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(10),
-                                        topRight: Radius.circular(10),
-                                      ),
                                     ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          Container(
+                                        color: const Color(0xff737373),
+                                        child: MemberRelationshipsModal(),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 7.5),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: Colors.white, width: 1.5),
+                                      borderRadius: BorderRadius.circular(25),
+                                    ),
+                                    child: Row(
                                       children: <Widget>[
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: <Widget>[
-                                                Container(
-                                                  height: 5,
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      .1,
-                                                  decoration: BoxDecoration(
-                                                    color:
-                                                        const Color(0xffeeeeee),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            100),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            const SizedBox(height: 10),
-                                            ListTile(
-                                              contentPadding:
-                                                  const EdgeInsets.all(0),
-                                              title: Row(
-                                                children: <Widget>[
-                                                  Icon(
-                                                    Icons.visibility,
-                                                    size: 17,
-                                                    color:
-                                                        const Color(0xff555555),
-                                                  ),
-                                                  const SizedBox(width: 15),
-                                                  const Text(
-                                                    'Subscribe',
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        fontSize: 17),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            ListTile(
-                                              contentPadding:
-                                                  const EdgeInsets.all(0),
-                                              title: Row(
-                                                children: const <Widget>[
-                                                  Icon(
-                                                    CustomIcons.circle,
-                                                    size: 17,
-                                                    color: Color(0xff555555),
-                                                  ),
-                                                  SizedBox(width: 15),
-                                                  Text(
-                                                    'Connect',
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        fontSize: 17),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            ListTile(
-                                              contentPadding:
-                                                  const EdgeInsets.all(0),
-                                              onTap: () {},
-                                              title: Row(
-                                                children: const <Widget>[
-                                                  Icon(
-                                                    CustomIcons.packs,
-                                                    size: 17,
-                                                    color: Color(0xff555555),
-                                                  ),
-                                                  SizedBox(width: 15),
-                                                  Text(
-                                                    'Join Pack',
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        fontSize: 17),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Container(
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          child: FlatButton(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 10),
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: const Text(
-                                              'Cancel',
-                                              style: TextStyle(
-                                                  fontSize: 17,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            color: const Color(0xffeeeeee),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(25),
-                                            ),
-                                          ),
-                                        )
+                                        const SizedBox(width: 14),
+                                        Image.asset(
+                                            'assets/images/junto-mobile__infinity.png',
+                                            color: Colors.white,
+                                            height: 14),
+                                        const SizedBox(width: 2),
+                                        Icon(Icons.keyboard_arrow_down,
+                                            size: 12, color: Colors.white)
                                       ],
                                     ),
                                   ),
                                 ),
-                              );
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 7.5),
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: JuntoPalette.juntoGrey, width: 1),
-                                  borderRadius: BorderRadius.circular(5)),
-                              child: Row(
-                                children: <Widget>[
-                                  const SizedBox(width: 14),
-                                  Image.asset(
-                                      'assets/images/junto-mobile__infinity.png',
-                                      height: 14),
-                                  const SizedBox(width: 2),
-                                  const Icon(Icons.keyboard_arrow_down, size: 12)
-                                ],
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                Transform.translate(
-                  offset: const Offset(0.0, -18.0),
-                  child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    width: MediaQuery.of(context).size.width,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          '${widget.profile.firstName} ${widget.profile.lastName}',
-                          style: const TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w700),
-                        ),
-                        const SizedBox(height: 10),
-                        Text(widget.profile.bio,
-                            style: const TextStyle(fontSize: 15)),
-                        const SizedBox(height: 10),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              margin: const EdgeInsets.only(right: 15),
-                              child: Row(
-                                children: <Widget>[
-                                  Image.asset(
-                                    'assets/images/junto-mobile__location.png',
-                                    height: 17,
-                                    color: JuntoPalette.juntoSleek,
-                                  ),
-                                  const SizedBox(width: 5),
-                                  const Text(
-                                    'Somewhere cool',
-                                    style: TextStyle(
-                                      color: JuntoPalette.juntoSleek,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            Container(
-                              child: Row(
-                                children: <Widget>[
-                                  Image.asset(
-                                    'assets/images/junto-mobile__link.png',
-                                    height: 17,
-                                    color: JuntoPalette.juntoSleek,
-                                  ),
-                                  const SizedBox(width: 5),
-                                  const Text(
-                                    'junto.foundation',
-                                    style: TextStyle(
-                                        color: JuntoPalette.juntoPrimary),
-                                  )
-                                ],
-                              ),
+                              ],
                             ),
                           ],
                         ),
+                      ),
+                    ],
+                  ),
+                ),
+                expandedHeight: MediaQuery.of(context).size.height * .24,
+                forceElevated: false,
+              ),
+              SliverPersistentHeader(
+                delegate: JuntoAppBarDelegate(
+                  TabBar(
+                    labelPadding: const EdgeInsets.all(0),
+                    isScrollable: true,
+                    labelColor: const Color(0xff333333),
+                    labelStyle: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xff555555),
+                    ),
+                    indicatorWeight: 0.0001,
+                    tabs: <Widget>[
+                      for (String name in _tabs)
+                        Container(
+                          margin: const EdgeInsets.only(right: 24),
+                          color: Colors.white,
+                          child: Tab(
+                            text: name,
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+                pinned: true,
+              ),
+            ];
+          },
+          body: TabBarView(
+            children: <Widget>[
+              ListView(
+                physics: const ClampingScrollPhysics(),
+                shrinkWrap: true,
+                padding: const EdgeInsets.only(left: 10),
+                children: <Widget>[
+                  CarouselSlider(
+                    viewportFraction: 1.0,
+                    height: MediaQuery.of(context).size.width,
+                    enableInfiniteScroll: false,
+                    items: <Widget>[
+                      Container(
+                        padding: const EdgeInsets.only(right: 10),
+                        width: MediaQuery.of(context).size.width,
+                        child: Image.asset(
+                            'assets/images/junto-mobile__eric.png',
+                            fit: BoxFit.cover),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        padding: const EdgeInsets.only(right: 10),
+                        child: Image.asset(
+                            'assets/images/junto-mobile__eric--qigong.png',
+                            fit: BoxFit.cover),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 15),
+                  Container(
+                    padding: const EdgeInsets.only(left: 10, top: 5, bottom: 5),
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        left: BorderSide(color: Color(0xffeeeeee), width: 1.5),
+                      ),
+                    ),
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          child: Row(
+                            children: <Widget>[
+                              Image.asset(
+                                'assets/images/junto-mobile__location.png',
+                                height: 15,
+                                color: const Color(0xff777777),
+                              ),
+                              const SizedBox(width: 5),
+                              const Text(
+                                'Spirit',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    color: Color(0xff777777),
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Container(
+                          child: Row(
+                            children: <Widget>[
+                              Image.asset(
+                                'assets/images/junto-mobile__link.png',
+                                height: 15,
+                                color: const Color(0xff777777),
+                              ),
+                              const SizedBox(width: 5),
+                              Text(
+                                'junto.foundation',
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                style: TextStyle(
+                                    color: JuntoPalette.juntoPrimary,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
-                )
-              ],
-            ),
+                  const SizedBox(height: 15),
+                  Container(
+                    child: const Text(
+                      'Founder/Executive Director @junto; Mr. Snack @lunchbox; Student of QiGong',
+                      style: TextStyle(
+                          fontSize: 15,
+                          color: Color(0xff333333),
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ],
+              ),
+              ListView(
+                children: <Widget>[],
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Custom [SliverPersistentHeaderDelegate] used on Den.
+class JuntoAppBarDelegate extends SliverPersistentHeaderDelegate {
+  JuntoAppBarDelegate(this._tabBar);
+
+  final TabBar _tabBar;
+
+  @override
+  double get minExtent => _tabBar.preferredSize.height + .5;
+
+  @override
+  double get maxExtent => _tabBar.preferredSize.height + .5;
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          bottom: BorderSide(color: Color(0xffeeeeee), width: .5),
+        ),
+      ),
+      width: MediaQuery.of(context).size.width,
+      child: _tabBar,
+    );
+  }
+
+  @override
+  bool shouldRebuild(JuntoAppBarDelegate oldDelegate) {
+    return false;
+  }
+}
+
+class MemberRelationshipsModal extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height * .4,
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(10),
+          topRight: Radius.circular(10),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    height: 5,
+                    width: MediaQuery.of(context).size.width * .1,
+                    decoration: BoxDecoration(
+                        color: const Color(0xffeeeeee),
+                        borderRadius: BorderRadius.circular(100)),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              ListTile(
+                contentPadding: const EdgeInsets.all(0),
+                title: Row(
+                  children: <Widget>[
+                    Icon(
+                      Icons.visibility,
+                      size: 17,
+                      color: const Color(0xff555555),
+                    ),
+                    const SizedBox(width: 15),
+                    const Text(
+                      'Subscribe',
+                      style:
+                          TextStyle(fontWeight: FontWeight.w500, fontSize: 17),
+                    ),
+                  ],
+                ),
+              ),
+              ListTile(
+                contentPadding: const EdgeInsets.all(0),
+                title: Row(
+                  children: <Widget>[
+                    Icon(
+                      CustomIcons.circle,
+                      size: 17,
+                      color: const Color(0xff555555),
+                    ),
+                    const SizedBox(width: 15),
+                    const Text(
+                      'Connect',
+                      style:
+                          TextStyle(fontWeight: FontWeight.w500, fontSize: 17),
+                    ),
+                  ],
+                ),
+              ),
+              ListTile(
+                contentPadding: const EdgeInsets.all(0),
+                onTap: () {},
+                title: Row(
+                  children: <Widget>[
+                    Icon(
+                      CustomIcons.packs,
+                      size: 17,
+                      color: const Color(0xff555555),
+                    ),
+                    const SizedBox(width: 15),
+                    const Text(
+                      'Join Pack',
+                      style:
+                          TextStyle(fontWeight: FontWeight.w500, fontSize: 17),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ],
       ),
