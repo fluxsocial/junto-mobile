@@ -27,20 +27,8 @@ class JuntoDenState extends State<JuntoDen> {
   bool privateExpressionsActive = true;
   bool privateCollectionActive = false;
 
-  PageController controller;
   AsyncMemoizer<UserProfile> userMemoizer = AsyncMemoizer<UserProfile>();
   List<CentralizedExpressionResponse> expressions;
-  @override
-  void initState() {
-    super.initState();
-    controller = PageController(initialPage: 0);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    controller.dispose();
-  }
 
   Future<UserProfile> _retrieveUserInfo() async {
     final UserService _userProvider = Provider.of<UserService>(context);
@@ -115,6 +103,7 @@ class JuntoDenState extends State<JuntoDen> {
             body: TabBarView(
               children: <Widget>[
                 ListView(
+                  
                   physics: const ClampingScrollPhysics(),
                   shrinkWrap: true,
                   padding: const EdgeInsets.only(left: 10),
