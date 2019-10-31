@@ -31,7 +31,7 @@ class JuntoDenAppbar extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
-              height: MediaQuery.of(context).size.height * .24,
+              height: MediaQuery.of(context).size.height * .2,
               padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
               alignment: Alignment.bottomLeft,
               decoration: const BoxDecoration(
@@ -94,7 +94,7 @@ class JuntoDenAppbar extends StatelessWidget {
           ],
         ),
       ),
-      expandedHeight: MediaQuery.of(context).size.height * .24,
+      expandedHeight: MediaQuery.of(context).size.height * .2,
       forceElevated: false,
     );
   }
