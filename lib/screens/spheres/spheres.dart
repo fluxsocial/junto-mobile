@@ -513,7 +513,7 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                   Icon(
                     Icons.add,
                     size: 17,
-                    color: const Color(0xff999999),
+                    color: Color(0xff999999),
                   )
                 ],
               )),
