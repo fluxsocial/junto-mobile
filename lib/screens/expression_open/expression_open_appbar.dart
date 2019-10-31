@@ -47,7 +47,7 @@ class ExpressionOpenAppbar extends StatelessWidget {
                 width: 42,
                 alignment: Alignment.centerRight,
                 child: const Icon(
-                  CustomIcons.lotus,
+                  CustomIcons.enso,
                   size: 20,
                   color: Color(0xff333333),
                 ),
@@ -124,7 +124,7 @@ class ExpressionOpenContext extends StatelessWidget {
                     borderRadius: BorderRadius.circular(100),
                   ),
                   child: const Icon(
-                    CustomIcons.lotus,
+                    CustomIcons.enso,
                     color: Colors.white,
                     size: 15,
                   ),

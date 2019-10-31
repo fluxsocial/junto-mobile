@@ -141,56 +141,67 @@ class JuntoDenState extends State<JuntoDen> {
                       ],
                     ),
                     const SizedBox(height: 15),
-                    Row(
-                      children: <Widget>[
-                        Container(
-                          child: Row(
-                            children: <Widget>[
-                              Image.asset(
+                    Container(
+                      padding:
+                          const EdgeInsets.only(left: 10, top: 5, bottom: 5),
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          left:
+                              BorderSide(color: Color(0xffeeeeee), width: 1.5),
+                        ),
+                      ),
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            child: Row(
+                              children: <Widget>[
+                                Image.asset(
                                   'assets/images/junto-mobile__location.png',
-                                  height: 14,
-                                  color: const Color(0xff999999)),
-                              const SizedBox(width: 5),
-                              const Text(
-                                'Spirit',
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    color: Color(0xff999999),
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ],
+                                  height: 15,
+                                  color: const Color(0xff777777),
+                                ),
+                                const SizedBox(width: 5),
+                                const Text(
+                                  'Spirit',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      color: Color(0xff777777),
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        const SizedBox(width: 10),
-                        Container(
-                          child: Row(
-                            children: <Widget>[
-                              Image.asset(
-                                'assets/images/junto-mobile__link.png',
-                                height: 14,
-                                color: const Color(0xff999999),
-                              ),
-                              const SizedBox(width: 5),
-                              Text(
-                                'junto.foundation',
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                                style: TextStyle(
-                                    color: JuntoPalette.juntoPrimary,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ],
+                          SizedBox(height: 10),
+                          Container(
+                            child: Row(
+                              children: <Widget>[
+                                Image.asset(
+                                  'assets/images/junto-mobile__link.png',
+                                  height: 15,
+                                  color: const Color(0xff777777),
+                                ),
+                                const SizedBox(width: 5),
+                                Text(
+                                  'junto.foundation',
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                      color: JuntoPalette.juntoPrimary,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     const SizedBox(height: 15),
                     Container(
                       child: const Text(
-                        'Founder/Executive Director at Junto; Mr. Snack at Lunchbox; Student of QiGong',
+                        'Founder/Executive Director @junto; Mr. Snack @lunchbox; Student of QiGong',
                         style: TextStyle(
                             fontSize: 15,
                             color: Color(0xff333333),
