@@ -73,7 +73,7 @@ class BottomNavState extends State<BottomNav> {
               _BottomNavButton(
                 index: 0,
                 selectedIndex: widget.currentIndex,
-                icon: CustomIcons.lotus,
+                icon: CustomIcons.enso,
                 onTap: widget.setIndex,
               ),
               _BottomNavButton(
@@ -118,7 +118,7 @@ class BottomNavState extends State<BottomNav> {
                   color: Colors.transparent,
                   child: AnimatedSwitcher(
                     duration: kThemeChangeDuration,
-                    child: Icon(CustomIcons.enso,
+                    child: Icon(CustomIcons.lotus,
                         size: 20, color: JuntoPalette.juntoGreyLight),
                   ),
                 ),
