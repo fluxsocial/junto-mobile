@@ -1,4 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:giphy_client/giphy_client.dart';
+import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_appbar.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_bottom.dart';
@@ -10,6 +13,7 @@ import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/shortform_open.dart';
 import 'package:junto_beta_mobile/widgets/comment_preview/comment_preview.dart';
+import 'package:async/async.dart' show AsyncMemoizer;
 
 class ExpressionOpen extends StatefulWidget {
   const ExpressionOpen(this.expression);
@@ -418,6 +422,15 @@ class _GiphyPanel extends StatefulWidget {
 }
 
 class _GiphyPanelState extends State<_GiphyPanel> {
+  final GiphyClient client = GiphyClient(apiKey: kGiphyApi);
+  GiphyCollection gifs;
+  AsyncMemoizer<GiphyCollection> asyncMemoizer =
+      AsyncMemoizer<GiphyCollection>();
+
+  Future<GiphyCollection> getGifs() async {
+    return asyncMemoizer.runOnce(() => client.trending());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -440,20 +453,44 @@ class _GiphyPanelState extends State<_GiphyPanel> {
               ),
             ),
           ),
-          SliverGrid.count(
-            crossAxisCount: 2,
-            crossAxisSpacing: 5.0,
-            mainAxisSpacing: 4.0,
-            children:  <Widget>[
-             Image.asset('assets/images/junto-mobile__logo.png'),
-             Image.asset('assets/images/junto-mobile__logo.png'),
-             Image.asset('assets/images/junto-mobile__logo.png'),
-             Image.asset('assets/images/junto-mobile__logo.png'),
-             Image.asset('assets/images/junto-mobile__logo.png'),
-             Image.asset('assets/images/junto-mobile__logo.png'),
-             Image.asset('assets/images/junto-mobile__logo.png'),
-            ],
-          )
+          FutureBuilder<GiphyCollection>(
+            future: getGifs(),
+            builder: (BuildContext context,
+                AsyncSnapshot<GiphyCollection> snapshot) {
+              if (!snapshot.hasData) {
+                return SliverToBoxAdapter(child: Container());
+              }
+              if (snapshot.hasError) {
+                SliverToBoxAdapter(
+                  child: Container(
+                    color: Colors.red,
+                  ),
+                );
+              }
+              final GiphyCollection _data = snapshot.data;
+              return SliverGrid(
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    final GiphyGif _gifs = _data.data[index];
+                    return CachedNetworkImage(
+                      placeholder: (BuildContext context, String _) {
+                        return Image.asset(
+                          'assets/images/junto-mobile__logo.png',
+                        );
+                      },
+                      imageUrl: _gifs.images.downsized.url,
+                    );
+                  },
+                  childCount: _data.data.length,
+                ),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 2.0,
+                  mainAxisSpacing: 2.0,
+                ),
+              );
+            },
+          ),
         ],
       ),
     );
