@@ -25,6 +25,7 @@ dependencies:
   sentry: 2.3.1
   localstorage: 2.0.0
   giphy_client: 0.2.0
+  cached_network_image: 1.1.2+1
   # webview_flutter: ^0.3.9+1
   # swipedetector: ^1.2.0
 
