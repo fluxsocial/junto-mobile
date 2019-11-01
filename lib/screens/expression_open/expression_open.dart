@@ -253,20 +253,22 @@ class ExpressionOpenState extends State<ExpressionOpen> {
             ),
           ),
           _BottomCommentBar(
+            postComment: () {},
             canCreateComment: createComment,
             commentController: commentController,
             commentPrivacy: _commentPrivacy,
             focusNode: _focusNode,
             onTextChange: (String value) {
-              if (value == '') {
+              if (value.isEmpty) {
                 createComment.value = false;
-              } else if (value != '') {
+              } else if (value.isNotEmpty) {
                 createComment.value = true;
               }
             },
             showPrivacySheet: () async {
               await _showPrivacyModalSheet();
             },
+            onGifSelected: (_) {},
           ),
         ],
       ),
@@ -283,6 +285,8 @@ class _BottomCommentBar extends StatefulWidget {
     @required this.canCreateComment,
     @required this.showPrivacySheet,
     @required this.commentPrivacy,
+    @required this.onGifSelected,
+    @required this.postComment,
   }) : super(key: key);
   final FocusNode focusNode;
   final ValueChanged<String> onTextChange;
@@ -290,15 +294,22 @@ class _BottomCommentBar extends StatefulWidget {
   final ValueNotifier<bool> canCreateComment;
   final VoidCallback showPrivacySheet;
   final String commentPrivacy;
+  final ValueChanged<String> onGifSelected;
+  final VoidCallback postComment;
   @override
   _BottomCommentBarState createState() => _BottomCommentBarState();
 }
 
+enum MessageType { regular, gif }
+
 class _BottomCommentBarState extends State<_BottomCommentBar> {
+  final ValueNotifier<MessageType> _type =
+      ValueNotifier<MessageType>(MessageType.regular);
+  String selectedUrl;
   Widget _createCommentIcon(bool createComment) {
     if (createComment == true) {
       return GestureDetector(
-        onTap: () {},
+        onTap: widget.postComment,
         child: const Icon(
           Icons.send,
           size: 20,
@@ -332,13 +343,28 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
             ),
           ),
         ),
-        child: Column(
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(
-                  child: Row(
+        child: ValueListenableBuilder<MessageType>(
+            valueListenable: _type,
+            builder: (BuildContext context, MessageType type, _) {
+              return Column(
+                children: <Widget>[
+                  if (type == MessageType.gif && selectedUrl != null)
+                    SizedBox(
+                      height: 150.0,
+                      width: 150.0,
+                      child: CachedNetworkImage(
+                        placeholder: (BuildContext context, String _) {
+                          return Image.asset(
+                            'assets/images/junto-mobile__logo.png',
+                          );
+                        },
+                        imageUrl: selectedUrl,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  const SizedBox(height: 4.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
                         margin: const EdgeInsets.only(right: 10),
@@ -387,59 +413,58 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
                           ],
                         ),
                       ),
+                      if (widget.focusNode.hasFocus)
+                        _createCommentIcon(widget.canCreateComment.value)
                     ],
                   ),
-                ),
-                widget.focusNode.hasFocus
-                    ? _createCommentIcon(widget.canCreateComment.value)
-                    : const SizedBox()
-              ],
-            ),
-            widget.focusNode.hasFocus
-                ? Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        GestureDetector(
-                          onTap: widget.showPrivacySheet,
-                          child: Container(
-                            color: Colors.white,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Text(
-                                  widget.commentPrivacy,
-                                  style: const TextStyle(
-                                    color: Color(0xff333333),
-                                    fontWeight: FontWeight.w500,
+                  if (widget.focusNode.hasFocus)
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          GestureDetector(
+                            onTap: widget.showPrivacySheet,
+                            child: Container(
+                              color: Colors.white,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    widget.commentPrivacy,
+                                    style: const TextStyle(
+                                      color: Color(0xff333333),
+                                      fontWeight: FontWeight.w500,
+                                    ),
                                   ),
-                                ),
-                                const Icon(Icons.keyboard_arrow_down, size: 14)
-                              ],
+                                  const Icon(Icons.keyboard_arrow_down,
+                                      size: 14)
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        GestureDetector(
-                          onTap: () async {
-                            await showModalBottomSheet(
-                              context: context,
-                              backgroundColor: const Color(0xff737373),
-                              builder: (BuildContext context) => _GiphyPanel(
-                                onGifSelected: (String selected) {
-                                  print(selected);
-                                },
-                              ),
-                            );
-                          },
-                          child: const Text('Insert Gif 🤓'),
-                        ),
-                      ],
+                          GestureDetector(
+                            onTap: () async {
+                              await showModalBottomSheet(
+                                context: context,
+                                backgroundColor: const Color(0xff737373),
+                                builder: (BuildContext context) => _GiphyPanel(
+                                  onGifSelected: (String selected) {
+                                    selectedUrl = selected;
+                                    _type.value = MessageType.gif;
+                                    widget.onGifSelected(selected);
+                                  },
+                                ),
+                              );
+                            },
+                            child: const Text('Insert Gif 🤓'),
+                          ),
+                        ],
+                      ),
                     ),
-                  )
-                : const SizedBox()
-          ],
-        ),
+                ],
+              );
+            }),
       ),
     );
   }
