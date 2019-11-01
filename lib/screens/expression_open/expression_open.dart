@@ -411,8 +411,9 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
                                 Text(
                                   widget.commentPrivacy,
                                   style: const TextStyle(
-                                      color: Color(0xff333333),
-                                      fontWeight: FontWeight.w500),
+                                    color: Color(0xff333333),
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                                 const Icon(Icons.keyboard_arrow_down, size: 14)
                               ],
@@ -425,8 +426,8 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
                               context: context,
                               backgroundColor: const Color(0xff737373),
                               builder: (BuildContext context) => _GiphyPanel(
-                                onGifSelected: (thing) {
-                                  print(thing);
+                                onGifSelected: (String selected) {
+                                  print(selected);
                                 },
                               ),
                             );
@@ -526,6 +527,7 @@ class _GiphyPanelState extends State<_GiphyPanel> {
                     delegate: SliverChildBuilderDelegate(
                       (BuildContext context, int index) {
                         final GiphyGif _gifs = _data.data[index];
+
                         return InkWell(
                           onTap: () {
                             Navigator.pop(context);
