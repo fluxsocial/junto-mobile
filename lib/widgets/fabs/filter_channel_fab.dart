@@ -17,27 +17,28 @@ class FilterChannelFAB extends StatelessWidget {
             });
       },
       child: Container(
-          height: 50,
-          width: 50,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.bottomLeft,
-              end: Alignment.topRight,
-              stops: <double>[0.3, 0.9],
-              colors: <Color>[
-                  Theme.of(context).colorScheme.secondary,
-                  Theme.of(context).colorScheme.primary,
-              ],
-            ),
-            color: JuntoPalette.juntoWhite.withOpacity(.9),
-            border: Border.all(
-              color: JuntoPalette.juntoWhite,
-              width: 2,
-            ),
-            borderRadius: BorderRadius.circular(100),
+        height: 50,
+        width: 50,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.bottomLeft,
+            end: Alignment.topRight,
+            stops: <double>[0.3, 0.9],
+            colors: <Color>[
+              Theme.of(context).colorScheme.secondary,
+              Theme.of(context).colorScheme.primary,
+            ],
           ),
-          alignment: Alignment.center,
-          child: Icon(CustomIcons.hash, size: 17, color: Colors.white),),
+          color: JuntoPalette.juntoWhite.withOpacity(.9),
+          border: Border.all(
+            color: JuntoPalette.juntoWhite,
+            width: 2,
+          ),
+          borderRadius: BorderRadius.circular(100),
+        ),
+        alignment: Alignment.center,
+        child: Icon(CustomIcons.hash, size: 17, color: Colors.white),
+      ),
     );
   }
 }
@@ -57,9 +58,9 @@ class FilterChannelModalState extends State<FilterChannelModal> {
       child: Container(
         height: MediaQuery.of(context).size.height * .8,
         padding: const EdgeInsets.all(10),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.background,
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(10),
             topRight: Radius.circular(10),
           ),
@@ -69,11 +70,11 @@ class FilterChannelModalState extends State<FilterChannelModal> {
           children: <Widget>[
             const SizedBox(height: 10),
             Container(
-              padding: EdgeInsets.only(bottom: 5),
-              decoration: const BoxDecoration(
+              padding: const EdgeInsets.only(bottom: 5),
+              decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
-                    color: Color(0xffeeeeee),
+                    color: Theme.of(context).dividerColor,
                     width: .75,
                   ),
                 ),
@@ -84,7 +85,7 @@ class FilterChannelModalState extends State<FilterChannelModal> {
                   Icon(
                     Icons.search,
                     size: 20,
-                    color: const Color(0xff999999),
+                    color: Theme.of(context).primaryColorLight,
                   ),
                   const SizedBox(width: 10),
                   Expanded(
@@ -98,22 +99,19 @@ class FilterChannelModalState extends State<FilterChannelModal> {
                           bool isFocused,
                         }) =>
                             null,
-                        decoration: const InputDecoration(
-                          contentPadding: EdgeInsets.all(0.0),
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.all(0.0),
                           hintText: 'filter by channel',
                           border: InputBorder.none,
                           hintStyle: TextStyle(
-                              color: Color(0xff999999),
+                              color: Theme.of(context).primaryColorLight,
                               fontSize: 15,
                               fontWeight: FontWeight.w500),
                         ),
-                        cursorColor: const Color(0xff333333),
+                        cursorColor: Theme.of(context).primaryColorDark,
                         cursorWidth: 1,
                         maxLines: null,
-                        style: const TextStyle(
-                            color: Color(0xff333333),
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500),
+                        style: Theme.of(context).textTheme.caption,
                         maxLength: 80,
                         textInputAction: TextInputAction.done,
                       ),
@@ -124,7 +122,7 @@ class FilterChannelModalState extends State<FilterChannelModal> {
             ),
             Expanded(
                 child: ListView(
-              children: <Widget>[
+              children: const <Widget>[
                 ChannelPreview(channel: 'design'),
                 ChannelPreview(channel: 'philosophy'),
                 ChannelPreview(channel: 'zen'),

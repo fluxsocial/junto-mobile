@@ -12,23 +12,23 @@ class ChannelPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: Theme.of(context).colorScheme.background,
       child: Row(
         children: <Widget>[
           Row(
             children: <Widget>[
               Container(
                 alignment: Alignment.center,
-                height: 38.0,
-                width: 38.0,
+                height: 45.0,
+                width: 45.0,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.bottomLeft,
                     end: Alignment.topRight,
                     stops: const <double>[0.3, 0.9],
                     colors: <Color>[
-                      JuntoPalette.juntoSecondary,
-                      JuntoPalette.juntoPrimary,
+                      Theme.of(context).colorScheme.secondary,
+                      Theme.of(context).colorScheme.primary
                     ],
                   ),
                   borderRadius: BorderRadius.circular(100),
@@ -40,7 +40,7 @@ class ChannelPreview extends StatelessWidget {
                 ),
               ),
               Container(
-                width: MediaQuery.of(context).size.width - 68,
+                width: MediaQuery.of(context).size.width - 75,
                 padding: const EdgeInsets.symmetric(
                   vertical: 15,
                 ),
@@ -48,7 +48,7 @@ class ChannelPreview extends StatelessWidget {
                   border: Border(
                     bottom: BorderSide(
                       width: .5,
-                      color: JuntoPalette.juntoFade,
+                      color: Theme.of(context).dividerColor
                     ),
                   ),
                 ),
@@ -60,16 +60,12 @@ class ChannelPreview extends StatelessWidget {
                     Text(
                       channel,
                       textAlign: TextAlign.start,
-                      style: JuntoStyles.title,
+                      style: Theme.of(context).textTheme.subhead
                     ),
                     Text(
                       '2,400 expressions',
                       textAlign: TextAlign.start,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xff555555),
-                      ),
+                      style: Theme.of(context).textTheme.body1
                     )
                   ],
                 ),
