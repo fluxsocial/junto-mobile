@@ -25,13 +25,13 @@ class CreateSphereFAB extends StatelessWidget {
           height: 50,
           width: 50,
           decoration: BoxDecoration(
-            gradient: const LinearGradient(
+            gradient: LinearGradient(
               begin: Alignment.bottomLeft,
               end: Alignment.topRight,
               stops: <double>[0.1, 0.9],
               colors: <Color>[
-                JuntoPalette.juntoSecondary,
-                JuntoPalette.juntoPrimary,
+                Theme.of(context).colorScheme.secondary,
+                Theme.of(context).colorScheme.primary
               ],
             ),
             color: JuntoPalette.juntoWhite.withOpacity(.9),
@@ -159,9 +159,9 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
     return Container(
       height: MediaQuery.of(context).size.height * .9,
       padding: const EdgeInsets.all(10),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.background,
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(10),
           topRight: Radius.circular(10),
         ),
@@ -175,14 +175,7 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               _currentPage == 0
-                  ? Text(
-                      'New Sphere',
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xff333333),
-                      ),
-                    )
+                  ? Text('New Sphere', style: Theme.of(context).textTheme.title)
                   : GestureDetector(
                       onTap: () {
                         _createSphereController.previousPage(
@@ -194,7 +187,7 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                         width: 50,
                         child: Icon(
                           Icons.keyboard_arrow_left,
-                          color: Color(0xff555555),
+                          color: Theme.of(context).primaryColorDark,
                         ),
                       ),
                     ),
@@ -251,15 +244,15 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
     return ListView(
       children: <Widget>[
         const SizedBox(height: 25),
-        Container(
-          height: 200,
-          decoration: BoxDecoration(
-            color: Color(0xfff2f2f2),
-          ),
-          alignment: Alignment.center,
-          child: Text('add a cover photo'),
-        ),
-        const SizedBox(height: 15),
+        // Container(
+        //   height: 200,
+        //   decoration: BoxDecoration(
+        //     color: Color(0xfff2f2f2),
+        //   ),
+        //   alignment: Alignment.center,
+        //   child: Text('add a cover photo'),
+        // ),
+        // const SizedBox(height: 15),
         Container(
           width: MediaQuery.of(context).size.width,
           child: TextField(
@@ -271,22 +264,20 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
               bool isFocused,
             }) =>
                 null,
-            decoration: const InputDecoration(
-                contentPadding: EdgeInsets.all(0),
-                border: InputBorder.none,
-                hintText: 'Name your sphere*',
-                hintStyle: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xff999999),
-                )),
-            cursorColor: const Color(0xff333333),
+            decoration: InputDecoration(
+              contentPadding: const EdgeInsets.all(0),
+              border: InputBorder.none,
+              hintText: 'Name your sphere*',
+              hintStyle: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w700,
+                color: Theme.of(context).primaryColorLight,
+              ),
+            ),
+            cursorColor: Theme.of(context).primaryColorDark,
             cursorWidth: 2,
             maxLines: 1,
-            style: const TextStyle(
-                color: Color(0xff333333),
-                fontSize: 15,
-                fontWeight: FontWeight.w700),
+            style: Theme.of(context).textTheme.caption,
             maxLength: 80,
             textInputAction: TextInputAction.done,
           ),
@@ -303,22 +294,19 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
               bool isFocused,
             }) =>
                 null,
-            decoration: const InputDecoration(
-                contentPadding: EdgeInsets.all(0),
+            decoration: InputDecoration(
+                contentPadding: const EdgeInsets.all(0),
                 border: InputBorder.none,
                 hintText: 'Give your sphere a unique username*',
                 hintStyle: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xff999999),
+                  color: Theme.of(context).primaryColorLight,
                 )),
-            cursorColor: const Color(0xff333333),
+            cursorColor: Theme.of(context).primaryColorDark,
             cursorWidth: 2,
             maxLines: 1,
-            style: const TextStyle(
-                color: Color(0xff333333),
-                fontSize: 15,
-                fontWeight: FontWeight.w700),
+            style: Theme.of(context).textTheme.caption,
             maxLength: 80,
             textInputAction: TextInputAction.done,
           ),
@@ -336,22 +324,19 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
               bool isFocused,
             }) =>
                 null,
-            decoration: const InputDecoration(
-                contentPadding: EdgeInsets.all(0),
+            decoration: InputDecoration(
+                contentPadding: const EdgeInsets.all(0),
                 border: InputBorder.none,
                 hintText: 'Write your sphere bio / purpose',
                 hintStyle: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xff999999),
+                  color: Theme.of(context).primaryColorLight,
                 )),
-            cursorColor: const Color(0xff333333),
+            cursorColor: Theme.of(context).primaryColorDark,
             cursorWidth: 2,
             maxLines: null,
-            style: const TextStyle(
-                color: Color(0xff333333),
-                fontSize: 15,
-                fontWeight: FontWeight.w500),
+            style: Theme.of(context).textTheme.caption,
             maxLength: 240,
             textInputAction: TextInputAction.newline,
           ),

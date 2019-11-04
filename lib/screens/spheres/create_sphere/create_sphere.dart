@@ -101,7 +101,7 @@ class _CreateSphereState extends State<CreateSphere>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      // backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(45),
         child: AppBar(
