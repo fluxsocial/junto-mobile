@@ -12,7 +12,7 @@ class MemberPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: Theme.of(context).colorScheme.background,
       child: Row(
         children: <Widget>[
           Row(
@@ -65,16 +65,12 @@ class MemberPreview extends StatelessWidget {
                     Text(
                       profile.username,
                       textAlign: TextAlign.start,
-                      style: JuntoStyles.title,
+                      style: Theme.of(context).textTheme.subhead,
                     ),
                     Text(
                       profile.firstName,
                       textAlign: TextAlign.start,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xff555555),
-                      ),
+                      style:  Theme.of(context).textTheme.body1
                     )
                   ],
                 ),

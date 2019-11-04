@@ -27,7 +27,7 @@ class SpherePreview extends StatelessWidget {
         );
       },
       child: Container(
-        color: Colors.white,
+        color: Colors.transparent,
         child: Row(
           children: <Widget>[
             Row(
@@ -42,16 +42,16 @@ class SpherePreview extends StatelessWidget {
                       end: Alignment.topRight,
                       stops: const <double>[0.3, 0.9],
                       colors: <Color>[
-                        JuntoPalette.juntoSecondary,
-                        JuntoPalette.juntoPrimary,
+                        Theme.of(context).colorScheme.secondary,
+                        Theme.of(context).colorScheme.primary,
                       ],
                     ),
                     borderRadius: BorderRadius.circular(100),
                   ),
                   child: Icon(
                     CustomIcons.spheres,
-                    color: Colors.white,
-                    size: 15,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    size: 17,
                   ),
                 ),
                 Container(
@@ -59,11 +59,11 @@ class SpherePreview extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                     vertical: 20,
                   ),
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     border: Border(
                       bottom: BorderSide(
                         width: .5,
-                        color: JuntoPalette.juntoFade,
+                        color: Theme.of(context).dividerColor,
                       ),
                     ),
                   ),
@@ -75,17 +75,12 @@ class SpherePreview extends StatelessWidget {
                       Text(
                         's/' + group.groupData.sphereHandle,
                         textAlign: TextAlign.start,
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.w700),
+                        style: Theme.of(context).textTheme.subhead
                       ),
                       Text(
                         group.groupData.name,
                         textAlign: TextAlign.start,
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: const Color(0xff555555),
-                          fontWeight: FontWeight.w500,
-                        ),
+                        style: Theme.of(context).textTheme.body1
                       )
                     ],
                   ),

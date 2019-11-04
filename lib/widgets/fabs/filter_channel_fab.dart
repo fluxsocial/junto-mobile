@@ -20,14 +20,13 @@ class FilterChannelFAB extends StatelessWidget {
           height: 50,
           width: 50,
           decoration: BoxDecoration(
-            gradient: const LinearGradient(
+            gradient: LinearGradient(
               begin: Alignment.bottomLeft,
               end: Alignment.topRight,
-              stops: <double>[0.1, 0.9],
+              stops: <double>[0.3, 0.9],
               colors: <Color>[
-                JuntoPalette.juntoSecondary,
-
-                JuntoPalette.juntoPrimary,
+                  Theme.of(context).colorScheme.secondary,
+                  Theme.of(context).colorScheme.primary,
               ],
             ),
             color: JuntoPalette.juntoWhite.withOpacity(.9),

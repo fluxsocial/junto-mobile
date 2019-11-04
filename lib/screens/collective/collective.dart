@@ -105,7 +105,7 @@ class JuntoCollectiveState extends State<JuntoCollective> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(color: JuntoPalette.juntoWhite),
+      color: Theme.of(context).colorScheme.background,
       child: ListView(
         controller: widget.controller,
         children: <Widget>[

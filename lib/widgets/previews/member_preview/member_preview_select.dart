@@ -20,8 +20,8 @@ class MemberPreviewSelect extends StatelessWidget {
               ClipOval(
                 child: Image.asset(
                   profile.profilePicture,
-                  height: 38.0,
-                  width: 38.0,
+                  height: 45.0,
+                  width: 45.0,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -52,7 +52,7 @@ class MemberPreviewSelect extends StatelessWidget {
                       profile.firstName,
                       textAlign: TextAlign.start,
                       style: const TextStyle(
-                        fontSize: 12,
+                        fontSize: 14,
                         fontWeight: FontWeight.w500,
                         color: Color(0xff555555),
                       ),

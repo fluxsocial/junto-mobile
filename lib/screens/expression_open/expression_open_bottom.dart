@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/widgets/resonate_bottom_sheet.dart';
 
 class ExpressionOpenBottom extends StatefulWidget {
@@ -17,9 +18,9 @@ class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: Color(0xffeeeeee), width: .75),
+          bottom: BorderSide(color: Theme.of(context).dividerColor, width: .75),
         ),
       ),
       padding: const EdgeInsets.only(left: 10, right: 10, bottom: 15, top: 15),
@@ -36,17 +37,18 @@ class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
                   'today',
                   style: JuntoStyles.expressionTimestamp,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    _buildResonationModal();
-                  },
-                  child: Image.asset(
-                    'assets/images/junto-mobile__resonation.png',
-                    height: 17,
-                    color: const Color(0xff555555),
-                  ),
-                ),
+                // GestureDetector(
+                //   onTap: () {
+                //     _buildResonationModal();
+                //   },
+                //   child: Image.asset(
+                //     'assets/images/junto-mobile__resonation.png',
+                //     height: 17,
+                //     color: const Color(0xff555555),
+                //   ),
+                // ),
               ]),
+
         ],
       ),
     );

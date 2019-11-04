@@ -6,6 +6,7 @@ import 'package:junto_beta_mobile/screens/expression_open/expression_open_top.da
 import 'package:junto_beta_mobile/screens/expression_open/expressions/event_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/longform_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/photo_open.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/shortform_open.dart';
@@ -108,8 +109,8 @@ class ExpressionOpenState extends State<ExpressionOpen> {
         child: Container(
           height: 240,
           padding: const EdgeInsets.all(10),
-          decoration: const BoxDecoration(
-            color: Colors.white,
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.background,
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(10),
               topRight: Radius.circular(10),
@@ -182,7 +183,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
         preferredSize: const Size.fromHeight(45.0),
         child: ExpressionOpenAppbar(),
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: Column(
         children: <Widget>[
           Expanded(
@@ -193,6 +194,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                   ExpressionOpenTop(expression: widget.expression),
                   _buildExpression(),
                   ExpressionOpenBottom(widget.expression),
+  
                   GestureDetector(
                     onTap: () {
                       if (commentsVisible == false) {
@@ -206,28 +208,23 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                       }
                     },
                     child: Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        border: Border(
-                          bottom:
-                              BorderSide(color: Color(0xffeeeeee), width: .75),
-                        ),
-                      ),
+                      color: Colors.transparent,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 15),
                       child: Row(
                         children: <Widget>[
                           const Text(
-                            'Show Replies (9)',
+                            'show replies (9)',
                             style: TextStyle(
+                              fontSize: 12,
                               fontWeight: FontWeight.w600,
                               color: Color(0xff333333),
                             ),
                           ),
                           const SizedBox(width: 5),
                           commentsVisible == false
-                              ? const Icon(Icons.keyboard_arrow_down, size: 17)
-                              : const Icon(Icons.keyboard_arrow_up, size: 17)
+                              ? const Icon(Icons.keyboard_arrow_down, size: 14)
+                              : const Icon(Icons.keyboard_arrow_up, size: 14)
                         ],
                       ),
                     ),

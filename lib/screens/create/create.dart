@@ -301,16 +301,6 @@ class JuntoCreateState extends State<JuntoCreate> {
                           TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
                     ),
                   ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 10),
-                    width: 180,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: const Border(
-                        top: BorderSide(color: Color(0xffeeeeee), width: 1),
-                      ),
-                    ),
-                  ),
                   const SizedBox(height: 10),
                   Container(
                     padding: const EdgeInsets.only(top: 10),
@@ -331,14 +321,16 @@ class JuntoCreateState extends State<JuntoCreate> {
                                 const Icon(
                                   CustomIcons.longform,
                                   size: 20,
-                                  color: JuntoPalette.juntoBlack,
+                                  color: Color(0xff555555),
                                 ),
                                 const SizedBox(height: 5),
                                 Text(
                                   'dynamic',
                                   style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w700,
+                                    color: Color(0xff555555),
+                                  ),
                                 )
                               ],
                             ),
@@ -356,14 +348,15 @@ class JuntoCreateState extends State<JuntoCreate> {
                                 Icon(
                                   CustomIcons.feather,
                                   size: 20,
-                                  color: JuntoPalette.juntoBlack,
+                                  color: Color(0xff555555),
                                 ),
                                 SizedBox(height: 5),
                                 Text(
                                   'shortform',
                                   style: TextStyle(
                                       fontSize: 14,
-                                      fontWeight: FontWeight.w700),
+                                      fontWeight: FontWeight.w700,
+                                      color: Color(0xff555555)),
                                 )
                               ],
                             ),
@@ -381,14 +374,15 @@ class JuntoCreateState extends State<JuntoCreate> {
                                 Icon(
                                   CustomIcons.camera,
                                   size: 20,
-                                  color: JuntoPalette.juntoBlack,
+                                  color: Color(0xff555555),
                                 ),
                                 SizedBox(height: 5),
                                 Text(
                                   'photo',
                                   style: TextStyle(
                                       fontSize: 14,
-                                      fontWeight: FontWeight.w700),
+                                      fontWeight: FontWeight.w700,
+                                      color: Color(0xff555555)),
                                 )
                               ],
                             ),
@@ -406,14 +400,15 @@ class JuntoCreateState extends State<JuntoCreate> {
                                 Icon(
                                   CustomIcons.event,
                                   size: 20,
-                                  color: JuntoPalette.juntoBlack,
+                                  color: Color(0xff555555),
                                 ),
                                 SizedBox(height: 5),
                                 Text(
                                   'event',
                                   style: TextStyle(
                                       fontSize: 14,
-                                      fontWeight: FontWeight.w700),
+                                      fontWeight: FontWeight.w700,
+                                      color: Color(0xff555555)),
                                 )
                               ],
                             ),

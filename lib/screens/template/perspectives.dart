@@ -21,14 +21,14 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
     return Scaffold(
       body: Container(
           width: MediaQuery.of(context).size.width * .9,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.bottomLeft,
               end: Alignment.topRight,
-              stops: <double>[0.1, 0.9],
+              stops: <double>[0.4, 0.9],
               colors: <Color>[
-                JuntoPalette.juntoSecondary,
-                JuntoPalette.juntoPrimary,
+                Theme.of(context).colorScheme.secondary,
+                Theme.of(context).colorScheme.primary
               ],
             ),
           ),
@@ -39,14 +39,6 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                 Container(
                   height: 45,
                   padding: const EdgeInsets.symmetric(horizontal: 10),
-                  // decoration: const BoxDecoration(
-                  //   border: Border(
-                  //     bottom: BorderSide(
-                  //       color: Color(0xff4263A3),
-                  //       width: .75,
-                  //     ),
-                  //   ),
-                  // ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
@@ -278,32 +270,27 @@ class _CreatePerspectiveBottomSheetState
   // add members
   int _searchMembersIndex = 0;
 
-    List<UserProfile> profiles = <UserProfile>[
+  List<UserProfile> profiles = <UserProfile>[
     UserProfile(
-      firstName: 'Eric Yang',
-      username: 'sunyata',
-      profilePicture: 'assets/images/junto-mobile__eric.png'
-    ),
+        firstName: 'Eric Yang',
+        username: 'sunyata',
+        profilePicture: 'assets/images/junto-mobile__eric.png'),
     UserProfile(
-      firstName: 'Riley Wagner',
-      username: 'wags',
-      profilePicture: 'assets/images/junto-mobile__riley.png'
-    ),
+        firstName: 'Riley Wagner',
+        username: 'wags',
+        profilePicture: 'assets/images/junto-mobile__riley.png'),
     UserProfile(
-      firstName: 'Dora Czovek',
-      username: 'wingedmessenger',
-      profilePicture: 'assets/images/junto-mobile__dora.png'
-    ), 
+        firstName: 'Dora Czovek',
+        username: 'wingedmessenger',
+        profilePicture: 'assets/images/junto-mobile__dora.png'),
     UserProfile(
-      firstName: 'Josh Parkin',
-      username: 'jdeepee',
-      profilePicture: 'assets/images/junto-mobile__josh.png'
-    ),
+        firstName: 'Josh Parkin',
+        username: 'jdeepee',
+        profilePicture: 'assets/images/junto-mobile__josh.png'),
     UserProfile(
-      firstName: 'Nash Ramdial',
-      username: 'nash',
-      profilePicture: 'assets/images/junto-mobile__nash.png'
-    )            
+        firstName: 'Nash Ramdial',
+        username: 'nash',
+        profilePicture: 'assets/images/junto-mobile__nash.png')
   ];
 
   @override
@@ -504,7 +491,6 @@ class _CreatePerspectiveBottomSheetState
                     MemberPreviewSelect(profile: profiles[2]),
                     MemberPreviewSelect(profile: profiles[3]),
                     MemberPreviewSelect(profile: profiles[4]),
-
                   ],
                 ),
                 ListView(

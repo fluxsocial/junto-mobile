@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 
-class JuntoStyles {
+class JuntoStyles with ChangeNotifier {
+  JuntoStyles(this.theme);
+  final String theme;
+
   // horizontal padding for widgets across app
   static const double horizontalPadding = 10.0;
 
