@@ -27,26 +27,20 @@ class EventOpen extends StatelessWidget {
                 )
               : const SizedBox(),
           Container(
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.background,
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
-                  eventTitle,
-                  style: const TextStyle(
-                      color: JuntoPalette.juntoGrey,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700),
-                ),
+                Text(eventTitle, style: Theme.of(context).textTheme.title),
                 const SizedBox(height: 10),
                 Container(
                   alignment: Alignment.center,
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   decoration: BoxDecoration(
-                    gradient: const LinearGradient(colors: <Color>[
-                      JuntoPalette.juntoSecondary,
-                      JuntoPalette.juntoPrimary
+                    gradient: LinearGradient(colors: <Color>[
+                      Theme.of(context).colorScheme.secondary,
+                      Theme.of(context).colorScheme.primary,
                     ]),
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -64,25 +58,21 @@ class EventOpen extends StatelessWidget {
                     const SizedBox(height: 10),
                     Row(
                       children: <Widget>[
-                        Icon(Icons.timer),
+                        Icon(Icons.timer,
+                            color: Theme.of(context).primaryColor),
                         const SizedBox(width: 5),
-                        Text(
-                          eventTime,
-                          style: const TextStyle(
-                              fontSize: 17, fontWeight: FontWeight.w600),
-                        ),
+                        Text(eventTime,
+                            style: Theme.of(context).textTheme.subtitle),
                       ],
                     ),
                     const SizedBox(height: 10),
                     Row(
                       children: <Widget>[
-                        Icon(Icons.location_searching),
+                        Icon(Icons.location_searching,
+                            color: Theme.of(context).primaryColor),
                         const SizedBox(width: 5),
-                        Text(
-                          eventLocation,
-                          style: const TextStyle(
-                              fontSize: 17, fontWeight: FontWeight.w600),
-                        ),
+                        Text(eventLocation,
+                            style: Theme.of(context).textTheme.subtitle),
                       ],
                     ),
                     const SizedBox(height: 10),
@@ -160,13 +150,8 @@ class EventOpen extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 5),
-                    Text(
-                      eventDescription,
-                      style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w400,
-                          height: 1.5),
-                    ),
+                    Text(eventDescription,
+                        style: Theme.of(context).textTheme.caption)
                   ],
                 )
               ],
