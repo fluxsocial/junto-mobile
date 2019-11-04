@@ -18,29 +18,25 @@ class PackDrawer extends StatelessWidget {
       child: Drawer(
         elevation: 0,
         child: Container(
-          color: Colors.white,
-          margin: EdgeInsets.only(top: statusBarHeight),
+          color: Theme.of(context).colorScheme.background,
+          padding: EdgeInsets.only(top: statusBarHeight),
           child: Column(
             children: <Widget>[
               Container(
                 height: 48,
                 padding: const EdgeInsets.symmetric(horizontal: 15),
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   border: Border(
-                    bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
+                    bottom: BorderSide(
+                        color: Theme.of(context).dividerColor, width: .75),
                   ),
                 ),
                 alignment: Alignment.centerLeft,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text(
-                      pack.groupData.name,
-                      style: const TextStyle(
-                          fontSize: 17,
-                          color: Color(0xff333333),
-                          fontWeight: FontWeight.w700),
-                    ),
+                    Text(pack.groupData.name,
+                        style: Theme.of(context).textTheme.title),
                   ],
                 ),
               ),
@@ -51,10 +47,10 @@ class PackDrawer extends StatelessWidget {
                   ),
                   children: <Widget>[
                     Container(
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         border: Border(
                           bottom: BorderSide(
-                            color: Color(0xffeeeeee),
+                            color: Theme.of(context).dividerColor,
                             width: .75,
                           ),
                         ),
@@ -104,10 +100,10 @@ class PackDrawer extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         border: Border(
                           bottom: BorderSide(
-                            color: Color(0xffeeeeee),
+                            color: Theme.of(context).dividerColor,
                             width: .75,
                           ),
                         ),
@@ -120,10 +116,10 @@ class PackDrawer extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         border: Border(
                           bottom: BorderSide(
-                            color: Color(0xffeeeeee),
+                            color: Theme.of(context).dividerColor,
                             width: .75,
                           ),
                         ),
@@ -159,14 +155,14 @@ class PackDrawerItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.white,
+      color: Theme.of(context).colorScheme.background,
       child: InkWell(
         onTap: onTap,
         child: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
-                color: Color(0xffeeeeee),
+                color: Theme.of(context).dividerColor,
                 width: .75,
               ),
             ),
