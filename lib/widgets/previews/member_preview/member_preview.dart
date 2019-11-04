@@ -36,18 +36,19 @@ class MemberPreview extends StatelessWidget {
                           end: Alignment.topRight,
                           stops: const <double>[0.3, 0.9],
                           colors: <Color>[
-                            JuntoPalette.juntoSecondary,
-                            JuntoPalette.juntoPrimary,
+                            Theme.of(context).colorScheme.secondary,
+                            Theme.of(context).colorScheme.primary
                           ],
                         ),
                         borderRadius: BorderRadius.circular(100),
                       ),
-                      child: Image.asset('assets/images/junto-mobile__logo--white.png', height: 15)
-                    ),
+                      child: Image.asset(
+                          'assets/images/junto-mobile__logo--white.png',
+                          height: 15)),
               Container(
                 width: MediaQuery.of(context).size.width - 75,
                 padding: const EdgeInsets.symmetric(
-                  vertical: 15,
+                  vertical: 20,
                 ),
                 decoration: BoxDecoration(
                   border: Border(
@@ -67,11 +68,9 @@ class MemberPreview extends StatelessWidget {
                       textAlign: TextAlign.start,
                       style: Theme.of(context).textTheme.subhead,
                     ),
-                    Text(
-                      profile.firstName,
-                      textAlign: TextAlign.start,
-                      style:  Theme.of(context).textTheme.body1
-                    )
+                    Text(profile.firstName,
+                        textAlign: TextAlign.start,
+                        style: Theme.of(context).textTheme.body1)
                   ],
                 ),
               )
