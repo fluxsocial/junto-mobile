@@ -125,6 +125,9 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     ),
   ];
 
+  final GlobalKey<SphereOpenState> _keyFlexibleSpace =
+      GlobalKey<SphereOpenState>();
+
   @override
   void initState() {
     super.initState();
@@ -136,6 +139,22 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
       );
     });
     _isVisible = ValueNotifier<bool>(true);
+
+    WidgetsBinding.instance.addPostFrameCallback(_getFlexibleSpaceSize);
+  }
+
+  double _flexibleHeightSpace;
+
+  void _getFlexibleSpaceSize(_) {
+    final RenderBox renderBoxFlexibleSpace =
+        _keyFlexibleSpace.currentContext.findRenderObject();
+    final Size sizeFlexibleSpace = renderBoxFlexibleSpace.size;
+    final double heightFlexibleSpace = sizeFlexibleSpace.height;
+    print(heightFlexibleSpace);
+
+    setState(() {
+      _flexibleHeightSpace = heightFlexibleSpace;
+    });
   }
 
   @override
@@ -230,36 +249,32 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                         ),
                       ),
                       Container(
+                        key: _keyFlexibleSpace,
                         padding: const EdgeInsets.symmetric(
-                          horizontal: JuntoStyles.horizontalPadding,
-                          vertical: 15,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                            horizontal: JuntoStyles.horizontalPadding,
+                            vertical: 15),
+                        child: Row(
                           children: <Widget>[
-                            Row(
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Container(
-                                      child: Text(widget.group.groupData.name,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .display1),
-                                    ),
-                                  ],
-                                )
+                                Container(
+                                  child: Text(widget.group.groupData.name,
+                                      style:
+                                          Theme.of(context).textTheme.display1),
+                                ),
                               ],
                             ),
-                            const SizedBox(height: 15),
                           ],
                         ),
                       ),
                     ],
                   ),
                 ),
-                expandedHeight: MediaQuery.of(context).size.height * .2 + 158,
+                expandedHeight: _flexibleHeightSpace == null
+                    ? 100000
+                    : _flexibleHeightSpace +
+                        MediaQuery.of(context).size.height * .3,
                 forceElevated: false,
               ),
               SliverPersistentHeader(
