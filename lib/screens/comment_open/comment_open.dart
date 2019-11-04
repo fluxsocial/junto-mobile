@@ -24,7 +24,6 @@ class CommentOpenState extends State<CommentOpen> {
         preferredSize: const Size.fromHeight(45.0),
         child: CommentOpenAppbar(),
       ),
-      backgroundColor: Colors.white,
       body: Column(
         children: <Widget>[
           Expanded(
@@ -36,7 +35,7 @@ class CommentOpenState extends State<CommentOpen> {
                     'in response to ' + widget.expression.creator.firstName,
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
-                      color: Color(0xff999999),
+                      color: Theme.of(context).primaryColorLight,
                     ),
                   ),
                 ),
@@ -49,7 +48,7 @@ class CommentOpenState extends State<CommentOpen> {
                       GestureDetector(
                         onTap: () {},
                         child: Container(
-                          color: Colors.white,
+                          color: Colors.transparent,
                           child: Row(children: <Widget>[
                             // profile picture
                             ClipOval(
@@ -67,20 +66,11 @@ class CommentOpenState extends State<CommentOpen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  Text(
-                                    'sunyata' ?? '',
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                  Text(
-                                    'Eric Yang',
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w500,
-                                      color: const Color(0xff555555),
-                                    ),
-                                  ),
+                                  Text('sunyata' ?? '',
+                                      style:
+                                          Theme.of(context).textTheme.subhead),
+                                  Text('Eric Yang',
+                                      style: Theme.of(context).textTheme.body1),
                                 ],
                               ),
                             ),
@@ -99,9 +89,9 @@ class CommentOpenState extends State<CommentOpen> {
                           color: Colors.transparent,
                           padding: EdgeInsets.all(5),
                           alignment: Alignment.centerRight,
-                          child: const Icon(
+                          child: Icon(
                             Icons.keyboard_arrow_down,
-                            color: Color(0xff777777),
+                            color: Theme.of(context).primaryColorLight,
                             size: 24,
                           ),
                         ),
@@ -115,14 +105,9 @@ class CommentOpenState extends State<CommentOpen> {
                     children: <Widget>[
                       Container(
                         width: MediaQuery.of(context).size.width,
-                        child: Text(
-                          widget.comment,
-                          textAlign: TextAlign.start,
-                          style: const TextStyle(
-                              fontSize: 15,
-                              height: 1.4,
-                              fontWeight: FontWeight.w500),
-                        ),
+                        child: Text(widget.comment,
+                            textAlign: TextAlign.start,
+                            style: Theme.of(context).textTheme.caption),
                       ),
                     ],
                   ),
@@ -141,11 +126,10 @@ class CommentOpenState extends State<CommentOpen> {
                           children: <Widget>[
                             Container(
                               child: Text(
-                                // expressionTime,
-                                'today',
-                                textAlign: TextAlign.start,
-                                style: JuntoStyles.expressionTimestamp,
-                              ),
+                                  // expressionTime,
+                                  'today',
+                                  textAlign: TextAlign.start,
+                                  style: Theme.of(context).textTheme.overline),
                             )
                           ],
                         ),

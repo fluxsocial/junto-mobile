@@ -23,7 +23,7 @@ class ExpressionOpenAppbar extends StatelessWidget {
                 width: 42,
                 alignment: Alignment.centerLeft,
                 child: Icon(CustomIcons.back,
-                    size: 17, color: Theme.of(context).primaryColor),
+                    size: 17, color: Theme.of(context).primaryColorDark),
               ),
             ),
             GestureDetector(
@@ -44,7 +44,7 @@ class ExpressionOpenAppbar extends StatelessWidget {
                 child: Icon(
                   CustomIcons.enso,
                   size: 20,
-                  color: Theme.of(context).primaryColor,
+                  color: Theme.of(context).primaryColorDark,
                 ),
               ),
             )
