@@ -176,7 +176,7 @@ class _JuntoMemberState extends State<JuntoMember> {
                 children: <Widget>[
                   CarouselSlider(
                     viewportFraction: 1.0,
-                    height: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.width - 20,
                     enableInfiniteScroll: false,
                     items: <Widget>[
                       Container(

@@ -25,7 +25,6 @@ class EventPreview extends StatelessWidget {
                 )
               : const SizedBox(),
           Container(
-            color: Colors.white,
             width: MediaQuery.of(context).size.width,
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Column(

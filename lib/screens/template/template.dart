@@ -141,7 +141,6 @@ class JuntoTemplateState extends State<JuntoTemplate> {
           child: Stack(children: <Widget>[
             Scaffold(
               key: _juntoTemplateKey,
-              backgroundColor: Colors.white,
               appBar: JuntoAppBar(
                 appContext: _currentScreen,
                 openPerspectivesDrawer: () {
@@ -201,7 +200,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
               },
               child: _dx > 0
                   ? Container(
-                      color: Colors.white.withOpacity(.5),
+                      color: Theme.of(context).backgroundColor.withOpacity(.5),
                     )
                   : const SizedBox(),
             )

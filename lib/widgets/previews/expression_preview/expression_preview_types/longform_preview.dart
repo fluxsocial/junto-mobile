@@ -21,29 +21,25 @@ class LongformPreview extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          _buildTitle(),
-          Text(
-            expressionBody,
-            textAlign: TextAlign.left,
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-                fontSize: 15, height: 1.4, fontWeight: FontWeight.w500),
-          ),
+          _buildTitle(context),
+          SizedBox(height: 5),
+          Text(expressionBody,
+              textAlign: TextAlign.left,
+              maxLines: 5,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.caption),
         ],
       ),
     );
   }
 
-  Widget _buildTitle() {
+  Widget _buildTitle(context) {
     final String expressionTitle = expression.expressionData.title;
     if (expressionTitle != '') {
       return Container(
-        child: Text(
-          expressionTitle,
-          textAlign: TextAlign.left,
-          style: JuntoStyles.longformPreviewTitle,
-        ),
+        child: Text(expressionTitle,
+            textAlign: TextAlign.left,
+            style: Theme.of(context).textTheme.title),
       );
     } else {
       return const SizedBox();

@@ -75,6 +75,7 @@ class JuntoDenState extends State<JuntoDen> {
                 SliverPersistentHeader(
                   delegate: JuntoAppBarDelegate(
                     TabBar(
+                      
                       labelPadding: const EdgeInsets.all(0),
                       isScrollable: true,
                       labelColor: const Color(0xff333333),
@@ -88,7 +89,7 @@ class JuntoDenState extends State<JuntoDen> {
                         for (String name in _tabs)
                           Container(
                             margin: const EdgeInsets.only(right: 24),
-                            color: Colors.white,
+                            color: Theme.of(context).colorScheme.background,
                             child: Tab(
                               text: name,
                             ),
@@ -110,7 +111,7 @@ class JuntoDenState extends State<JuntoDen> {
                   children: <Widget>[
                     CarouselSlider(
                       viewportFraction: 1.0,
-                      height: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.width - 20,
                       enableInfiniteScroll: false,
                       items: <Widget>[
                         Container(

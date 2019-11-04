@@ -61,11 +61,11 @@ class BottomNavState extends State<BottomNav> {
       child: SizedBox(
         height: 48.0,
         child: Material(
-          color: Colors.white,
-          shape: const Border(
+          color: Theme.of(context).backgroundColor,
+          shape: Border(
             top: BorderSide(
-              color: JuntoPalette.juntoFade,
-              width: .75,
+              color: Theme.of(context).dividerColor,
+              width: .5,
             ),
           ),
           child: Row(
@@ -119,7 +119,7 @@ class BottomNavState extends State<BottomNav> {
                   child: AnimatedSwitcher(
                     duration: kThemeChangeDuration,
                     child: Icon(CustomIcons.lotus,
-                        size: 20, color: JuntoPalette.juntoGreyLight),
+                        size: 20, color: Theme.of(context).primaryColorLight),
                   ),
                 ),
               ),
@@ -141,10 +141,6 @@ class BottomNavState extends State<BottomNav> {
                     width: 30,
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
-                      // border: Border.all(
-                      //   width: 1.0,
-                      //   color: Color(0xffFFCF68),
-                      // ),
                     ),
                     child: ClipOval(
                       child: Image.asset(
@@ -192,8 +188,8 @@ class _BottomNavButton extends StatelessWidget {
             key: Key('index-$index-$selectedIndex'),
             size: 20,
             color: selectedIndex == index
-                ? JuntoPalette.juntoGrey
-                : JuntoPalette.juntoGreyLight,
+                ? Theme.of(context).primaryColorDark
+                : Theme.of(context).primaryColorLight
           ),
         ),
       ),

@@ -40,8 +40,9 @@ class ExpressionPreview extends StatelessWidget {
         // );
       },
       child: Container(
-        color: Colors.white,
-        margin: const EdgeInsets.only(bottom: 15),
+        padding: const EdgeInsets.only(bottom: 10),
+        margin: EdgeInsets.only(bottom: 5),
+        color: Theme.of(context).colorScheme.background,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[

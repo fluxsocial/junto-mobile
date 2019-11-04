@@ -8,7 +8,7 @@ import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives'
     '/create_perspective/create_perspective.dart' show SelectedUsers;
 import 'package:junto_beta_mobile/app/palette.dart';
-import 'package:junto_beta_mobile/app/styles.dart';
+import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
@@ -76,14 +76,13 @@ class _JuntoAppBarState extends State<JuntoAppBar>
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.white,
       automaticallyImplyLeading: false,
       actions: <Widget>[Container()],
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(.75),
         child: Container(
           height: .75,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
@@ -92,8 +91,8 @@ class _JuntoAppBarState extends State<JuntoAppBar>
                   0.9
                 ],
                 colors: <Color>[
-                  JuntoPalette.juntoSecondary,
-                  JuntoPalette.juntoPrimary
+                  Theme.of(context).colorScheme.secondary,
+                  Theme.of(context).colorScheme.primary,
                 ]),
           ),
         ),
@@ -122,19 +121,19 @@ class _JuntoAppBarState extends State<JuntoAppBar>
                     height: 48,
                     child: Row(
                       children: <Widget>[
-                        Image.asset('assets/images/junto-mobile__logo.png',
+                        Image.asset('assets/images/junto-mobile__logo--white.png',
                             height: 22.0, width: 22.0),
                         const SizedBox(width: 7.5),
                         Text(
                           widget.juntoAppBarTitle,
-                          style: JuntoStyles.appbarTitle,
+                          style: Theme.of(context).appBarTheme.textTheme.body1,
                         ),
                         const SizedBox(width: 2.5),
                         widget.appContext == 'collective'
                             ? Icon(
                                 Icons.keyboard_arrow_down,
                                 size: 17,
-                                color: const Color(0xff999999),
+                                color: Theme.of(context).primaryColorLight,
                               )
                             : const SizedBox()
                       ],
@@ -170,8 +169,6 @@ class _JuntoAppBarState extends State<JuntoAppBar>
                     color: Colors.transparent,
                     child: Icon(
                       Icons.search,
-                      color: JuntoPalette.juntoSleek,
-                      size: 22,
                     ),
                   ),
                 ),
@@ -185,8 +182,8 @@ class _JuntoAppBarState extends State<JuntoAppBar>
                         child: Container(
                           height: MediaQuery.of(context).size.height * .9,
                           padding: const EdgeInsets.all(10),
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.background ,
                             borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(10),
                               topRight: Radius.circular(10),
@@ -197,13 +194,13 @@ class _JuntoAppBarState extends State<JuntoAppBar>
                             children: <Widget>[
                               const SizedBox(height: 10),
                               Row(
-                                children: const <Widget>[
+                                children: <Widget>[
                                   Text(
                                     'Notifications',
                                     style: TextStyle(
                                       fontSize: 17,
                                       fontWeight: FontWeight.w700,
-                                      color: Color(0xff333333),
+                                      color: Theme.of(context).primaryColorDark,
                                     ),
                                   ),
                                 ],
@@ -223,11 +220,15 @@ class _JuntoAppBarState extends State<JuntoAppBar>
                     padding: const EdgeInsets.only(right: 10),
                     child: const Icon(
                       CustomIcons.moon,
-                      color: JuntoPalette.juntoSleek,
-                      size: 22,
                     ),
                   ),
-                )
+                ),  
+                RaisedButton(onPressed: () {
+                  // Provider.of<JuntoThemesProvider>(context)
+                  //     .setTheme('lightSecondary');
+                  Provider.of<JuntoThemesProvider>(context)
+                      .setTheme('night');                  
+                })
               ],
             )
           ],
@@ -343,8 +344,8 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
       child: Container(
         height: MediaQuery.of(context).size.height * .9,
         padding: const EdgeInsets.all(10),
-        decoration: const BoxDecoration(
-          color: Colors.white,
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.background,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(10),
             topRight: Radius.circular(10),
@@ -356,10 +357,10 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
             const SizedBox(height: 10),
             Container(
               padding: EdgeInsets.only(bottom: 5),
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
-                    color: Color(0xffeeeeee),
+                    color: Theme.of(context).dividerColor,
                     width: .75,
                   ),
                 ),
@@ -370,7 +371,7 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                   Icon(
                     Icons.search,
                     size: 20,
-                    color: const Color(0xff999999),
+                    color: Theme.of(context).primaryColorLight,
                   ),
                   const SizedBox(width: 10),
                   Expanded(
@@ -385,19 +386,19 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                           bool isFocused,
                         }) =>
                             null,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           contentPadding: EdgeInsets.all(0.0),
                           border: InputBorder.none,
                           hintStyle: TextStyle(
-                              color: Color(0xff999999),
+                              color: Theme.of(context).primaryColorLight,
                               fontSize: 15,
                               fontWeight: FontWeight.w500),
                         ),
-                        cursorColor: const Color(0xff333333),
+                        cursorColor: Theme.of(context).primaryColorDark,
                         cursorWidth: 1,
                         maxLines: null,
-                        style: const TextStyle(
-                            color: Color(0xff333333),
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColorDark,
                             fontSize: 15,
                             fontWeight: FontWeight.w500),
                         maxLength: 80,
@@ -422,8 +423,8 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
                         color: currentIndex == 0
-                            ? const Color(0xff333333)
-                            : const Color(0xff999999)),
+                            ? Theme.of(context).primaryColorDark
+                            : Theme.of(context).primaryColorLight),
                   ),
                 ),
                 const SizedBox(width: 20),
@@ -437,8 +438,8 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
                       color: currentIndex == 1
-                          ? const Color(0xff333333)
-                          : const Color(0xff999999),
+                          ? Theme.of(context).primaryColorDark
+                          : Theme.of(context).primaryColorLight,
                     ),
                   ),
                 )

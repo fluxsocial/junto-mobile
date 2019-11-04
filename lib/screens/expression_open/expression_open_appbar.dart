@@ -9,7 +9,6 @@ class ExpressionOpenAppbar extends StatelessWidget {
       automaticallyImplyLeading: false,
       brightness: Brightness.light,
       iconTheme: const IconThemeData(color: JuntoPalette.juntoSleek),
-      backgroundColor: Colors.white,
       elevation: 0,
       titleSpacing: 0,
       title: Container(
@@ -25,7 +24,6 @@ class ExpressionOpenAppbar extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: Icon(
                   CustomIcons.back,
-                  color: JuntoPalette.juntoGrey,
                   size: 17,
                 ),
               ),
@@ -97,7 +95,7 @@ class ExpressionOpenContext extends StatelessWidget {
           children: <Widget>[
             const SizedBox(height: 10),
             Text(
-              'CONTEXT',
+              'CONTEXT', 
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w700,

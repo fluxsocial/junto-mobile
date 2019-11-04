@@ -34,14 +34,14 @@ class JuntoDenAppbar extends StatelessWidget {
               height: MediaQuery.of(context).size.height * .24,
               padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
               alignment: Alignment.bottomLeft,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                  stops: <double>[0.1, 0.9],
+                  begin: Alignment.bottomLeft,
+                  end: Alignment.topRight,
+                  stops: <double>[0.3, 0.9],
                   colors: <Color>[
-                    JuntoPalette.juntoSecondary,
-                    JuntoPalette.juntoPrimary,
+                    Theme.of(context).colorScheme.secondary,
+                    Theme.of(context).colorScheme.primary,
                   ],
                 ),
               ),

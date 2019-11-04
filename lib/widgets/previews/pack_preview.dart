@@ -26,7 +26,7 @@ class PackPreview extends StatelessWidget {
         );
       },
       child: Container(
-        color: Colors.white,
+        color: Colors.transparent,
         child: Row(
           children: <Widget>[
             Container(
@@ -39,8 +39,8 @@ class PackPreview extends StatelessWidget {
                   end: Alignment.topRight,
                   stops: const <double>[0.3, 0.9],
                   colors: <Color>[
-                    JuntoPalette.juntoSecondary,
-                    JuntoPalette.juntoPrimary,
+                    Theme.of(context).colorScheme.secondary,
+                    Theme.of(context).colorScheme.primary
                   ],
                 ),
                 borderRadius: BorderRadius.circular(100),
@@ -49,7 +49,7 @@ class PackPreview extends StatelessWidget {
                 offset: Offset(-1.0, 0),
                 child: Icon(
                   CustomIcons.packs,
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.onPrimary,
                   size: 17,
                 ),
               ),
@@ -57,9 +57,10 @@ class PackPreview extends StatelessWidget {
             Container(
               width: MediaQuery.of(context).size.width - 75,
               padding: const EdgeInsets.symmetric(vertical: 15),
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 border: Border(
-                  bottom: BorderSide(width: .5, color: JuntoPalette.juntoFade),
+                  bottom: BorderSide(
+                      width: .5, color: Theme.of(context).dividerColor),
                 ),
               ),
               margin: const EdgeInsets.only(left: 10.0),
@@ -67,13 +68,12 @@ class PackPreview extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    group.groupData.name,
-                    textAlign: TextAlign.start,
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
-                  ),
+                  Text(group.groupData.name,
+                      textAlign: TextAlign.start,
+                      style: Theme.of(context).textTheme.subhead),
                   Text(group.creator,
-                      textAlign: TextAlign.start, style: JuntoStyles.body),
+                      textAlign: TextAlign.start,
+                      style: Theme.of(context).textTheme.body1),
                 ],
               ),
             )

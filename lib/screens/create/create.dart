@@ -317,120 +317,117 @@ class ExpressionCenter extends StatelessWidget {
                     'Expression Center',
                     style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
                   ),
-                ),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 10),
-                  width: 180,
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    border: Border(
-                      top: BorderSide(color: Color(0xffeeeeee), width: 1),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Container(
-                  padding: const EdgeInsets.only(top: 10),
-                  height: 70,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: <Widget>[
-                      GestureDetector(
-                        onTap: () {
-                          switchView('LongForm');
-                        },
-                        child: Container(
-                          color: Colors.white,
-                          alignment: Alignment.bottomCenter,
-                          width: MediaQuery.of(context).size.width * .25,
-                          child: Column(
-                            children: const <Widget>[
-                              Icon(
-                                CustomIcons.longform,
-                                size: 20,
-                                color: JuntoPalette.juntoBlack,
-                              ),
-                              SizedBox(height: 5),
-                              Text(
-                                'dynamic',
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.w700),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          switchView('ShortForm');
-                        },
-                        child: Container(
-                          color: Colors.white,
-                          width: MediaQuery.of(context).size.width * .25,
-                          child: Column(
-                            children: const <Widget>[
-                              Icon(
-                                CustomIcons.feather,
-                                size: 20,
-                                color: JuntoPalette.juntoBlack,
-                              ),
-                              SizedBox(height: 5),
-                              Text(
-                                'shortform',
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.w700),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          switchView('PhotoForm');
-                        },
-                        child: Container(
-                          color: Colors.white,
-                          width: MediaQuery.of(context).size.width * .25,
-                          child: Column(
-                            children: const <Widget>[
-                              Icon(
-                                CustomIcons.camera,
-                                size: 20,
-                                color: JuntoPalette.juntoBlack,
-                              ),
-                              SizedBox(height: 5),
-                              Text(
-                                'photo',
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.w700),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          switchView('EventForm');
-                        },
-                        child: Container(
-                          color: Colors.white,
-                          width: MediaQuery.of(context).size.width * .25,
-                          child: Column(
-                            children: const <Widget>[
-                              Icon(
-                                CustomIcons.event,
-                                size: 20,
-                                color: JuntoPalette.juntoBlack,
-                              ),
-                              SizedBox(height: 5),
-                              Text(
-                                'event',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700,
+                  const SizedBox(height: 10),
+                  Container(
+                    padding: const EdgeInsets.only(top: 10),
+                    height: 70,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: <Widget>[
+                        GestureDetector(
+                          onTap: () {
+                            switchTemplate('LongForm');
+                          },
+                          child: Container(
+                            color: Colors.white,
+                            alignment: Alignment.bottomCenter,
+                            width: MediaQuery.of(context).size.width * .25,
+                            child: Column(
+                              children: <Widget>[
+                                const Icon(
+                                  CustomIcons.longform,
+                                  size: 20,
+                                  color: Color(0xff555555),
                                 ),
-                              )
-                            ],
+                                const SizedBox(height: 5),
+                                Text(
+                                  'dynamic',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w700,
+                                    color: Color(0xff555555),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            switchTemplate('ShortForm');
+                          },
+                          child: Container(
+                            color: Colors.white,
+                            width: MediaQuery.of(context).size.width * .25,
+                            child: Column(
+                              children: const <Widget>[
+                                Icon(
+                                  CustomIcons.feather,
+                                  size: 20,
+                                  color: Color(0xff555555),
+                                ),
+                                SizedBox(height: 5),
+                                Text(
+                                  'shortform',
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                      color: Color(0xff555555)),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            switchTemplate('PhotoForm');
+                          },
+                          child: Container(
+                            color: Colors.white,
+                            width: MediaQuery.of(context).size.width * .25,
+                            child: Column(
+                              children: const <Widget>[
+                                Icon(
+                                  CustomIcons.camera,
+                                  size: 20,
+                                  color: Color(0xff555555),
+                                ),
+                                SizedBox(height: 5),
+                                Text(
+                                  'photo',
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                      color: Color(0xff555555)),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            switchTemplate('EventForm');
+                          },
+                          child: Container(
+                            color: Colors.white,
+                            width: MediaQuery.of(context).size.width * .25,
+                            child: Column(
+                              children: const <Widget>[
+                                Icon(
+                                  CustomIcons.event,
+                                  size: 20,
+                                  color: Color(0xff555555),
+                                ),
+                                SizedBox(height: 5),
+                                Text(
+                                  'event',
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                      color: Color(0xff555555)),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),

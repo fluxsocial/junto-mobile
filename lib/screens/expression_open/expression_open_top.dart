@@ -45,7 +45,7 @@ class ExpressionOpenTop extends StatelessWidget {
               );
             },
             child: Container(
-              color: Colors.white,
+              color: Colors.transparent,
               child: Row(children: <Widget>[
                 // profile picture
                 ClipOval(
@@ -65,16 +65,12 @@ class ExpressionOpenTop extends StatelessWidget {
                     children: <Widget>[
                       Text(
                         username ?? '',
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.w700),
+                        style: Theme.of(context).textTheme.subhead
                       ),
                       Text(
                         firstName + ' ' + lastName,
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
-                          color: const Color(0xff555555),
-                        ),
+                        style: Theme.of(context).textTheme.body1
+                        
                       ),
                     ],
                   ),
