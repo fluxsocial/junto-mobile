@@ -25,6 +25,7 @@ class ExpressionOpenAppbar extends StatelessWidget {
                 child: Icon(
                   CustomIcons.back,
                   size: 17,
+                  color: Theme.of(context).primaryColor
                 ),
               ),
             ),
@@ -44,10 +45,10 @@ class ExpressionOpenAppbar extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 10),
                 width: 42,
                 alignment: Alignment.centerRight,
-                child: const Icon(
+                child: Icon(
                   CustomIcons.enso,
                   size: 20,
-                  color: Color(0xff333333),
+                  color: Theme.of(context).primaryColor,
                 ),
               ),
             )
@@ -55,19 +56,11 @@ class ExpressionOpenAppbar extends StatelessWidget {
         ),
       ),
       bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(1),
+        preferredSize: const Size.fromHeight(.75),
         child: Container(
-          height: 1,
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              stops: <double>[0.1, 0.9],
-              colors: <Color>[
-                JuntoPalette.juntoFade,
-                JuntoPalette.juntoFade,
-              ],
-            ),
+          height: .75,
+          decoration: BoxDecoration(
+            color: Theme.of(context).dividerColor
           ),
         ),
       ),
