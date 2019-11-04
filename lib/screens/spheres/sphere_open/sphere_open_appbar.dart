@@ -43,7 +43,10 @@ class SphereOpenAppbar extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                SphereOpenActionItems().buildSphereOpenActionItems(context);
+                showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) => SphereOpenActionItems(),
+                );
               },
               child: Container(
                 width: 42,

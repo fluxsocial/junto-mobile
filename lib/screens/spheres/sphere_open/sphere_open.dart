@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
@@ -254,17 +254,38 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                             horizontal: JuntoStyles.horizontalPadding,
                             vertical: 15),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Container(
-                                  child: Text(widget.group.groupData.name,
-                                      style:
-                                          Theme.of(context).textTheme.display1),
-                                ),
-                              ],
+                            Container(
+                              width: MediaQuery.of(context).size.width * .7,
+                              child: Text(
+                                  'Hello this is a sphere for great members viva!',
+                                  // widget.group.groupData.name,
+                                  style: Theme.of(context).textTheme.display1),
                             ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 7.5),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Theme.of(context).primaryColor,
+                                    width: 1.5),
+                                borderRadius: BorderRadius.circular(25),
+                              ),
+                              child: Row(
+                                children: <Widget>[
+                                  const SizedBox(width: 14),
+                                  Icon(CustomIcons.spheres,
+                                      size: 14,
+                                      color: Theme.of(context).primaryColor),
+                                  const SizedBox(width: 2),
+                                  Icon(Icons.keyboard_arrow_down,
+                                      size: 12,
+                                      color: Theme.of(context).primaryColor)
+                                ],
+                              ),
+                            )
                           ],
                         ),
                       ),
@@ -472,7 +493,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                     ? Icons.keyboard_arrow_up
                     : Icons.keyboard_arrow_down,
                 size: 17,
-                color: const Color(0xff555555),
+                color: Theme.of(context).primaryColor,
               )
             ],
           ),
