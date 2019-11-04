@@ -16,7 +16,6 @@ class SphereOpenAppbar extends StatelessWidget {
       automaticallyImplyLeading: false,
       brightness: Brightness.light,
       iconTheme: const IconThemeData(color: JuntoPalette.juntoSleek),
-      backgroundColor: Colors.white,
       elevation: 0,
       titleSpacing: 0,
       title: Container(
@@ -27,26 +26,20 @@ class SphereOpenAppbar extends StatelessWidget {
               onTap: () => Navigator.pop(context),
               child: Container(
                 padding: const EdgeInsets.only(left: 10),
-                color: Colors.white,
+                color: Colors.transparent,
                 width: 42,
                 alignment: Alignment.centerLeft,
-                child: const Icon(
+                child: Icon(
                   CustomIcons.back,
-                  color: JuntoPalette.juntoSleek,
+                  color: Theme.of(context).primaryColorDark,
                   size: 17,
                 ),
               ),
             ),
             Container(
               margin: const EdgeInsets.only(right: 5),
-              child: Text(
-                's/' + sphereHandle,
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xff333333),
-                ),
-              ),
+              child: Text('s/' + sphereHandle,
+                  style: Theme.of(context).textTheme.subhead),
             ),
             GestureDetector(
               onTap: () {
@@ -57,10 +50,10 @@ class SphereOpenAppbar extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 10),
                 color: Colors.transparent,
                 alignment: Alignment.centerRight,
-                child: const Icon(
+                child: Icon(
                   CustomIcons.more,
                   size: 24,
-                  color: Color(0xff333333),
+                  color: Theme.of(context).primaryColorDark,
                 ),
               ),
             )
@@ -68,14 +61,14 @@ class SphereOpenAppbar extends StatelessWidget {
         ),
       ),
       bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(1),
+        preferredSize: const Size.fromHeight(.75),
         child: Container(
-          height: 1,
-          decoration: const BoxDecoration(
+          height: .75,
+          decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
-                width: 1,
-                color: JuntoPalette.juntoFade,
+                width: .75,
+                color: Theme.of(context).dividerColor,
               ),
             ),
           ),
