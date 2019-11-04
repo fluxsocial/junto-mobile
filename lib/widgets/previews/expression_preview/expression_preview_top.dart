@@ -65,10 +65,8 @@ class ExpressionPreviewTop extends StatelessWidget {
                   ),
                   const SizedBox(width: 10),
                   Container(
-                    child: Text(
-                      username,
-                      style: Theme.of(context).textTheme.subhead
-                    ),
+                    child: Text(username,
+                        style: Theme.of(context).textTheme.subhead),
                   )
                 ],
               ),
@@ -88,9 +86,9 @@ class ExpressionPreviewTop extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.all(5),
                   color: Colors.transparent,
-                  child: const Icon(
+                  child: Icon(
                     Icons.keyboard_arrow_down,
-                    color: Color(0xff777777),
+                    color: Theme.of(context).primaryColorLight,
                     size: 24,
                   ),
                 ),

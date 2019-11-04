@@ -121,7 +121,7 @@ class _JuntoAppBarState extends State<JuntoAppBar>
                     height: 48,
                     child: Row(
                       children: <Widget>[
-                        Image.asset('assets/images/junto-mobile__logo--white.png',
+                        Image.asset('assets/images/junto-mobile__logo.png',
                             height: 22.0, width: 22.0),
                         const SizedBox(width: 7.5),
                         Text(
@@ -183,7 +183,7 @@ class _JuntoAppBarState extends State<JuntoAppBar>
                           height: MediaQuery.of(context).size.height * .9,
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.background ,
+                            color: Theme.of(context).colorScheme.background,
                             borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(10),
                               topRight: Radius.circular(10),
@@ -222,12 +222,11 @@ class _JuntoAppBarState extends State<JuntoAppBar>
                       CustomIcons.moon,
                     ),
                   ),
-                ),  
+                ),
                 RaisedButton(onPressed: () {
                   // Provider.of<JuntoThemesProvider>(context)
                   //     .setTheme('lightSecondary');
-                  Provider.of<JuntoThemesProvider>(context)
-                      .setTheme('night');                  
+                  Provider.of<JuntoThemesProvider>(context).setTheme('night');
                 })
               ],
             )
