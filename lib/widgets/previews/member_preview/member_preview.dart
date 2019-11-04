@@ -21,15 +21,15 @@ class MemberPreview extends StatelessWidget {
                   ? ClipOval(
                       child: Image.asset(
                         profile.profilePicture,
-                        height: 38.0,
-                        width: 38.0,
+                        height: 45.0,
+                        width: 45.0,
                         fit: BoxFit.cover,
                       ),
                     )
                   : Container(
                       alignment: Alignment.center,
-                      height: 38.0,
-                      width: 38.0,
+                      height: 45.0,
+                      width: 45.0,
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           begin: Alignment.bottomLeft,
@@ -45,7 +45,7 @@ class MemberPreview extends StatelessWidget {
                       child: Image.asset('assets/images/junto-mobile__logo--white.png', height: 15)
                     ),
               Container(
-                width: MediaQuery.of(context).size.width - 68,
+                width: MediaQuery.of(context).size.width - 75,
                 padding: const EdgeInsets.symmetric(
                   vertical: 15,
                 ),
@@ -53,7 +53,7 @@ class MemberPreview extends StatelessWidget {
                   border: Border(
                     bottom: BorderSide(
                       width: .5,
-                      color: JuntoPalette.juntoFade,
+                      color: Theme.of(context).dividerColor,
                     ),
                   ),
                 ),
