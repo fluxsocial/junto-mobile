@@ -32,7 +32,7 @@ class EventOpen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(eventTitle, style: Theme.of(context).textTheme.title),
+                Text(eventTitle, style: Theme.of(context).textTheme.display1),
                 const SizedBox(height: 10),
                 Container(
                   alignment: Alignment.center,

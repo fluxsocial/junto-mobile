@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
 
 class JuntoThemes {
   ThemeData juntoLightMain = ThemeData(
@@ -9,21 +8,21 @@ class JuntoThemes {
     primaryColorLight: const Color(0xff999999),
     dividerColor: const Color(0xffeeeeee),
     backgroundColor: Colors.white,
-    colorScheme: ColorScheme(
+    colorScheme: const ColorScheme(
         // Junto blue
-        primary: const Color(0xFF307FAB),
-        primaryVariant: const Color(0xff333333),
+        primary: Color(0xFF307FAB),
+        primaryVariant: Color(0xff333333),
         // Junto purple
-        secondary: const Color(0xFF635FAA),
-        secondaryVariant: const Color(0xff333333),
-        surface: const Color(0xfff9f9f9),
+        secondary: Color(0xFF635FAA),
+        secondaryVariant: Color(0xff333333),
+        surface: Color(0xfff9f9f9),
         background: Colors.white,
-        error: const Color(0xff333333),
+        error: Color(0xff333333),
         onPrimary: Colors.white,
         onSecondary: Colors.white,
-        onBackground: const Color(0xff333333),
-        onError: const Color(0xff333333),
-        onSurface: const Color(0xff333333),
+        onBackground: Color(0xff333333),
+        onError: Color(0xff333333),
+        onSurface: Color(0xff333333),
         brightness: Brightness.light),
     scaffoldBackgroundColor: Colors.white,
     appBarTheme: AppBarTheme(
@@ -40,16 +39,20 @@ class JuntoThemes {
     ),
     bottomAppBarColor: Colors.blue,
     textTheme: TextTheme(
+      display1: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.w700,
+        color: const Color(0xff333333),
+      ),
       title: TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.w700,
-        color: Color(0xff333333),
+        color: const Color(0xff333333),
       ),
-
-      subtitle: TextStyle(
+      headline: TextStyle(
         fontSize: 17,
-        fontWeight: FontWeight.w500,
-        color: Color(0xff333333),
+        color: const Color(0xff333333),
+        fontWeight: FontWeight.w600,
       ),
 
       // used for user and sphere handles
@@ -57,6 +60,12 @@ class JuntoThemes {
         fontSize: 15,
         color: const Color(0xff333333),
         fontWeight: FontWeight.w700,
+      ),
+
+      subtitle: TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w700,
+        color: const Color(0xff333333),
       ),
 
       body1: TextStyle(
@@ -88,20 +97,20 @@ class JuntoThemes {
     primaryColorLight: const Color(0xff999999),
     dividerColor: const Color(0xff555555),
     backgroundColor: Color(0xff333333),
-    colorScheme: ColorScheme(
+    colorScheme: const ColorScheme(
         // Junto blue
-        primary: const Color(0xFF307FAB),
-        primaryVariant: const Color(0xff333333),
-        secondary: const Color(0xFF635FAA),
-        secondaryVariant: const Color(0xff333333),
-        surface: const Color(0xff393939),
+        primary: Color(0xFF307FAB),
+        primaryVariant: Color(0xff333333),
+        secondary: Color(0xFF635FAA),
+        secondaryVariant: Color(0xff333333),
+        surface: Color(0xff393939),
         background: Color(0xff333333),
-        error: const Color(0xff333333),
+        error: Color(0xff333333),
         onPrimary: Colors.white,
         onSecondary: Colors.white,
-        onBackground: const Color(0xff333333),
-        onError: const Color(0xff333333),
-        onSurface: const Color(0xff333333),
+        onBackground: Color(0xff333333),
+        onError: Color(0xff333333),
+        onSurface: Color(0xff333333),
         brightness: Brightness.light),
     scaffoldBackgroundColor: Color(0xff333333),
     appBarTheme: AppBarTheme(
@@ -118,21 +127,32 @@ class JuntoThemes {
     ),
     bottomAppBarColor: Colors.blue,
     textTheme: TextTheme(
+      display1: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.w700,
+        color: Colors.white,
+      ),
       title: TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.w700,
         color: Colors.white,
       ),
-      subtitle: TextStyle(
+      headline: TextStyle(
         fontSize: 17,
-        fontWeight: FontWeight.w500,
         color: Colors.white,
+        fontWeight: FontWeight.w600,
       ),
       // used for user and sphere handles
       subhead: TextStyle(
         fontSize: 15,
         color: Colors.white,
         fontWeight: FontWeight.w700,
+      ),
+
+      subtitle: TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w700,
+        color: Colors.white,
       ),
       body1: TextStyle(
         fontSize: 13,

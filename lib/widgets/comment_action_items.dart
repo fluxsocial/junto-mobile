@@ -53,7 +53,7 @@ class CommentActionItems extends StatelessWidget {
                       const SizedBox(width: 15),
                       Text(
                         'Report Comment',
-                        style: Theme.of(context).textTheme.subtitle,
+                        style: Theme.of(context).textTheme.headline,
                       ),
                     ],
                   ),
@@ -71,7 +71,7 @@ class CommentActionItems extends StatelessWidget {
                       const SizedBox(width: 15),
                       Text(
                         'Hide Comment',
-                        style: Theme.of(context).textTheme.subtitle,
+                        style: Theme.of(context).textTheme.headline,
                       ),
                     ],
                   ),
@@ -90,7 +90,7 @@ class CommentActionItems extends StatelessWidget {
                       const SizedBox(width: 15),
                       Text(
                         'Block @member',
-                        style: Theme.of(context).textTheme.subtitle,
+                        style: Theme.of(context).textTheme.headline,
                       ),
                     ],
                   ),

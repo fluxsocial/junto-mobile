@@ -184,7 +184,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(45),
         child: SphereOpenAppbar(
@@ -201,7 +200,8 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
             child: child,
           );
         },
-        child: ExpressionCenterFAB(expressionLayer: widget.group.groupData.name),
+        child:
+            ExpressionCenterFAB(expressionLayer: widget.group.groupData.name),
       ),
       body: DefaultTabController(
         length: _tabs.length,
@@ -215,14 +215,15 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                 automaticallyImplyLeading: false,
                 primary: false,
                 actions: const <Widget>[SizedBox(height: 0, width: 0)],
-                backgroundColor: Colors.white,
+                backgroundColor: Theme.of(context).colorScheme.background,
                 pinned: false,
                 flexibleSpace: FlexibleSpaceBar(
                   collapseMode: CollapseMode.pin,
                   background: Column(
                     children: <Widget>[
                       Container(
-                        constraints: const BoxConstraints.expand(height: 200),
+                        constraints: BoxConstraints.expand(
+                            height: MediaQuery.of(context).size.height * .3),
                         child: Image.asset(
                           'assets/images/junto-mobile__stillmind.png',
                           fit: BoxFit.cover,
@@ -242,40 +243,16 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Container(
-                                      child: Text(
-                                        widget.group.groupData.name,
-                                        style: const TextStyle(
-                                          color: JuntoPalette.juntoGrey,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
+                                      child: Text(widget.group.groupData.name,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .display1),
                                     ),
                                   ],
                                 )
                               ],
                             ),
                             const SizedBox(height: 15),
-                            Container(
-                              padding: const EdgeInsets.symmetric(vertical: 12),
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                gradient: const LinearGradient(
-                                  colors: <Color>[
-                                    JuntoPalette.juntoSecondary,
-                                    JuntoPalette.juntoPrimary
-                                  ],
-                                ),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: const Text(
-                                'Join Sphere',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w700),
-                              ),
-                            ),
                           ],
                         ),
                       ),
@@ -290,17 +267,13 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                   TabBar(
                     labelPadding: const EdgeInsets.all(0),
                     isScrollable: true,
-                    labelColor: const Color(0xff333333),
-                    labelStyle: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xff333333),
-                    ),
+                    labelColor: Theme.of(context).primaryColorDark,
+                    labelStyle: Theme.of(context).textTheme.subhead,
                     indicatorWeight: 0.0001,
                     tabs: _tabs
                         .map((String name) => Container(
                             margin: const EdgeInsets.only(right: 24),
-                            color: Colors.white,
+                            color: Theme.of(context).colorScheme.background,
                             child: Tab(
                               text: name,
                             )))
@@ -332,10 +305,10 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
             horizontal: JuntoStyles.horizontalPadding,
             vertical: 15,
           ),
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
-                color: JuntoPalette.juntoFade,
+                color: Theme.of(context).dividerColor,
                 width: .75,
               ),
             ),
@@ -370,11 +343,10 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
           },
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-            decoration: const BoxDecoration(
-              color: Colors.white,
+            decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color: JuntoPalette.juntoFade,
+                  color: Theme.of(context).dividerColor,
                   width: .75,
                 ),
               ),
@@ -388,10 +360,12 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                   children: <Widget>[
                     Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const <Widget>[
-                          Text('Facilitators', style: JuntoStyles.header),
-                          SizedBox(height: 10),
-                          Text('Eric Yang and 7 others'),
+                        children: <Widget>[
+                          Text('Facilitators',
+                              style: Theme.of(context).textTheme.title),
+                          const SizedBox(height: 10),
+                          Text('Eric Yang and 7 others',
+                              style: Theme.of(context).textTheme.body2),
                         ]),
                     ClipOval(
                       child: Image.asset(
@@ -413,7 +387,8 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Text('Principles', style: JuntoStyles.header),
+                    Text('Principles',
+                        style: Theme.of(context).textTheme.title),
                     _getPrinciples(principles, _principlesFullView),
                     _principlesSeeMore()
                   ],
@@ -425,9 +400,10 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Text('Bio / Purpose', style: JuntoStyles.header),
+              Text('Bio / Purpose', style: Theme.of(context).textTheme.title),
               const SizedBox(height: 10),
-              Text(widget.group.groupData.description)
+              Text(widget.group.groupData.description,
+                  style: Theme.of(context).textTheme.body2)
             ],
           ),
         ),
@@ -464,9 +440,10 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 10),
           alignment: Alignment.centerLeft,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             border: Border(
-              bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
+              bottom:
+                  BorderSide(color: Theme.of(context).dividerColor, width: 1),
             ),
           ),
           child: Row(
@@ -495,27 +472,23 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   Widget _buildPrinciple(int index, String title, String body) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
+          bottom: BorderSide(color: Theme.of(context).dividerColor, width: 1),
         ),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            (index + 1).toString(),
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              color: const Color(0xff999999),
-            ),
-          ),
+          Text((index + 1).toString(),
+              style: Theme.of(context).textTheme.overline),
           const SizedBox(width: 15),
           Container(
             height: 17,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               border: Border(
-                right: BorderSide(color: Color(0xffeeeeee), width: 2),
+                right:
+                    BorderSide(color: Theme.of(context).dividerColor, width: 2),
               ),
             ),
           ),
@@ -526,11 +499,11 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
               children: <Widget>[
                 Text(
                   title,
-                  style: JuntoStyles.title,
+                  style: Theme.of(context).textTheme.subtitle,
                   textAlign: TextAlign.left,
                 ),
                 const SizedBox(height: 10),
-                Text(body)
+                Text(body, style: Theme.of(context).textTheme.body2)
               ],
             ),
           )
@@ -579,7 +552,7 @@ class MemberRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: Theme.of(context).colorScheme.background,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -660,7 +633,8 @@ class MemberRow extends StatelessWidget {
           ),
           const SizedBox(height: 5),
           Container(
-            child: Text('49 members', style: JuntoStyles.title),
+            child:
+                Text('49 members', style: Theme.of(context).textTheme.subtitle),
           ),
         ],
       ),
@@ -684,10 +658,11 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
         padding: const EdgeInsets.symmetric(horizontal: 10),
-        decoration: const BoxDecoration(
-          color: Colors.white,
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.background,
           border: Border(
-            bottom: BorderSide(color: Color(0xffeeeeee), width: .5),
+            bottom:
+                BorderSide(color: Theme.of(context).dividerColor, width: .5),
           ),
         ),
         width: MediaQuery.of(context).size.width,
