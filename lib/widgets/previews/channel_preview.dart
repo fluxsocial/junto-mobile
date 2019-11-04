@@ -42,14 +42,12 @@ class ChannelPreview extends StatelessWidget {
               Container(
                 width: MediaQuery.of(context).size.width - 75,
                 padding: const EdgeInsets.symmetric(
-                  vertical: 15,
+                  vertical: 20,
                 ),
                 decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
-                      width: .5,
-                      color: Theme.of(context).dividerColor
-                    ),
+                        width: .5, color: Theme.of(context).dividerColor),
                   ),
                 ),
                 margin: const EdgeInsets.only(left: 10.0),
@@ -57,16 +55,12 @@ class ChannelPreview extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      channel,
-                      textAlign: TextAlign.start,
-                      style: Theme.of(context).textTheme.subhead
-                    ),
-                    Text(
-                      '2,400 expressions',
-                      textAlign: TextAlign.start,
-                      style: Theme.of(context).textTheme.body1
-                    )
+                    Text(channel,
+                        textAlign: TextAlign.start,
+                        style: Theme.of(context).textTheme.subhead),
+                    Text('2,400 expressions',
+                        textAlign: TextAlign.start,
+                        style: Theme.of(context).textTheme.body1)
                   ],
                 ),
               )
