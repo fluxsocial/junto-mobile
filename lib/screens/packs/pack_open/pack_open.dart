@@ -44,7 +44,6 @@ class PackOpenState extends State<PackOpen> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor: Colors.white,
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(45),
           child: PackOpenAppbar(
