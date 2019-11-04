@@ -16,7 +16,7 @@ class JuntoThemes {
         // Junto purple
         secondary: const Color(0xFF635FAA),
         secondaryVariant: const Color(0xff333333),
-        surface: const Color(0xff333333),
+        surface: const Color(0xfff9f9f9),
         background: Colors.white,
         error: const Color(0xff333333),
         onPrimary: Colors.white,
@@ -47,7 +47,7 @@ class JuntoThemes {
       ),
 
       subtitle: TextStyle(
-        fontSize: 17, 
+        fontSize: 17,
         fontWeight: FontWeight.w500,
         color: Color(0xff333333),
       ),
@@ -91,13 +91,10 @@ class JuntoThemes {
     colorScheme: ColorScheme(
         // Junto blue
         primary: const Color(0xFF307FAB),
-        // primary: Color(0xff333333),
         primaryVariant: const Color(0xff333333),
-        // Junto purple
-        // secondary: Color(0xff222222),
         secondary: const Color(0xFF635FAA),
         secondaryVariant: const Color(0xff333333),
-        surface: const Color(0xff111111),
+        surface: const Color(0xff393939),
         background: Color(0xff333333),
         error: const Color(0xff333333),
         onPrimary: Colors.white,
