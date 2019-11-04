@@ -47,7 +47,7 @@ class JuntoThemes {
       ),
 
       subtitle: TextStyle(
-        fontSize: 17,
+        fontSize: 17, 
         fontWeight: FontWeight.w500,
         color: Color(0xff333333),
       ),

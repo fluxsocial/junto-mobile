@@ -87,11 +87,11 @@ class ExpressionOpenTop extends StatelessWidget {
             },
             child: Container(
               color: Colors.transparent,
-              padding: EdgeInsets.all(5),
+              padding: const EdgeInsets.all(5),
               alignment: Alignment.centerRight,
-              child: const Icon(
+              child: Icon(
                 Icons.keyboard_arrow_down,
-                color: Color(0xff777777),
+                color: Theme.of(context).primaryColorLight,
                 size: 24,
               ),
             ),

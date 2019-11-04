@@ -88,7 +88,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
         color: Color(0xff999999),
       );
     }
-  }
+  } 
 
   // Swipe down to dismiss keyboard
   void _onDragDown(DragDownDetails details) {
@@ -213,18 +213,14 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                           horizontal: 10, vertical: 15),
                       child: Row(
                         children: <Widget>[
-                          const Text(
+                          Text(
                             'show replies (9)',
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xff333333),
-                            ),
+                            style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 12)
                           ),
                           const SizedBox(width: 5),
                           commentsVisible == false
-                              ? const Icon(Icons.keyboard_arrow_down, size: 14)
-                              : const Icon(Icons.keyboard_arrow_up, size: 14)
+                              ? Icon(Icons.keyboard_arrow_down, size: 14, color: Theme.of(context).primaryColor)
+                              : Icon(Icons.keyboard_arrow_up, size: 14, color: Theme.of(context).primaryColor)
                         ],
                       ),
                     ),
@@ -256,12 +252,12 @@ class ExpressionOpenState extends State<ExpressionOpen> {
             ),
           ),
           Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               color: Colors.white,
               border: Border(
                 top: BorderSide(
                   width: 1,
-                  color: JuntoPalette.juntoFade,
+                  color: Theme.of(context).dividerColor,
                 ),
               ),
             ),

@@ -20,7 +20,7 @@ class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
     return Container(
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: Theme.of(context).dividerColor, width: .75),
+          bottom: BorderSide(color: Theme.of(context).dividerColor, width: .5),
         ),
       ),
       padding: const EdgeInsets.only(left: 10, right: 10, bottom: 15, top: 15),
@@ -48,7 +48,6 @@ class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
                 //   ),
                 // ),
               ]),
-
         ],
       ),
     );

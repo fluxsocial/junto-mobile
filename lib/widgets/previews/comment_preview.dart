@@ -8,11 +8,9 @@ import 'package:junto_beta_mobile/widgets/comment_action_items.dart';
 
 /// Shows a preview of the comments. Takes a un-named [String] as a param.
 class CommentPreview extends StatelessWidget {
-  const CommentPreview({
-    Key key,
-    @required this.commentText,
-    @required this.parent
-  }) : super(key: key);
+  const CommentPreview(
+      {Key key, @required this.commentText, @required this.parent})
+      : super(key: key);
 
   /// String to be displayed as comment
   final String commentText;
@@ -31,7 +29,7 @@ class CommentPreview extends StatelessWidget {
       },
       child: Container(
         padding: const EdgeInsets.only(bottom: 20),
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.background,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -75,13 +73,8 @@ class CommentPreview extends StatelessWidget {
                           ),
                           const SizedBox(width: 10),
                           Container(
-                            child: const Text(
-                              'sunyata',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 15,
-                              ),
-                            ),
+                            child: Text('sunyata',
+                                style: Theme.of(context).textTheme.subhead),
                           ),
                         ],
                       ),
@@ -101,10 +94,10 @@ class CommentPreview extends StatelessWidget {
                       color: Colors.transparent,
                       alignment: Alignment.centerRight,
                       padding: const EdgeInsets.all(5),
-                      child: const Icon(
+                      child: Icon(
                         Icons.keyboard_arrow_down,
                         size: 24,
-                        color: Color(0xff777777),
+                        color: Theme.of(context).primaryColorLight,
                       ),
                     ),
                   ),
@@ -113,22 +106,18 @@ class CommentPreview extends StatelessWidget {
             ),
             // comment preview body
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Text(
                 commentText,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 3,
-                style: const TextStyle(
-                    fontSize: 15, height: 1.4, fontWeight: FontWeight.w500),
+                style: Theme.of(context).textTheme.caption,
               ),
             ),
             const SizedBox(height: 5),
             Padding(
-              padding: EdgeInsets.only(left: 10),
-              child: const Text(
-                'today',
-                style: JuntoStyles.expressionTimestamp,
-              ),
+              padding: const EdgeInsets.only(left: 10),
+              child: Text('today', style: Theme.of(context).textTheme.overline),
             ),
           ],
         ),
