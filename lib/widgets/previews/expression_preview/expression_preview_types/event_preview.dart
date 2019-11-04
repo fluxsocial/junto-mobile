@@ -32,26 +32,15 @@ class EventPreview extends StatelessWidget {
               children: <Widget>[
                 Text(
                   expression.expressionData.startTime,
-                  style: const TextStyle(
-                      color: JuntoPalette.juntoGrey,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500),
+                  style: Theme.of(context).textTheme.body2,
                 ),
                 const SizedBox(height: 2.5),
-                Text(
-                  expression.expressionData.title,
-                  style: const TextStyle(
-                      color: JuntoPalette.juntoGrey,
-                      fontSize: 17,
-                      fontWeight: FontWeight.w700),
-                ),
+                Text(expression.expressionData.title,
+                    style: Theme.of(context).textTheme.title),
                 const SizedBox(height: 2.5),
                 Text(
                   expression.expressionData.location,
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: JuntoPalette.juntoGrey),
+                  style: Theme.of(context).textTheme.body2,
                 ),
               ],
             ),

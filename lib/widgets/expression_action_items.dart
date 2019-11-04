@@ -14,7 +14,7 @@ class ExpressionActionItems extends StatelessWidget {
         height: MediaQuery.of(context).size.height * .4,
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.background,
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(10),
             topRight: Radius.circular(10),
@@ -34,7 +34,7 @@ class ExpressionActionItems extends StatelessWidget {
                       height: 5,
                       width: MediaQuery.of(context).size.width * .1,
                       decoration: BoxDecoration(
-                          color: const Color(0xffeeeeee),
+                          color: Theme.of(context).dividerColor,
                           borderRadius: BorderRadius.circular(100)),
                     ),
                   ],
@@ -48,13 +48,12 @@ class ExpressionActionItems extends StatelessWidget {
                       Icon(
                         Icons.visibility_off,
                         size: 17,
-                        color: const Color(0xff555555),
+                        color: Theme.of(context).primaryColor,
                       ),
                       const SizedBox(width: 15),
                       Text(
                         'Hide Expression',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 17),
+                        style: Theme.of(context).textTheme.subtitle 
                       ),
                     ],
                   ),
@@ -68,20 +67,18 @@ class ExpressionActionItems extends StatelessWidget {
                       Icon(
                         Icons.block,
                         size: 17,
-                        color: const Color(0xff555555),
+                        color: Theme.of(context).primaryColor,
                       ),
                       const SizedBox(width: 15),
                       Text(
                         'Block Member',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 17),
+                        style: Theme.of(context).textTheme.subtitle
                       ),
                     ],
                   ),
                 ),
               ],
             ),
-
           ],
         ),
       ),
