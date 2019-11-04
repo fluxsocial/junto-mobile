@@ -75,20 +75,20 @@ class ExpressionOpenState extends State<ExpressionOpen> {
     if (createComment == true) {
       return GestureDetector(
         onTap: () {},
-        child: const Icon(
+        child: Icon(
           Icons.send,
           size: 20,
-          color: JuntoPalette.juntoPrimary,
+          color: Theme.of(context).colorScheme.primary,
         ),
       );
     } else {
-      return const Icon(
+      return Icon(
         Icons.send,
         size: 20,
-        color: Color(0xff999999),
+        color: Theme.of(context).primaryColorLight,
       );
     }
-  } 
+  }
 
   // Swipe down to dismiss keyboard
   void _onDragDown(DragDownDetails details) {
@@ -107,11 +107,11 @@ class ExpressionOpenState extends State<ExpressionOpen> {
       builder: (BuildContext context) => Container(
         color: const Color(0xff737373),
         child: Container(
-          height: 240,
+          height: MediaQuery.of(context).size.height * .3,
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.background,
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(10),
               topRight: Radius.circular(10),
             ),
@@ -139,6 +139,8 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                     Text(
                       'Your comment will visible to everyone who can see '
                       'this expression.',
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                     )
                   ],
                 ),
@@ -163,6 +165,8 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                     Text(
                       'Your comment will only be visible to the creator of '
                       'this expression.',
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                     )
                   ],
                 ),
@@ -194,7 +198,6 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                   ExpressionOpenTop(expression: widget.expression),
                   _buildExpression(),
                   ExpressionOpenBottom(widget.expression),
-  
                   GestureDetector(
                     onTap: () {
                       if (commentsVisible == false) {
@@ -213,14 +216,18 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                           horizontal: 10, vertical: 15),
                       child: Row(
                         children: <Widget>[
-                          Text(
-                            'show replies (9)',
-                            style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 12)
-                          ),
+                          Text('show replies (9)',
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontSize: 12)),
                           const SizedBox(width: 5),
                           commentsVisible == false
-                              ? Icon(Icons.keyboard_arrow_down, size: 14, color: Theme.of(context).primaryColor)
-                              : Icon(Icons.keyboard_arrow_up, size: 14, color: Theme.of(context).primaryColor)
+                              ? Icon(Icons.keyboard_arrow_down,
+                                  size: 14,
+                                  color: Theme.of(context).primaryColor)
+                              : Icon(Icons.keyboard_arrow_up,
+                                  size: 14,
+                                  color: Theme.of(context).primaryColor)
                         ],
                       ),
                     ),
@@ -253,10 +260,10 @@ class ExpressionOpenState extends State<ExpressionOpen> {
           ),
           Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.background,
               border: Border(
                 top: BorderSide(
-                  width: 1,
+                  width: .75,
                   color: Theme.of(context).dividerColor,
                 ),
               ),
@@ -276,8 +283,8 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                             child: ClipOval(
                               child: Image.asset(
                                 'assets/images/junto-mobile__eric.png',
-                                height: 36.0,
-                                width: 36.0,
+                                height: 38.0,
+                                width: 38.0,
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -285,12 +292,12 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                           Container(
                             padding: const EdgeInsets.only(left: 15),
                             decoration: BoxDecoration(
-                              color: const Color(0xfff9f9f9),
+                              color: Theme.of(context).colorScheme.surface,
                               borderRadius: BorderRadius.circular(10),
                             ),
                             width: _focusNode.hasFocus
                                 ? MediaQuery.of(context).size.width - 100
-                                : MediaQuery.of(context).size.width - 66,
+                                : MediaQuery.of(context).size.width - 68,
                             constraints: const BoxConstraints(maxHeight: 180),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -317,12 +324,9 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                                       // hintText: 'reply',
                                     ),
                                     maxLines: null,
-                                    cursorColor: JuntoPalette.juntoGrey,
+                                    cursorColor: Theme.of(context).primaryColor,
                                     cursorWidth: 2,
-                                    style: const TextStyle(
-                                      fontSize: 17,
-                                      color: JuntoPalette.juntoGrey,
-                                    ),
+                                    style: Theme.of(context).textTheme.caption,
                                     textInputAction: TextInputAction.done,
                                   ),
                                 ),
@@ -347,18 +351,19 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                                 _showPrivacyModalSheet();
                               },
                               child: Container(
-                                color: Colors.white,
+                                color: Colors.transparent,
+                                padding: EdgeInsets.symmetric(horizontal: 5),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: <Widget>[
                                     Text(
                                       _commentPrivacy,
-                                      style: const TextStyle(
-                                          color: Color(0xff333333),
-                                          fontWeight: FontWeight.w500),
+                                      style: Theme.of(context).textTheme.body2,
                                     ),
-                                    const Icon(Icons.keyboard_arrow_down,
-                                        size: 14)
+                                    Icon(Icons.keyboard_arrow_down,
+                                        size: 14,
+                                        color:
+                                            Theme.of(context).primaryColorDark)
                                   ],
                                 ),
                               ),
