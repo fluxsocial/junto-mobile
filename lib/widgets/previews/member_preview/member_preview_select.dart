@@ -4,15 +4,14 @@ import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 
 class MemberPreviewSelect extends StatelessWidget {
-  const MemberPreviewSelect({Key key, this.profile})
-      : super(key: key);
+  const MemberPreviewSelect({Key key, this.profile}) : super(key: key);
 
   final UserProfile profile;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: Theme.of(context).colorScheme.background,
       child: Row(
         children: <Widget>[
           Row(
@@ -26,7 +25,7 @@ class MemberPreviewSelect extends StatelessWidget {
                 ),
               ),
               Container(
-                width: MediaQuery.of(context).size.width - 68,
+                width: MediaQuery.of(context).size.width - 75,
                 padding: const EdgeInsets.symmetric(
                   vertical: 15,
                 ),
@@ -34,7 +33,7 @@ class MemberPreviewSelect extends StatelessWidget {
                   border: Border(
                     bottom: BorderSide(
                       width: .5,
-                      color: JuntoPalette.juntoFade,
+                      color: Theme.of(context).dividerColor,
                     ),
                   ),
                 ),
@@ -43,20 +42,12 @@ class MemberPreviewSelect extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      profile.username,
-                      textAlign: TextAlign.start,
-                      style: JuntoStyles.title,
-                    ),
-                    Text(
-                      profile.firstName,
-                      textAlign: TextAlign.start,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xff555555),
-                      ),
-                    )
+                    Text(profile.username,
+                        textAlign: TextAlign.start,
+                        style: Theme.of(context).textTheme.subhead),
+                    Text(profile.firstName,
+                        textAlign: TextAlign.start,
+                        style: Theme.of(context).textTheme.body1)
                   ],
                 ),
               )

@@ -177,14 +177,12 @@ class JuntoCreateState extends State<JuntoCreate> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(45),
         child: AppBar(
           automaticallyImplyLeading: false,
           brightness: Brightness.light,
           iconTheme: const IconThemeData(color: JuntoPalette.juntoGrey),
-          backgroundColor: Colors.white,
           elevation: 0,
           titleSpacing: 0,
           title: Container(
@@ -198,25 +196,13 @@ class JuntoCreateState extends State<JuntoCreate> {
                   onTap: () {
                     Navigator.pop(context);
                   },
-                  child: Text(
-                    'cancel',
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w500,
-                      color: const Color(0xff333333),
-                    ),
-                  ),
+                  child: Text('cancel',
+                      style: Theme.of(context).textTheme.caption),
                 ),
                 GestureDetector(
                   onTap: _onNextClick,
-                  child: const Text(
-                    'next',
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w600,
-                      color: JuntoPalette.juntoSleek,
-                    ),
-                  ),
+                  child:
+                      Text('next', style: Theme.of(context).textTheme.caption),
                 )
               ],
             ),
@@ -268,7 +254,7 @@ class JuntoCreateState extends State<JuntoCreate> {
           height: MediaQuery.of(context).size.height * .3,
           padding: const EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.background,
             borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(10),
               topRight: Radius.circular(10),
@@ -288,18 +274,16 @@ class JuntoCreateState extends State<JuntoCreate> {
                         height: 5,
                         width: MediaQuery.of(context).size.width * .1,
                         decoration: BoxDecoration(
-                            color: const Color(0xffeeeeee),
-                            borderRadius: BorderRadius.circular(100)),
+                          color: Theme.of(context).dividerColor,
+                          borderRadius: BorderRadius.circular(100),
+                        ),
                       ),
                     ],
                   ),
                   ListTile(
                     contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-                    title: Text(
-                      'Expression Center',
-                      style:
-                          TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
-                    ),
+                    title: Text('Expression Center',
+                        style: Theme.of(context).textTheme.title),
                   ),
                   const SizedBox(height: 10),
                   Container(
@@ -313,25 +297,19 @@ class JuntoCreateState extends State<JuntoCreate> {
                             switchTemplate('LongForm');
                           },
                           child: Container(
-                            color: Colors.white,
+                            color: Colors.transparent,
                             alignment: Alignment.bottomCenter,
                             width: MediaQuery.of(context).size.width * .25,
                             child: Column(
                               children: <Widget>[
-                                const Icon(
+                                Icon(
                                   CustomIcons.longform,
                                   size: 20,
-                                  color: Color(0xff555555),
+                                  color: Theme.of(context).primaryColor,
                                 ),
                                 const SizedBox(height: 5),
-                                Text(
-                                  'dynamic',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w700,
-                                    color: Color(0xff555555),
-                                  ),
-                                )
+                                Text('dynamic',
+                                    style: Theme.of(context).textTheme.subtitle)
                               ],
                             ),
                           ),
@@ -341,22 +319,19 @@ class JuntoCreateState extends State<JuntoCreate> {
                             switchTemplate('ShortForm');
                           },
                           child: Container(
-                            color: Colors.white,
+                            color: Colors.transparent,
                             width: MediaQuery.of(context).size.width * .25,
                             child: Column(
-                              children: const <Widget>[
+                              children: <Widget>[
                                 Icon(
                                   CustomIcons.feather,
                                   size: 20,
-                                  color: Color(0xff555555),
+                                  color: Theme.of(context).primaryColor,
                                 ),
                                 SizedBox(height: 5),
                                 Text(
                                   'shortform',
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700,
-                                      color: Color(0xff555555)),
+                                  style: Theme.of(context).textTheme.subtitle,
                                 )
                               ],
                             ),
@@ -367,22 +342,19 @@ class JuntoCreateState extends State<JuntoCreate> {
                             switchTemplate('PhotoForm');
                           },
                           child: Container(
-                            color: Colors.white,
+                            color: Colors.transparent,
                             width: MediaQuery.of(context).size.width * .25,
                             child: Column(
-                              children: const <Widget>[
+                              children: <Widget>[
                                 Icon(
                                   CustomIcons.camera,
                                   size: 20,
-                                  color: Color(0xff555555),
+                                  color: Theme.of(context).primaryColor,
                                 ),
                                 SizedBox(height: 5),
                                 Text(
                                   'photo',
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700,
-                                      color: Color(0xff555555)),
+                                  style: Theme.of(context).textTheme.subtitle,
                                 )
                               ],
                             ),
@@ -393,22 +365,19 @@ class JuntoCreateState extends State<JuntoCreate> {
                             switchTemplate('EventForm');
                           },
                           child: Container(
-                            color: Colors.white,
+                            color: Colors.transparent,
                             width: MediaQuery.of(context).size.width * .25,
                             child: Column(
-                              children: const <Widget>[
+                              children: <Widget>[
                                 Icon(
                                   CustomIcons.event,
                                   size: 20,
-                                  color: Color(0xff555555),
+                                  color: Theme.of(context).primaryColor,
                                 ),
                                 SizedBox(height: 5),
                                 Text(
                                   'event',
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700,
-                                      color: Color(0xff555555)),
+                                  style: Theme.of(context).textTheme.subtitle,
                                 )
                               ],
                             ),

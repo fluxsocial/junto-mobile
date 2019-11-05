@@ -99,7 +99,6 @@ class CreateActionsState extends State<CreateActions> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(45),
         child: CreateActionsAppbar(
@@ -112,11 +111,11 @@ class CreateActionsState extends State<CreateActions> {
             onTap: () => _buildChannelsModal(context),
             child: Container(
               width: MediaQuery.of(context).size.width,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
-                    color: Color(0xffeeeeee),
-                    width: 1,
+                    color: Theme.of(context).dividerColor,
+                    width: .75,
                   ),
                 ),
               ),
@@ -137,10 +136,10 @@ class CreateActionsState extends State<CreateActions> {
             },
             child: Container(
               width: MediaQuery.of(context).size.width,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
-                    color: Color(0xffeeeeee),
+                    color: Theme.of(context).dividerColor,
                     width: 1,
                   ),
                 ),
@@ -165,10 +164,10 @@ class CreateActionsState extends State<CreateActions> {
           ),
           Container(
             width: MediaQuery.of(context).size.width,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color: Color(0xffeeeeee),
+                  color: Theme.of(context).dividerColor,
                   width: 1,
                 ),
               ),
@@ -235,7 +234,7 @@ class CreateActionsState extends State<CreateActions> {
                       height: 5,
                       width: MediaQuery.of(context).size.width * .1,
                       decoration: BoxDecoration(
-                          color: const Color(0xffeeeeee),
+                          color: Theme.of(context).dividerColor,
                           borderRadius: BorderRadius.circular(100)),
                     ),
                   ],
@@ -246,10 +245,10 @@ class CreateActionsState extends State<CreateActions> {
                   children: <Widget>[
                     Container(
                       width: MediaQuery.of(context).size.width - 60,
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         border: Border(
                           bottom: BorderSide(
-                            color: Color(0xffeeeeee),
+                            color: Theme.of(context).dividerColor,
                             width: .75,
                           ),
                         ),
@@ -349,7 +348,7 @@ class _ExpressionLayerBottomSheetState
                       height: 5,
                       width: MediaQuery.of(context).size.width * .1,
                       decoration: BoxDecoration(
-                          color: const Color(0xffeeeeee),
+                          color: Theme.of(context).dividerColor,
                           borderRadius: BorderRadius.circular(100)),
                     ),
                   ],
@@ -452,7 +451,8 @@ class _ExpressionLayerBottomSheetState
                                 stops: const <double>[0.1, 0.9],
                               )
                             : null,
-                        color: _chooseBase ? null : const Color(0xffeeeeee),
+                        color:
+                            _chooseBase ? null : Theme.of(context).dividerColor,
                       ),
                     ),
                     const SizedBox(width: 6),
@@ -471,7 +471,9 @@ class _ExpressionLayerBottomSheetState
                                 end: Alignment.topRight,
                                 stops: const <double>[0.1, 0.9])
                             : null,
-                        color: _chooseSpheres ? null : const Color(0xffeeeeee),
+                        color: _chooseSpheres
+                            ? null
+                            : Theme.of(context).dividerColor,
                       ),
                     ),
                   ],
@@ -540,9 +542,9 @@ class _SelectionTileState extends State<_SelectionTile> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
+          bottom: BorderSide(color: Theme.of(context).dividerColor, width: 1),
         ),
       ),
       padding: const EdgeInsets.symmetric(
@@ -588,14 +590,14 @@ class _SelectionTileState extends State<_SelectionTile> {
                 border: Border.all(
                   color: widget.isSelected
                       ? Colors.white
-                      : const Color(0xffeeeeee),
+                      : Theme.of(context).dividerColor,
                   width: 2,
                 ),
                 borderRadius: BorderRadius.circular(25),
               ),
             )
           ],
-        ),
+        ),  
       ),
     );
   }
