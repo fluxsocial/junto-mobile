@@ -11,10 +11,10 @@ class JuntoThemes {
     colorScheme: const ColorScheme(
         // Junto blue
         primary: Color(0xFF307FAB),
-        primaryVariant: Color(0xff333333),
+        primaryVariant: Color(0xFF307FAB),
         // Junto purple
         secondary: Color(0xFF635FAA),
-        secondaryVariant: Color(0xff333333),
+        secondaryVariant: Color(0xFF635FAA),
         surface: Color(0xfff9f9f9),
         background: Colors.white,
         error: Color(0xff333333),
@@ -100,7 +100,7 @@ class JuntoThemes {
     colorScheme: const ColorScheme(
         // Junto blue
         primary: Color(0xFF307FAB),
-        primaryVariant: Color(0xff333333),
+        primaryVariant: Color(0xff393939),
         secondary: Color(0xFF635FAA),
         secondaryVariant: Color(0xff333333),
         surface: Color(0xff393939),

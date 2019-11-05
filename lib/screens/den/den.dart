@@ -75,15 +75,10 @@ class JuntoDenState extends State<JuntoDen> {
                 SliverPersistentHeader(
                   delegate: JuntoAppBarDelegate(
                     TabBar(
-                      
                       labelPadding: const EdgeInsets.all(0),
                       isScrollable: true,
-                      labelColor: const Color(0xff333333),
-                      labelStyle: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xff555555),
-                      ),
+                      labelColor: Theme.of(context).primaryColorDark,
+                      labelStyle: Theme.of(context).textTheme.subhead,
                       indicatorWeight: 0.0001,
                       tabs: <Widget>[
                         for (String name in _tabs)
@@ -104,11 +99,89 @@ class JuntoDenState extends State<JuntoDen> {
             body: TabBarView(
               children: <Widget>[
                 ListView(
-                  
                   physics: const ClampingScrollPhysics(),
                   shrinkWrap: true,
                   padding: const EdgeInsets.only(left: 10),
                   children: <Widget>[
+                    // CarouselSlider(
+                    //   viewportFraction: 1.0,
+                    //   height: MediaQuery.of(context).size.width - 20,
+                    //   enableInfiniteScroll: false,
+                    //   items: <Widget>[
+                    //     Container(
+                    //       padding: EdgeInsets.only(right: 10),
+                    //       width: MediaQuery.of(context).size.width,
+                    //       child: Image.asset(
+                    //           'assets/images/junto-mobile__eric.png',
+                    //           fit: BoxFit.cover),
+                    //     ),
+                    //     Container(
+                    //       width: MediaQuery.of(context).size.width,
+                    //       padding: EdgeInsets.only(right: 10),
+                    //       child: Image.asset(
+                    //           'assets/images/junto-mobile__eric--qigong.png',
+                    //           fit: BoxFit.cover),
+                    //     ),
+                    //   ],
+                    // ),
+                    const SizedBox(height: 15),
+                    Container(
+                      padding: const EdgeInsets.only(top: 5, bottom: 5),
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            child: Row(
+                              children: <Widget>[
+                                Image.asset(
+                                  'assets/images/junto-mobile__location.png',
+                                  height: 15,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                                const SizedBox(width: 5),
+                                Text(
+                                  'Spirit',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      color: Theme.of(context).primaryColor,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Container(
+                            child: Row(
+                              children: <Widget>[
+                                Image.asset(
+                                  'assets/images/junto-mobile__link.png',
+                                  height: 15,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                                const SizedBox(width: 5),
+                                Text(
+                                  'junto.foundation',
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                      color: Theme.of(context).primaryColor,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    Container(
+                      child: Text('Founder @junto; student of QiGong',
+                          style: Theme.of(context).textTheme.caption),
+                    ),
+                    const SizedBox(height: 15),
+
                     CarouselSlider(
                       viewportFraction: 1.0,
                       height: MediaQuery.of(context).size.width - 20,
@@ -129,74 +202,6 @@ class JuntoDenState extends State<JuntoDen> {
                               fit: BoxFit.cover),
                         ),
                       ],
-                    ),
-                    const SizedBox(height: 15),
-                    Container(
-                      padding:
-                          const EdgeInsets.only(left: 10, top: 5, bottom: 5),
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          left:
-                              BorderSide(color: Color(0xffeeeeee), width: 1.5),
-                        ),
-                      ),
-                      child: Column(
-                        children: <Widget>[
-                          Container(
-                            child: Row(
-                              children: <Widget>[
-                                Image.asset(
-                                  'assets/images/junto-mobile__location.png',
-                                  height: 15,
-                                  color: const Color(0xff777777),
-                                ),
-                                const SizedBox(width: 5),
-                                const Text(
-                                  'Spirit',
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      color: Color(0xff777777),
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          Container(
-                            child: Row(
-                              children: <Widget>[
-                                Image.asset(
-                                  'assets/images/junto-mobile__link.png',
-                                  height: 15,
-                                  color: const Color(0xff777777),
-                                ),
-                                const SizedBox(width: 5),
-                                Text(
-                                  'junto.foundation',
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                  style: TextStyle(
-                                      color: JuntoPalette.juntoPrimary,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 15),
-                    Container(
-                      child: const Text(
-                        'Founder/Executive Director @junto; Mr. Snack @lunchbox; Student of QiGong',
-                        style: TextStyle(
-                            fontSize: 15,
-                            color: Color(0xff333333),
-                            fontWeight: FontWeight.w600),
-                      ),
                     ),
                   ],
                 ),
@@ -294,106 +299,106 @@ class _UserExpressionsState extends State<UserExpressions> {
   }
 }
 
-class DenToggle extends StatelessWidget {
-  const DenToggle({
-    Key key,
-    @required this.onCollectionsTap,
-    @required this.onLotusTap,
-    @required this.active,
-  }) : super(key: key);
+// class DenToggle extends StatelessWidget {
+//   const DenToggle({
+//     Key key,
+//     @required this.onCollectionsTap,
+//     @required this.onLotusTap,
+//     @required this.active,
+//   }) : super(key: key);
 
-  final VoidCallback onCollectionsTap;
-  final VoidCallback onLotusTap;
-  final bool active;
+//   final VoidCallback onCollectionsTap;
+//   final VoidCallback onLotusTap;
+//   final bool active;
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 10),
-      child: Column(
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Container(
-                padding: const EdgeInsets.all(2.5),
-                height: 30,
-                width: 80,
-                decoration: BoxDecoration(
-                  color: const Color(0xffeeeeee),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Row(
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: onLotusTap,
-                      child: Container(
-                        height: 30,
-                        // half width of parent container minus horizontal padding
-                        width: 37.5,
-                        decoration: BoxDecoration(
-                          color:
-                              active ? Colors.white : const Color(0xffeeeeee),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Icon(
-                          CustomIcons.half_lotus,
-                          size: 12,
-                          color: active
-                              ? const Color(0xff555555)
-                              : const Color(0xff999999),
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: onCollectionsTap,
-                      child: Container(
-                        height: 30,
-                        // half width of parent container minus horizontal padding
-                        width: 37.5,
-                        decoration: BoxDecoration(
-                          color:
-                              active ? Colors.white : const Color(0xffeeeeee),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Icon(
-                          Icons.collections,
-                          size: 12,
-                          color: active
-                              ? const Color(0xff555555)
-                              : const Color(0xff999999),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              active
-                  ? GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          CupertinoPageRoute<dynamic>(
-                            builder: (BuildContext context) =>
-                                DenCreateCollection(),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        width: 38,
-                        alignment: Alignment.centerRight,
-                        child: Icon(
-                          Icons.add,
-                          size: 20,
-                          color: const Color(0xff555555),
-                        ),
-                      ),
-                    )
-                  : const SizedBox()
-            ],
-          )
-        ],
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 10),
+//       child: Column(
+//         children: <Widget>[
+//           Row(
+//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//             children: <Widget>[
+//               Container(
+//                 padding: const EdgeInsets.all(2.5),
+//                 height: 30,
+//                 width: 80,
+//                 decoration: BoxDecoration(
+//                   color: constTheme.of(context).dividerColor,
+//                   borderRadius: BorderRadius.circular(5),
+//                 ),
+//                 child: Row(
+//                   children: <Widget>[
+//                     GestureDetector(
+//                       onTap: onLotusTap,
+//                       child: Container(
+//                         height: 30,
+//                         // half width of parent container minus horizontal padding
+//                         width: 37.5,
+//                         decoration: BoxDecoration(
+//                           color:
+//                               active ? Colors.white : constTheme.of(context).dividerColor,
+//                           borderRadius: BorderRadius.circular(5),
+//                         ),
+//                         child: Icon(
+//                           CustomIcons.half_lotus,
+//                           size: 12,
+//                           color: active
+//                               ? const Color(0xff555555)
+//                               : const Color(0xff999999),
+//                         ),
+//                       ),
+//                     ),
+//                     GestureDetector(
+//                       onTap: onCollectionsTap,
+//                       child: Container(
+//                         height: 30,
+//                         // half width of parent container minus horizontal padding
+//                         width: 37.5,
+//                         decoration: BoxDecoration(
+//                           color:
+//                               active ? Colors.white : constTheme.of(context).dividerColor,
+//                           borderRadius: BorderRadius.circular(5),
+//                         ),
+//                         child: Icon(
+//                           Icons.collections,
+//                           size: 12,
+//                           color: active
+//                               ? const Color(0xff555555)
+//                               : const Color(0xff999999),
+//                         ),
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//               active
+//                   ? GestureDetector(
+//                       onTap: () {
+//                         Navigator.push(
+//                           context,
+//                           CupertinoPageRoute<dynamic>(
+//                             builder: (BuildContext context) =>
+//                                 DenCreateCollection(),
+//                           ),
+//                         );
+//                       },
+//                       child: Container(
+//                         width: 38,
+//                         alignment: Alignment.centerRight,
+//                         child: Icon(
+//                           Icons.add,
+//                           size: 20,
+//                           color: const Color(0xff555555),
+//                         ),
+//                       ),
+//                     )
+//                   : const SizedBox()
+//             ],
+//           )
+//         ],
+//       ),
+//     );
+//   }
+// }
