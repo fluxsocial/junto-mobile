@@ -101,7 +101,7 @@ class _JuntoMemberState extends State<JuntoMember> {
                                       context: context,
                                       builder: (BuildContext context) =>
                                           Container(
-                                        color: const Color(0xff737373),
+                                        color: Colors.transparent,
                                         child: MemberRelationshipsModal(),
                                       ),
                                     );

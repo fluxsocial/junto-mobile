@@ -213,7 +213,7 @@ class CreateActionsState extends State<CreateActions> {
       context: context,
       builder: (BuildContext context) {
         return Container(
-          color: const Color(0xff737373),
+          color: Colors.transparent,
           child: Container(
             height: MediaQuery.of(context).size.height * .6,
             padding: const EdgeInsets.all(10),
@@ -324,7 +324,7 @@ class _ExpressionLayerBottomSheetState
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color(0xff737373),
+      color: Colors.transparent,
       child: Container(
         height: MediaQuery.of(context).size.height * .6,
         padding: const EdgeInsets.all(10),

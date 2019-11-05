@@ -9,6 +9,7 @@ class JuntoThemes {
     primaryColorLight: const Color(0xff999999),
     dividerColor: const Color(0xffeeeeee),
     backgroundColor: Colors.white,
+    canvasColor: Colors.transparent,
     colorScheme: const ColorScheme(
         // Junto blue
         primary: Color(0xff223E72),
@@ -75,7 +76,9 @@ class JuntoThemes {
         fontWeight: FontWeight.w500,
       ),
       body2: TextStyle(
-          color: const Color(0xff333333), fontSize: 14, fontWeight: FontWeight.w500),
+          color: const Color(0xff333333),
+          fontSize: 14,
+          fontWeight: FontWeight.w500),
 
       caption: TextStyle(
         fontSize: 16,
@@ -99,6 +102,7 @@ class JuntoThemes {
     primaryColorLight: const Color(0xff999999),
     dividerColor: const Color(0xff555555),
     backgroundColor: const Color(0xff333333),
+    canvasColor: Colors.transparent,
     colorScheme: const ColorScheme(
         // Junto blue
         primary: Color(0xFF223E72),

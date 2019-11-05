@@ -14,7 +14,7 @@ class ResonateBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color(0xff737373),
+      color: Colors.transparent,
       child: Container(
         height: MediaQuery.of(context).size.height * .3,
         padding: const EdgeInsets.all(10),

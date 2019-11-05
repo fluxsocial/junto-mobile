@@ -174,7 +174,7 @@ class _JuntoAppBarState extends State<JuntoAppBar>
                       isScrollControlled: true,
                       context: context,
                       builder: (BuildContext context) => Container(
-                        color: const Color(0xff737373),
+                        color: Colors.transparent,
                         child: Container(
                           height: MediaQuery.of(context).size.height * .9,
                           padding: const EdgeInsets.all(10),
@@ -330,7 +330,7 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
         Provider.of<ValueNotifier<SelectedUsers>>(context);
 
     return Container(
-      color: const Color(0xff737373),
+      color: Colors.transparent,
       child: Container(
         height: MediaQuery.of(context).size.height * .9,
         padding: const EdgeInsets.all(10),
@@ -377,7 +377,7 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                         }) =>
                             null,
                         decoration: InputDecoration(
-                          contentPadding: EdgeInsets.all(0.0),
+                          contentPadding: const EdgeInsets.all(0.0),
                           border: InputBorder.none,
                           hintStyle: TextStyle(
                               color: Theme.of(context).primaryColorLight,
@@ -408,9 +408,9 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                     pageController.jumpToPage(0);
                   },
                   child: Text(
-                    'MEMBERS',
+                    'Members',
                     style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 15,
                         fontWeight: FontWeight.w700,
                         color: currentIndex == 0
                             ? Theme.of(context).primaryColorDark
@@ -423,9 +423,9 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                     pageController.jumpToPage(1);
                   },
                   child: Text(
-                    'SPHERES',
+                    'Spheres',
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 15,
                       fontWeight: FontWeight.w700,
                       color: currentIndex == 1
                           ? Theme.of(context).primaryColorDark

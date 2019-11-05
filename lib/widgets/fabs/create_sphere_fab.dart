@@ -16,7 +16,7 @@ class CreateSphereFAB extends StatelessWidget {
           isScrollControlled: true,
           context: context,
           builder: (BuildContext context) => Container(
-            color: const Color(0xff737373),
+            color: Colors.transparent,
             child: _CreateSphereBottomSheet(),
           ),
         );

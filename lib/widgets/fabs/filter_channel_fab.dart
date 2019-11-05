@@ -23,7 +23,7 @@ class FilterChannelFAB extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.bottomLeft,
             end: Alignment.topRight,
-            stops: <double>[0.2, 0.9],
+            stops: <double>[0.1, 0.9],
             colors: <Color>[
               Theme.of(context).colorScheme.secondary,
               Theme.of(context).colorScheme.primary,
@@ -54,7 +54,7 @@ class FilterChannelModalState extends State<FilterChannelModal> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color(0xff737373),
+      color: Colors.transparent,
       child: Container(
         height: MediaQuery.of(context).size.height * .8,
         padding: const EdgeInsets.all(10),

@@ -149,7 +149,7 @@ class DenCreateCollectionState extends State<DenCreateCollection> {
                             isScrollControlled: true,
                             context: context,
                             builder: (BuildContext context) => Container(
-                              color: const Color(0xff737373),
+                              color: Colors.transparent,
                               child: Container(
                                 height: MediaQuery.of(context).size.height * .9,
                                 padding: const EdgeInsets.all(10),

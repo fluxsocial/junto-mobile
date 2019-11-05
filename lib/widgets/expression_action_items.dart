@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-//FIXME: Refactor into Stateless Widget
-// This component is used in ExpressionPreview and ExpressionOpen
-// as the 'more' icon is pressed to view the action items
-// available for each expression
 class ExpressionActionItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color(0xff737373),
+      color: Colors.transparent,
       child: Container(
         height: MediaQuery.of(context).size.height * .4,
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
