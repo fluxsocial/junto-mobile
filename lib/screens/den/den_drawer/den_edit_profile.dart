@@ -17,54 +17,54 @@ class DenEditProfile extends StatelessWidget {
           automaticallyImplyLeading: false,
           brightness: Brightness.light,
           iconTheme: const IconThemeData(color: JuntoPalette.juntoSleek),
-          backgroundColor: Colors.white,
           elevation: 0,
           titleSpacing: 0,
           title: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 GestureDetector(
                   onTap: () => Navigator.pop(context),
-                  child: const Icon(
-                    CustomIcons.back_arrow_left,
-                    color: JuntoPalette.juntoSleek,
-                    size: 24,
+                  child: Container(
+                    padding: const EdgeInsets.only(left: 10),
+                    width: 42,
+                    height: 42,
+                    alignment: Alignment.centerLeft,
+                    color: Colors.transparent,
+                    child: Icon(
+                      CustomIcons.back,
+                      color: Theme.of(context).primaryColorDark,
+                      size: 17,
+                    ),
                   ),
                 ),
-                const Text(
-                  'Edit Profile',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xff333333),
-                  ),
-                ),
-                const Text(
-                  'Save',
-                  style: TextStyle(
-                    color: Color(0xff333333),
-                    fontSize: 14,
-                  ),
+                Text('Edit Profile',
+                    style: Theme.of(context).textTheme.subhead),
+                Container(
+                  padding: const EdgeInsets.only(right: 10),
+                  alignment: Alignment.centerRight,
+                  color: Colors.transparent,
+                  width: 42,
+                  height: 42,
+                  child: Text('Save', style: Theme.of(context).textTheme.body2),
                 )
               ],
             ),
           ),
           bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(1),
+            preferredSize: const Size.fromHeight(.75),
             child: Container(
-              height: 1,
-              decoration: const BoxDecoration(
+              height: .75,
+              decoration: BoxDecoration(
                 border: Border(
-                  bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
+                  bottom: BorderSide(
+                      color: Theme.of(context).dividerColor, width: .75),
                 ),
               ),
             ),
           ),
         ),
       ),
-      backgroundColor: Colors.white,
       body: Column(
         children: <Widget>[
           Expanded(
@@ -73,9 +73,10 @@ class DenEditProfile extends StatelessWidget {
                 Container(
                   padding:
                       const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     border: Border(
-                      bottom: BorderSide(color: Color(0xffeeeeee), width: .75),
+                      bottom: BorderSide(
+                          color: Theme.of(context).dividerColor, width: .75),
                     ),
                   ),
                   child: Row(
@@ -89,9 +90,9 @@ class DenEditProfile extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 10),
-                      const Text(
+                      Text(
                         'Edit profile picture',
-                        style: TextStyle(fontWeight: FontWeight.w500),
+                        style: Theme.of(context).textTheme.body2,
                       )
                     ],
                   ),
@@ -99,26 +100,29 @@ class DenEditProfile extends StatelessWidget {
                 Container(
                   padding:
                       const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     border: Border(
-                      bottom: BorderSide(color: Color(0xffeeeeee), width: .75),
+                      bottom: BorderSide(
+                          color: Theme.of(context).dividerColor, width: .75),
                     ),
                   ),
                   child: TextFormField(
-                      initialValue: name,
-                      decoration: const InputDecoration(
-                          border: InputBorder.none, hintText: 'name'),
-                      maxLines: null,
-                      style: const TextStyle(
-                        fontSize: 14,
-                      )),
+                    initialValue: name,
+                    decoration: const InputDecoration(
+                        border: InputBorder.none, hintText: 'name'),
+                    maxLines: null,
+                    style: const TextStyle(
+                      fontSize: 14,
+                    ),
+                  ),
                 ),
                 Container(
                   padding:
                       const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     border: Border(
-                      bottom: BorderSide(color: Color(0xffeeeeee), width: .75),
+                      bottom: BorderSide(
+                          color: Theme.of(context).dividerColor, width: .75),
                     ),
                   ),
                   child: TextFormField(
@@ -133,9 +137,10 @@ class DenEditProfile extends StatelessWidget {
                 Container(
                   padding:
                       const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     border: Border(
-                      bottom: BorderSide(color: Color(0xffeeeeee), width: .75),
+                      bottom: BorderSide(
+                          color: Theme.of(context).dividerColor, width: .75),
                     ),
                   ),
                   child: TextFormField(
@@ -150,9 +155,10 @@ class DenEditProfile extends StatelessWidget {
                 Container(
                   padding:
                       const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     border: Border(
-                      bottom: BorderSide(color: Color(0xffeeeeee), width: .75),
+                      bottom: BorderSide(
+                          color: Theme.of(context).dividerColor, width: .75),
                     ),
                   ),
                   child: TextFormField(
