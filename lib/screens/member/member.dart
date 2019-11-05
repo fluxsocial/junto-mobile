@@ -196,15 +196,14 @@ class _JuntoMemberState extends State<JuntoMember> {
                                               contentPadding:
                                                   const EdgeInsets.all(0),
                                               title: Row(
-                                                children: <Widget>[
+                                                children: const <Widget>[
                                                   Icon(
                                                     CustomIcons.circle,
                                                     size: 17,
-                                                    color:
-                                                        const Color(0xff555555),
+                                                    color: Color(0xff555555),
                                                   ),
-                                                  const SizedBox(width: 15),
-                                                  const Text(
+                                                  SizedBox(width: 15),
+                                                  Text(
                                                     'Connect',
                                                     style: TextStyle(
                                                         fontWeight:
@@ -219,15 +218,14 @@ class _JuntoMemberState extends State<JuntoMember> {
                                                   const EdgeInsets.all(0),
                                               onTap: () {},
                                               title: Row(
-                                                children: <Widget>[
+                                                children: const <Widget>[
                                                   Icon(
                                                     CustomIcons.packs,
                                                     size: 17,
-                                                    color:
-                                                        const Color(0xff555555),
+                                                    color: Color(0xff555555),
                                                   ),
-                                                  const SizedBox(width: 15),
-                                                  const Text(
+                                                  SizedBox(width: 15),
+                                                  Text(
                                                     'Join Pack',
                                                     style: TextStyle(
                                                         fontWeight:

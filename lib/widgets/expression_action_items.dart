@@ -46,7 +46,7 @@ class ExpressionActionItems extends StatelessWidget {
                         color: Theme.of(context).primaryColor,
                       ),
                       const SizedBox(width: 15),
-                      Text(
+                      const Text(
                         'Hide Expression',
                         style: Theme.of(context).textTheme.headline 
                       ),
@@ -65,7 +65,7 @@ class ExpressionActionItems extends StatelessWidget {
                         color: Theme.of(context).primaryColor,
                       ),
                       const SizedBox(width: 15),
-                      Text(
+                      const Text(
                         'Block Member',
                         style: Theme.of(context).textTheme.headline
                       ),

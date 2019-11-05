@@ -123,7 +123,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                         width: 38,
                         color: Colors.transparent,
                         alignment: Alignment.centerRight,
-                        child: Icon(Icons.add, color: Colors.white, size: 17),
+                        child: const Icon(Icons.add, color: Colors.white, size: 17),
                       ),
                       GestureDetector(
                         onTap: () {
@@ -212,7 +212,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
               onTap: () {
                 _openPerspectiveBottomSheet();
               },
-              child: Icon(
+              child: const Icon(
                 Icons.keyboard_arrow_down,
                 size: 20,
                 color: Colors.white,
@@ -386,7 +386,7 @@ class _CreatePerspectiveBottomSheetState
             ),
             child: Row(
               children: <Widget>[
-                Icon(
+                const Icon(
                   Icons.search,
                   size: 20,
                   color: Theme.of(context).primaryColorLight,

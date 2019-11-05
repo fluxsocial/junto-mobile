@@ -333,7 +333,7 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
     return SafeArea(
       top: false,
       child: Container(
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
           horizontal: JuntoStyles.horizontalPadding,
           vertical: 5,
         ),
