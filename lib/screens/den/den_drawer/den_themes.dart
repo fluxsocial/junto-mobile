@@ -87,27 +87,6 @@ class DenThemes extends StatelessWidget {
                     ),
                   ),
                 ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                          color: Theme.of(context).dividerColor, width: .75),
-                    ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text('Light Royal',
-                          style: Theme.of(context).textTheme.headline),
-                      const SizedBox(height: 5),
-                      Text(
-                          'The Light Royal theme of Junto carries a light tone complemented by our custom purple and yellow gold gradient.',
-                          style: Theme.of(context).textTheme.body2)
-                    ],
-                  ),
-                ),
                 GestureDetector(
                   onTap: () {
                     Provider.of<JuntoThemesProvider>(context)
@@ -135,44 +114,59 @@ class DenThemes extends StatelessWidget {
                     ),
                   ),
                 ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                          color: Theme.of(context).dividerColor, width: .75),
-                    ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text('Night Royal',
-                          style: Theme.of(context).textTheme.headline),
-                      const SizedBox(height: 5),
-                      Text(
-                          'The Night Royal theme carries a darker shade complemented by our custom purple and yellow gold gradient.',
-                          style: Theme.of(context).textTheme.body2)
-                    ],
-                  ),
-                ),
-                // _buildTheme('Light Indigo', context),
-                // _buildTheme('Light Royal', context),
-                // _buildTheme('Light Royal', context),
+
+                // GestureDetector(
+                //   onTap: () {
+                //     // Provider.of<JuntoThemesProvider>(context)
+                //     //     .setTheme('light-royal');
+                //   },
+                //   child: Container(
+                //     padding: const EdgeInsets.symmetric(
+                //         horizontal: 10, vertical: 15),
+                //     decoration: BoxDecoration(
+                //       border: Border(
+                //         bottom: BorderSide(
+                //             color: Theme.of(context).dividerColor, width: .75),
+                //       ),
+                //     ),
+                //     child: Column(
+                //       crossAxisAlignment: CrossAxisAlignment.start,
+                //       children: <Widget>[
+                //         Text('Light Royal',
+                //             style: Theme.of(context).textTheme.headline),
+                //         const SizedBox(height: 5),
+                //         Text(
+                //             'The Light Royal theme of Junto carries a light tone complemented by our custom purple and yellow gold gradient.',
+                //             style: Theme.of(context).textTheme.body2)
+                //       ],
+                //     ),
+                //   ),
+                // ),
+
+                // Container(
+                //   padding:
+                //       const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                //   decoration: BoxDecoration(
+                //     border: Border(
+                //       bottom: BorderSide(
+                //           color: Theme.of(context).dividerColor, width: .75),
+                //     ),
+                //   ),
+                //   child: Column(
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: <Widget>[
+                //       Text('Night Royal',
+                //           style: Theme.of(context).textTheme.headline),
+                //       const SizedBox(height: 5),
+                //       Text(
+                //           'The Night Royal theme carries a darker shade complemented by our custom purple and yellow gold gradient.',
+                //           style: Theme.of(context).textTheme.body2)
+                //     ],
+                //   ),
+                // ),
               ],
             ),
           )
-        ],
-      ),
-    );
-  }
-
-  _buildTheme(String theme, BuildContext context) {
-    Container(
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-      child: Column(
-        children: <Widget>[
-          Text(theme, style: Theme.of(context).textTheme.title)
         ],
       ),
     );

@@ -32,7 +32,7 @@ class JuntoAppState extends State<JuntoApp> {
   Widget build(BuildContext context) {
     return MultiProvider(providers: <SingleChildCloneableWidget>[
       ChangeNotifierProvider<JuntoThemesProvider>(
-        builder: (_) => JuntoThemesProvider(JuntoThemes().juntoLightMain),
+        builder: (_) => JuntoThemesProvider(JuntoThemes().juntoLightIndigo),
       ),
       Provider<SearchProvider>.value(value: backend.searchProvider),
       Provider<AuthRepo>.value(value: backend.authRepo),

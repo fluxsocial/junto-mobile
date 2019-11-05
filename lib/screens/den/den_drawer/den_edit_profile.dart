@@ -90,10 +90,8 @@ class DenEditProfile extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 10),
-                      Text(
-                        'Edit profile picture',
-                        style: Theme.of(context).textTheme.body2,
-                      )
+                      Text('Edit profile picture',
+                          style: Theme.of(context).textTheme.body2)
                     ],
                   ),
                 ),
@@ -111,9 +109,7 @@ class DenEditProfile extends StatelessWidget {
                     decoration: const InputDecoration(
                         border: InputBorder.none, hintText: 'name'),
                     maxLines: null,
-                    style: const TextStyle(
-                      fontSize: 14,
-                    ),
+                    style: Theme.of(context).textTheme.body2,
                   ),
                 ),
                 Container(
@@ -130,9 +126,7 @@ class DenEditProfile extends StatelessWidget {
                       decoration: const InputDecoration(
                           border: InputBorder.none, hintText: 'bio'),
                       maxLines: null,
-                      style: const TextStyle(
-                        fontSize: 14,
-                      )),
+                      style: Theme.of(context).textTheme.body2),
                 ),
                 Container(
                   padding:
@@ -148,9 +142,7 @@ class DenEditProfile extends StatelessWidget {
                       decoration: const InputDecoration(
                           border: InputBorder.none, hintText: 'location'),
                       maxLines: null,
-                      style: const TextStyle(
-                        fontSize: 14,
-                      )),
+                      style: Theme.of(context).textTheme.body2),
                 ),
                 Container(
                   padding:
@@ -166,7 +158,7 @@ class DenEditProfile extends StatelessWidget {
                     decoration: const InputDecoration(
                         border: InputBorder.none, hintText: 'website'),
                     maxLines: null,
-                    style: const TextStyle(fontSize: 14),
+                    style: Theme.of(context).textTheme.body2,
                   ),
                 ),
               ],
