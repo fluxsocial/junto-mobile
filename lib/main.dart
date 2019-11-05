@@ -11,11 +11,11 @@ Future<void> main() async {
     DeviceOrientation.portraitDown,
   ]);
   final Backend backend = await Backend.init();
-
+  final bool _loggedIn = await backend.authRepo.isLoggedIn();
   runLoggedApp(
     JuntoApp(
       backend: backend,
-      loggedIn: await backend.authRepo.isLoggedIn(),
+      loggedIn: _loggedIn ?? false,
     ),
   );
 }
