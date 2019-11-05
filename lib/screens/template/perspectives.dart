@@ -20,11 +20,11 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
     return Scaffold(
       body: Container(
         width: MediaQuery.of(context).size.width * .9,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.bottomLeft,
             end: Alignment.topRight,
-            stops: const <double>[0.1, 0.9],
+            stops: <double>[0.1, 0.9],
             colors: <Color>[
               JuntoPalette.juntoSecondary,
               JuntoPalette.juntoPrimary,
@@ -55,7 +55,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                         ),
                         child: Row(
                           children: <Widget>[
-                            Icon(Icons.search, size: 17, color: Colors.white),
+                            const Icon(Icons.search, size: 17, color: Colors.white),
                             const SizedBox(width: 5),
                             Transform.translate(
                               offset: const Offset(0.0, 2.5),
@@ -130,7 +130,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                         width: 38,
                         color: Colors.transparent,
                         alignment: Alignment.centerRight,
-                        child: Icon(Icons.add, color: Colors.white, size: 17),
+                        child: const Icon(Icons.add, color: Colors.white, size: 17),
                       ),
                     )
                   ],
@@ -201,7 +201,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
               onTap: () {
                 _openPerspectiveBottomSheet();
               },
-              child: Icon(
+              child: const Icon(
                 Icons.keyboard_arrow_down,
                 size: 20,
                 color: Colors.white,
@@ -374,10 +374,10 @@ class _CreatePerspectiveBottomSheetState
             ),
             child: Row(
               children: <Widget>[
-                Icon(
+                const Icon(
                   Icons.search,
                   size: 20,
-                  color: const Color(0xff999999),
+                  color: Color(0xff999999),
                 ),
                 const SizedBox(width: 5),
                 Expanded(

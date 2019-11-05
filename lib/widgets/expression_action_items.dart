@@ -22,9 +22,9 @@ class ExpressionActionsItems extends StatelessWidget {
           left: 10,
           right: 10,
         ),
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.white,
-          borderRadius: const BorderRadius.only(
+          borderRadius: BorderRadius.only(
             topLeft: Radius.circular(10),
             topRight: Radius.circular(10),
           ),
@@ -59,7 +59,7 @@ class ExpressionActionsItems extends StatelessWidget {
                         color: const Color(0xff555555),
                       ),
                       const SizedBox(width: 15),
-                      Text(
+                      const Text(
                         'Hide Expression',
                         style: TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 17),
@@ -78,7 +78,7 @@ class ExpressionActionsItems extends StatelessWidget {
                         color: const Color(0xff555555),
                       ),
                       const SizedBox(width: 15),
-                      Text(
+                      const Text(
                         'Block Member',
                         style: TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 17),
@@ -95,7 +95,7 @@ class ExpressionActionsItems extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text(
+                child: const Text(
                   'Cancel',
                   style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
                 ),
