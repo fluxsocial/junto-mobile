@@ -27,6 +27,12 @@ class ExpressionOpen extends StatefulWidget {
 }
 
 class ExpressionOpenState extends State<ExpressionOpen> {
+  final List<String> comments = <String>[
+    'Hey there! This is what a comment preview looks like.',
+    'All comments are hidden initially so the viewer can have complete independence of thought while viewing expressions.',
+    'In Junto, comments are treated like expressions. You can resonate them or reply to a comment (nested comments). This is quite complex so we are tacklign this once the rest of the core functionality is finished.',
+    "And yes, I know what you're thinking. 'Comments??' We need a new semantic!",
+  ];
   //  whether the comments are visible or not
   bool commentsVisible = false;
 
@@ -68,15 +74,13 @@ class ExpressionOpenState extends State<ExpressionOpen> {
     } else if (expressionType == 'EventForm') {
       return EventOpen(widget.expression);
     } else {
-      print(widget.expression.type);
-
       return const Text('no expressions!');
     }
   }
 
   // Swipe down to dismiss keyboard
   void _onDragDown(DragDownDetails details) {
-    FocusScope.of(context).requestFocus(FocusNode());
+    FocusScope.of(context).requestFocus(_focusNode);
   }
 
   // Bring the focus back to the TextField
@@ -88,9 +92,9 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   Future<void> _showPrivacyModalSheet() async {
     await showModalBottomSheet(
       context: context,
-      builder: (BuildContext context) => Container(
-        color: const Color(0xff737373),
-        child: Container(
+      backgroundColor: const Color(0xff737373),
+      builder: (BuildContext context) {
+        return Container(
           height: 240,
           padding: const EdgeInsets.all(10),
           decoration: const BoxDecoration(
@@ -153,11 +157,30 @@ class ExpressionOpenState extends State<ExpressionOpen> {
               ),
             ],
           ),
-        ),
-      ),
+        );
+      },
     );
-
     _focusTextField();
+  }
+
+  void _onTextChange(String value) {
+    if (value.isEmpty) {
+      createComment.value = false;
+    } else if (value.isNotEmpty) {
+      createComment.value = true;
+    }
+  }
+
+  void _showComments() {
+    if (commentsVisible == false) {
+      setState(() {
+        commentsVisible = true;
+      });
+    } else if (commentsVisible == true) {
+      setState(() {
+        commentsVisible = false;
+      });
+    }
   }
 
   @override
@@ -179,17 +202,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                   _buildExpression(),
                   ExpressionOpenBottom(widget.expression),
                   GestureDetector(
-                    onTap: () {
-                      if (commentsVisible == false) {
-                        setState(() {
-                          commentsVisible = true;
-                        });
-                      } else if (commentsVisible == true) {
-                        setState(() {
-                          commentsVisible = false;
-                        });
-                      }
-                    },
+                    onTap: _showComments,
                     child: Container(
                       decoration: const BoxDecoration(
                         color: Colors.white,
@@ -202,52 +215,30 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                           horizontal: 10, vertical: 15),
                       child: Row(
                         children: <Widget>[
-                          const Text(
-                            'Show replies (9)',
-                            style: TextStyle(fontWeight: FontWeight.w500),
+                          Text(
+                            'Show replies (${comments.length})',
+                            style: const TextStyle(fontWeight: FontWeight.w500),
                           ),
                           const SizedBox(width: 5),
-                          commentsVisible == false
-                              ? const Icon(Icons.keyboard_arrow_down, size: 17)
-                              : const Icon(Icons.keyboard_arrow_up, size: 17)
+                          if (commentsVisible == false)
+                            const Icon(Icons.keyboard_arrow_down, size: 17),
+                          if (commentsVisible != false)
+                            const Icon(Icons.keyboard_arrow_up, size: 17),
                         ],
                       ),
                     ),
                   ),
-                  commentsVisible
-                      ? ListView(
-                          shrinkWrap: true,
-                          physics: const ClampingScrollPhysics(),
-                          children: const <Widget>[
-                            CommentPreview(
-                              commentText:
-                                  'Hey there! This is what a comment preview looks like.',
-                            ),
-                            CommentPreview(
-                              commentText:
-                                  'All comments are hidden initially so the viewer can have complete independence of thought while viewing expressions.',
-                            ),
-                            CommentPreview(
-                              commentText:
-                                  'In Junto, comments are treated like expressions. You can resonate them or reply to a comment (nested comments). This is quite complex so we are tacklign this once the rest of the core functionality is finished.',
-                            ),
-                            CommentPreview(
-                              commentText:
-                                  "And yes, I know what you're thinking. 'Comments??' We need a new semantic!",
-                            ),
-                            CommentPreview(
-                              commentText:
-                                  "Let's leave that to Fri to discuss :)",
-                            ),
-                            CommentPreview(
-                              commentText: 'Much',
-                            ),
-                            CommentPreview(
-                              commentText: 'love <3',
-                            ),
-                          ],
-                        )
-                      : const SizedBox()
+                  if (commentsVisible)
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: const ClampingScrollPhysics(),
+                      itemCount: comments.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return CommentPreview(
+                          commentText: comments[index],
+                        );
+                      },
+                    )
                 ],
               ),
             ),
@@ -258,13 +249,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
             commentController: commentController,
             commentPrivacy: _commentPrivacy,
             focusNode: _focusNode,
-            onTextChange: (String value) {
-              if (value.isEmpty) {
-                createComment.value = false;
-              } else if (value.isNotEmpty) {
-                createComment.value = true;
-              }
-            },
+            onTextChange: _onTextChange,
             showPrivacySheet: () async {
               await _showPrivacyModalSheet();
             },
@@ -447,6 +432,7 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
                             onTap: () async {
                               await showModalBottomSheet(
                                 context: context,
+                                isScrollControlled: false,
                                 backgroundColor: const Color(0xff737373),
                                 builder: (BuildContext context) => _GiphyPanel(
                                   onGifSelected: (String selected) {
