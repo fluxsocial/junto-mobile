@@ -38,13 +38,13 @@ class JuntoDenAppbar extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.bottomLeft,
                   end: Alignment.topRight,
-                  stops: <double>[0.3, 0.9],
+                  stops: <double>[0.2, 0.9],
                   colors: <Color>[
                     Theme.of(context).colorScheme.secondaryVariant,
                     Theme.of(context).colorScheme.primaryVariant,
                   ],
+                  ),
                 ),
-              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

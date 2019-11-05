@@ -25,7 +25,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
             gradient: LinearGradient(
               begin: Alignment.bottomLeft,
               end: Alignment.topRight,
-              stops: <double>[0.4, 0.9],
+              stops: <double>[0.2, 0.9],
               colors: <Color>[
                 Theme.of(context).colorScheme.secondary,
                 Theme.of(context).colorScheme.primary
@@ -45,53 +45,53 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                       Image.asset('assets/images/junto-mobile__logo--white.png',
                           height: 22.0, width: 22.0),
                       const SizedBox(width: 15),
-                      Expanded(
-                        child: Container(
-                          alignment: Alignment.centerLeft,
-                          height: 33,
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                            color: const Color(0xff4263A3),
-                            borderRadius: BorderRadius.circular(100),
-                          ),
-                          child: Row(
-                            children: <Widget>[
-                              Icon(Icons.search, size: 17, color: Colors.white),
-                              const SizedBox(width: 5),
-                              Transform.translate(
-                                offset: const Offset(0.0, 2.5),
-                                child: Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * .72 -
-                                          45,
-                                  child: TextField(
-                                    buildCounter: (
-                                      BuildContext context, {
-                                      int currentLength,
-                                      int maxLength,
-                                      bool isFocused,
-                                    }) =>
-                                        null,
-                                    decoration: const InputDecoration(
-                                      contentPadding: EdgeInsets.all(0),
-                                      border: InputBorder.none,
-                                    ),
-                                    cursorColor: Colors.white,
-                                    cursorWidth: 2,
-                                    maxLines: 1,
-                                    style: const TextStyle(
-                                        color: Color(0xffffffff),
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500),
-                                    maxLength: 80,
-                                    textInputAction: TextInputAction.done,
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      )
+                      // Expanded(
+                      //   child: Container(
+                      //     alignment: Alignment.centerLeft,
+                      //     height: 33,
+                      //     padding: const EdgeInsets.symmetric(horizontal: 10),
+                      //     decoration: BoxDecoration(
+                      //       color: const Color(0xff4263A3),
+                      //       borderRadius: BorderRadius.circular(100),
+                      //     ),
+                      //     child: Row(
+                      //       children: <Widget>[
+                      //         Icon(Icons.search, size: 17, color: Colors.white),
+                      //         const SizedBox(width: 5),
+                      //         Transform.translate(
+                      //           offset: const Offset(0.0, 2.5),
+                      //           child: Container(
+                      //             width:
+                      //                 MediaQuery.of(context).size.width * .72 -
+                      //                     45,
+                      //             child: TextField(
+                      //               buildCounter: (
+                      //                 BuildContext context, {
+                      //                 int currentLength,
+                      //                 int maxLength,
+                      //                 bool isFocused,
+                      //               }) =>
+                      //                   null,
+                      //               decoration: const InputDecoration(
+                      //                 contentPadding: EdgeInsets.all(0),
+                      //                 border: InputBorder.none,
+                      //               ),
+                      //               cursorColor: Colors.white,
+                      //               cursorWidth: 2,
+                      //               maxLines: 1,
+                      //               style: const TextStyle(
+                      //                   color: Color(0xffffffff),
+                      //                   fontSize: 14,
+                      //                   fontWeight: FontWeight.w500),
+                      //               maxLength: 80,
+                      //               textInputAction: TextInputAction.done,
+                      //             ),
+                      //           ),
+                      //         )
+                      //       ],
+                      //     ),
+                      //   ),
+                      // )
                     ],
                   ),
                 ),
@@ -218,9 +218,9 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
         child: Container(
           height: MediaQuery.of(context).size.height * .9,
           padding: const EdgeInsets.all(10),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.background,
+            borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(10),
               topRight: Radius.circular(10),
             ),
@@ -305,9 +305,9 @@ class _CreatePerspectiveBottomSheetState
     return Container(
       height: MediaQuery.of(context).size.height * .9,
       padding: const EdgeInsets.all(10),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.background,
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(10),
           topRight: Radius.circular(10),
         ),
@@ -318,19 +318,11 @@ class _CreatePerspectiveBottomSheetState
           const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const <Widget>[
-              // Text('cancel'),
-              Text(
-                'New Perspective',
-                style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xff333333),
-                ),
-              ),
+            children: <Widget>[
+              Text('New Perspective', style: Theme.of(context).textTheme.title),
               Text(
                 'create',
-                style: TextStyle(fontWeight: FontWeight.w500),
+                style: Theme.of(context).textTheme.caption,
               )
             ],
           ),
@@ -345,48 +337,45 @@ class _CreatePerspectiveBottomSheetState
                 bool isFocused,
               }) =>
                   null,
-              decoration: const InputDecoration(
-                  contentPadding: EdgeInsets.all(0),
-                  border: InputBorder.none,
-                  hintText: 'Name your perspective',
-                  hintStyle: TextStyle(
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.all(0),
+                border: InputBorder.none,
+                hintText: 'Name perspective',
+                hintStyle: TextStyle(
                     fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xff999999),
-                  )),
-              cursorColor: const Color(0xff333333),
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).primaryColorLight),
+              ),
+              cursorColor: Theme.of(context).primaryColorDark,
               cursorWidth: 2,
               maxLines: 1,
-              style: const TextStyle(
-                  color: Color(0xff333333),
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500),
+              style: Theme.of(context).textTheme.caption,
               maxLength: 80,
               textInputAction: TextInputAction.done,
             ),
           ),
           Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color: Color(0xffeeeeee),
-                  width: 1,
+                  color: Theme.of(context).dividerColor,
+                  width: .75,
                 ),
               ),
             ),
             child: Row(
               children: <Widget>[
-                Icon(
-                  Icons.search,
-                  size: 20,
-                  color: const Color(0xff999999),
-                ),
-                const SizedBox(width: 5),
+                // Icon(
+                //   Icons.search,
+                //   size: 20,
+                //   color: Theme.of(context).primaryColorLight,
+                // ),
+                // const SizedBox(width: 5),
                 Expanded(
                   child: Transform.translate(
                     offset: const Offset(
                       0.0,
-                      5,
+                      4,
                     ),
                     child: TextField(
                       buildCounter: (
@@ -396,21 +385,18 @@ class _CreatePerspectiveBottomSheetState
                         bool isFocused,
                       }) =>
                           null,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         border: InputBorder.none,
-                        hintText: 'add members to your perspective',
+                        hintText: 'Add members',
                         hintStyle: TextStyle(
-                            color: Color(0xff999999),
                             fontSize: 15,
-                            fontWeight: FontWeight.w500),
+                            fontWeight: FontWeight.w500,
+                            color: Theme.of(context).primaryColorLight),
                       ),
-                      cursorColor: const Color(0xff333333),
+                      cursorColor: Theme.of(context).primaryColorDark,
                       cursorWidth: 2,
                       maxLines: null,
-                      style: const TextStyle(
-                          color: Color(0xff333333),
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500),
+                      style: Theme.of(context).textTheme.caption,
                       maxLength: 80,
                       textInputAction: TextInputAction.done,
                     ),
@@ -430,11 +416,11 @@ class _CreatePerspectiveBottomSheetState
                 child: Text(
                   'CONNECTIONS',
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 12,
                     fontWeight: FontWeight.w700,
                     color: _searchMembersIndex == 0
-                        ? const Color(0xff333333)
-                        : const Color(0xff999999),
+                        ? Theme.of(context).primaryColorDark
+                        : Theme.of(context).primaryColorLight,
                   ),
                 ),
               ),
@@ -447,11 +433,11 @@ class _CreatePerspectiveBottomSheetState
                 child: Text(
                   'SUBSCRIPTIONS',
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 12,
                     fontWeight: FontWeight.w700,
                     color: _searchMembersIndex == 1
-                        ? const Color(0xff333333)
-                        : const Color(0xff999999),
+                        ? Theme.of(context).primaryColorDark
+                        : Theme.of(context).primaryColorLight,
                   ),
                 ),
               ),
@@ -464,11 +450,11 @@ class _CreatePerspectiveBottomSheetState
                 child: Text(
                   'ALL',
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 12,
                     fontWeight: FontWeight.w700,
                     color: _searchMembersIndex == 2
-                        ? const Color(0xff333333)
-                        : const Color(0xff999999),
+                        ? Theme.of(context).primaryColorDark
+                        : Theme.of(context).primaryColorLight,
                   ),
                 ),
               )

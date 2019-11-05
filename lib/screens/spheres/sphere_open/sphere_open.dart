@@ -241,12 +241,20 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                   background: Column(
                     children: <Widget>[
                       Container(
-                        constraints: BoxConstraints.expand(
-                            height: MediaQuery.of(context).size.height * .3),
-                        child: Image.asset(
-                          'assets/images/junto-mobile__stillmind.png',
-                          fit: BoxFit.cover,
+                        height: MediaQuery.of(context).size.height * .3,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.bottomLeft,
+                            end: Alignment.topRight,
+                            stops: <double>[0.2, 0.9],
+                            colors: <Color>[
+                              Theme.of(context).colorScheme.secondary,
+                              Theme.of(context).colorScheme.primary
+                            ],
+                          ),
                         ),
+                        alignment: Alignment.center,
+                        child: Icon(CustomIcons.spheres, size: 60, color: Theme.of(context).colorScheme.onPrimary),
                       ),
                       Container(
                         key: _keyFlexibleSpace,
