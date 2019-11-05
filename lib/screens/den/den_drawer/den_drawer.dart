@@ -90,34 +90,29 @@ class _DenDrawerState extends State<DenDrawer> {
       child: Drawer(
         elevation: 0,
         child: Container(
-          color: Colors.white,
-          margin: EdgeInsets.only(top: statusBarHeight),
+          color: Theme.of(context).colorScheme.background,
+          padding: EdgeInsets.only(top: statusBarHeight),
           child: Column(
             children: <Widget>[
               Container(
                 height: 48,
                 padding: const EdgeInsets.symmetric(horizontal: 10),
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   border: Border(
-                    bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
+                    bottom: BorderSide(
+                        color: Theme.of(context).dividerColor, width: .75),
                   ),
                 ),
                 alignment: Alignment.centerLeft,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text(
-                      'Hey ${profile?.firstName}!',
-                      style: const TextStyle(
-                          fontSize: 17,
-                          color: Color(0xff333333),
-                          fontWeight: FontWeight.w700),
-                    ),
+                    Text('My Den', style: Theme.of(context).textTheme.title),
                     ClipOval(
                       child: Image.asset(
                         'assets/images/junto-mobile__eric.png',
-                        height: 36.0,
-                        width: 36.0,
+                        height: 38.0,
+                        width: 38.0,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -142,38 +137,38 @@ class _DenDrawerState extends State<DenDrawer> {
                       arrow: true,
                     ),
                     DenDrawerItem(
-                      title: 'Subscribers',
+                      title: 'Subscribers/Subscriptions',
                       onTap: _onFollowersPress,
                       arrow: true,
                     ),
                     DenDrawerItem(
-                      title: 'Edit profile',
+                      title: 'Edit den',
                       onTap: _onEditPress,
                       arrow: true,
                     ),
 
                     DenDrawerItem(
-                      title: 'Night theme',
+                      title: 'Themes',
                       onTap: () {
                         // nav
                       },
                       arrow: true,
                     ),
 
-                    DenDrawerItem(
-                      title: 'Manage account',
-                      onTap: () {
-                        // nav
-                      },
-                      arrow: true,
-                    ),
-                    DenDrawerItem(
-                      title: 'Resources',
-                      onTap: () {
-                        // nav
-                      },
-                      arrow: true,
-                    ),
+                    // DenDrawerItem(
+                    //   title: 'Manage account',
+                    //   onTap: () {
+                    //     // nav
+                    //   },
+                    //   arrow: true,
+                    // ),
+                    // DenDrawerItem(
+                    //   title: 'Resources',
+                    //   onTap: () {
+                    //     // nav
+                    //   },
+                    //   arrow: true,
+                    // ),
                     DenDrawerItem(
                       title: 'Logout',
                       onTap: () async {
@@ -216,23 +211,17 @@ class DenDrawerItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.background,
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
+            Text(title, style: Theme.of(context).textTheme.caption),
             arrow == true
                 ? Icon(
                     Icons.keyboard_arrow_right,
                     size: 17,
-                    color: const Color(0xff555555),
+                    color: Theme.of(context).primaryColor,
                   )
                 : const SizedBox()
           ],
