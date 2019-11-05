@@ -17,6 +17,7 @@ class ExpressionOpenTop extends StatelessWidget {
     final String username = expression.creator.username;
     final String firstName = expression.creator.firstName;
     final String lastName = expression.creator.lastName;
+    final String profilePicture = expression.creator.profilePicture;
 
     return Container(
       padding: const EdgeInsets.only(top: 15, bottom: 15, left: 10),
@@ -50,7 +51,8 @@ class ExpressionOpenTop extends StatelessWidget {
                 // profile picture
                 ClipOval(
                   child: Image.asset(
-                    'assets/images/junto-mobile__placeholder--member.png',
+                    profilePicture,
+                    // 'assets/images/junto-mobile__placeholder--member.png',
                     height: 45.0,
                     width: 45.0,
                     fit: BoxFit.cover,

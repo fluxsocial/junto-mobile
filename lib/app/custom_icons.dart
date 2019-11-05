@@ -13,6 +13,7 @@ class CustomIcons {
   static const IconData member = IconData(0xe905, fontFamily: 'j_home');
   static const IconData resonate = IconData(0xe906, fontFamily: 'j_home');
   static const IconData comment = IconData(0xe907, fontFamily: 'j_home');
+  static const IconData commenticon = IconData(0xe90e, fontFamily: 'j_home');
   static const IconData more = IconData(0xe908, fontFamily: 'j_home');
   static const IconData back = IconData(0xe90d, fontFamily: 'j_home');
   static const IconData back_arrow_left =

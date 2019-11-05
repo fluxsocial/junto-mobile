@@ -18,9 +18,9 @@ class ResonateBottomSheet extends StatelessWidget {
       child: Container(
         height: MediaQuery.of(context).size.height * .3,
         padding: const EdgeInsets.all(10),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.background,
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(10),
             topRight: Radius.circular(10),
           ),
@@ -39,8 +39,9 @@ class ResonateBottomSheet extends StatelessWidget {
                       height: 5,
                       width: MediaQuery.of(context).size.width * .1,
                       decoration: BoxDecoration(
-                          color: const Color(0xffeeeeee),
-                          borderRadius: BorderRadius.circular(100)),
+                        color: Theme.of(context).dividerColor,
+                        borderRadius: BorderRadius.circular(100),
+                      ),
                     ),
                   ],
                 ),
@@ -51,14 +52,13 @@ class ResonateBottomSheet extends StatelessWidget {
                     children: <Widget>[
                       Image.asset(
                         'assets/images/junto-mobile__resonation.png',
-                        height: 17,
-                        color: const Color(0xff555555),
+                        height: 20,
+                        color: Theme.of(context).primaryColor,
                       ),
                       const SizedBox(width: 10),
-                      const Text(
+                      Text(
                         'Resonate',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 17),
+                        style: Theme.of(context).textTheme.headline,
                       ),
                     ],
                   ),
@@ -81,21 +81,19 @@ class ResonateBottomSheet extends StatelessWidget {
                     children: <Widget>[
                       Icon(
                         Icons.edit,
-                        size: 17,
-                        color: const Color(0xff555555),
+                        size: 20,
+                        color: Theme.of(context).primaryColor,
                       ),
                       const SizedBox(width: 10),
-                      const Text(
+                      Text(
                         'Resonate with comment',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 17),
+                        style: Theme.of(context).textTheme.headline,
                       ),
                     ],
                   ),
                 ),
               ],
             ),
-
           ],
         ),
       ),

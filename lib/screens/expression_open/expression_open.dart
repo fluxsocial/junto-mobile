@@ -197,7 +197,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                 children: <Widget>[
                   ExpressionOpenTop(expression: widget.expression),
                   _buildExpression(),
-                  ExpressionOpenBottom(widget.expression),
+                  ExpressionOpenBottom(widget.expression, _focusTextField),
                   GestureDetector(
                     onTap: () {
                       if (commentsVisible == false) {
