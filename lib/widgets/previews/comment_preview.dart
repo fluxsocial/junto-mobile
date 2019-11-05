@@ -85,7 +85,7 @@ class CommentPreview extends StatelessWidget {
                       showModalBottomSheet(
                         context: context,
                         builder: (BuildContext context) => Container(
-                          color: const Color(0xff737373),
+                          color: Colors.transparent,
                           child: CommentActionItems(),
                         ),
                       );

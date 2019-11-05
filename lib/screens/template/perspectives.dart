@@ -123,7 +123,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                             isScrollControlled: true,
                             context: context,
                             builder: (BuildContext context) => Container(
-                                color: const Color(0xff737373),
+                                color: Colors.transparent,
                                 child: _CreatePerspectiveBottomSheet()),
                           );
                         },
@@ -214,7 +214,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
       isScrollControlled: true,
       context: context,
       builder: (BuildContext context) => Container(
-        color: const Color(0xff737373),
+        color: Colors.transparent,
         child: Container(
           height: MediaQuery.of(context).size.height * .9,
           padding: const EdgeInsets.all(10),
@@ -354,7 +354,9 @@ class _CreatePerspectiveBottomSheetState
               textInputAction: TextInputAction.done,
             ),
           ),
+          SizedBox(height: 10),
           Container(
+            padding: EdgeInsets.only(bottom: 5),
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
@@ -365,18 +367,15 @@ class _CreatePerspectiveBottomSheetState
             ),
             child: Row(
               children: <Widget>[
-                // Icon(
-                //   Icons.search,
-                //   size: 20,
-                //   color: Theme.of(context).primaryColorLight,
-                // ),
-                // const SizedBox(width: 5),
+                Icon(
+                  Icons.search,
+                  size: 20,
+                  color: Theme.of(context).primaryColorLight,
+                ),
+                const SizedBox(width: 5),
                 Expanded(
                   child: Transform.translate(
-                    offset: const Offset(
-                      0.0,
-                      4,
-                    ),
+                    offset: const Offset(0.0, 4),
                     child: TextField(
                       buildCounter: (
                         BuildContext context, {
@@ -386,13 +385,13 @@ class _CreatePerspectiveBottomSheetState
                       }) =>
                           null,
                       decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Add members',
-                        hintStyle: TextStyle(
+                          contentPadding: const EdgeInsets.all(0),
+                          border: InputBorder.none,
+                          hintText: 'add members',
+                          hintStyle: const TextStyle(
                             fontSize: 15,
-                            fontWeight: FontWeight.w500,
-                            color: Theme.of(context).primaryColorLight),
-                      ),
+                            color: Color(0xff999999),
+                          )),
                       cursorColor: Theme.of(context).primaryColorDark,
                       cursorWidth: 2,
                       maxLines: null,
@@ -414,9 +413,9 @@ class _CreatePerspectiveBottomSheetState
                   _searchMembersIndex = 0;
                 },
                 child: Text(
-                  'CONNECTIONS',
+                  'Connections',
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: 15,
                     fontWeight: FontWeight.w700,
                     color: _searchMembersIndex == 0
                         ? Theme.of(context).primaryColorDark
@@ -424,16 +423,16 @@ class _CreatePerspectiveBottomSheetState
                   ),
                 ),
               ),
-              const SizedBox(width: 25),
+              const SizedBox(width: 20),
               GestureDetector(
                 onTap: () {
                   _searchMembersController.jumpToPage(1);
                   _searchMembersIndex = 1;
                 },
                 child: Text(
-                  'SUBSCRIPTIONS',
+                  'Subscriptions',
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: 15,
                     fontWeight: FontWeight.w700,
                     color: _searchMembersIndex == 1
                         ? Theme.of(context).primaryColorDark
@@ -441,16 +440,16 @@ class _CreatePerspectiveBottomSheetState
                   ),
                 ),
               ),
-              const SizedBox(width: 25),
+              const SizedBox(width: 20),
               GestureDetector(
                 onTap: () {
                   _searchMembersController.jumpToPage(2);
                   _searchMembersIndex = 2;
                 },
                 child: Text(
-                  'ALL',
+                  'All',
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: 15,
                     fontWeight: FontWeight.w700,
                     color: _searchMembersIndex == 2
                         ? Theme.of(context).primaryColorDark

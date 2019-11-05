@@ -9,7 +9,7 @@ class SphereOpenActionItems extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Container(
-      color: const Color(0xff737373),
+      color: Colors.transparent,
       child: Container(
         height: MediaQuery.of(context).size.height * .4,
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),

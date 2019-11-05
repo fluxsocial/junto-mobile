@@ -105,7 +105,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
     await showModalBottomSheet(
       context: context,
       builder: (BuildContext context) => Container(
-        color: const Color(0xff737373),
+        color: Colors.transparent,
         child: Container(
           height: MediaQuery.of(context).size.height * .3,
           padding: const EdgeInsets.all(10),
