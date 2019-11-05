@@ -51,7 +51,6 @@ class PackOpenAppbar extends StatelessWidget {
                 onTap: () {
                   Scaffold.of(context).openEndDrawer();
                 },
-
                 child: Container(
                   alignment: Alignment.center,
                   height: 32.0,

@@ -40,8 +40,8 @@ class JuntoDenAppbar extends StatelessWidget {
                   end: Alignment.topRight,
                   stops: <double>[0.3, 0.9],
                   colors: <Color>[
-                    Theme.of(context).colorScheme.secondary,
-                    Theme.of(context).colorScheme.primary,
+                    Theme.of(context).colorScheme.secondaryVariant,
+                    Theme.of(context).colorScheme.primaryVariant,
                   ],
                 ),
               ),
@@ -72,13 +72,14 @@ class JuntoDenAppbar extends StatelessWidget {
                         child: Container(
                             margin: const EdgeInsets.only(left: 10),
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 5, vertical: 5),
+                                horizontal: 10, vertical: 5),
                             decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: Colors.white, width: 1.5),
-                                borderRadius: BorderRadius.circular(5)),
+                              border:
+                                  Border.all(color: Colors.white, width: 1.5),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
                             child: Text(
-                              'Edit Den',
+                              'My Den',
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w700,
@@ -117,10 +118,10 @@ class JuntoAppBarDelegate extends SliverPersistentHeaderDelegate {
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
-      decoration: const BoxDecoration(
-        color: Colors.white,
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.background,
         border: Border(
-          bottom: BorderSide(color: Color(0xffeeeeee), width: .5),
+          bottom: BorderSide(color: Theme.of(context).dividerColor, width: .5),
         ),
       ),
       width: MediaQuery.of(context).size.width,
