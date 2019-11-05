@@ -7,13 +7,9 @@ import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives'
     '/create_perspective/create_perspective.dart' show SelectedUsers;
-import 'package:junto_beta_mobile/app/palette.dart';
-import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
-import 'package:junto_beta_mobile/widgets/previews/channel_preview.dart';
-import 'package:junto_beta_mobile/widgets/previews/sphere_preview/sphere_preview_search.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 // Junto app bar used throughout the main screens. Rendered in JuntoTemplate.
@@ -223,11 +219,6 @@ class _JuntoAppBarState extends State<JuntoAppBar>
                     ),
                   ),
                 ),
-                RaisedButton(onPressed: () {
-                  // Provider.of<JuntoThemesProvider>(context)
-                  //     .setTheme('lightSecondary');
-                  Provider.of<JuntoThemesProvider>(context).setTheme('night');
-                })
               ],
             )
           ],

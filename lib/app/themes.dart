@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class JuntoThemes {
+  // Junto Light Indigo Theme
   ThemeData juntoLightMain = ThemeData(
     fontFamily: 'Avenir',
     primaryColor: const Color(0xff555555),
@@ -90,6 +91,7 @@ class JuntoThemes {
     ),
   );
 
+// Junto Night Indigo Theme
   ThemeData juntoNight = ThemeData(
     fontFamily: 'Avenir',
     primaryColor: const Color(0xfff0f0f0),
