@@ -7,6 +7,7 @@ import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open.dart';
 import 'package:junto_beta_mobile/screens/den/den_drawer/den_connections.dart';
 import 'package:junto_beta_mobile/screens/den/den_drawer/den_followers.dart';
 import 'package:junto_beta_mobile/screens/den/den_drawer/den_edit_profile.dart';
+import 'package:junto_beta_mobile/screens/den/den_drawer/den_themes.dart';
 import 'package:junto_beta_mobile/screens/sign_in/sign_in.dart';
 import 'package:provider/provider.dart';
 
@@ -151,6 +152,12 @@ class _DenDrawerState extends State<DenDrawer> {
                       title: 'Themes',
                       onTap: () {
                         // nav
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (BuildContext context) => DenThemes(),
+                          ),
+                        );
                       },
                       arrow: true,
                     ),

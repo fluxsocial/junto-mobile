@@ -8,12 +8,10 @@ class JuntoThemesProvider with ChangeNotifier {
   getTheme() => currentTheme;
 
   void setTheme(String theme) {
-    if (theme == 'lightSecondary') {
-      // currentTheme = JuntoThemes().juntoLightSecondary;
-      print('set secondary theme');
-    } else if (theme == 'night') {
+    if (theme == 'light-indigo') {
+      currentTheme = JuntoThemes().juntoLightMain;
+    } else if (theme == 'night-indigo') {
       currentTheme = JuntoThemes().juntoNight;
-      print('set night theme');
     }
 
     notifyListeners();
