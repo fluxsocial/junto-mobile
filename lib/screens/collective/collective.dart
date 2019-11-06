@@ -35,14 +35,11 @@ class JuntoCollectiveState extends State<JuntoCollective> {
   void initState() {
     super.initState();
     _perspective = widget.currentPerspective;
-
-    widget.controller.addListener(scollListener);
   }
 
   @override
   void dispose() {
     super.dispose();
-    widget.controller.removeListener(scollListener);
   }
 
   @override
@@ -52,18 +49,11 @@ class JuntoCollectiveState extends State<JuntoCollective> {
     super.didChangeDependencies();
   }
 
-  void scollListener() {
-    if (widget.controller.position.pixels ==
-        widget.controller.position.maxScrollExtent) {
-      _getData();
-    }
-  }
-
   Future<void> _getData() async {
     if (!isLoading) {
       setState(() => isLoading = true);
     }
-    await Future<void>.delayed(const Duration(seconds: 2), () {});
+    await Future<void>.delayed(const Duration(milliseconds: 500), () {});
     isLoading = false;
     if (mounted)
       setState(() {
@@ -73,13 +63,43 @@ class JuntoCollectiveState extends State<JuntoCollective> {
       });
   }
 
-  Widget _buildProgressIndicator() {
-    return const Padding(
-      padding: EdgeInsets.all(8.0),
-      child: Center(
-        child: Opacity(
-          opacity: 1.0,
-          child: CircularProgressIndicator(),
+  Widget _buildLoadExpressions() {
+    return GestureDetector(
+      onTap: () {
+        _getData();
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.background,
+          gradient: LinearGradient(
+            begin: Alignment.bottomLeft,
+            end: Alignment.topRight,
+            stops: <double>[0.2, 0.9],
+            colors: <Color>[
+              Theme.of(context).colorScheme.secondary,
+              Theme.of(context).colorScheme.primary
+            ],
+          ),
+        ),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 10,
+          vertical: 15,
+        ),
+        alignment: Alignment.center,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              'view 10 more expressions',
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700),
+            ),
+            const SizedBox(width: 2.5),
+            Icon(Icons.keyboard_arrow_down,
+                size: 13, color: Theme.of(context).colorScheme.onPrimary)
+          ],
         ),
       ),
     );
@@ -114,7 +134,7 @@ class JuntoCollectiveState extends State<JuntoCollective> {
 
           for (int index = 0; index < initialData.length + 1; index++)
             if (index == initialData.length)
-              _buildProgressIndicator()
+              _buildLoadExpressions()
             else
               ExpressionPreview(expression: initialData[index])
         ],

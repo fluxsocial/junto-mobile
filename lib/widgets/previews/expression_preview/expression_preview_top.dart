@@ -67,7 +67,7 @@ class ExpressionPreviewTop extends StatelessWidget {
                   ),
                   const SizedBox(width: 10),
                   Container(
-                    child: Text(username,
+                    child: Text(username.toLowerCase(),
                         style: Theme.of(context).textTheme.subhead),
                   )
                 ],

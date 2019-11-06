@@ -214,9 +214,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                           children: <Widget>[
                             Container(
                               width: MediaQuery.of(context).size.width * .7,
-                              child: Text(
-                                  'Hello this is a sphere for great members viva!',
-                                  // widget.group.groupData.name,
+                              child: Text(widget.group.groupData.name,
                                   style: Theme.of(context).textTheme.display1),
                             ),
                             Container(
@@ -247,7 +245,10 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                     ],
                   ),
                 ),
-                expandedHeight: MediaQuery.of(context).size.height * .2 + 158,
+                expandedHeight: _flexibleHeightSpace == null
+                    ? 10000
+                    : MediaQuery.of(context).size.height * .3 +
+                        _flexibleHeightSpace,
                 forceElevated: false,
               ),
               SliverPersistentHeader(
@@ -361,7 +362,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                const Text('Principles', style: JuntoStyles.header),
+                Text('Principles', style: Theme.of(context).textTheme.title),
                 _PrincipleListing(
                   data: principles,
                   showFirst: _principlesFullView,
@@ -615,6 +616,7 @@ class __PrincipleListingState extends State<_PrincipleListing> {
     } else {
       return ListView.builder(
         shrinkWrap: true,
+        physics: ClampingScrollPhysics(),
         itemCount: widget.data.length,
         itemBuilder: (BuildContext context, int index) {
           return _PrincipleItem(
@@ -644,9 +646,9 @@ class _PrincipleItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
+          bottom: BorderSide(color: Theme.of(context).dividerColor, width: 1),
         ),
       ),
       child: Row(
@@ -654,17 +656,18 @@ class _PrincipleItem extends StatelessWidget {
         children: <Widget>[
           Text(
             (index + 1).toString(),
-            style: const TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.w500,
-              color: Color(0xff999999),
+              color: Theme.of(context).primaryColorLight,
             ),
           ),
           const SizedBox(width: 15),
           Container(
             height: 17,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               border: Border(
-                right: BorderSide(color: Color(0xffeeeeee), width: 2),
+                right:
+                    BorderSide(color: Theme.of(context).dividerColor, width: 2),
               ),
             ),
           ),
@@ -675,7 +678,7 @@ class _PrincipleItem extends StatelessWidget {
               children: <Widget>[
                 Text(
                   title,
-                  style: JuntoStyles.title,
+                  style: Theme.of(context).textTheme.subtitle,
                   textAlign: TextAlign.left,
                 ),
                 const SizedBox(height: 10),

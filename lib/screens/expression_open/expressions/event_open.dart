@@ -23,7 +23,8 @@ class EventOpen extends StatelessWidget {
           eventImage != ''
               ? Container(
                   margin: const EdgeInsets.only(bottom: 10),
-                  child: Image.asset(eventImage, fit: BoxFit.fitWidth),
+                  height: MediaQuery.of(context).size.height * .3,
+                  child: Image.asset(eventImage, fit: BoxFit.cover),
                 )
               : const SizedBox(),
           Container(
@@ -34,61 +35,37 @@ class EventOpen extends StatelessWidget {
               children: <Widget>[
                 Text(eventTitle, style: Theme.of(context).textTheme.display1),
                 const SizedBox(height: 10),
-                Container(
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(colors: <Color>[
-                      Theme.of(context).colorScheme.secondary,
-                      Theme.of(context).colorScheme.primary,
-                    ]),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Text(
-                    'RSVP',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 17,
-                        fontWeight: FontWeight.w700),
-                  ),
-                ),
+                
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const SizedBox(height: 10),
-                    Row(
-                      children: <Widget>[
-                        Icon(Icons.timer,
-                            color: Theme.of(context).primaryColor),
-                        const SizedBox(width: 5),
-                        Text(eventTime,
-                            style: Theme.of(context).textTheme.subtitle),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: <Widget>[
-                        Icon(Icons.location_searching,
-                            color: Theme.of(context).primaryColor),
-                        const SizedBox(width: 5),
-                        Text(eventLocation,
-                            style: Theme.of(context).textTheme.subtitle),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    const Text(
-                      '90 members going',
-                      style:
-                          TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
-                    ),
-                    const SizedBox(height: 5),
+                    // Row(
+                    //   children: <Widget>[
+                    //     Icon(Icons.timer,
+                    //         color: Theme.of(context).primaryColor),
+                    //     const SizedBox(width: 5),
+                    //     Text(eventTime,
+                    //         style: Theme.of(context).textTheme.subtitle),
+                    //   ],
+                    // ),
+                    // const SizedBox(height: 10),
+                    // Row(
+                    //   children: <Widget>[
+                    //     Icon(Icons.location_searching,
+                    //         color: Theme.of(context).primaryColor),
+                    //     const SizedBox(width: 5),
+                    //     Text(eventLocation,
+                    //         style: Theme.of(context).textTheme.subtitle),
+                    //   ],
+                    // ),
+
                     Row(
                       children: <Widget>[
                         ClipOval(
                           child: Image.asset(
                             'assets/images/junto-mobile__eric.png',
-                            height: 33.0,
-                            width: 33.0,
+                            height: 28.0,
+                            width: 28.0,
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -96,8 +73,8 @@ class EventOpen extends StatelessWidget {
                         ClipOval(
                           child: Image.asset(
                             'assets/images/junto-mobile__riley.png',
-                            height: 33.0,
-                            width: 33.0,
+                            height: 28.0,
+                            width: 28.0,
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -105,8 +82,8 @@ class EventOpen extends StatelessWidget {
                         ClipOval(
                           child: Image.asset(
                             'assets/images/junto-mobile__yaz.png',
-                            height: 33.0,
-                            width: 33.0,
+                            height: 28.0,
+                            width: 28.0,
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -114,8 +91,8 @@ class EventOpen extends StatelessWidget {
                         ClipOval(
                           child: Image.asset(
                             'assets/images/junto-mobile__josh.png',
-                            height: 33.0,
-                            width: 33.0,
+                            height: 28.0,
+                            width: 28.0,
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -123,8 +100,8 @@ class EventOpen extends StatelessWidget {
                         ClipOval(
                           child: Image.asset(
                             'assets/images/junto-mobile__dora.png',
-                            height: 33.0,
-                            width: 33.0,
+                            height: 28.0,
+                            width: 28.0,
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -132,8 +109,8 @@ class EventOpen extends StatelessWidget {
                         ClipOval(
                           child: Image.asset(
                             'assets/images/junto-mobile__drea.png',
-                            height: 33.0,
-                            width: 33.0,
+                            height: 28.0,
+                            width: 28.0,
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -141,8 +118,8 @@ class EventOpen extends StatelessWidget {
                         ClipOval(
                           child: Image.asset(
                             'assets/images/junto-mobile__tomis.png',
-                            height: 33.0,
-                            width: 33.0,
+                            height: 28.0,
+                            width: 28.0,
                             fit: BoxFit.cover,
                           ),
                         ),
