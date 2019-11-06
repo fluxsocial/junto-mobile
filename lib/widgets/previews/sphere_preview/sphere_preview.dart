@@ -10,7 +10,7 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 class SpherePreview extends StatelessWidget {
   const SpherePreview({@required this.group});
 
-  final Group group;
+  final group;
 
   @override
   Widget build(BuildContext context) {
@@ -32,28 +32,37 @@ class SpherePreview extends StatelessWidget {
           children: <Widget>[
             Row(
               children: <Widget>[
-                Container(
-                  alignment: Alignment.center,
-                  height: 45.0,
-                  width: 45.0,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.bottomLeft,
-                      end: Alignment.topRight,
-                      stops: const <double>[0.3, 0.9],
-                      colors: <Color>[
-                        Theme.of(context).colorScheme.secondary,
-                        Theme.of(context).colorScheme.primary,
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                  child: Icon(
-                    CustomIcons.spheres,
-                    color: Theme.of(context).colorScheme.onPrimary,
-                    size: 17,
-                  ),
-                ),
+                group.groupData.photo == ''
+                    ? Container(
+                        alignment: Alignment.center,
+                        height: 45.0,
+                        width: 45.0,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.bottomLeft,
+                            end: Alignment.topRight,
+                            stops: const <double>[0.3, 0.9],
+                            colors: <Color>[
+                              Theme.of(context).colorScheme.secondary,
+                              Theme.of(context).colorScheme.primary,
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        child: Icon(
+                          CustomIcons.spheres,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                          size: 17,
+                        ),
+                      )
+                    : ClipOval(
+                        child: Image.asset(
+                          group.groupData.photo,
+                          height: 45.0,
+                          width: 45.0,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                 Container(
                   width: MediaQuery.of(context).size.width - 75,
                   padding: const EdgeInsets.symmetric(

@@ -185,24 +185,31 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                   collapseMode: CollapseMode.pin,
                   background: Column(
                     children: <Widget>[
-                      Container(
-                        height: MediaQuery.of(context).size.height * .3,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.bottomLeft,
-                            end: Alignment.topRight,
-                            stops: <double>[0.2, 0.9],
-                            colors: <Color>[
-                              Theme.of(context).colorScheme.secondary,
-                              Theme.of(context).colorScheme.primary
-                            ],
-                          ),
-                        ),
-                        alignment: Alignment.center,
-                        child: Icon(CustomIcons.spheres,
-                            size: 60,
-                            color: Theme.of(context).colorScheme.onPrimary),
-                      ),
+                      widget.group.groupData.photo == ''
+                          ? Container(
+                              height: MediaQuery.of(context).size.height * .3,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.bottomLeft,
+                                  end: Alignment.topRight,
+                                  stops: <double>[0.2, 0.9],
+                                  colors: <Color>[
+                                    Theme.of(context).colorScheme.secondary,
+                                    Theme.of(context).colorScheme.primary
+                                  ],
+                                ),
+                              ),
+                              alignment: Alignment.center,
+                              child: Icon(CustomIcons.spheres,
+                                  size: 60,
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary),
+                            )
+                          : Container(
+                              height: MediaQuery.of(context).size.height * .3,
+                              width: MediaQuery.of(context).size.width,
+                              child: Image.asset(widget.group.groupData.photo,
+                                  fit: BoxFit.cover)),
                       Container(
                         key: _keyFlexibleSpace,
                         padding: const EdgeInsets.symmetric(

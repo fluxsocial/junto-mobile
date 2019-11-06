@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
-
+import 'package:junto_beta_mobile/backend/mock/mock_sphere.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/previews/sphere_preview/sphere_preview.dart';
@@ -52,46 +52,114 @@ class JuntoSpheresState extends State<JuntoSpheres> with ListDistinct {
     );
   }
 
+  List _spheres = [
+    Group(
+      address: '',
+      createdAt: DateTime.now(),
+      creator: null,
+      privacy: 'public',
+      groupType: 'sphere',
+      groupData: GroupDataSphere(
+          description:
+              'Ecstatic dance is a space for movement, rhythm, non-judgment, and '
+              'expression in its purest form. Come groove out with us!',
+          name: 'Ecstatic Dance',
+          photo: 'assets/images/junto-mobile__ecstatic.png',
+          principles: '',
+          sphereHandle: 'ecstaticdance'),
+    ),
+    Group(
+      address: '',
+      createdAt: DateTime.now(),
+      creator: null,
+      privacy: 'public',
+      groupType: 'sphere',
+      groupData: GroupDataSphere(
+          description: 'in the pursuit of presence',
+          name: 'Zen',
+          photo: 'assets/images/junto-mobile__stillmind.png',
+          principles: '',
+          sphereHandle: 'zen'),
+    ),
+    Group(
+      address: '',
+      createdAt: DateTime.now(),
+      creator: null,
+      privacy: 'public',
+      groupType: 'sphere',
+      groupData: GroupDataSphere(
+          description: 'Core team happenings',
+          name: 'JUNTO Core',
+          photo: '',
+          principles: '',
+          sphereHandle: 'junto'),
+    ),
+    Group(
+      address: '',
+      createdAt: DateTime.now(),
+      creator: null,
+      privacy: 'public',
+      groupType: 'sphere',
+      groupData: GroupDataSphere(
+          description: 'A more human internet',
+          name: 'Holochain',
+          photo: 'assets/images/junto-mobile__expression--photo.png',
+          principles: '',
+          sphereHandle: 'holochain'),
+    ),
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    print(_spheres);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: ListView(
         children: <Widget>[
-          FutureBuilder<UserGroupsResponse>(
-            future: getUserGroups(),
-            builder: (BuildContext context,
-                AsyncSnapshot<UserGroupsResponse> snapshot) {
-              if (snapshot.hasError) {
-                return buildError();
-              }
-              if (snapshot.hasData && !snapshot.hasError) {
-                final List<Group> ownedGroups = snapshot.data.owned;
-                final List<Group> associatedGroups = snapshot.data.associated;
-                final List<Group> userGroups =
-                    distinct<Group>(ownedGroups, associatedGroups)
-                        .where((Group group) => group.groupType == 'Sphere')
-                        .toList();
-                return ListView(
-                  shrinkWrap: true,
-                  physics: const ClampingScrollPhysics(),
-                  children: <Widget>[
-                    for (Group group in userGroups)
-                      SpherePreview(
-                        group: group,
-                      ),
-                  ],
-                );
-              }
-              return Container(
-                height: 100.0,
-                width: 100.0,
-                child: const Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
-            },
-          ),
+          SpherePreview(group: _spheres[0]),
+          SpherePreview(group: _spheres[1]),
+          SpherePreview(group: _spheres[2]),
+          SpherePreview(group: _spheres[3]),
+
+          // FutureBuilder<UserGroupsResponse>(
+          //   future: getUserGroups(),
+          //   builder: (BuildContext context,
+          //       AsyncSnapshot<UserGroupsResponse> snapshot) {
+          //     if (snapshot.hasError) {
+          //       return buildError();
+          //     }
+          //     if (snapshot.hasData && !snapshot.hasError) {
+          //       final List<Group> ownedGroups = snapshot.data.owned;
+          //       final List<Group> associatedGroups = snapshot.data.associated;
+          //       final List<Group> userGroups =
+          //           distinct<Group>(ownedGroups, associatedGroups)
+          //               .where((Group group) => group.groupType == 'Sphere')
+          //               .toList();
+          //       return ListView(
+          //         shrinkWrap: true,
+          //         physics: const ClampingScrollPhysics(),
+          //         children: <Widget>[
+          //           for (Group group in userGroups)
+          //             SpherePreview(
+          //               group: group,
+          //             ),
+          //         ],
+          //       );
+          //     }
+          //     return Container(
+          //       height: 100.0,
+          //       width: 100.0,
+          //       child: const Center(
+          //         child: CircularProgressIndicator(),
+          //       ),
+          //     );
+          //   },
+          // ),
         ],
       ),
     );
