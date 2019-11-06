@@ -49,56 +49,49 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                   ],
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  const Text(
-                    'PERSPECTIVES',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 12,
-                      letterSpacing: 1.2,
-                      color: Colors.white,
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                decoration: const BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: Color(0xff4263A3),
+                      width: .75,
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet(
-                        isScrollControlled: true,
-                        context: context,
-                        builder: (BuildContext context) => Container(
-                            color: const Color(0xff737373),
-                            child: _CreatePerspectiveBottomSheet()),
-                      );
-                    },
-                    child: Container(
-                      height: 38,
-                      width: 38,
-                      color: Colors.transparent,
-                      alignment: Alignment.centerRight,
-                      child:
-                          const Icon(Icons.add, color: Colors.white, size: 17),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    const Text(
+                      'PERSPECTIVES',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 12,
+                        letterSpacing: 1.2,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet(
-                        isScrollControlled: true,
-                        context: context,
-                        builder: (BuildContext context) => Container(
+                    GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                          isScrollControlled: true,
+                          context: context,
+                          builder: (BuildContext context) => Container(
                             color: Colors.transparent,
-                            child: _CreatePerspectiveBottomSheet()),
-                      );
-                    },
-                    child: Container(
-                      height: 38,
-                      width: 38,
-                      color: Colors.transparent,
-                      alignment: Alignment.centerRight,
-                      child: Icon(Icons.add, color: Colors.white, size: 17),
-                    ),
-                  )
-                ],
+                            child: _CreatePerspectiveBottomSheet(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        height: 38,
+                        width: 38,
+                        color: Colors.transparent,
+                        alignment: Alignment.centerRight,
+                        child: Icon(Icons.add, color: Colors.white, size: 17),
+                      ),
+                    )
+                  ],
+                ),
               ),
               Expanded(
                 child: ListView(
