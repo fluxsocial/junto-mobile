@@ -109,13 +109,12 @@ class JuntoCreateState extends State<JuntoCreate> {
       setState(() {
         _longform = true;
         _currentIcon =
-            const Icon(CustomIcons.longform, color: Colors.white, size: 20);
+            Icon(CustomIcons.longform, color: Colors.white, size: 20);
       });
     } else if (templateType == 'ShortForm') {
       setState(() {
         _shortform = true;
-        _currentIcon =
-            const Icon(CustomIcons.feather, color: Colors.white, size: 20);
+        _currentIcon = Icon(CustomIcons.feather, color: Colors.white, size: 20);
       });
     } else if (templateType == 'BulletForm') {
       setState(() {
@@ -124,14 +123,12 @@ class JuntoCreateState extends State<JuntoCreate> {
     } else if (templateType == 'PhotoForm') {
       setState(() {
         _photo = true;
-        _currentIcon =
-            const Icon(CustomIcons.camera, color: Colors.white, size: 20);
+        _currentIcon = Icon(CustomIcons.camera, color: Colors.white, size: 20);
       });
     } else if (templateType == 'EventForm') {
       setState(() {
         _events = true;
-        _currentIcon =
-            const Icon(CustomIcons.event, color: Colors.white, size: 20);
+        _currentIcon = Icon(CustomIcons.event, color: Colors.white, size: 20);
       });
     } else {
       print('not an expresion type');
@@ -197,14 +194,8 @@ class JuntoCreateState extends State<JuntoCreate> {
                   onTap: () {
                     Navigator.pop(context);
                   },
-                  child: const Text(
-                    'cancel',
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xff333333),
-                    ),
-                  ),
+                  child: Text('cancel',
+                      style: Theme.of(context).textTheme.caption),
                 ),
                 GestureDetector(
                   onTap: _onNextClick,
@@ -229,13 +220,13 @@ class JuntoCreateState extends State<JuntoCreate> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(25),
               border: Border.all(color: Colors.white, width: 2),
-              gradient: const LinearGradient(
+              gradient: LinearGradient(
                 begin: Alignment.bottomLeft,
                 end: Alignment.topRight,
                 stops: <double>[0.1, 0.9],
                 colors: <Color>[
-                  JuntoPalette.juntoSecondary,
-                  JuntoPalette.juntoPrimary,
+                  Theme.of(context).colorScheme.secondary,
+                  Theme.of(context).colorScheme.primary
                 ],
               ),
             ),
@@ -273,13 +264,13 @@ class ExpressionCenter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color(0xff737373),
+      color: Colors.transparent,
       child: Container(
         height: MediaQuery.of(context).size.height * .3,
         padding: const EdgeInsets.symmetric(vertical: 10),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.background,
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(10),
             topRight: Radius.circular(10),
           ),
@@ -298,136 +289,106 @@ class ExpressionCenter extends StatelessWidget {
                       height: 5,
                       width: MediaQuery.of(context).size.width * .1,
                       decoration: BoxDecoration(
-                          color: const Color(0xffeeeeee),
-                          borderRadius: BorderRadius.circular(100)),
+                        color: Theme.of(context).dividerColor,
+                        borderRadius: BorderRadius.circular(100),
+                      ),
                     ),
                   ],
                 ),
-                const ListTile(
-                  contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                  title: Text(
-                    'Expression Center',
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
-                  ),
+                ListTile(
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+                  title: Text('Expression Center',
+                      style: Theme.of(context).textTheme.title),
                 ),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 10),
-                  width: 180,
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    border: Border(
-                      top: BorderSide(color: Color(0xffeeeeee), width: 1),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Container(
-                  padding: const EdgeInsets.only(top: 10),
-                  height: 70,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: <Widget>[
-                      GestureDetector(
-                        onTap: () {
-                          switchView('LongForm');
-                        },
-                        child: Container(
-                          color: Colors.white,
-                          alignment: Alignment.bottomCenter,
-                          width: MediaQuery.of(context).size.width * .25,
-                          child: Column(
-                            children: const <Widget>[
-                              Icon(
-                                CustomIcons.longform,
-                                size: 20,
-                                color: JuntoPalette.juntoBlack,
-                              ),
-                              SizedBox(height: 5),
-                              Text(
-                                'dynamic',
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.w700),
-                              )
-                            ],
-                          ),
+                const SizedBox(height: 20),
+                Row(
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: () {
+                        switchView('LongForm');
+                      },
+                      child: Container(
+                        color: Theme.of(context).colorScheme.background,
+                        alignment: Alignment.bottomCenter,
+                        width: MediaQuery.of(context).size.width * .25,
+                        child: Column(
+                          children: <Widget>[
+                            Icon(
+                              CustomIcons.longform,
+                              size: 20,
+                              color: Theme.of(context).primaryColorDark,
+                            ),
+                            const SizedBox(height: 5),
+                            Text('dynamic',
+                                style: Theme.of(context).textTheme.subtitle)
+                          ],
                         ),
                       ),
-                    ],
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    switchView('ShortForm');
-                  },
-                  child: Container(
-                    color: Colors.white,
-                    width: MediaQuery.of(context).size.width * .25,
-                    child: Column(
-                      children: const <Widget>[
-                        Icon(
-                          CustomIcons.feather,
-                          size: 20,
-                          color: JuntoPalette.juntoBlack,
-                        ),
-                        SizedBox(height: 5),
-                        Text(
-                          'shortform',
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w700),
-                        )
-                      ],
                     ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    switchView('PhotoForm');
-                  },
-                  child: Container(
-                    color: Colors.white,
-                    width: MediaQuery.of(context).size.width * .25,
-                    child: Column(
-                      children: const <Widget>[
-                        Icon(
-                          CustomIcons.camera,
-                          size: 20,
-                          color: JuntoPalette.juntoBlack,
+                    GestureDetector(
+                      onTap: () {
+                        switchView('ShortForm');
+                      },
+                      child: Container(
+                        color: Theme.of(context).colorScheme.background,
+                        width: MediaQuery.of(context).size.width * .25,
+                        child: Column(
+                          children: <Widget>[
+                            Icon(
+                              CustomIcons.feather,
+                              size: 20,
+                              color: Theme.of(context).primaryColorDark,
+                            ),
+                            const SizedBox(height: 5),
+                            Text('shortform',
+                                style: Theme.of(context).textTheme.subtitle)
+                          ],
                         ),
-                        SizedBox(height: 5),
-                        Text(
-                          'photo',
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w700),
-                        )
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    switchView('EventForm');
-                  },
-                  child: Container(
-                    color: Colors.white,
-                    width: MediaQuery.of(context).size.width * .25,
-                    child: Column(
-                      children: const <Widget>[
-                        Icon(
-                          CustomIcons.event,
-                          size: 20,
-                          color: JuntoPalette.juntoBlack,
+                    GestureDetector(
+                      onTap: () {
+                        switchView('PhotoForm');
+                      },
+                      child: Container(
+                        color: Theme.of(context).colorScheme.background,
+                        width: MediaQuery.of(context).size.width * .25,
+                        child: Column(
+                          children: <Widget>[
+                            Icon(
+                              CustomIcons.camera,
+                              size: 20,
+                              color: Theme.of(context).primaryColorDark,
+                            ),
+                            const SizedBox(height: 5),
+                            Text('photo',
+                                style: Theme.of(context).textTheme.subtitle)
+                          ],
                         ),
-                        SizedBox(height: 5),
-                        Text(
-                          'event',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        )
-                      ],
+                      ),
                     ),
-                  ),
+                    GestureDetector(
+                      onTap: () {
+                        switchView('EventForm');
+                      },
+                      child: Container(
+                        color: Theme.of(context).colorScheme.background,
+                        width: MediaQuery.of(context).size.width * .25,
+                        child: Column(
+                          children: <Widget>[
+                            Icon(
+                              CustomIcons.event,
+                              size: 20,
+                              color: Theme.of(context).primaryColorDark,
+                            ),
+                            const SizedBox(height: 5),
+                            Text('event',
+                                style: Theme.of(context).textTheme.subtitle)
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
