@@ -106,7 +106,7 @@ class JuntoThemes {
     colorScheme: const ColorScheme(
         // Junto blue
         primary: Color(0xFF223E72),
-        primaryVariant: Color(0xff393939),
+        primaryVariant: Color(0xff333333),
         secondary: Color(0xFF635FAA),
         secondaryVariant: Color(0xff333333),
         surface: Color(0xff393939),
