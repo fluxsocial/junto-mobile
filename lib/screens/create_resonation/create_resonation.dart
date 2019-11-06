@@ -38,7 +38,6 @@ class CreateResonationState extends State<CreateResonation> {
         preferredSize: const Size.fromHeight(45),
         child: CreateResonationAppbar(),
       ),
-      backgroundColor: Colors.white,
       body: Container(
         child: Column(
           children: <Widget>[
@@ -50,23 +49,14 @@ class CreateResonationState extends State<CreateResonation> {
                     margin: const EdgeInsets.symmetric(vertical: 10),
                     child: TextField(
                       focusNode: resonationCommentFocusNode,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'add a comment',
-                        hintStyle: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                        color: JuntoPalette.juntoGreyLight,
-                      ),
-                      ),
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'add a comment',
+                          hintStyle: Theme.of(context).textTheme.caption),
                       maxLines: null,
-                      cursorColor: JuntoPalette.juntoGrey,
+                      cursorColor: Theme.of(context).primaryColorDark,
                       cursorWidth: 2,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                        color: JuntoPalette.juntoGrey,
-                      ),
+                      style: Theme.of(context).textTheme.caption,
                       textInputAction: TextInputAction.done,
                     ),
                   ),
@@ -82,10 +72,11 @@ class CreateResonationState extends State<CreateResonation> {
                 ? Container(
                     height: 50,
                     padding: const EdgeInsets.symmetric(horizontal: 10),
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border(
-                        top: BorderSide(color: Color(0xffeeeeee), width: 1),
+                        top: BorderSide(
+                            color: Theme.of(context).dividerColor, width: 1),
                       ),
                     ),
                     child: Row(
@@ -94,7 +85,8 @@ class CreateResonationState extends State<CreateResonation> {
                         SizedBox(width: 10),
                         Text('GIF')
                       ],
-                    ))
+                    ),
+                  )
                 : const SizedBox()
           ],
         ),

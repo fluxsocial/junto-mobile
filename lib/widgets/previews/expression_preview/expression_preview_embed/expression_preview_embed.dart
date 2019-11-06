@@ -18,11 +18,11 @@ class ExpressionPreviewEmbed extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(color: const Color(0xffeeeeee), width: 1),
+          color: Theme.of(context).colorScheme.background,
+          border: Border.all(color: Theme.of(context).dividerColor, width: .75),
           borderRadius: BorderRadius.circular(5),
-          boxShadow: const <BoxShadow>[
-            BoxShadow(color: Color(0xffeeeeee), blurRadius: 7)
+          boxShadow: <BoxShadow>[
+            BoxShadow(color: Theme.of(context).dividerColor, blurRadius: 7)
           ]),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,7 +34,7 @@ class ExpressionPreviewEmbed extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Container(
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.background,
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
@@ -49,25 +49,20 @@ class ExpressionPreviewEmbed extends StatelessWidget {
                       ),
                       Container(
                         margin: const EdgeInsets.only(left: 7.5),
-                        child: Text(
-                          expression.creator.username,
-                          style: const TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
+                        child: Text(expression.creator.username,
+                            style: Theme.of(context).textTheme.subhead),
                       )
                     ],
                   ),
                 ),
                 Row(
-                  children: const <Widget>[
+                  children: <Widget>[
                     Padding(
                       padding: EdgeInsets.only(right: 5),
                       child: Icon(
                         Icons.keyboard_arrow_down,
                         size: 24,
-                        color: Color(0xff777777),
+                        color: Theme.of(context).primaryColorLight,
                       ),
                     ),
                   ],
@@ -91,11 +86,9 @@ class ExpressionPreviewEmbed extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Container(
-                        child: Text(
-                          'today',
-                          textAlign: TextAlign.start,
-                          style: JuntoStyles.expressionTimestamp,
-                        ),
+                        child: Text('today',
+                            textAlign: TextAlign.start,
+                            style: Theme.of(context).textTheme.overline),
                       )
                     ],
                   ),
