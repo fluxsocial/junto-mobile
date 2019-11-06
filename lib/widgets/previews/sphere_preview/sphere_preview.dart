@@ -72,16 +72,12 @@ class SpherePreview extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
-                        's/' + group.groupData.sphereHandle,
-                        textAlign: TextAlign.start,
-                        style: Theme.of(context).textTheme.subhead
-                      ),
-                      Text(
-                        group.groupData.name,
-                        textAlign: TextAlign.start,
-                        style: Theme.of(context).textTheme.body1
-                      )
+                      Text('s/' + group.groupData.sphereHandle,
+                          textAlign: TextAlign.start,
+                          style: Theme.of(context).textTheme.subhead),
+                      Text(group.groupData.name,
+                          textAlign: TextAlign.start,
+                          style: Theme.of(context).textTheme.body1)
                     ],
                   ),
                 )

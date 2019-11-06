@@ -64,15 +64,10 @@ class ExpressionOpenTop extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
-                        username ?? '',
-                        style: Theme.of(context).textTheme.subhead
-                      ),
-                      Text(
-                        firstName + ' ' + lastName,
-                        style: Theme.of(context).textTheme.body1
-                        
-                      ),
+                      Text(username ?? '',
+                          style: Theme.of(context).textTheme.subhead),
+                      Text(firstName + ' ' + lastName,
+                          style: Theme.of(context).textTheme.body1),
                     ],
                   ),
                 ),

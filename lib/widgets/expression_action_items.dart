@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class ExpressionActionItems extends StatelessWidget {
   @override
@@ -46,10 +46,8 @@ class ExpressionActionItems extends StatelessWidget {
                         color: Theme.of(context).primaryColor,
                       ),
                       const SizedBox(width: 15),
-                      const Text(
-                        'Hide Expression',
-                        style: Theme.of(context).textTheme.headline 
-                      ),
+                      Text('Hide Expression',
+                          style: Theme.of(context).textTheme.headline),
                     ],
                   ),
                 ),
@@ -65,10 +63,8 @@ class ExpressionActionItems extends StatelessWidget {
                         color: Theme.of(context).primaryColor,
                       ),
                       const SizedBox(width: 15),
-                      const Text(
-                        'Block Member',
-                        style: Theme.of(context).textTheme.headline
-                      ),
+                      Text('Block Member',
+                          style: Theme.of(context).textTheme.headline),
                     ],
                   ),
                 ),

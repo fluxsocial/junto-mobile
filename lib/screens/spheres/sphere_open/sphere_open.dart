@@ -11,8 +11,8 @@ import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open_member
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
-import 'package:junto_beta_mobile/widgets/create_fab.dart';
-import 'package:junto_beta_mobile/widgets/expression_preview/expression_preview.dart';
+import 'package:junto_beta_mobile/widgets/fabs/expression_center_fab.dart';
+import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
 
@@ -162,6 +162,14 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
       body: DefaultTabController(
         length: _tabs.length,
         child: NestedScrollView(
+          body: TabBarView(
+            // These are the contents of the tab views, below the tabs.
+            children: <Widget>[
+              _buildAboutView(),
+              _buildExpressionView(),
+              _buildEventsView()
+            ],
+          ),
           controller: _hideFABController,
           physics: const ClampingScrollPhysics(),
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -191,7 +199,9 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                           ),
                         ),
                         alignment: Alignment.center,
-                        child: Icon(CustomIcons.spheres, size: 60, color: Theme.of(context).colorScheme.onPrimary),
+                        child: Icon(CustomIcons.spheres,
+                            size: 60,
+                            color: Theme.of(context).colorScheme.onPrimary),
                       ),
                       Container(
                         key: _keyFlexibleSpace,
@@ -233,19 +243,15 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                             )
                           ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  expandedHeight: MediaQuery.of(context).size.height * .2 + 158,
-                  forceElevated: false,
                 ),
-                expandedHeight: _flexibleHeightSpace == null
-                    ? 100000
-                    : _flexibleHeightSpace +
-                        MediaQuery.of(context).size.height * .3,
+                expandedHeight: MediaQuery.of(context).size.height * .2 + 158,
                 forceElevated: false,
               ),
               SliverPersistentHeader(
+                pinned: true,
                 delegate: _SliverAppBarDelegate(
                   TabBar(
                     labelPadding: const EdgeInsets.all(0),
@@ -262,18 +268,10 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                             )))
                         .toList(),
                   ),
-                  pinned: true,
                 ),
-              ];
-            },
-            body: TabBarView(
-                // These are the contents of the tab views, below the tabs.
-                children: <Widget>[
-                  _buildAboutView(),
-                  _buildExpressionView(),
-                  _buildEventsView()
-                ]),
-          ),
+              )
+            ];
+          },
         ),
       ),
     );
@@ -311,8 +309,9 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
             Navigator.push(
               context,
               CupertinoPageRoute<dynamic>(
-                builder: (BuildContext context) =>
-                    const SphereOpenFacilitators(),
+                builder: (BuildContext context) => const SphereOpenFacilitators(
+                  users: <Users>[],
+                ),
               ),
             );
           },

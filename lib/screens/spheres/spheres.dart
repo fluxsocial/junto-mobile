@@ -1,6 +1,8 @@
 import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/app/styles.dart';
 
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
@@ -11,8 +13,10 @@ import 'package:provider/provider.dart';
 /// This class renders the main screen for Spheres. It includes a widget to
 /// create a screen as well as a ListView of all the sphere previews
 class JuntoSpheres extends StatefulWidget {
-  const JuntoSpheres({Key key, @required this.userProfile,})
-      : super(key: key);
+  const JuntoSpheres({
+    Key key,
+    @required this.userProfile,
+  }) : super(key: key);
 
   final UserProfile userProfile;
 
@@ -509,7 +513,7 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                 padding: const EdgeInsets.symmetric(
                   vertical: 15,
                 ),
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
                       width: .5,

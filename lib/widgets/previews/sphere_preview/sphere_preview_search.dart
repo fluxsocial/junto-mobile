@@ -32,32 +32,32 @@ class SpherePreviewSearch extends StatelessWidget {
           children: <Widget>[
             Row(
               children: <Widget>[
-              Container(
-                alignment: Alignment.center,
-                height: 38.0,
-                width: 38.0,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.bottomLeft,
-                    end: Alignment.topRight,
-                    stops: const <double>[0.3, 0.9],
-                    colors: <Color>[
-                      JuntoPalette.juntoSecondary,
-                      JuntoPalette.juntoPrimary,
-                    ],
+                Container(
+                  alignment: Alignment.center,
+                  height: 38.0,
+                  width: 38.0,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomLeft,
+                      end: Alignment.topRight,
+                      stops: const <double>[0.3, 0.9],
+                      colors: <Color>[
+                        JuntoPalette.juntoSecondary,
+                        JuntoPalette.juntoPrimary,
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(100),
                   ),
-                  borderRadius: BorderRadius.circular(100),
+                  child: Icon(
+                    CustomIcons.spheres,
+                    color: Colors.white,
+                    size: 15,
+                  ),
                 ),
-                child: Icon(
-                  CustomIcons.spheres,
-                  color: Colors.white,
-                  size: 15,
-                ),
-              ),
                 Container(
                   width: MediaQuery.of(context).size.width - 68,
                   padding: const EdgeInsets.symmetric(
-                    vertical: 15,                    
+                    vertical: 15,
                   ),
                   decoration: const BoxDecoration(
                     border: Border(

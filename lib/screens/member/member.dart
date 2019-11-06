@@ -1,18 +1,10 @@
 import 'package:flutter/cupertino.dart';
-<<<<<<< HEAD
+import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/member/member_appbar.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-=======
-import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/screens/member/member_appbar.dart';
-import 'package:junto_beta_mobile/screens/member/member_expanded.dart';
->>>>>>> b6d7dab... Functions widget clean up (Sphere) (#188)
 
 //FIXME: Build method and bottom sheet should be broken up
 class JuntoMember extends StatefulWidget {
@@ -117,34 +109,14 @@ class _JuntoMemberState extends State<JuntoMember> {
                                   },
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(
-<<<<<<< HEAD
                                         horizontal: 10, vertical: 7.5),
                                     decoration: BoxDecoration(
                                       border: Border.all(
                                           color: Colors.white, width: 1.5),
                                       borderRadius: BorderRadius.circular(25),
-=======
-                                        horizontal: 15, vertical: 10),
-                                    decoration: const BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(10),
-                                        topRight: Radius.circular(10),
-                                      ),
->>>>>>> b6d7dab... Functions widget clean up (Sphere) (#188)
                                     ),
                                     child: Row(
                                       children: <Widget>[
-<<<<<<< HEAD
-                                        const SizedBox(width: 14),
-                                        Image.asset(
-                                            'assets/images/junto-mobile__infinity.png',
-                                            color: Colors.white,
-                                            height: 14),
-                                        const SizedBox(width: 2),
-                                        Icon(Icons.keyboard_arrow_down,
-                                            size: 12, color: Colors.white)
-=======
                                         Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -259,7 +231,6 @@ class _JuntoMemberState extends State<JuntoMember> {
                                             ),
                                           ),
                                         )
->>>>>>> b6d7dab... Functions widget clean up (Sphere) (#188)
                                       ],
                                     ),
                                   ),

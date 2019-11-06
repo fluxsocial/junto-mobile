@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/screens/comment_open/comment_open.dart';
-import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/widgets/comment_action_items.dart';
 
 /// Shows a preview of the comments. Takes a un-named [String] as a param.
@@ -14,7 +13,9 @@ class CommentPreview extends StatelessWidget {
 
   /// String to be displayed as comment
   final String commentText;
-  final parent;
+
+  /// Represents the expression
+  final dynamic parent;
 
   @override
   Widget build(BuildContext context) {

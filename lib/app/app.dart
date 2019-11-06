@@ -31,26 +31,37 @@ class JuntoAppState extends State<JuntoApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(providers: <SingleChildCloneableWidget>[
-      ChangeNotifierProvider<JuntoThemesProvider>(
-        builder: (_) => JuntoThemesProvider(JuntoThemes().juntoLightIndigo),
+    return MultiProvider(
+      providers: <SingleChildCloneableWidget>[
+        ChangeNotifierProvider<JuntoThemesProvider>(
+          builder: (_) => JuntoThemesProvider(JuntoThemes().juntoLightIndigo),
+        ),
+        Provider<SearchProvider>.value(value: backend.searchProvider),
+        Provider<AuthRepo>.value(value: backend.authRepo),
+        Provider<UserService>.value(value: backend.userProvider),
+        Provider<CollectiveService>.value(value: backend.collectiveProvider),
+        Provider<GroupRepo>.value(value: backend.groupsProvider),
+        Provider<ExpressionRepo>.value(value: backend.expressionRepo),
+      ],
+      child: MaterialAppWithTheme(
+        loggedIn: widget.loggedIn,
       ),
-      Provider<SearchProvider>.value(value: backend.searchProvider),
-      Provider<AuthRepo>.value(value: backend.authRepo),
-      Provider<UserService>.value(value: backend.userProvider),
-      Provider<CollectiveService>.value(value: backend.collectiveProvider),
-      Provider<GroupRepo>.value(value: backend.groupsProvider),
-      Provider<ExpressionRepo>.value(value: backend.expressionRepo),
-    ], child: MaterialAppWithTheme());
+    );
   }
 }
 
 class MaterialAppWithTheme extends StatelessWidget {
+  const MaterialAppWithTheme({
+    Key key,
+    @required this.loggedIn,
+  }) : super(key: key);
+
+  final bool loggedIn;
   @override
   Widget build(BuildContext context) {
-    final theme = Provider.of<JuntoThemesProvider>(context);
+    final JuntoThemesProvider theme = Provider.of<JuntoThemesProvider>(context);
     return MaterialApp(
-      home: JuntoLoading(),
+      home: loggedIn ? JuntoTemplate() : Welcome(),
       title: 'JUNTO Alpha',
       debugShowCheckedModeBanner: false,
       theme: theme.getTheme(),

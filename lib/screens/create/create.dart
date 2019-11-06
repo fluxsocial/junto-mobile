@@ -351,84 +351,82 @@ class ExpressionCenter extends StatelessWidget {
                             ],
                           ),
                         ),
-                      ],
-                    ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          switchView('ShortForm');
-                        },
-                        child: Container(
-                          color: Colors.white,
-                          width: MediaQuery.of(context).size.width * .25,
-                          child: Column(
-                            children: const <Widget>[
-                              Icon(
-                                CustomIcons.feather,
-                                size: 20,
-                                color: JuntoPalette.juntoBlack,
-                              ),
-                              SizedBox(height: 5),
-                              Text(
-                                'shortform',
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.w700),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          switchView('PhotoForm');
-                        },
-                        child: Container(
-                          color: Colors.white,
-                          width: MediaQuery.of(context).size.width * .25,
-                          child: Column(
-                            children: const <Widget>[
-                              Icon(
-                                CustomIcons.camera,
-                                size: 20,
-                                color: JuntoPalette.juntoBlack,
-                              ),
-                              SizedBox(height: 5),
-                              Text(
-                                'photo',
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.w700),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          switchView('EventForm');
-                        },
-                        child: Container(
-                          color: Colors.white,
-                          width: MediaQuery.of(context).size.width * .25,
-                          child: Column(
-                            children: const <Widget>[
-                              Icon(
-                                CustomIcons.event,
-                                size: 20,
-                                color: JuntoPalette.juntoBlack,
-                              ),
-                              SizedBox(height: 5),
-                              Text(
-                                'event',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
                       ),
                     ],
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    switchView('ShortForm');
+                  },
+                  child: Container(
+                    color: Colors.white,
+                    width: MediaQuery.of(context).size.width * .25,
+                    child: Column(
+                      children: const <Widget>[
+                        Icon(
+                          CustomIcons.feather,
+                          size: 20,
+                          color: JuntoPalette.juntoBlack,
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          'shortform',
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w700),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    switchView('PhotoForm');
+                  },
+                  child: Container(
+                    color: Colors.white,
+                    width: MediaQuery.of(context).size.width * .25,
+                    child: Column(
+                      children: const <Widget>[
+                        Icon(
+                          CustomIcons.camera,
+                          size: 20,
+                          color: JuntoPalette.juntoBlack,
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          'photo',
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w700),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    switchView('EventForm');
+                  },
+                  child: Container(
+                    color: Colors.white,
+                    width: MediaQuery.of(context).size.width * .25,
+                    child: Column(
+                      children: const <Widget>[
+                        Icon(
+                          CustomIcons.event,
+                          size: 20,
+                          color: JuntoPalette.juntoBlack,
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          'event',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ],

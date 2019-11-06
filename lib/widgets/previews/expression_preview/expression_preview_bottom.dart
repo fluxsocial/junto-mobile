@@ -19,7 +19,7 @@ class ExpressionPreviewBottom extends StatelessWidget {
           // expressionTime,
           'today',
           textAlign: TextAlign.start,
-          style: Theme.of(context).textTheme.overline, 
+          style: Theme.of(context).textTheme.overline,
         ));
   }
 }

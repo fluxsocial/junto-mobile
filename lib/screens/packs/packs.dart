@@ -94,4 +94,3 @@ class JuntoPacksState extends State<JuntoPacks> with ListDistinct {
     );
   }
 }
- 

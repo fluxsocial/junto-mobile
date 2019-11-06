@@ -10,7 +10,6 @@ import 'package:junto_beta_mobile/screens/expression_open/expression_open_top.da
 import 'package:junto_beta_mobile/screens/expression_open/expressions/event_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/longform_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/photo_open.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/shortform_open.dart';
@@ -79,25 +78,6 @@ class ExpressionOpenState extends State<ExpressionOpen> {
     }
   }
 
-  Widget _createCommentIcon(bool createComment) {
-    if (createComment == true) {
-      return GestureDetector(
-        onTap: () {},
-        child: Icon(
-          Icons.send,
-          size: 20,
-          color: Theme.of(context).colorScheme.primary,
-        ),
-      );
-    } else {
-      return Icon(
-        Icons.send,
-        size: 20,
-        color: Theme.of(context).primaryColorLight,
-      );
-    }
-  }
-
   // Swipe down to dismiss keyboard
   void _onDragDown(DragDownDetails details) {
     FocusScope.of(context).requestFocus(_focusNode);
@@ -112,14 +92,14 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   Future<void> _showPrivacyModalSheet() async {
     await showModalBottomSheet(
       context: context,
-      builder: (BuildContext context) => Container(
-        color: Colors.transparent,
-        child: Container(
-          height: MediaQuery.of(context).size.height * .3,
+      backgroundColor: const Color(0xff737373),
+      builder: (BuildContext context) {
+        return Container(
+          height: 240,
           padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.background,
-            borderRadius: const BorderRadius.only(
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
               topLeft: Radius.circular(10),
               topRight: Radius.circular(10),
             ),
@@ -147,8 +127,6 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                     Text(
                       'Your comment will visible to everyone who can see '
                       'this expression.',
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                     )
                   ],
                 ),
@@ -173,8 +151,6 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                     Text(
                       'Your comment will only be visible to the creator of '
                       'this expression.',
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                     )
                   ],
                 ),
@@ -214,7 +190,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
         preferredSize: const Size.fromHeight(45.0),
         child: ExpressionOpenAppbar(),
       ),
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Colors.white,
       body: Column(
         children: <Widget>[
           Expanded(
@@ -228,7 +204,13 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                   GestureDetector(
                     onTap: _showComments,
                     child: Container(
-                      color: Colors.transparent,
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        border: Border(
+                          bottom:
+                              BorderSide(color: Color(0xffeeeeee), width: .75),
+                        ),
+                      ),
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 15),
                       child: Row(
@@ -253,6 +235,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                       itemCount: comments.length,
                       itemBuilder: (BuildContext context, int index) {
                         return CommentPreview(
+                          parent: widget.expression,
                           commentText: comments[index],
                         );
                       },

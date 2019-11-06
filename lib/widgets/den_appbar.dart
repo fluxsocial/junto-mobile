@@ -43,8 +43,8 @@ class JuntoDenAppbar extends StatelessWidget {
                     Theme.of(context).colorScheme.secondaryVariant,
                     Theme.of(context).colorScheme.primaryVariant,
                   ],
-                  ),
                 ),
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

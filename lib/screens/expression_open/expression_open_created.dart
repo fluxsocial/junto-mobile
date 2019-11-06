@@ -227,7 +227,8 @@ class ExpressionOpenCreatedState extends State<ExpressionOpenCreated> {
                           Container(
                               key: _keyFlexibleSpace,
                               child: _buildExpression()),
-                          ExpressionOpenBottom(widget.expression, _focusTextField),
+                          ExpressionOpenBottom(
+                              widget.expression, _focusTextField),
                         ],
                       ),
                     ),

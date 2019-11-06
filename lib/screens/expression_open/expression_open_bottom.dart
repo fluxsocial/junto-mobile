@@ -84,4 +84,3 @@ class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
     );
   }
 }
-

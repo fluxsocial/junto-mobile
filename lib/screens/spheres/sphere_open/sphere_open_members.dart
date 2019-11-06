@@ -97,9 +97,6 @@ class SphereOpenMembers extends StatelessWidget {
                       color: JuntoPalette.juntoSleek,
                       size: 28,
                     ),
-                  )
-                ],
-              ),
                   ),
                 ),
                 Container(

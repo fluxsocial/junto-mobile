@@ -594,7 +594,7 @@ class _SelectionTileState extends State<_SelectionTile> {
               ),
             )
           ],
-        ),  
+        ),
       ),
     );
   }

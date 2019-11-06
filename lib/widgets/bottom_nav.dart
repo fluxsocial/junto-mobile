@@ -183,14 +183,12 @@ class _BottomNavButton extends StatelessWidget {
         color: Colors.transparent,
         child: AnimatedSwitcher(
           duration: kThemeChangeDuration,
-          child: Icon(
-            icon,
-            key: Key('index-$index-$selectedIndex'),
-            size: 20,
-            color: selectedIndex == index
-                ? Theme.of(context).primaryColorDark
-                : Theme.of(context).primaryColorLight
-          ),
+          child: Icon(icon,
+              key: Key('index-$index-$selectedIndex'),
+              size: 20,
+              color: selectedIndex == index
+                  ? Theme.of(context).primaryColorDark
+                  : Theme.of(context).primaryColorLight),
         ),
       ),
     );
