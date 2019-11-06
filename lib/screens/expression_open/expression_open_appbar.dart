@@ -72,7 +72,7 @@ class ExpressionOpenContext extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.background,
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(10),
             topRight: Radius.circular(10),
           ),
@@ -80,22 +80,13 @@ class ExpressionOpenContext extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            // const SizedBox(height: 10),
-            // Text(
-            //   'CONTEXT',
-            //   style: TextStyle(
-            //     fontSize: 14,
-            //     fontWeight: FontWeight.w700,
-            //     color: const Color(0xff555555),
-            //   ),
-            // ),
             const SizedBox(height: 10),
             Row(
               children: <Widget>[
                 Container(
                   alignment: Alignment.center,
-                  height: 38.0,
-                  width: 38.0,
+                  height: 45.0,
+                  width: 45.0,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.bottomLeft,
@@ -111,21 +102,21 @@ class ExpressionOpenContext extends StatelessWidget {
                   child: const Icon(
                     CustomIcons.enso,
                     color: Colors.white,
-                    size: 15,
+                    size: 17,
                   ),
                 ),
                 const SizedBox(width: 10),
                 Text("shared to 'Collective'",
-                    style: Theme.of(context).textTheme.body2)
+                    style: Theme.of(context).textTheme.caption)
               ],
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 15),
             Row(
               children: <Widget>[
                 Container(
                   alignment: Alignment.center,
-                  height: 38.0,
-                  width: 38.0,
+                  height: 45.0,
+                  width: 45.0,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.bottomLeft,
@@ -141,29 +132,26 @@ class ExpressionOpenContext extends StatelessWidget {
                   child: Icon(
                     CustomIcons.hash,
                     color: Colors.white,
-                    size: 15,
+                    size: 17,
                   ),
                 ),
                 const SizedBox(width: 10),
                 Flexible(
                   child: Text(
                       'tagged in #sustainability, #permaculture, #design',
-                      style: Theme.of(context).textTheme.body2),
+                      style: Theme.of(context).textTheme.caption),
                 )
               ],
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 25),
             Text(
-              'INTENTION',
-              style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                  color: Theme.of(context).primaryColor),
+              'Intention',
+              style: Theme.of(context).textTheme.subhead,
             ),
             const SizedBox(height: 10),
             Text(
               'Looking for feedback!',
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+              style: Theme.of(context).textTheme.caption,
             )
           ],
         ),
