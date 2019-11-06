@@ -406,7 +406,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
           decoration: BoxDecoration(
             border: Border(
               bottom:
-                  BorderSide(color: Theme.of(context).dividerColor, width: 1),
+                  BorderSide(color: Theme.of(context).dividerColor, width: .75),
             ),
           ),
           child: Row(
@@ -648,7 +648,7 @@ class _PrincipleItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: Theme.of(context).dividerColor, width: 1),
+          bottom: BorderSide(color: Theme.of(context).dividerColor, width: .75),
         ),
       ),
       child: Row(
