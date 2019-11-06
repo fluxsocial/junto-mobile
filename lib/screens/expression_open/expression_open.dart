@@ -80,7 +80,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
 
   // Swipe down to dismiss keyboard
   void _onDragDown(DragDownDetails details) {
-    FocusScope.of(context).requestFocus(_focusNode);
+    FocusScope.of(context).requestFocus(FocusNode());
   }
 
   // Bring the focus back to the TextField
@@ -92,14 +92,14 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   Future<void> _showPrivacyModalSheet() async {
     await showModalBottomSheet(
       context: context,
-      backgroundColor: const Color(0xff737373),
-      builder: (BuildContext context) {
-        return Container(
-          height: 240,
+      builder: (BuildContext context) => Container(
+        color: Colors.transparent,
+        child: Container(
+          height: MediaQuery.of(context).size.height * .3,
           padding: const EdgeInsets.all(10),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.background,
+            borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(10),
               topRight: Radius.circular(10),
             ),
@@ -127,6 +127,8 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                     Text(
                       'Your comment will visible to everyone who can see '
                       'this expression.',
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                     )
                   ],
                 ),
@@ -151,15 +153,18 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                     Text(
                       'Your comment will only be visible to the creator of '
                       'this expression.',
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                     )
                   ],
                 ),
               ),
             ],
           ),
-        );
-      },
+        ),
+      ),
     );
+
     _focusTextField();
   }
 
@@ -190,7 +195,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
         preferredSize: const Size.fromHeight(45.0),
         child: ExpressionOpenAppbar(),
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: Column(
         children: <Widget>[
           Expanded(
@@ -204,26 +209,26 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                   GestureDetector(
                     onTap: _showComments,
                     child: Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        border: Border(
-                          bottom:
-                              BorderSide(color: Color(0xffeeeeee), width: .75),
-                        ),
-                      ),
+                      color: Colors.transparent,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 15),
                       child: Row(
                         children: <Widget>[
                           Text(
                             'Show replies (${comments.length})',
-                            style: const TextStyle(fontWeight: FontWeight.w500),
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontSize: 12),
                           ),
                           const SizedBox(width: 5),
                           if (commentsVisible == false)
-                            const Icon(Icons.keyboard_arrow_down, size: 17),
+                            Icon(Icons.keyboard_arrow_down,
+                                size: 14,
+                                color: Theme.of(context).primaryColor),
                           if (commentsVisible != false)
-                            const Icon(Icons.keyboard_arrow_up, size: 17),
+                            Icon(Icons.keyboard_arrow_up,
+                                size: 17,
+                                color: Theme.of(context).primaryColor),
                         ],
                       ),
                     ),
@@ -296,17 +301,17 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
     if (createComment == true) {
       return GestureDetector(
         onTap: widget.postComment,
-        child: const Icon(
+        child: Icon(
           Icons.send,
           size: 20,
-          color: JuntoPalette.juntoPrimary,
+          color: Theme.of(context).colorScheme.primary,
         ),
       );
     } else {
-      return const Icon(
+      return Icon(
         Icons.send,
         size: 20,
-        color: Color(0xff999999),
+        color: Theme.of(context).primaryColorLight,
       );
     }
   }
@@ -320,12 +325,12 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
           horizontal: JuntoStyles.horizontalPadding,
           vertical: 5,
         ),
-        decoration: const BoxDecoration(
-          color: Colors.white,
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.background,
           border: Border(
             top: BorderSide(
-              width: 1,
-              color: JuntoPalette.juntoFade,
+              width: .75,
+              color: Theme.of(context).dividerColor,
             ),
           ),
         ),
@@ -341,7 +346,7 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
                       child: CachedNetworkImage(
                         placeholder: (BuildContext context, String _) {
                           return Image.asset(
-                            'assets/images/junto-mobile__logo.png',
+                            'assets/images/junto-mobile__placeholder--member.png',
                           );
                         },
                         imageUrl: selectedUrl,
@@ -357,8 +362,8 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
                         child: ClipOval(
                           child: Image.asset(
                             'assets/images/junto-mobile__eric.png',
-                            height: 36.0,
-                            width: 36.0,
+                            height: 38.0,
+                            width: 38.0,
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -366,12 +371,12 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
                       Container(
                         padding: const EdgeInsets.only(left: 15),
                         decoration: BoxDecoration(
-                          color: const Color(0xfff9f9f9),
-                          borderRadius: BorderRadius.circular(10),
+                          color: Theme.of(context).colorScheme.surface,
+                          borderRadius: BorderRadius.circular(25),
                         ),
                         width: widget.focusNode.hasFocus
                             ? MediaQuery.of(context).size.width - 100
-                            : MediaQuery.of(context).size.width - 66,
+                            : MediaQuery.of(context).size.width - 68,
                         constraints: const BoxConstraints(maxHeight: 180),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -384,16 +389,12 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
                                 onChanged: widget.onTextChange,
                                 decoration: const InputDecoration(
                                   border: InputBorder.none,
-                                  // hintText: 'reply',
                                 ),
                                 maxLines: null,
                                 cursorColor: JuntoPalette.juntoGrey,
                                 cursorWidth: 2,
-                                style: const TextStyle(
-                                  fontSize: 17,
-                                  color: JuntoPalette.juntoGrey,
-                                ),
-                                textInputAction: TextInputAction.done,
+                                style: Theme.of(context).textTheme.caption,
+                                textInputAction: TextInputAction.newline,
                               ),
                             ),
                           ],
@@ -407,45 +408,42 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
                     Container(
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
                           GestureDetector(
                             onTap: widget.showPrivacySheet,
                             child: Container(
-                              color: Colors.white,
+                              color: Colors.transparent,
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
-                                  Text(
-                                    widget.commentPrivacy,
-                                    style: const TextStyle(
-                                      color: Color(0xff333333),
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  const Icon(Icons.keyboard_arrow_down,
-                                      size: 14)
+                                  Text(widget.commentPrivacy,
+                                      style: Theme.of(context).textTheme.body2),
+                                  Icon(Icons.keyboard_arrow_down,
+                                      size: 14,
+                                      color: Theme.of(context).primaryColorDark)
                                 ],
                               ),
                             ),
                           ),
-                          GestureDetector(
-                            onTap: () async {
-                              await showModalBottomSheet(
-                                context: context,
-                                isScrollControlled: false,
-                                backgroundColor: const Color(0xff737373),
-                                builder: (BuildContext context) => _GiphyPanel(
-                                  onGifSelected: (String selected) {
-                                    selectedUrl = selected;
-                                    _type.value = MessageType.gif;
-                                    widget.onGifSelected(selected);
-                                  },
-                                ),
-                              );
-                            },
-                            child: const Text('Insert Gif 🤓'),
-                          ),
+                          SizedBox(width: 10),
+                          // GestureDetector(
+                          //   onTap: () async {
+                          //     await showModalBottomSheet(
+                          //       context: context,
+                          //       isScrollControlled: false,
+                          //       backgroundColor:
+                          //           Theme.of(context).colorScheme.background,
+                          //       builder: (BuildContext context) => _GiphyPanel(
+                          //         onGifSelected: (String selected) {
+                          //           selectedUrl = selected;
+                          //           _type.value = MessageType.gif;
+                          //           widget.onGifSelected(selected);
+                          //         },
+                          //       ),
+                          //     );
+                          //   },
+                          //   child: const Text('GIF'),
+                          // ),
                         ],
                       ),
                     ),
@@ -499,9 +497,9 @@ class _GiphyPanelState extends State<_GiphyPanel> {
     return Container(
       height: MediaQuery.of(context).size.height,
       padding: const EdgeInsets.all(10),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.background,
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(10),
           topRight: Radius.circular(10),
         ),
@@ -548,7 +546,7 @@ class _GiphyPanelState extends State<_GiphyPanel> {
                           child: CachedNetworkImage(
                             placeholder: (BuildContext context, String _) {
                               return Image.asset(
-                                'assets/images/junto-mobile__logo.png',
+                                'assets/images/junto-mobile__placeholder--member.png',
                               );
                             },
                             imageUrl: _gifs.images.downsized.url,
