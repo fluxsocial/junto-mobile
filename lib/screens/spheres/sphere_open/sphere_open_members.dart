@@ -78,7 +78,6 @@ class SphereOpenMembers extends StatelessWidget {
           automaticallyImplyLeading: false,
           brightness: Brightness.light,
           iconTheme: const IconThemeData(color: JuntoPalette.juntoSleek),
-          backgroundColor: Colors.white,
           elevation: 0,
           titleSpacing: 0,
           title: Container(
@@ -89,52 +88,43 @@ class SphereOpenMembers extends StatelessWidget {
                 GestureDetector(
                   onTap: () => Navigator.pop(context),
                   child: Container(
-                    color: Colors.white,
+                    color: Colors.transparent,
                     width: 38,
                     alignment: Alignment.centerLeft,
-                    child: const Icon(
-                      CustomIcons.back_arrow_left,
-                      color: JuntoPalette.juntoSleek,
-                      size: 28,
+                    child: Icon(
+                      CustomIcons.back,
+                      color: Theme.of(context).primaryColorDark,
+                      size: 17,
                     ),
                   ),
                 ),
                 Container(
                   margin: const EdgeInsets.only(right: 5),
-                  child: const Text(
-                    'Members',
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xff333333),
-                    ),
-                  ),
+                  child: Text('Members',
+                      style: Theme.of(context).textTheme.subhead),
                 ),
                 GestureDetector(
                   onTap: () {},
                   child: Container(
                     width: 38,
-                    color: Colors.white,
+                    color: Colors.transparent,
                     alignment: Alignment.centerRight,
-                    child: const Icon(
-                      Icons.add,
-                      size: 24,
-                      color: Color(0xff333333),
-                    ),
+                    child: Icon(Icons.add,
+                        size: 24, color: Theme.of(context).primaryColorDark),
                   ),
                 )
               ],
             ),
           ),
           bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(1),
+            preferredSize: const Size.fromHeight(.75),
             child: Container(
-              height: 1,
-              decoration: const BoxDecoration(
+              height: .75,
+              decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
-                    width: 1,
-                    color: JuntoPalette.juntoFade,
+                    width: .75,
+                    color: Theme.of(context).dividerColor,
                   ),
                 ),
               ),
@@ -142,7 +132,6 @@ class SphereOpenMembers extends StatelessWidget {
           ),
         ),
       ),
-      backgroundColor: Colors.white,
       body: SafeArea(
         child: ListView.builder(
           shrinkWrap: true,

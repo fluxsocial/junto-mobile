@@ -192,7 +192,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
       builder: (BuildContext context) => Container(
         color: Colors.transparent,
         child: Container(
-          height: MediaQuery.of(context).size.height * .3,
+          height: MediaQuery.of(context).size.height * .9,
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.background,

@@ -74,46 +74,58 @@ class PackOpenState extends State<PackOpen> {
                 ),
                 child: Row(
                   children: <Widget>[
-                    Container(
-                      width: MediaQuery.of(context).size.width * .5,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(CustomIcons.lotus,
-                              size: 20,
-                              color: _currentIndex == 0
-                                  ? Theme.of(context).primaryColorDark
-                                  : Theme.of(context).primaryColorLight),
-                          const SizedBox(width: 10),
-                          Text('Public',
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600,
-                                  color: _currentIndex == 0
-                                      ? Theme.of(context).primaryColorDark
-                                      : Theme.of(context).primaryColorLight))
-                        ],
+                    GestureDetector(
+                      onTap: () {
+                        controller.jumpToPage(0);
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * .5,
+                        color: Colors.transparent,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(CustomIcons.lotus,
+                                size: 20,
+                                color: _currentIndex == 0
+                                    ? Theme.of(context).primaryColorDark
+                                    : Theme.of(context).primaryColorLight),
+                            const SizedBox(width: 10),
+                            Text('Public',
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                    color: _currentIndex == 0
+                                        ? Theme.of(context).primaryColorDark
+                                        : Theme.of(context).primaryColorLight))
+                          ],
+                        ),
                       ),
                     ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * .5,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(CustomIcons.packs,
-                              size: 17,
-                              color: _currentIndex == 1
-                                  ? Theme.of(context).primaryColorDark
-                                  : Theme.of(context).primaryColorLight),
-                          const SizedBox(width: 10),
-                          Text('Pack',
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600,
-                                  color: _currentIndex == 1
-                                      ? Theme.of(context).primaryColorDark
-                                      : Theme.of(context).primaryColorLight))
-                        ],
+                    GestureDetector(
+                      onTap: () {
+                        controller.jumpToPage(1);
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * .5,
+                        color: Colors.transparent,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(CustomIcons.packs,
+                                size: 17,
+                                color: _currentIndex == 1
+                                    ? Theme.of(context).primaryColorDark
+                                    : Theme.of(context).primaryColorLight),
+                            const SizedBox(width: 10),
+                            Text('Pack',
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                    color: _currentIndex == 1
+                                        ? Theme.of(context).primaryColorDark
+                                        : Theme.of(context).primaryColorLight))
+                          ],
+                        ),
                       ),
                     ),
                   ],

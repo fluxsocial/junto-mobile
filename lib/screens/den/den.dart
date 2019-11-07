@@ -40,205 +40,378 @@ class JuntoDenState extends State<JuntoDen> {
 
   @override
   Widget build(BuildContext context) {
-    final MediaQueryData media = MediaQuery.of(context);
-    return FutureBuilder<UserProfile>(
-      future: _retrieveUserInfo(),
-      builder: (BuildContext context, AsyncSnapshot<UserProfile> snapshot) {
-        if (!snapshot.hasData) {
-          return Container(
-            height: media.size.height,
-            width: media.size.width,
-            child: const Center(
-              child: CircularProgressIndicator(),
+    return DefaultTabController(
+      length: _tabs.length,
+      child: NestedScrollView(
+        physics: const ClampingScrollPhysics(),
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            JuntoDenAppbar(
+              handle: 'sunyata',
+              name: 'Eric Yang',
+              profilePicture: 'assets/images/junto-mobile__eric.png',
+              bio: 'student of suffering and its cessation',
             ),
-          );
-        }
-        if (snapshot.hasError) {
-          return Container(
-            height: media.size.height,
-            width: media.size.width,
-            child: Center(
-              child: Text('Unable to load user ${snapshot.error}'),
-            ),
-          );
-        }
-        return DefaultTabController(
-          length: _tabs.length,
-          child: NestedScrollView(
-            physics: const ClampingScrollPhysics(),
-            headerSliverBuilder:
-                (BuildContext context, bool innerBoxIsScrolled) {
-              return <Widget>[
-                JuntoDenAppbar(
-                  handle: snapshot.data.username,
-                  name: '${snapshot.data.firstName} ${snapshot.data.lastName}',
-                  profilePicture: profilePicture,
-                  bio: snapshot.data.bio,
-                ),
-                SliverPersistentHeader(
-                  delegate: JuntoAppBarDelegate(
-                    TabBar(
-                      labelPadding: const EdgeInsets.all(0),
-                      isScrollable: true,
-                      labelColor: Theme.of(context).primaryColorDark,
-                      labelStyle: Theme.of(context).textTheme.subhead,
-                      indicatorWeight: 0.0001,
-                      tabs: <Widget>[
-                        for (String name in _tabs)
-                          Container(
-                            margin: const EdgeInsets.only(right: 24),
-                            color: Theme.of(context).colorScheme.background,
-                            child: Tab(
-                              text: name,
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
-                  pinned: true,
-                ),
-              ];
-            },
-            body: TabBarView(
-              children: <Widget>[
-                ListView(
-                  physics: const ClampingScrollPhysics(),
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.only(left: 10),
-                  children: <Widget>[
-                    SizedBox(height: 5),
-                    Container(
-                      padding: const EdgeInsets.only(top: 5, bottom: 5),
-                      child: Column(
-                        children: <Widget>[
-                          Container(
-                            child: Row(
-                              children: <Widget>[
-                                Icon(CustomIcons.gender,
-                                    size: 17,
-                                    color: Theme.of(context).primaryColor),
-                                const SizedBox(width: 5),
-                                Text(
-                                  'he/him',
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      color: Theme.of(context).primaryColor,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          Container(
-                            child: Row(
-                              children: <Widget>[
-                                Image.asset(
-                                  'assets/images/junto-mobile__location.png',
-                                  height: 15,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                                const SizedBox(width: 5),
-                                Text(
-                                  'Spirit',
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      color: Theme.of(context).primaryColor,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          Container(
-                            child: Row(
-                              children: <Widget>[
-                                Image.asset(
-                                  'assets/images/junto-mobile__link.png',
-                                  height: 15,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                                const SizedBox(width: 5),
-                                Text(
-                                  'junto.foundation',
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                  style: TextStyle(
-                                      color: Theme.of(context).primaryColor,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+            SliverPersistentHeader(
+              delegate: JuntoAppBarDelegate(
+                TabBar(
+                  labelPadding: const EdgeInsets.all(0),
+                  isScrollable: true,
+                  labelColor: Theme.of(context).primaryColorDark,
+                  labelStyle: Theme.of(context).textTheme.subhead,
+                  indicatorWeight: 0.0001,
+                  tabs: <Widget>[
+                    for (String name in _tabs)
+                      Container(
+                        margin: const EdgeInsets.only(right: 24),
+                        color: Theme.of(context).colorScheme.background,
+                        child: Tab(
+                          text: name,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 15),
-                    CarouselSlider(
-                      viewportFraction: 1.0,
-                      height: MediaQuery.of(context).size.width - 20,
-                      enableInfiniteScroll: false,
-                      items: <Widget>[
-                        Container(
-                          padding: EdgeInsets.only(right: 10),
-                          width: MediaQuery.of(context).size.width,
-                          child: Image.asset(
-                              'assets/images/junto-mobile__eric.png',
-                              fit: BoxFit.cover),
+                  ],
+                ),
+              ),
+              pinned: true,
+            ),
+          ];
+        },
+        body: TabBarView(
+          children: <Widget>[
+            ListView(
+              physics: const ClampingScrollPhysics(),
+              shrinkWrap: true,
+              padding: const EdgeInsets.only(left: 10),
+              children: <Widget>[
+                SizedBox(height: 5),
+                Container(
+                  padding: const EdgeInsets.only(top: 5, bottom: 5),
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        child: Row(
+                          children: <Widget>[
+                            Icon(CustomIcons.gender,
+                                size: 17,
+                                color: Theme.of(context).primaryColor),
+                            const SizedBox(width: 5),
+                            Text(
+                              'he/him',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ],
                         ),
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          padding: EdgeInsets.only(right: 10),
-                          child: Image.asset(
-                              'assets/images/junto-mobile__eric--qigong.png',
-                              fit: BoxFit.cover),
+                      ),
+                      SizedBox(height: 10),
+                      Container(
+                        child: Row(
+                          children: <Widget>[
+                            Image.asset(
+                              'assets/images/junto-mobile__location.png',
+                              height: 15,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                            const SizedBox(width: 5),
+                            Text(
+                              'Spirit',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 15),
+                      ),
+                      SizedBox(height: 10),
+                      Container(
+                        child: Row(
+                          children: <Widget>[
+                            Image.asset(
+                              'assets/images/junto-mobile__link.png',
+                              height: 15,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                            const SizedBox(width: 5),
+                            Text(
+                              'junto.foundation',
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 15),
+                CarouselSlider(
+                  viewportFraction: 1.0,
+                  height: MediaQuery.of(context).size.width - 20,
+                  enableInfiniteScroll: false,
+                  items: <Widget>[
                     Container(
-                      child: Text("student of suffering and its cessation",
-                          style: Theme.of(context).textTheme.caption),
+                      padding: EdgeInsets.only(right: 10),
+                      width: MediaQuery.of(context).size.width,
+                      child: Image.asset('assets/images/junto-mobile__eric.png',
+                          fit: BoxFit.cover),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      padding: EdgeInsets.only(right: 10),
+                      child: Image.asset(
+                          'assets/images/junto-mobile__eric--qigong.png',
+                          fit: BoxFit.cover),
                     ),
                   ],
                 ),
-                // public mock expressions
-                ListView(
-                  shrinkWrap: true,
-                  physics: ClampingScrollPhysics(),
-                  children: <Widget>[
-                    ExpressionPreview(expression: mockExpressions[0])
-                  ],
+                const SizedBox(height: 15),
+                Container(
+                  child: Text("student of suffering and its cessation",
+                      style: Theme.of(context).textTheme.caption),
                 ),
-
-                // private mock expressions
-                ListView(
-                  shrinkWrap: true,
-                  physics: ClampingScrollPhysics(),
-                  children: <Widget>[
-                    ExpressionPreview(expression: mockExpressions[0])
-                  ],
-                ),
-                // UserExpressions(
-                //   key: const PageStorageKey<String>('public-user-expressions'),
-                //   privacy: 'Public',
-                //   userProfile: snapshot.data,
-                // ),
-                // UserExpressions(
-                //   key: const PageStorageKey<String>('private-user-expressions'),
-                //   privacy: 'Private',
-                //   userProfile: snapshot.data,
-                // )
               ],
             ),
-          ),
-        );
-      },
+            // public mock expressions
+            ListView(
+              shrinkWrap: true,
+              physics: ClampingScrollPhysics(),
+              children: <Widget>[
+                ExpressionPreview(expression: mockExpressions[0])
+              ],
+            ),
+
+            // private mock expressions
+            ListView(
+              shrinkWrap: true,
+              physics: ClampingScrollPhysics(),
+              children: <Widget>[
+                ExpressionPreview(expression: mockExpressions[0])
+              ],
+            ),
+            // UserExpressions(
+            //   key: const PageStorageKey<String>('public-user-expressions'),
+            //   privacy: 'Public',
+            //   userProfile: snapshot.data,
+            // ),
+            // UserExpressions(
+            //   key: const PageStorageKey<String>('private-user-expressions'),
+            //   privacy: 'Private',
+            //   userProfile: snapshot.data,
+            // )
+          ],
+        ),
+      ),
     );
+    // final MediaQueryData media = MediaQuery.of(context);
+    // return FutureBuilder<UserProfile>(
+    //   future: _retrieveUserInfo(),
+    //   builder: (BuildContext context, AsyncSnapshot<UserProfile> snapshot) {
+    //     if (!snapshot.hasData) {
+    //       return Container(
+    //         height: media.size.height,
+    //         width: media.size.width,
+    //         child: const Center(
+    //           child: CircularProgressIndicator(),
+    //         ),
+    //       );
+    //     }
+    //     if (snapshot.hasError) {
+    //       return Container(
+    //         height: media.size.height,
+    //         width: media.size.width,
+    //         child: Center(
+    //           child: Text('Unable to load user ${snapshot.error}'),
+    //         ),
+    //       );
+    //     }
+    //     return DefaultTabController(
+    //       length: _tabs.length,
+    //       child: NestedScrollView(
+    //         physics: const ClampingScrollPhysics(),
+    //         headerSliverBuilder:
+    //             (BuildContext context, bool innerBoxIsScrolled) {
+    //           return <Widget>[
+    //             JuntoDenAppbar(
+    //               handle: snapshot.data.username,
+    //               name: '${snapshot.data.firstName} ${snapshot.data.lastName}',
+    //               profilePicture: profilePicture,
+    //               bio: snapshot.data.bio,
+    //             ),
+    //             SliverPersistentHeader(
+    //               delegate: JuntoAppBarDelegate(
+    //                 TabBar(
+    //                   labelPadding: const EdgeInsets.all(0),
+    //                   isScrollable: true,
+    //                   labelColor: Theme.of(context).primaryColorDark,
+    //                   labelStyle: Theme.of(context).textTheme.subhead,
+    //                   indicatorWeight: 0.0001,
+    //                   tabs: <Widget>[
+    //                     for (String name in _tabs)
+    //                       Container(
+    //                         margin: const EdgeInsets.only(right: 24),
+    //                         color: Theme.of(context).colorScheme.background,
+    //                         child: Tab(
+    //                           text: name,
+    //                         ),
+    //                       ),
+    //                   ],
+    //                 ),
+    //               ),
+    //               pinned: true,
+    //             ),
+    //           ];
+    //         },
+    //         body: TabBarView(
+    //           children: <Widget>[
+    //             ListView(
+    //               physics: const ClampingScrollPhysics(),
+    //               shrinkWrap: true,
+    //               padding: const EdgeInsets.only(left: 10),
+    //               children: <Widget>[
+    //                 SizedBox(height: 5),
+    //                 Container(
+    //                   padding: const EdgeInsets.only(top: 5, bottom: 5),
+    //                   child: Column(
+    //                     children: <Widget>[
+    //                       Container(
+    //                         child: Row(
+    //                           children: <Widget>[
+    //                             Icon(CustomIcons.gender,
+    //                                 size: 17,
+    //                                 color: Theme.of(context).primaryColor),
+    //                             const SizedBox(width: 5),
+    //                             Text(
+    //                               'he/him',
+    //                               maxLines: 1,
+    //                               overflow: TextOverflow.ellipsis,
+    //                               style: TextStyle(
+    //                                   color: Theme.of(context).primaryColor,
+    //                                   fontSize: 15,
+    //                                   fontWeight: FontWeight.w600),
+    //                             ),
+    //                           ],
+    //                         ),
+    //                       ),
+    //                       SizedBox(height: 10),
+    //                       Container(
+    //                         child: Row(
+    //                           children: <Widget>[
+    //                             Image.asset(
+    //                               'assets/images/junto-mobile__location.png',
+    //                               height: 15,
+    //                               color: Theme.of(context).primaryColor,
+    //                             ),
+    //                             const SizedBox(width: 5),
+    //                             Text(
+    //                               'Spirit',
+    //                               maxLines: 1,
+    //                               overflow: TextOverflow.ellipsis,
+    //                               style: TextStyle(
+    //                                   color: Theme.of(context).primaryColor,
+    //                                   fontSize: 15,
+    //                                   fontWeight: FontWeight.w600),
+    //                             ),
+    //                           ],
+    //                         ),
+    //                       ),
+    //                       SizedBox(height: 10),
+    //                       Container(
+    //                         child: Row(
+    //                           children: <Widget>[
+    //                             Image.asset(
+    //                               'assets/images/junto-mobile__link.png',
+    //                               height: 15,
+    //                               color: Theme.of(context).primaryColor,
+    //                             ),
+    //                             const SizedBox(width: 5),
+    //                             Text(
+    //                               'junto.foundation',
+    //                               overflow: TextOverflow.ellipsis,
+    //                               maxLines: 1,
+    //                               style: TextStyle(
+    //                                   color: Theme.of(context).primaryColor,
+    //                                   fontSize: 15,
+    //                                   fontWeight: FontWeight.w600),
+    //                             ),
+    //                           ],
+    //                         ),
+    //                       ),
+    //                     ],
+    //                   ),
+    //                 ),
+    //                 const SizedBox(height: 15),
+    //                 CarouselSlider(
+    //                   viewportFraction: 1.0,
+    //                   height: MediaQuery.of(context).size.width - 20,
+    //                   enableInfiniteScroll: false,
+    //                   items: <Widget>[
+    //                     Container(
+    //                       padding: EdgeInsets.only(right: 10),
+    //                       width: MediaQuery.of(context).size.width,
+    //                       child: Image.asset(
+    //                           'assets/images/junto-mobile__eric.png',
+    //                           fit: BoxFit.cover),
+    //                     ),
+    //                     Container(
+    //                       width: MediaQuery.of(context).size.width,
+    //                       padding: EdgeInsets.only(right: 10),
+    //                       child: Image.asset(
+    //                           'assets/images/junto-mobile__eric--qigong.png',
+    //                           fit: BoxFit.cover),
+    //                     ),
+    //                   ],
+    //                 ),
+    //                 const SizedBox(height: 15),
+    //                 Container(
+    //                   child: Text("student of suffering and its cessation",
+    //                       style: Theme.of(context).textTheme.caption),
+    //                 ),
+    //               ],
+    //             ),
+    //             // public mock expressions
+    //             ListView(
+    //               shrinkWrap: true,
+    //               physics: ClampingScrollPhysics(),
+    //               children: <Widget>[
+    //                 ExpressionPreview(expression: mockExpressions[0])
+    //               ],
+    //             ),
+
+    //             // private mock expressions
+    //             ListView(
+    //               shrinkWrap: true,
+    //               physics: ClampingScrollPhysics(),
+    //               children: <Widget>[
+    //                 ExpressionPreview(expression: mockExpressions[0])
+    //               ],
+    //             ),
+    //             // UserExpressions(
+    //             //   key: const PageStorageKey<String>('public-user-expressions'),
+    //             //   privacy: 'Public',
+    //             //   userProfile: snapshot.data,
+    //             // ),
+    //             // UserExpressions(
+    //             //   key: const PageStorageKey<String>('private-user-expressions'),
+    //             //   privacy: 'Private',
+    //             //   userProfile: snapshot.data,
+    //             // )
+    //           ],
+    //         ),
+    //       ),
+    //     );
+    //   },
+    // );
   }
 }
 
