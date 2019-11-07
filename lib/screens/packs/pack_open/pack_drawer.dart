@@ -111,22 +111,6 @@ class PackDrawer extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 15, vertical: 15),
                       child: const Text(
-                        'Edit Pack',
-                        style: TextStyle(fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: Theme.of(context).dividerColor,
-                            width: .75,
-                          ),
-                        ),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 15),
-                      child: const Text(
                         'Leave Pack',
                         style: TextStyle(fontWeight: FontWeight.w500),
                       ),

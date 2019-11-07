@@ -51,8 +51,9 @@ class ExpressionCenterFAB extends StatelessWidget {
               end: Alignment.topRight,
               stops: const <double>[0.1, 0.9],
               colors: <Color>[
-                JuntoPalette.juntoSecondary,
-                JuntoPalette.juntoPrimary,
+                Theme.of(context).colorScheme.secondary,
+                Theme.of(context).colorScheme.primary,
+
               ],
             ),
             color: JuntoPalette.juntoWhite.withOpacity(.9),

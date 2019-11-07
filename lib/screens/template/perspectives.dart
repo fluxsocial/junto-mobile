@@ -156,7 +156,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
             ),
             GestureDetector(
               onTap: () {
-                _openPerspectiveBottomSheet();
+                _openPerspectiveBottomSheet(name);
               },
               child: const Icon(
                 Icons.keyboard_arrow_down,
@@ -170,7 +170,22 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
     );
   }
 
-  void _openPerspectiveBottomSheet() {
+  _perspectiveText(perspective) {
+    if (perspective == 'JUNTO') {
+      return 'The Junto perspective contains all public expressions from '
+          'every member of Junto.';
+    } else if (perspective == 'Connections') {
+      return 'The Connections perspective contains all public expressions from '
+          'your 1st degree connections.';
+    } else if (perspective == 'Subscriptions') {
+      return "The Subscriptions perspective contains all public expressions from "
+          "members you're subscribed to.";
+    } else if (perspective == 'Degrees of separation') {
+      return 'The Degrees of separation perspective allows you to discover expression from one to six degrees of separtion away from you!';
+    }
+  }
+
+  void _openPerspectiveBottomSheet(perspective) {
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
@@ -192,25 +207,15 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
               const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const <Widget>[
+                children: <Widget>[
                   // Text('cancel'),
-                  Text(
-                    'JUNTO',
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xff333333),
-                    ),
-                  ),
+                  Text(perspective, style: Theme.of(context).textTheme.title),
                 ],
               ),
               const SizedBox(height: 20),
               Container(
-                child: const Text(
-                  'The Junto perspective contains all public expressions from '
-                  'every member of Junto. Expressions are displayed in '
-                  'chronological order.',
-                ),
+                child: Text(_perspectiveText(perspective),
+                    style: Theme.of(context).textTheme.caption),
               )
             ],
           ),

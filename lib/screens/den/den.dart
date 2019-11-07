@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/backend/mock/mock_expression.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/den/den_create_collection.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
-import 'package:junto_beta_mobile/widgets/den_appbar.dart';
+import 'package:junto_beta_mobile/screens/den/den_appbar.dart';
 import 'package:provider/provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:async/async.dart' show AsyncMemoizer;
@@ -29,6 +30,8 @@ class JuntoDenState extends State<JuntoDen> {
 
   AsyncMemoizer<UserProfile> userMemoizer = AsyncMemoizer<UserProfile>();
   List<CentralizedExpressionResponse> expressions;
+  List<CentralizedExpressionResponse> mockExpressions =
+      MockExpressionService().collectiveExpressions;
 
   Future<UserProfile> _retrieveUserInfo() async {
     final UserService _userProvider = Provider.of<UserService>(context);
@@ -103,27 +106,6 @@ class JuntoDenState extends State<JuntoDen> {
                   shrinkWrap: true,
                   padding: const EdgeInsets.only(left: 10),
                   children: <Widget>[
-                    // CarouselSlider(
-                    //   viewportFraction: 1.0,
-                    //   height: MediaQuery.of(context).size.width - 20,
-                    //   enableInfiniteScroll: false,
-                    //   items: <Widget>[
-                    //     Container(
-                    //       padding: EdgeInsets.only(right: 10),
-                    //       width: MediaQuery.of(context).size.width,
-                    //       child: Image.asset(
-                    //           'assets/images/junto-mobile__eric.png',
-                    //           fit: BoxFit.cover),
-                    //     ),
-                    //     Container(
-                    //       width: MediaQuery.of(context).size.width,
-                    //       padding: EdgeInsets.only(right: 10),
-                    //       child: Image.asset(
-                    //           'assets/images/junto-mobile__eric--qigong.png',
-                    //           fit: BoxFit.cover),
-                    //     ),
-                    //   ],
-                    // ),
                     const SizedBox(height: 15),
                     Container(
                       padding: const EdgeInsets.only(top: 5, bottom: 5),
@@ -176,12 +158,6 @@ class JuntoDenState extends State<JuntoDen> {
                       ),
                     ),
                     const SizedBox(height: 15),
-                    Container(
-                      child: Text('Founder @junto; student of QiGong',
-                          style: Theme.of(context).textTheme.caption),
-                    ),
-                    const SizedBox(height: 15),
-
                     CarouselSlider(
                       viewportFraction: 1.0,
                       height: MediaQuery.of(context).size.width - 20,
@@ -203,18 +179,40 @@ class JuntoDenState extends State<JuntoDen> {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 15),
+                    Container(
+                      child: Text('Founder @junto; student of Qigong',
+                          style: Theme.of(context).textTheme.caption),
+                    ),
                   ],
                 ),
-                UserExpressions(
-                  key: const PageStorageKey<String>('public-user-expressions'),
-                  privacy: 'Public',
-                  userProfile: snapshot.data,
+                // public mock expressions
+                ListView(
+                  shrinkWrap: true,
+                  physics: ClampingScrollPhysics(),
+                  children: <Widget>[
+                    ExpressionPreview(expression: mockExpressions[0])
+                  ],
                 ),
-                UserExpressions(
-                  key: const PageStorageKey<String>('private-user-expressions'),
-                  privacy: 'Private',
-                  userProfile: snapshot.data,
-                )
+
+                // private mock expressions
+                ListView(
+                  shrinkWrap: true,
+                  physics: ClampingScrollPhysics(),
+                  children: <Widget>[
+                    ExpressionPreview(expression: mockExpressions[0])
+                  ],
+                ),
+                // UserExpressions(
+                //   key: const PageStorageKey<String>('public-user-expressions'),
+                //   privacy: 'Public',
+                //   userProfile: snapshot.data,
+                // ),
+                // UserExpressions(
+                //   key: const PageStorageKey<String>('private-user-expressions'),
+                //   privacy: 'Private',
+                //   userProfile: snapshot.data,
+                // )
               ],
             ),
           ),

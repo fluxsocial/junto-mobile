@@ -4,16 +4,9 @@ import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 
 class PackOpenAppbar extends StatelessWidget {
-  const PackOpenAppbar({
-    Key key,
-    @required this.packTitle,
-    @required this.packUser,
-    @required this.packImage,
-  }) : super(key: key);
+  const PackOpenAppbar({Key key, @required this.pack}) : super(key: key);
 
-  final dynamic packTitle;
-  final dynamic packUser;
-  final dynamic packImage;
+  final dynamic pack;
 
   @override
   Widget build(BuildContext context) {
@@ -44,38 +37,43 @@ class PackOpenAppbar extends StatelessWidget {
                 ),
               ),
               Center(
-                child:
-                    Text(packTitle, style: Theme.of(context).textTheme.subhead),
+                child: Text(pack.groupData.name,
+                    style: Theme.of(context).textTheme.subhead),
               ),
               GestureDetector(
                 onTap: () {
                   Scaffold.of(context).openEndDrawer();
                 },
-                child: Container(
-                  alignment: Alignment.center,
-                  height: 32.0,
-                  width: 32.0,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.bottomLeft,
-                      end: Alignment.topRight,
-                      stops: const <double>[0.3, 0.9],
-                      colors: <Color>[
-                        JuntoPalette.juntoSecondary,
-                        JuntoPalette.juntoPrimary,
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                  child: Transform.translate(
-                    offset: Offset(-1.0, 0),
-                    child: Icon(
-                      CustomIcons.packs,
-                      color: Colors.white,
-                      size: 14,
-                    ),
-                  ),
-                ),
+                child: pack.address == ''
+                    ? Container(
+                        alignment: Alignment.center,
+                        height: 32.0,
+                        width: 32.0,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.bottomLeft,
+                            end: Alignment.topRight,
+                            stops: const <double>[0.3, 0.9],
+                            colors: <Color>[
+                              JuntoPalette.juntoSecondary,
+                              JuntoPalette.juntoPrimary,
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        child: Transform.translate(
+                          offset: Offset(-1.0, 0),
+                          child: Icon(
+                            CustomIcons.packs,
+                            color: Colors.white,
+                            size: 14,
+                          ),
+                        ),
+                      )
+                    : ClipOval(
+                        child: Image.asset(pack.address,
+                            height: 32, width: 32, fit: BoxFit.cover),
+                      ),
               )
             ],
           ),

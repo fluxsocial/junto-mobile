@@ -144,7 +144,7 @@ class BottomNavState extends State<BottomNav> {
                     ),
                     child: ClipOval(
                       child: Image.asset(
-                        'assets/images/junto-mobile__placeholder--member.png',
+                        'assets/images/junto-mobile__eric.png',
                         fit: BoxFit.cover,
                       ),
                     ),

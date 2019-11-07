@@ -129,7 +129,24 @@ class _DenDrawerState extends State<DenDrawer> {
                     // relationships
                     DenDrawerItem(
                       title: 'My Pack',
-                      onTap: _onPackPress,
+                      // onTap: _onPackPress,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => PackOpen(
+                              pack: Group(
+                                address: '',
+                                createdAt: DateTime.now(),
+                                creator: 'Eric Yang',
+                                privacy: 'public',
+                                groupType: 'sphere',
+                                groupData: GroupDataPack(name: 'Urksters'),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                       arrow: true,
                     ),
                     DenDrawerItem(
@@ -143,12 +160,6 @@ class _DenDrawerState extends State<DenDrawer> {
                       arrow: true,
                     ),
                     DenDrawerItem(
-                      title: 'Edit den',
-                      onTap: _onEditPress,
-                      arrow: true,
-                    ),
-
-                    DenDrawerItem(
                       title: 'Themes',
                       onTap: () {
                         // nav
@@ -159,6 +170,11 @@ class _DenDrawerState extends State<DenDrawer> {
                           ),
                         );
                       },
+                      arrow: true,
+                    ),
+                    DenDrawerItem(
+                      title: 'Edit den',
+                      onTap: _onEditPress,
                       arrow: true,
                     ),
 

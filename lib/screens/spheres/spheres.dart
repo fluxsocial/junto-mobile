@@ -75,6 +75,32 @@ class JuntoSpheresState extends State<JuntoSpheres> with ListDistinct {
       privacy: 'public',
       groupType: 'sphere',
       groupData: GroupDataSphere(
+          description: 'Ensemble of NYC-based musicians',
+          name: 'Music Crew NYC',
+          photo: '',
+          principles: '',
+          sphereHandle: 'jamsnyc'),
+    ),
+    Group(
+      address: '',
+      createdAt: DateTime.now(),
+      creator: null,
+      privacy: 'public',
+      groupType: 'sphere',
+      groupData: GroupDataSphere(
+          description: 'Basketball crew',
+          name: 'Hoops 🏀',
+          photo: '',
+          principles: '',
+          sphereHandle: 'hoops'),
+    ),
+    Group(
+      address: '',
+      createdAt: DateTime.now(),
+      creator: null,
+      privacy: 'public',
+      groupType: 'sphere',
+      groupData: GroupDataSphere(
           description: 'in the pursuit of presence',
           name: 'Zen',
           photo: 'assets/images/junto-mobile__stillmind.png',
@@ -107,6 +133,46 @@ class JuntoSpheresState extends State<JuntoSpheres> with ListDistinct {
           principles: '',
           sphereHandle: 'holochain'),
     ),
+    Group(
+      address: '',
+      createdAt: DateTime.now(),
+      creator: null,
+      privacy: 'public',
+      groupType: 'sphere',
+      groupData: GroupDataSphere(
+          description:
+              'Plant based medicines, shamanism, holistic spirutuality, and more.',
+          name: 'plantbased',
+          photo: '',
+          principles: '',
+          sphereHandle: 'plantbased'),
+    ),
+    Group(
+      address: '',
+      createdAt: DateTime.now(),
+      creator: null,
+      privacy: 'public',
+      groupType: 'sphere',
+      groupData: GroupDataSphere(
+          description: 'For UX/UI designers and architects',
+          name: 'UX/UI Design',
+          photo: '',
+          principles: '',
+          sphereHandle: 'uxdesignn'),
+    ),    
+    Group(
+      address: '',
+      createdAt: DateTime.now(),
+      creator: null,
+      privacy: 'public',
+      groupType: 'sphere',
+      groupData: GroupDataSphere(
+          description: 'Come to wash Sq Park for latest happenings!',
+          name: 'Chess NYC',
+          photo: '',
+          principles: '',
+          sphereHandle: 'chessnyc'),
+    ),    
   ];
 
   @override
@@ -125,7 +191,12 @@ class JuntoSpheresState extends State<JuntoSpheres> with ListDistinct {
           SpherePreview(group: _spheres[1]),
           SpherePreview(group: _spheres[2]),
           SpherePreview(group: _spheres[3]),
+          SpherePreview(group: _spheres[4]),
+          SpherePreview(group: _spheres[5]),
+          SpherePreview(group: _spheres[6]),
+          SpherePreview(group: _spheres[7]),          
 
+          SpherePreview(group: _spheres[8]),          
           // FutureBuilder<UserGroupsResponse>(
           //   future: getUserGroups(),
           //   builder: (BuildContext context,

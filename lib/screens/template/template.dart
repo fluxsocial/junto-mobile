@@ -260,7 +260,8 @@ class JuntoTemplateState extends State<JuntoTemplate> {
       case 3:
         setState(() {
           _currentScreen = 'den';
-          _appbarTitle = profile?.username ?? 'Junto';
+          // _appbarTitle = profile?.username ?? 'sunyata';
+          _appbarTitle = 'sunyata';
         });
 
         break;

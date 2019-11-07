@@ -29,31 +29,40 @@ class PackPreview extends StatelessWidget {
         color: Colors.transparent,
         child: Row(
           children: <Widget>[
-            Container(
-              alignment: Alignment.center,
-              height: 45.0,
-              width: 45.0,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.bottomLeft,
-                  end: Alignment.topRight,
-                  stops: const <double>[0.3, 0.9],
-                  colors: <Color>[
-                    Theme.of(context).colorScheme.secondary,
-                    Theme.of(context).colorScheme.primary
-                  ],
-                ),
-                borderRadius: BorderRadius.circular(100),
-              ),
-              child: Transform.translate(
-                offset: Offset(-1.0, 0),
-                child: Icon(
-                  CustomIcons.packs,
-                  color: Theme.of(context).colorScheme.onPrimary,
-                  size: 17,
-                ),
-              ),
-            ),
+            group.address == ''
+                ? Container(
+                    alignment: Alignment.center,
+                    height: 45.0,
+                    width: 45.0,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.bottomLeft,
+                        end: Alignment.topRight,
+                        stops: const <double>[0.3, 0.9],
+                        colors: <Color>[
+                          Theme.of(context).colorScheme.secondary,
+                          Theme.of(context).colorScheme.primary
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    child: Transform.translate(
+                      offset: Offset(-1.0, 0),
+                      child: Icon(
+                        CustomIcons.packs,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                        size: 17,
+                      ),
+                    ),
+                  )
+                : ClipOval(
+                    child: Image.asset(
+                      group.address,
+                      height: 45.0,
+                      width: 45.0,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
             Container(
               width: MediaQuery.of(context).size.width - 75,
               padding: const EdgeInsets.symmetric(vertical: 15),

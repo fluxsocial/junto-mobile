@@ -86,37 +86,48 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   }
 
   Future<void> _getMembers() async {
-    try {
-      JuntoOverlay.showLoader(context);
-      final List<Users> _members =
-          await Provider.of<GroupRepo>(context).getGroupMembers(
-        widget.group.address,
-      );
-      JuntoOverlay.hide();
       Navigator.push(
         context,
         CupertinoPageRoute<dynamic>(
           builder: (BuildContext context) {
             return SphereOpenMembers(
               group: widget.group,
-              users: _members,
+              users: [],
             );
           },
         ),
-      );
-    } on JuntoException catch (error) {
-      JuntoOverlay.hide();
-      JuntoDialog.showJuntoDialog(
-        context,
-        error.message,
-        <Widget>[
-          FlatButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Ok'),
-          )
-        ],
-      );
-    }
+      );    
+    // try {
+    //   JuntoOverlay.showLoader(context);
+    //   final List<Users> _members =
+    //       await Provider.of<GroupRepo>(context).getGroupMembers(
+    //     widget.group.address,
+    //   );
+    //   JuntoOverlay.hide();
+    //   Navigator.push(
+    //     context,
+    //     CupertinoPageRoute<dynamic>(
+    //       builder: (BuildContext context) {
+    //         return SphereOpenMembers(
+    //           group: widget.group,
+    //           users: _members,
+    //         );
+    //       },
+    //     ),
+    //   );
+    // } on JuntoException catch (error) {
+    //   JuntoOverlay.hide();
+    //   JuntoDialog.showJuntoDialog(
+    //     context,
+    //     error.message,
+    //     <Widget>[
+    //       FlatButton(
+    //         onPressed: () => Navigator.pop(context),
+    //         child: const Text('Ok'),
+    //       )
+    //     ],
+    //   );
+    // }
   }
 
   final List<String> _tabs = <String>['About', 'Discussion', 'Events'];
@@ -125,17 +136,14 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     const Principle(
       title: 'Be a nice person because nice people get chocolate',
       body: 'Engage with empathy and respect for one another. We are more than '
-          'viewpoints that may oppose each other at times. We are human beings '
-          ':)',
+          'viewpoints that may oppose each other at times :)',
     ),
     const Principle(
-      title: 'All walks of life',
-      body: 'This is a communal space where people from all walks of life are'
-          ' welcome',
-    ),
+        title: 'All walks of life',
+        body: 'This is a communal space for all walks of life'),
   ];
 
-  bool _principlesFullView = false;
+  bool _principlesFullView = true;
 
   @override
   Widget build(BuildContext context) {

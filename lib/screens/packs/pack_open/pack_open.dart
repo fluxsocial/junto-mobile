@@ -47,9 +47,7 @@ class PackOpenState extends State<PackOpen> {
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(45),
           child: PackOpenAppbar(
-            packTitle: widget.pack.groupData.name,
-            packUser: widget.pack.creator,
-            packImage: 'assets/images/junto-mobile__logo.png',
+            pack: widget.pack
           ),
         ),
         floatingActionButton: ValueListenableBuilder<bool>(
