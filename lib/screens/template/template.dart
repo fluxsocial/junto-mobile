@@ -63,7 +63,6 @@ class JuntoTemplateState extends State<JuntoTemplate> {
     final UserService _userProvider = Provider.of<UserService>(context);
     try {
       final UserProfile _profile = await _userProvider.readLocalUser();
-      print(_profile);
       setState(() {
         profile = _profile;
       });
@@ -240,8 +239,12 @@ class JuntoTemplateState extends State<JuntoTemplate> {
           _currentScreen = 'collective';
           _appbarTitle = 'JUNTO';
         });
-        collectiveController.animateTo(0.0,
-            duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
+        if (collectiveController.hasClients)
+          collectiveController.animateTo(
+            0.0,
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeIn,
+          );
         break;
       case 1:
         setState(() {
