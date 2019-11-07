@@ -3,7 +3,6 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
-import 'package:junto_beta_mobile/screens/create/create_templates/bullet/bullet.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/event.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/longform.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/photo.dart';
@@ -25,7 +24,6 @@ class JuntoCreateState extends State<JuntoCreate> {
   String _expressionType = 'LongForm';
   bool _longform = true;
   bool _shortform = false;
-  bool _bullet = false;
   bool _photo = false;
   bool _events = false;
 
@@ -67,8 +65,6 @@ class JuntoCreateState extends State<JuntoCreate> {
         key: _shortFormKey,
         isEditing: isEditing,
       );
-    } else if (_bullet) {
-      return CreateBullet();
     } else if (_photo) {
       return CreatePhoto(
         key: _photoFormKey,
@@ -90,7 +86,6 @@ class JuntoCreateState extends State<JuntoCreate> {
     setState(() {
       _longform = false;
       _shortform = false;
-      _bullet = false;
       _photo = false;
       _events = false;
     });
@@ -115,10 +110,6 @@ class JuntoCreateState extends State<JuntoCreate> {
       setState(() {
         _shortform = true;
         _currentIcon = Icon(CustomIcons.feather, color: Colors.white, size: 20);
-      });
-    } else if (templateType == 'BulletForm') {
-      setState(() {
-        _bullet = true;
       });
     } else if (templateType == 'PhotoForm') {
       setState(() {
@@ -160,9 +151,7 @@ class JuntoCreateState extends State<JuntoCreate> {
     if (_expressionType == 'ShortForm') {
       return _shortFormKey.currentState.createExpression();
     }
-    if (_expressionType == 'BulletForm') {
-      return null;
-    }
+
     if (_expressionType == 'PhotoForm') {
       return _photoFormKey.currentState.createExpression();
     }

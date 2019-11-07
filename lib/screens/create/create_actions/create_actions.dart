@@ -3,6 +3,7 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/widgets/previews/channel_preview.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions_appbar.dart';
 import 'package:junto_beta_mobile/screens/template/template.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
@@ -102,7 +103,8 @@ class CreateActionsState extends State<CreateActions> {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(45),
         child: CreateActionsAppbar(
-          onCreateTap: _createExpression,
+          // onCreateTap: _createExpression,
+          onCreateTap: null,
         ),
       ),
       body: ListView(
@@ -120,8 +122,8 @@ class CreateActionsState extends State<CreateActions> {
                 ),
               ),
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-              child: const Text('# add channels',
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500)),
+              child: Text('# add channels',
+                  style: Theme.of(context).textTheme.caption),
             ),
           ),
           GestureDetector(
@@ -139,9 +141,7 @@ class CreateActionsState extends State<CreateActions> {
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
-                    color: Theme.of(context).dividerColor,
-                    width: 1,
-                  ),
+                      color: Theme.of(context).dividerColor, width: .75),
                 ),
               ),
               padding: const EdgeInsets.symmetric(
@@ -150,14 +150,11 @@ class CreateActionsState extends State<CreateActions> {
               ),
               child: Row(
                 children: <Widget>[
-                  Text(
-                    'sharing to ' + widget.expressionLayer,
-                    style: const TextStyle(
-                        fontSize: 15, fontWeight: FontWeight.w500),
-                  ),
+                  Text('sharing to ' + widget.expressionLayer,
+                      style: Theme.of(context).textTheme.caption),
                   const SizedBox(width: 1),
-                  const Icon(Icons.keyboard_arrow_down,
-                      color: Color(0xff333333), size: 17)
+                  Icon(Icons.keyboard_arrow_down,
+                      color: Theme.of(context).primaryColorDark, size: 17)
                 ],
               ),
             ),
@@ -168,7 +165,7 @@ class CreateActionsState extends State<CreateActions> {
               border: Border(
                 bottom: BorderSide(
                   color: Theme.of(context).dividerColor,
-                  width: 1,
+                  width: .75,
                 ),
               ),
             ),
@@ -181,22 +178,16 @@ class CreateActionsState extends State<CreateActions> {
                 bool isFocused,
               }) =>
                   null,
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                hintStyle: TextStyle(
-                  color: Color(0xff333333),
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                ),
-                hintText: 'set an intention (optional)',
-              ),
-              cursorColor: const Color(0xff333333),
+              decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintStyle: Theme.of(context).textTheme.caption,
+                  hintText:
+                      'set an intention (i.e. why are you sharing this? what are you looking for from others?)',
+                  hintMaxLines: 2),
+              cursorColor: Theme.of(context).primaryColorDark,
               cursorWidth: 2,
               maxLines: null,
-              style: const TextStyle(
-                  color: Color(0xff333333),
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500),
+              style: Theme.of(context).textTheme.caption,
               maxLength: 240,
               textInputAction: TextInputAction.done,
             ),
@@ -217,9 +208,9 @@ class CreateActionsState extends State<CreateActions> {
           child: Container(
             height: MediaQuery.of(context).size.height * .6,
             padding: const EdgeInsets.all(10),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.background,
+              borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(10),
                 topRight: Radius.circular(10),
               ),
@@ -239,53 +230,61 @@ class CreateActionsState extends State<CreateActions> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 15),
+                const SizedBox(height: 25),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Container(
-                      width: MediaQuery.of(context).size.width - 60,
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: Theme.of(context).dividerColor,
-                            width: .75,
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: Theme.of(context).dividerColor,
+                              width: .75,
+                            ),
                           ),
                         ),
-                      ),
-                      child: TextField(
-                        controller: _channelController,
-                        buildCounter: (
-                          BuildContext context, {
-                          int currentLength,
-                          int maxLength,
-                          bool isFocused,
-                        }) =>
-                            null,
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Add up to five channels',
-                          hintStyle: TextStyle(
-                              color: Color(0xff999999),
-                              fontSize: 17,
-                              fontWeight: FontWeight.w500),
+                        child: TextField(
+                          controller: _channelController,
+                          buildCounter: (
+                            BuildContext context, {
+                            int currentLength,
+                            int maxLength,
+                            bool isFocused,
+                          }) =>
+                              null,
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.all(0),
+                            border: InputBorder.none,
+                            hintText: 'add up to five channels',
+                            hintStyle: Theme.of(context).textTheme.caption,
+                          ),
+                          cursorColor: Theme.of(context).primaryColorDark,
+                          cursorWidth: 2,
+                          maxLines: null,
+                          style: Theme.of(context).textTheme.caption,
+                          maxLength: 80,
+                          textInputAction: TextInputAction.done,
                         ),
-                        cursorColor: const Color(0xff333333),
-                        cursorWidth: 2,
-                        maxLines: null,
-                        style: const TextStyle(
-                            color: Color(0xff333333),
-                            fontSize: 17,
-                            fontWeight: FontWeight.w500),
-                        maxLength: 80,
-                        textInputAction: TextInputAction.done,
                       ),
                     ),
-                    Container(
-                      child: const Icon(Icons.add, size: 20),
-                    )
                   ],
                 ),
+                Expanded(
+                  child: ListView(
+                    children: <Widget>[
+                      ChannelPreview(
+                        channel: 'design',
+                      ),
+                      ChannelPreview(
+                        channel: 'technology',
+                      ),
+                      ChannelPreview(
+                        channel: 'austrian economics',
+                      ),
+                    ],
+                  ),
+                )
               ],
             ),
           ),
@@ -325,9 +324,9 @@ class _ExpressionLayerBottomSheetState
       child: Container(
         height: MediaQuery.of(context).size.height * .6,
         padding: const EdgeInsets.all(10),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.background,
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(10),
             topRight: Radius.circular(10),
           ),
@@ -345,8 +344,9 @@ class _ExpressionLayerBottomSheetState
                       height: 5,
                       width: MediaQuery.of(context).size.width * .1,
                       decoration: BoxDecoration(
-                          color: Theme.of(context).dividerColor,
-                          borderRadius: BorderRadius.circular(100)),
+                        color: Theme.of(context).dividerColor,
+                        borderRadius: BorderRadius.circular(100),
+                      ),
                     ),
                   ],
                 ),
@@ -363,8 +363,8 @@ class _ExpressionLayerBottomSheetState
                           fontSize: 17,
                           fontWeight: FontWeight.w700,
                           color: _chooseBase
-                              ? const Color(0xff333333)
-                              : const Color(0xff999999),
+                              ? Theme.of(context).primaryColorDark
+                              : Theme.of(context).primaryColorLight,
                         ),
                       ),
                     ),
@@ -379,8 +379,8 @@ class _ExpressionLayerBottomSheetState
                           fontSize: 17,
                           fontWeight: FontWeight.w700,
                           color: _chooseSpheres
-                              ? const Color(0xff333333)
-                              : const Color(0xff999999),
+                              ? Theme.of(context).primaryColorDark
+                              : Theme.of(context).primaryColorLight,
                         ),
                       ),
                     )
@@ -422,60 +422,7 @@ class _ExpressionLayerBottomSheetState
                     ],
                   ),
                 )
-
-                // Container(height: 50, color: Colors.green)
               ],
-            ),
-            Positioned(
-              bottom: 15,
-              child: Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      height: 9,
-                      width: 9,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(100),
-                        gradient: _chooseBase
-                            ? const LinearGradient(
-                                colors: <Color>[
-                                  JuntoPalette.juntoSecondary,
-                                  JuntoPalette.juntoPrimary
-                                ],
-                                begin: Alignment.bottomLeft,
-                                end: Alignment.topRight,
-                                stops: <double>[0.1, 0.9],
-                              )
-                            : null,
-                        color:
-                            _chooseBase ? null : Theme.of(context).dividerColor,
-                      ),
-                    ),
-                    const SizedBox(width: 6),
-                    Container(
-                      height: 9,
-                      width: 9,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(100),
-                        gradient: _chooseSpheres
-                            ? const LinearGradient(
-                                colors: <Color>[
-                                  JuntoPalette.juntoSecondary,
-                                  JuntoPalette.juntoPrimary
-                                ],
-                                begin: Alignment.bottomLeft,
-                                end: Alignment.topRight,
-                                stops: <double>[0.1, 0.9])
-                            : null,
-                        color: _chooseSpheres
-                            ? null
-                            : Theme.of(context).dividerColor,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
             ),
           ],
         ),
@@ -484,33 +431,51 @@ class _ExpressionLayerBottomSheetState
   }
 
   Widget _expressionLayerWidget(String layer) {
-    IconData expressionLayerIcon;
+    dynamic expressionLayerIcon;
 
     if (layer == 'Collective') {
-      expressionLayerIcon = CustomIcons.lotus;
+      expressionLayerIcon = Icon(
+        CustomIcons.lotus,
+        color: Colors.white,
+        size: 15,
+      );
     } else if (layer == 'My Pack') {
-      expressionLayerIcon = CustomIcons.packs;
+      expressionLayerIcon = Icon(
+        CustomIcons.packs,
+        color: Colors.white,
+        size: 15,
+      );
     } else if (layer == 'Private Den') {
-      expressionLayerIcon = CustomIcons.profile;
+      expressionLayerIcon = Image.asset(
+        'assets/images/junto-mobile__logo--white.png',
+        color: Colors.white,
+        height: 18,
+      );
     }
 
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
       title: Row(
         children: <Widget>[
-          Icon(
-            expressionLayerIcon,
-            size: 17,
-            color: const Color(0xff555555),
-          ),
+          Container(
+              alignment: Alignment.center,
+              height: 45.0,
+              width: 45.0,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomLeft,
+                  end: Alignment.topRight,
+                  stops: const <double>[0.2, 0.9],
+                  colors: <Color>[
+                    Theme.of(context).colorScheme.secondary,
+                    Theme.of(context).colorScheme.primary
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(100),
+              ),
+              child: expressionLayerIcon),
           const SizedBox(width: 20),
-          Text(
-            layer,
-            style: const TextStyle(
-                fontSize: 17,
-                color: Color(0xff333333),
-                fontWeight: FontWeight.w500),
-          )
+          Text(layer, style: Theme.of(context).textTheme.caption)
         ],
       ),
     );

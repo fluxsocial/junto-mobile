@@ -172,45 +172,24 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                   Container(
                     // color: Colors.blue,
                     child: TextFormField(
-                      validator: Validator.validateNonEmpty,
-                      controller: titleController,
-                      buildCounter: (
-                        BuildContext context, {
-                        int currentLength,
-                        int maxLength,
-                        bool isFocused,
-                      }) =>
-                          null,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Name of event',
-                        hintStyle: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xff999999),
-                        ),
-                      ),
-                      cursorColor: JuntoPalette.juntoGrey,
-                      cursorWidth: 2,
-                      maxLines: null,
-                      maxLength: 140,
-                      style: const TextStyle(
-                          fontSize: 20,
-                          color: Color(0xff333333),
-                          fontWeight: FontWeight.w700),
-                    ),
-                  ),
-                  // Container(
-                  //   height: .75,
-                  //   color: Color(0xffeeeeee),
-                  // ),
-                  Container(
-                    color: const Color(0xfffbfbfb),
-                    height: 200,
-                    width: MediaQuery.of(context).size.width,
-                    child: const Center(
-                      child: Text('Add a cover photo (optional)'),
-                    ),
+                        validator: Validator.validateNonEmpty,
+                        controller: titleController,
+                        buildCounter: (
+                          BuildContext context, {
+                          int currentLength,
+                          int maxLength,
+                          bool isFocused,
+                        }) =>
+                            null,
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Name of event',
+                            hintStyle: Theme.of(context).textTheme.display1),
+                        cursorColor: JuntoPalette.juntoGrey,
+                        cursorWidth: 2,
+                        maxLines: null,
+                        maxLength: 140,
+                        style: Theme.of(context).textTheme.display1),
                   ),
                   GestureDetector(
                     onTap: () {
@@ -228,37 +207,29 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                       }
                     },
                     child: Container(
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.background,
                       padding: const EdgeInsets.symmetric(vertical: 15),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          const Text(
-                            'Start Date',
-                            style: TextStyle(
-                              fontSize: 17,
-                              fontWeight: FontWeight.w700,
-                              color: Color(0xff999999),
-                            ),
-                          ),
+                          Text('Start Date',
+                              style: Theme.of(context).textTheme.subhead),
                           Row(
                             children: <Widget>[
                               Text(
-                                startMonth +
-                                    ' ' +
-                                    startDay +
-                                    ', ' +
-                                    startYear +
-                                    ', ' +
-                                    startHour +
-                                    ':' +
-                                    startMinute +
-                                    ' ' +
-                                    startPeriod,
-                                style: const TextStyle(
-                                    fontSize: 17, fontWeight: FontWeight.w500),
-                              )
+                                  startMonth +
+                                      ' ' +
+                                      startDay +
+                                      ', ' +
+                                      startYear +
+                                      ', ' +
+                                      startHour +
+                                      ':' +
+                                      startMinute +
+                                      ' ' +
+                                      startPeriod,
+                                  style: Theme.of(context).textTheme.headline)
                             ],
                           )
                         ],
@@ -269,6 +240,8 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                       ? Container(
                           height: 200,
                           child: CupertinoDatePicker(
+                            backgroundColor:
+                                Theme.of(context).colorScheme.background,
                             initialDateTime: _startDate,
                             mode: CupertinoDatePickerMode.dateAndTime,
                             onDateTimeChanged: (DateTime date) {
@@ -295,40 +268,33 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                       }
                     },
                     child: Container(
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.background,
                       padding: const EdgeInsets.symmetric(vertical: 15),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          const Text(
-                            'End Date',
-                            style: TextStyle(
-                              fontSize: 17,
-                              fontWeight: FontWeight.w700,
-                              color: Color(0xff999999),
-                            ),
-                          ),
+                          Text('End Date',
+                              style: Theme.of(context).textTheme.subhead),
                           endDay == ''
                               ? const SizedBox()
                               : Row(
                                   children: <Widget>[
                                     Text(
-                                      endMonth +
-                                          ' ' +
-                                          endDay +
-                                          ', ' +
-                                          endYear +
-                                          ', ' +
-                                          endHour +
-                                          ':' +
-                                          endMinute +
-                                          ' ' +
-                                          endPeriod,
-                                      style: const TextStyle(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w500),
-                                    )
+                                        endMonth +
+                                            ' ' +
+                                            endDay +
+                                            ', ' +
+                                            endYear +
+                                            ', ' +
+                                            endHour +
+                                            ':' +
+                                            endMinute +
+                                            ' ' +
+                                            endPeriod,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline)
                                   ],
                                 )
                         ],
@@ -339,6 +305,8 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                       ? Container(
                           height: 200,
                           child: CupertinoDatePicker(
+                            backgroundColor:
+                                Theme.of(context).colorScheme.background,
                             initialDateTime: _startDate,
                             mode: CupertinoDatePickerMode.dateAndTime,
                             onDateTimeChanged: (DateTime date) {
@@ -357,22 +325,14 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                         bool isFocused,
                       }) =>
                           null,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Location',
-                        hintStyle: TextStyle(
-                          color: Color(0xff999999),
-                          fontSize: 17,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      cursorColor: const Color(0xff333333),
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Location',
+                          hintStyle: Theme.of(context).textTheme.subhead),
+                      cursorColor: Theme.of(context).primaryColorDark,
                       cursorWidth: 2,
                       maxLines: null,
-                      style: const TextStyle(
-                          color: Color(0xff333333),
-                          fontSize: 17,
-                          fontWeight: FontWeight.w700),
+                      style: Theme.of(context).textTheme.subhead,
                       maxLength: 80,
                       textInputAction: TextInputAction.done,
                     ),
@@ -387,22 +347,14 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                         bool isFocused,
                       }) =>
                           null,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Details',
-                        hintStyle: TextStyle(
-                          color: Color(0xff999999),
-                          fontSize: 17,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Details',
+                          hintStyle: Theme.of(context).textTheme.subhead),
                       cursorColor: const Color(0xff333333),
                       cursorWidth: 2,
                       maxLines: null,
-                      style: const TextStyle(
-                          color: Color(0xff333333),
-                          fontSize: 17,
-                          fontWeight: FontWeight.w700),
+                      style: Theme.of(context).textTheme.subhead,
                       maxLength: 80,
                       textInputAction: TextInputAction.done,
                     ),
