@@ -134,38 +134,6 @@ class CentralizedEventFormExpression {
       };
 }
 
-class CentralizedBulletFormExpression {
-  CentralizedBulletFormExpression({
-    this.title,
-    this.bullets,
-  });
-
-  factory CentralizedBulletFormExpression.fromMap(Map<String, dynamic> json) {
-    return CentralizedBulletFormExpression(
-      title: json['title'],
-      bullets: List<String>.from(
-        json['bullets'].map(
-          (String _bullet) {
-            return _bullet;
-          },
-        ),
-      ),
-    );
-  }
-
-  final String title;
-  final List<String> bullets;
-
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'title': title,
-      'bullet': List<String>.from(
-        bullets.map((String _bullet) => _bullet),
-      ),
-    };
-  }
-}
-
 class CentralizedExpressionResponse {
   CentralizedExpressionResponse(
       {this.address,
@@ -272,9 +240,6 @@ class CentralizedExpressionResponse {
     }
     if (type == 'EventForm') {
       return CentralizedEventFormExpression.fromMap(json);
-    }
-    if (type == 'BulletForm') {
-      return CentralizedBulletFormExpression.fromMap(json);
     }
   }
 }
