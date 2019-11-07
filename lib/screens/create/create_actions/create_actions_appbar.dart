@@ -27,6 +27,7 @@ class CreateActionsAppbar extends StatelessWidget {
               child: Container(
                 width: 42,
                 height: 42,
+                color: Colors.transparent,
                 alignment: Alignment.centerLeft,
                 padding: const EdgeInsets.only(left: 10),
                 child: Icon(

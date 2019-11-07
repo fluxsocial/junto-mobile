@@ -27,4 +27,5 @@ class CustomIcons {
   static const IconData event = IconData(0xe910, fontFamily: 'j_home');
   static const IconData camera = IconData(0xe913, fontFamily: 'j_home');
   static const IconData longform = IconData(0xe914, fontFamily: 'j_home');
+  static const IconData gender = IconData(0xe919, fontFamily: 'j_home');
 }

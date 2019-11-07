@@ -114,6 +114,26 @@ class JuntoDenState extends State<JuntoDen> {
                           Container(
                             child: Row(
                               children: <Widget>[
+                                Icon(CustomIcons.gender,
+                                    size: 17,
+                                    color: Theme.of(context).primaryColor),
+                                const SizedBox(width: 5),
+                                Text(
+                                  'he/him',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      color: Theme.of(context).primaryColor,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Container(
+                            child: Row(
+                              children: <Widget>[
                                 Image.asset(
                                   'assets/images/junto-mobile__location.png',
                                   height: 15,
@@ -181,7 +201,7 @@ class JuntoDenState extends State<JuntoDen> {
                     ),
                     const SizedBox(height: 15),
                     Container(
-                      child: Text("founder @junto; student of life",
+                      child: Text("founder @junto; student of suffering and its cessation",
                           style: Theme.of(context).textTheme.caption),
                     ),
                   ],
