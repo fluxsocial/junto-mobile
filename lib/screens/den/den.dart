@@ -106,7 +106,7 @@ class JuntoDenState extends State<JuntoDen> {
                   shrinkWrap: true,
                   padding: const EdgeInsets.only(left: 10),
                   children: <Widget>[
-                    const SizedBox(height: 15),
+                    SizedBox(height: 5),
                     Container(
                       padding: const EdgeInsets.only(top: 5, bottom: 5),
                       child: Column(
@@ -201,7 +201,7 @@ class JuntoDenState extends State<JuntoDen> {
                     ),
                     const SizedBox(height: 15),
                     Container(
-                      child: Text("founder @junto; student of suffering and its cessation",
+                      child: Text("student of suffering and its cessation",
                           style: Theme.of(context).textTheme.caption),
                     ),
                   ],

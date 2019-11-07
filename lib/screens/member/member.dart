@@ -41,7 +41,6 @@ class _JuntoMemberState extends State<JuntoMember> {
         preferredSize: const Size.fromHeight(45),
         child: MemberAppbar(widget.profile.username),
       ),
-      backgroundColor: Colors.white,
       body: DefaultTabController(
         length: _tabs.length,
         child: NestedScrollView(
@@ -53,7 +52,7 @@ class _JuntoMemberState extends State<JuntoMember> {
                 automaticallyImplyLeading: false,
                 primary: false,
                 actions: const <Widget>[SizedBox(height: 0, width: 0)],
-                backgroundColor: Colors.white,
+                backgroundColor: Theme.of(context).colorScheme.background,
                 pinned: false,
                 flexibleSpace: FlexibleSpaceBar(
                   collapseMode: CollapseMode.pin,
@@ -65,17 +64,21 @@ class _JuntoMemberState extends State<JuntoMember> {
                         padding: const EdgeInsets.only(
                             left: 10, right: 10, bottom: 10),
                         alignment: Alignment.bottomLeft,
-                        decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            stops: <double>[0.1, 0.9],
-                            colors: <Color>[
-                              JuntoPalette.juntoSecondary,
-                              JuntoPalette.juntoPrimary,
-                            ],
-                          ),
-                        ),
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              stops: <double>[0.1, 0.9],
+                              colors: <Color>[
+                                Theme.of(context).colorScheme.secondaryVariant,
+                                Theme.of(context).colorScheme.primaryVariant,
+                              ],
+                            ),
+                            border: Border(
+                              bottom: BorderSide(
+                                  color: Theme.of(context).dividerColor,
+                                  width: .75),
+                            )),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -85,156 +88,58 @@ class _JuntoMemberState extends State<JuntoMember> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: <Widget>[
-                                const Flexible(
+                                Flexible(
                                   child: Text(
                                     // name,
                                     'Eric Yang',
                                     style: TextStyle(
-                                      fontSize: 28,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.white,
-                                    ),
+                                        fontSize: 28,
+                                        fontWeight: FontWeight.w600,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary),
                                   ),
                                 ),
                                 GestureDetector(
-                                  onTap: () {
-                                    showModalBottomSheet(
-                                      context: context,
-                                      builder: (BuildContext context) =>
-                                          Container(
-                                        color: Colors.transparent,
-                                        child: MemberRelationshipsModal(),
-                                      ),
-                                    );
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10, vertical: 7.5),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: Colors.white, width: 1.5),
-                                      borderRadius: BorderRadius.circular(25),
-                                    ),
-                                    child: Row(
-                                      children: <Widget>[
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: <Widget>[
-                                                Container(
-                                                  height: 5,
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      .1,
-                                                  decoration: BoxDecoration(
-                                                    color:
-                                                        const Color(0xffeeeeee),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            100),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            const SizedBox(height: 10),
-                                            ListTile(
-                                              contentPadding:
-                                                  const EdgeInsets.all(0),
-                                              title: Row(
-                                                children: <Widget>[
-                                                  Icon(
-                                                    Icons.visibility,
-                                                    size: 17,
-                                                    color:
-                                                        const Color(0xff555555),
-                                                  ),
-                                                  const SizedBox(width: 15),
-                                                  const Text(
-                                                    'Subscribe',
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        fontSize: 17),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            ListTile(
-                                              contentPadding:
-                                                  const EdgeInsets.all(0),
-                                              title: Row(
-                                                children: const <Widget>[
-                                                  Icon(
-                                                    CustomIcons.circle,
-                                                    size: 17,
-                                                    color: Color(0xff555555),
-                                                  ),
-                                                  SizedBox(width: 15),
-                                                  Text(
-                                                    'Connect',
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        fontSize: 17),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            ListTile(
-                                              contentPadding:
-                                                  const EdgeInsets.all(0),
-                                              onTap: () {},
-                                              title: Row(
-                                                children: const <Widget>[
-                                                  Icon(
-                                                    CustomIcons.packs,
-                                                    size: 17,
-                                                    color: Color(0xff555555),
-                                                  ),
-                                                  SizedBox(width: 15),
-                                                  Text(
-                                                    'Join Pack',
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        fontSize: 17),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
+                                    onTap: () {
+                                      showModalBottomSheet(
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            Container(
+                                          color: Colors.transparent,
+                                          child: MemberRelationshipsModal(),
                                         ),
-                                        Container(
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          child: FlatButton(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 10),
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: const Text(
-                                              'Cancel',
-                                              style: TextStyle(
-                                                  fontSize: 17,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            color: const Color(0xffeeeeee),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(25),
-                                            ),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                                      );
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 7.5),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onPrimary,
+                                            width: 1.5),
+                                        borderRadius: BorderRadius.circular(25),
+                                      ),
+                                      child: Row(
+                                        children: <Widget>[
+                                          const SizedBox(width: 14),
+                                          Image.asset(
+                                              'assets/images/junto-mobile__infinity.png',
+                                              height: 14,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onPrimary),
+                                          const SizedBox(width: 2),
+                                          Icon(Icons.keyboard_arrow_down,
+                                              size: 12,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onPrimary)
+                                        ],
+                                      ),
+                                    )),
                               ],
                             ),
                           ],
@@ -251,18 +156,14 @@ class _JuntoMemberState extends State<JuntoMember> {
                   TabBar(
                     labelPadding: const EdgeInsets.all(0),
                     isScrollable: true,
-                    labelColor: const Color(0xff333333),
-                    labelStyle: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xff555555),
-                    ),
+                    labelColor: Theme.of(context).primaryColor,
+                    labelStyle: Theme.of(context).textTheme.subhead,
                     indicatorWeight: 0.0001,
                     tabs: <Widget>[
                       for (String name in _tabs)
                         Container(
                           margin: const EdgeInsets.only(right: 24),
-                          color: Colors.white,
+                          color: Theme.of(context).colorScheme.background,
                           child: Tab(
                             text: name,
                           ),
@@ -281,66 +182,60 @@ class _JuntoMemberState extends State<JuntoMember> {
                 shrinkWrap: true,
                 padding: const EdgeInsets.only(left: 10),
                 children: <Widget>[
-                  CarouselSlider(
-                    viewportFraction: 1.0,
-                    height: MediaQuery.of(context).size.width - 20,
-                    enableInfiniteScroll: false,
-                    items: <Widget>[
-                      Container(
-                        padding: const EdgeInsets.only(right: 10),
-                        width: MediaQuery.of(context).size.width,
-                        child: Image.asset(
-                            'assets/images/junto-mobile__eric.png',
-                            fit: BoxFit.cover),
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        padding: const EdgeInsets.only(right: 10),
-                        child: Image.asset(
-                            'assets/images/junto-mobile__eric--qigong.png',
-                            fit: BoxFit.cover),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 15),
+                  SizedBox(height: 5),
                   Container(
-                    padding: const EdgeInsets.only(left: 10, top: 5, bottom: 5),
-                    decoration: const BoxDecoration(
-                      border: Border(
-                        left: BorderSide(color: Color(0xffeeeeee), width: 1.5),
-                      ),
-                    ),
+                    padding: const EdgeInsets.only(top: 5, bottom: 5),
                     child: Column(
                       children: <Widget>[
                         Container(
                           child: Row(
                             children: <Widget>[
-                              Image.asset(
-                                'assets/images/junto-mobile__location.png',
-                                height: 15,
-                                color: const Color(0xff777777),
-                              ),
+                              Icon(CustomIcons.gender,
+                                  size: 17,
+                                  color: Theme.of(context).primaryColor),
                               const SizedBox(width: 5),
-                              const Text(
-                                'Spirit',
+                              Text(
+                                'he/him',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                    color: Color(0xff777777),
+                                    color: Theme.of(context).primaryColor,
                                     fontSize: 15,
                                     fontWeight: FontWeight.w600),
                               ),
                             ],
                           ),
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10),
+                        Container(
+                          child: Row(
+                            children: <Widget>[
+                              Image.asset(
+                                'assets/images/junto-mobile__location.png',
+                                height: 15,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                              const SizedBox(width: 5),
+                              Text(
+                                'Spirit',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 10),
                         Container(
                           child: Row(
                             children: <Widget>[
                               Image.asset(
                                 'assets/images/junto-mobile__link.png',
                                 height: 15,
-                                color: const Color(0xff777777),
+                                color: Theme.of(context).primaryColor,
                               ),
                               const SizedBox(width: 5),
                               Text(
@@ -348,9 +243,9 @@ class _JuntoMemberState extends State<JuntoMember> {
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
                                 style: TextStyle(
-                                    color: JuntoPalette.juntoPrimary,
+                                    color: Theme.of(context).primaryColor,
                                     fontSize: 15,
-                                    fontWeight: FontWeight.w500),
+                                    fontWeight: FontWeight.w600),
                               ),
                             ],
                           ),
@@ -359,14 +254,31 @@ class _JuntoMemberState extends State<JuntoMember> {
                     ),
                   ),
                   const SizedBox(height: 15),
+                  CarouselSlider(
+                    viewportFraction: 1.0,
+                    height: MediaQuery.of(context).size.width - 20,
+                    enableInfiniteScroll: false,
+                    items: <Widget>[
+                      Container(
+                        padding: EdgeInsets.only(right: 10),
+                        width: MediaQuery.of(context).size.width,
+                        child: Image.asset(
+                            'assets/images/junto-mobile__eric.png',
+                            fit: BoxFit.cover),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        padding: EdgeInsets.only(right: 10),
+                        child: Image.asset(
+                            'assets/images/junto-mobile__eric--qigong.png',
+                            fit: BoxFit.cover),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 15),
                   Container(
-                    child: const Text(
-                      'Founder/Executive Director @junto; Mr. Snack @lunchbox; Student of QiGong',
-                      style: TextStyle(
-                          fontSize: 15,
-                          color: Color(0xff333333),
-                          fontWeight: FontWeight.w600),
-                    ),
+                    child: Text("student of suffering and its cessation",
+                        style: Theme.of(context).textTheme.caption),
                   ),
                 ],
               ),
@@ -398,10 +310,10 @@ class JuntoAppBarDelegate extends SliverPersistentHeaderDelegate {
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
-      decoration: const BoxDecoration(
-        color: Colors.white,
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.background,
         border: Border(
-          bottom: BorderSide(color: Color(0xffeeeeee), width: .5),
+          bottom: BorderSide(color: Theme.of(context).dividerColor, width: .5),
         ),
       ),
       width: MediaQuery.of(context).size.width,
@@ -419,10 +331,10 @@ class MemberRelationshipsModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * .4,
+      height: MediaQuery.of(context).size.height * .3,
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.background,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(10),
           topRight: Radius.circular(10),
@@ -442,7 +354,7 @@ class MemberRelationshipsModal extends StatelessWidget {
                     height: 5,
                     width: MediaQuery.of(context).size.width * .1,
                     decoration: BoxDecoration(
-                        color: const Color(0xffeeeeee),
+                        color: Theme.of(context).dividerColor,
                         borderRadius: BorderRadius.circular(100)),
                   ),
                 ],
@@ -453,15 +365,14 @@ class MemberRelationshipsModal extends StatelessWidget {
                 title: Row(
                   children: <Widget>[
                     Icon(
-                      Icons.visibility,
+                      CustomIcons.pawprints,
                       size: 17,
-                      color: const Color(0xff555555),
+                      color: Theme.of(context).primaryColorDark,
                     ),
                     const SizedBox(width: 15),
-                    const Text(
+                    Text(
                       'Subscribe',
-                      style:
-                          TextStyle(fontWeight: FontWeight.w500, fontSize: 17),
+                      style: Theme.of(context).textTheme.headline,
                     ),
                   ],
                 ),
@@ -473,32 +384,12 @@ class MemberRelationshipsModal extends StatelessWidget {
                     Icon(
                       CustomIcons.circle,
                       size: 17,
-                      color: const Color(0xff555555),
+                      color: Theme.of(context).primaryColorDark,
                     ),
                     const SizedBox(width: 15),
-                    const Text(
+                    Text(
                       'Connect',
-                      style:
-                          TextStyle(fontWeight: FontWeight.w500, fontSize: 17),
-                    ),
-                  ],
-                ),
-              ),
-              ListTile(
-                contentPadding: const EdgeInsets.all(0),
-                onTap: () {},
-                title: Row(
-                  children: <Widget>[
-                    Icon(
-                      CustomIcons.packs,
-                      size: 17,
-                      color: const Color(0xff555555),
-                    ),
-                    const SizedBox(width: 15),
-                    const Text(
-                      'Join Pack',
-                      style:
-                          TextStyle(fontWeight: FontWeight.w500, fontSize: 17),
+                      style: Theme.of(context).textTheme.headline,
                     ),
                   ],
                 ),

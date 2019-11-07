@@ -13,10 +13,6 @@ class MemberAppbar extends StatelessWidget {
     return AppBar(
         automaticallyImplyLeading: false,
         brightness: Brightness.light,
-        iconTheme: const IconThemeData(
-          color: Color(0xff555555),
-        ),
-        backgroundColor: Colors.white,
         elevation: 0,
         titleSpacing: 0,
         title: Container(
@@ -32,20 +28,16 @@ class MemberAppbar extends StatelessWidget {
                   padding: const EdgeInsets.only(
                     left: 10,
                   ),
-                  child: const Icon(
+                  child: Icon(
                     CustomIcons.back,
-                    color: Color(0xff333333),
+                    color: Theme.of(context).primaryColorDark,
                     size: 17,
                   ),
                 ),
               ),
               Text(
-                memberHandle,
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xff333333),
-                ),
+                memberHandle.toLowerCase(),
+                style: Theme.of(context).textTheme.subhead,
               ),
               GestureDetector(
                 onTap: () {
@@ -72,12 +64,10 @@ class MemberAppbar extends StatelessWidget {
           preferredSize: const Size.fromHeight(1),
           child: Container(
             height: 1,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  width: 1,
-                  color: Color(0xffeeeeee),
-                ),
+                    width: .75, color: Theme.of(context).dividerColor),
               ),
             ),
           ),
@@ -89,11 +79,11 @@ class MemberActionItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * .4,
+      height: MediaQuery.of(context).size.height * .3,
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.background,
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(10),
           topRight: Radius.circular(10),
         ),
@@ -112,8 +102,9 @@ class MemberActionItems extends StatelessWidget {
                     height: 5,
                     width: MediaQuery.of(context).size.width * .1,
                     decoration: BoxDecoration(
-                        color: const Color(0xffeeeeee),
-                        borderRadius: BorderRadius.circular(100)),
+                      color: Theme.of(context).dividerColor,
+                      borderRadius: BorderRadius.circular(100),
+                    ),
                   ),
                 ],
               ),
@@ -123,17 +114,11 @@ class MemberActionItems extends StatelessWidget {
                 onTap: () {},
                 title: Row(
                   children: <Widget>[
-                    Icon(
-                      Icons.block,
-                      size: 17,
-                      color: const Color(0xff555555),
-                    ),
+                    Icon(Icons.block,
+                        size: 17, color: Theme.of(context).primaryColorDark),
                     const SizedBox(width: 15),
-                    Text(
-                      'Block Member',
-                      style:
-                          TextStyle(fontWeight: FontWeight.w500, fontSize: 17),
-                    ),
+                    Text('Block Member',
+                        style: Theme.of(context).textTheme.headline),
                   ],
                 ),
               ),

@@ -12,8 +12,10 @@ class JuntoThemes {
     canvasColor: Colors.transparent,
     colorScheme: const ColorScheme(
         // Junto blue
-        primary: Color(0xff223E72),
-        primaryVariant: Color(0xFF223E72),
+        // primary: Color(0xff223E72),
+        // primaryVariant: Color(0xFF223E72),
+        primary: Color(0xff22517D),
+        primaryVariant: Color(0xFF22517D),
         // Junto purple
         secondary: Color(0xFF635FAA),
         secondaryVariant: Color(0xFF635FAA),
@@ -105,7 +107,8 @@ class JuntoThemes {
     canvasColor: Colors.transparent,
     colorScheme: const ColorScheme(
         // Junto blue
-        primary: Color(0xFF223E72),
+        // primary: Color(0xFF223E72),
+        primary: Color(0xff22517D),
         primaryVariant: Color(0xff333333),
         secondary: Color(0xFF635FAA),
         secondaryVariant: Color(0xff333333),
