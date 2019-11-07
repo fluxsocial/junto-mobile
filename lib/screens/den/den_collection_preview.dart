@@ -6,18 +6,17 @@ import 'package:junto_beta_mobile/screens/den/den_collection_open.dart';
 class DenCollectionPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
-          CupertinoPageRoute(
-            builder: (context) => DenCollectionOpen(),
+          CupertinoPageRoute<dynamic>(
+            builder: (BuildContext context) => DenCollectionOpen(),
           ),
         );
       },
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           border: Border(
             bottom: BorderSide(
               color: Color(0xffeeeeee),
@@ -25,7 +24,7 @@ class DenCollectionPreview extends StatelessWidget {
             ),
           ),
         ),
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
@@ -34,12 +33,12 @@ class DenCollectionPreview extends StatelessWidget {
                 Image.asset(
                   'assets/images/junto-mobile__collection.png',
                   height: 20,
-                  color: Color(0xff555555),
+                  color: const Color(0xff555555),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
+                  children: const <Widget>[
                     Text(
                       'Anbu',
                       style:

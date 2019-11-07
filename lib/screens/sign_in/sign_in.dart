@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/providers/provider.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/template/template.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
@@ -40,10 +40,7 @@ class _SignInState extends State<SignIn> {
         UserAuthLoginDetails(email: email, password: password);
     JuntoOverlay.showLoader(context);
     try {
-      await Provider.of<AuthenticationProvider>(context)
-          .loginUser(loginDetails);
-      await SharedPreferences.getInstance()
-        ..setBool('isLoggedIn', true);
+      await Provider.of<AuthRepo>(context).loginUser(loginDetails);
       JuntoOverlay.hide();
       Navigator.pushReplacement(
         context,
@@ -56,7 +53,7 @@ class _SignInState extends State<SignIn> {
       JuntoDialog.showJuntoDialog(
           context,
           'Unable to login user. Please recheck your '
-              'account.',
+          'account.',
           <Widget>[
             FlatButton(
               onPressed: () => Navigator.of(context).pop(),

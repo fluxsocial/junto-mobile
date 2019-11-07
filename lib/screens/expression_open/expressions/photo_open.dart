@@ -4,26 +4,26 @@ import 'package:junto_beta_mobile/models/expression.dart';
 class PhotoOpen extends StatelessWidget {
   const PhotoOpen(this.photoExpression);
 
-  final Expression photoExpression;
+  final CentralizedExpressionResponse photoExpression;
 
   @override
   Widget build(BuildContext context) {
-    final String photoImage =
-        photoExpression.expression.expressionContent['image'];
-    final String photoCaption =
-        photoExpression.expression.expressionContent['caption'];
+    final CentralizedPhotoFormExpression _expression =
+        photoExpression.expressionData as CentralizedPhotoFormExpression;
+    final String photoImage = _expression.image;
+    final String photoCaption = _expression.caption;
 
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Image.asset(photoImage, fit: BoxFit.fitWidth),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Text(
               photoCaption,
-              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
+              style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
             ),
           )
         ],

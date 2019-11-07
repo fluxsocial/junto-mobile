@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/screens/sign_in/sign_in.dart';
 import 'package:junto_beta_mobile/screens/sign_up/sign_up.dart';
 import 'package:junto_beta_mobile/screens/template/template.dart';
+import 'package:junto_beta_mobile/utils/logging.dart';
 
 class Welcome extends StatelessWidget {
   static Route<dynamic> route() {
@@ -117,15 +118,28 @@ class Welcome extends StatelessWidget {
                   ),
                 ),
                 RaisedButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute<dynamic>(
-                          builder: (BuildContext context) => JuntoTemplate(),
-                        ),
-                      );
-                    },
-                    child: Text('Skip :)'))
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute<dynamic>(
+                        builder: (BuildContext context) => JuntoTemplate(),
+                      ),
+                    );
+                  },
+                  child: const Text('Skip :)'),
+                )
+                // if (isInDebugMode)
+                //   RaisedButton(
+                //     onPressed: () {
+                //       Navigator.pushReplacement(
+                //         context,
+                //         MaterialPageRoute<dynamic>(
+                //           builder: (BuildContext context) => JuntoTemplate(),
+                //         ),
+                //       );
+                //     },
+                //     child: const Text('Skip :)'),
+                //   )
               ],
             )
           ],

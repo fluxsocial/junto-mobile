@@ -72,7 +72,6 @@ key.properties
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 ios/Flutter/flutter_export_environment.sh
-lib/API.dart
 android/.project
 android/app/.classpath
 android/.settings/org.eclipse.buildship.core.prefs
@@ -81,3 +80,7 @@ android/app/.settings/org.eclipse.buildship.core.prefs
 android/key.keystore
 android/app/key.keystore
 android/app/release/
+
+# API authentication keys required to build app
+lib/app/api.dart
+lib/api.dart

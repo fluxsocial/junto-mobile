@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/components/expression_preview/expression_preview.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/providers/provider.dart';
 import 'package:junto_beta_mobile/screens/collective/degrees/degrees.dart';
-import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
 import 'package:provider/provider.dart';
 
 /// This screen shows a list of public expressions that can be filtered
@@ -26,85 +26,115 @@ class JuntoCollective extends StatefulWidget {
 }
 
 class JuntoCollectiveState extends State<JuntoCollective> {
-  String currentScreen = 'collective';
+  String _perspective;
   bool isLoading = false;
-  List<Expression> initialData = <Expression>[];
+  List<CentralizedExpressionResponse> initialData =
+      <CentralizedExpressionResponse>[];
+
   @override
   void initState() {
     super.initState();
-    
-    widget.controller.addListener(scollListener);
+    _perspective = widget.currentPerspective;
   }
 
   @override
   void dispose() {
     super.dispose();
-    widget.controller.removeListener(scollListener);
   }
 
   @override
   void didChangeDependencies() {
     initialData
-        .addAll(Provider.of<CollectiveProvider>(context).collectiveExpressions);
+        .addAll(Provider.of<ExpressionRepo>(context).collectiveExpressions);
     super.didChangeDependencies();
-  }
-
-  void scollListener() {
-    if (widget.controller.position.pixels ==
-        widget.controller.position.maxScrollExtent) {
-      _getData();
-    }
   }
 
   Future<void> _getData() async {
     if (!isLoading) {
       setState(() => isLoading = true);
     }
-    await Future<void>.delayed(const Duration(seconds: 2), () {});
+    await Future<void>.delayed(const Duration(milliseconds: 500), () {});
     isLoading = false;
-    setState(() {
-      isLoading = true;
-      initialData.addAll(
-          Provider.of<CollectiveProvider>(context).collectiveExpressions);
-    });
+    if (mounted)
+      setState(() {
+        isLoading = true;
+        initialData
+            .addAll(Provider.of<ExpressionRepo>(context).collectiveExpressions);
+      });
   }
 
-  Widget _buildProgressIndicator() {
-    return const Padding(
-      padding: EdgeInsets.all(8.0),
-      child: Center(
-        child: Opacity(
-          opacity: 1.0,
-          child: CircularProgressIndicator(),
+  Widget _buildLoadExpressions() {
+    return GestureDetector(
+      onTap: () {
+        _getData();
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.background,
+          gradient: LinearGradient(
+            begin: Alignment.bottomLeft,
+            end: Alignment.topRight,
+            stops: <double>[0.2, 0.9],
+            colors: <Color>[
+              Theme.of(context).colorScheme.secondary,
+              Theme.of(context).colorScheme.primary
+            ],
+          ),
+        ),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 10,
+          vertical: 15,
+        ),
+        alignment: Alignment.center,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              'view 10 more expressions',
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700),
+            ),
+            const SizedBox(width: 2.5),
+            Icon(Icons.keyboard_arrow_down,
+                size: 13, color: Theme.of(context).colorScheme.onPrimary)
+          ],
         ),
       ),
     );
   }
 
+  Widget _displayDegrees() {
+    if (_perspective == 'Degrees of separation') {
+      return DegreesOfSeparation(
+        _changeDegree,
+        _oneDegreeColor,
+        _twoDegreesColor,
+        _threeDegreesColor,
+        _fourDegreesColor,
+        _fiveDegreesColor,
+        _sixDegreesColor,
+      );
+    } else {
+      return const SizedBox();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(color: JuntoPalette.juntoWhite),
+      color: Theme.of(context).colorScheme.background,
       child: ListView(
         controller: widget.controller,
         children: <Widget>[
           /// Degrees of Separation Widget rendered only when on the 'Degrees of separation'
           /// perspective
-          widget.currentPerspective == 'Degrees of separation'
-              ? DegreesOfSeparation(
-                  _changeDegree,
-                  _oneDegreeColor,
-                  _twoDegreesColor,
-                  _threeDegreesColor,
-                  _fourDegreesColor,
-                  _fiveDegreesColor,
-                  _sixDegreesColor,
-                )
-              : const SizedBox(),
+          _displayDegrees(),
 
           for (int index = 0; index < initialData.length + 1; index++)
             if (index == initialData.length)
-              _buildProgressIndicator()
+              _buildLoadExpressions()
             else
               ExpressionPreview(expression: initialData[index])
         ],

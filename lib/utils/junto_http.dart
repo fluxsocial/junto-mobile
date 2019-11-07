@@ -1,15 +1,19 @@
-import 'dart:convert';
+import 'dart:convert' as convert;
 
-import 'package:junto_beta_mobile/API.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/io_client.dart';
+import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 
 class JuntoHttp {
-  JuntoHttp();
+  JuntoHttp({this.httpClient}) {
+    httpClient ??= IOClient();
+  }
 
   final String _endPoint = END_POINT;
+  http.Client httpClient;
 
   Future<String> _getAuthKey() async {
     final SharedPreferences sharedPreferences =
@@ -48,7 +52,7 @@ class JuntoHttp {
     Map<String, String> headers,
     Map<String, dynamic> body,
   }) async {
-    return http.get(
+    return httpClient.get(
       _encodeUrl(resource),
       headers: await _withPersistentHeaders(headers),
     );
@@ -57,12 +61,16 @@ class JuntoHttp {
   Future<http.Response> delete(
     String resource, {
     Map<String, String> headers,
-    Map<String, dynamic> body,
+    dynamic body,
   }) async {
-    return http.delete(
-      _encodeUrl(resource),
-      headers: await _withPersistentHeaders(headers),
+    final Map<String, String> header = await _withPersistentHeaders(null);
+    final http.StreamedResponse _streamedResponse = await httpClient.send(
+      http.Request('DELETE', Uri.parse('$_endPoint$resource'))
+        ..headers['cookie'] = header['cookie']
+        ..headers['Content-Type'] = header['Content-Type']
+        ..body = convert.json.encode(body),
     );
+    return http.Response.fromStream(_streamedResponse);
   }
 
   Future<http.Response> post(
@@ -70,10 +78,11 @@ class JuntoHttp {
     Map<String, String> headers,
     Map<String, dynamic> body,
   }) async {
-    return http.post(
+    final String _body = _encodeBody(body);
+    return httpClient.post(
       _encodeUrl(resource),
       headers: await _withPersistentHeaders(headers),
-      body: _encodeBody(body),
+      body: _body,
     );
   }
 
@@ -82,10 +91,10 @@ class JuntoHttp {
     Map<String, String> headers,
     Map<String, dynamic> body,
   }) async {
-    return http.post(
+    return httpClient.post(
       _encodeUrl(resource),
       headers: await _withPersistentHeaders(headers),
-      body: json.encode(body),
+      body: convert.json.encode(body),
     );
   }
 
@@ -99,16 +108,11 @@ class JuntoHttp {
   }
 
   /// Parses the [http.Response] sent back to the client. Function takes the response and verifies the
-  /// status code. Since holochain sends all responses with a `response.statusCode == 200`, we consider all
-  /// other status codes to be errors.
-  /// Should the response body contain the `Ok` key, it returned as a Map. If the response body contains the
-  /// `Err` key, an exception is thrown with the error message.
-  /// Note: Since Holochain is only able to process string, the response is
-  /// parsed using [deserializeHoloJson];
+  /// status code.
   static dynamic handleResponse(http.Response response) {
     if (response.statusCode == 200) {
-      final dynamic responseBody = deserializeHoloJson(response.body);
-      if (responseBody != null) {
+      final dynamic responseBody = convert.json.decode(response.body);
+      if (responseBody != null || responseBody == '') {
         return responseBody;
       }
       if (responseBody['error']) {
@@ -117,11 +121,13 @@ class JuntoHttp {
       throw const JuntoException('Error occured parsing response');
     }
     if (response.statusCode == 400) {
-      final Map<String, dynamic> results = deserializeHoloJson(response?.body);
+      final Map<String, dynamic> results = convert.json.decode(response?.body);
       throw JuntoException('Forbidden ${results['error']}');
     }
-    if (response.statusCode == 500) {
+    if (response.statusCode >= 500) {
       throw const JuntoException("Ooh no, our server isn't feeling so good");
     }
+    throw JuntoException(
+        "Oops something went wrong ${convert.json.decode(response.body)['error']}");
   }
 }

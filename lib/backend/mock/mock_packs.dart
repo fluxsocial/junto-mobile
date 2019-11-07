@@ -1,0 +1,121 @@
+import 'package:junto_beta_mobile/models/group_model.dart';
+
+class MockPackService {
+  static List<Group> kSamplePacks = <Group>[
+    Group(
+      address: 'assets/images/junto-mobile__eric.png',
+      createdAt: DateTime.now(),
+      creator: 'Eric Yang',
+      privacy: 'public',
+      groupType: 'sphere',
+      groupData: GroupDataPack(name: 'Yang Gang'),
+    ),
+    Group(
+      address: 'assets/images/junto-mobile__riley.png',
+      createdAt: DateTime.now(),
+      creator: 'Riley Wagner',
+      privacy: 'public',
+      groupType: 'sphere',
+      groupData: GroupDataPack(name: 'Wags'),
+    ),
+    Group(
+      address: 'assets/images/junto-mobile__josh.png',
+      createdAt: DateTime.now(),
+      creator: 'Josh Parkin',
+      privacy: 'public',
+      groupType: 'sphere',
+      groupData: GroupDataPack(name: 'The Way'),
+    ),
+    Group(
+      address: 'assets/images/junto-mobile__yaz.png',
+      createdAt: DateTime.now(),
+      creator: 'Yaz Owainati',
+      privacy: 'public',
+      groupType: 'sphere',
+      groupData: GroupDataPack(name: 'Jasmine Flowers'),
+    ),
+    Group(
+      address: 'assets/images/junto-mobile__tomis.png',
+      createdAt: DateTime.now(),
+      creator: 'Tomis Parker',
+      privacy: 'public',
+      groupType: 'sphere',
+      groupData: GroupDataPack(name: 'Self-Directed AF'),
+    ),
+    Group(
+      address: 'assets/images/junto-mobile__nash.png',
+      createdAt: DateTime.now(),
+      creator: 'Nash Ramdial',
+      privacy: 'public',
+      groupType: 'sphere',
+      groupData: GroupDataPack(name: 'Nash Flash'),
+    ),
+    Group(
+      address: 'assets/images/junto-mobile__drea.png',
+      createdAt: DateTime.now(),
+      creator: 'Drea Bennett',
+      privacy: 'public',
+      groupType: 'sphere',
+      groupData: GroupDataPack(name: 'Greene House'),
+    ),
+    Group(
+      address: 'assets/images/junto-mobile__dora.png',
+      createdAt: DateTime.now(),
+      creator: 'Dora Czovek',
+      privacy: 'public',
+      groupType: 'sphere',
+      groupData: GroupDataPack(name: 'The Spaceship'),
+    ),
+    Group(
+      address: 'assets/images/junto-mobile__kevin.png',
+      createdAt: DateTime.now(),
+      creator: 'Kevin Yang',
+      privacy: 'public',
+      groupType: 'sphere',
+      groupData: GroupDataPack(name: 'Yangsters'),
+    ),
+    Group(
+      address: 'assets/images/junto-mobile__ekene.png',
+      createdAt: DateTime.now(),
+      creator: 'Ekene Nkem-Mmekam',
+      privacy: 'public',
+      groupType: 'sphere',
+      groupData: GroupDataPack(name: 'FlatTops'),
+    ),
+    Group(
+      address: 'assets/images/junto-mobile__david.png',
+      createdAt: DateTime.now(),
+      creator: 'David Wu',
+      privacy: 'public',
+      groupType: 'sphere',
+      groupData: GroupDataPack(name: 'Wuseph'),
+    ),
+    Group(
+      address: '',
+      createdAt: DateTime.now(),
+      creator: 'Ali Makhdoom',
+      privacy: 'public',
+      groupType: 'sphere',
+      groupData: GroupDataPack(name: 'Mopbroomsters'),
+    ),
+    Group(
+      address: '',
+      createdAt: DateTime.now(),
+      creator: 'Vidit Gupta',
+      privacy: 'public',
+      groupType: 'sphere',
+      groupData: GroupDataPack(name: 'Wanderers'),
+    ),
+    Group(
+      address: '',
+      createdAt: DateTime.now(),
+      creator: 'Diana Ruan',
+      privacy: 'public',
+      groupType: 'sphere',
+      groupData: GroupDataPack(name: 'The Playgruand'),
+    ),
+  ];
+
+  @override
+  List<Group> get packs => kSamplePacks;
+}

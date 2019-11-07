@@ -1,19 +1,36 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/custom_icons.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
-import 'package:junto_beta_mobile/palette.dart';
-import 'package:junto_beta_mobile/providers/user_provider.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
+import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:junto_beta_mobile/utils/utils.dart';
+import 'package:junto_beta_mobile/widgets/search_members_modal.dart';
+import 'package:junto_beta_mobile/widgets/user_preview.dart';
 import 'package:provider/provider.dart';
+
+class SelectedUsers extends ChangeNotifier {
+  List<UserProfile> selection = <UserProfile>[];
+}
 
 class CreatePerspective extends StatefulWidget {
   @override
   _CreatePerspectiveState createState() => _CreatePerspectiveState();
 }
 
-class _CreatePerspectiveState extends State<CreatePerspective> {
+class _CreatePerspectiveState extends State<CreatePerspective>
+    with AddUserToList<UserProfile> {
   TextEditingController controller;
+  Timer debounceTimer;
+  ValueNotifier<List<UserProfile>> queriedUsers =
+      ValueNotifier<List<UserProfile>>(<UserProfile>[]);
+  final ValueNotifier<SelectedUsers> _users =
+      ValueNotifier<SelectedUsers>(SelectedUsers());
 
   @override
   void initState() {
@@ -27,14 +44,54 @@ class _CreatePerspectiveState extends State<CreatePerspective> {
     super.dispose();
   }
 
+  void _onTextChange(String value) {
+    if (debounceTimer != null) {
+      debounceTimer.cancel();
+    }
+    debounceTimer = Timer(const Duration(milliseconds: 500), () async {
+      if (mounted) {
+        final List<UserProfile> result =
+            await Provider.of<SearchProvider>(context).searchMember(value);
+        if (result != null && result.isNotEmpty) {
+          queriedUsers.value = result;
+        }
+      }
+    });
+  }
+
+  void _removeSelectedItem(UserProfile profile) {
+    _users.value.selection.remove(profile);
+    //ignore:, invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+    _users.notifyListeners();
+  }
+
   Future<void> createPerspective() async {
     final String name = controller.value.text;
     JuntoOverlay.showLoader(context);
-    final CentralizedPerspective address =
-        await Provider.of<UserProvider>(context)
-            .createPerspective(Perspective(name: name));
-    JuntoOverlay.hide();
-    Navigator.pop(context);
+    try {
+      await Provider.of<UserService>(context)
+          .createPerspective(Perspective(name: name));
+      JuntoOverlay.hide();
+      Navigator.pop(context);
+    } on JuntoException catch (error) {
+      JuntoOverlay.hide();
+      JuntoDialog.showJuntoDialog(
+        context,
+        error.message,
+        <Widget>[
+          FlatButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Ok'),
+          ),
+        ],
+      );
+    }
+  }
+
+  void _onUserSelected(UserProfile value) {
+    _users.value.selection = placeUser(value, _users.value.selection);
+    // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+    _users.notifyListeners();
   }
 
   @override
@@ -66,27 +123,29 @@ class _CreatePerspectiveState extends State<CreatePerspective> {
                     size: 24,
                   ),
                 ),
-                Text(
+                const Text(
                   'New Perspective',
                   style: TextStyle(
                       fontSize: 15,
                       color: Color(0xff333333),
                       fontWeight: FontWeight.w700),
                 ),
-                InkWell(
-                  onTap: () {
-                    if (controller.value.text != '') {
-                      createPerspective();
-                    } else {
-                      return;
-                    }
-                  },
-                  enableFeedback: false,
-                  child: const Text(
-                    'create',
-                    style: TextStyle(
-                      color: Color(0xff333333),
-                      fontSize: 14,
+                SizedBox(
+                  width: 34.0,
+                  child: FlatButton(
+                    onPressed: () {
+                      if (controller.value.text != '') {
+                        createPerspective();
+                      } else {
+                        return;
+                      }
+                    },
+                    child: const Text(
+                      'create',
+                      style: TextStyle(
+                        color: Color(0xff333333),
+                        fontSize: 14,
+                      ),
                     ),
                   ),
                 ),
@@ -109,14 +168,14 @@ class _CreatePerspectiveState extends State<CreatePerspective> {
             child: ListView(
               children: <Widget>[
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Container(
                         // padding: EdgeInsets.symmetric(vertical: 15),
                         width: MediaQuery.of(context).size.width - 20,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           border: Border(
                             bottom: BorderSide(
                               color: Color(0xffeeeeee),
@@ -136,12 +195,12 @@ class _CreatePerspectiveState extends State<CreatePerspective> {
                           decoration: const InputDecoration(
                             border: InputBorder.none,
                             hintText: 'Name your perspective',
-                            hintStyle: const TextStyle(
+                            hintStyle: TextStyle(
                                 color: Color(0xff999999),
                                 fontSize: 20,
                                 fontWeight: FontWeight.w700),
                           ),
-                          cursorColor: Color(0xff333333),
+                          cursorColor: const Color(0xff333333),
                           cursorWidth: 2,
                           maxLines: null,
                           style: const TextStyle(
@@ -153,8 +212,8 @@ class _CreatePerspectiveState extends State<CreatePerspective> {
                         ),
                       ),
                       Container(
-                        padding: EdgeInsets.symmetric(vertical: 15),
-                        decoration: BoxDecoration(
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        decoration: const BoxDecoration(
                           border: Border(
                             bottom: BorderSide(
                               color: Color(0xffeeeeee),
@@ -162,122 +221,45 @@ class _CreatePerspectiveState extends State<CreatePerspective> {
                             ),
                           ),
                         ),
-                        child: GestureDetector(
-                          onTap: () {
-                            showModalBottomSheet(
-                              isScrollControlled: true,
-                              context: context,
-                              builder: (context) => Container(
-                                color: Color(0xff737373),
-                                child: Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * .9,
-                                  padding: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: const Radius.circular(10),
-                                      topRight: Radius.circular(10),
-                                    ),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      SizedBox(height: 10),
-                                      Row(
-                                        children: <Widget>[
-                                          Text(
-                                            'Members',
-                                            style: TextStyle(
-                                              fontSize: 17,
-                                              fontWeight: FontWeight.w700,
-                                              color: Color(0xff333333),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(height: 10),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width -
-                                                60,
-                                            decoration: BoxDecoration(
-                                              border: Border(
-                                                bottom: BorderSide(
-                                                  color: Color(0xffeeeeee),
-                                                  width: .75,
-                                                ),
-                                              ),
-                                            ),
-                                            child: TextField(
-                                              buildCounter: (
-                                                BuildContext context, {
-                                                int currentLength,
-                                                int maxLength,
-                                                bool isFocused,
-                                              }) =>
-                                                  null,
-                                              decoration: const InputDecoration(
-                                                border: InputBorder.none,
-                                                hintText: 'Search members',
-                                                hintStyle: const TextStyle(
-                                                    color: Color(0xff999999),
-                                                    fontSize: 17,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                              cursorColor: Color(0xff333333),
-                                              cursorWidth: 2,
-                                              maxLines: null,
-                                              style: const TextStyle(
-                                                  color: Color(0xff333333),
-                                                  fontSize: 17,
-                                                  fontWeight: FontWeight.w500),
-                                              maxLength: 80,
-                                              textInputAction:
-                                                  TextInputAction.done,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            color: Colors.white,
-                            child: Row(
-                              children: <Widget>[
-                                Icon(
-                                  CustomIcons.half_lotus,
-                                  size: 17,
-                                  color: Color(0xff333333),
-                                ),
-                                SizedBox(width: 20),
-                                Text(
-                                  'add members',
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              ],
-                            ),
+                        child: ListenableProvider<
+                            ValueNotifier<SelectedUsers>>.value(
+                          value: _users,
+                          child: SearchMembersModal(
+                            onTextChange: _onTextChange,
+                            results: queriedUsers,
+                            onProfileSelected: _onUserSelected,
                           ),
                         ),
                       ),
                     ],
                   ),
-                )
+                ),
+                const SizedBox(height: 12.0),
+                ValueListenableBuilder<SelectedUsers>(
+                  valueListenable: _users,
+                  builder: (BuildContext context, SelectedUsers snapshot, _) {
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: snapshot.selection.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final UserProfile _profile = snapshot.selection[index];
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Dismissible(
+                            key: ValueKey<UserProfile>(_profile),
+                            background: Material(color: Colors.redAccent),
+                            onDismissed: (_) => _removeSelectedItem(_profile),
+                            child: UserPreview(
+                              userProfile: _profile,
+                              onTap: _removeSelectedItem,
+                              showSelectionIndicator: false,
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
               ],
             ),
           )

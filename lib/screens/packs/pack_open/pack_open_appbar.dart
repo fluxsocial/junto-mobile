@@ -1,19 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/custom_icons.dart';
-import 'package:junto_beta_mobile/palette.dart';
-import 'package:junto_beta_mobile/styles.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/app/styles.dart';
 
 class PackOpenAppbar extends StatelessWidget {
-  const PackOpenAppbar({
-    Key key,
-    @required this.packTitle,
-    @required this.packUser,
-    @required this.packImage,
-  }) : super(key: key);
+  const PackOpenAppbar({Key key, @required this.pack}) : super(key: key);
 
-  final dynamic packTitle;
-  final dynamic packUser;
-  final dynamic packImage;
+  final dynamic pack;
 
   @override
   Widget build(BuildContext context) {
@@ -22,46 +15,70 @@ class PackOpenAppbar extends StatelessWidget {
       actions: <Widget>[Container()],
       brightness: Brightness.light,
       iconTheme: const IconThemeData(color: JuntoPalette.juntoSleek),
-      backgroundColor: Colors.white,
       elevation: 0,
       titleSpacing: 0,
       title: Container(
-        padding: const EdgeInsets.symmetric(
-            horizontal: JuntoStyles.horizontalPadding),
+        padding: const EdgeInsets.only(right: JuntoStyles.horizontalPadding),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             GestureDetector(
               onTap: () => Navigator.pop(context),
-              child: const Icon(
-                CustomIcons.back_arrow_left,
-                color: JuntoPalette.juntoSleek,
-                size: 24,
+              child: Container(
+                color: Colors.transparent,
+                alignment: Alignment.centerLeft,
+                padding: const EdgeInsets.only(left: 10),
+                width: 42,
+                child: Icon(
+                  CustomIcons.back,
+                  color: Theme.of(context).primaryColorDark,
+                  size: 17,
+                ),
               ),
             ),
-            Container(
-              margin: const EdgeInsets.only(right: 10),
-              child: Text(packTitle, style: JuntoStyles.title),
+            Center(
+              child: Text(pack.groupData.name,
+                  style: Theme.of(context).textTheme.subhead),
             ),
             GestureDetector(
               onTap: () {
                 Scaffold.of(context).openEndDrawer();
               },
-              child: ClipOval(
-                child: Image.asset(
-                  packImage,
-                  height: 28.0,
-                  width: 28.0,
-                  fit: BoxFit.cover,
-                ),
-              ),
+              child: pack.address == ''
+                  ? Container(
+                      alignment: Alignment.center,
+                      height: 32.0,
+                      width: 32.0,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.bottomLeft,
+                          end: Alignment.topRight,
+                          stops: const <double>[0.3, 0.9],
+                          colors: <Color>[
+                            JuntoPalette.juntoSecondary,
+                            JuntoPalette.juntoPrimary,
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      child: Transform.translate(
+                        offset: Offset(-1.0, 0),
+                        child: Icon(
+                          CustomIcons.packs,
+                          color: Colors.white,
+                          size: 14,
+                        ),
+                      ),
+                    )
+                  : ClipOval(
+                      child: Image.asset(pack.address,
+                          height: 32, width: 32, fit: BoxFit.cover),
+                    ),
             )
-            // GestureDetector(
-            //   child: Icon(CustomIcons.more),
-            // )
           ],
         ),
       ),
+
     );
   }
 }

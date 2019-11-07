@@ -26,7 +26,7 @@ class UserProfile {
         firstName: json['first_name'],
         lastName: json['last_name'],
         bio: json['bio'],
-        profilePicture: json['profile_picture'],
+        profilePicture: json['profile_picture'] ?? '',
         verified: json['verified'],
         username: json['username'] ?? '');
   }
@@ -66,34 +66,39 @@ class UserProfile {
         'verified': verified,
         'username': username
       };
-}
 
-/// The username of the user.
-class Username {
-  Username({
-    this.address,
-    this.username,
-  });
+  @override
+  String toString() {
+    return 'UserProfile: address: $address, parent: $parent, firstName: '
+        '$firstName, lastName: $lastName, bio: $bio,'
+        ' profilePicture: $profilePicture, verified: $verified,'
+        ' username: $username';
+  }
 
-  /// Creates an [Username] from the map data.
-  factory Username.fromMap(Map<String, dynamic> json) => Username(
-        address: json['address'],
-        username: json['entry']['username'],
-      );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is UserProfile &&
+          runtimeType == other.runtimeType &&
+          address == other.address &&
+          parent == other.parent &&
+          firstName == other.firstName &&
+          lastName == other.lastName &&
+          bio == other.bio &&
+          profilePicture == other.profilePicture &&
+          verified == other.verified &&
+          username == other.username;
 
-  /// Location
-  final String address;
-
-  /// Username of the user
-  final String username;
-
-  /// Converts the object to a map
-  Map<String, dynamic> toMap() => <String, dynamic>{
-        'address': address,
-        'entry': <String, String>{
-          'username': username,
-        },
-      };
+  @override
+  int get hashCode =>
+      address.hashCode ^
+      parent.hashCode ^
+      firstName.hashCode ^
+      lastName.hashCode ^
+      bio.hashCode ^
+      profilePicture.hashCode ^
+      verified.hashCode ^
+      username.hashCode;
 }
 
 /// Detials used during user authentication.
@@ -174,8 +179,12 @@ class UserData {
 
   factory UserData.fromMap(Map<String, dynamic> map) {
     return UserData(
-      privateDen: CentralizedDen.fromMap(map['private_den']),
-      publicDen: CentralizedDen.fromMap(map['public_den']),
+      privateDen: map['private_den'] != null
+          ? CentralizedDen.fromMap(map['private_den'])
+          : null,
+      publicDen: map['private_den'] != null
+          ? CentralizedDen.fromMap(map['public_den'])
+          : null,
       pack: CentralizedPack.fromMap(map['pack']),
       user: UserProfile.fromMap(map['user']),
       userPerspective: CentralizedPerspective.fromMap(

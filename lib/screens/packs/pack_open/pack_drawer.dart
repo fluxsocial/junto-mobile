@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/models/group_model.dart';
 
 class PackDrawer extends StatelessWidget {
+  const PackDrawer({
+    Key key,
+    @required this.pack,
+  }) : super(key: key);
+
+  final Group pack;
+
   @override
   Widget build(BuildContext context) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
@@ -10,29 +18,25 @@ class PackDrawer extends StatelessWidget {
       child: Drawer(
         elevation: 0,
         child: Container(
-          color: Colors.white,
-          margin: EdgeInsets.only(top: statusBarHeight),
+          color: Theme.of(context).colorScheme.background,
+          padding: EdgeInsets.only(top: statusBarHeight),
           child: Column(
             children: <Widget>[
               Container(
                 height: 48,
                 padding: const EdgeInsets.symmetric(horizontal: 15),
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   border: Border(
-                    bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
+                    bottom: BorderSide(
+                        color: Theme.of(context).dividerColor, width: .75),
                   ),
                 ),
                 alignment: Alignment.centerLeft,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const <Widget>[
-                    Text(
-                      'The Gnarly Nomads',
-                      style: TextStyle(
-                          fontSize: 17,
-                          color: Color(0xff333333),
-                          fontWeight: FontWeight.w700),
-                    ),
+                  children: <Widget>[
+                    Text(pack.groupData.name,
+                        style: Theme.of(context).textTheme.title),
                   ],
                 ),
               ),
@@ -43,10 +47,10 @@ class PackDrawer extends StatelessWidget {
                   ),
                   children: <Widget>[
                     Container(
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         border: Border(
                           bottom: BorderSide(
-                            color: Color(0xffeeeeee),
+                            color: Theme.of(context).dividerColor,
                             width: .75,
                           ),
                         ),
@@ -96,26 +100,10 @@ class PackDrawer extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         border: Border(
                           bottom: BorderSide(
-                            color: Color(0xffeeeeee),
-                            width: .75,
-                          ),
-                        ),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 15),
-                      child: const Text(
-                        'Edit Pack',
-                        style: TextStyle(fontWeight: FontWeight.w500),
-                      ),
-                    ),                    
-                    Container(
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: Color(0xffeeeeee),
+                            color: Theme.of(context).dividerColor,
                             width: .75,
                           ),
                         ),
@@ -131,6 +119,42 @@ class PackDrawer extends StatelessWidget {
                 ),
               )
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class PackDrawerItem extends StatelessWidget {
+  const PackDrawerItem({
+    Key key,
+    @required this.itemName,
+    @required this.onTap,
+  }) : super(key: key);
+
+  final String itemName;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Theme.of(context).colorScheme.background,
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(
+                color: Theme.of(context).dividerColor,
+                width: .75,
+              ),
+            ),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+          child: Text(
+            itemName,
+            style: const TextStyle(fontWeight: FontWeight.w500),
           ),
         ),
       ),

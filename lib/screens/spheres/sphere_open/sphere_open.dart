@@ -1,29 +1,28 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:junto_beta_mobile/components/utils/hide_fab.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/styles.dart';
+import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/components/expression_preview/expression_preview.dart';
-import 'package:junto_beta_mobile/components/create_fab/create_fab.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open_appbar.dart';
-import 'package:junto_beta_mobile/palette.dart';
-import 'package:junto_beta_mobile/styles.dart';
+import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open_facilitators.dart';
+import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open_members.dart';
+import 'package:junto_beta_mobile/utils/junto_dialog.dart';
+import 'package:junto_beta_mobile/utils/junto_exception.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:junto_beta_mobile/widgets/fabs/expression_center_fab.dart';
+import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
+import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
+import 'package:provider/provider.dart';
 
 class SphereOpen extends StatefulWidget {
   const SphereOpen({
     Key key,
-    @required this.sphereTitle,
-    @required this.sphereImage,
-    @required this.sphereMembers,
-    @required this.sphereHandle,
-    @required this.sphereDescription,
+    this.group,
   }) : super(key: key);
 
-  final String sphereTitle;
-  final String sphereImage;
-  final String sphereMembers;
-  final String sphereHandle;
-  final String sphereDescription;
+  final Group group;
 
   @override
   State<StatefulWidget> createState() {
@@ -35,283 +34,14 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   ScrollController _hideFABController;
   ValueNotifier<bool> _isVisible;
 
-  List<Expression> expressions = <Expression>[
-    Expression(
-      expression: ExpressionContent(
-        address: '0xfee32zokie8',
-        expressionType: 'longform',
-        expressionContent: <String, String>{
-          'title': 'Dynamic form is in motion!',
-          'body': "Hey! Eric here. We're currently working with a London-based dev agency called DevAngels to build out our dynamic, rich text editor. Soon, you'll be able to create short or longform expressions that contain text, links, images complemented with features such as bullet points, horiozntal lines, bold and italic font, and much more. This should be done in the next 1 or 2 weeks so stay tuned!"
-        },
-      ),
-      subExpressions: <Expression>[],
-      authorUsername: Username(
-        address: '02efredffdfvdbnrtg',
-        username: 'eric',
-      ),
-      authorProfile: UserProfile(
-        address: '0vefoiwiafjvkbr32r243r5',
-        parent: 'parent-address',
-        bio: 'hellooo',
-        firstName: 'Eric',
-        lastName: 'Yang',
-        profilePicture: 'assets/images/junto-mobile__eric.png',
-        verified: true,
-      ),
-      resonations: <dynamic>[],
-      timestamp: '2',
-      channels: <Channel>[
-        Channel(
-          address: 'channel-address',
-          value: 'design',
-          attributeType: 'Channel',
-        ),
-        Channel(
-          address: 'channel-address',
-          value: 'tech',
-          attributeType: 'Channel',
-        ),
-      ],
-    ),
-    Expression(
-      expression: ExpressionContent(
-        address: '0xfee32zokie8',
-        expressionType: 'shortform',
-        expressionContent: <String, String>{
-          'body': "Have you heard of Paradym sound healing meditation? Join us for a transformational session this Friday!",
-          'background': 'four'
-        },
-      ),
-      authorUsername: Username(
-        address: '02efredffdfvdbnrtg',
-        username: 'wingedmessenger',
-      ),
-      authorProfile: UserProfile(
-        address: '0vefoiwiafjvkbr32r243r5',
-        firstName: 'Dora',
-        lastName: 'Czovek',
-        profilePicture: 'assets/images/junto-mobile__dora.png',
-        bio: 'hellooo',
-        parent: 'parent-address',
-        verified: true,
-      ),
-      subExpressions: <Expression>[],
-      resonations: <dynamic>[],
-      timestamp: '7',
-      channels: <Channel>[
-        Channel(
-          address: 'channel-address',
-          value: 'design',
-          attributeType: 'Channel',
-        ),
-        Channel(
-          address: 'channel-address',
-          value: 'tech',
-          attributeType: 'Channel',
-        ),
-      ],
-    ),        
-    Expression(
-      expression: ExpressionContent(
-        address: '0xfee32zokie8',
-        expressionType: 'photo',
-        expressionContent: <String, String>{
-          'image': 'assets/images/junto-mobile__photo--one.png',
-          'caption': 'Catching some waves in New Polzeath!'
-        },
-      ),
-      authorUsername: Username(
-        address: '02efredffdfvdbnrtg',
-        username: 'jdlparkin',
-      ),
-      authorProfile: UserProfile(
-        address: '0vefoiwiafjvkbr32r243r5',
-        firstName: 'Josh',
-        lastName: 'Parkin',
-        profilePicture: 'assets/images/junto-mobile__josh.png',
-        bio: 'hellooo',
-        parent: 'parent-address',
-        verified: true,
-      ),
-      subExpressions: <Expression>[],
-      resonations: <dynamic>[],
-      timestamp: '18',
-      channels: <Channel>[
-        Channel(
-          address: 'channel-address',
-          value: 'design',
-          attributeType: 'Channel',
-        ),
-        Channel(
-          address: 'channel-address',
-          value: 'tech',
-          attributeType: 'Channel',
-        ),
-      ],
-    ),
-    Expression(
-      expression: ExpressionContent(
-        address: '0xfee32zokie8',
-        expressionType: 'event',
-        expressionContent: <String, String>{
-          'title': 'Junto Presents: Jazz and Draw',
-          'location': 'The Assemblage',
-          'time': 'Sun, Sep 15, 3:00PM',
-          'image': 'assets/images/junto-mobile__event--one.png',
-          'description': "Join us for a splendiferous afternoon of paint-splattering fun! We'll be syncing our movements to your favorite blues while creating beautiful masterpieces together. All are invited!"
-        },
-      ),
-      authorProfile: UserProfile(
-        address: '0vefoiwiafjvkbr32r243r5',
-        parent: 'parent-address',
-        bio: "I'm Drea.",
-        firstName: 'Drea',
-        lastName: 'Bennett',
-        profilePicture: 'assets/images/junto-mobile__drea.png',
-        verified: true,
-      ),
-      authorUsername: Username(
-        address: '02efredffdfvdbnrtg',
-        username: 'DMONEY',
-      ),
-      subExpressions: <Expression>[],
-      resonations: <dynamic>[],
-      timestamp: '22',
-      channels: <Channel>[
-        Channel(
-          address: 'channel-address',
-          value: 'design',
-          attributeType: 'Channel',
-        ),
-        Channel(
-          address: 'channel-address',
-          value: 'tech',
-          attributeType: 'Channel',
-        ),
-      ],
-    ),
-    Expression(
-      expression: ExpressionContent(
-        address: '0xfee32zokie8',
-        expressionType: 'photo',
-        expressionContent: <String, String>{
-          'image': 'assets/images/junto-mobile__photo--two.png',
-          'caption': 'Hi, Yaz here!',
-        },
-      ),
-      authorUsername: Username(
-        address: '02efredffdfvdbnrtg',
-        username: 'yaz',
-      ),
-      authorProfile: UserProfile(
-        address: '0vefoiwiafjvkbr32r243r5',
-        firstName: 'Yaz',
-        lastName: 'Owainati',
-        profilePicture: 'assets/images/junto-mobile__yaz.png',
-        bio: 'hellooo',
-        parent: 'parent-address',
-        verified: true,
-      ),
-      subExpressions: <Expression>[],
-      resonations: <dynamic>[],
-      timestamp: '38',
-      channels: <Channel>[
-        Channel(
-          address: 'channel-address',
-          value: 'design',
-          attributeType: 'Channel',
-        ),
-        Channel(
-          address: 'channel-address',
-          value: 'tech',
-          attributeType: 'Channel',
-        ),
-      ],
-    ),
+  List<CentralizedExpressionResponse> expressions;
 
-    Expression(
-      expression: ExpressionContent(
-        address: '0xfee32zokie8',
-        expressionType: 'longform',
-        expressionContent: <String, String>{
-          'title': 'The funny story about my name...',
-          'body': "A question I get all the time is, 'Is that your real name?' Well, I'm glad you asked. You see, it was a hot afternoon in Lexington, Kentucky. Feeling hangry, I swung by the closest Subway shop and..."
-        },
-      ),
-      subExpressions: <Expression>[],
-      timestamp: '4',
-      authorProfile: UserProfile(
-        address: '0vefoiwiafjvkbr32r243r5',
-        parent: 'parent-address',
-        firstName: 'Tomis',
-        lastName: 'Parker',
-        profilePicture: 'assets/images/junto-mobile__tomis.png',
-        verified: true,
-        bio: 'hellooo',
-      ),
-      authorUsername: Username(
-        address: '02efredffdfvdbnrtg',
-        username: 'tomis',
-      ),
-      resonations: <dynamic>[],
-      channels: <Channel>[
-        Channel(
-          address: 'channel-address',
-          value: 'tech',
-          attributeType: 'Channel',
-        ),
-      ],
-    ),
-    Expression(
-      expression: ExpressionContent(
-        address: '0xfee32zokie8',
-        expressionType: 'event',
-        expressionContent: <String, String>{
-          'title': 'Happiness is Your True Nature',
-          'location': 'within',
-          'time': 'ANYTIME',
-          'image': 'assets/images/junto-mobile__event--two.png',
-          'description': "Now, you may not be as muscular as this stud. But let me tell you - You. Are. Beautiful. Everything you need is within, so come book an appointmnet with Happy Leif and we're guarantee you some Happy Photos ;)"
-        },
-      ),
-      authorProfile: UserProfile(
-        address: '0vefoiwiafjvkbr32r243r5',
-        parent: 'parent-address',
-        bio: "I'm Leif.",
-        firstName: 'Leif',
-        lastName: 'Lioness',
-        profilePicture: 'assets/images/junto-mobile__leif.png',
-        verified: true,
-      ),
-      authorUsername: Username(
-        address: '02efredffdfvdbnrtg',
-        username: 'leifthelion',
-      ),
-      subExpressions: <Expression>[],
-      resonations: <dynamic>[],
-      timestamp: '59',
-      channels: <Channel>[
-        Channel(
-          address: 'channel-address',
-          value: 'design',
-          attributeType: 'Channel',
-        ),
-        Channel(
-          address: 'channel-address',
-          value: 'tech',
-          attributeType: 'Channel',
-        ),
-      ],
-    ),    
-
-
-
-
-  ];
+  final GlobalKey<SphereOpenState> _keyFlexibleSpace =
+      GlobalKey<SphereOpenState>();
 
   @override
   void initState() {
+    super.initState();
     _hideFABController = ScrollController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _hideFABController.addListener(_onScrollingHasChanged);
@@ -320,7 +50,28 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
       );
     });
     _isVisible = ValueNotifier<bool>(true);
-    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback(_getFlexibleSpaceSize);
+  }
+
+  double _flexibleHeightSpace;
+
+  void _getFlexibleSpaceSize(_) {
+    final RenderBox renderBoxFlexibleSpace =
+        _keyFlexibleSpace.currentContext.findRenderObject();
+    final Size sizeFlexibleSpace = renderBoxFlexibleSpace.size;
+    final double heightFlexibleSpace = sizeFlexibleSpace.height;
+    print(heightFlexibleSpace);
+
+    setState(() {
+      _flexibleHeightSpace = heightFlexibleSpace;
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    expressions = Provider.of<ExpressionRepo>(context).collectiveExpressions;
   }
 
   void _onScrollingHasChanged() {
@@ -334,13 +85,75 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     super.dispose();
   }
 
+  Future<void> _getMembers() async {
+      Navigator.push(
+        context,
+        CupertinoPageRoute<dynamic>(
+          builder: (BuildContext context) {
+            return SphereOpenMembers(
+              group: widget.group,
+              users: [],
+            );
+          },
+        ),
+      );    
+    // try {
+    //   JuntoOverlay.showLoader(context);
+    //   final List<Users> _members =
+    //       await Provider.of<GroupRepo>(context).getGroupMembers(
+    //     widget.group.address,
+    //   );
+    //   JuntoOverlay.hide();
+    //   Navigator.push(
+    //     context,
+    //     CupertinoPageRoute<dynamic>(
+    //       builder: (BuildContext context) {
+    //         return SphereOpenMembers(
+    //           group: widget.group,
+    //           users: _members,
+    //         );
+    //       },
+    //     ),
+    //   );
+    // } on JuntoException catch (error) {
+    //   JuntoOverlay.hide();
+    //   JuntoDialog.showJuntoDialog(
+    //     context,
+    //     error.message,
+    //     <Widget>[
+    //       FlatButton(
+    //         onPressed: () => Navigator.pop(context),
+    //         child: const Text('Ok'),
+    //       )
+    //     ],
+    //   );
+    // }
+  }
+
+  final List<String> _tabs = <String>['About', 'Discussion', 'Events'];
+
+  List<Principle> principles = <Principle>[
+    const Principle(
+      title: 'Be a nice person because nice people get chocolate',
+      body: 'Engage with empathy and respect for one another. We are more than '
+          'viewpoints that may oppose each other at times :)',
+    ),
+    const Principle(
+        title: 'All walks of life',
+        body: 'This is a communal space for all walks of life'),
+  ];
+
+  bool _principlesFullView = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(45),
-        child: SphereOpenAppbar(widget.sphereHandle, widget.sphereImage),
+        child: SphereOpenAppbar(
+          widget.group.groupData.sphereHandle,
+          widget.group.groupData.photo,
+        ),
       ),
       floatingActionButton: ValueListenableBuilder<bool>(
         valueListenable: _isVisible,
@@ -351,220 +164,179 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
             child: child,
           );
         },
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: CreateFAB(
-            sphereHandle: widget.sphereHandle,
-            isVisible: _isVisible,
-          ),
-        ),
+        child:
+            ExpressionCenterFAB(expressionLayer: widget.group.groupData.name),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      body: ListView(
-        controller: _hideFABController,
-        children: <Widget>[
-          Container(
-            constraints: const BoxConstraints.expand(height: 200),
-            child: Image.asset(
-              widget.sphereImage,
-              fit: BoxFit.cover,
-            ),
+      body: DefaultTabController(
+        length: _tabs.length,
+        child: NestedScrollView(
+          body: TabBarView(
+            // These are the contents of the tab views, below the tabs.
+            children: <Widget>[
+              _buildAboutView(),
+              _buildExpressionView(),
+              _buildEventsView()
+            ],
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: JuntoStyles.horizontalPadding,
-              vertical: 15,
-            ),
-            decoration: const BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: JuntoPalette.juntoFade,
-                  width: .75,
-                ),
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          child: Text(
-                            widget.sphereTitle,
-                            style: const TextStyle(
-                              color: JuntoPalette.juntoGrey,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-                const SizedBox(height: 15),
-                Container(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  margin: const EdgeInsets.only(bottom: 15),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: <Color>[
-                          JuntoPalette.juntoSecondary,
-                          JuntoPalette.juntoPrimary
-                        ],
-                      ),
-                      borderRadius: BorderRadius.circular(10)),
-                  child: const Text(
-                    'Join Sphere',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 17,
-                        fontWeight: FontWeight.w700),
-                  ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Row(
+          controller: _hideFABController,
+          physics: const ClampingScrollPhysics(),
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              SliverAppBar(
+                brightness: Brightness.light,
+                automaticallyImplyLeading: false,
+                primary: false,
+                actions: const <Widget>[SizedBox(height: 0, width: 0)],
+                backgroundColor: Theme.of(context).colorScheme.background,
+                pinned: false,
+                flexibleSpace: FlexibleSpaceBar(
+                  collapseMode: CollapseMode.pin,
+                  background: Column(
+                    children: <Widget>[
+                      widget.group.groupData.photo == ''
+                          ? Container(
+                              height: MediaQuery.of(context).size.height * .3,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.bottomLeft,
+                                  end: Alignment.topRight,
+                                  stops: <double>[0.2, 0.9],
+                                  colors: <Color>[
+                                    Theme.of(context).colorScheme.secondary,
+                                    Theme.of(context).colorScheme.primary
+                                  ],
+                                ),
+                              ),
+                              alignment: Alignment.center,
+                              child: Icon(CustomIcons.spheres,
+                                  size: 60,
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary),
+                            )
+                          : Container(
+                              height: MediaQuery.of(context).size.height * .3,
+                              width: MediaQuery.of(context).size.width,
+                              child: Image.asset(widget.group.groupData.photo,
+                                  fit: BoxFit.cover)),
+                      Container(
+                        key: _keyFlexibleSpace,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: JuntoStyles.horizontalPadding,
+                            vertical: 15),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            ClipOval(
-                              child: Image.asset(
-                                'assets/images/junto-mobile__eric.png',
-                                height: 28.0,
-                                width: 28.0,
-                                fit: BoxFit.cover,
-                              ),
+                            Container(
+                              width: MediaQuery.of(context).size.width * .7,
+                              child: Text(widget.group.groupData.name,
+                                  style: Theme.of(context).textTheme.display1),
                             ),
-                            const SizedBox(width: 5),
-                            ClipOval(
-                              child: Image.asset(
-                                'assets/images/junto-mobile__riley.png',
-                                height: 28.0,
-                                width: 28.0,
-                                fit: BoxFit.cover,
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 7.5),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Theme.of(context).primaryColor,
+                                    width: 1.5),
+                                borderRadius: BorderRadius.circular(25),
                               ),
-                            ),
-                            const SizedBox(width: 5),
-                            ClipOval(
-                              child: Image.asset(
-                                'assets/images/junto-mobile__yaz.png',
-                                height: 28.0,
-                                width: 28.0,
-                                fit: BoxFit.cover,
+                              child: Row(
+                                children: <Widget>[
+                                  const SizedBox(width: 14),
+                                  Icon(CustomIcons.spheres,
+                                      size: 14,
+                                      color: Theme.of(context).primaryColor),
+                                  const SizedBox(width: 2),
+                                  Icon(Icons.keyboard_arrow_down,
+                                      size: 12,
+                                      color: Theme.of(context).primaryColor)
+                                ],
                               ),
-                            ),
-                            const SizedBox(width: 5),
-                            ClipOval(
-                              child: Image.asset(
-                                'assets/images/junto-mobile__josh.png',
-                                height: 28.0,
-                                width: 28.0,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            const SizedBox(width: 5),
-                            ClipOval(
-                              child: Image.asset(
-                                'assets/images/junto-mobile__dora.png',
-                                height: 28.0,
-                                width: 28.0,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            const SizedBox(width: 5),
-                            ClipOval(
-                              child: Image.asset(
-                                'assets/images/junto-mobile__tomis.png',
-                                height: 28.0,
-                                width: 28.0,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            const SizedBox(width: 5),
-                            ClipOval(
-                              child: Image.asset(
-                                'assets/images/junto-mobile__drea.png',
-                                height: 28.0,
-                                width: 28.0,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            const SizedBox(width: 5),
-                            ClipOval(
-                              child: Image.asset(
-                                'assets/images/junto-mobile__leif.png',
-                                height: 28.0,
-                                width: 28.0,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
+                            )
                           ],
                         ),
-                        const SizedBox(height: 5),
-                        Container(
-                          child: Text(widget.sphereMembers + ' members',
-                              style: JuntoStyles.title),
-                        ),
-                        const SizedBox(height: 10),
-                        Container(
-                          child: Text(widget.sphereDescription,
-                              textAlign: TextAlign.start,
-                              style:
-                                  const TextStyle(fontSize: 15, height: 1.4)),
-                        ),
-                      ],
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-            decoration: const BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: JuntoPalette.juntoFade,
-                  width: .75,
+                      ),
+                    ],
+                  ),
                 ),
+                expandedHeight: _flexibleHeightSpace == null
+                    ? 10000
+                    : MediaQuery.of(context).size.height * .3 +
+                        _flexibleHeightSpace,
+                forceElevated: false,
+              ),
+              SliverPersistentHeader(
+                pinned: true,
+                delegate: _SliverAppBarDelegate(
+                  TabBar(
+                    labelPadding: const EdgeInsets.all(0),
+                    isScrollable: true,
+                    labelColor: Theme.of(context).primaryColorDark,
+                    labelStyle: Theme.of(context).textTheme.subhead,
+                    indicatorWeight: 0.0001,
+                    tabs: _tabs
+                        .map((String name) => Container(
+                            margin: const EdgeInsets.only(right: 24),
+                            color: Theme.of(context).colorScheme.background,
+                            child: Tab(
+                              text: name,
+                            )))
+                        .toList(),
+                  ),
+                ),
+              )
+            ];
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAboutView() {
+    return ListView(
+      physics: const ClampingScrollPhysics(),
+      children: <Widget>[
+        Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: JuntoStyles.horizontalPadding,
+            vertical: 15,
+          ),
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(
+                color: Theme.of(context).dividerColor,
+                width: .75,
               ),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text('Principles', style: JuntoStyles.header),
-                const SizedBox(height: 10),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        width: MediaQuery.of(context).size.width * .88,
-                        child: const Text(
-                            'Help maintain an awesome, respectful community!'),
-                      ),
-                      Icon(
-                        Icons.keyboard_arrow_right,
-                        size: 20,
-                        color: const Color(0xff555555),
-                      )
-                    ]),
-              ],
-            ),
           ),
-          Container(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              GestureDetector(
+                onTap: () => _getMembers(),
+                child: const MemberRow(),
+              )
+            ],
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              CupertinoPageRoute<dynamic>(
+                builder: (BuildContext context) => const SphereOpenFacilitators(
+                  users: <Users>[],
+                ),
+              ),
+            );
+          },
+          child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color: JuntoPalette.juntoFade,
+                  color: Theme.of(context).dividerColor,
                   width: .75,
                 ),
               ),
@@ -579,9 +351,11 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                     Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text('Facilitators', style: JuntoStyles.header),
+                          Text('Facilitators',
+                              style: Theme.of(context).textTheme.title),
                           const SizedBox(height: 10),
-                          const Text('Eric Yang and 7 others'),
+                          Text('Eric Yang and 7 others',
+                              style: Theme.of(context).textTheme.body2),
                         ]),
                     ClipOval(
                       child: Image.asset(
@@ -596,19 +370,336 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
               ],
             ),
           ),
-          ListView(
-            shrinkWrap: true,
-            physics: const ClampingScrollPhysics(),
+        ),
+        if (principles.isNotEmpty)
+          Container(
+            padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text('Principles', style: Theme.of(context).textTheme.title),
+                _PrincipleListing(
+                  data: principles,
+                  showFirst: _principlesFullView,
+                ),
+                _principlesSeeMore()
+              ],
+            ),
+          ),
+        if (!principles.isNotEmpty) const SizedBox(),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              ExpressionPreview(expression: expressions[0]),
-              ExpressionPreview(expression: expressions[1]),
-              ExpressionPreview(expression: expressions[2]),
-              ExpressionPreview(expression: expressions[3]),
-              ExpressionPreview(expression: expressions[4]),
-              ExpressionPreview(expression: expressions[5]),
-              ExpressionPreview(expression: expressions[6]),
-         
+              Text('Bio / Purpose', style: Theme.of(context).textTheme.title),
+              const SizedBox(height: 10),
+              Text(widget.group.groupData.description,
+                  style: Theme.of(context).textTheme.body2)
             ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _principlesSeeMore() {
+    if (principles.length > 1) {
+      return GestureDetector(
+        onTap: () {
+          setState(() {
+            if (_principlesFullView == false) {
+              _principlesFullView = true;
+            } else {
+              _principlesFullView = false;
+            }
+          });
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          alignment: Alignment.centerLeft,
+          decoration: BoxDecoration(
+            border: Border(
+              bottom:
+                  BorderSide(color: Theme.of(context).dividerColor, width: .75),
+            ),
+          ),
+          child: Row(
+            children: <Widget>[
+              _principlesFullView
+                  ? const Text('see more')
+                  : const Text('collapse'),
+              const SizedBox(width: 5),
+              Icon(
+                _principlesFullView
+                    ? Icons.keyboard_arrow_down
+                    : Icons.keyboard_arrow_up,
+                size: 17,
+                color: Theme.of(context).primaryColor,
+              )
+            ],
+          ),
+        ),
+      );
+    } else {
+      return const SizedBox();
+    }
+  }
+
+  Widget _buildExpressionView() {
+    return ListView(
+      physics: const ClampingScrollPhysics(),
+      children: <Widget>[
+        ExpressionPreview(
+          expression: expressions[0],
+        ),
+        ExpressionPreview(
+          expression: expressions[1],
+        ),
+        ExpressionPreview(
+          expression: expressions[2],
+        ),
+        ExpressionPreview(
+          expression: expressions[3],
+        )
+      ],
+    );
+  }
+
+  Widget _buildEventsView() {
+    return ListView(
+      physics: const ClampingScrollPhysics(),
+      children: <Widget>[
+        ExpressionPreview(
+          expression: expressions[3],
+        )
+      ],
+    );
+  }
+}
+
+class MemberRow extends StatelessWidget {
+  const MemberRow({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Theme.of(context).colorScheme.background,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              ClipOval(
+                child: Image.asset(
+                  'assets/images/junto-mobile__eric.png',
+                  height: 28.0,
+                  width: 28.0,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              const SizedBox(width: 5),
+              ClipOval(
+                child: Image.asset(
+                  'assets/images/junto-mobile__riley.png',
+                  height: 28.0,
+                  width: 28.0,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              const SizedBox(width: 5),
+              ClipOval(
+                child: Image.asset(
+                  'assets/images/junto-mobile__yaz.png',
+                  height: 28.0,
+                  width: 28.0,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              const SizedBox(width: 5),
+              ClipOval(
+                child: Image.asset(
+                  'assets/images/junto-mobile__josh.png',
+                  height: 28.0,
+                  width: 28.0,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              const SizedBox(width: 5),
+              ClipOval(
+                child: Image.asset(
+                  'assets/images/junto-mobile__dora.png',
+                  height: 28.0,
+                  width: 28.0,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              const SizedBox(width: 5),
+              ClipOval(
+                child: Image.asset(
+                  'assets/images/junto-mobile__tomis.png',
+                  height: 28.0,
+                  width: 28.0,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              const SizedBox(width: 5),
+              ClipOval(
+                child: Image.asset(
+                  'assets/images/junto-mobile__drea.png',
+                  height: 28.0,
+                  width: 28.0,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              const SizedBox(width: 5),
+              ClipOval(
+                child: Image.asset(
+                  'assets/images/junto-mobile__leif.png',
+                  height: 28.0,
+                  width: 28.0,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 5),
+          Container(
+            child:
+                Text('49 members', style: Theme.of(context).textTheme.subtitle),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
+  _SliverAppBarDelegate(this._tabBar);
+
+  final TabBar _tabBar;
+
+  @override
+  double get minExtent => _tabBar.preferredSize.height + .5;
+
+  @override
+  double get maxExtent => _tabBar.preferredSize.height + .5;
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.background,
+          border: Border(
+            bottom:
+                BorderSide(color: Theme.of(context).dividerColor, width: .5),
+          ),
+        ),
+        width: MediaQuery.of(context).size.width,
+        child: _tabBar);
+  }
+
+  @override
+  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
+    return false;
+  }
+}
+
+class _PrincipleListing extends StatefulWidget {
+  const _PrincipleListing({
+    Key key,
+    @required this.showFirst,
+    @required this.data,
+  }) : super(key: key);
+
+  final bool showFirst;
+  final List<Principle> data;
+
+  @override
+  __PrincipleListingState createState() => __PrincipleListingState();
+}
+
+class __PrincipleListingState extends State<_PrincipleListing> {
+  @override
+  Widget build(BuildContext context) {
+    if (widget.showFirst) {
+      return _PrincipleItem(item: widget.data.first, index: 0);
+    } else {
+      return ListView.builder(
+        shrinkWrap: true,
+        physics: ClampingScrollPhysics(),
+        itemCount: widget.data.length,
+        itemBuilder: (BuildContext context, int index) {
+          return _PrincipleItem(
+            index: index,
+            item: widget.data[index],
+          );
+        },
+      );
+    }
+  }
+}
+
+class _PrincipleItem extends StatelessWidget {
+  const _PrincipleItem({
+    Key key,
+    @required this.item,
+    @required this.index,
+  }) : super(key: key);
+  final Principle item;
+  final int index;
+
+  String get title => item.title;
+
+  String get body => item.body;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: Theme.of(context).dividerColor, width: .75),
+        ),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            (index + 1).toString(),
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              color: Theme.of(context).primaryColorLight,
+            ),
+          ),
+          const SizedBox(width: 15),
+          Container(
+            height: 17,
+            decoration: BoxDecoration(
+              border: Border(
+                right:
+                    BorderSide(color: Theme.of(context).dividerColor, width: 2),
+              ),
+            ),
+          ),
+          const SizedBox(width: 15),
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  title,
+                  style: Theme.of(context).textTheme.subtitle,
+                  textAlign: TextAlign.left,
+                ),
+                const SizedBox(height: 10),
+                Text(body)
+              ],
+            ),
           )
         ],
       ),

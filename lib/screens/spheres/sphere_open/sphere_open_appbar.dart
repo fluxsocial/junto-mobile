@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/custom_icons.dart';
-import 'package:junto_beta_mobile/palette.dart';
-import 'package:junto_beta_mobile/styles.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open_action_items.dart';
 
 class SphereOpenAppbar extends StatelessWidget {
@@ -17,50 +16,47 @@ class SphereOpenAppbar extends StatelessWidget {
       automaticallyImplyLeading: false,
       brightness: Brightness.light,
       iconTheme: const IconThemeData(color: JuntoPalette.juntoSleek),
-      backgroundColor: Colors.white,
       elevation: 0,
       titleSpacing: 0,
       title: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 5),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             GestureDetector(
               onTap: () => Navigator.pop(context),
               child: Container(
-                color: Colors.white,
-                width: 38,
+                padding: const EdgeInsets.only(left: 10),
+                color: Colors.transparent,
+                width: 42,
                 alignment: Alignment.centerLeft,
                 child: Icon(
-                  CustomIcons.back_arrow_left,
-                  color: JuntoPalette.juntoSleek,
-                  size: 28,
+                  CustomIcons.back,
+                  color: Theme.of(context).primaryColorDark,
+                  size: 17,
                 ),
               ),
             ),
             Container(
               margin: const EdgeInsets.only(right: 5),
-              child: Text(
-                '/s/' + sphereHandle,
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xff333333),
-                ),
-              ),
+              child: Text('s/' + sphereHandle,
+                  style: Theme.of(context).textTheme.subhead),
             ),
             GestureDetector(
               onTap: () {
-                SphereOpenActionItems().buildSphereOpenActionItems(context);
+                showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) => SphereOpenActionItems(),
+                );
               },
               child: Container(
-                width: 38,
-                color: Colors.white,
+                width: 42,
+                padding: const EdgeInsets.only(right: 10),
+                color: Colors.transparent,
                 alignment: Alignment.centerRight,
-                child: const Icon(
+                child: Icon(
                   CustomIcons.more,
                   size: 24,
-                  color: Color(0xff333333),
+                  color: Theme.of(context).primaryColorDark,
                 ),
               ),
             )
@@ -68,14 +64,14 @@ class SphereOpenAppbar extends StatelessWidget {
         ),
       ),
       bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(1),
+        preferredSize: const Size.fromHeight(.75),
         child: Container(
-          height: 1,
-          decoration: const BoxDecoration(
+          height: .75,
+          decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
-                width: 1,
-                color: JuntoPalette.juntoFade,
+                width: .75,
+                color: Theme.of(context).dividerColor,
               ),
             ),
           ),

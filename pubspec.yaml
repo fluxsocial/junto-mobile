@@ -7,34 +7,34 @@ description: A new Flutter project.
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # Read more about versioning at semver.org.
-version: 1.0.0+1
+version: 1.0.0+2
 
 environment:
-  sdk: ">=2.3.0 <3.0.0"
-  
+  sdk: ">=2.6.0-dev <3.0.0"
+  flutter: ">=1.10.14 <2.0.0"
+
 dependencies:
   flutter:
     sdk: flutter
-  
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  image_picker: ^0.6.1+4
-  shared_preferences: 0.5.3+4
-  cupertino_icons: ^0.1.2
-  provider: ^3.0.0+1  
-  http: ^0.12.0+2 
-  image_cropper: ^1.0.2  
-  sentry: ^2.2.0
+  image_picker: 0.6.1+8
+  shared_preferences: 0.5.4
+  cupertino_icons: 0.1.2
+  provider: 3.1.0+1
+  http: 0.12.0+2
+  image_cropper: 1.1.0
+  sentry: 2.3.1
   localstorage: 2.0.0
-  # flutter_google_places: ^0.2.3
+  giphy_client: 0.2.0
+  cached_network_image: 1.1.2+1
+  carousel_slider: 1.3.1
   # webview_flutter: ^0.3.9+1
   # swipedetector: ^1.2.0
-  
-  
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  test: any 
+  test: any
 
 
 # For information on the generic Dart part of this file, see the
@@ -47,18 +47,18 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
-  
+
   fonts:
     - family: Avenir
       fonts:
       - asset: assets/fonts/AvenirLTStd-Book.otf
-        weight: 400 
+        weight: 400
       - asset: assets/fonts/Avenir-Medium.ttf
         weight: 500
       - asset: assets/fonts/Avenir-Heavy.ttf
-        weight: 600 
+        weight: 600
       - asset: assets/fonts/Avenir-Black.ttf
-        weight: 700                
+        weight: 700
 
     - family:  j_home
       fonts:
@@ -76,38 +76,41 @@ flutter:
     - assets/images/junto-mobile__logo--collective.png
     - assets/images/junto-mobile__logo--pack.png
     - assets/images/junto-mobile__logo--den.png
-    - assets/images/junto-mobile__logo--spheres.png 
-    - assets/images/junto-mobile__eric.png 
-    - assets/images/junto-mobile__riley.png 
-    - assets/images/junto-mobile__kevin.png 
-    - assets/images/junto-mobile__david.png     
-    - assets/images/junto-mobile__ekene.png     
-    - assets/images/junto-mobile__yaz.png 
-    - assets/images/junto-mobile__josh.png 
-    - assets/images/junto-mobile__dora.png 
-    - assets/images/junto-mobile__drea.png 
-    - assets/images/junto-mobile__nash.png 
-    - assets/images/junto-mobile__tomis.png 
-    - assets/images/junto-mobile__leif.png 
+    - assets/images/junto-mobile__logo--spheres.png
+    - assets/images/junto-mobile__placeholder--member.png
+    - assets/images/junto-mobile__placeholder--sphere.png
+    - assets/images/junto-mobile__eric.png
+    - assets/images/junto-mobile__eric--qigong.png
+    - assets/images/junto-mobile__riley.png
+    - assets/images/junto-mobile__kevin.png
+    - assets/images/junto-mobile__david.png
+    - assets/images/junto-mobile__ekene.png
+    - assets/images/junto-mobile__yaz.png
+    - assets/images/junto-mobile__josh.png
+    - assets/images/junto-mobile__dora.png
+    - assets/images/junto-mobile__drea.png
+    - assets/images/junto-mobile__nash.png
+    - assets/images/junto-mobile__tomis.png
+    - assets/images/junto-mobile__leif.png
     - assets/images/junto-mobile__expression--photo.png
     - assets/images/junto-mobile__den--photo.png
     - assets/images/junto-mobile__logo--white.png
     - assets/images/junto-mobile__outlinelogo--gradient.png
     - assets/images/junto-mobile__flutter.png
     - assets/images/junto-mobile__ecstatic.png
-    - assets/images/junto-mobile__stillmind.png    
-    - assets/images/junto-mobile__junto.png    
-    - assets/images/junto-mobile__infinity.png    
-    - assets/images/junto-mobile__location.png    
-    - assets/images/junto-mobile__link.png    
-    - assets/images/junto-mobile__join-pack.png    
-    - assets/images/junto-mobile__resonation.png    
-    - assets/images/junto-mobile__event.png    
-    - assets/images/junto-mobile__collection.png    
-    - assets/images/junto-mobile__photo--one.png    
-    - assets/images/junto-mobile__photo--two.png    
-    - assets/images/junto-mobile__event--one.png    
-    - assets/images/junto-mobile__event--two.png    
+    - assets/images/junto-mobile__stillmind.png
+    - assets/images/junto-mobile__junto.png
+    - assets/images/junto-mobile__infinity.png
+    - assets/images/junto-mobile__location.png
+    - assets/images/junto-mobile__link.png
+    - assets/images/junto-mobile__join-pack.png
+    - assets/images/junto-mobile__resonation.png
+    - assets/images/junto-mobile__event.png
+    - assets/images/junto-mobile__collection.png
+    - assets/images/junto-mobile__photo--one.png
+    - assets/images/junto-mobile__photo--two.png
+    - assets/images/junto-mobile__event--one.png
+    - assets/images/junto-mobile__event--two.png
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -122,8 +125,8 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
 
-  
-  
+
+
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.io/custom-fonts/#from-packages

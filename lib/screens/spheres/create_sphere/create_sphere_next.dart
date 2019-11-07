@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/custom_icons.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/sphere.dart';
-import 'package:junto_beta_mobile/providers/provider.dart';
 import 'package:junto_beta_mobile/screens/template/template.dart';
-import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
@@ -41,12 +41,14 @@ class _CreateSphereNextState extends State<CreateSphereNext> {
       privacy: _selectedType,
     );
     try {
-      final CentralizedSphereResponse _response =
-          await Provider.of<SpheresProvider>(context)
-              .createSphere(updatedSphere);
+      await Provider.of<GroupRepo>(context).createSphere(updatedSphere);
       JuntoOverlay.hide();
-      Navigator.pushReplacement(
-          context, CupertinoPageRoute(builder: (context) => JuntoTemplate()));
+      Navigator.pushAndRemoveUntil(
+          context,
+          CupertinoPageRoute<dynamic>(
+            builder: (BuildContext context) => JuntoTemplate(),
+          ),
+          (_) => false);
     } on JuntoException catch (error) {
       JuntoOverlay.hide();
       JuntoDialog.showJuntoDialog(
@@ -89,31 +91,33 @@ class _CreateSphereNextState extends State<CreateSphereNext> {
                       color: Colors.white,
                       width: 38,
                       alignment: Alignment.centerLeft,
-                      child: Icon(
+                      child: const Icon(
                         CustomIcons.back_arrow_left,
                         color: JuntoPalette.juntoSleek,
                         size: 28,
                       ),
                     )),
-                Text(
+                const Text(
                   'Sphere Privacy',
                   style: TextStyle(
                       color: Color(0xff333333),
                       fontWeight: FontWeight.w700,
                       fontSize: 15),
                 ),
-                GestureDetector(
-                    onTap: _createSphere,
-                    child: Container(
-                      color: Colors.white,
-                      width: 38,
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        'create',
-                        style:
-                            TextStyle(color: Color(0xff333333), fontSize: 14),
-                      ),
-                    ))
+                Expanded(
+                  child: GestureDetector(
+                      onTap: _createSphere,
+                      child: Container(
+                        color: Colors.white,
+                        width: 38,
+                        alignment: Alignment.centerRight,
+                        child: const Text(
+                          'create',
+                          style:
+                              TextStyle(color: Color(0xff333333), fontSize: 14),
+                        ),
+                      )),
+                )
               ],
             ),
           ),
@@ -225,11 +229,11 @@ class _SelectionTileState extends State<_SelectionTile> {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                     colors: widget.isSelected
-                        ? [
+                        ? <Color>[
                             JuntoPalette.juntoSecondary,
                             JuntoPalette.juntoPrimary
                           ]
-                        : [Colors.white, Colors.white],
+                        : <Color>[Colors.white, Colors.white],
                     begin: Alignment.bottomLeft,
                     end: Alignment.topRight),
                 // color: widget.isSelected ? JuntoPalette.juntoPrimary : null,

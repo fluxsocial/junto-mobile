@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/custom_icons.dart';
-import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 
 class DenConnections extends StatelessWidget {
   @override
@@ -12,54 +12,54 @@ class DenConnections extends StatelessWidget {
           automaticallyImplyLeading: false,
           brightness: Brightness.light,
           iconTheme: const IconThemeData(color: JuntoPalette.juntoSleek),
-          backgroundColor: Colors.white,
           elevation: 0,
           titleSpacing: 0,
           title: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 GestureDetector(
                   onTap: () => Navigator.pop(context),
-                  child: const Icon(
-                    CustomIcons.back_arrow_left,
-                    color: JuntoPalette.juntoSleek,
-                    size: 24,
+                  child: Container(
+                    padding: const EdgeInsets.only(left: 10),
+                    width: 42,
+                    height: 42,
+                    alignment: Alignment.centerLeft,
+                    color: Colors.transparent,
+                    child: Icon(
+                      CustomIcons.back,
+                      color: Theme.of(context).primaryColorDark,
+                      size: 17,
+                    ),
                   ),
                 ),
-                Text(
-                  'Connections',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.black,
-                  ),
-                ),
-                const SizedBox(width: 24),
+                Text('My Connections',
+                    style: Theme.of(context).textTheme.subhead),
+                const SizedBox(width: 42)
               ],
             ),
           ),
           bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(1),
+            preferredSize: const Size.fromHeight(.75),
             child: Container(
-              height: 1,
-              decoration: const BoxDecoration(
+              height: .75,
+              decoration: BoxDecoration(
                 border: Border(
-                  bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
+                  bottom: BorderSide(
+                      color: Theme.of(context).dividerColor, width: .75),
                 ),
               ),
             ),
           ),
         ),
       ),
-      backgroundColor: Colors.white,
       body: Column(
         children: <Widget>[
           Expanded(
-              child: ListView(
-            children: const <Widget>[SizedBox()],
-          ))
+            child: ListView(
+              children: <Widget>[],
+            ),
+          )
         ],
       ),
     );

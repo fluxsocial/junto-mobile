@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:junto_beta_mobile/palette.dart';
-import 'package:junto_beta_mobile/styles.dart';
-import 'package:junto_beta_mobile/custom_icons.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/app/styles.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/den/den_create_subcollection.dart';
 
 class DenCollectionOpen extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return DenCollectionOpenState();
-  }
+  State<StatefulWidget> createState() => DenCollectionOpenState();
 }
 
 class DenCollectionOpenState extends State<DenCollectionOpen> {
@@ -25,7 +22,7 @@ class DenCollectionOpenState extends State<DenCollectionOpen> {
     subcollectionActive = false;
   }
 
-  _toggleDomain(domain) {
+  void _toggleDomain(String domain) {
     if (domain == 'expressions') {
       setState(() {
         expressionsActive = true;
@@ -39,21 +36,22 @@ class DenCollectionOpenState extends State<DenCollectionOpen> {
     }
   }
 
-  _buildCollectionList() {
+// ignore: unused_element
+  Widget _buildCollectionList() {
     if (expressionsActive) {
       return ListView(
         shrinkWrap: true,
-        physics: ClampingScrollPhysics(),
-        children: <Widget>[SizedBox()],
+        physics: const ClampingScrollPhysics(),
+        children: const <Widget>[SizedBox()],
       );
     } else if (subcollectionActive == true) {
       return ListView(
         shrinkWrap: true,
-        physics: ClampingScrollPhysics(),
-        children: <Widget>[Text('subcollection')],
+        physics: const ClampingScrollPhysics(),
+        children: const <Widget>[Text('subcollection')],
       );
     } else {
-      return SizedBox();
+      return const SizedBox();
     }
   }
 
@@ -100,7 +98,7 @@ class DenCollectionOpenState extends State<DenCollectionOpen> {
                   onTap: () {
                     // create collection
                   },
-                  child: Icon(
+                  child: const Icon(
                     CustomIcons.more,
                     size: 20,
                     color: Color(0xff333333),
@@ -125,25 +123,26 @@ class DenCollectionOpenState extends State<DenCollectionOpen> {
             child: ListView(
               children: <Widget>[
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
+                      const Text(
                         'Anbu',
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.w700),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Container(
-                            padding: EdgeInsets.all(2.5),
+                            padding: const EdgeInsets.all(2.5),
                             height: 30,
                             width: 80,
                             decoration: BoxDecoration(
-                              color: Color(0xfffeeeeee),
+                              color: const Color(0xffeeeeee),
                               borderRadius: BorderRadius.circular(5),
                             ),
                             child: Row(
@@ -159,15 +158,15 @@ class DenCollectionOpenState extends State<DenCollectionOpen> {
                                     decoration: BoxDecoration(
                                       color: expressionsActive
                                           ? Colors.white
-                                          : Color(0xffeeeeee),
+                                          : const Color(0xffeeeeee),
                                       borderRadius: BorderRadius.circular(5),
                                     ),
                                     child: Icon(
                                       CustomIcons.half_lotus,
                                       size: 12,
                                       color: expressionsActive
-                                          ? Color(0xff555555)
-                                          : Color(0xff999999),
+                                          ? const Color(0xff555555)
+                                          : const Color(0xff999999),
                                     ),
                                   ),
                                 ),
@@ -182,15 +181,15 @@ class DenCollectionOpenState extends State<DenCollectionOpen> {
                                     decoration: BoxDecoration(
                                       color: subcollectionActive
                                           ? Colors.white
-                                          : Color(0xffeeeeee),
+                                          : const Color(0xffeeeeee),
                                       borderRadius: BorderRadius.circular(5),
                                     ),
                                     child: Icon(
                                       Icons.collections,
                                       size: 12,
                                       color: subcollectionActive
-                                          ? Color(0xff555555)
-                                          : Color(0xff999999),
+                                          ? const Color(0xff555555)
+                                          : const Color(0xff999999),
                                     ),
                                   ),
                                 ),
@@ -202,23 +201,24 @@ class DenCollectionOpenState extends State<DenCollectionOpen> {
                                   onTap: () {
                                     Navigator.push(
                                       context,
-                                      CupertinoPageRoute(
-                                        builder: (context) =>
-                                            DenCreateSubcollection(),
+                                      CupertinoPageRoute<dynamic>(
+                                        builder: (BuildContext context) {
+                                          return DenCreateSubcollection();
+                                        },
                                       ),
                                     );
                                   },
                                   child: Container(
                                     width: 38,
                                     alignment: Alignment.centerRight,
-                                    child: Icon(
+                                    child: const Icon(
                                       Icons.add,
                                       size: 20,
                                       color: Color(0xff555555),
                                     ),
                                   ),
                                 )
-                              : SizedBox()
+                              : const SizedBox()
                         ],
                       ),
                     ],

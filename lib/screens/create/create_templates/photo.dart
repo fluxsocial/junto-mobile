@@ -4,8 +4,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:junto_beta_mobile/custom_icons.dart';
-import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:flutter/services.dart' show PlatformException;
+import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 
 /// Create using photo form
 class CreatePhoto extends StatefulWidget {
@@ -33,34 +36,57 @@ class CreatePhotoState extends State<CreatePhoto> {
   bool _libraryActive = true;
   bool _cameraActive = false;
 
+  //TODO(Nash): Connect to backend and impl once image upload becomes
+  // available.
+  /// Creates a [CentralizedPhotoFormExpression] from the given data entered
+  /// by the user.
+  CentralizedPhotoFormExpression createExpression() {
+    return CentralizedPhotoFormExpression(image: '', caption: '');
+  }
+
   // Function to retrieve image from source (i.e. library or camera)
   void _getImage(BuildContext context, ImageSource source) {
     ImagePicker.pickImage(source: source, maxWidth: 512).then((File image) {
       setState(() {
         _imageFile = image;
       });
-
       _cropImage(image);
-
       if (_onFirstScreen) {
         widget.toggleBottomNavVisibility();
         _onFirstScreen = false;
         _photoEdit = true;
       }
+    }).catchError((dynamic error) {
+      if (error is PlatformException && error.code == 'photo_access_denied')
+        JuntoDialog.showJuntoDialog(
+          context,
+          'You need to allow photo '
+          'permission',
+          <Widget>[
+            FlatButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Ok'),
+            ),
+          ],
+        );
+      debugPrint('Error occured selecting photo');
     });
   }
 
   // Function to crop an image
   Future<void> _cropImage(File imageFile) async {
-    final File croppedFile = await ImageCropper.cropImage(
-      sourcePath: imageFile.path,
-      maxWidth: 512,
-      maxHeight: 512,
-    );
-    widget.isEditing.value = true;
-    setState(() {
-      _croppedFile = croppedFile;
-    });
+    if (imageFile != null) {
+      final File croppedFile = await ImageCropper.cropImage(
+        sourcePath: imageFile?.path,
+        maxWidth: 512,
+        maxHeight: 512,
+      );
+      widget.isEditing.value = true;
+      setState(() {
+        _croppedFile = croppedFile;
+      });
+    }
+    return;
   }
 
   // Upload Image component - rendered in _photoTypeTemplate()
@@ -375,8 +401,11 @@ class CreatePhotoState extends State<CreatePhoto> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: _currentScreen(),
-    );
+        child: Center(
+      child: Text('share a photo'),
+    )
+        // _currentScreen(),
+        );
   }
 
   // Render current screen conditionally

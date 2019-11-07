@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/palette.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 
 /// Allows the user to create a short form expression.
 class CreateShortform extends StatefulWidget {
@@ -22,6 +23,14 @@ class CreateShortformState extends State<CreateShortform> {
   String _currentBackground = 'none';
   TextEditingController _bodyController;
 
+  /// Creates a [CentralizedShortFormExpression] from the given data entered
+  /// by the user.
+  CentralizedShortFormExpression createExpression() {
+    return CentralizedShortFormExpression(
+        body: _bodyController.value.text,
+        background: gradientOne.value.toRadixString(16));
+  }
+
   @override
   void initState() {
     super.initState();
@@ -29,8 +38,7 @@ class CreateShortformState extends State<CreateShortform> {
     gradientTwo = JuntoPalette.juntoSecondary;
     _bodyController = TextEditingController();
     _bodyController.addListener(bodyListener);
-    _bodyController.text = 'Going to create two color pickers that people can use to generate their own gradient. These are just placeholders';
-
+    _bodyController.text = 'gradients are fully customizeable and tbd';
   }
 
   void bodyListener() {
@@ -44,8 +52,8 @@ class CreateShortformState extends State<CreateShortform> {
 
   @override
   void dispose() {
-    _bodyController.dispose();
     _bodyController.removeListener(bodyListener);
+    _bodyController.dispose();
     super.dispose();
   }
 
@@ -105,7 +113,7 @@ class CreateShortformState extends State<CreateShortform> {
       return Container(
         decoration: BoxDecoration(
           border: Border.all(
-            color: const Color(0xffeeeeee),
+            color: Theme.of(context).dividerColor,
             width: 1,
           ),
           gradient: LinearGradient(
@@ -201,7 +209,7 @@ class CreateShortformState extends State<CreateShortform> {
                         null,
                     decoration: const InputDecoration(
                       border: InputBorder.none,
-                    ),                    
+                    ),
                     cursorColor: Colors.white,
                     cursorWidth: 2,
                     maxLines: null,
