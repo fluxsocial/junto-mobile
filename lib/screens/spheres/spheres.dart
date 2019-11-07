@@ -159,7 +159,7 @@ class JuntoSpheresState extends State<JuntoSpheres> with ListDistinct {
           photo: '',
           principles: '',
           sphereHandle: 'uxdesignn'),
-    ),    
+    ),
     Group(
       address: '',
       createdAt: DateTime.now(),
@@ -172,7 +172,7 @@ class JuntoSpheresState extends State<JuntoSpheres> with ListDistinct {
           photo: '',
           principles: '',
           sphereHandle: 'chessnyc'),
-    ),    
+    ),
   ];
 
   @override
@@ -194,9 +194,9 @@ class JuntoSpheresState extends State<JuntoSpheres> with ListDistinct {
           SpherePreview(group: _spheres[4]),
           SpherePreview(group: _spheres[5]),
           SpherePreview(group: _spheres[6]),
-          SpherePreview(group: _spheres[7]),          
+          SpherePreview(group: _spheres[7]),
 
-          SpherePreview(group: _spheres[8]),          
+          SpherePreview(group: _spheres[8]),
           // FutureBuilder<UserGroupsResponse>(
           //   future: getUserGroups(),
           //   builder: (BuildContext context,
@@ -608,7 +608,7 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   const Text(
-                    'New Principle',
+                    'New principle x',
                     style: TextStyle(
                         fontSize: 15,
                         color: Color(0xff999999),
@@ -623,11 +623,6 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                 ],
               )),
         ),
-        GestureDetector(
-            onTap: () {
-              print(principles);
-            },
-            child: const Text('test'))
       ],
     );
   }
@@ -753,7 +748,7 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                 _searchMembersIndex = 0;
               },
               child: Text(
-                'CONNECTIONS',
+                'Connections',
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
@@ -770,7 +765,7 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                 _searchMembersIndex = 1;
               },
               child: Text(
-                'SUBSCRIPTIONS',
+                'Subscriptions',
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
@@ -787,7 +782,7 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                 _searchMembersIndex = 2;
               },
               child: Text(
-                'ALL',
+                'Al',
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w700,

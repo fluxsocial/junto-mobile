@@ -181,7 +181,7 @@ class JuntoDenState extends State<JuntoDen> {
                     ),
                     const SizedBox(height: 15),
                     Container(
-                      child: Text('Founder @junto; student of Qigong',
+                      child: Text("founder @junto; student of life",
                           style: Theme.of(context).textTheme.caption),
                     ),
                   ],

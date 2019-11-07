@@ -186,7 +186,8 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                         alignment: Alignment.centerLeft,
                         width: 50,
                         child: Icon(
-                          Icons.keyboard_arrow_left,
+                          CustomIcons.back,
+                          size: 14,
                           color: Theme.of(context).primaryColorDark,
                         ),
                       ),
@@ -211,7 +212,7 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                         width: 50,
                         child: Text(
                           'next',
-                          style: TextStyle(fontWeight: FontWeight.w500),
+                          style: Theme.of(context).textTheme.caption,
                         ),
                       ),
                     )
@@ -244,15 +245,6 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
     return ListView(
       children: <Widget>[
         const SizedBox(height: 25),
-        // Container(
-        //   height: 200,
-        //   decoration: BoxDecoration(
-        //     color: Color(0xfff2f2f2),
-        //   ),
-        //   alignment: Alignment.center,
-        //   child: Text('add a cover photo'),
-        // ),
-        // const SizedBox(height: 15),
         Container(
           width: MediaQuery.of(context).size.width,
           child: TextField(
@@ -375,9 +367,9 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
+          bottom: BorderSide(color: Theme.of(context).dividerColor, width: 1),
         ),
       ),
       child: Row(
@@ -393,9 +385,10 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
           const SizedBox(width: 15),
           Container(
             height: 17,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               border: Border(
-                right: BorderSide(color: Color(0xffeeeeee), width: 2),
+                right:
+                    BorderSide(color: Theme.of(context).dividerColor, width: 2),
               ),
             ),
           ),
@@ -415,22 +408,16 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                       bool isFocused,
                     }) =>
                         null,
-                    decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.all(0),
-                        border: InputBorder.none,
-                        hintText: 'Principle title',
-                        hintStyle: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xff999999),
-                        )),
-                    cursorColor: const Color(0xff333333),
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.all(0),
+                      border: InputBorder.none,
+                      hintText: 'Principle title',
+                      hintStyle: Theme.of(context).textTheme.caption,
+                    ),
+                    cursorColor: Theme.of(context).primaryColorDark,
                     cursorWidth: 2,
                     maxLines: 1,
-                    style: const TextStyle(
-                        color: Color(0xff333333),
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700),
+                    style: Theme.of(context).textTheme.caption,
                     maxLength: 80,
                     textInputAction: TextInputAction.done,
                   ),
@@ -447,22 +434,15 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                       bool isFocused,
                     }) =>
                         null,
-                    decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.all(0),
+                    decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.all(0),
                         border: InputBorder.none,
                         hintText: 'Describe this principle',
-                        hintStyle: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xff999999),
-                        )),
-                    cursorColor: const Color(0xff333333),
+                        hintStyle: Theme.of(context).textTheme.caption),
+                    cursorColor: Theme.of(context).primaryColorDark,
                     cursorWidth: 2,
                     maxLines: 1,
-                    style: const TextStyle(
-                        color: Color(0xff333333),
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700),
+                    style: Theme.of(context).textTheme.caption,
                     maxLength: 80,
                     textInputAction: TextInputAction.done,
                   ),
@@ -523,35 +503,28 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
           },
           child: Container(
               padding: const EdgeInsets.symmetric(vertical: 15),
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 border: Border(
-                  bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
+                  bottom: BorderSide(
+                      color: Theme.of(context).dividerColor, width: 1),
                 ),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  const Text(
+                  Text(
                     'New Principle',
-                    style: TextStyle(
-                        fontSize: 15,
-                        color: Color(0xff999999),
-                        fontWeight: FontWeight.w700),
+                    style: Theme.of(context).textTheme.caption,
                   ),
                   const SizedBox(width: 5),
                   Icon(
                     Icons.add,
                     size: 17,
-                    color: const Color(0xff999999),
+                    color: Theme.of(context).primaryColorLight,
                   )
                 ],
               )),
         ),
-        GestureDetector(
-            onTap: () {
-              print(principles);
-            },
-            child: const Text('test'))
       ],
     );
   }
@@ -561,10 +534,10 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
-                color: Color(0xffeeeeee),
+                color: Theme.of(context).dividerColor,
                 width: .75,
               ),
             ),
@@ -620,13 +593,13 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                 _searchMembersIndex = 0;
               },
               child: Text(
-                'CONNECTIONS',
+                'Connections',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 15,
                   fontWeight: FontWeight.w700,
                   color: _searchMembersIndex == 0
-                      ? const Color(0xff333333)
-                      : const Color(0xff999999),
+                      ? Theme.of(context).primaryColorDark
+                      : Theme.of(context).primaryColorLight,
                 ),
               ),
             ),
@@ -637,13 +610,13 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                 _searchMembersIndex = 1;
               },
               child: Text(
-                'SUBSCRIPTIONS',
+                'Subscriptions',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 15,
                   fontWeight: FontWeight.w700,
                   color: _searchMembersIndex == 1
-                      ? const Color(0xff333333)
-                      : const Color(0xff999999),
+                      ? Theme.of(context).primaryColorDark
+                      : Theme.of(context).primaryColorLight,
                 ),
               ),
             ),
@@ -654,13 +627,13 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                 _searchMembersIndex = 2;
               },
               child: Text(
-                'ALL',
+                'All',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 15,
                   fontWeight: FontWeight.w700,
                   color: _searchMembersIndex == 2
-                      ? const Color(0xff333333)
-                      : const Color(0xff999999),
+                      ? Theme.of(context).primaryColorDark
+                      : Theme.of(context).primaryColorLight,
                 ),
               ),
             )
@@ -705,10 +678,10 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
-                color: Color(0xffeeeeee),
+                color: Theme.of(context).dividerColor,
                 width: .75,
               ),
             ),
@@ -764,13 +737,13 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                 _searchFacilitatorsIndex = 0;
               },
               child: Text(
-                'CONNECTIONS',
+                'Connections',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 15,
                   fontWeight: FontWeight.w700,
                   color: _searchFacilitatorsIndex == 0
-                      ? const Color(0xff333333)
-                      : const Color(0xff999999),
+                      ? Theme.of(context).primaryColorDark
+                      : Theme.of(context).primaryColorLight,
                 ),
               ),
             ),
@@ -781,13 +754,13 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                 _searchFacilitatorsIndex = 1;
               },
               child: Text(
-                'SUBSCRIPTIONS',
+                'Subscriptions',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 15,
                   fontWeight: FontWeight.w700,
                   color: _searchFacilitatorsIndex == 1
-                      ? const Color(0xff333333)
-                      : const Color(0xff999999),
+                      ? Theme.of(context).primaryColorDark
+                      : Theme.of(context).primaryColorLight,
                 ),
               ),
             ),
@@ -798,13 +771,13 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                 _searchFacilitatorsIndex = 2;
               },
               child: Text(
-                'ALL',
+                'All',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 15,
                   fontWeight: FontWeight.w700,
                   color: _searchFacilitatorsIndex == 2
-                      ? const Color(0xff333333)
-                      : const Color(0xff999999),
+                      ? Theme.of(context).primaryColorDark
+                      : Theme.of(context).primaryColorLight,
                 ),
               ),
             )
@@ -835,9 +808,10 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
       children: <Widget>[
         const SizedBox(height: 10),
         Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             border: Border(
-              bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
+              bottom:
+                  BorderSide(color: Theme.of(context).dividerColor, width: 1),
             ),
           ),
           padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
@@ -867,13 +841,13 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                   height: 22,
                   width: 22,
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [Colors.white, Colors.white],
-                        begin: Alignment.bottomLeft,
-                        end: Alignment.topRight),
+                    gradient: LinearGradient(colors: [
+                      Theme.of(context).dividerColor,
+                      Theme.of(context).dividerColor
+                    ], begin: Alignment.bottomLeft, end: Alignment.topRight),
                     // color: widget.isSelected ? JuntoPalette.juntoPrimary : null,
                     border: Border.all(
-                      color: const Color(0xffeeeeee),
+                      color: Theme.of(context).dividerColor,
                       width: 2,
                     ),
                     borderRadius: BorderRadius.circular(25),
@@ -884,9 +858,10 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
           ),
         ),
         Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             border: Border(
-              bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
+              bottom:
+                  BorderSide(color: Theme.of(context).dividerColor, width: 1),
             ),
           ),
           padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
@@ -916,13 +891,13 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                   height: 22,
                   width: 22,
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [Colors.white, Colors.white],
-                        begin: Alignment.bottomLeft,
-                        end: Alignment.topRight),
+                    gradient: LinearGradient(colors: [
+                      Theme.of(context).dividerColor,
+                      Theme.of(context).dividerColor
+                    ], begin: Alignment.bottomLeft, end: Alignment.topRight),
                     // color: widget.isSelected ? JuntoPalette.juntoPrimary : null,
                     border: Border.all(
-                      color: const Color(0xffeeeeee),
+                      color: Theme.of(context).dividerColor,
                       width: 2,
                     ),
                     borderRadius: BorderRadius.circular(25),
@@ -933,9 +908,10 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
           ),
         ),
         Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             border: Border(
-              bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
+              bottom:
+                  BorderSide(color: Theme.of(context).dividerColor, width: 1),
             ),
           ),
           padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
@@ -965,13 +941,13 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                   height: 22,
                   width: 22,
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [Colors.white, Colors.white],
-                        begin: Alignment.bottomLeft,
-                        end: Alignment.topRight),
+                    gradient: LinearGradient(colors: [
+                      Theme.of(context).dividerColor,
+                      Theme.of(context).dividerColor
+                    ], begin: Alignment.bottomLeft, end: Alignment.topRight),
                     // color: widget.isSelected ? JuntoPalette.juntoPrimary : null,
                     border: Border.all(
-                      color: const Color(0xffeeeeee),
+                      color: Theme.of(context).dividerColor,
                       width: 2,
                     ),
                     borderRadius: BorderRadius.circular(25),
