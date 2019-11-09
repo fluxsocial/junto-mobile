@@ -188,7 +188,7 @@ class UserData {
       pack: CentralizedPack.fromMap(map['pack']),
       user: UserProfile.fromMap(map['user']),
       userPerspective: CentralizedPerspective.fromMap(
-        map['userPerspective'],
+        map['user_perspective'],
       ),
     );
   }
