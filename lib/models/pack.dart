@@ -126,7 +126,8 @@ class CentralizedPack {
       address: map['address'] as String,
       name: map['name'] as String,
       creator: map['creator'] as String,
-      createdAt: DateTime.parse(map['created_at']),
+      //FIXME(Nash): Speak to Josh regarding date format
+      createdAt: null, // DateTime.tryParse(map['created_at']),
       privacy: map['privacy'] as String,
       isDefault: map['is_default'] as bool,
     );
@@ -144,7 +145,7 @@ class CentralizedPack {
       'address': address,
       'name': name,
       'creator': creator,
-      'created_at': createdAt.toIso8601String(),
+      'created_at': createdAt?.toIso8601String(),
       'privacy': privacy,
       'is_default': isDefault,
     };

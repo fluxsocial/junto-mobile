@@ -56,7 +56,7 @@ class CreateActionsState extends State<CreateActions> {
       context: <String, dynamic>{
         'Group': <String, dynamic>{'address': widget.address}
       },
-      expressionData: widget.expression.toMap(),
+      expressionData: widget.expression.toJson(),
     );
     JuntoOverlay.showLoader(context);
     try {

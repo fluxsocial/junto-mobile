@@ -98,7 +98,8 @@ class CentralizedPerspective {
       address: map['address'] as String,
       name: map['name'] as String,
       creator: map['creator'] as String,
-      createdAt: DateTime.parse(map['created_at']),
+      //FIXME(Nash): Same as user model
+      createdAt: null, // DateTime.tryParse(map['created_at']),
       isDefault: map['is_default'] as bool,
       users: _parseUsers(map['users']),
     );
@@ -125,7 +126,7 @@ class CentralizedPerspective {
       'address': address,
       'name': name,
       'creator': creator,
-      'createdAt': createdAt.toIso8601String(),
+      'createdAt': createdAt?.toIso8601String(),
       'isDefault': isDefault,
     };
   }
