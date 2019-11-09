@@ -217,7 +217,7 @@ class CentralizedExpressionResponse {
     return <String, dynamic>{
       'address': address,
       'type': type,
-      'expression_data': expressionData.toMap(),
+      'expression_data': expressionData.toJson(),
       'created_at': createdAt.toIso8601String(),
       'comments': numberComments,
       'resonations': numberResonations,
@@ -287,7 +287,7 @@ class Comment {
   Map<String, dynamic> toMap() => <String, dynamic>{
         'address': address,
         'type': type,
-        'expression_data': expressionData.toMap(),
+        'expression_data': expressionData.toJson(),
         'creator': creator.toMap(),
         'comments': comments,
         'resonations': resonations,
