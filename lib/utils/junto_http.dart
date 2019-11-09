@@ -89,7 +89,7 @@ class JuntoHttp {
   Future<http.Response> postWithoutEncoding(
     String resource, {
     Map<String, String> headers,
-    Map<String, dynamic> body,
+    dynamic body,
   }) async {
     return httpClient.post(
       _encodeUrl(resource),

@@ -38,7 +38,7 @@ class JuntoAppState extends State<JuntoApp> {
         ),
         Provider<SearchProvider>.value(value: backend.searchProvider),
         Provider<AuthRepo>.value(value: backend.authRepo),
-        Provider<UserService>.value(value: backend.userProvider),
+        Provider<UserRepo>.value(value: backend.userRepo),
         Provider<CollectiveService>.value(value: backend.collectiveProvider),
         Provider<GroupRepo>.value(value: backend.groupsProvider),
         Provider<ExpressionRepo>.value(value: backend.expressionRepo),

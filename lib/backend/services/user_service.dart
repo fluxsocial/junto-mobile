@@ -35,9 +35,21 @@ class UserServiceCentralized implements UserService {
   }
 
   @override
-  Future<String> addUserToPerspective(
-      String perspectiveAddress, String userAddress) async {
-    throw UnimplementedError('Not implemented in centralized API');
+  Future<UserProfile> addUserToPerspective(
+      String perspectiveAddress, List<String> userAddress) async {
+    final List<dynamic> users = <dynamic>[];
+    userAddress.map(
+      (String uid) => users.add(
+        <String, dynamic>{'user_address': uid},
+      ),
+    );
+    final http.Response _serverResponse = await client.postWithoutEncoding(
+      '/perspectives/$perspectiveAddress/users',
+      body: users,
+    );
+    final Map<String, dynamic> _body =
+        JuntoHttp.handleResponse(_serverResponse);
+    return UserProfile.fromMap(_body);
   }
 
   @override

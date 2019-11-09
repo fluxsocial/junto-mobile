@@ -15,14 +15,14 @@ class JuntoPacks extends StatefulWidget {
 }
 
 class JuntoPacksState extends State<JuntoPacks> with ListDistinct {
-  UserService _userProvider;
+  UserRepo _userProvider;
   final AsyncMemoizer<UserGroupsResponse> _memoizer =
       AsyncMemoizer<UserGroupsResponse>();
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _userProvider = Provider.of<UserService>(context);
+    _userProvider = Provider.of<UserRepo>(context);
   }
 
   Future<UserGroupsResponse> getUserPacks() async {

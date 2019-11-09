@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/widgets/fabs/filter_channel_fab.dart';
 import 'package:junto_beta_mobile/widgets/fabs/create_sphere_fab.dart';
@@ -60,7 +60,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   }
 
   Future<void> _retrieveUserInfo() async {
-    final UserService _userProvider = Provider.of<UserService>(context);
+    final UserRepo _userProvider = Provider.of<UserRepo>(context);
     try {
       final UserProfile _profile = await _userProvider.readLocalUser();
       setState(() {
