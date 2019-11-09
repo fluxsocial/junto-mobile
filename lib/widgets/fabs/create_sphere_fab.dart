@@ -129,7 +129,7 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
   }
 
   void _createSphere() async {
-    final UserProfile _profile =
+    final UserData _profile =
         await Provider.of<UserService>(context).readLocalUser();
     final sphereName = _nameController.value.text;
     final sphereHandle = _handleController.value.text;
@@ -138,7 +138,7 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
       name: sphereName,
       description: sphereDescription,
       facilitators: <String>[
-        _profile.address,
+        _profile.user.address,
       ],
       photo: '',
       members: [],

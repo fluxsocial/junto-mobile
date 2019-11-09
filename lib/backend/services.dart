@@ -13,7 +13,7 @@ abstract class AuthenticationService {
   /// Authenticates a registered user. Returns the [UserProfile]  for the
   /// given user. Their cookie is stored locally on device and is used for
   /// all future request.
-  Future<void> loginUser(UserAuthLoginDetails details);
+  Future<UserData> loginUser(UserAuthLoginDetails details);
 
   /// Logs out a user and removes their auth token from the device.
   Future<void> logoutUser();
@@ -139,7 +139,7 @@ abstract class UserService {
   );
 
   /// Reads the cached user from the device.
-  Future<UserProfile> readLocalUser();
+  Future<UserData> readLocalUser();
 
   /// Returns a list of perspectives owned by the given user
   Future<List<CentralizedPerspective>> userPerspectives(String userAddress);

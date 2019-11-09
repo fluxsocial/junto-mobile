@@ -15,7 +15,7 @@ class AuthenticationServiceCentralized implements AuthenticationService {
   final JuntoHttp client;
 
   @override
-  Future<void> loginUser(UserAuthLoginDetails details) async {
+  Future<UserData> loginUser(UserAuthLoginDetails details) async {
     final http.Response response = await client.post(
       '/auth',
       body: <String, String>{
@@ -29,6 +29,7 @@ class AuthenticationServiceCentralized implements AuthenticationService {
           Cookie.fromSetCookieValue(response.headers['set-cookie']);
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('auth', responseCookie.value);
+      return UserData.fromMap(JuntoHttp.handleResponse(response));
     } else {
       final Map<String, dynamic> errorResponse =
           JuntoHttp.handleResponse(response);
@@ -49,8 +50,7 @@ class AuthenticationServiceCentralized implements AuthenticationService {
       'email': details.email,
       'password': details.password,
       'confirm_password': details.password,
-      'first_name': details.firstName,
-      'last_name': details.lastName,
+      'name': '${details.firstName} ${details.lastName}',
       'bio': details.bio,
       'username': details.username,
       'profile_picture': details.profileImage ?? ''

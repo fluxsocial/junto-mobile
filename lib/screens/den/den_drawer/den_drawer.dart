@@ -29,10 +29,10 @@ class _DenDrawerState extends State<DenDrawer> {
   Future<void> _retrieveUserInfo() async {
     final UserRepo _userProvider = Provider.of<UserRepo>(context);
     try {
-      final UserProfile _profile = await _userProvider.readLocalUser();
+      final UserData _profile = await _userProvider.readLocalUser();
       if (mounted) {
         setState(() {
-          profile = _profile;
+          profile = _profile.user;
         });
       }
     } catch (error) {

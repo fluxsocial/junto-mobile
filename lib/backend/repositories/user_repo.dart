@@ -42,7 +42,7 @@ class UserRepo {
     return _userService.getUsersExpressions(userAddress);
   }
 
-  Future<UserProfile> readLocalUser() {
+  Future<UserData> readLocalUser() {
     return _userService.readLocalUser();
   }
 
