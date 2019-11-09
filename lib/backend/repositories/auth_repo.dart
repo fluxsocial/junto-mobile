@@ -37,25 +37,24 @@ class AuthRepo {
   /// Authenticates a registered user. Returns the [UserProfile]  for the
   /// given user. Their cookie is stored locally on device and is used for
   /// all future request.
-  Future<UserProfile> loginUser(UserAuthLoginDetails details) async {
+  Future<UserData> loginUser(UserAuthLoginDetails details) async {
     try {
-      await _authService.loginUser(details);
-      final UserProfile profile =
-          await _userService.queryUser(details.email, QueryType.email);
+      final UserData _user = await _authService.loginUser(details);
+
       final LocalStorage _storage = LocalStorage('user-details');
       final bool ready = await _storage.ready;
       if (ready) {
         _storage.setItem(
           'data',
           json.encode(
-            profile.toMap(),
+            _user.toMap(),
           ),
         );
       }
       _isLoggedIn = true;
       await SharedPreferences.getInstance()
         ..setBool('isLoggedIn', true);
-      return profile;
+      return _user;
     } catch (error) {
       rethrow;
     }

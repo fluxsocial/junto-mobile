@@ -62,9 +62,9 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   Future<void> _retrieveUserInfo() async {
     final UserRepo _userProvider = Provider.of<UserRepo>(context);
     try {
-      final UserProfile _profile = await _userProvider.readLocalUser();
+      final UserData _profile = await _userProvider.readLocalUser();
       setState(() {
-        profile = _profile;
+        profile = _profile.user;
       });
     } catch (error) {
       debugPrint('Error occured in _retrieveUserInfo: $error');

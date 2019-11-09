@@ -26,9 +26,9 @@ class JuntoPacksState extends State<JuntoPacks> with ListDistinct {
   }
 
   Future<UserGroupsResponse> getUserPacks() async {
-    final UserProfile _profile = await _userProvider.readLocalUser();
+    final UserData _profile = await _userProvider.readLocalUser();
     return _memoizer.runOnce(
-      () async => _userProvider.getUserGroups(_profile.address),
+      () async => _userProvider.getUserGroups(_profile.user.address),
     );
   }
 
