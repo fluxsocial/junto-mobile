@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/utils/utils.dart';
 
 class Perspective {
   const Perspective({@required this.name, this.members});
@@ -98,8 +99,7 @@ class CentralizedPerspective {
       address: map['address'] as String,
       name: map['name'] as String,
       creator: map['creator'] as String,
-      //FIXME(Nash): Same as user model
-      createdAt: null, // DateTime.tryParse(map['created_at']),
+      createdAt: RFC3339.parseRfc3339(map['created_at']),
       isDefault: map['is_default'] as bool,
       users: _parseUsers(map['users']),
     );

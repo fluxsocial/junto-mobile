@@ -16,7 +16,7 @@ class AuthenticationServiceCentralized implements AuthenticationService {
 
   @override
   Future<UserData> loginUser(UserAuthLoginDetails details) async {
-    final http.Response response = await client.post(
+    final http.Response response = await client.postWithoutEncoding(
       '/auth',
       body: <String, String>{
         'email': details.email,

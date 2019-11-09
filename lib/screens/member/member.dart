@@ -6,7 +6,6 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
-//FIXME: Build method and bottom sheet should be broken up
 class JuntoMember extends StatefulWidget {
   const JuntoMember({
     Key key,
