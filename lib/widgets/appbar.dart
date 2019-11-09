@@ -1,26 +1,30 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/backend/services.dart';
-import 'package:junto_beta_mobile/screens/collective/perspectives'
-    '/create_perspective/create_perspective.dart' show SelectedUsers;
-import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
+import 'package:junto_beta_mobile/backend/services.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives'
+    '/create_perspective/create_perspective.dart' show SelectedUsers;
 import 'package:junto_beta_mobile/utils/utils.dart';
-import 'package:junto_beta_mobile/widgets/user_preview.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 
 // Junto app bar used throughout the main screens. Rendered in JuntoTemplate.
 class JuntoAppBar extends StatefulWidget implements PreferredSizeWidget {
   const JuntoAppBar({
     Key key,
+    this.appContext,
+    this.openPerspectivesDrawer,
     @required this.juntoAppBarTitle,
   }) : super(key: key);
 
+  final String appContext;
+  final Function openPerspectivesDrawer;
   final String juntoAppBarTitle;
 
   @override
@@ -70,14 +74,13 @@ class _JuntoAppBarState extends State<JuntoAppBar>
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.white,
       automaticallyImplyLeading: false,
       actions: <Widget>[Container()],
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(.75),
         child: Container(
           height: .75,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
@@ -86,8 +89,8 @@ class _JuntoAppBarState extends State<JuntoAppBar>
                   0.9
                 ],
                 colors: <Color>[
-                  JuntoPalette.juntoSecondary,
-                  JuntoPalette.juntoPrimary
+                  Theme.of(context).colorScheme.secondary,
+                  Theme.of(context).colorScheme.primary,
                 ]),
           ),
         ),
@@ -96,119 +99,74 @@ class _JuntoAppBarState extends State<JuntoAppBar>
       elevation: 0,
       titleSpacing: 0.0,
       title: Container(
-        padding: const EdgeInsets.symmetric(
-            horizontal: JuntoStyles.horizontalPadding),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Builder(
               builder: (BuildContext context) {
-                return Row(
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: () {
-                        Scaffold.of(context).openDrawer();
-                      },
-                      child: Image.asset('assets/images/junto-mobile__logo.png',
-                          height: 22.0, width: 22.0),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        showModalBottomSheet(
-                          isScrollControlled: true,
-                          context: context,
-                          builder: (BuildContext context) => Container(
-                                color: const Color(0xff737373),
-                                child: Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * .9,
-                                  padding: const EdgeInsets.all(10),
-                                  decoration: const BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(10),
-                                      topRight: Radius.circular(10),
-                                    ),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      const SizedBox(height: 10),
-                                      Row(
-                                        children: const <Widget>[
-                                          Text(
-                                            'Edit Perspective',
-                                            style: TextStyle(
-                                              fontSize: 17,
-                                              fontWeight: FontWeight.w700,
-                                              color: Color(0xff333333),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 10),
-                                      const Text(
-                                        'This modal will enable you to edit your'
-                                        ' perspective. This includes '
-                                        'adding/removing members, changing'
-                                        ' the name, deleting the perspective,'
-                                        ' and so on. You will also be able to '
-                                        'view the list of members, etc.',
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                        );
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.only(left: 7.5),
-                        child: Text(
+                return GestureDetector(
+                  onTap: () {
+                    // Scaffold.of(context).openDrawer();
+                    if (widget.appContext == 'collective') {
+                      widget.openPerspectivesDrawer();
+                    } else {
+                      return;
+                    }
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.only(left: 10),
+                    color: Colors.transparent,
+                    height: 48,
+                    child: Row(
+                      children: <Widget>[
+                        Image.asset('assets/images/junto-mobile__logo.png',
+                            height: 22.0, width: 22.0),
+                        const SizedBox(width: 7.5),
+                        Text(
                           widget.juntoAppBarTitle,
-                          style: JuntoStyles.appbarTitle,
+                          style: Theme.of(context).appBarTheme.textTheme.body1,
                         ),
-                      ),
-                    )
-                  ],
+                        const SizedBox(width: 2.5),
+                        widget.appContext == 'collective'
+                            ? Icon(
+                                Icons.keyboard_arrow_down,
+                                size: 17,
+                                color: Theme.of(context).primaryColorLight,
+                              )
+                            : const SizedBox()
+                      ],
+                    ),
+                  ),
                 );
               },
             ),
             Row(
               children: <Widget>[
-                FlatButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute<dynamic>(
-                        builder: (BuildContext context) => GlobalSearch(),
-                      ),
+                GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet(
+                      isScrollControlled: true,
+                      context: context,
+                      builder: (BuildContext context) {
+                        return ListenableProvider<
+                            ValueNotifier<SelectedUsers>>.value(
+                          value: _users,
+                          child: _SearchBottomSheet(
+                            results: queriedUsers,
+                            onProfileSelected: _onUserSelected,
+                            onTextChange: _onTextChange,
+                          ),
+                        );
+                      },
                     );
                   },
-                  child: GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet(
-                        isScrollControlled: true,
-                        context: context,
-                        builder: (BuildContext context) {
-                          return ListenableProvider<
-                              ValueNotifier<SelectedUsers>>.value(
-                            value: _users,
-                            child: _SearchBottomSheet(
-                              results: queriedUsers,
-                              onProfileSelected: _onUserSelected,
-                              onTextChange: _onTextChange,
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    child: Container(
-                      child: Icon(
-                        Icons.search,
-                        color: JuntoPalette.juntoSleek,
-                        size: JuntoStyles.appbarIcon,
-                      ),
+                  child: Container(
+                    width: 42,
+                    padding: const EdgeInsets.only(right: 10),
+                    alignment: Alignment.centerRight,
+                    color: Colors.transparent,
+                    child: Icon(
+                      Icons.search,
                     ),
                   ),
                 ),
@@ -218,50 +176,51 @@ class _JuntoAppBarState extends State<JuntoAppBar>
                       isScrollControlled: true,
                       context: context,
                       builder: (BuildContext context) => Container(
-                            color: const Color(0xff737373),
-                            child: Container(
-                              height: MediaQuery.of(context).size.height * .9,
-                              padding: const EdgeInsets.all(10),
-                              decoration: const BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  topRight: Radius.circular(10),
-                                ),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  const SizedBox(height: 10),
-                                  Row(
-                                    children: const <Widget>[
-                                      Text(
-                                        'Notifications',
-                                        style: TextStyle(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w700,
-                                          color: Color(0xff333333),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 10),
-                                  const Text('building this last...')
-                                ],
-                              ),
+                        color: Colors.transparent,
+                        child: Container(
+                          height: MediaQuery.of(context).size.height * .9,
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.background,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10),
                             ),
                           ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              const SizedBox(height: 10),
+                              Row(
+                                children: <Widget>[
+                                  Text(
+                                    'Notifications',
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w700,
+                                      color: Theme.of(context).primaryColorDark,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              const Text('building this last...')
+                            ],
+                          ),
+                        ),
+                      ),
                     );
                   },
                   child: Container(
-                    margin: const EdgeInsets.only(left: 7.5),
+                    width: 42,
+                    color: Colors.transparent,
+                    alignment: Alignment.centerRight,
+                    padding: const EdgeInsets.only(right: 10),
                     child: const Icon(
                       CustomIcons.moon,
-                      color: JuntoPalette.juntoSleek,
-                      size: JuntoStyles.appbarIcon,
                     ),
                   ),
-                )
+                ),
               ],
             )
           ],
@@ -294,18 +253,92 @@ class _SearchBottomSheet extends StatefulWidget {
 }
 
 class __SearchBottomSheetState extends State<_SearchBottomSheet> {
+  PageController pageController = PageController(
+    initialPage: 0,
+  );
+
+  int currentIndex;
+
+  bool searchChannelsPage = true;
+  bool searchMembersPage = false;
+  bool searchSpheresPage = false;
+
+  FocusNode textFieldFocusNode = FocusNode();
+
+  List<UserProfile> profiles = <UserProfile>[
+    UserProfile(
+        firstName: 'Eric Yang',
+        username: 'sunyata',
+        profilePicture: 'assets/images/junto-mobile__eric.png'),
+    UserProfile(
+        firstName: 'Riley Wagner',
+        username: 'wags',
+        profilePicture: 'assets/images/junto-mobile__riley.png'),
+    UserProfile(
+        firstName: 'Dora Czovek',
+        username: 'wingedmessenger',
+        profilePicture: 'assets/images/junto-mobile__dora.png'),
+    UserProfile(firstName: 'Urk', username: 'sunyata', profilePicture: ''),
+  ];
+
+  List<Sphere> spheres = <Sphere>[
+    const Sphere(
+      sphereTitle: 'Ecstatic Dance',
+      sphereMembers: '12000',
+      sphereImage: 'assets/images/junto-mobile__ecstatic.png',
+      sphereHandle: 'ecstaticdance',
+      sphereDescription:
+          'Ecstatic dance is a space for movement, rhythm, non-judgment, and '
+          'expression in its purest form. Come groove out with us!',
+    ),
+    const Sphere(
+      sphereTitle: 'Flutter NYC',
+      sphereMembers: '690',
+      sphereImage: 'assets/images/junto-mobile__flutter.png',
+      sphereHandle: 'flutternyc',
+      sphereDescription:
+          'Connect with other members in the Flutter NYC community and learn'
+          ' about this amazing technology!',
+    ),
+    const Sphere(
+      sphereTitle: 'Zen',
+      sphereMembers: '77',
+      sphereImage: 'assets/images/junto-mobile__stillmind.png',
+      sphereHandle: 'zen',
+      sphereDescription:
+          '"To a mind that is still, the whole universe surrenders"',
+    ),
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+
+    setState(() {
+      currentIndex = 0;
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    pageController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    //ignore:unused_local_variable
     final ValueNotifier<SelectedUsers> _selectedUsers =
         Provider.of<ValueNotifier<SelectedUsers>>(context);
 
     return Container(
-      color: const Color(0xff737373),
+      color: Colors.transparent,
       child: Container(
         height: MediaQuery.of(context).size.height * .9,
         padding: const EdgeInsets.all(10),
-        decoration: const BoxDecoration(
-          color: Colors.white,
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.background,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(10),
             topRight: Radius.circular(10),
@@ -315,95 +348,135 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             const SizedBox(height: 10),
-            Row(
-              children: const <Widget>[
-                Text(
-                  'Members',
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xff333333),
+            Container(
+              padding: EdgeInsets.only(bottom: 5),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: Theme.of(context).dividerColor,
+                    width: .75,
                   ),
                 ),
-                SizedBox(width: 25),
-                Text(
-                  'Spheres',
-                  style: TextStyle(
-                      fontSize: 17,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Icon(
+                    Icons.search,
+                    size: 20,
+                    color: Theme.of(context).primaryColorLight,
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Transform.translate(
+                      offset: Offset(0.0, 2),
+                      child: TextField(
+                        focusNode: textFieldFocusNode,
+                        buildCounter: (
+                          BuildContext context, {
+                          int currentLength,
+                          int maxLength,
+                          bool isFocused,
+                        }) =>
+                            null,
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.all(0.0),
+                          border: InputBorder.none,
+                          hintStyle: TextStyle(
+                              color: Theme.of(context).primaryColorLight,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        cursorColor: Theme.of(context).primaryColorDark,
+                        cursorWidth: 1,
+                        maxLines: null,
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColorDark,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500),
+                        maxLength: 80,
+                        textInputAction: TextInputAction.done,
+                        onChanged: widget.onTextChange,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            Row(
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () {
+                    pageController.jumpToPage(0);
+                  },
+                  child: Text(
+                    'Members',
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700,
+                        color: currentIndex == 0
+                            ? Theme.of(context).primaryColorDark
+                            : Theme.of(context).primaryColorLight),
+                  ),
+                ),
+                const SizedBox(width: 20),
+                GestureDetector(
+                  onTap: () {
+                    pageController.jumpToPage(1);
+                  },
+                  child: Text(
+                    'Spheres',
+                    style: TextStyle(
+                      fontSize: 15,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xff999999)),
+                      color: currentIndex == 1
+                          ? Theme.of(context).primaryColorDark
+                          : Theme.of(context).primaryColorLight,
+                    ),
+                  ),
                 )
               ],
             ),
             const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  width: MediaQuery.of(context).size.width - 20,
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: Color(0xffeeeeee),
-                        width: .75,
-                      ),
-                    ),
+            Expanded(
+              child: PageView(
+                controller: pageController,
+                onPageChanged: (int index) {
+                  setState(() {
+                    currentIndex = index;
+                  });
+                },
+                children: <Widget>[
+                  // search members
+                  Column(
+                    children: <Widget>[
+                      Expanded(
+                        child: ListView(children: <Widget>[
+                          MemberPreview(profile: profiles[0]),
+                          MemberPreview(profile: profiles[1]),
+                          MemberPreview(profile: profiles[2]),
+                          MemberPreview(profile: profiles[3]),
+                        ]),
+                      )
+                    ],
                   ),
-                  child: TextField(
-                    buildCounter: (
-                      BuildContext context, {
-                      int currentLength,
-                      int maxLength,
-                      bool isFocused,
-                    }) =>
-                        null,
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'Search members',
-                      hintStyle: TextStyle(
-                          color: Color(0xff999999),
-                          fontSize: 17,
-                          fontWeight: FontWeight.w500),
-                    ),
-                    cursorColor: const Color(0xff333333),
-                    cursorWidth: 2,
-                    maxLines: null,
-                    style: const TextStyle(
-                        color: Color(0xff333333),
-                        fontSize: 17,
-                        fontWeight: FontWeight.w500),
-                    maxLength: 80,
-                    textInputAction: TextInputAction.done,
-                    onChanged: widget.onTextChange,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            ValueListenableBuilder<List<UserProfile>>(
-              valueListenable: widget.results,
-              builder: (BuildContext context, List<UserProfile> query, _) {
-                return ListView.builder(
-                  itemCount: query.length,
-                  shrinkWrap: true,
-                  itemBuilder: (BuildContext context, int index) {
-                    final UserProfile _user = query[index];
-                    return ValueListenableBuilder<SelectedUsers>(
-                      valueListenable: _selectedUsers,
-                      builder: (BuildContext context,
-                          SelectedUsers selectedUser, _) {
-                        return UserPreview(
-                          onTap: widget.onProfileSelected,
-                          userProfile: _user,
-                          isSelected: selectedUser.selection.contains(_user),
-                        );
-                      },
-                    );
-                  },
-                );
-              },
-            ),
+                  // search spheres
+                  Column(
+                    children: <Widget>[
+                      Expanded(
+                          child: ListView(
+                        children: <Widget>[
+                          // SpherePreviewSearch(group: spheres[0]),
+                          // SpherePreviewSearch(group: spheres[1]),
+                          // SpherePreviewSearch(group: spheres[2])
+                        ],
+                      ))
+                    ],
+                  )
+                ],
+              ),
+            )
           ],
         ),
       ),

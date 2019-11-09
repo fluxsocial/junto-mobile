@@ -1,10 +1,9 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 @visibleForTesting
-class MockSphere with ChangeNotifier implements SpheresProvider {
+class MockSphere with ChangeNotifier implements GroupService {
   final List<Sphere> _spheres = Sphere.fetchAll();
 
   @override
@@ -38,6 +37,12 @@ class MockSphere with ChangeNotifier implements SpheresProvider {
 
   @override
   Future<List<Users>> getGroupMembers(String groupAddress) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<CentralizedExpressionResponse>> getGroupExpressions(
+      ExpressionQueryParams params) {
     throw UnimplementedError();
   }
 }

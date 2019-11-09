@@ -5,10 +5,11 @@ class PerspectiveMemberPreview extends StatelessWidget {
     Key key,
     @required this.name,
     @required this.username,
+    @required this.onTap,
+    @required this.onLongPress,
     this.padding = const EdgeInsets.symmetric(vertical: 4.0),
     this.showIndicator = false,
     this.indicatorColor = Colors.white,
-    this.onTap,
   }) : super(key: key);
 
   final String name;
@@ -17,17 +18,18 @@ class PerspectiveMemberPreview extends StatelessWidget {
   final bool showIndicator;
   final Color indicatorColor;
   final VoidCallback onTap;
+  final VoidCallback onLongPress;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      margin: padding,
-      color: Colors.white,
-      child: Material(
-        color: Colors.white,
-        child: InkWell(
-          onTap: onTap,
+    return Material(
+      child: InkWell(
+        onTap: onTap,
+        onLongPress: onLongPress,
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          margin: padding,
+          color: Colors.white,
           child: Row(
             children: <Widget>[
               ClipOval(

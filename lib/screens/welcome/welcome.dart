@@ -117,18 +117,29 @@ class Welcome extends StatelessWidget {
                     ),
                   ),
                 ),
-                if (isInDebugMode)
-                  RaisedButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute<dynamic>(
-                          builder: (BuildContext context) => JuntoTemplate(),
-                        ),
-                      );
-                    },
-                    child: const Text('Skip :)'),
-                  )
+                RaisedButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute<dynamic>(
+                        builder: (BuildContext context) => JuntoTemplate(),
+                      ),
+                    );
+                  },
+                  child: const Text('Skip :)'),
+                )
+                // if (isInDebugMode)
+                //   RaisedButton(
+                //     onPressed: () {
+                //       Navigator.pushReplacement(
+                //         context,
+                //         MaterialPageRoute<dynamic>(
+                //           builder: (BuildContext context) => JuntoTemplate(),
+                //         ),
+                //       );
+                //     },
+                //     child: const Text('Skip :)'),
+                //   )
               ],
             )
           ],

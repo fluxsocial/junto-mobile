@@ -1,6 +1,7 @@
 import 'package:junto_beta_mobile/models/models.dart';
 
 abstract class SearchProvider {
+  /// Queries our API with the given [query].
   Future<List<UserProfile>> searchMember(String query);
 }
 
@@ -18,20 +19,22 @@ abstract class AuthenticationService {
   Future<void> logoutUser();
 }
 
-abstract class CollectiveProvider {
+abstract class CollectiveService {
   /// Creates a collection with the given arguments.
-  Future<Collective> createCollection(String name, String privacy, [String parent]);
+  Future<Collective> createCollection(String name, String privacy,
+      [String parent]);
 
   /// Returns the [CollectionResponse] for the given [collectionAddress]
   Future<CollectionResponse> getCollection(String collectionAddress);
 
   /// Adds the given [expressionAddress] to the collective [collectionAddress]
-  Future<void> postCollectiveExpression(String collectionAddress, String expressionAddress);
+  Future<void> postCollectiveExpression(
+      String collectionAddress, String expressionAddress);
 }
 
 /// Interface which defines the roles and functionality of the
 /// CollectiveProvider.
-abstract class ExpressionProvider {
+abstract class ExpressionService {
   /// Creates an expression on the server.
   /// Method requires [CentralizedExpression] as it's only arg.
   Future<CentralizedExpressionResponse> createExpression(
@@ -68,11 +71,14 @@ abstract class ExpressionProvider {
     String expressionAddress,
   );
 
+  Future<List<CentralizedExpressionResponse>> queryExpression(
+      ExpressionQueryParams params);
+
   /// Returns mock expression data.
   List<CentralizedExpressionResponse> get collectiveExpressions;
 }
 
-abstract class SpheresProvider {
+abstract class GroupService {
   List<Sphere> get spheres;
 
   /// Allows an authenticated user to create a sphere.
@@ -92,6 +98,9 @@ abstract class SpheresProvider {
   /// Removes a user from the given group. Sufficient permission is required
   /// to perform this action.
   Future<void> removeGroupMember(String groupAddress, String userAddress);
+
+  Future<List<CentralizedExpressionResponse>> getGroupExpressions(
+      ExpressionQueryParams params);
 }
 
 enum QueryType { address, email, username }

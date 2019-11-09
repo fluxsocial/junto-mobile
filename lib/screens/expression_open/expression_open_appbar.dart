@@ -9,99 +9,151 @@ class ExpressionOpenAppbar extends StatelessWidget {
       automaticallyImplyLeading: false,
       brightness: Brightness.light,
       iconTheme: const IconThemeData(color: JuntoPalette.juntoSleek),
-      backgroundColor: Colors.white,
       elevation: 0,
       titleSpacing: 0,
       title: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: Container(
-                  color: Colors.white,
-                  width: 38,
-                  alignment: Alignment.centerLeft,
-                  child: const Icon(
-                    CustomIcons.back_arrow_left,
-                    color: JuntoPalette.juntoSleek,
-                    size: 28,
-                  ),
-                )),
+              onTap: () => Navigator.pop(context),
+              child: Container(
+                padding: const EdgeInsets.only(left: 10),
+                color: Colors.transparent,
+                width: 42,
+                alignment: Alignment.centerLeft,
+                child: Icon(CustomIcons.back,
+                    size: 17, color: Theme.of(context).primaryColorDark),
+              ),
+            ),
             GestureDetector(
               onTap: () {
                 showModalBottomSheet(
                   isScrollControlled: true,
                   context: context,
                   builder: (BuildContext context) {
-                    return Container(
-                      color: const Color(0xff737373),
-                      child: Container(
-                        height: MediaQuery.of(context).size.height * .9,
-                        padding: const EdgeInsets.all(10),
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            topRight: Radius.circular(10),
-                          ),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            const SizedBox(height: 10),
-                            Row(
-                              children: const <Widget>[
-                                Text(
-                                  'Expression context',
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w700,
-                                    color: Color(0xff333333),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            const Text(
-                              'This will show the context of each expression, and the icon that you pressed to open this modal up will be dynamic. For example, for a given expression this would show that it resides in the collective and is tagged into channels x, y, z.'
-                              ' Expressions that live in the collective context will have the collective icon (tbd). Those that live in spheres, pack, den will reflect the icons that represent those contexts as well. Hope this makes sense!',
-                              style: TextStyle(fontSize: 15, height: 1.4),
-                            )
-                          ],
-                        ),
-                      ),
-                    );
+                    return ExpressionOpenContext();
                   },
                 );
               },
               child: Container(
-                color: Colors.white,
-                width: 32,
-                alignment: Alignment.centerRight,
+                color: Colors.transparent,
                 padding: const EdgeInsets.only(right: 10),
-                child: const Icon(CustomIcons.half_lotus, size: 14),
+                width: 42,
+                alignment: Alignment.centerRight,
+                child: Icon(
+                  CustomIcons.enso,
+                  size: 20,
+                  color: Theme.of(context).primaryColorDark,
+                ),
               ),
             )
           ],
         ),
       ),
       bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(1),
+        preferredSize: const Size.fromHeight(.75),
         child: Container(
-          height: 1,
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              stops: <double>[0.1, 0.9],
-              colors: <Color>[
-                JuntoPalette.juntoFade,
-                JuntoPalette.juntoFade,
+          height: .75,
+          decoration: BoxDecoration(color: Theme.of(context).dividerColor),
+        ),
+      ),
+    );
+  }
+}
+
+class ExpressionOpenContext extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.transparent,
+      child: Container(
+        height: MediaQuery.of(context).size.height * .5,
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.background,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(10),
+            topRight: Radius.circular(10),
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const SizedBox(height: 10),
+            Row(
+              children: <Widget>[
+                Container(
+                  alignment: Alignment.center,
+                  height: 45.0,
+                  width: 45.0,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomLeft,
+                      end: Alignment.topRight,
+                      stops: const <double>[0.3, 0.9],
+                      colors: <Color>[
+                        Theme.of(context).colorScheme.secondary,
+                        Theme.of(context).colorScheme.primary
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  child: const Icon(
+                    CustomIcons.enso,
+                    color: Colors.white,
+                    size: 17,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Text("shared to 'Collective'",
+                    style: Theme.of(context).textTheme.caption)
               ],
             ),
-          ),
+            const SizedBox(height: 15),
+            Row(
+              children: <Widget>[
+                Container(
+                  alignment: Alignment.center,
+                  height: 45.0,
+                  width: 45.0,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomLeft,
+                      end: Alignment.topRight,
+                      stops: const <double>[0.3, 0.9],
+                      colors: <Color>[
+                        Theme.of(context).colorScheme.secondary,
+                        Theme.of(context).colorScheme.primary
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  child: Icon(
+                    CustomIcons.hash,
+                    color: Colors.white,
+                    size: 17,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Flexible(
+                  child: Text(
+                      'tagged in #sustainability, #permaculture, #design',
+                      style: Theme.of(context).textTheme.caption),
+                )
+              ],
+            ),
+            const SizedBox(height: 25),
+            Text(
+              'Intention',
+              style: Theme.of(context).textTheme.subhead,
+            ),
+            const SizedBox(height: 10),
+            Text(
+              'Looking for feedback!',
+              style: Theme.of(context).textTheme.caption,
+            )
+          ],
         ),
       ),
     );

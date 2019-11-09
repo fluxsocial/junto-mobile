@@ -401,8 +401,11 @@ class CreatePhotoState extends State<CreatePhoto> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: _currentScreen(),
-    );
+        child: Center(
+      child: Text('share a photo'),
+    )
+        // _currentScreen(),
+        );
   }
 
   // Render current screen conditionally

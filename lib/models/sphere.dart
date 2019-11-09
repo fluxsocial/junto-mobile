@@ -215,3 +215,27 @@ class Users {
     return data;
   }
 }
+
+class Principle {
+  const Principle({
+    @required this.title,
+    @required this.body,
+  });
+
+  factory Principle.fromMap(Map<String, dynamic> map) {
+    return Principle(
+      title: map['title'] as String,
+      body: map['body'] as String,
+    );
+  }
+
+  final String title;
+  final String body;
+
+  Map<String, dynamic> toMap() {
+    return <String, String>{
+      'title': title,
+      'body': body,
+    };
+  }
+}

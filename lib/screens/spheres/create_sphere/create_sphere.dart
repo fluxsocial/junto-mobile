@@ -1,16 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
-import 'package:junto_beta_mobile/models/sphere.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/screens/collective/perspectives/create_perspective/create_perspective.dart'
-    show SelectedUsers;
-import 'package:junto_beta_mobile/screens/spheres/create_sphere/create_sphere_next.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/models/sphere.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/create_perspective/create_perspective.dart'
+    show SelectedUsers;
+import 'package:junto_beta_mobile/screens/spheres/create_sphere/create_sphere_next.dart';
 import 'package:junto_beta_mobile/utils/utils.dart' show AddUserToList;
 import 'package:junto_beta_mobile/widgets/search_members_modal.dart';
 import 'package:junto_beta_mobile/widgets/user_preview.dart';
@@ -26,6 +25,7 @@ class _CreateSphereState extends State<CreateSphere>
     with AddUserToList<UserProfile> {
   TextEditingController _nameController;
   TextEditingController _descriptionController;
+  TextEditingController _principleController;
   Timer debounceTimer;
   ValueNotifier<List<UserProfile>> queriedUsers =
       ValueNotifier<List<UserProfile>>(<UserProfile>[]);
@@ -34,9 +34,10 @@ class _CreateSphereState extends State<CreateSphere>
 
   @override
   void initState() {
+    super.initState();
     _nameController = TextEditingController();
     _descriptionController = TextEditingController();
-    super.initState();
+    _principleController = TextEditingController();
   }
 
   void _addUser(UserProfile user) {
@@ -64,6 +65,7 @@ class _CreateSphereState extends State<CreateSphere>
   void dispose() {
     _nameController.dispose();
     _descriptionController.dispose();
+    _principleController.dispose();
     super.dispose();
   }
 
@@ -72,6 +74,7 @@ class _CreateSphereState extends State<CreateSphere>
         await Provider.of<UserRepo>(context).readLocalUser();
     final String sphereName = _nameController.value.text;
     final String sphereDescription = _descriptionController.value.text;
+    final String principleDesc = _principleController.value.text;
     final CentralizedSphere sphere = CentralizedSphere(
       name: sphereName,
       description: sphereDescription,
@@ -82,7 +85,7 @@ class _CreateSphereState extends State<CreateSphere>
       members: _users.value.selection
           .map((UserProfile _profile) => _profile.address)
           .toList(growable: false),
-      principles: "Don't be a horrible human being",
+      principles: principleDesc,
       sphereHandle: sphereName,
       privacy: '',
     );
@@ -98,7 +101,7 @@ class _CreateSphereState extends State<CreateSphere>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      // backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(45),
         child: AppBar(
@@ -176,6 +179,11 @@ class _CreateSphereState extends State<CreateSphere>
                         key: const Key('Description-field-create-sphere'),
                         controller: _descriptionController,
                         hintText: 'Describe your sphere',
+                      ),
+                      _CreateSphereTextField(
+                        key: const Key('principle-field-create-sphere'),
+                        controller: _principleController,
+                        hintText: 'Sphere principles',
                       ),
                       Container(
                         padding: const EdgeInsets.symmetric(vertical: 15),

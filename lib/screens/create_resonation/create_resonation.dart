@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/create_resonation/create_resonation_appbar.dart';
-import 'package:junto_beta_mobile/widgets/expression_preview/expression_preview_embed/expression_preview_embed.dart';
+import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview_embed/expression_preview_embed.dart';
 
 class CreateResonation extends StatefulWidget {
   const CreateResonation({Key key, @required this.expression})
@@ -38,7 +38,6 @@ class CreateResonationState extends State<CreateResonation> {
         preferredSize: const Size.fromHeight(45),
         child: CreateResonationAppbar(),
       ),
-      backgroundColor: Colors.white,
       body: Container(
         child: Column(
           children: <Widget>[
@@ -50,17 +49,14 @@ class CreateResonationState extends State<CreateResonation> {
                     margin: const EdgeInsets.symmetric(vertical: 10),
                     child: TextField(
                       focusNode: resonationCommentFocusNode,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Add a comment',
-                      ),
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'add a comment',
+                          hintStyle: Theme.of(context).textTheme.caption),
                       maxLines: null,
-                      cursorColor: JuntoPalette.juntoGrey,
+                      cursorColor: Theme.of(context).primaryColorDark,
                       cursorWidth: 2,
-                      style: const TextStyle(
-                        fontSize: 17,
-                        color: JuntoPalette.juntoGrey,
-                      ),
+                      style: Theme.of(context).textTheme.caption,
                       textInputAction: TextInputAction.done,
                     ),
                   ),
@@ -76,10 +72,11 @@ class CreateResonationState extends State<CreateResonation> {
                 ? Container(
                     height: 50,
                     padding: const EdgeInsets.symmetric(horizontal: 10),
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border(
-                        top: BorderSide(color: Color(0xffeeeeee), width: 1),
+                        top: BorderSide(
+                            color: Theme.of(context).dividerColor, width: 1),
                       ),
                     ),
                     child: Row(
@@ -88,7 +85,8 @@ class CreateResonationState extends State<CreateResonation> {
                         SizedBox(width: 10),
                         Text('GIF')
                       ],
-                    ))
+                    ),
+                  )
                 : const SizedBox()
           ],
         ),

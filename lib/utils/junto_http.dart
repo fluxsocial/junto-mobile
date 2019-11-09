@@ -61,12 +61,16 @@ class JuntoHttp {
   Future<http.Response> delete(
     String resource, {
     Map<String, String> headers,
-    Map<String, dynamic> body,
+    dynamic body,
   }) async {
-    return httpClient.delete(
-      _encodeUrl(resource),
-      headers: await _withPersistentHeaders(headers),
+    final Map<String, String> header = await _withPersistentHeaders(null);
+    final http.StreamedResponse _streamedResponse = await httpClient.send(
+      http.Request('DELETE', Uri.parse('$_endPoint$resource'))
+        ..headers['cookie'] = header['cookie']
+        ..headers['Content-Type'] = header['Content-Type']
+        ..body = convert.json.encode(body),
     );
+    return http.Response.fromStream(_streamedResponse);
   }
 
   Future<http.Response> post(
@@ -108,7 +112,7 @@ class JuntoHttp {
   static dynamic handleResponse(http.Response response) {
     if (response.statusCode == 200) {
       final dynamic responseBody = convert.json.decode(response.body);
-      if (responseBody != null) {
+      if (responseBody != null || responseBody == '') {
         return responseBody;
       }
       if (responseBody['error']) {
@@ -120,7 +124,7 @@ class JuntoHttp {
       final Map<String, dynamic> results = convert.json.decode(response?.body);
       throw JuntoException('Forbidden ${results['error']}');
     }
-    if (response.statusCode == 500) {
+    if (response.statusCode >= 500) {
       throw const JuntoException("Ooh no, our server isn't feeling so good");
     }
     throw JuntoException(

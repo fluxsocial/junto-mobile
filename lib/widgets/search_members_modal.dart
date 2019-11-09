@@ -43,7 +43,7 @@ class _SearchMembersModalState extends State<SearchMembersModal> {
           context: context,
           builder: (BuildContext context) {
             return Material(
-              color: const Color(0xff737373),
+              color: Colors.transparent,
               child: Container(
                 height: MediaQuery.of(context).size.height * .9,
                 padding: const EdgeInsets.all(10),

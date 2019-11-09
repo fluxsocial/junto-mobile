@@ -16,44 +16,49 @@ class CreateActionsAppbar extends StatelessWidget {
       automaticallyImplyLeading: false,
       brightness: Brightness.light,
       iconTheme: const IconThemeData(color: JuntoPalette.juntoSleek),
-      backgroundColor: Colors.white,
       elevation: 0,
       titleSpacing: 0,
       title: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             GestureDetector(
               onTap: () => Navigator.pop(context),
-              child: const Icon(
-                CustomIcons.back_arrow_left,
-                color: JuntoPalette.juntoSleek,
-                size: 24,
+              child: Container(
+                width: 42,
+                height: 42,
+                color: Colors.transparent,
+                alignment: Alignment.centerLeft,
+                padding: const EdgeInsets.only(left: 10),
+                child: Icon(
+                  CustomIcons.back,
+                  color: Theme.of(context).primaryColorDark,
+                  size: 17,
+                ),
               ),
             ),
             GestureDetector(
               onTap: onCreateTap,
-              child: const Text(
-                'create',
-                style: TextStyle(
-                  fontSize: 15,
-                  color: Color(0xff333333),
-                ),
+              child: Container(
+                height: 42,
+                alignment: Alignment.centerRight,
+                padding: const EdgeInsets.only(right: 10),
+                child:
+                    Text('create', style: Theme.of(context).textTheme.caption),
               ),
             )
           ],
         ),
       ),
       bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(1),
+        preferredSize: const Size.fromHeight(.75),
         child: Container(
-          height: 1,
-          decoration: const BoxDecoration(
+          height: .75,
+          decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
-                color: Color(0xffeeeeee),
-                width: 1,
+                color: Theme.of(context).dividerColor,
+                width: .75,
               ),
             ),
           ),

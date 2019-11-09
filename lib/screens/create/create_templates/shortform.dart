@@ -38,8 +38,7 @@ class CreateShortformState extends State<CreateShortform> {
     gradientTwo = JuntoPalette.juntoSecondary;
     _bodyController = TextEditingController();
     _bodyController.addListener(bodyListener);
-    _bodyController.text =
-        'Going to create two color pickers that people can use to generate their own gradient. These are just placeholders';
+    _bodyController.text = 'gradients are fully customizeable and tbd';
   }
 
   void bodyListener() {
@@ -114,7 +113,7 @@ class CreateShortformState extends State<CreateShortform> {
       return Container(
         decoration: BoxDecoration(
           border: Border.all(
-            color: const Color(0xffeeeeee),
+            color: Theme.of(context).dividerColor,
             width: 1,
           ),
           gradient: LinearGradient(

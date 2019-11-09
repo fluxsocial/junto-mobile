@@ -211,10 +211,10 @@ class DenCollectionOpenState extends State<DenCollectionOpen> {
                                   child: Container(
                                     width: 38,
                                     alignment: Alignment.centerRight,
-                                    child: Icon(
+                                    child: const Icon(
                                       Icons.add,
                                       size: 20,
-                                      color: const Color(0xff555555),
+                                      color: Color(0xff555555),
                                     ),
                                   ),
                                 )

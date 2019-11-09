@@ -4,9 +4,8 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_drawer.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open_appbar.dart';
-import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open_private.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open_public.dart';
-import 'package:junto_beta_mobile/widgets/create_fab/create_fab.dart';
+import 'package:junto_beta_mobile/widgets/fabs/expression_center_fab.dart';
 
 class PackOpen extends StatefulWidget {
   const PackOpen({
@@ -25,7 +24,7 @@ class PackOpen extends StatefulWidget {
 class PackOpenState extends State<PackOpen> {
   // Controller for PageView
   PageController controller;
-  bool publicActive = true;
+  int _currentIndex = 0;
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
 
   @override
@@ -45,65 +44,60 @@ class PackOpenState extends State<PackOpen> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(45),
-          child: PackOpenAppbar(
-            packTitle: widget.pack.groupData.name,
-            packUser: widget.pack.creator,
-            packImage: 'assets/images/junto-mobile__logo.png',
+          appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(45),
+            child: PackOpenAppbar(pack: widget.pack),
           ),
-        ),
-        floatingActionButton: ValueListenableBuilder<bool>(
-          valueListenable: _isVisible,
-          builder: (BuildContext context, bool visible, Widget child) {
-            return AnimatedOpacity(
-              duration: const Duration(milliseconds: 300),
-              opacity: visible ? 1.0 : 0.0,
-              child: child,
-            );
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CreateFAB(
-              sphereHandle: widget.pack.groupData.name,
-              isVisible: _isVisible,
-              address: widget.pack.address,
-            ),
+          floatingActionButton: ValueListenableBuilder<bool>(
+            valueListenable: _isVisible,
+            builder: (BuildContext context, bool visible, Widget child) {
+              return AnimatedOpacity(
+                duration: const Duration(milliseconds: 300),
+                opacity: visible ? 1.0 : 0.0,
+                child: child,
+              );
+            },
+            child: const ExpressionCenterFAB(expressionLayer: 'my pack'),
           ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        endDrawer: PackDrawer(
-          pack: widget.pack,
-        ),
-        body: Column(
-          children: <Widget>[
-            Container(
-                padding: const EdgeInsets.only(top: 20),
-                decoration: const BoxDecoration(
+          endDrawer: PackDrawer(
+            pack: widget.pack,
+          ),
+          body: Column(
+            children: <Widget>[
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 15),
+                decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
-                      color: Color(0xffeeeeee),
-                      width: .75,
-                    ),
+                        color: Theme.of(context).dividerColor, width: .75),
                   ),
                 ),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     GestureDetector(
                       onTap: () {
                         controller.jumpToPage(0);
                       },
                       child: Container(
-                        padding: const EdgeInsets.only(bottom: 20),
                         width: MediaQuery.of(context).size.width * .5,
-                        child: Icon(
-                          CustomIcons.half_lotus,
-                          size: 17,
-                          color: publicActive
-                              ? const Color(0xff333333)
-                              : const Color(0xff999999),
+                        color: Colors.transparent,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(CustomIcons.lotus,
+                                size: 20,
+                                color: _currentIndex == 0
+                                    ? Theme.of(context).primaryColorDark
+                                    : Theme.of(context).primaryColorLight),
+                            const SizedBox(width: 10),
+                            Text('Public',
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                    color: _currentIndex == 0
+                                        ? Theme.of(context).primaryColorDark
+                                        : Theme.of(context).primaryColorLight))
+                          ],
                         ),
                       ),
                     ),
@@ -112,50 +106,49 @@ class PackOpenState extends State<PackOpen> {
                         controller.jumpToPage(1);
                       },
                       child: Container(
-                        padding: const EdgeInsets.only(bottom: 20),
                         width: MediaQuery.of(context).size.width * .5,
-                        child: RotatedBox(
-                          quarterTurns: 2,
-                          child: Icon(
-                            CustomIcons.triangle,
-                            size: 17,
-                            color: publicActive
-                                ? const Color(0xff999999)
-                                : const Color(0xff333333),
-                          ),
+                        color: Colors.transparent,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(CustomIcons.packs,
+                                size: 17,
+                                color: _currentIndex == 1
+                                    ? Theme.of(context).primaryColorDark
+                                    : Theme.of(context).primaryColorLight),
+                            const SizedBox(width: 10),
+                            Text('Pack',
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                    color: _currentIndex == 1
+                                        ? Theme.of(context).primaryColorDark
+                                        : Theme.of(context).primaryColorLight))
+                          ],
                         ),
                       ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: PageView(
+                  controller: controller,
+                  onPageChanged: (index) {
+                    setState(() {
+                      _currentIndex = index;
+                    });
+                  },
+                  children: <Widget>[
+                    PackOpenPublic(fabVisible: _isVisible),
+                    Center(
+                      child: Text('private pack expressions'),
                     )
                   ],
-                )),
-            Expanded(
-              child: PageView(
-                physics: const PageScrollPhysics(),
-                controller: controller,
-                onPageChanged: (int index) {
-                  if (index == 0) {
-                    setState(() {
-                      publicActive = true;
-                    });
-                  } else if (index == 1) {
-                    setState(() {
-                      publicActive = false;
-                    });
-                  }
-                },
-                children: <Widget>[
-                  PackOpenPublic(
-                    fabVisible: _isVisible,
-                  ),
-                  PackOpenPrivate(
-                    fabVisible: _isVisible,
-                  ),
-                ],
+                ),
               ),
-            )
-          ],
-        ),
-      ),
+            ],
+          )),
     );
   }
 }

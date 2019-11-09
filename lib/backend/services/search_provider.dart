@@ -14,7 +14,6 @@ class SearchProviderCentralized implements SearchProvider {
 
   final JuntoHttp client;
 
-  // FIXME docs required
   @override
   Future<List<UserProfile>> searchMember(String query) async {
     final SharedPreferences _prefs = await SharedPreferences.getInstance();
@@ -34,10 +33,13 @@ class SearchProviderCentralized implements SearchProvider {
       },
     );
     if (_serverResponse.statusCode == 200) {
-      final Iterable<dynamic> _listData = convert.json.decode(_serverResponse.body);
+      final Iterable<dynamic> _listData =
+          convert.json.decode(_serverResponse.body);
 
       if (_listData.isNotEmpty) {
-        return _listData.map((dynamic data) => UserProfile.fromMap(data)).toList(growable: false);
+        return _listData
+            .map((dynamic data) => UserProfile.fromMap(data))
+            .toList(growable: false);
       }
       return <UserProfile>[];
     }

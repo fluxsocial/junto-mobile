@@ -29,9 +29,9 @@ class AuthenticationServiceCentralized implements AuthenticationService {
           Cookie.fromSetCookieValue(response.headers['set-cookie']);
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('auth', responseCookie.value);
-
     } else {
-      final Map<String, dynamic> errorResponse = JuntoHttp.handleResponse(response);
+      final Map<String, dynamic> errorResponse =
+          JuntoHttp.handleResponse(response);
       throw JuntoException('Unable to login: ${errorResponse['error']}');
     }
   }
@@ -60,7 +60,8 @@ class AuthenticationServiceCentralized implements AuthenticationService {
       '/users',
       body: _body,
     );
-    final Map<String, dynamic> _responseMap = JuntoHttp.handleResponse(response);
+    final Map<String, dynamic> _responseMap =
+        JuntoHttp.handleResponse(response);
     final UserData _userData = UserData.fromMap(_responseMap);
     return _userData;
   }
