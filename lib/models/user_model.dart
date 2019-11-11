@@ -201,11 +201,11 @@ class UserData {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'privateDen': privateDen,
-      'publicDen': publicDen,
+      'privateDen': privateDen.toJson(),
+      'publicDen': publicDen.toJson(),
       'pack': pack.toMap(),
-      'user': user,
-      'userPerspective': userPerspective,
+      'user': user.toMap(),
+      'userPerspective': userPerspective.toMap(),
     };
   }
 

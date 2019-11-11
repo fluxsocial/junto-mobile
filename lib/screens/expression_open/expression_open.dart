@@ -426,24 +426,24 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
                             ),
                           ),
                           SizedBox(width: 10),
-                          // GestureDetector(
-                          //   onTap: () async {
-                          //     await showModalBottomSheet(
-                          //       context: context,
-                          //       isScrollControlled: false,
-                          //       backgroundColor:
-                          //           Theme.of(context).colorScheme.background,
-                          //       builder: (BuildContext context) => _GiphyPanel(
-                          //         onGifSelected: (String selected) {
-                          //           selectedUrl = selected;
-                          //           _type.value = MessageType.gif;
-                          //           widget.onGifSelected(selected);
-                          //         },
-                          //       ),
-                          //     );
-                          //   },
-                          //   child: const Text('GIF'),
-                          // ),
+                          GestureDetector(
+                            onTap: () async {
+                              await showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: false,
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.background,
+                                builder: (BuildContext context) => _GiphyPanel(
+                                  onGifSelected: (String selected) {
+                                    selectedUrl = selected;
+                                    _type.value = MessageType.gif;
+                                    widget.onGifSelected(selected);
+                                  },
+                                ),
+                              );
+                            },
+                            child: const Text('GIF'),
+                          ),
                         ],
                       ),
                     ),

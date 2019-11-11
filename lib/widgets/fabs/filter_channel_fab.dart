@@ -6,7 +6,6 @@ import 'package:junto_beta_mobile/widgets/previews/channel_preview.dart';
 class FilterChannelFAB extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return GestureDetector(
       onTap: () {
         showModalBottomSheet(

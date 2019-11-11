@@ -1,12 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/backend/mock/mock_expression.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/screens/den/den_create_collection.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
 import 'package:junto_beta_mobile/screens/den/den_appbar.dart';
 import 'package:provider/provider.dart';
@@ -28,14 +26,14 @@ class JuntoDenState extends State<JuntoDen> {
   bool privateExpressionsActive = true;
   bool privateCollectionActive = false;
 
-  AsyncMemoizer<UserProfile> userMemoizer = AsyncMemoizer<UserProfile>();
+  AsyncMemoizer<UserData> userMemoizer = AsyncMemoizer<UserData>();
   List<CentralizedExpressionResponse> expressions;
   List<CentralizedExpressionResponse> mockExpressions =
       MockExpressionService().collectiveExpressions;
 
-  Future<UserProfile> _retrieveUserInfo() async {
-    final UserService _userProvider = Provider.of<UserService>(context);
-    return userMemoizer.runOnce(() => _userProvider.readLocalUser());
+  Future<UserData> _retrieveUserInfo() async {
+    final UserRepo _userProvider = Provider.of<UserRepo>(context);
+    return userMemoizer.runOnce(()=>  _userProvider.readLocalUser());
   }
 
   @override
@@ -434,13 +432,13 @@ class UserExpressions extends StatefulWidget {
 }
 
 class _UserExpressionsState extends State<UserExpressions> {
-  UserService _userProvider;
+  UserRepo _userProvider;
   AsyncMemoizer<List<CentralizedExpressionResponse>> memoizer =
       AsyncMemoizer<List<CentralizedExpressionResponse>>();
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _userProvider = Provider.of<UserService>(context);
+    _userProvider = Provider.of<UserRepo>(context);
   }
 
   Future<List<CentralizedExpressionResponse>> getExpressions() {

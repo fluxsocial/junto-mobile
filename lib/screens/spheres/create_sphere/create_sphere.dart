@@ -70,8 +70,8 @@ class _CreateSphereState extends State<CreateSphere>
   }
 
   Future<void> _createSphere() async {
-    final UserProfile _profile =
-        await Provider.of<UserService>(context).readLocalUser();
+    final UserData _profile =
+        await Provider.of<UserRepo>(context).readLocalUser();
     final String sphereName = _nameController.value.text;
     final String sphereDescription = _descriptionController.value.text;
     final String principleDesc = _principleController.value.text;
@@ -79,7 +79,7 @@ class _CreateSphereState extends State<CreateSphere>
       name: sphereName,
       description: sphereDescription,
       facilitators: <String>[
-        _profile.address,
+        _profile.user.address,
       ],
       photo: '',
       members: _users.value.selection

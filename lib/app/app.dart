@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/themes.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
-import 'package:junto_beta_mobile/screens/create/create.dart';
 import 'package:junto_beta_mobile/screens/template/template.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:provider/provider.dart';
@@ -38,7 +36,7 @@ class JuntoAppState extends State<JuntoApp> {
         ),
         Provider<SearchProvider>.value(value: backend.searchProvider),
         Provider<AuthRepo>.value(value: backend.authRepo),
-        Provider<UserService>.value(value: backend.userProvider),
+        Provider<UserRepo>.value(value: backend.userRepo),
         Provider<CollectiveService>.value(value: backend.collectiveProvider),
         Provider<GroupRepo>.value(value: backend.groupsProvider),
         Provider<ExpressionRepo>.value(value: backend.expressionRepo),

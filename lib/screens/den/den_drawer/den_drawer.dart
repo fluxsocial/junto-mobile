@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
@@ -26,12 +27,12 @@ class _DenDrawerState extends State<DenDrawer> {
   }
 
   Future<void> _retrieveUserInfo() async {
-    final UserService _userProvider = Provider.of<UserService>(context);
+    final UserRepo _userProvider = Provider.of<UserRepo>(context);
     try {
-      final UserProfile _profile = await _userProvider.readLocalUser();
+      final UserData _profile = await _userProvider.readLocalUser();
       if (mounted) {
         setState(() {
-          profile = _profile;
+          profile = _profile.user;
         });
       }
     } catch (error) {
@@ -43,7 +44,7 @@ class _DenDrawerState extends State<DenDrawer> {
 //  see: https://github.com/juntofoundation/junto-mobile/issues/170
   Future<void> _onPackPress() async {
     final UserGroupsResponse _userPack =
-        await Provider.of<UserService>(context).getUserGroups(profile.address);
+        await Provider.of<UserRepo>(context).getUserGroups(profile.address);
     Navigator.push(
       context,
       CupertinoPageRoute<dynamic>(

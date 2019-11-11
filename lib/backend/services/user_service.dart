@@ -35,9 +35,21 @@ class UserServiceCentralized implements UserService {
   }
 
   @override
-  Future<String> addUserToPerspective(
-      String perspectiveAddress, String userAddress) async {
-    throw UnimplementedError('Not implemented in centralized API');
+  Future<UserProfile> addUserToPerspective(
+      String perspectiveAddress, List<String> userAddress) async {
+    final List<dynamic> users = <dynamic>[];
+    userAddress.map(
+      (String uid) => users.add(
+        <String, dynamic>{'user_address': uid},
+      ),
+    );
+    final http.Response _serverResponse = await client.postWithoutEncoding(
+      '/perspectives/$perspectiveAddress/users',
+      body: users,
+    );
+    final Map<String, dynamic> _body =
+        JuntoHttp.handleResponse(_serverResponse);
+    return UserProfile.fromMap(_body);
   }
 
   @override
@@ -130,12 +142,12 @@ class UserServiceCentralized implements UserService {
   }
 
   @override
-  Future<UserProfile> readLocalUser() async {
+  Future<UserData> readLocalUser() async {
     final LocalStorage _storage = LocalStorage('user-details');
     final bool isReady = await _storage.ready;
     if (isReady) {
       final String _data = _storage.getItem('data');
-      final UserProfile profile = UserProfile.fromMap(json.decode(_data));
+      final UserData profile = UserData.fromMap(json.decode(_data));
       return profile;
     }
     throw const JuntoException('Unable to read local user');

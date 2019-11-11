@@ -25,14 +25,14 @@ class JuntoSpheres extends StatefulWidget {
 }
 
 class JuntoSpheresState extends State<JuntoSpheres> with ListDistinct {
-  UserService _userProvider;
+  UserRepo _userProvider;
   final AsyncMemoizer<UserGroupsResponse> _memoizer =
       AsyncMemoizer<UserGroupsResponse>();
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _userProvider = Provider.of<UserService>(context);
+    _userProvider = Provider.of<UserRepo>(context);
   }
 
   Widget buildError() {
@@ -296,7 +296,7 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
   }
 
   Future<void> _createSphere() async {
-    final UserProfile _profile =
+    final UserData _profile =
         await Provider.of<UserService>(context).readLocalUser();
     final String sphereName = _nameController.value.text;
     final String sphereHandle = _handleController.value.text;
@@ -305,7 +305,7 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
       name: sphereName,
       description: sphereDescription,
       facilitators: <String>[
-        _profile.address,
+        _profile.user.address,
       ],
       photo: '',
       members: <String>[],
