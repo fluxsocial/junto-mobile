@@ -101,7 +101,7 @@ class CentralizedPerspective {
       creator: map['creator'] as String,
       createdAt: RFC3339.parseRfc3339(map['created_at']),
       isDefault: map['is_default'] as bool,
-      users: _parseUsers(map['users']),
+      users: map['users'] != null ? _parseUsers(map['users']) : null,
     );
   }
 
