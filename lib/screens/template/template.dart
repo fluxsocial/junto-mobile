@@ -1,19 +1,20 @@
+import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
-import 'package:junto_beta_mobile/widgets/fabs/filter_channel_fab.dart';
-import 'package:junto_beta_mobile/widgets/fabs/create_sphere_fab.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/den/den_drawer/den_drawer.dart';
 import 'package:junto_beta_mobile/screens/packs/packs.dart';
 import 'package:junto_beta_mobile/screens/spheres/spheres.dart';
+import 'package:junto_beta_mobile/screens/template/perspectives.dart';
 import 'package:junto_beta_mobile/widgets/appbar.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
+import 'package:junto_beta_mobile/widgets/fabs/create_sphere_fab.dart';
+import 'package:junto_beta_mobile/widgets/fabs/filter_channel_fab.dart';
 import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/screens/template/perspectives.dart';
 
 // This class is a template screen that contains the navbar, bottom bar,
 // and screen (collective, spheres, pack, etc) depending on condition.
@@ -32,6 +33,7 @@ class JuntoTemplate extends StatefulWidget {
 
 class JuntoTemplateState extends State<JuntoTemplate> {
   final GlobalKey<ScaffoldState> _juntoTemplateKey = GlobalKey<ScaffoldState>();
+  AsyncMemoizer<void> readUserMemoizer = AsyncMemoizer<void>();
 
   // Default values for collective screen / JUNTO perspective - change dynamically.
   String _currentScreen = 'collective';
@@ -56,7 +58,11 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _retrieveUserInfo();
+    _readUser();
+  }
+
+  Future<void> _readUser() {
+    return readUserMemoizer.runOnce(() => _retrieveUserInfo());
   }
 
   Future<void> _retrieveUserInfo() async {
@@ -66,8 +72,8 @@ class JuntoTemplateState extends State<JuntoTemplate> {
       setState(() {
         profile = _profile.user;
       });
-    } catch (error) {
-      debugPrint('Error occured in _retrieveUserInfo: $error');
+    } catch (error, stack) {
+      debugPrint('Error occured in _retrieveUserInfo: $error,  $stack');
     }
   }
 
