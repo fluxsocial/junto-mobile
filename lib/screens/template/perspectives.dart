@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
-import 'package:junto_beta_mobile/app/styles.dart';
-import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview_select.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:provider/provider.dart';
 
 class JuntoPerspectives extends StatefulWidget {
   const JuntoPerspectives({
@@ -170,7 +169,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
     );
   }
 
-  _perspectiveText(perspective) {
+  String _perspectiveText(perspective) {
     if (perspective == 'JUNTO') {
       return 'The Junto perspective contains all public expressions from '
           'every member of Junto.';
@@ -178,20 +177,22 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
       return 'The Connections perspective contains all public expressions from '
           'your 1st degree connections.';
     } else if (perspective == 'Subscriptions') {
-      return "The Subscriptions perspective contains all public expressions from "
+      return 'The Subscriptions perspective contains all public expressions from ' +
           "members you're subscribed to.";
     } else if (perspective == 'Degrees of separation') {
       return 'The Degrees of separation perspective allows you to discover expression from one to six degrees of separtion away from you!';
     }
+    //
+    return '';
   }
 
   void _openPerspectiveBottomSheet(perspective) {
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
-      builder: (BuildContext context) => Container(
-        color: Colors.transparent,
-        child: Container(
+      backgroundColor: Colors.transparent,
+      builder: (BuildContext context) {
+        return Container(
           height: MediaQuery.of(context).size.height * .9,
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
@@ -219,8 +220,8 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
               )
             ],
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
@@ -237,37 +238,37 @@ class _CreatePerspectiveBottomSheetState
   final PageController _searchMembersController =
       PageController(initialPage: 0);
 
-  // add members
-  int _searchMembersIndex = 0;
+  UserRepo userRepo;
+  TextEditingController _textController;
 
-  List<UserProfile> profiles = <UserProfile>[
-    UserProfile(
-        firstName: 'Eric Yang',
-        username: 'sunyata',
-        profilePicture: 'assets/images/junto-mobile__eric.png'),
-    UserProfile(
-        firstName: 'Riley Wagner',
-        username: 'wags',
-        profilePicture: 'assets/images/junto-mobile__riley.png'),
-    UserProfile(
-        firstName: 'Dora Czovek',
-        username: 'wingedmessenger',
-        profilePicture: 'assets/images/junto-mobile__dora.png'),
-    UserProfile(
-        firstName: 'Josh Parkin',
-        username: 'jdeepee',
-        profilePicture: 'assets/images/junto-mobile__josh.png'),
-    UserProfile(
-        firstName: 'Nash Ramdial',
-        username: 'nash',
-        profilePicture: 'assets/images/junto-mobile__nash.png')
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _textController = TextEditingController();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    userRepo = Provider.of<UserRepo>(context);
+  }
+
+  int _searchMembersIndex = 0;
 
   @override
   void dispose() {
     super.dispose();
-
     _searchMembersController.dispose();
+    _textController.dispose();
+  }
+
+  void _createPerspective() async {
+    final String perspectiveName = _textController.value.text;
+    Perspective perspective =
+        Perspective(name: perspectiveName, members: <String>[]);
+    final CentralizedPerspective response =
+        await userRepo.createPerspective(perspective);
+    print(response);
   }
 
   @override
@@ -290,9 +291,12 @@ class _CreatePerspectiveBottomSheetState
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text('New Perspective', style: Theme.of(context).textTheme.title),
-              Text(
-                'create',
-                style: Theme.of(context).textTheme.caption,
+              InkWell(
+                onTap: _createPerspective,
+                child: Text(
+                  'create',
+                  style: Theme.of(context).textTheme.caption,
+                ),
               )
             ],
           ),
@@ -300,6 +304,7 @@ class _CreatePerspectiveBottomSheetState
           Container(
             width: MediaQuery.of(context).size.width,
             child: TextField(
+              controller: _textController,
               buildCounter: (
                 BuildContext context, {
                 int currentLength,
@@ -324,9 +329,9 @@ class _CreatePerspectiveBottomSheetState
               textInputAction: TextInputAction.done,
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Container(
-            padding: EdgeInsets.only(bottom: 5),
+            padding: const EdgeInsets.only(bottom: 5),
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
@@ -440,23 +445,7 @@ class _CreatePerspectiveBottomSheetState
               },
               children: <Widget>[
                 ListView(
-                  children: <Widget>[
-                    MemberPreviewSelect(profile: profiles[0]),
-                    MemberPreviewSelect(profile: profiles[1]),
-                    MemberPreviewSelect(profile: profiles[2]),
-                    MemberPreviewSelect(profile: profiles[3]),
-                    MemberPreviewSelect(profile: profiles[4]),
-                  ],
-                ),
-                ListView(
-                  children: const <Widget>[
-                    // _memberPreview(),
-                  ],
-                ),
-                ListView(
-                  children: const <Widget>[
-                    // _memberPreview(),
-                  ],
+                  children: const <Widget>[],
                 ),
               ],
             ),
