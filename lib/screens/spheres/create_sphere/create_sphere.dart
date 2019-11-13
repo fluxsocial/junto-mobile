@@ -257,10 +257,10 @@ class _CreateSphereTextField extends StatefulWidget {
   final String hintText;
 
   @override
-  __CreateSphereTextFieldState createState() => __CreateSphereTextFieldState();
+  _CreateSphereTextFieldState createState() => _CreateSphereTextFieldState();
 }
 
-class __CreateSphereTextFieldState extends State<_CreateSphereTextField> {
+class _CreateSphereTextFieldState extends State<_CreateSphereTextField> {
   @override
   Widget build(BuildContext context) {
     return Container(
