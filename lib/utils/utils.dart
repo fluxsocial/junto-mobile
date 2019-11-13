@@ -189,12 +189,15 @@ mixin ListDistinct {
 
 mixin RFC3339 {
   static DateTime parseRfc3339(String time) {
-    if (time.length > 25) {
-      final String limitedString =
-          time.substring(0, 25) + time[time.length - 1];
-      return DateTime.parse(limitedString);
-    } else {
-      return DateTime.parse(time);
+    if (time != null) {
+      if (time.length > 25) {
+        final String limitedString =
+            time.substring(0, 20) + time[time.length - 1];
+        return DateTime.parse(limitedString);
+      } else {
+        return DateTime.parse(time);
+      }
     }
+    return null;
   }
 }

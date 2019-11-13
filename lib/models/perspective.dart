@@ -99,7 +99,7 @@ class CentralizedPerspective {
       address: map['address'] as String,
       name: map['name'] as String,
       creator: map['creator'] as String,
-      createdAt: RFC3339.parseRfc3339(map['createdAt']),
+      createdAt: RFC3339.parseRfc3339(map['created_at']),
       isDefault: map['is_default'] as bool,
       users: map['users'] != null ? _parseUsers(map['users']) : null,
     );

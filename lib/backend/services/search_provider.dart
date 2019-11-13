@@ -1,6 +1,7 @@
 import 'dart:convert' as convert;
 
 import 'package:http/http.dart' as http;
+import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
@@ -20,7 +21,7 @@ class SearchProviderCentralized implements SearchProvider {
     final String authKey = _prefs.getString('auth');
 
     final Uri _uri = Uri.http(
-      '198.199.67.10',
+      '18.191.236.123',
       '/users',
       <String, String>{'username': query},
     );
