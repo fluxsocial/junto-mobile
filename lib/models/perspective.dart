@@ -126,8 +126,8 @@ class CentralizedPerspective {
       'address': address,
       'name': name,
       'creator': creator,
-      'createdAt': createdAt?.toIso8601String(),
-      'isDefault': isDefault,
+      'created_at': createdAt?.toIso8601String(),
+      'is_default': isDefault,
     };
   }
 
