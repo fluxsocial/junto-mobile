@@ -44,12 +44,7 @@ class AuthRepo {
       final LocalStorage _storage = LocalStorage('user-details');
       final bool ready = await _storage.ready;
       if (ready) {
-        _storage.setItem(
-          'data',
-          json.encode(
-            _user.toMap(),
-          ),
-        );
+        _storage.setItem('data', _user.toMap());
       }
       _isLoggedIn = true;
       await SharedPreferences.getInstance()
