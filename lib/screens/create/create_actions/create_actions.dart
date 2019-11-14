@@ -56,7 +56,7 @@ class CreateActionsState extends State<CreateActions> {
       context: <String, dynamic>{
         'Group': <String, dynamic>{'address': widget.address}
       },
-      expressionData: widget.expression.toJson(),
+      expressionData: widget.expression.toMap(),
     );
     JuntoOverlay.showLoader(context);
     try {
@@ -103,8 +103,7 @@ class CreateActionsState extends State<CreateActions> {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(45),
         child: CreateActionsAppbar(
-          // onCreateTap: _createExpression,
-          onCreateTap: null,
+           onCreateTap: _createExpression,
         ),
       ),
       body: ListView(
