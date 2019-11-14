@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/utils/utils.dart';
 
 /// Base class for posting an expression to the server
 class CentralizedExpression {
@@ -188,7 +189,7 @@ class CentralizedExpressionResponse {
         json['type'],
         json['expression_data'],
       ),
-      createdAt: DateTime.parse(
+      createdAt: RFC3339.parseRfc3339(
         json['created_at'],
       ),
       numberComments: json['comments'] ?? 0,

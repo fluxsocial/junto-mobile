@@ -9,7 +9,7 @@ import 'package:junto_beta_mobile/screens/create/create_templates/photo.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/shortform.dart';
 
 class JuntoCreate extends StatefulWidget {
-  const JuntoCreate(this.expressionLayer, {this.address});
+  const JuntoCreate(this.expressionLayer, {@required this.address});
 
   final String expressionLayer;
   final String address;

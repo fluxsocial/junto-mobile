@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
 
 // This widget is the bottom navigation on all of the main screens. Members can
@@ -22,36 +21,6 @@ class BottomNav extends StatefulWidget {
 }
 
 class BottomNavState extends State<BottomNav> {
-  _navCreate() {
-    Navigator.of(context).push(
-      PageRouteBuilder<dynamic>(
-        pageBuilder: (
-          BuildContext context,
-          Animation<double> animation,
-          Animation<double> secondaryAnimation,
-        ) {
-          return const JuntoCreate(
-            'collective',
-          );
-        },
-        transitionsBuilder: (
-          BuildContext context,
-          Animation<double> animation,
-          Animation<double> secondaryAnimation,
-          Widget child,
-        ) {
-          return FadeTransition(
-            opacity: animation,
-            child: child,
-          );
-        },
-        transitionDuration: const Duration(
-          milliseconds: 200,
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -93,6 +62,7 @@ class BottomNavState extends State<BottomNav> {
                       ) {
                         return const JuntoCreate(
                           'collective',
+                          address: 'eeb72aa1-07f9-b304-f8e8-f58bbf7c5f93',
                         );
                       },
                       transitionsBuilder: (
