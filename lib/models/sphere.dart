@@ -1,5 +1,6 @@
 import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:meta/meta.dart';
 
 class Sphere {
@@ -148,7 +149,7 @@ class CentralizedSphereResponse {
     return CentralizedSphereResponse(
       address: json['address'],
       creator: json['creator'],
-      createdAt: DateTime.parse(json['created_at']),
+      createdAt: RFC3339.parseRfc3339(json['created_at']),
       privacy: json['privacy'],
       groupType: json['group_type'],
       groupData: GroupDataSphere.fromJson(json['group_data']),
