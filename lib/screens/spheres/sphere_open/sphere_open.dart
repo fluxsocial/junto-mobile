@@ -38,6 +38,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
 
   final GlobalKey<SphereOpenState> _keyFlexibleSpace =
       GlobalKey<SphereOpenState>();
+  final ValueNotifier<int> _memberLength = ValueNotifier<int>(0);
 
   @override
   void initState() {
@@ -86,48 +87,38 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   }
 
   Future<void> _getMembers() async {
+    try {
+      JuntoOverlay.showLoader(context);
+      final List<Users> _members =
+          await Provider.of<GroupRepo>(context).getGroupMembers(
+        widget.group.address,
+      );
+      JuntoOverlay.hide();
+      _memberLength.value = _members.length;
       Navigator.push(
         context,
         CupertinoPageRoute<dynamic>(
           builder: (BuildContext context) {
             return SphereOpenMembers(
               group: widget.group,
-              users: [],
+              users: _members,
             );
           },
         ),
-      );    
-    // try {
-    //   JuntoOverlay.showLoader(context);
-    //   final List<Users> _members =
-    //       await Provider.of<GroupRepo>(context).getGroupMembers(
-    //     widget.group.address,
-    //   );
-    //   JuntoOverlay.hide();
-    //   Navigator.push(
-    //     context,
-    //     CupertinoPageRoute<dynamic>(
-    //       builder: (BuildContext context) {
-    //         return SphereOpenMembers(
-    //           group: widget.group,
-    //           users: _members,
-    //         );
-    //       },
-    //     ),
-    //   );
-    // } on JuntoException catch (error) {
-    //   JuntoOverlay.hide();
-    //   JuntoDialog.showJuntoDialog(
-    //     context,
-    //     error.message,
-    //     <Widget>[
-    //       FlatButton(
-    //         onPressed: () => Navigator.pop(context),
-    //         child: const Text('Ok'),
-    //       )
-    //     ],
-    //   );
-    // }
+      );
+    } on JuntoException catch (error) {
+      JuntoOverlay.hide();
+      JuntoDialog.showJuntoDialog(
+        context,
+        error.message,
+        <Widget>[
+          FlatButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Ok'),
+          )
+        ],
+      );
+    }
   }
 
   final List<String> _tabs = <String>['About', 'Discussion', 'Events'];
@@ -193,31 +184,24 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                   collapseMode: CollapseMode.pin,
                   background: Column(
                     children: <Widget>[
-                      widget.group.groupData.photo == ''
-                          ? Container(
-                              height: MediaQuery.of(context).size.height * .3,
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.bottomLeft,
-                                  end: Alignment.topRight,
-                                  stops: <double>[0.2, 0.9],
-                                  colors: <Color>[
-                                    Theme.of(context).colorScheme.secondary,
-                                    Theme.of(context).colorScheme.primary
-                                  ],
-                                ),
-                              ),
-                              alignment: Alignment.center,
-                              child: Icon(CustomIcons.spheres,
-                                  size: 60,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary),
-                            )
-                          : Container(
-                              height: MediaQuery.of(context).size.height * .3,
-                              width: MediaQuery.of(context).size.width,
-                              child: Image.asset(widget.group.groupData.photo,
-                                  fit: BoxFit.cover)),
+                      Container(
+                        height: MediaQuery.of(context).size.height * .3,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.bottomLeft,
+                            end: Alignment.topRight,
+                            stops: const <double>[0.2, 0.9],
+                            colors: <Color>[
+                              Theme.of(context).colorScheme.secondary,
+                              Theme.of(context).colorScheme.primary
+                            ],
+                          ),
+                        ),
+                        alignment: Alignment.center,
+                        child: Icon(CustomIcons.spheres,
+                            size: 60,
+                            color: Theme.of(context).colorScheme.onPrimary),
+                      ),
                       Container(
                         key: _keyFlexibleSpace,
                         padding: const EdgeInsets.symmetric(
@@ -275,14 +259,16 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                     labelColor: Theme.of(context).primaryColorDark,
                     labelStyle: Theme.of(context).textTheme.subhead,
                     indicatorWeight: 0.0001,
-                    tabs: _tabs
-                        .map((String name) => Container(
-                            margin: const EdgeInsets.only(right: 24),
-                            color: Theme.of(context).colorScheme.background,
-                            child: Tab(
-                              text: name,
-                            )))
-                        .toList(),
+                    tabs: <Widget>[
+                      for (String name in _tabs)
+                        Container(
+                          margin: const EdgeInsets.only(right: 24),
+                          color: Theme.of(context).colorScheme.background,
+                          child: Tab(
+                            text: name,
+                          ),
+                        ),
+                    ],
                   ),
                 ),
               )
@@ -315,7 +301,14 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
             children: <Widget>[
               GestureDetector(
                 onTap: () => _getMembers(),
-                child: const MemberRow(),
+                child: ValueListenableBuilder<int>(
+                  valueListenable: _memberLength,
+                  builder: (BuildContext context, int value, _) {
+                    return MemberRow(
+                      membersLength: value,
+                    );
+                  },
+                ),
               )
             ],
           ),
@@ -481,7 +474,9 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
 class MemberRow extends StatelessWidget {
   const MemberRow({
     Key key,
+    @required this.membersLength,
   }) : super(key: key);
+  final int membersLength;
 
   @override
   Widget build(BuildContext context) {
@@ -567,8 +562,10 @@ class MemberRow extends StatelessWidget {
           ),
           const SizedBox(height: 5),
           Container(
-            child:
-                Text('49 members', style: Theme.of(context).textTheme.subtitle),
+            child: Text(
+              '$membersLength members',
+              style: Theme.of(context).textTheme.subtitle,
+            ),
           ),
         ],
       ),
@@ -631,7 +628,7 @@ class __PrincipleListingState extends State<_PrincipleListing> {
     } else {
       return ListView.builder(
         shrinkWrap: true,
-        physics: ClampingScrollPhysics(),
+        physics: const ClampingScrollPhysics(),
         itemCount: widget.data.length,
         itemBuilder: (BuildContext context, int index) {
           return _PrincipleItem(
