@@ -23,7 +23,7 @@ class Collective {
 
   /// Address of the [Collective] on the server
   final String address;
-
+ 
   /// UUID of the [Collective] creator
   final String creator;
 
