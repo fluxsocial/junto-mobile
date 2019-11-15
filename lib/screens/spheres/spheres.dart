@@ -52,134 +52,6 @@ class JuntoSpheresState extends State<JuntoSpheres> with ListDistinct {
     );
   }
 
-  List _spheres = [
-    Group(
-      address: '',
-      createdAt: DateTime.now(),
-      creator: null,
-      privacy: 'public',
-      groupType: 'sphere',
-      groupData: GroupDataSphere(
-          description:
-              'Ecstatic dance is a space for movement, rhythm, non-judgment, and '
-              'expression in its purest form. Come groove out with us!',
-          name: 'Ecstatic Dance',
-          photo: 'assets/images/junto-mobile__ecstatic.png',
-          principles: '',
-          sphereHandle: 'ecstaticdance'),
-    ),
-    Group(
-      address: '',
-      createdAt: DateTime.now(),
-      creator: null,
-      privacy: 'public',
-      groupType: 'sphere',
-      groupData: GroupDataSphere(
-          description: 'Ensemble of NYC-based musicians',
-          name: 'Music Crew NYC',
-          photo: '',
-          principles: '',
-          sphereHandle: 'jamsnyc'),
-    ),
-    Group(
-      address: '',
-      createdAt: DateTime.now(),
-      creator: null,
-      privacy: 'public',
-      groupType: 'sphere',
-      groupData: GroupDataSphere(
-          description: 'Basketball crew',
-          name: 'Hoops 🏀',
-          photo: '',
-          principles: '',
-          sphereHandle: 'hoops'),
-    ),
-    Group(
-      address: '',
-      createdAt: DateTime.now(),
-      creator: null,
-      privacy: 'public',
-      groupType: 'sphere',
-      groupData: GroupDataSphere(
-          description: 'in the pursuit of presence',
-          name: 'Zen',
-          photo: 'assets/images/junto-mobile__stillmind.png',
-          principles: '',
-          sphereHandle: 'zen'),
-    ),
-    Group(
-      address: '',
-      createdAt: DateTime.now(),
-      creator: null,
-      privacy: 'public',
-      groupType: 'sphere',
-      groupData: GroupDataSphere(
-          description: 'Core team happenings',
-          name: 'JUNTO Core',
-          photo: '',
-          principles: '',
-          sphereHandle: 'junto'),
-    ),
-    Group(
-      address: '',
-      createdAt: DateTime.now(),
-      creator: null,
-      privacy: 'public',
-      groupType: 'sphere',
-      groupData: GroupDataSphere(
-          description: 'A more human internet',
-          name: 'Holochain',
-          photo: 'assets/images/junto-mobile__expression--photo.png',
-          principles: '',
-          sphereHandle: 'holochain'),
-    ),
-    Group(
-      address: '',
-      createdAt: DateTime.now(),
-      creator: null,
-      privacy: 'public',
-      groupType: 'sphere',
-      groupData: GroupDataSphere(
-          description:
-              'Plant based medicines, shamanism, holistic spirutuality, and more.',
-          name: 'plantbased',
-          photo: '',
-          principles: '',
-          sphereHandle: 'plantbased'),
-    ),
-    Group(
-      address: '',
-      createdAt: DateTime.now(),
-      creator: null,
-      privacy: 'public',
-      groupType: 'sphere',
-      groupData: GroupDataSphere(
-          description: 'For UX/UI designers and architects',
-          name: 'UX/UI Design',
-          photo: '',
-          principles: '',
-          sphereHandle: 'uxdesignn'),
-    ),
-    Group(
-      address: '',
-      createdAt: DateTime.now(),
-      creator: null,
-      privacy: 'public',
-      groupType: 'sphere',
-      groupData: GroupDataSphere(
-          description: 'Come to wash Sq Park for latest happenings!',
-          name: 'Chess NYC',
-          photo: '',
-          principles: '',
-          sphereHandle: 'chessnyc'),
-    ),
-  ];
-
-  @override
-  void initState() {
-    super.initState();
-    print(_spheres);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -187,50 +59,40 @@ class JuntoSpheresState extends State<JuntoSpheres> with ListDistinct {
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: ListView(
         children: <Widget>[
-          SpherePreview(group: _spheres[0]),
-          SpherePreview(group: _spheres[1]),
-          SpherePreview(group: _spheres[2]),
-          SpherePreview(group: _spheres[3]),
-          SpherePreview(group: _spheres[4]),
-          SpherePreview(group: _spheres[5]),
-          SpherePreview(group: _spheres[6]),
-          SpherePreview(group: _spheres[7]),
-
-          SpherePreview(group: _spheres[8]),
-          // FutureBuilder<UserGroupsResponse>(
-          //   future: getUserGroups(),
-          //   builder: (BuildContext context,
-          //       AsyncSnapshot<UserGroupsResponse> snapshot) {
-          //     if (snapshot.hasError) {
-          //       return buildError();
-          //     }
-          //     if (snapshot.hasData && !snapshot.hasError) {
-          //       final List<Group> ownedGroups = snapshot.data.owned;
-          //       final List<Group> associatedGroups = snapshot.data.associated;
-          //       final List<Group> userGroups =
-          //           distinct<Group>(ownedGroups, associatedGroups)
-          //               .where((Group group) => group.groupType == 'Sphere')
-          //               .toList();
-          //       return ListView(
-          //         shrinkWrap: true,
-          //         physics: const ClampingScrollPhysics(),
-          //         children: <Widget>[
-          //           for (Group group in userGroups)
-          //             SpherePreview(
-          //               group: group,
-          //             ),
-          //         ],
-          //       );
-          //     }
-          //     return Container(
-          //       height: 100.0,
-          //       width: 100.0,
-          //       child: const Center(
-          //         child: CircularProgressIndicator(),
-          //       ),
-          //     );
-          //   },
-          // ),
+           FutureBuilder<UserGroupsResponse>(
+             future: getUserGroups(),
+             builder: (BuildContext context,
+                 AsyncSnapshot<UserGroupsResponse> snapshot) {
+               if (snapshot.hasError) {
+                 return buildError();
+               }
+               if (snapshot.hasData && !snapshot.hasError) {
+                 final List<Group> ownedGroups = snapshot.data.owned;
+                 final List<Group> associatedGroups = snapshot.data.associated;
+                 final List<Group> userGroups =
+                     distinct<Group>(ownedGroups, associatedGroups)
+                         .where((Group group) => group.groupType == 'Sphere')
+                         .toList();
+                 return ListView(
+                   shrinkWrap: true,
+                   physics: const ClampingScrollPhysics(),
+                   children: <Widget>[
+                     for (Group group in userGroups)
+                       SpherePreview(
+                         group: group,
+                       ),
+                   ],
+                 );
+               }
+               return Container(
+                 height: 100.0,
+                 width: 100.0,
+                 child: const Center(
+                   child: CircularProgressIndicator(),
+                 ),
+               );
+             },
+           ),
         ],
       ),
     );
