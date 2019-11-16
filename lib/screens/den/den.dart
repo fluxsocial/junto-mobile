@@ -33,7 +33,7 @@ class JuntoDenState extends State<JuntoDen> {
 
   Future<UserData> _retrieveUserInfo() async {
     final UserRepo _userProvider = Provider.of<UserRepo>(context);
-    return userMemoizer.runOnce(()=>  _userProvider.readLocalUser());
+    return userMemoizer.runOnce(() => _userProvider.readLocalUser());
   }
 
   @override

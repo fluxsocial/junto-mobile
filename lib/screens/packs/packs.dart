@@ -77,7 +77,6 @@ class JuntoPacksState extends State<JuntoPacks> with ListDistinct {
         PackPreview(group: _packs[11]),
         PackPreview(group: _packs[12]),
         PackPreview(group: _packs[13]),
-
       ]),
       // FutureBuilder<UserGroupsResponse>(
       //   future: getUserPacks(),

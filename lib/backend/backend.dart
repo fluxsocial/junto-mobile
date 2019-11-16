@@ -29,7 +29,8 @@ class Backend {
     final AuthenticationServiceCentralized authService =
         AuthenticationServiceCentralized(client);
     final UserServiceCentralized userService = UserServiceCentralized(client);
-    final ExpressionService expressionService = MockExpressionService(); // ExpressionServiceCentralized(client);
+    final ExpressionService expressionService =
+        MockExpressionService(); // ExpressionServiceCentralized(client);
     final GroupService groupService = GroupServiceCentralized(client);
     return Backend._(
       searchProvider: SearchProviderCentralized(client),

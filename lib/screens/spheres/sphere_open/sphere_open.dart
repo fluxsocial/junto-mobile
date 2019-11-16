@@ -440,22 +440,39 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   }
 
   Widget _buildExpressionView() {
-    return ListView(
-      physics: const ClampingScrollPhysics(),
-      children: <Widget>[
-        ExpressionPreview(
-          expression: expressions[0],
-        ),
-        ExpressionPreview(
-          expression: expressions[1],
-        ),
-        ExpressionPreview(
-          expression: expressions[2],
-        ),
-        ExpressionPreview(
-          expression: expressions[3],
-        )
-      ],
+    return FutureBuilder<List<CentralizedExpressionResponse>>(
+      future: Provider.of<GroupRepo>(context)
+          .getGroupExpressions(widget.group.address, null),
+      builder: (
+        BuildContext context,
+        AsyncSnapshot<List<CentralizedExpressionResponse>> snapshot,
+      ) {
+        if (snapshot.hasError)
+          return Container(
+            height: 400,
+            alignment: Alignment.center,
+            child: const Text(
+              'Oops, something is wrong!',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+            ),
+          );
+        if (snapshot.hasData && !snapshot.hasError)
+          return ListView.builder(
+            itemCount: snapshot.data.length,
+            itemBuilder: (BuildContext context, int index) {
+              return ExpressionPreview(
+                expression: snapshot.data[index],
+              );
+            },
+          );
+        return Container(
+          height: 100.0,
+          width: 100.0,
+          child: const Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      },
     );
   }
 

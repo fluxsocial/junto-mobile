@@ -103,7 +103,7 @@ class CreateActionsState extends State<CreateActions> {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(45),
         child: CreateActionsAppbar(
-           onCreateTap: _createExpression,
+          onCreateTap: _createExpression,
         ),
       ),
       body: ListView(

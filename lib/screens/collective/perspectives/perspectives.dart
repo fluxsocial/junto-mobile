@@ -99,8 +99,8 @@ class Perspectives extends StatelessWidget {
 
   Widget _buildUserPerspectives(BuildContext context) {
     return FutureBuilder<List<CentralizedPerspective>>(
-      future: Provider.of<UserRepo>(context)
-          .getUserPerspective(profile?.address),
+      future:
+          Provider.of<UserRepo>(context).getUserPerspective(profile?.address),
       builder: (
         BuildContext context,
         AsyncSnapshot<List<CentralizedPerspective>> snapshot,

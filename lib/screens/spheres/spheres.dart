@@ -52,47 +52,46 @@ class JuntoSpheresState extends State<JuntoSpheres> with ListDistinct {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: ListView(
         children: <Widget>[
-           FutureBuilder<UserGroupsResponse>(
-             future: getUserGroups(),
-             builder: (BuildContext context,
-                 AsyncSnapshot<UserGroupsResponse> snapshot) {
-               if (snapshot.hasError) {
-                 return buildError();
-               }
-               if (snapshot.hasData && !snapshot.hasError) {
-                 final List<Group> ownedGroups = snapshot.data.owned;
-                 final List<Group> associatedGroups = snapshot.data.associated;
-                 final List<Group> userGroups =
-                     distinct<Group>(ownedGroups, associatedGroups)
-                         .where((Group group) => group.groupType == 'Sphere')
-                         .toList();
-                 return ListView(
-                   shrinkWrap: true,
-                   physics: const ClampingScrollPhysics(),
-                   children: <Widget>[
-                     for (Group group in userGroups)
-                       SpherePreview(
-                         group: group,
-                       ),
-                   ],
-                 );
-               }
-               return Container(
-                 height: 100.0,
-                 width: 100.0,
-                 child: const Center(
-                   child: CircularProgressIndicator(),
-                 ),
-               );
-             },
-           ),
+          FutureBuilder<UserGroupsResponse>(
+            future: getUserGroups(),
+            builder: (BuildContext context,
+                AsyncSnapshot<UserGroupsResponse> snapshot) {
+              if (snapshot.hasError) {
+                return buildError();
+              }
+              if (snapshot.hasData && !snapshot.hasError) {
+                final List<Group> ownedGroups = snapshot.data.owned;
+                final List<Group> associatedGroups = snapshot.data.associated;
+                final List<Group> userGroups =
+                    distinct<Group>(ownedGroups, associatedGroups)
+                        .where((Group group) => group.groupType == 'Sphere')
+                        .toList();
+                return ListView(
+                  shrinkWrap: true,
+                  physics: const ClampingScrollPhysics(),
+                  children: <Widget>[
+                    for (Group group in userGroups)
+                      SpherePreview(
+                        group: group,
+                      ),
+                  ],
+                );
+              }
+              return Container(
+                height: 100.0,
+                width: 100.0,
+                child: const Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            },
+          ),
         ],
       ),
     );

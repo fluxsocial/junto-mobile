@@ -85,3 +85,4 @@ android/app/release/
 lib/app/api.dart
 lib/api.dart
 ios/Runner.xcodeproj/project.pbxproj
+ios/Flutter/Flutter.podspec
