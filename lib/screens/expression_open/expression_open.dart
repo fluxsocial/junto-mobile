@@ -6,6 +6,7 @@ import 'package:giphy_client/giphy_client.dart';
 import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_appbar.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_bottom.dart';
@@ -14,7 +15,9 @@ import 'package:junto_beta_mobile/screens/expression_open/expressions/event_open
 import 'package:junto_beta_mobile/screens/expression_open/expressions/longform_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/photo_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/shortform_open.dart';
+import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/widgets/previews/comment_preview.dart';
+import 'package:provider/provider.dart';
 
 class ExpressionOpen extends StatefulWidget {
   const ExpressionOpen(this.expression);
@@ -94,84 +97,77 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   Future<void> _showPrivacyModalSheet() async {
     await showModalBottomSheet(
       context: context,
-      builder: (BuildContext context) =>
-          Container(
-            color: Colors.transparent,
-            child: Container(
-              height: MediaQuery
-                  .of(context)
-                  .size
-                  .height * .3,
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: Theme
-                    .of(context)
-                    .colorScheme
-                    .background,
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(10),
-                  topRight: Radius.circular(10),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  const SizedBox(height: 10),
-                  ListTile(
-                    onTap: () {
-                      setState(() {
-                        _commentPrivacy = 'public';
-                      });
-                      Navigator.pop(context);
-                    },
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const <Widget>[
-                        Text(
-                          'Public',
-                          style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
-                        ),
-                        SizedBox(height: 5),
-                        Text(
-                          'Your comment will visible to everyone who can see '
-                              'this expression.',
-                          style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-                        )
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  ListTile(
-                    onTap: () {
-                      setState(() {
-                        _commentPrivacy = 'private';
-                      });
-                      Navigator.pop(context);
-                    },
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const <Widget>[
-                        Text(
-                          'Private',
-                          style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
-                        ),
-                        SizedBox(height: 5),
-                        Text(
-                          'Your comment will only be visible to the creator of '
-                              'this expression.',
-                          style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+      builder: (BuildContext context) => Container(
+        color: Colors.transparent,
+        child: Container(
+          height: MediaQuery.of(context).size.height * .3,
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.background,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(10),
+              topRight: Radius.circular(10),
             ),
           ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              const SizedBox(height: 10),
+              ListTile(
+                onTap: () {
+                  setState(() {
+                    _commentPrivacy = 'public';
+                  });
+                  Navigator.pop(context);
+                },
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const <Widget>[
+                    Text(
+                      'Public',
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      'Your comment will visible to everyone who can see '
+                      'this expression.',
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                    )
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+              ListTile(
+                onTap: () {
+                  setState(() {
+                    _commentPrivacy = 'private';
+                  });
+                  Navigator.pop(context);
+                },
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const <Widget>[
+                    Text(
+                      'Private',
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      'Your comment will only be visible to the creator of '
+                      'this expression.',
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
 
     _focusTextField();
@@ -197,6 +193,44 @@ class ExpressionOpenState extends State<ExpressionOpen> {
     }
   }
 
+  Future<void> _createComment() async {
+    try {
+      final CentralizedExpressionResponse response =
+          await Provider.of<ExpressionRepo>(context).postCommentExpression(
+        widget.expression.address,
+        'LongForm',
+        CentralizedLongFormExpression(
+          title: 'Expression Comment',
+          body: commentController.value.text,
+        ).toMap(),
+      );
+      commentController.clear();
+      JuntoDialog.showJuntoDialog(
+        context,
+        'Comment Created',
+        <Widget>[
+          FlatButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Ok'),
+          ),
+        ],
+      );
+      print(response.address);
+    } catch (error) {
+      debugPrint('Error posting comment $error');
+      JuntoDialog.showJuntoDialog(
+        context,
+        'Error posting comment',
+        <Widget>[
+          FlatButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Ok'),
+          ),
+        ],
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -204,9 +238,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
         preferredSize: const Size.fromHeight(45.0),
         child: ExpressionOpenAppbar(),
       ),
-      backgroundColor: Theme
-          .of(context)
-          .backgroundColor,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: Column(
         children: <Widget>[
           Expanded(
@@ -228,24 +260,18 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                           Text(
                             'Show replies (${comments.length})',
                             style: TextStyle(
-                                color: Theme
-                                    .of(context)
-                                    .primaryColor,
+                                color: Theme.of(context).primaryColor,
                                 fontSize: 12),
                           ),
                           const SizedBox(width: 5),
                           if (commentsVisible == false)
                             Icon(Icons.keyboard_arrow_down,
                                 size: 14,
-                                color: Theme
-                                    .of(context)
-                                    .primaryColor),
+                                color: Theme.of(context).primaryColor),
                           if (commentsVisible != false)
                             Icon(Icons.keyboard_arrow_up,
                                 size: 17,
-                                color: Theme
-                                    .of(context)
-                                    .primaryColor),
+                                color: Theme.of(context).primaryColor),
                         ],
                       ),
                     ),
@@ -267,9 +293,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
             ),
           ),
           _BottomCommentBar(
-            postComment: () {
-              print('Clicked');
-            },
+            postComment: _createComment,
             commentController: commentController,
             commentPrivacy: _commentPrivacy,
             focusNode: _focusNode,
@@ -312,7 +336,7 @@ enum MessageType { regular, gif }
 
 class _BottomCommentBarState extends State<_BottomCommentBar> {
   final ValueNotifier<MessageType> _type =
-  ValueNotifier<MessageType>(MessageType.regular);
+      ValueNotifier<MessageType>(MessageType.regular);
   String selectedUrl;
 
   Widget _createCommentIcon(bool createComment) {
@@ -322,19 +346,14 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
         child: Icon(
           Icons.send,
           size: 20,
-          color: Theme
-              .of(context)
-              .colorScheme
-              .primary,
+          color: Theme.of(context).colorScheme.primary,
         ),
       );
     } else {
       return Icon(
         Icons.send,
         size: 20,
-        color: Theme
-            .of(context)
-            .primaryColorLight,
+        color: Theme.of(context).primaryColorLight,
       );
     }
   }
@@ -349,16 +368,11 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
           vertical: 5,
         ),
         decoration: BoxDecoration(
-          color: Theme
-              .of(context)
-              .colorScheme
-              .background,
+          color: Theme.of(context).colorScheme.background,
           border: Border(
             top: BorderSide(
               width: .75,
-              color: Theme
-                  .of(context)
-                  .dividerColor,
+              color: Theme.of(context).dividerColor,
             ),
           ),
         ),
@@ -408,15 +422,9 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Text(widget.commentPrivacy,
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .body2),
+                            style: Theme.of(context).textTheme.body2),
                         Icon(Icons.keyboard_arrow_down,
-                            size: 14,
-                            color: Theme
-                                .of(context)
-                                .primaryColorDark)
+                            size: 14, color: Theme.of(context).primaryColorDark)
                       ],
                     ),
                   ),
@@ -427,19 +435,14 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
                     await showModalBottomSheet(
                       context: context,
                       isScrollControlled: false,
-                      backgroundColor:
-                      Theme
-                          .of(context)
-                          .colorScheme
-                          .background,
-                      builder: (BuildContext context) =>
-                          _GiphyPanel(
-                            onGifSelected: (String selected) {
-                              selectedUrl = selected;
-                              _type.value = MessageType.gif;
-                              widget.onGifSelected(selected);
-                            },
-                          ),
+                      backgroundColor: Theme.of(context).colorScheme.background,
+                      builder: (BuildContext context) => _GiphyPanel(
+                        onGifSelected: (String selected) {
+                          selectedUrl = selected;
+                          _type.value = MessageType.gif;
+                          widget.onGifSelected(selected);
+                        },
+                      ),
                     );
                   },
                   child: const Text('GIF'),
@@ -472,27 +475,15 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
           child: Container(
             padding: const EdgeInsets.only(left: 15),
             decoration: BoxDecoration(
-              color: Theme
-                  .of(context)
-                  .colorScheme
-                  .surface,
+              color: Theme.of(context).colorScheme.surface,
               borderRadius: BorderRadius.circular(25),
             ),
             width: widget.focusNode.hasFocus
-                ? MediaQuery
-                .of(context)
-                .size
-                .width - 100
-                : MediaQuery
-                .of(context)
-                .size
-                .width - 68,
+                ? MediaQuery.of(context).size.width - 100
+                : MediaQuery.of(context).size.width - 68,
             constraints: const BoxConstraints(maxHeight: 180),
             child: Container(
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width - 140,
+              width: MediaQuery.of(context).size.width - 140,
               child: TextField(
                 focusNode: widget.focusNode,
                 controller: widget.commentController,
@@ -503,10 +494,7 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
                 maxLines: null,
                 cursorColor: JuntoPalette.juntoGrey,
                 cursorWidth: 2,
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .caption,
+                style: Theme.of(context).textTheme.caption,
                 textInputAction: TextInputAction.newline,
               ),
             ),
@@ -568,16 +556,10 @@ class _GiphyPanelState extends State<_GiphyPanel> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery
-          .of(context)
-          .size
-          .height,
+      height: MediaQuery.of(context).size.height,
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: Theme
-            .of(context)
-            .colorScheme
-            .background,
+        color: Theme.of(context).colorScheme.background,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(10),
           topRight: Radius.circular(10),
@@ -614,7 +596,7 @@ class _GiphyPanelState extends State<_GiphyPanel> {
                   final GiphyCollection _data = snapshot.data;
                   return SliverGrid(
                     delegate: SliverChildBuilderDelegate(
-                          (BuildContext context, int index) {
+                      (BuildContext context, int index) {
                         final GiphyGif _gifs = _data.data[index];
 
                         return InkWell(
@@ -636,7 +618,7 @@ class _GiphyPanelState extends State<_GiphyPanel> {
                       childCount: _data.data.length,
                     ),
                     gridDelegate:
-                    const SliverGridDelegateWithFixedCrossAxisCount(
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 2.0,
                       mainAxisSpacing: 2.0,
