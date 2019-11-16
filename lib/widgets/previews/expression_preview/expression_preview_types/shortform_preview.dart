@@ -72,6 +72,7 @@ class ShortformPreviewState extends State<ShortformPreview> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
         gradient: LinearGradient(
           begin: Alignment.bottomLeft,
           end: Alignment.topRight,
@@ -91,9 +92,13 @@ class ShortformPreviewState extends State<ShortformPreview> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(shortformBody,
-              textAlign: TextAlign.center,
-              style: JuntoStyles.shortformPreviewTitle),
+          Text(
+            shortformBody,
+            maxLines: 7,
+            textAlign: TextAlign.center,
+            style: JuntoStyles.shortformPreviewTitle,
+            overflow: TextOverflow.ellipsis,
+          ),
         ],
       ),
     );

@@ -24,7 +24,13 @@ class ExpressionPreviewTop extends StatelessWidget {
     final String profilePicture = expression.creator.profilePicture;
 
     return Container(
-      padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
+      padding: const EdgeInsets.only(
+          // top: 10,
+          // bottom: 10,
+          // left: 10,
+          // right: 10
+          ),
+      // padding: EdgeInsets.only(top: 5, bottom: 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -54,49 +60,55 @@ class ExpressionPreviewTop extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  // profile picture
-                  ClipOval(
-                    child: Image.asset(
-                      profilePicture.isEmpty
-                          ? 'assets/images/junto-mobile__junto.png'
-                          : profilePicture,
-                      height: 38.0,
-                      width: 38.0,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  const SizedBox(width: 10),
+                  // // profile picture
+                  // ClipOval(
+                  //   child: Image.asset(
+                  //     profilePicture.isEmpty
+                  //         ? 'assets/images/junto-mobile__junto.png'
+                  //         : profilePicture,
+                  //     height: 28.0,
+                  //     width: 28.0,
+                  //     fit: BoxFit.cover,
+                  //   ),
+                  // ),
+                  // const SizedBox(width: 5),
                   Container(
-                    child: Text(username.toLowerCase(),
-                        style: Theme.of(context).textTheme.subhead),
+                    child: Text(
+                      username.toLowerCase(),
+                      style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w700,
+                          color: Theme.of(context).primaryColor),
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   )
                 ],
               ),
             ),
           ),
-          Row(
-            children: <Widget>[
-              GestureDetector(
-                onTap: () {
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (BuildContext context) => Container(
-                        color: Colors.transparent,
-                        child: ExpressionActionItems()),
-                  );
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(5),
-                  color: Colors.transparent,
-                  child: Icon(
-                    Icons.keyboard_arrow_down,
-                    color: Theme.of(context).primaryColorLight,
-                    size: 24,
-                  ),
-                ),
-              )
-            ],
-          )
+          // Row(
+          //   children: <Widget>[
+          //     GestureDetector(
+          //       onTap: () {
+          //         showModalBottomSheet(
+          //           context: context,
+          //           builder: (BuildContext context) => Container(
+          //               color: Colors.transparent,
+          //               child: ExpressionActionItems()),
+          //         );
+          //       },
+          //       child: Container(
+          //         padding: const EdgeInsets.all(5),
+          //         color: Colors.transparent,
+          //         child: Icon(
+          //           Icons.keyboard_arrow_down,
+          //           color: Theme.of(context).primaryColorLight,
+          //           size: 24,
+          //         ),
+          //       ),
+          //     )
+          //   ],
+          // )
         ],
       ),
     );

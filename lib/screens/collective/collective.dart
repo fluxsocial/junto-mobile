@@ -105,21 +105,42 @@ class JuntoCollectiveState extends State<JuntoCollective> {
     );
   }
 
-  Widget _displayDegrees() {
-    if (_perspective == 'Degrees of separation') {
-      return DegreesOfSeparation(
-        _changeDegree,
-        _oneDegreeColor,
-        _twoDegreesColor,
-        _threeDegreesColor,
-        _fourDegreesColor,
-        _fiveDegreesColor,
-        _sixDegreesColor,
-      );
-    } else {
-      return const SizedBox();
-    }
-  }
+  // Widget _displayDegrees() {
+  //   if (_perspective == 'Degrees of separation') {
+  //     return DegreesOfSeparation(
+  //       _changeDegree,
+  //       _oneDegreeColor,
+  //       _twoDegreesColor,
+  //       _threeDegreesColor,
+  //       _fourDegreesColor,
+  //       _fiveDegreesColor,
+  //       _sixDegreesColor,
+  //     );
+  //   } else {
+  //     return const SizedBox();
+  //   }
+  // }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   return Container(
+  //     color: Theme.of(context).colorScheme.background,
+  //     child: ListView(
+  //       controller: widget.controller,
+  //       children: <Widget>[
+  //         /// Degrees of Separation Widget rendered only when on the 'Degrees of separation'
+  //         /// perspective
+  //         // _displayDegrees(),
+
+  //         for (int index = 0; index < initialData.length + 1; index++)
+  //           if (index == initialData.length)
+  //             _buildLoadExpressions()
+  //           else
+  //             ExpressionPreview(expression: initialData[index])
+  //       ],
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -128,15 +149,40 @@ class JuntoCollectiveState extends State<JuntoCollective> {
       child: ListView(
         controller: widget.controller,
         children: <Widget>[
-          /// Degrees of Separation Widget rendered only when on the 'Degrees of separation'
-          /// perspective
-          _displayDegrees(),
-
-          for (int index = 0; index < initialData.length + 1; index++)
-            if (index == initialData.length)
-              _buildLoadExpressions()
-            else
-              ExpressionPreview(expression: initialData[index])
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                width: MediaQuery.of(context).size.width * .5,
+                padding: EdgeInsets.only(left: 10, right: 5, top: 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    for (int index = 0; index < initialData.length + 1; index++)
+                      if (index == initialData.length)
+                        SizedBox()
+                      else if (index.isEven)
+                        ExpressionPreview(expression: initialData[index])
+                  ],
+                ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * .5,
+                padding: EdgeInsets.only(left: 5, right: 10, top: 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    for (int index = 0; index < initialData.length + 1; index++)
+                      if (index == initialData.length)
+                        SizedBox()
+                      else if (index.isOdd)
+                        ExpressionPreview(expression: initialData[index])
+                  ],
+                ),
+              ),
+            ],
+          )
         ],
       ),
     );
