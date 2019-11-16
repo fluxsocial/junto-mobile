@@ -456,15 +456,19 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
             ),
           );
-        if (snapshot.hasData && !snapshot.hasError)
-          return ListView.builder(
-            itemCount: snapshot.data.length,
-            itemBuilder: (BuildContext context, int index) {
-              return ExpressionPreview(
-                expression: snapshot.data[index],
-              );
-            },
+        if (snapshot.hasData && !snapshot.hasError) {
+          return RefreshIndicator(
+            onRefresh: () async => setState(()=>print('refresh')),
+            child: ListView.builder(
+              itemCount: snapshot.data.length,
+              itemBuilder: (BuildContext context, int index) {
+                return ExpressionPreview(
+                  expression: snapshot.data[index],
+                );
+              },
+            ),
           );
+        }
         return Container(
           height: 100.0,
           width: 100.0,
