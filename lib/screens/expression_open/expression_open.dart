@@ -195,8 +195,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
 
   Future<void> _createComment() async {
     try {
-      final CentralizedExpressionResponse response =
-          await Provider.of<ExpressionRepo>(context).postCommentExpression(
+      await Provider.of<ExpressionRepo>(context).postCommentExpression(
         widget.expression.address,
         'LongForm',
         CentralizedLongFormExpression(
@@ -215,7 +214,6 @@ class ExpressionOpenState extends State<ExpressionOpen> {
           ),
         ],
       );
-      print(response.address);
     } catch (error) {
       debugPrint('Error posting comment $error');
       JuntoDialog.showJuntoDialog(

@@ -458,7 +458,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
           );
         if (snapshot.hasData && !snapshot.hasError) {
           return RefreshIndicator(
-            onRefresh: () async => setState(()=>print('refresh')),
+            onRefresh: () async => setState(() => print('refresh')),
             child: ListView.builder(
               itemCount: snapshot.data.length,
               itemBuilder: (BuildContext context, int index) {
