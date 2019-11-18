@@ -1,12 +1,12 @@
+import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/mock/mock_packs.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/widgets/previews/pack_preview.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
+import 'package:junto_beta_mobile/widgets/previews/pack_preview.dart';
 import 'package:provider/provider.dart';
-import 'package:async/async.dart' show AsyncMemoizer;
 
 // This class renders the screen of packs a user belongs to
 class JuntoPacks extends StatefulWidget {

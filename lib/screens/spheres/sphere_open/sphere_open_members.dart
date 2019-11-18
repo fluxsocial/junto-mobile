@@ -21,6 +21,7 @@ class SphereOpenMembers extends StatelessWidget {
 
   final List<Users> users;
   final Group group;
+
   static Route<dynamic> route(Group group, List<Users> users) {
     return CupertinoPageRoute<dynamic>(
       builder: (BuildContext context) {

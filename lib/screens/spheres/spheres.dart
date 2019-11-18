@@ -3,11 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
-import 'package:junto_beta_mobile/backend/mock/mock_sphere.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/widgets/previews/sphere_preview/sphere_preview.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
+import 'package:junto_beta_mobile/widgets/previews/sphere_preview/sphere_preview.dart';
 import 'package:provider/provider.dart';
 
 /// This class renders the main screen for Spheres. It includes a widget to

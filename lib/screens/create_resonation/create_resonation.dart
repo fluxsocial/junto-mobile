@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/create_resonation/create_resonation_appbar.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview_embed/expression_preview_embed.dart';

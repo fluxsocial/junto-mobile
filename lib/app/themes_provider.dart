@@ -3,6 +3,7 @@ import 'package:junto_beta_mobile/app/themes.dart';
 
 class JuntoThemesProvider with ChangeNotifier {
   JuntoThemesProvider(this.currentTheme);
+
   ThemeData currentTheme;
 
   getTheme() => currentTheme;

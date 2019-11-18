@@ -3,6 +3,7 @@ import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:provider/provider.dart';
+
 import 'create_perspective/create_perspective.dart';
 
 class Perspectives extends StatelessWidget {

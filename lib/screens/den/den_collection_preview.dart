@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-
+import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/screens/den/den_collection_open.dart';
 
 class DenCollectionPreview extends StatelessWidget {
