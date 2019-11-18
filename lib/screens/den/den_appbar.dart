@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
 
 class JuntoDenAppbar extends StatelessWidget {
   const JuntoDenAppbar({

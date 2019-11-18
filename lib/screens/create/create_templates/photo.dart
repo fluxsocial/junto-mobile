@@ -2,11 +2,11 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show PlatformException;
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
-import 'package:flutter/services.dart' show PlatformException;
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 

@@ -88,6 +88,7 @@ class CollectionResponse {
     @required this.nestedCollections,
     @required this.expressions,
   });
+
   factory CollectionResponse.fromMap(Map<String, dynamic> json) {
     return CollectionResponse._(
       collective: Collective.fromMap(json['collection']),

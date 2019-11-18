@@ -3,6 +3,7 @@ import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:provider/provider.dart';
+
 import 'create_perspective/create_perspective.dart';
 
 class Perspectives extends StatelessWidget {
@@ -99,8 +100,8 @@ class Perspectives extends StatelessWidget {
 
   Widget _buildUserPerspectives(BuildContext context) {
     return FutureBuilder<List<CentralizedPerspective>>(
-      future: Provider.of<UserRepo>(context)
-          .getUserPerspective(profile?.address),
+      future:
+          Provider.of<UserRepo>(context).getUserPerspective(profile?.address),
       builder: (
         BuildContext context,
         AsyncSnapshot<List<CentralizedPerspective>> snapshot,

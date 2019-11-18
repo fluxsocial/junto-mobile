@@ -78,7 +78,6 @@ class PackOpenAppbar extends StatelessWidget {
           ],
         ),
       ),
-
     );
   }
 }

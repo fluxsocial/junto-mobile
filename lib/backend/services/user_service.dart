@@ -146,7 +146,9 @@ class UserServiceCentralized implements UserService {
     final LocalStorage _storage = LocalStorage('user-details');
     final bool isReady = await _storage.ready;
     if (isReady) {
-      final UserData profile = UserData.fromMap(_storage.getItem('data'));
+      final UserData profile = UserData.fromMap(
+        json.decode(_storage.getItem('data')),
+      );
       return profile;
     }
     throw const JuntoException('Unable to read local user');

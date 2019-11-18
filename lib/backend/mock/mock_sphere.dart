@@ -42,7 +42,7 @@ class MockSphere with ChangeNotifier implements GroupService {
 
   @override
   Future<List<CentralizedExpressionResponse>> getGroupExpressions(
-      ExpressionQueryParams params) {
+      String groupAddress, ExpressionQueryParams params) {
     throw UnimplementedError();
   }
 }

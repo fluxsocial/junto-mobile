@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/utils/utils.dart';
 
 /// Object representing a group and a sphere. [groupType] determines the
 /// return type of [groupData]. Should [groupType] == 'Pack', [GroupDataPack]
@@ -16,7 +17,7 @@ class Group {
   factory Group.fromMap(Map<String, dynamic> json) => Group(
         address: json['address'],
         creator: json['creator'],
-        createdAt: DateTime.parse(json['created_at']),
+        createdAt: RFC3339.parseRfc3339(json['created_at']),
         privacy: json['privacy'],
         groupType: json['group_type'],
         groupData: json['group_type'] == 'Sphere'

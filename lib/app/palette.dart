@@ -9,6 +9,7 @@ class JuntoPalette {
   static const Color juntoFade = Color(0xffeeeeee);
   static const Color juntoPrimary = Color(0xFF307FAB);
   static const Color juntoPrimaryLight = Color(0xFF5EB6D5);
+
   // static const Color juntoSecondary = Color(0xff5E54D0);
   static const Color juntoSecondary = Color(0xFF635FAA);
   static const Color juntoSecondaryLight = Color(0xff5E54D0);

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
-import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
+import 'package:provider/provider.dart';
 
 class DenThemes extends StatelessWidget {
   @override

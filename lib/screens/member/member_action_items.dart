@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 // This component is used in ExpressionPreview and ExpressionOpen
 // as the 'more' icon is pressed to view the action items

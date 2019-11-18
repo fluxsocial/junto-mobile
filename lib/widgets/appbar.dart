@@ -3,16 +3,14 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
-import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives'
     '/create_perspective/create_perspective.dart' show SelectedUsers;
 import 'package:junto_beta_mobile/utils/utils.dart';
-import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
-import 'package:junto_beta_mobile/models/models.dart';
+import 'package:provider/provider.dart';
 
 // Junto app bar used throughout the main screens. Rendered in JuntoTemplate.
 class JuntoAppBar extends StatefulWidget implements PreferredSizeWidget {

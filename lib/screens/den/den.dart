@@ -1,15 +1,15 @@
+import 'package:async/async.dart' show AsyncMemoizer;
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/backend/mock/mock_expression.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
+import 'package:junto_beta_mobile/backend/mock/mock_expression.dart';
+import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
+import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/den/den_appbar.dart';
+import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
 import 'package:provider/provider.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:async/async.dart' show AsyncMemoizer;
 
 /// Displays the user's DEN or "profile screen"
 class JuntoDen extends StatefulWidget {
@@ -33,7 +33,7 @@ class JuntoDenState extends State<JuntoDen> {
 
   Future<UserData> _retrieveUserInfo() async {
     final UserRepo _userProvider = Provider.of<UserRepo>(context);
-    return userMemoizer.runOnce(()=>  _userProvider.readLocalUser());
+    return userMemoizer.runOnce(() => _userProvider.readLocalUser());
   }
 
   @override
@@ -435,6 +435,7 @@ class _UserExpressionsState extends State<UserExpressions> {
   UserRepo _userProvider;
   AsyncMemoizer<List<CentralizedExpressionResponse>> memoizer =
       AsyncMemoizer<List<CentralizedExpressionResponse>>();
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
