@@ -180,23 +180,85 @@ class JuntoDenState extends State<JuntoDen> {
                 ),
               ],
             ),
+
             // public mock expressions
-            ListView(
-              shrinkWrap: true,
-              physics: ClampingScrollPhysics(),
-              children: <Widget>[
-                ExpressionPreview(expression: mockExpressions[0])
-              ],
+            Container(
+              color: Theme.of(context).colorScheme.background,
+              child: ListView(
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        width: MediaQuery.of(context).size.width * .5,
+                        padding:
+                            const EdgeInsets.only(left: 10, right: 5, top: 10),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            // even number indexes
+                            ExpressionPreview(expression: mockExpressions[0]),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width * .5,
+                        padding:
+                            const EdgeInsets.only(left: 5, right: 10, top: 10),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            // odd number indexes
+                            ExpressionPreview(expression: mockExpressions[0]),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ),
 
             // private mock expressions
-            ListView(
-              shrinkWrap: true,
-              physics: ClampingScrollPhysics(),
-              children: <Widget>[
-                ExpressionPreview(expression: mockExpressions[0])
-              ],
+            Container(
+              color: Theme.of(context).colorScheme.background,
+              child: ListView(
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        width: MediaQuery.of(context).size.width * .5,
+                        padding:
+                            const EdgeInsets.only(left: 10, right: 5, top: 10),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            // even number indexes
+                            ExpressionPreview(expression: mockExpressions[0]),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width * .5,
+                        padding:
+                            const EdgeInsets.only(left: 5, right: 10, top: 10),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            // odd number indexes
+                            ExpressionPreview(expression: mockExpressions[0]),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ),
+
             // UserExpressions(
             //   key: const PageStorageKey<String>('public-user-expressions'),
             //   privacy: 'Public',

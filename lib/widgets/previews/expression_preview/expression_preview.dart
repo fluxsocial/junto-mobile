@@ -39,20 +39,27 @@ class ExpressionPreview extends StatelessWidget {
         // );
       },
       child: Container(
-        padding: const EdgeInsets.only(bottom: 10),
-        margin: EdgeInsets.only(bottom: 5),
-        color: Theme.of(context).colorScheme.background,
+        margin: EdgeInsets.only(bottom: 25),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            // expression preview profile
+            Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.background,
+                border:
+                    Border.all(color: Theme.of(context).dividerColor, width: 1),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  // expression preview body
+                  _returnExpression(),
+                ],
+              ),
+            ),
+            SizedBox(height: 5),
             ExpressionPreviewTop(expression: expression),
-
-            // expression preview body
-            _returnExpression(),
-
-            // expression preview channels, resonation, and comments
-            ExpressionPreviewBottom(expression: expression)
           ],
         ),
       ),
