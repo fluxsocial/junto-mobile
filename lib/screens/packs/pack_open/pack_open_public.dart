@@ -57,15 +57,45 @@ class _PackOpenPublicState extends State<PackOpenPublic> with HideFab {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(controller: _packOpenPublicController, children: <Widget>[
-      ExpressionPreview(expression: expression[0]),
-      ExpressionPreview(expression: expression[1]),
-      ExpressionPreview(expression: expression[2]),
-      ExpressionPreview(expression: expression[3]),
-      ExpressionPreview(expression: expression[4]),
-      ExpressionPreview(expression: expression[5]),
-      ExpressionPreview(expression: expression[6]),
-      ExpressionPreview(expression: expression[7]),
-    ]);
+    return Container(
+      color: Theme.of(context).colorScheme.background,
+      child: ListView(
+        controller: _packOpenPublicController,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                width: MediaQuery.of(context).size.width * .5,
+                padding: EdgeInsets.only(left: 10, right: 5, top: 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    ExpressionPreview(expression: expression[0]),
+                    ExpressionPreview(expression: expression[2]),
+                    ExpressionPreview(expression: expression[4]),
+                    ExpressionPreview(expression: expression[6]),
+                  ],
+                ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * .5,
+                padding: EdgeInsets.only(left: 5, right: 10, top: 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    ExpressionPreview(expression: expression[1]),
+                    ExpressionPreview(expression: expression[3]),
+                    ExpressionPreview(expression: expression[5]),
+                    ExpressionPreview(expression: expression[7]),
+                  ],
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
   }
 }
