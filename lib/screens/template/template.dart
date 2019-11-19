@@ -12,6 +12,8 @@ import 'package:junto_beta_mobile/screens/spheres/spheres.dart';
 import 'package:junto_beta_mobile/screens/template/perspectives.dart';
 import 'package:junto_beta_mobile/widgets/appbar.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
+import 'package:junto_beta_mobile/widgets/bottom_nav_new.dart';
+
 import 'package:junto_beta_mobile/widgets/fabs/create_sphere_fab.dart';
 import 'package:junto_beta_mobile/widgets/fabs/filter_channel_fab.dart';
 import 'package:provider/provider.dart';
@@ -157,22 +159,11 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                 },
                 juntoAppBarTitle: _appbarTitle,
               ),
-              floatingActionButton: _displayFAB(),
-              // floatingActionButton:
-              //     const CreateFAB(expressionLayer: 'collective'),
+              // floatingActionButton: _displayFAB(),
+              floatingActionButton: BottomNavNew(),
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerDocked,
 
-              // only enable drawer if current screen is collective
-              // drawer: _currentScreen == 'collective'
-              //     ? WillPopScope(
-              //         onWillPop: () async {
-              //           return false;
-              //         },
-              //         child: Perspectives(
-              //           changePerspective: _changePerspective,
-              //           profile: profile,
-              //         ),
-              //       )
-              //     : null,
               // only enable end drawer if current screen is den
               endDrawer: _currentScreen == 'den'
                   ? WillPopScope(
@@ -185,15 +176,15 @@ class JuntoTemplateState extends State<JuntoTemplate> {
               // dynamically render body
               body: _renderBody(),
 
-              bottomNavigationBar: ValueListenableBuilder<int>(
-                valueListenable: _bottomNavIndex,
-                builder: (BuildContext context, int index, _) {
-                  return BottomNav(
-                    currentIndex: index,
-                    setIndex: _switchScreen,
-                  );
-                },
-              ),
+              // bottomNavigationBar: ValueListenableBuilder<int>(
+              //   valueListenable: _bottomNavIndex,
+              //   builder: (BuildContext context, int index, _) {
+              //     return BottomNav(
+              //       currentIndex: index,
+              //       setIndex: _switchScreen,
+              //     );
+              //   },
+              // ),
             ),
             GestureDetector(
               onTap: () {
