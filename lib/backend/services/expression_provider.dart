@@ -39,7 +39,7 @@ class ExpressionServiceCentralized implements ExpressionService {
       'type': type,
       'expression_data': data
     };
-    final http.Response _serverResponse = await client.post(
+    final http.Response _serverResponse = await client.postWithoutEncoding(
       '/expressions/$expressionAddress/comments',
       body: _postBody,
     );

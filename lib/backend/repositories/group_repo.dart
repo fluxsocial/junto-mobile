@@ -26,4 +26,9 @@ class GroupRepo {
   Future<void> removeGroupMember(String groupAddress, String userAddress) {
     return _groupService.removeGroupMember(groupAddress, userAddress);
   }
+
+  Future<List<CentralizedExpressionResponse>> getGroupExpressions(
+      String groupAddress, ExpressionQueryParams params) {
+    return _groupService.getGroupExpressions(groupAddress, params);
+  }
 }

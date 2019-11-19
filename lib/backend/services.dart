@@ -100,7 +100,7 @@ abstract class GroupService {
   Future<void> removeGroupMember(String groupAddress, String userAddress);
 
   Future<List<CentralizedExpressionResponse>> getGroupExpressions(
-      ExpressionQueryParams params);
+      String groupAddress, ExpressionQueryParams params);
 }
 
 enum QueryType { address, email, username }

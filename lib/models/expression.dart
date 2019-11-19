@@ -305,6 +305,7 @@ class ExpressionQueryParams {
     @required this.channels,
     @required this.contextType,
   });
+
   final int dos;
   final int context;
   final List<String> channels;

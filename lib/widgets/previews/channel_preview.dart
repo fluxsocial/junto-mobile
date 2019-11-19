@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
-import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
 
 class ChannelPreview extends StatelessWidget {
   const ChannelPreview({Key key, this.channel}) : super(key: key);

@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 
 class JuntoDialog {
@@ -11,6 +11,7 @@ class JuntoDialog {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
+        final Brightness brightness = MediaQuery.of(context).platformBrightness;
         return Theme(
           data: ThemeData(dialogBackgroundColor: Colors.white),
           child: Platform.isAndroid
@@ -26,7 +27,9 @@ class JuntoDialog {
               : CupertinoAlertDialog(
                   content: Text(
                     body,
-                    style: JuntoStyles.lotusLongformBody,
+                    style: Brightness.dark == brightness
+                        ? JuntoStyles.lotusLongformBodyLight
+                        : JuntoStyles.lotusLongformBody,
                   ),
                   actions: <Widget>[
                     if (actions.isNotEmpty) ...actions else const SizedBox(),

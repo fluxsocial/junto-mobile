@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/models/expression.dart';
 
 class ShortformOpen extends StatefulWidget {
   const ShortformOpen(this.expression);

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview_select.dart';
@@ -27,7 +27,7 @@ class CreateSphereFAB extends StatelessWidget {
             gradient: LinearGradient(
               begin: Alignment.bottomLeft,
               end: Alignment.topRight,
-              stops: <double>[0.1, 0.9],
+              stops: const <double>[0.1, 0.9],
               colors: <Color>[
                 Theme.of(context).colorScheme.secondary,
                 Theme.of(context).colorScheme.primary
@@ -76,20 +76,14 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
   TextEditingController _principleTitle;
   TextEditingController _principleBody;
   TextEditingController _principleTitleTwo;
-  TextEditingController _principleBodyTwo;
   TextEditingController _principleTitleThree;
-  TextEditingController _principleBodyThree;
   TextEditingController _principleTitleFour;
-  TextEditingController _principleBodyFour;
   TextEditingController _principleTitleFive;
-  TextEditingController _principleBodyFive;
   TextEditingController _principleTitleSix;
-  TextEditingController _principleBodySix;
   TextEditingController _principleTitleSeven;
-  TextEditingController _principleBodySeven;
-
-  List<Map> principles = [
-    {"title": "", "body": ""}
+  String _selectedType = 'Public';
+  List<Map<String, String>> principles = <Map<String, String>>[
+    <String, String>{'title': '', 'body': ''}
   ];
 
   List<UserProfile> profiles = <UserProfile>[
@@ -109,12 +103,12 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
 
   @override
   void initState() {
+    super.initState();
     _nameController = TextEditingController();
     _handleController = TextEditingController();
     _descriptionController = TextEditingController();
     _principleTitle = TextEditingController();
     _principleBody = TextEditingController();
-    super.initState();
   }
 
   @override
@@ -127,12 +121,12 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
     super.dispose();
   }
 
-  void _createSphere() async {
+  Future<void> _createSphere() async {
     final UserData _profile =
-        await Provider.of<UserService>(context).readLocalUser();
-    final sphereName = _nameController.value.text;
-    final sphereHandle = _handleController.value.text;
-    final sphereDescription = _descriptionController.value.text;
+        await Provider.of<UserRepo>(context).readLocalUser();
+    final String sphereName = _nameController.value.text;
+    final String sphereHandle = _handleController.value.text;
+    final String sphereDescription = _descriptionController.value.text;
     final CentralizedSphere sphere = CentralizedSphere(
       name: sphereName,
       description: sphereDescription,
@@ -140,10 +134,10 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
         _profile.user.address,
       ],
       photo: '',
-      members: [],
-      principles: "",
+      members: <String>[],
+      principles: '',
       sphereHandle: sphereHandle,
-      privacy: 'Public',
+      privacy: _selectedType,
     );
 
     try {
@@ -178,7 +172,7 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                   : GestureDetector(
                       onTap: () {
                         _createSphereController.previousPage(
-                            duration: Duration(milliseconds: 200),
+                            duration: const Duration(milliseconds: 200),
                             curve: Curves.easeIn);
                       },
                       child: Container(
@@ -196,12 +190,12 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                       onTap: () {
                         _createSphere();
                       },
-                      child: Text('create'),
+                      child: const Text('create'),
                     )
                   : GestureDetector(
                       onTap: () {
                         _createSphereController.nextPage(
-                            duration: Duration(milliseconds: 200),
+                            duration: const Duration(milliseconds: 200),
                             curve: Curves.easeIn);
                         _searchMembersIndex = 0;
                         _searchFacilitatorsIndex = 0;
@@ -220,7 +214,7 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
           Expanded(
             child: PageView(
               controller: _createSphereController,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               onPageChanged: (int index) {
                 setState(() {
                   _currentPage = index;
@@ -240,7 +234,7 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
     );
   }
 
-  _createSphereDetails() {
+  Widget _createSphereDetails() {
     return ListView(
       children: <Widget>[
         const SizedBox(height: 25),
@@ -336,11 +330,9 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
     );
   }
 
-  _spherePrinciple(
-    index,
-  ) {
-    var title;
-    var body;
+  Widget _spherePrinciple(int index) {
+    TextEditingController title;
+    TextEditingController body;
     if (index == 1) {
       title = _principleTitle;
       body = _principleBody;
@@ -376,9 +368,9 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
         children: <Widget>[
           Text(
             index.toString(),
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.w500,
-              color: const Color(0xff999999),
+              color: Color(0xff999999),
             ),
           ),
           const SizedBox(width: 15),
@@ -408,7 +400,7 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                     }) =>
                         null,
                     decoration: InputDecoration(
-                      contentPadding: EdgeInsets.all(0),
+                      contentPadding: const EdgeInsets.all(0),
                       border: InputBorder.none,
                       hintText: 'Principle title',
                       hintStyle: Theme.of(context).textTheme.caption,
@@ -454,11 +446,11 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
     );
   }
 
-  _createSpherePrinciples() {
+  Widget _createSpherePrinciples() {
     return ListView(
-      children: [
+      children: <Widget>[
         const SizedBox(height: 15),
-        for (var i = 0; i < principles.length; i++) _spherePrinciple(i + 1),
+        for (int i = 0; i < principles.length; i++) _spherePrinciple(i + 1),
         GestureDetector(
           onTap: () {
             if (principles.length < 7) {
@@ -495,34 +487,35 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
               }
 
               setState(() {
-                principles.add({"title": "", "body": ""});
+                principles.add(<String, String>{'title': '', 'body': ''});
                 print(principles.length);
               });
             }
           },
           child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 15),
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                      color: Theme.of(context).dividerColor, width: 1),
-                ),
+            padding: const EdgeInsets.symmetric(vertical: 15),
+            decoration: BoxDecoration(
+              border: Border(
+                bottom:
+                    BorderSide(color: Theme.of(context).dividerColor, width: 1),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    'New Principle',
-                    style: Theme.of(context).textTheme.caption,
-                  ),
-                  const SizedBox(width: 5),
-                  Icon(
-                    Icons.add,
-                    size: 17,
-                    color: Theme.of(context).primaryColorLight,
-                  )
-                ],
-              )),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'New Principle',
+                  style: Theme.of(context).textTheme.caption,
+                ),
+                const SizedBox(width: 5),
+                Icon(
+                  Icons.add,
+                  size: 17,
+                  color: Theme.of(context).primaryColorLight,
+                )
+              ],
+            ),
+          ),
         ),
       ],
     );
@@ -653,16 +646,6 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                   MemberPreviewSelect(profile: profiles[0]),
                   MemberPreviewSelect(profile: profiles[1]),
                   MemberPreviewSelect(profile: profiles[2]),
-                ],
-              ),
-              ListView(
-                children: <Widget>[
-                  // _memberPreview(),
-                ],
-              ),
-              ListView(
-                children: <Widget>[
-                  // _memberPreview(),
                 ],
               ),
             ],
@@ -805,158 +788,122 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
   Widget _createSpherePrivacy() {
     return Column(
       children: <Widget>[
-        const SizedBox(height: 10),
-        Container(
-          decoration: BoxDecoration(
-            border: Border(
-              bottom:
-                  BorderSide(color: Theme.of(context).dividerColor, width: 1),
-            ),
-          ),
-          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-          child: InkWell(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(
-                  width: MediaQuery.of(context).size.width * .75,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const <Widget>[
-                      Text(
-                        'Public',
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      Text('Anyone can join this sphere, read its, '
-                          'expressions and share to it')
-                    ],
-                  ),
-                ),
-                AnimatedContainer(
-                  duration: kThemeChangeDuration,
-                  height: 22,
-                  width: 22,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(colors: [
-                      Theme.of(context).dividerColor,
-                      Theme.of(context).dividerColor
-                    ], begin: Alignment.bottomLeft, end: Alignment.topRight),
-                    // color: widget.isSelected ? JuntoPalette.juntoPrimary : null,
-                    border: Border.all(
-                      color: Theme.of(context).dividerColor,
-                      width: 2,
-                    ),
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
-        Container(
-          decoration: BoxDecoration(
-            border: Border(
-              bottom:
-                  BorderSide(color: Theme.of(context).dividerColor, width: 1),
-            ),
-          ),
-          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-          child: InkWell(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(
-                  width: MediaQuery.of(context).size.width * .75,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const <Widget>[
-                      Text(
-                        'Shared',
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      Text('Only members can read expressions '
-                          'and share to it. Facilitators can invite members or accept their request to join.')
-                    ],
-                  ),
-                ),
-                AnimatedContainer(
-                  duration: kThemeChangeDuration,
-                  height: 22,
-                  width: 22,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(colors: [
-                      Theme.of(context).dividerColor,
-                      Theme.of(context).dividerColor
-                    ], begin: Alignment.bottomLeft, end: Alignment.topRight),
-                    // color: widget.isSelected ? JuntoPalette.juntoPrimary : null,
-                    border: Border.all(
-                      color: Theme.of(context).dividerColor,
-                      width: 2,
-                    ),
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
-        Container(
-          decoration: BoxDecoration(
-            border: Border(
-              bottom:
-                  BorderSide(color: Theme.of(context).dividerColor, width: 1),
-            ),
-          ),
-          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-          child: InkWell(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(
-                  width: MediaQuery.of(context).size.width * .75,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const <Widget>[
-                      Text(
-                        'Private',
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      Text(
-                          'Members must be invited into this sphere. This sphere is only searchable by members.')
-                    ],
-                  ),
-                ),
-                AnimatedContainer(
-                  duration: kThemeChangeDuration,
-                  height: 22,
-                  width: 22,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(colors: [
-                      Theme.of(context).dividerColor,
-                      Theme.of(context).dividerColor
-                    ], begin: Alignment.bottomLeft, end: Alignment.topRight),
-                    // color: widget.isSelected ? JuntoPalette.juntoPrimary : null,
-                    border: Border.all(
-                      color: Theme.of(context).dividerColor,
-                      width: 2,
-                    ),
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                )
-              ],
-            ),
+        Expanded(
+          child: ListView(
+            children: <Widget>[
+              _SelectionTile(
+                name: 'Public',
+                desc: 'Anyone can join this sphere, read its, '
+                    'expressions and share to it',
+                onClick: (String privacy) {
+                  setState(() => _selectedType = privacy);
+                },
+                isSelected: _selectedType == 'Public',
+              ),
+              _SelectionTile(
+                name: 'Shared',
+                desc: 'Only members can read expressions '
+                    'and share to it. Facilitators can invite members or accept their request to join.',
+                onClick: (String privacy) {
+                  setState(() => _selectedType = privacy);
+                },
+                isSelected: _selectedType == 'Shared',
+              ),
+              _SelectionTile(
+                name: 'Private',
+                desc:
+                    'Members must be invited into this sphere. This sphere is only searchable by members.',
+                onClick: (String privacy) {
+                  setState(() => _selectedType = privacy);
+                },
+                isSelected: _selectedType == 'Private',
+              ),
+            ],
           ),
         )
       ],
+    );
+  }
+}
+
+class _SelectionTile extends StatefulWidget {
+  const _SelectionTile({
+    Key key,
+    @required this.name,
+    @required this.desc,
+    @required this.onClick,
+    @required this.isSelected,
+  }) : super(key: key);
+
+  final String name;
+  final String desc;
+  final bool isSelected;
+  final ValueChanged<String> onClick;
+
+  @override
+  State createState() => _SelectionTileState();
+}
+
+class _SelectionTileState extends State<_SelectionTile> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: Color(0xffeeeeee), width: 1),
+        ),
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+      child: InkWell(
+        onTap: () => widget.onClick(widget.name),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Container(
+              width: MediaQuery.of(context).size.width * .75,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    widget.name,
+                    style: const TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  Text(
+                    widget.desc,
+                  )
+                ],
+              ),
+            ),
+            AnimatedContainer(
+              duration: kThemeChangeDuration,
+              height: 22,
+              width: 22,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: widget.isSelected
+                        ? <Color>[
+                            JuntoPalette.juntoSecondary,
+                            JuntoPalette.juntoPrimary
+                          ]
+                        : <Color>[Colors.white, Colors.white],
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight),
+                color: widget.isSelected ? JuntoPalette.juntoPrimary : null,
+                border: Border.all(
+                  color: widget.isSelected
+                      ? Colors.white
+                      : const Color(0xffeeeeee),
+                  width: 2,
+                ),
+                borderRadius: BorderRadius.circular(25),
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }

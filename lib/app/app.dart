@@ -55,6 +55,7 @@ class MaterialAppWithTheme extends StatelessWidget {
   }) : super(key: key);
 
   final bool loggedIn;
+
   @override
   Widget build(BuildContext context) {
     final JuntoThemesProvider theme = Provider.of<JuntoThemesProvider>(context);
