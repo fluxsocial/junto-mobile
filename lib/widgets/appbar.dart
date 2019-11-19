@@ -77,9 +77,9 @@ class _JuntoAppBarState extends State<JuntoAppBar>
       automaticallyImplyLeading: false,
       actions: <Widget>[Container()],
       bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(.75),
+        preferredSize: const Size.fromHeight(.5),
         child: Container(
-          height: .75,
+          height: .5,
           decoration: BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.centerLeft,

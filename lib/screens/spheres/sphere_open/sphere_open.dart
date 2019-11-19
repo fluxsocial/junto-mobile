@@ -86,17 +86,17 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   }
 
   Future<void> _getMembers() async {
-      Navigator.push(
-        context,
-        CupertinoPageRoute<dynamic>(
-          builder: (BuildContext context) {
-            return SphereOpenMembers(
-              group: widget.group,
-              users: [],
-            );
-          },
-        ),
-      );    
+    Navigator.push(
+      context,
+      CupertinoPageRoute<dynamic>(
+        builder: (BuildContext context) {
+          return SphereOpenMembers(
+            group: widget.group,
+            users: [],
+          );
+        },
+      ),
+    );
     // try {
     //   JuntoOverlay.showLoader(context);
     //   final List<Users> _members =
@@ -447,33 +447,55 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   }
 
   Widget _buildExpressionView() {
-    return ListView(
-      physics: const ClampingScrollPhysics(),
-      children: <Widget>[
-        ExpressionPreview(
-          expression: expressions[0],
-        ),
-        ExpressionPreview(
-          expression: expressions[1],
-        ),
-        ExpressionPreview(
-          expression: expressions[2],
-        ),
-        ExpressionPreview(
-          expression: expressions[3],
-        )
-      ],
+    return Container(
+      color: Theme.of(context).colorScheme.background,
+      child: ListView(
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                width: MediaQuery.of(context).size.width * .5,
+                padding: EdgeInsets.only(left: 10, right: 5, top: 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    ExpressionPreview(
+                      expression: expressions[0],
+                    ),
+                    ExpressionPreview(
+                      expression: expressions[2],
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * .5,
+                padding: EdgeInsets.only(left: 5, right: 10, top: 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    ExpressionPreview(
+                      expression: expressions[1],
+                    ),
+                    ExpressionPreview(
+                      expression: expressions[3],
+                    )
+                  ],
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
     );
   }
 
   Widget _buildEventsView() {
     return ListView(
       physics: const ClampingScrollPhysics(),
-      children: <Widget>[
-        ExpressionPreview(
-          expression: expressions[3],
-        )
-      ],
+      children: <Widget>[Text('Events')],
     );
   }
 }
