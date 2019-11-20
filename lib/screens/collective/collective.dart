@@ -1,45 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/collective/degrees/degrees.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 
 /// This screen shows a list of public expressions that can be filtered
 /// by channel or perspective
 class JuntoCollective extends StatefulWidget {
-  const JuntoCollective({
-    Key key,
-    this.currentPerspective,
-    this.controller,
-  }) : super(key: key);
+  const JuntoCollective({Key key, this.currentPerspective, this.visibility})
+      : super(key: key);
 
   final String currentPerspective;
-
-  /// This controller is used to detect the scroll of the ListView
-  /// to render the FAB dynamically
-  final ScrollController controller;
+  final ValueNotifier<bool> visibility;
 
   @override
   State<StatefulWidget> createState() => JuntoCollectiveState();
 }
 
-class JuntoCollectiveState extends State<JuntoCollective> {
+class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
   String _perspective;
   bool isLoading = false;
   List<CentralizedExpressionResponse> initialData =
       <CentralizedExpressionResponse>[];
 
+  ScrollController _collectiveController;
+
   @override
   void initState() {
     super.initState();
     _perspective = widget.currentPerspective;
+    _collectiveController = ScrollController();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _collectiveController.addListener(_onScrollingHasChanged);
+      _collectiveController.position.isScrollingNotifier.addListener(
+        _onScrollingHasChanged,
+      );
+    });
   }
 
   @override
   void dispose() {
     super.dispose();
+    _collectiveController.dispose();
+    _collectiveController.removeListener(_onScrollingHasChanged());
   }
 
   @override
@@ -61,6 +68,10 @@ class JuntoCollectiveState extends State<JuntoCollective> {
         initialData
             .addAll(Provider.of<ExpressionRepo>(context).collectiveExpressions);
       });
+  }
+
+  _onScrollingHasChanged() {
+    super.hideFabOnScroll(_collectiveController, widget.visibility);
   }
 
   Widget _buildLoadExpressions() {
@@ -105,49 +116,12 @@ class JuntoCollectiveState extends State<JuntoCollective> {
     );
   }
 
-  // Widget _displayDegrees() {
-  //   if (_perspective == 'Degrees of separation') {
-  //     return DegreesOfSeparation(
-  //       _changeDegree,
-  //       _oneDegreeColor,
-  //       _twoDegreesColor,
-  //       _threeDegreesColor,
-  //       _fourDegreesColor,
-  //       _fiveDegreesColor,
-  //       _sixDegreesColor,
-  //     );
-  //   } else {
-  //     return const SizedBox();
-  //   }
-  // }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Container(
-  //     color: Theme.of(context).colorScheme.background,
-  //     child: ListView(
-  //       controller: widget.controller,
-  //       children: <Widget>[
-  //         /// Degrees of Separation Widget rendered only when on the 'Degrees of separation'
-  //         /// perspective
-  //         // _displayDegrees(),
-
-  //         for (int index = 0; index < initialData.length + 1; index++)
-  //           if (index == initialData.length)
-  //             _buildLoadExpressions()
-  //           else
-  //             ExpressionPreview(expression: initialData[index])
-  //       ],
-  //     ),
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Theme.of(context).colorScheme.background,
       child: ListView(
-        controller: widget.controller,
+        controller: _collectiveController,
         children: <Widget>[
           Row(
             mainAxisAlignment: MainAxisAlignment.start,

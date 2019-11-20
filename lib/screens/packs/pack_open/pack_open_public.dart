@@ -43,7 +43,7 @@ class _PackOpenPublicState extends State<PackOpenPublic> with HideFab {
 
   @override
   void didChangeDependencies() {
-    super.didChangeDependencies();
+    super.didChangeDependencies(); 
     _expressionRepo = Provider.of<ExpressionRepo>(context);
     expression = _expressionRepo.collectiveExpressions;
   }

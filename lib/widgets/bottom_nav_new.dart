@@ -52,8 +52,7 @@ class BottomNavNew extends StatelessWidget {
           Expanded(
             child: GestureDetector(
               onTap: () {
-                Provider.of<JuntoThemesProvider>(context)
-                    .setTheme('night-indigo');
+                // open lotus screen
               },
               child: Container(
                 alignment: Alignment.center,
@@ -69,16 +68,21 @@ class BottomNavNew extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: Container(
-              alignment: Alignment.center,
-              width: 60,
-              height: 50,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
-                // color: Colors.purple,
+            child: GestureDetector(
+              onTap: () {
+                Scaffold.of(context).openEndDrawer();
+              },
+              child: Container( 
+                alignment: Alignment.center,
+                width: 60,
+                height: 50,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100),
+                  // color: Colors.purple,
+                ),
+                child: Icon(CustomIcons.morevertical,
+                    size: 17, color: Theme.of(context).primaryColor),
               ),
-              child: Icon(CustomIcons.morevertical,
-                  size: 17, color: Theme.of(context).primaryColor),
             ),
           ),
         ],

@@ -13,9 +13,6 @@ import 'package:junto_beta_mobile/screens/template/perspectives.dart';
 import 'package:junto_beta_mobile/widgets/appbar.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav_new.dart';
-
-import 'package:junto_beta_mobile/widgets/fabs/create_sphere_fab.dart';
-import 'package:junto_beta_mobile/widgets/fabs/filter_channel_fab.dart';
 import 'package:provider/provider.dart';
 
 // This class is a template screen that contains the navbar, bottom bar,
@@ -43,18 +40,18 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   String _appbarTitle = 'JUNTO';
 
   ValueNotifier<int> _bottomNavIndex;
-  ScrollController collectiveController;
 
   double _dx = 0.0;
   String _scrollDirection;
 
   UserProfile profile;
 
+  ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
+
   @override
   void initState() {
     super.initState();
     _bottomNavIndex = ValueNotifier<int>(0);
-    collectiveController = ScrollController();
   }
 
   @override
@@ -76,14 +73,6 @@ class JuntoTemplateState extends State<JuntoTemplate> {
       });
     } catch (error, stack) {
       debugPrint('Error occured in _retrieveUserInfo: $error,  $stack');
-    }
-  }
-
-  _displayFAB() {
-    if (_currentScreen == 'collective') {
-      return FilterChannelFAB();
-    } else if (_currentScreen == 'spheres') {
-      return CreateSphereFAB();
     }
   }
 
@@ -160,31 +149,35 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                 juntoAppBarTitle: _appbarTitle,
               ),
               // floatingActionButton: _displayFAB(),
-              floatingActionButton: BottomNavNew(),
+              floatingActionButton: ValueListenableBuilder(
+                valueListenable: _isVisible,
+                builder: (BuildContext context, bool visible, Widget child) {
+                  return AnimatedOpacity(
+                      duration: const Duration(milliseconds: 300),
+                      opacity: visible ? 1.0 : 0.0,
+                      child: child);
+                },
+                child: BottomNavNew(),
+              ),
+
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.centerDocked,
 
               // only enable end drawer if current screen is den
-              endDrawer: _currentScreen == 'den'
-                  ? WillPopScope(
-                      onWillPop: () async {
-                        return false;
-                      },
-                      child: DenDrawer())
-                  : null,
+              endDrawer: DenDrawer(),
 
               // dynamically render body
               body: _renderBody(),
 
-              // bottomNavigationBar: ValueListenableBuilder<int>(
-              //   valueListenable: _bottomNavIndex,
-              //   builder: (BuildContext context, int index, _) {
-              //     return BottomNav(
-              //       currentIndex: index,
-              //       setIndex: _switchScreen,
-              //     );
-              //   },
-              // ),
+              bottomNavigationBar: ValueListenableBuilder<int>(
+                valueListenable: _bottomNavIndex,
+                builder: (BuildContext context, int index, _) {
+                  return BottomNav(
+                    currentIndex: index,
+                    setIndex: _switchScreen,
+                  );
+                },
+              ),
             ),
             GestureDetector(
               onTap: () {
@@ -211,8 +204,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
     switch (_currentScreen) {
       case 'collective':
         return JuntoCollective(
-            currentPerspective: _currentPerspective,
-            controller: collectiveController);
+            currentPerspective: _currentPerspective, visibility: _isVisible);
 
       case 'spheres':
         return JuntoSpheres(
@@ -236,12 +228,6 @@ class JuntoTemplateState extends State<JuntoTemplate> {
           _currentScreen = 'collective';
           _appbarTitle = 'JUNTO';
         });
-        if (collectiveController.hasClients)
-          collectiveController.animateTo(
-            0.0,
-            duration: const Duration(milliseconds: 200),
-            curve: Curves.easeIn,
-          );
         break;
       case 1:
         setState(() {
