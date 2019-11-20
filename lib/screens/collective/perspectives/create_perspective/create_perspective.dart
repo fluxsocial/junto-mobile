@@ -229,6 +229,24 @@ class _CreatePerspectiveState extends State<CreatePerspective>
                             onTextChange: _onTextChange,
                             results: queriedUsers,
                             onProfileSelected: _onUserSelected,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: const <Widget>[
+                                Icon(
+                                  CustomIcons.half_lotus,
+                                  size: 17,
+                                  color: Color(0xff333333),
+                                ),
+                                SizedBox(width: 20),
+                                Text(
+                                  'add members',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),

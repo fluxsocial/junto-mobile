@@ -98,6 +98,12 @@ class _CreateSphereState extends State<CreateSphere>
     _users.notifyListeners();
   }
 
+  void _onUserSelected(UserProfile value) {
+    _users.value.selection = placeUser(value, _users.value.selection);
+    // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+    _users.notifyListeners();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -202,6 +208,24 @@ class _CreateSphereState extends State<CreateSphere>
                             onProfileSelected: _addUser,
                             results: queriedUsers,
                             onTextChange: _onTextChange,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: const <Widget>[
+                                Icon(
+                                  CustomIcons.half_lotus,
+                                  size: 17,
+                                  color: Color(0xff333333),
+                                ),
+                                SizedBox(width: 20),
+                                Text(
+                                  'add members',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),

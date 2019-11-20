@@ -71,7 +71,7 @@ class SignUpTwoState extends State<SignUpTwo> {
                             onChanged: (String text) {
                               setState(
                                 () {
-                                  username = text;
+                                  username = text.toLowerCase();
                                 },
                               );
                             },
