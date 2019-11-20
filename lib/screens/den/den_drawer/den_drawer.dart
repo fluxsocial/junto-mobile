@@ -137,6 +137,8 @@ class _DenDrawerState extends State<DenDrawer> {
                           CupertinoPageRoute(
                             builder: (context) => PackOpen(
                               pack: Group(
+                                members: 1,
+                                facilitators: 0,
                                 address: '',
                                 createdAt: DateTime.now(),
                                 creator: 'Eric Yang',
