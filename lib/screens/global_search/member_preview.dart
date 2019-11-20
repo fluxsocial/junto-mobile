@@ -50,7 +50,7 @@ class SearchMemberPreview extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          '${member.firstName} ${member.lastName}',
+                          '${member.name}',
                           textAlign: TextAlign.start,
                           style: const TextStyle(
                             fontSize: 14,

@@ -12,9 +12,7 @@ class ExpressionOpenTop extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String username = expression.creator.username ?? '';
-    final String firstName = expression.creator.firstName ?? '';
-    final String lastName = expression.creator.lastName;
-    final String profilePicture = expression.creator.profilePicture;
+    final String name = expression.creator.name ?? '';
 
     return Container(
       padding: const EdgeInsets.only(top: 15, bottom: 15, left: 10),
@@ -30,8 +28,7 @@ class ExpressionOpenTop extends StatelessWidget {
                   builder: (BuildContext context) => JuntoMember(
                     profile: UserProfile(
                       address: '',
-                      firstName: firstName,
-                      lastName: lastName,
+                      name: name,
                       bio: 'This is a test',
                       profilePicture:
                           'assets/images/junto-mobile__placeholder--member.png',
@@ -64,7 +61,7 @@ class ExpressionOpenTop extends StatelessWidget {
                     children: <Widget>[
                       Text(username.toLowerCase() ?? '',
                           style: Theme.of(context).textTheme.subhead),
-                      Text('$firstName $lastName',
+                      Text('$name $name',
                           style: Theme.of(context).textTheme.body1),
                     ],
                   ),

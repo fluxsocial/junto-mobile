@@ -16,9 +16,7 @@ class ExpressionPreviewTop extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //ignore: unused_local_variable
-    final String firstName = expression.creator.firstName;
-    //ignore: unused_local_variable
-    final String lastName = expression.creator.lastName;
+    final String name = expression.creator.name;
     final String username = expression.creator.username;
     final String profilePicture = expression.creator.profilePicture;
 
@@ -38,8 +36,7 @@ class ExpressionPreviewTop extends StatelessWidget {
                       JuntoMember(
                     profile: UserProfile(
                       address: '',
-                      firstName: firstName,
-                      lastName: lastName,
+                      name: name,
                       bio: 'This is a test',
                       profilePicture: profilePicture,
                       username: username,
