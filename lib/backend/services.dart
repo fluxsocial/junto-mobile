@@ -93,7 +93,7 @@ abstract class GroupService {
 
   /// Adds the given user address to a group
   Future<void> addGroupMember(
-      String groupAddress, String userAddress, String perms);
+      String groupAddress, List<Map<String, dynamic>> users);
 
   /// Removes a user from the given group. Sufficient permission is required
   /// to perform this action.
