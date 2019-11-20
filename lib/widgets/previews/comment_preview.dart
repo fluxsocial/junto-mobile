@@ -49,8 +49,7 @@ class CommentPreview extends StatelessWidget {
                           builder: (BuildContext context) => JuntoMember(
                             profile: UserProfile(
                               address: '',
-                              firstName: 'Eric',
-                              lastName: 'Yang',
+                              name: 'Eric Yang',
                               bio: 'This is a test',
                               profilePicture:
                                   'assets/images/junto-mobile__logo.png',

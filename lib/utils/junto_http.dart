@@ -76,7 +76,7 @@ class JuntoHttp {
   Future<http.Response> post(
     String resource, {
     Map<String, String> headers,
-    Map<String, dynamic> body,
+    dynamic body,
   }) async {
     final String _body = _encodeBody(body);
     return httpClient.post(
@@ -91,10 +91,11 @@ class JuntoHttp {
     Map<String, String> headers,
     dynamic body,
   }) async {
+    final jsonBody = convert.json.encode(body);
     return httpClient.post(
       _encodeUrl(resource),
       headers: await _withPersistentHeaders(headers),
-      body: convert.json.encode(body),
+      body: jsonBody
     );
   }
 

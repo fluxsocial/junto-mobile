@@ -43,7 +43,7 @@ class MemberPreviewSelect extends StatelessWidget {
                     Text(profile.username,
                         textAlign: TextAlign.start,
                         style: Theme.of(context).textTheme.subhead),
-                    Text(profile.firstName,
+                    Text(profile.name,
                         textAlign: TextAlign.start,
                         style: Theme.of(context).textTheme.body1)
                   ],

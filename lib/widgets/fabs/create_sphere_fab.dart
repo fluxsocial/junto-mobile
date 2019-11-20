@@ -3,6 +3,7 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview_select.dart';
 import 'package:provider/provider.dart';
 
@@ -88,15 +89,15 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
 
   List<UserProfile> profiles = <UserProfile>[
     UserProfile(
-        firstName: 'Eric Yang',
+        name: 'Eric Yang',
         username: 'sunyata',
         profilePicture: 'assets/images/junto-mobile__eric.png'),
     UserProfile(
-        firstName: 'Riley Wagner',
+        name: 'Riley Wagner',
         username: 'wags',
         profilePicture: 'assets/images/junto-mobile__riley.png'),
     UserProfile(
-        firstName: 'Dora Czovek',
+        name: 'Dora Czovek',
         username: 'wingedmessenger',
         profilePicture: 'assets/images/junto-mobile__dora.png')
   ];
@@ -141,8 +142,12 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
     );
 
     try {
+      JuntoOverlay.showLoader(context);
       await Provider.of<GroupRepo>(context).createSphere(sphere);
+      JuntoOverlay.hide();
+      Navigator.pop(context);
     } catch (error) {
+      JuntoOverlay.hide();
       print(error);
     }
   }

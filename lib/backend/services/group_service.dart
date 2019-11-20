@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
@@ -39,16 +41,11 @@ class GroupServiceCentralized implements GroupService {
   @override
   Future<void> addGroupMember(
     String groupAddress,
-    String userAddress,
-    String perms,
+      List<Map<String, dynamic>> users
   ) async {
-    final Map<String, String> _postBody = <String, String>{
-      'user_address': userAddress,
-      'permission_level': perms,
-    };
-    final http.Response _serverResponse = await client.post(
+    final http.Response _serverResponse = await client.postWithoutEncoding(
       '/groups/$groupAddress/members',
-      body: _postBody,
+      body: users,
     );
     JuntoHttp.handleResponse(_serverResponse);
   }

@@ -265,18 +265,18 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
 
   List<UserProfile> profiles = <UserProfile>[
     UserProfile(
-        firstName: 'Eric Yang',
+        name: 'Eric Yang',
         username: 'sunyata',
         profilePicture: 'assets/images/junto-mobile__eric.png'),
     UserProfile(
-        firstName: 'Riley Wagner',
+        name: 'Riley Wagner',
         username: 'wags',
         profilePicture: 'assets/images/junto-mobile__riley.png'),
     UserProfile(
-        firstName: 'Dora Czovek',
+        name: 'Dora Czovek',
         username: 'wingedmessenger',
         profilePicture: 'assets/images/junto-mobile__dora.png'),
-    UserProfile(firstName: 'Urk', username: 'sunyata', profilePicture: ''),
+    UserProfile(name: 'Urk', username: 'sunyata', profilePicture: ''),
   ];
 
   List<Sphere> spheres = <Sphere>[

@@ -10,8 +10,7 @@ class UserProfile {
   UserProfile({
     this.address,
     this.parent,
-    this.firstName,
-    this.lastName,
+    this.name,
     this.bio,
     this.profilePicture,
     this.verified,
@@ -23,8 +22,7 @@ class UserProfile {
     return UserProfile(
         address: json['address'],
         parent: json['parent'] ?? '',
-        firstName: json['first_name'],
-        lastName: json['last_name'],
+        name: json['name'],
         bio: json['bio'],
         profilePicture: json['profile_picture'] ?? '',
         verified: json['verified'],
@@ -37,11 +35,8 @@ class UserProfile {
   /// Parent's address
   final String parent;
 
-  /// First Name of the author
-  final String firstName;
-
-  /// Last Name of the author
-  final String lastName;
+  ///  Name of the author
+  final String name;
 
   /// Author's biography
   final String bio;
@@ -59,8 +54,7 @@ class UserProfile {
   Map<String, dynamic> toMap() => <String, dynamic>{
         'address': address,
         'parent': parent,
-        'first_name': firstName,
-        'last_name': lastName,
+        'name': name,
         'bio': bio,
         'profile_picture': profilePicture,
         'verified': verified,
@@ -69,8 +63,8 @@ class UserProfile {
 
   @override
   String toString() {
-    return 'UserProfile: address: $address, parent: $parent, firstName: '
-        '$firstName, lastName: $lastName, bio: $bio,'
+    return 'UserProfile: address: $address, parent: $parent, name: '
+        '$name, bio: $bio,'
         ' profilePicture: $profilePicture, verified: $verified,'
         ' username: $username';
   }
@@ -82,8 +76,7 @@ class UserProfile {
           runtimeType == other.runtimeType &&
           address == other.address &&
           parent == other.parent &&
-          firstName == other.firstName &&
-          lastName == other.lastName &&
+          name == other.name &&
           bio == other.bio &&
           profilePicture == other.profilePicture &&
           verified == other.verified &&
@@ -93,8 +86,7 @@ class UserProfile {
   int get hashCode =>
       address.hashCode ^
       parent.hashCode ^
-      firstName.hashCode ^
-      lastName.hashCode ^
+      name.hashCode ^
       bio.hashCode ^
       profilePicture.hashCode ^
       verified.hashCode ^

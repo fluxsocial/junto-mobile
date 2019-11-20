@@ -15,6 +15,7 @@ class SearchMembersModal extends StatefulWidget {
     @required this.onTextChange,
     @required this.results,
     @required this.onProfileSelected,
+    @required this.child,
   }) : super(key: key);
 
   /// [ValueChanged] callback which exposes the text typed by the user
@@ -26,6 +27,9 @@ class SearchMembersModal extends StatefulWidget {
   /// [ValueNotifier] used to rebuild the results [ListView] with the data
   /// sent back from the server.
   final ValueNotifier<List<UserProfile>> results;
+
+  /// Icon to be displayed
+  final Widget child;
 
   @override
   _SearchMembersModalState createState() => _SearchMembersModalState();
@@ -152,23 +156,7 @@ class _SearchMembersModalState extends State<SearchMembersModal> {
       },
       child: Container(
         color: Colors.white,
-        child: Row(
-          children: const <Widget>[
-            Icon(
-              CustomIcons.half_lotus,
-              size: 17,
-              color: Color(0xff333333),
-            ),
-            SizedBox(width: 20),
-            Text(
-              'add members',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ],
-        ),
+        child: widget.child,
       ),
     );
   }

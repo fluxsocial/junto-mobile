@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/models.dart';
@@ -146,9 +147,8 @@ class UserServiceCentralized implements UserService {
     final LocalStorage _storage = LocalStorage('user-details');
     final bool isReady = await _storage.ready;
     if (isReady) {
-      final UserData profile = UserData.fromMap(
-        json.decode(_storage.getItem('data')),
-      );
+      final dynamic data = _storage.getItem('data');
+      final UserData profile = UserData.fromMap(data);
       return profile;
     }
     throw const JuntoException('Unable to read local user');

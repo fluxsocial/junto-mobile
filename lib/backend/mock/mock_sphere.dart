@@ -24,8 +24,7 @@ class MockSphere with ChangeNotifier implements GroupService {
   @override
   Future<void> addGroupMember(
     String groupAddress,
-    String userAddress,
-    String perms,
+    List<Map<String, dynamic>> users,
   ) {
     throw UnimplementedError();
   }

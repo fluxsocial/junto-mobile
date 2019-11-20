@@ -57,7 +57,7 @@ class UserPreview extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      '${userProfile.firstName} ${userProfile.lastName}',
+                      '${userProfile.name}',
                       textAlign: TextAlign.start,
                       style: JuntoStyles.title,
                     ),

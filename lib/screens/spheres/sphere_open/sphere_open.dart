@@ -38,7 +38,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
 
   final GlobalKey<SphereOpenState> _keyFlexibleSpace =
       GlobalKey<SphereOpenState>();
-  final ValueNotifier<int> _memberLength = ValueNotifier<int>(0);
 
   @override
   void initState() {
@@ -95,7 +94,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
         widget.group.address,
       );
       JuntoOverlay.hide();
-      _memberLength.value = _members.length;
       Navigator.push(
         context,
         CupertinoPageRoute<dynamic>(
@@ -302,13 +300,9 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
             children: <Widget>[
               GestureDetector(
                 onTap: () => _getMembers(),
-                child: ValueListenableBuilder<int>(
-                  valueListenable: _memberLength,
-                  builder: (BuildContext context, int value, _) {
-                    return MemberRow(
-                      membersLength: value,
-                    );
-                  },
+                child: MemberRow(
+                  membersLength:
+                      widget.group.members + widget.group.facilitators,
                 ),
               )
             ],
@@ -348,7 +342,8 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                           Text('Facilitators',
                               style: Theme.of(context).textTheme.title),
                           const SizedBox(height: 10),
-                          Text('Eric Yang and 7 others',
+                          Text(
+                              '${widget.group.creator} and ${widget.group.facilitators - 0} others',
                               style: Theme.of(context).textTheme.body2),
                         ]),
                     ClipOval(
