@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/template/template.dart';
+import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +32,7 @@ class _SignInState extends State<SignIn> {
 
   /// Called when the user hits the `Sign In` button.
   /// Makes a call to [SharedPreferences] then replaces the current route
-  /// with [JuntoTemplate].
+  /// with [JuntoCollective].
   Future<void> _handleSignIn(BuildContext context) async {
     final String email = _emailController.value.text;
     final String password = _passwordController.value.text;
@@ -45,7 +45,7 @@ class _SignInState extends State<SignIn> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute<dynamic>(
-          builder: (BuildContext context) => JuntoTemplate(),
+          builder: (BuildContext context) => JuntoCollective(),
         ),
       );
     } catch (error) {

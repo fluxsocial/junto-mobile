@@ -2,11 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
-import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
@@ -70,7 +69,7 @@ class _CreatePerspectiveState extends State<CreatePerspective>
     final String name = controller.value.text;
     JuntoOverlay.showLoader(context);
     try {
-      await Provider.of<UserRepo>(context)
+      await Provider.of<UserService>(context)
           .createPerspective(Perspective(name: name));
       JuntoOverlay.hide();
       Navigator.pop(context);
@@ -229,24 +228,6 @@ class _CreatePerspectiveState extends State<CreatePerspective>
                             onTextChange: _onTextChange,
                             results: queriedUsers,
                             onProfileSelected: _onUserSelected,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: const <Widget>[
-                                Icon(
-                                  CustomIcons.half_lotus,
-                                  size: 17,
-                                  color: Color(0xff333333),
-                                ),
-                                SizedBox(width: 20),
-                                Text(
-                                  'add members',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
-                            ),
                           ),
                         ),
                       ),

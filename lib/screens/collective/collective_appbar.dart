@@ -16,12 +16,10 @@ import 'package:provider/provider.dart';
 class JuntoAppBar extends StatefulWidget implements PreferredSizeWidget {
   const JuntoAppBar({
     Key key,
-    this.appContext,
     this.openPerspectivesDrawer,
     @required this.juntoAppBarTitle,
   }) : super(key: key);
 
-  final String appContext;
   final Function openPerspectivesDrawer;
   final String juntoAppBarTitle;
 
@@ -40,7 +38,6 @@ class _JuntoAppBarState extends State<JuntoAppBar>
   final ValueNotifier<SelectedUsers> _users = ValueNotifier<SelectedUsers>(
     SelectedUsers(),
   );
-
   void _onTextChange(String value) {
     if (debounceTimer != null) {
       debounceTimer.cancel();
@@ -105,11 +102,7 @@ class _JuntoAppBarState extends State<JuntoAppBar>
                 return GestureDetector(
                   onTap: () {
                     // Scaffold.of(context).openDrawer();
-                    if (widget.appContext == 'collective') {
-                      widget.openPerspectivesDrawer();
-                    } else {
-                      return;
-                    }
+                    widget.openPerspectivesDrawer();
                   },
                   child: Container(
                     padding: const EdgeInsets.only(left: 10),
@@ -125,13 +118,11 @@ class _JuntoAppBarState extends State<JuntoAppBar>
                           style: Theme.of(context).appBarTheme.textTheme.body1,
                         ),
                         const SizedBox(width: 2.5),
-                        widget.appContext == 'collective'
-                            ? Icon(
-                                Icons.keyboard_arrow_down,
-                                size: 17,
-                                color: Theme.of(context).primaryColorLight,
-                              )
-                            : const SizedBox()
+                        Icon(
+                          Icons.keyboard_arrow_down,
+                          size: 17,
+                          color: Theme.of(context).primaryColorLight,
+                        )
                       ],
                     ),
                   ),
@@ -326,7 +317,7 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    //ignore:unused_local_variable
+    // ignore:unused_local_variable
     final ValueNotifier<SelectedUsers> _selectedUsers =
         Provider.of<ValueNotifier<SelectedUsers>>(context);
 

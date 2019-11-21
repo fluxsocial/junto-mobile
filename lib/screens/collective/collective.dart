@@ -1,28 +1,51 @@
+import 'package:async/async.dart' show AsyncMemoizer;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/screens/collective/collective_appbar.dart';
+
+import 'package:junto_beta_mobile/screens/den/den_drawer/den_drawer.dart';
+
+import 'package:junto_beta_mobile/screens/collective/perspectives.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
-import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/screens/collective/degrees/degrees.dart';
-import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
+import 'package:junto_beta_mobile/widgets/bottom_nav_new.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
+import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 
-/// This screen shows a list of public expressions that can be filtered
-/// by channel or perspective
+// This class is a collective screen
 class JuntoCollective extends StatefulWidget {
-  const JuntoCollective({Key key, this.currentPerspective, this.visibility})
-      : super(key: key);
-
-  final String currentPerspective;
-  final ValueNotifier<bool> visibility;
+  static Route<dynamic> route() {
+    return MaterialPageRoute<dynamic>(
+      builder: (BuildContext context) {
+        return JuntoCollective();
+      },
+    );
+  }
 
   @override
   State<StatefulWidget> createState() => JuntoCollectiveState();
 }
 
 class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
-  String _perspective;
+  final GlobalKey<ScaffoldState> _juntoCollectiveKey = GlobalKey<ScaffoldState>();
+  AsyncMemoizer<void> readUserMemoizer = AsyncMemoizer<void>();
+
+  // Default values for collective screen / JUNTO perspective - change dynamically.
+  String _currentPerspective = 'JUNTO';
+  String _appbarTitle = 'JUNTO';
+
+  double _dx = 0.0;
+  String _scrollDirection;
+
+  UserProfile profile;
+
+  ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
+  bool lotusVisible = false;
+
   bool isLoading = false;
   List<CentralizedExpressionResponse> initialData =
       <CentralizedExpressionResponse>[];
@@ -32,7 +55,6 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
   @override
   void initState() {
     super.initState();
-    _perspective = widget.currentPerspective;
     _collectiveController = ScrollController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _collectiveController.addListener(_onScrollingHasChanged);
@@ -43,162 +65,263 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _readUser();
+    initialData
+        .addAll(Provider.of<ExpressionRepo>(context).collectiveExpressions);
+    super.didChangeDependencies();
+  }
+
+  _onScrollingHasChanged() {
+    super.hideFabOnScroll(_collectiveController, _isVisible);
+  }
+
+  Future<void> _readUser() {
+    return readUserMemoizer.runOnce(() => _retrieveUserInfo());
+  }
+
+  Future<void> _retrieveUserInfo() async {
+    final UserRepo _userProvider = Provider.of<UserRepo>(context);
+    try {
+      final UserData _profile = await _userProvider.readLocalUser();
+      setState(() {
+        profile = _profile.user;
+      });
+    } catch (error, stack) {
+      debugPrint('Error occured in _retrieveUserInfo: $error,  $stack');
+    }
+  }
+
+  @override
   void dispose() {
     super.dispose();
     _collectiveController.dispose();
     _collectiveController.removeListener(_onScrollingHasChanged());
   }
 
-  @override
-  void didChangeDependencies() {
-    initialData
-        .addAll(Provider.of<ExpressionRepo>(context).collectiveExpressions);
-    super.didChangeDependencies();
-  }
+  // Future<void> _getData() async {
+  //   if (!isLoading) {
+  //     setState(() => isLoading = true);
+  //   }
+  //   await Future<void>.delayed(const Duration(milliseconds: 500), () {});
+  //   isLoading = false;
+  //   if (mounted)
+  //     setState(() {
+  //       isLoading = true;
+  //       initialData
+  //           .addAll(Provider.of<ExpressionRepo>(context).collectiveExpressions);
+  //     });
+  // }
 
-  Future<void> _getData() async {
-    if (!isLoading) {
-      setState(() => isLoading = true);
-    }
-    await Future<void>.delayed(const Duration(milliseconds: 500), () {});
-    isLoading = false;
-    if (mounted)
-      setState(() {
-        isLoading = true;
-        initialData
-            .addAll(Provider.of<ExpressionRepo>(context).collectiveExpressions);
-      });
-  }
-
-  _onScrollingHasChanged() {
-    super.hideFabOnScroll(_collectiveController, widget.visibility);
-  }
-
-  Widget _buildLoadExpressions() {
-    return GestureDetector(
-      onTap: () {
-        _getData();
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
-          gradient: LinearGradient(
-            begin: Alignment.bottomLeft,
-            end: Alignment.topRight,
-            stops: <double>[0.2, 0.9],
-            colors: <Color>[
-              Theme.of(context).colorScheme.secondary,
-              Theme.of(context).colorScheme.primary
-            ],
-          ),
-        ),
-        padding: const EdgeInsets.symmetric(
-          horizontal: 10,
-          vertical: 15,
-        ),
-        alignment: Alignment.center,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'view 10 more expressions',
-              style: TextStyle(
-                  color: Theme.of(context).colorScheme.onPrimary,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w700),
-            ),
-            const SizedBox(width: 2.5),
-            Icon(Icons.keyboard_arrow_down,
-                size: 13, color: Theme.of(context).colorScheme.onPrimary)
-          ],
-        ),
-      ),
-    );
-  }
+  // Widget _buildLoadExpressions() {
+  //   return GestureDetector(
+  //     onTap: () {
+  //       _getData();
+  //     },
+  //     child: Container(
+  //       decoration: BoxDecoration(
+  //         color: Theme.of(context).colorScheme.background,
+  //         gradient: LinearGradient(
+  //           begin: Alignment.bottomLeft,
+  //           end: Alignment.topRight,
+  //           stops: <double>[0.2, 0.9],
+  //           colors: <Color>[
+  //             Theme.of(context).colorScheme.secondary,
+  //             Theme.of(context).colorScheme.primary
+  //           ],
+  //         ),
+  //       ),
+  //       padding: const EdgeInsets.symmetric(
+  //         horizontal: 10,
+  //         vertical: 15,
+  //       ),
+  //       alignment: Alignment.center,
+  //       child: Row(
+  //         mainAxisAlignment: MainAxisAlignment.center,
+  //         children: <Widget>[
+  //           Text(
+  //             'view 10 more expressions',
+  //             style: TextStyle(
+  //                 color: Theme.of(context).colorScheme.onPrimary,
+  //                 fontSize: 13,
+  //                 fontWeight: FontWeight.w700),
+  //           ),
+  //           const SizedBox(width: 2.5),
+  //           Icon(Icons.keyboard_arrow_down,
+  //               size: 13, color: Theme.of(context).colorScheme.onPrimary)
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Theme.of(context).colorScheme.background,
-      child: ListView(
-        controller: _collectiveController,
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                width: MediaQuery.of(context).size.width * .5,
-                padding: EdgeInsets.only(left: 10, right: 5, top: 10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
+    return Stack(children: <Widget>[
+      JuntoPerspectives(changePerspective: _changePerspective),
+      GestureDetector(
+        onTap: () {
+          print('yo');
+        },
+        onHorizontalDragUpdate: (DragUpdateDetails details) {
+          // only enable drag on collective screen
+          if (_dx == 0.0 &&
+              details.globalPosition.dy != 0.0 &&
+              details.delta.direction > 0) {
+            return;
+          } else {
+            if (details.globalPosition.dx > 0 &&
+                details.globalPosition.dx <
+                    MediaQuery.of(context).size.width * .9) {
+              setState(() {
+                _dx = details.globalPosition.dx;
+                if (details.delta.direction > 0) {
+                  setState(() {
+                    _scrollDirection = 'left';
+                  });
+                } else if (details.delta.direction < 0) {
+                  setState(() {
+                    _scrollDirection = 'right';
+                  });
+                }
+              });
+            }
+          }
+        },
+        onHorizontalDragEnd: (DragEndDetails details) {
+          if (_scrollDirection == 'right') {
+            if (_dx >= MediaQuery.of(context).size.width * .2) {
+              setState(() {
+                _dx = MediaQuery.of(context).size.width * .9;
+              });
+            } else if (_dx < MediaQuery.of(context).size.width * .2) {
+              _dx = 0.0;
+            }
+          } else if (_scrollDirection == 'left') {
+            if (_dx < MediaQuery.of(context).size.width * .7) {
+              setState(() {
+                _dx = 0.0;
+              });
+            } else if (_dx >= MediaQuery.of(context).size.width * .7) {
+              setState(() {
+                _dx = MediaQuery.of(context).size.width * .9;
+              });
+            }
+          }
+        },
+        child: Transform.translate(
+          offset: Offset(_dx, 0.0),
+          child: Stack(children: <Widget>[
+            Scaffold(
+              key: _juntoCollectiveKey,
+              appBar: JuntoAppBar(
+                openPerspectivesDrawer: () {
+                  if (_dx == 0) {
+                    setState(() {
+                      _dx = MediaQuery.of(context).size.width * .9;
+                    });
+                  }
+                },
+                juntoAppBarTitle: _appbarTitle,
+              ),
+              floatingActionButton: ValueListenableBuilder(
+                valueListenable: _isVisible,
+                builder: (BuildContext context, bool visible, Widget child) {
+                  return AnimatedOpacity(
+                      duration: const Duration(milliseconds: 300),
+                      opacity: visible ? 1.0 : 0.0,
+                      child: child);
+                },
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: 25),
+                  child: BottomNavNew(),
+                ),
+              ),
+
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerDocked,
+
+              endDrawer: DenDrawer(),
+
+              // dynamically render body
+              body: Container(
+                color: Theme.of(context).colorScheme.background,
+                child: ListView(
+                  controller: _collectiveController,
                   children: <Widget>[
-                    for (int index = 0; index < initialData.length + 1; index++)
-                      if (index == initialData.length)
-                        SizedBox()
-                      else if (index.isEven)
-                        ExpressionPreview(expression: initialData[index])
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          width: MediaQuery.of(context).size.width * .5,
+                          padding: EdgeInsets.only(left: 10, right: 5, top: 10),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              for (int index = 0;
+                                  index < initialData.length + 1;
+                                  index++)
+                                if (index == initialData.length)
+                                  SizedBox()
+                                else if (index.isEven)
+                                  ExpressionPreview(
+                                      expression: initialData[index])
+                            ],
+                          ),
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width * .5,
+                          padding: EdgeInsets.only(left: 5, right: 10, top: 10),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              for (int index = 0;
+                                  index < initialData.length + 1;
+                                  index++)
+                                if (index == initialData.length)
+                                  SizedBox()
+                                else if (index.isOdd)
+                                  ExpressionPreview(
+                                      expression: initialData[index])
+                            ],
+                          ),
+                        ),
+                      ],
+                    )
                   ],
                 ),
               ),
-              Container(
-                width: MediaQuery.of(context).size.width * .5,
-                padding: EdgeInsets.only(left: 5, right: 10, top: 10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    for (int index = 0; index < initialData.length + 1; index++)
-                      if (index == initialData.length)
-                        SizedBox()
-                      else if (index.isOdd)
-                        ExpressionPreview(expression: initialData[index])
-                  ],
-                ),
-              ),
-            ],
-          )
-        ],
+            ),
+            GestureDetector(
+              onTap: () {
+                if (_dx == MediaQuery.of(context).size.width * .9) {
+                  setState(() {
+                    _dx = 0;
+                  });
+                }
+              },
+              child: _dx > 0
+                  ? Container(
+                      color: Theme.of(context).backgroundColor.withOpacity(.5),
+                    )
+                  : const SizedBox(),
+            )
+          ]),
+        ),
       ),
+    ]);
+  }
+
+  // Switch between perspectives; used in perspectives side drawer.
+  void _changePerspective(String perspective) {
+    setState(
+      () {
+        _currentPerspective = perspective;
+        _appbarTitle = perspective;
+        _dx = 0;
+      },
     );
-  }
-
-  /// Default colors for degrees
-  Color _oneDegreeColor = JuntoPalette.juntoGreyLight;
-  Color _twoDegreesColor = JuntoPalette.juntoGreyLight;
-  Color _threeDegreesColor = JuntoPalette.juntoGreyLight;
-  Color _fourDegreesColor = JuntoPalette.juntoGreyLight;
-  Color _fiveDegreesColor = JuntoPalette.juntoGreyLight;
-  Color _sixDegreesColor = JuntoPalette.juntoGreyLight;
-
-  /// Reset all degree colors to inactive
-  void _resetDegrees() {
-    setState(() {
-      _oneDegreeColor = JuntoPalette.juntoGreyLight;
-      _twoDegreesColor = JuntoPalette.juntoGreyLight;
-      _threeDegreesColor = JuntoPalette.juntoGreyLight;
-      _fourDegreesColor = JuntoPalette.juntoGreyLight;
-      _fiveDegreesColor = JuntoPalette.juntoGreyLight;
-      _sixDegreesColor = JuntoPalette.juntoGreyLight;
-    });
-  }
-
-  /// Switch degrees
-  void _changeDegree(String degree) {
-    setState(() {
-      _resetDegrees();
-      if (degree == 'one') {
-        _oneDegreeColor = JuntoPalette.juntoGrey;
-      } else if (degree == 'two') {
-        _twoDegreesColor = JuntoPalette.juntoGrey;
-      } else if (degree == 'three') {
-        _threeDegreesColor = JuntoPalette.juntoGrey;
-      } else if (degree == 'four') {
-        _fourDegreesColor = JuntoPalette.juntoGrey;
-      } else if (degree == 'five') {
-        _fiveDegreesColor = JuntoPalette.juntoGrey;
-      } else if (degree == 'six') {
-        _sixDegreesColor = JuntoPalette.juntoGrey;
-      }
-    });
   }
 }

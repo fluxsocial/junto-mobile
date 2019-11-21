@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/screens/collective/perspectives/create_perspective/create_perspective.dart';
 import 'package:junto_beta_mobile/widgets/user_preview.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives'
+    '/create_perspective/create_perspective.dart' show SelectedUsers;
 import 'package:provider/provider.dart';
 
 /// showModalBottomSheet] which allows the user to search members via their
@@ -40,6 +41,7 @@ class _SearchMembersModalState extends State<SearchMembersModal> {
   Widget build(BuildContext context) {
     final ValueNotifier<SelectedUsers> _selectedUsers =
         Provider.of<ValueNotifier<SelectedUsers>>(context);
+
     return GestureDetector(
       onTap: () {
         showModalBottomSheet(
