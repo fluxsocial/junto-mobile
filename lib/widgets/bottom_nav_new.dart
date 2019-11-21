@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/app/themes_provider.dart';
-import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
+
 import 'package:junto_beta_mobile/widgets/fabs/filter_channel_fab.dart';
 
 class BottomNavNew extends StatelessWidget {
@@ -52,7 +52,31 @@ class BottomNavNew extends StatelessWidget {
           Expanded(
             child: GestureDetector(
               onTap: () {
-                // open lotus screen
+                Navigator.of(context).push(
+                  PageRouteBuilder<dynamic>(
+                    pageBuilder: (
+                      BuildContext context,
+                      Animation<double> animation,
+                      Animation<double> secondaryAnimation,
+                    ) {
+                      return JuntoLotus();
+                    },
+                    transitionsBuilder: (
+                      BuildContext context,
+                      Animation<double> animation,
+                      Animation<double> secondaryAnimation,
+                      Widget child,
+                    ) {
+                      return FadeTransition(
+                        opacity: animation,
+                        child: child,
+                      );
+                    },
+                    transitionDuration: const Duration(
+                      milliseconds: 400,
+                    ),
+                  ),
+                );
               },
               child: Container(
                 alignment: Alignment.center,
@@ -72,7 +96,7 @@ class BottomNavNew extends StatelessWidget {
               onTap: () {
                 Scaffold.of(context).openEndDrawer();
               },
-              child: Container( 
+              child: Container(
                 alignment: Alignment.center,
                 width: 60,
                 height: 50,

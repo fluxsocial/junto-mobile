@@ -10,14 +10,18 @@ import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/den/den_appbar.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 
 /// Displays the user's DEN or "profile screen"
 class JuntoDen extends StatefulWidget {
+  JuntoDen({this.visibility});
+
+  final ValueNotifier<bool> visibility;
   @override
   State<StatefulWidget> createState() => JuntoDenState();
 }
 
-class JuntoDenState extends State<JuntoDen> {
+class JuntoDenState extends State<JuntoDen> with HideFab {
   String profilePicture = 'assets/images/junto-mobile__logo.png';
   final List<String> _tabs = <String>['About', 'Public', 'Private'];
 
@@ -34,6 +38,31 @@ class JuntoDenState extends State<JuntoDen> {
   Future<UserData> _retrieveUserInfo() async {
     final UserRepo _userProvider = Provider.of<UserRepo>(context);
     return userMemoizer.runOnce(() => _userProvider.readLocalUser());
+  }
+
+  ScrollController _denController;
+
+  @override
+  void initState() {
+    super.initState();
+    _denController = ScrollController();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _denController.addListener(_onScrollingHasChanged);
+      _denController.position.isScrollingNotifier.addListener(
+        _onScrollingHasChanged,
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _denController.dispose();
+    _denController.removeListener(_onScrollingHasChanged());
+  }
+
+  _onScrollingHasChanged() {
+    super.hideFabOnScroll(_denController, widget.visibility);
   }
 
   @override
@@ -77,6 +106,7 @@ class JuntoDenState extends State<JuntoDen> {
         body: TabBarView(
           children: <Widget>[
             ListView(
+              // controller: _denController,
               physics: const ClampingScrollPhysics(),
               shrinkWrap: true,
               padding: const EdgeInsets.only(left: 10),

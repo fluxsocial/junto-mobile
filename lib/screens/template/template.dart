@@ -13,6 +13,7 @@ import 'package:junto_beta_mobile/screens/template/perspectives.dart';
 import 'package:junto_beta_mobile/widgets/appbar.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav_new.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:provider/provider.dart';
 
 // This class is a template screen that contains the navbar, bottom bar,
@@ -47,6 +48,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   UserProfile profile;
 
   ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
+  bool lotusVisible = false;
 
   @override
   void initState() {
@@ -196,6 +198,36 @@ class JuntoTemplateState extends State<JuntoTemplate> {
           ]),
         ),
       ),
+      // Stack(children: <Widget>[
+      //   Opacity(
+      //     opacity: .9,
+      //     child: Container(
+      //       child: Image.asset(
+      //           'assets/images/junto-mobile__background--lotus.png'),
+      //     ),
+      //   ),
+      //   Container(
+      //       padding: EdgeInsets.only(top: 100, bottom: 60),
+      //       child: Column(
+      //         crossAxisAlignment: CrossAxisAlignment.center,
+      //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //         children: <Widget>[
+      //           Text(
+      //             'Where to?',
+      //             style: TextStyle(
+      //                 fontSize: 24,
+      //                 color: Colors.white,
+      //                 fontWeight: FontWeight.w600, decoration: TextDecoration.none),
+      //           ),
+      //           Row(
+      //             mainAxisAlignment: MainAxisAlignment.center,
+      //             children: <Widget>[
+      //               Icon(CustomIcons.lotus, color: Colors.white, size: 28)
+      //             ],
+      //           )
+      //         ],
+      //       ))
+      // ]),
     ]);
   }
 
@@ -213,7 +245,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
       case 'packs':
         return JuntoPacks();
       case 'den':
-        return JuntoDen();
+        return JuntoDen(visibility: _isVisible);
     }
     return Container();
   }
