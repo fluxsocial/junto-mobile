@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
-
 import 'package:junto_beta_mobile/widgets/fabs/filter_channel_fab.dart';
 
 class BottomNavNew extends StatelessWidget {
@@ -15,7 +14,7 @@ class BottomNavNew extends StatelessWidget {
           borderRadius: BorderRadius.circular(100),
           color: Theme.of(context).backgroundColor,
           // border: Border.all(color: Theme.of(context).dividerColor, width: 1),
-          boxShadow: [
+          boxShadow: <BoxShadow>[
             BoxShadow(
               color: Theme.of(context).dividerColor,
               blurRadius: 3,

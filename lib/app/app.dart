@@ -45,7 +45,7 @@ class JuntoAppState extends State<JuntoApp> {
         loggedIn: widget.loggedIn,
       ),
     );
-  } 
+  }
 }
 
 class MaterialAppWithTheme extends StatelessWidget {

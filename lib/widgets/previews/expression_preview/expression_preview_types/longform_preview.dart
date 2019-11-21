@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 
 class LongformPreview extends StatelessWidget {
@@ -35,11 +34,11 @@ class LongformPreview extends StatelessWidget {
     );
   }
 
-  Widget _buildTitle(context) {
+  Widget _buildTitle(BuildContext context) {
     final String expressionTitle = expression.expressionData.title;
     if (expressionTitle != '') {
       return Container(
-        margin: EdgeInsets.only(bottom: 5),
+        margin: const EdgeInsets.only(bottom: 5),
         child: Text(expressionTitle,
             textAlign: TextAlign.left,
             style: Theme.of(context).textTheme.title),

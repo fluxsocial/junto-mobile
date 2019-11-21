@@ -400,7 +400,7 @@ class CreatePhotoState extends State<CreatePhoto> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return const Expanded(
         child: Center(
       child: Text('share a photo'),
     )
@@ -409,6 +409,7 @@ class CreatePhotoState extends State<CreatePhoto> {
   }
 
   // Render current screen conditionally
+  // ignore: unused_element
   Widget _currentScreen() {
     if (_croppedFile == null) {
       return _photoTypeTemplate();

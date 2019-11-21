@@ -104,7 +104,7 @@ class JuntoCreateState extends State<JuntoCreate> {
       setState(() {
         _longform = true;
         _currentIcon =
-            Icon(CustomIcons.longform, color: Colors.white, size: 20);
+            const Icon(CustomIcons.longform, color: Colors.white, size: 20);
       });
     } else if (templateType == 'ShortForm') {
       setState(() {
@@ -212,7 +212,7 @@ class JuntoCreateState extends State<JuntoCreate> {
               gradient: LinearGradient(
                 begin: Alignment.bottomLeft,
                 end: Alignment.topRight,
-                stops: <double>[0.1, 0.9],
+                stops: const <double>[0.1, 0.9],
                 colors: <Color>[
                   Theme.of(context).colorScheme.secondary,
                   Theme.of(context).colorScheme.primary

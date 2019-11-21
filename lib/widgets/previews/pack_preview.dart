@@ -45,7 +45,7 @@ class PackPreview extends StatelessWidget {
                       borderRadius: BorderRadius.circular(100),
                     ),
                     child: Transform.translate(
-                      offset: Offset(-1.0, 0),
+                      offset: const Offset(-1.0, 0),
                       child: Icon(
                         CustomIcons.packs,
                         color: Theme.of(context).colorScheme.onPrimary,

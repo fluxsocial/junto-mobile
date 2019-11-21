@@ -91,12 +91,9 @@ class JuntoHttp {
     Map<String, String> headers,
     dynamic body,
   }) async {
-    final jsonBody = convert.json.encode(body);
-    return httpClient.post(
-      _encodeUrl(resource),
-      headers: await _withPersistentHeaders(headers),
-      body: jsonBody
-    );
+    final dynamic jsonBody = convert.json.encode(body);
+    return httpClient.post(_encodeUrl(resource),
+        headers: await _withPersistentHeaders(headers), body: jsonBody);
   }
 
   static Map<String, dynamic> holobody(

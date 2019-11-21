@@ -23,7 +23,7 @@ class CommentPreview extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          CupertinoPageRoute(
+          CupertinoPageRoute<dynamic>(
             builder: (BuildContext context) => CommentOpen(commentText, parent),
           ),
         );

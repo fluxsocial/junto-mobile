@@ -541,10 +541,10 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
           ),
           child: Row(
             children: <Widget>[
-              Icon(
+              const Icon(
                 Icons.search,
                 size: 20,
-                color: const Color(0xff999999),
+                color: Color(0xff999999),
               ),
               const SizedBox(width: 10),
               Expanded(
@@ -675,10 +675,10 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
           ),
           child: Row(
             children: <Widget>[
-              Icon(
+              const Icon(
                 Icons.search,
                 size: 20,
-                color: const Color(0xff999999),
+                color: Color(0xff999999),
               ),
               const SizedBox(width: 10),
               Expanded(

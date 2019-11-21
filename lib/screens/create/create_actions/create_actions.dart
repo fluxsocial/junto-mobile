@@ -253,7 +253,7 @@ class CreateActionsState extends State<CreateActions> {
                           }) =>
                               null,
                           decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(0),
+                            contentPadding: const EdgeInsets.all(0),
                             border: InputBorder.none,
                             hintText: 'add up to five channels',
                             hintStyle: Theme.of(context).textTheme.caption,
@@ -271,7 +271,7 @@ class CreateActionsState extends State<CreateActions> {
                 ),
                 Expanded(
                   child: ListView(
-                    children: <Widget>[
+                    children: const <Widget>[
                       ChannelPreview(
                         channel: 'design',
                       ),

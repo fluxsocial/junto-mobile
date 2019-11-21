@@ -134,14 +134,14 @@ class PackOpenState extends State<PackOpen> {
               Expanded(
                 child: PageView(
                   controller: controller,
-                  onPageChanged: (index) {
+                  onPageChanged: (int index) {
                     setState(() {
                       _currentIndex = index;
                     });
                   },
                   children: <Widget>[
                     PackOpenPublic(fabVisible: _isVisible),
-                    Center(
+                    const Center(
                       child: Text('private pack expressions'),
                     )
                   ],

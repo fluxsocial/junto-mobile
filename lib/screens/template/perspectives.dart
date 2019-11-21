@@ -25,7 +25,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
           gradient: LinearGradient(
             begin: Alignment.bottomLeft,
             end: Alignment.topRight,
-            stops: <double>[0.2, 0.9],
+            stops: const <double>[0.2, 0.9],
             colors: <Color>[
               Theme.of(context).colorScheme.secondary,
               Theme.of(context).colorScheme.primary
@@ -169,7 +169,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
     );
   }
 
-  String _perspectiveText(perspective) {
+  String _perspectiveText(String perspective) {
     if (perspective == 'JUNTO') {
       return 'The Junto perspective contains all public expressions from '
           'every member of Junto.';
@@ -177,7 +177,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
       return 'The Connections perspective contains all public expressions from '
           'your 1st degree connections.';
     } else if (perspective == 'Subscriptions') {
-      return 'The Subscriptions perspective contains all public expressions from ' +
+      return 'The Subscriptions perspective contains all public expressions from '
           "members you're subscribed to.";
     } else if (perspective == 'Degrees of separation') {
       return 'The Degrees of separation perspective allows you to discover expression from one to six degrees of separtion away from you!';
@@ -186,7 +186,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
     return '';
   }
 
-  void _openPerspectiveBottomSheet(perspective) {
+  void _openPerspectiveBottomSheet(String perspective) {
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
@@ -262,9 +262,9 @@ class _CreatePerspectiveBottomSheetState
     _textController.dispose();
   }
 
-  void _createPerspective() async {
+  Future<void> _createPerspective() async {
     final String perspectiveName = _textController.value.text;
-    Perspective perspective =
+    final Perspective perspective =
         Perspective(name: perspectiveName, members: <String>[]);
     final CentralizedPerspective response =
         await userRepo.createPerspective(perspective);

@@ -54,7 +54,7 @@ class PackOpenAppbar extends StatelessWidget {
                           begin: Alignment.bottomLeft,
                           end: Alignment.topRight,
                           stops: const <double>[0.3, 0.9],
-                          colors: <Color>[
+                          colors: const <Color>[
                             JuntoPalette.juntoSecondary,
                             JuntoPalette.juntoPrimary,
                           ],
@@ -62,7 +62,7 @@ class PackOpenAppbar extends StatelessWidget {
                         borderRadius: BorderRadius.circular(100),
                       ),
                       child: Transform.translate(
-                        offset: Offset(-1.0, 0),
+                        offset: const Offset(-1.0, 0),
                         child: Icon(
                           CustomIcons.packs,
                           color: Colors.white,

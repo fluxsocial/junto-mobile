@@ -82,7 +82,7 @@ class _JuntoAppBarState extends State<JuntoAppBar>
             gradient: LinearGradient(
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
-                stops: <double>[
+                stops: const <double>[
                   0.1,
                   0.9
                 ],
@@ -180,7 +180,7 @@ class _JuntoAppBarState extends State<JuntoAppBar>
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.background,
-                            borderRadius: BorderRadius.only(
+                            borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(10),
                               topRight: Radius.circular(10),
                             ),
@@ -337,7 +337,7 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.background,
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(10),
             topRight: Radius.circular(10),
           ),
@@ -347,7 +347,7 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
           children: <Widget>[
             const SizedBox(height: 10),
             Container(
-              padding: EdgeInsets.only(bottom: 5),
+              padding: const EdgeInsets.only(bottom: 5),
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
@@ -367,7 +367,7 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                   const SizedBox(width: 10),
                   Expanded(
                     child: Transform.translate(
-                      offset: Offset(0.0, 2),
+                      offset: const Offset(0.0, 2),
                       child: TextField(
                         focusNode: textFieldFocusNode,
                         buildCounter: (
@@ -464,7 +464,7 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                     children: <Widget>[
                       Expanded(
                           child: ListView(
-                        children: <Widget>[
+                        children: const <Widget>[
                           // SpherePreviewSearch(group: spheres[0]),
                           // SpherePreviewSearch(group: spheres[1]),
                           // SpherePreviewSearch(group: spheres[2])

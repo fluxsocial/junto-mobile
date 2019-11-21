@@ -4,10 +4,9 @@ import 'package:localstorage/localstorage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthRepo {
-  AuthRepo(this._authService, this._userService);
+  AuthRepo(this._authService);
 
   final AuthenticationService _authService;
-  final UserService _userService;
 
   String _authKey;
   bool _isLoggedIn;

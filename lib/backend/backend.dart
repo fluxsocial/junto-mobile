@@ -33,7 +33,7 @@ class Backend {
     final GroupService groupService = GroupServiceCentralized(client);
     return Backend._(
       searchProvider: SearchProviderCentralized(client),
-      authRepo: AuthRepo(authService, userService),
+      authRepo: AuthRepo(authService),
       userRepo: UserRepo(userService),
       collectiveProvider: CollectiveProviderCentralized(client),
       groupsProvider: GroupRepo(groupService),

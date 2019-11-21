@@ -9,14 +9,15 @@ import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/den/den_appbar.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
-import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
+import 'package:provider/provider.dart';
 
 /// Displays the user's DEN or "profile screen"
 class JuntoDen extends StatefulWidget {
-  JuntoDen({this.visibility});
+  const JuntoDen({this.visibility});
 
   final ValueNotifier<bool> visibility;
+
   @override
   State<StatefulWidget> createState() => JuntoDenState();
 }
@@ -35,6 +36,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
   List<CentralizedExpressionResponse> mockExpressions =
       MockExpressionService().collectiveExpressions;
 
+  // ignore: unused_element
   Future<UserData> _retrieveUserInfo() async {
     final UserRepo _userProvider = Provider.of<UserRepo>(context);
     return userMemoizer.runOnce(() => _userProvider.readLocalUser());
@@ -58,10 +60,10 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
   void dispose() {
     super.dispose();
     _denController.dispose();
-    _denController.removeListener(_onScrollingHasChanged());
+    _denController.removeListener(_onScrollingHasChanged);
   }
 
-  _onScrollingHasChanged() {
+  void _onScrollingHasChanged() {
     super.hideFabOnScroll(_denController, widget.visibility);
   }
 
@@ -73,7 +75,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
         physics: const ClampingScrollPhysics(),
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
-            JuntoDenAppbar(
+            const JuntoDenAppbar(
               handle: 'sunyata',
               name: 'Eric Yang',
               profilePicture: 'assets/images/junto-mobile__eric.png',
@@ -111,7 +113,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
               shrinkWrap: true,
               padding: const EdgeInsets.only(left: 10),
               children: <Widget>[
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 Container(
                   padding: const EdgeInsets.only(top: 5, bottom: 5),
                   child: Column(
@@ -135,7 +137,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                           ],
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Container(
                         child: Row(
                           children: <Widget>[
@@ -157,7 +159,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                           ],
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Container(
                         child: Row(
                           children: <Widget>[
@@ -189,14 +191,14 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                   enableInfiniteScroll: false,
                   items: <Widget>[
                     Container(
-                      padding: EdgeInsets.only(right: 10),
+                      padding: const EdgeInsets.only(right: 10),
                       width: MediaQuery.of(context).size.width,
                       child: Image.asset('assets/images/junto-mobile__eric.png',
                           fit: BoxFit.cover),
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width,
-                      padding: EdgeInsets.only(right: 10),
+                      padding: const EdgeInsets.only(right: 10),
                       child: Image.asset(
                           'assets/images/junto-mobile__eric--qigong.png',
                           fit: BoxFit.cover),
@@ -205,7 +207,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                 ),
                 const SizedBox(height: 15),
                 Container(
-                  child: Text("student of suffering and its cessation",
+                  child: Text('student of suffering and its cessation;',
                       style: Theme.of(context).textTheme.caption),
                 ),
               ],

@@ -40,7 +40,7 @@ class JuntoSpheresState extends State<JuntoSpheres> with ListDistinct {
       alignment: Alignment.center,
       child: const Text(
         'Oops, something is wrong!',
-        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+        style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
       ),
     );
   }
@@ -507,7 +507,7 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
                 padding: const EdgeInsets.symmetric(
                   vertical: 15,
                 ),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
                       width: .5,

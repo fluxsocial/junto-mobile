@@ -13,7 +13,6 @@ import 'package:junto_beta_mobile/screens/template/perspectives.dart';
 import 'package:junto_beta_mobile/widgets/appbar.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav_new.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:provider/provider.dart';
 
 // This class is a template screen that contains the navbar, bottom bar,
@@ -47,7 +46,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
 
   UserProfile profile;
 
-  ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
+  final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
   bool lotusVisible = false;
 
   @override
@@ -151,7 +150,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
                 juntoAppBarTitle: _appbarTitle,
               ),
               // floatingActionButton: _displayFAB(),
-              floatingActionButton: ValueListenableBuilder(
+              floatingActionButton: ValueListenableBuilder<bool>(
                 valueListenable: _isVisible,
                 builder: (BuildContext context, bool visible, Widget child) {
                   return AnimatedOpacity(

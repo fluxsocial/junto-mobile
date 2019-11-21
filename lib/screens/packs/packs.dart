@@ -56,12 +56,12 @@ class JuntoPacksState extends State<JuntoPacks> with ListDistinct {
     );
   }
 
-  List<Group> _packs = MockPackService().packs;
+  final List<Group> _packs = MockPackService().packs;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       child: ListView(children: <Widget>[
         PackPreview(group: _packs[0]),
         PackPreview(group: _packs[1]),

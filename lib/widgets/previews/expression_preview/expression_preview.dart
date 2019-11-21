@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open.dart';
-import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview_bottom.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview_top.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview_types/event_preview.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview_types/longform_preview.dart';
@@ -39,7 +38,7 @@ class ExpressionPreview extends StatelessWidget {
         // );
       },
       child: Container(
-        margin: EdgeInsets.only(bottom: 25),
+        margin: const EdgeInsets.only(bottom: 25),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -58,7 +57,7 @@ class ExpressionPreview extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
             ExpressionPreviewTop(expression: expression),
           ],
         ),
