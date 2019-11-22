@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/groups/groups.dart';
@@ -14,140 +15,274 @@ class JuntoLotus extends StatelessWidget {
           child:
               Image.asset('assets/images/junto-mobile__background--lotus.png'),
         ),
-        Column(
-          children: <Widget>[
-            GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Container(
-                margin: EdgeInsets.only(top: 50, left: 50),
-                height: 50,
-                width: 50,
-                child: Text('back'),
+        Container(
+          height: MediaQuery.of(context).size.height,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(top: 100),
+                child: Text(
+                  'Where to?',
+                  style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white),
+                ),
               ),
-            ),
-            RaisedButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  PageRouteBuilder<dynamic>(
-                    pageBuilder: (
-                      BuildContext context,
-                      Animation<double> animation,
-                      Animation<double> secondaryAnimation,
-                    ) {
-                      return JuntoCreate('yo');
-                    },
-                    transitionsBuilder: (
-                      BuildContext context,
-                      Animation<double> animation,
-                      Animation<double> secondaryAnimation,
-                      Widget child,
-                    ) {
-                      return FadeTransition(
-                        opacity: animation,
-                        child: child,
-                      );
-                    },
-                    transitionDuration: const Duration(
-                      milliseconds: 400,
+              Column(
+                children: <Widget>[
+                  Container(
+                    height: 100,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              PageRouteBuilder<dynamic>(
+                                pageBuilder: (
+                                  BuildContext context,
+                                  Animation<double> animation,
+                                  Animation<double> secondaryAnimation,
+                                ) {
+                                  return JuntoCreate('yo');
+                                },
+                                transitionsBuilder: (
+                                  BuildContext context,
+                                  Animation<double> animation,
+                                  Animation<double> secondaryAnimation,
+                                  Widget child,
+                                ) {
+                                  return FadeTransition(
+                                    opacity: animation,
+                                    child: child,
+                                  );
+                                },
+                                transitionDuration: const Duration(
+                                  milliseconds: 400,
+                                ),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.only(left: 25),
+                            width: MediaQuery.of(context).size.width * .5,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Container(
+                                  width: 27,
+                                  child: Icon(CustomIcons.create,
+                                      size: 20, color: Colors.white),
+                                ),
+                                const SizedBox(height: 10),
+                                Text(
+                                  'CREATE',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                      letterSpacing: 1.4),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              PageRouteBuilder<dynamic>(
+                                pageBuilder: (
+                                  BuildContext context,
+                                  Animation<double> animation,
+                                  Animation<double> secondaryAnimation,
+                                ) {
+                                  return JuntoGroups();
+                                },
+                                transitionsBuilder: (
+                                  BuildContext context,
+                                  Animation<double> animation,
+                                  Animation<double> secondaryAnimation,
+                                  Widget child,
+                                ) {
+                                  return FadeTransition(
+                                    opacity: animation,
+                                    child: child,
+                                  );
+                                },
+                                transitionDuration: const Duration(
+                                  milliseconds: 400,
+                                ),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.only(right: 25),
+                            width: MediaQuery.of(context).size.width * .5,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Transform.translate(
+                                  offset: Offset(-15, 0),
+                                  child: Icon(CustomIcons.collective,
+                                      size: 15, color: Colors.white),
+                                ),
+                                const SizedBox(height: 10),
+                                Text(
+                                  'GROUPS',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                      letterSpacing: 1.4),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                );
-              },
-              child: Text('create'),
-            ),            
-            RaisedButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  PageRouteBuilder<dynamic>(
-                    pageBuilder: (
-                      BuildContext context,
-                      Animation<double> animation,
-                      Animation<double> secondaryAnimation,
-                    ) {
-                      return JuntoCollective();
-                    },
-                    transitionsBuilder: (
-                      BuildContext context,
-                      Animation<double> animation,
-                      Animation<double> secondaryAnimation,
-                      Widget child,
-                    ) {
-                      return FadeTransition(
-                        opacity: animation,
-                        child: child,
-                      );
-                    },
-                    transitionDuration: const Duration(
-                      milliseconds: 400,
+                  Container(
+                    height: 100,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              PageRouteBuilder<dynamic>(
+                                pageBuilder: (
+                                  BuildContext context,
+                                  Animation<double> animation,
+                                  Animation<double> secondaryAnimation,
+                                ) {
+                                  return JuntoCollective();
+                                },
+                                transitionsBuilder: (
+                                  BuildContext context,
+                                  Animation<double> animation,
+                                  Animation<double> secondaryAnimation,
+                                  Widget child,
+                                ) {
+                                  return FadeTransition(
+                                    opacity: animation,
+                                    child: child,
+                                  );
+                                },
+                                transitionDuration: const Duration(
+                                  milliseconds: 400,
+                                ),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: MediaQuery.of(context).size.width * .5,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Container(
+                                  width: 45,
+                                  child: Icon(CustomIcons.collective,
+                                      size: 15, color: Colors.white),
+                                ),
+                                const SizedBox(height: 10),
+                                Text(
+                                  'DISCOVER',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                      letterSpacing: 1.4),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              PageRouteBuilder<dynamic>(
+                                pageBuilder: (
+                                  BuildContext context,
+                                  Animation<double> animation,
+                                  Animation<double> secondaryAnimation,
+                                ) {
+                                  return JuntoDen();
+                                },
+                                transitionsBuilder: (
+                                  BuildContext context,
+                                  Animation<double> animation,
+                                  Animation<double> secondaryAnimation,
+                                  Widget child,
+                                ) {
+                                  return FadeTransition(
+                                    opacity: animation,
+                                    child: child,
+                                  );
+                                },
+                                transitionDuration: const Duration(
+                                  milliseconds: 400,
+                                ),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: MediaQuery.of(context).size.width * .5,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Transform.translate(
+                                  offset: Offset(-15, 0),
+                                  child: Icon(CustomIcons.collective,
+                                      size: 15, color: Colors.white),
+                                ),
+                                const SizedBox(height: 10),
+                                Text(
+                                  'REFLECT',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                      letterSpacing: 1.4),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                );
-              },
-              child: Text('collective'),
-            ),
-            RaisedButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  PageRouteBuilder<dynamic>(
-                    pageBuilder: (
-                      BuildContext context,
-                      Animation<double> animation,
-                      Animation<double> secondaryAnimation,
-                    ) {
-                      return JuntoGroups();
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
                     },
-                    transitionsBuilder: (
-                      BuildContext context,
-                      Animation<double> animation,
-                      Animation<double> secondaryAnimation,
-                      Widget child,
-                    ) {
-                      return FadeTransition(
-                        opacity: animation,
-                        child: child,
-                      );
-                    },
-                    transitionDuration: const Duration(
-                      milliseconds: 400,
+                    child: Container(
+                      height: 50,
+                      margin: EdgeInsets.only(bottom: 25),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(CustomIcons.lotus, size: 28, color: Colors.white)
+                        ],
+                      ),
                     ),
                   ),
-                );
-              },
-              child: Text('groups'),
-            ),
-            RaisedButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  PageRouteBuilder<dynamic>(
-                    pageBuilder: (
-                      BuildContext context,
-                      Animation<double> animation,
-                      Animation<double> secondaryAnimation,
-                    ) {
-                      return JuntoDen();
-                    },
-                    transitionsBuilder: (
-                      BuildContext context,
-                      Animation<double> animation,
-                      Animation<double> secondaryAnimation,
-                      Widget child,
-                    ) {
-                      return FadeTransition(
-                        opacity: animation,
-                        child: child,
-                      );
-                    },
-                    transitionDuration: const Duration(
-                      milliseconds: 400,
-                    ),
-                  ),
-                );
-              },
-              child: Text('den'),
-            ),
-          ],
+                ],
+              )
+            ],
+          ),
         )
       ]),
     );

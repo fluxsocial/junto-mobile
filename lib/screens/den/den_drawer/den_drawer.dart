@@ -109,7 +109,8 @@ class _DenDrawerState extends State<DenDrawer> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text('My Den', style: Theme.of(context).textTheme.title),
+                    Text('Collective',
+                        style: Theme.of(context).textTheme.title),
                     ClipOval(
                       child: Image.asset(
                         'assets/images/junto-mobile__eric.png',
