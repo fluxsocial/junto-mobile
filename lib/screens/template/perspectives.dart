@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/utils/junto_dialog.dart';
+import 'package:junto_beta_mobile/utils/junto_exception.dart'
+    show JuntoException;
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
 
 class JuntoPerspectives extends StatefulWidget {
@@ -291,12 +295,30 @@ class _CreatePerspectiveBottomSheetState
   }
 
   Future<void> _createPerspective() async {
-    final String perspectiveName = _textController.value.text;
-    final Perspective perspective =
-        Perspective(name: perspectiveName, members: <String>[]);
-    final CentralizedPerspective response =
-        await userRepo.createPerspective(perspective);
-    print(response);
+    final String name = _textController.value.text;
+    JuntoOverlay.showLoader(context);
+    try {
+      await Provider.of<UserRepo>(context)
+          .createPerspective(Perspective(name: name, members: <String>[]));
+      JuntoOverlay.hide();
+      Navigator.pop(context);
+    } on JuntoException catch (error, stacktrace) {
+      print(error);
+      print(stacktrace);
+      JuntoOverlay.hide();
+      JuntoDialog.showJuntoDialog(
+        context,
+        error.message,
+        <Widget>[
+          FlatButton(
+            onPressed: () {
+              return Navigator.pop(context);
+            },
+            child: const Text('Ok'),
+          ),
+        ],
+      );
+    }
   }
 
   @override

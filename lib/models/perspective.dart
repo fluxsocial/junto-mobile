@@ -3,7 +3,7 @@ import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 
 class Perspective {
-  const Perspective({@required this.name, this.members});
+  const Perspective({@required this.name, @required this.members});
 
   factory Perspective.fromMap(Map<String, dynamic> map) {
     return Perspective(
@@ -19,12 +19,12 @@ class Perspective {
 
   static List<Perspective> fetchAll() {
     return <Perspective>[
-      const Perspective(name: 'NYC 🗽🏙️  '),
-      const Perspective(name: 'Design'),
-      const Perspective(name: 'Meditation'),
-      const Perspective(name: 'Hoops 🏀'),
-      const Perspective(name: 'Austrian Economics📈'),
-      const Perspective(name: 'Holochain ♓'),
+      const Perspective(name: 'NYC 🗽🏙️  ', members: <String>[]),
+      const Perspective(name: 'Design', members: <String>[]),
+      const Perspective(name: 'Meditation', members: <String>[]),
+      const Perspective(name: 'Hoops 🏀', members: <String>[]),
+      const Perspective(name: 'Austrian Economics📈', members:<String> []),
+      const Perspective(name: 'Holochain ♓', members: <String>[]),
     ];
   }
 
