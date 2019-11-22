@@ -7,15 +7,49 @@ class JuntoPerspectives extends StatefulWidget {
   const JuntoPerspectives({
     Key key,
     @required this.changePerspective,
+    @required this.profile,
   }) : super(key: key);
 
   final Function changePerspective;
+  final UserProfile profile;
 
   @override
   State<StatefulWidget> createState() => JuntoPerspectivesState();
 }
 
 class JuntoPerspectivesState extends State<JuntoPerspectives> {
+  Widget _buildUserPerspectives(BuildContext context) {
+    if (widget.profile?.address != null)
+      return FutureBuilder<List<CentralizedPerspective>>(
+        future: Provider.of<UserRepo>(context)
+            .getUserPerspective(widget.profile?.address),
+        builder: (
+          BuildContext context,
+          AsyncSnapshot<List<CentralizedPerspective>> snapshot,
+        ) {
+          if (snapshot.hasError) {
+            return Container();
+          }
+          if (snapshot.hasData) {
+            return ListView(
+              padding: const EdgeInsets.all(0),
+              shrinkWrap: true,
+              physics: const ClampingScrollPhysics(),
+              children: <Widget>[
+                for (CentralizedPerspective perspective in snapshot.data)
+                  _buildPerspective(
+                    perspective.name,
+                    perspective.userCount.toString(),
+                  )
+              ],
+            );
+          }
+          return Container();
+        },
+      );
+    return Container();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,9 +130,9 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                 child: ListView(
                   children: <Widget>[
                     _buildPerspective('JUNTO', 'all'),
-                    _buildPerspective('Connections', '99'),
-                    _buildPerspective('Subscriptions', '220'),
                     _buildPerspective('Degrees of separation', 'all'),
+                    _buildPerspective('Subscriptions', '220'),
+                    _buildUserPerspectives(context),
                   ],
                 ),
               )
@@ -120,42 +154,36 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Row(
-              children: <Widget>[
-                Container(
-                  child: Row(
-                    children: <Widget>[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            name,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 15,
-                              letterSpacing: 1.2,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(height: 5),
-                          Text(
-                            members + ' members',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 15,
-                                letterSpacing: 1.2,
-                                color: Colors.white),
-                          )
-                        ],
-                      ),
-                    ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    name,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 15,
+                      letterSpacing: 1.2,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 5),
+                  Text(
+                    members + ' members',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 15,
+                        letterSpacing: 1.2,
+                        color: Colors.white),
+                  )
+                ],
+              ),
             ),
             GestureDetector(
               onTap: () {
-                _openPerspectiveBottomSheet(name);
+                _openPerspectiveBottomSheet(
+                  name,
+                );
               },
               child: const Icon(
                 Icons.keyboard_arrow_down,

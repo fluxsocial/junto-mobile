@@ -91,6 +91,7 @@ class CentralizedPerspective {
     @required this.creator,
     @required this.createdAt,
     @required this.isDefault,
+    this.userCount,
     this.users,
   });
 
@@ -101,6 +102,7 @@ class CentralizedPerspective {
       creator: map['creator'] as String,
       createdAt: RFC3339.parseRfc3339(map['created_at']),
       isDefault: map['is_default'] as bool,
+      userCount: map['user_count'] != null ? map['user_count'] as int : null,
       users: map['users'] != null ? _parseUsers(map['users']) : null,
     );
   }
@@ -118,6 +120,9 @@ class CentralizedPerspective {
   final DateTime createdAt;
   final bool isDefault;
 
+  /// Number of users in the given perspective
+  final int userCount;
+
   /// List of users associated with the given perspective.
   final List<UserProfile> users;
 
@@ -128,6 +133,7 @@ class CentralizedPerspective {
       'creator': creator,
       'created_at': createdAt?.toIso8601String(),
       'is_default': isDefault,
+      'user_count': userCount,
     };
   }
 
