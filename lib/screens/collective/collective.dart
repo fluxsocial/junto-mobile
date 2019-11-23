@@ -41,8 +41,8 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
   @override
   void dispose() {
     super.dispose();
-    _collectiveController.dispose();
     _collectiveController.removeListener(_onScrollingHasChanged);
+    _collectiveController.dispose();
   }
 
   @override
