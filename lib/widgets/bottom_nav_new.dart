@@ -4,11 +4,11 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 
 class BottomNavNew extends StatelessWidget {
-  BottomNavNew({this.screen, this.function});
-  final screen;
-  final function;
+  const BottomNavNew({this.screen, this.function});
+  final String screen;
+  final Function function;
 
-  _uniqueActionItem(context, currentScreen) {
+  Widget _uniqueActionItem(BuildContext context, String currentScreen) {
     if (currentScreen == 'collective') {
       return Expanded(
         child: GestureDetector(
@@ -34,20 +34,30 @@ class BottomNavNew extends StatelessWidget {
       );
     } else if (currentScreen == 'spheres') {
       return Expanded(
-        child: Container(
-          width: 60,
-          height: 50,
-          child: Icon(CustomIcons.spheres,
-              size: 17, color: Theme.of(context).primaryColor),
+        child: GestureDetector(
+          onTap: () {
+            function();
+          },
+          child: Container(
+            width: 60,
+            height: 50,
+            child: Icon(CustomIcons.spheres,
+                size: 17, color: Theme.of(context).primaryColor),
+          ),
         ),
       );
     } else if (currentScreen == 'packs') {
       return Expanded(
-        child: Container(
-          width: 60,
-          height: 50,
-          child: Icon(CustomIcons.packs,
-              size: 17, color: Theme.of(context).primaryColor),
+        child: GestureDetector(
+          onTap: () {
+            // allow member to invite people into app via referral
+          },
+          child: Container(
+            width: 60,
+            height: 50,
+            child: Icon(CustomIcons.packs,
+                size: 17, color: Theme.of(context).primaryColor),
+          ),
         ),
       );
     } else if (currentScreen == 'den') {

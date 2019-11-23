@@ -17,7 +17,7 @@ class CreateSphereFAB extends StatelessWidget {
           context: context,
           builder: (BuildContext context) => Container(
             color: Colors.transparent,
-            child: _CreateSphereBottomSheet(),
+            child: CreateSphereBottomSheet(),
           ),
         );
       },
@@ -49,14 +49,14 @@ class CreateSphereFAB extends StatelessWidget {
   }
 }
 
-class _CreateSphereBottomSheet extends StatefulWidget {
+class CreateSphereBottomSheet extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _CreateSphereBottomSheetState();
+    return CreateSphereBottomSheetState();
   }
 }
 
-class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
+class CreateSphereBottomSheetState extends State<CreateSphereBottomSheet> {
   int _currentPage = 0;
   final PageController _createSphereController = PageController(initialPage: 0);
   final PageController _searchMembersController =

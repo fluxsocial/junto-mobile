@@ -72,7 +72,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
   Widget build(BuildContext context) {
     return Scaffold(
         key: _juntoDenKey,
-        appBar: JuntoAppBar(
+        appBar: const JuntoAppBar(
           juntoAppBarTitle: 'sunyata',
         ),
         floatingActionButton: ValueListenableBuilder(
@@ -84,8 +84,13 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                 child: child);
           },
           child: Padding(
-            padding: EdgeInsets.only(bottom: 25),
-            child: BottomNavNew(screen: 'den'),
+            padding: const EdgeInsets.only(bottom: 25),
+            child: BottomNavNew(
+                screen: 'den',
+                function: () {
+                  // edit profile ?
+                  // eventually.. create collection
+                }),
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

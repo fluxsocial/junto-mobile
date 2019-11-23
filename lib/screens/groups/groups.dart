@@ -6,6 +6,7 @@ import 'package:junto_beta_mobile/screens/spheres/spheres.dart';
 import 'package:junto_beta_mobile/screens/packs/packs.dart';
 import 'package:junto_beta_mobile/backend/mock/mock_packs.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/widgets/fabs/create_sphere_fab.dart';
 
 class JuntoGroups extends StatefulWidget {
   @override
@@ -44,7 +45,19 @@ class JuntoGroupsState extends State<JuntoGroups> {
           floatingActionButton: Padding(
             padding: EdgeInsets.only(bottom: 25),
             child: _currentIndex == 0
-                ? BottomNavNew(screen: 'spheres')
+                ? BottomNavNew(
+                    screen: 'spheres',
+                    function: () {
+                      // open create sphere modal
+                      showModalBottomSheet(
+                        isScrollControlled: true,
+                        context: context,
+                        builder: (BuildContext context) => Container(
+                          color: Colors.transparent,
+                          child: CreateSphereBottomSheet(),
+                        ),
+                      );
+                    })
                 : BottomNavNew(screen: 'packs'),
           ),
           floatingActionButtonLocation:

@@ -50,7 +50,6 @@ class JuntoDenAppbar extends StatelessWidget {
                 children: <Widget>[
                   const SizedBox(),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
                       Flexible(
@@ -63,28 +62,6 @@ class JuntoDenAppbar extends StatelessWidget {
                             color: Colors.white,
                           ),
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Scaffold.of(context).openEndDrawer();
-                        },
-                        child: Container(
-                            margin: const EdgeInsets.only(left: 10),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            decoration: BoxDecoration(
-                              border:
-                                  Border.all(color: Colors.white, width: 1.5),
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Text(
-                              'My Den',
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white,
-                              ),
-                            )),
                       ),
                     ],
                   ),
