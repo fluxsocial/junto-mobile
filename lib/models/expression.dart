@@ -7,7 +7,7 @@ class CentralizedExpression {
   CentralizedExpression({
     @required this.type,
     @required this.expressionData,
-    @required this.context,
+    this.context,
   });
 
   factory CentralizedExpression.fromMap(Map<String, dynamic> map) {
@@ -20,7 +20,7 @@ class CentralizedExpression {
 
   final String type;
   final Map<String, dynamic> expressionData;
-  final Map<String, dynamic> context;
+  final dynamic context;
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -28,6 +28,18 @@ class CentralizedExpression {
       'expression_data': expressionData,
       'context': context,
     };
+  }
+
+  CentralizedExpression copyWith({
+    String type,
+    Map<String, dynamic> expressionData,
+    dynamic context,
+  }) {
+    return CentralizedExpression(
+      type: type ?? this.type,
+      expressionData: expressionData ?? this.expressionData,
+      context: context ?? this.context,
+    );
   }
 }
 

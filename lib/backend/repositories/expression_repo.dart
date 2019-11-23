@@ -1,15 +1,38 @@
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
+enum ExpressionContext { Group, Collection, Collective }
+
 class ExpressionRepo {
   ExpressionRepo(this._expressionService);
 
   final ExpressionService _expressionService;
 
   Future<CentralizedExpressionResponse> createExpression(
-    CentralizedExpression expression,
-  ) {
-    return _expressionService.createExpression(expression);
+      CentralizedExpression expression, ExpressionContext context,
+      [String address]) {
+    CentralizedExpression _expression;
+    if (context == ExpressionContext.Group) {
+      assert(address != null);
+      _expression = expression.copyWith(
+        context: <String, dynamic>{
+          'Group': <String, dynamic>{'address': address}
+        },
+      );
+    } else if (context == ExpressionContext.Collection) {
+      assert(address != null);
+      _expression = expression.copyWith(
+        context: <String, dynamic>{
+          'Collection': <String, dynamic>{'address': address}
+        },
+      );
+    }else {
+      assert(address == null);
+      _expression = expression.copyWith(
+        context: 'Collective'
+      );
+    }
+    return _expressionService.createExpression(_expression);
   }
 
   Future<CentralizedExpressionResponse> getExpression(
