@@ -71,7 +71,7 @@ class _CreatePerspectiveState extends State<CreatePerspective>
     JuntoOverlay.showLoader(context);
     try {
       await Provider.of<UserRepo>(context)
-          .createPerspective(Perspective(name: name));
+          .createPerspective(Perspective(name: name, members: <String>[]));
       JuntoOverlay.hide();
       Navigator.pop(context);
     } on JuntoException catch (error) {
