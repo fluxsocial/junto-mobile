@@ -9,9 +9,18 @@ class ExpressionRepo {
   final ExpressionService _expressionService;
 
   Future<CentralizedExpressionResponse> createExpression(
-      CentralizedExpression expression, ExpressionContext context,
-      [String address]) {
+    CentralizedExpression expression,
+    ExpressionContext context, [
+    String address,
+  ]) {
+    // Server requires that channels is not null.
+    assert(expression.channels != null);
+
+    // Channels can only contain strings.
+    assert(expression.channels is List<String>);
+
     CentralizedExpression _expression;
+
     if (context == ExpressionContext.Group) {
       assert(address != null);
       _expression = expression.copyWith(
@@ -26,11 +35,9 @@ class ExpressionRepo {
           'Collection': <String, dynamic>{'address': address}
         },
       );
-    }else {
+    } else {
       assert(address == null);
-      _expression = expression.copyWith(
-        context: 'Collective'
-      );
+      _expression = expression.copyWith(context: 'Collective');
     }
     return _expressionService.createExpression(_expression);
   }
@@ -38,12 +45,18 @@ class ExpressionRepo {
   Future<CentralizedExpressionResponse> getExpression(
     String expressionAddress,
   ) {
+    // Expression address must not be null or empty.
+    assert(expressionAddress != null);
+    assert(expressionAddress.isNotEmpty);
     return _expressionService.getExpression(expressionAddress);
   }
 
   Future<Resonation> postResonation(
     String expressionAddress,
   ) {
+    // Expression address must not be null or empty.
+    assert(expressionAddress != null);
+    assert(expressionAddress.isNotEmpty);
     return _expressionService.postResonation(expressionAddress);
   }
 
