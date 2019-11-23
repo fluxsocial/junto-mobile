@@ -29,13 +29,6 @@ class ExpressionPreview extends StatelessWidget {
             builder: (BuildContext context) => ExpressionOpen(expression),
           ),
         );
-
-        // Navigator.push(
-        //   context,
-        //   CupertinoPageRoute<dynamic>(
-        //     builder: (BuildContext context) => ExpressionOpenCreated(expression),
-        //   ),
-        // );
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 25),

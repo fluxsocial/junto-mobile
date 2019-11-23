@@ -13,6 +13,8 @@ class ExpressionOpenTop extends StatelessWidget {
   Widget build(BuildContext context) {
     final String username = expression.creator.username ?? '';
     final String name = expression.creator.name ?? '';
+    final String bio = expression.creator.bio ?? '';
+    final String address = expression.creator.address ?? '';
 
     return Container(
       padding: const EdgeInsets.only(top: 15, bottom: 15, left: 10),
@@ -27,12 +29,12 @@ class ExpressionOpenTop extends StatelessWidget {
                 CupertinoPageRoute<dynamic>(
                   builder: (BuildContext context) => JuntoMember(
                     profile: UserProfile(
-                      address: '',
+                      address: address,
                       name: name,
-                      bio: 'This is a test',
+                      bio: bio,
                       profilePicture:
                           'assets/images/junto-mobile__placeholder--member.png',
-                      username: 'Gmail',
+                      username: username,
                       verified: false,
                     ),
                   ),
@@ -45,7 +47,6 @@ class ExpressionOpenTop extends StatelessWidget {
                 // profile picture
                 ClipOval(
                   child: Image.asset(
-//                    profilePicture,
                     'assets/images/junto-mobile__placeholder--member.png',
                     height: 45.0,
                     width: 45.0,
@@ -61,8 +62,7 @@ class ExpressionOpenTop extends StatelessWidget {
                     children: <Widget>[
                       Text(username.toLowerCase() ?? '',
                           style: Theme.of(context).textTheme.subhead),
-                      Text('$name $name',
-                          style: Theme.of(context).textTheme.body1),
+                      Text('$name', style: Theme.of(context).textTheme.body1),
                     ],
                   ),
                 ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
+import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/event.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/longform.dart';
@@ -9,10 +10,15 @@ import 'package:junto_beta_mobile/screens/create/create_templates/photo.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/shortform.dart';
 
 class JuntoCreate extends StatefulWidget {
-  const JuntoCreate(this.expressionLayer, {@required this.address});
+  const JuntoCreate(
+    this.channelName, {
+    @required this.address,
+    @required this.expressionContext,
+  });
 
-  final String expressionLayer;
+  final String channelName;
   final String address;
+  final ExpressionContext expressionContext;
 
   @override
   State<StatefulWidget> createState() {
@@ -134,9 +140,10 @@ class JuntoCreateState extends State<JuntoCreate> {
       MaterialPageRoute<dynamic>(
         builder: (BuildContext context) {
           return CreateActions(
-            address: widget.address,
-            expressionLayer: widget.expressionLayer,
             expressionType: _expressionType,
+            address: widget.address,
+            channelName: widget.channelName,
+            expressionContext: widget.expressionContext,
             expression: getExpression(),
           );
         },

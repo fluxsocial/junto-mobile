@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 
@@ -7,27 +8,59 @@ class CentralizedExpression {
   CentralizedExpression({
     @required this.type,
     @required this.expressionData,
-    @required this.context,
+    this.channels: const <String>[],
+    this.context,
   });
 
   factory CentralizedExpression.fromMap(Map<String, dynamic> map) {
     return CentralizedExpression(
       type: map['type'] as String,
+      channels: List<String>.from(map['channels']),
       expressionData: map['expression_data'] as Map<String, dynamic>,
       context: map['context'] as Map<String, dynamic>,
     );
   }
 
+  /// Type of expression being created. Server currently supports  LongForm,
+  /// ShortForm, PhotoForm, EventForm.
   final String type;
+
+  /// Map representation of the expression. Values are dependant on [type].
+  /// Can be serialized to an object:
+  /// * [CentralizedLongFormExpression],
+  /// * [CentralizedShortFormExpression]
+  /// * [CentralizedPhotoFormExpression]
+  /// * [CentralizedEventFormExpression]
   final Map<String, dynamic> expressionData;
-  final Map<String, dynamic> context;
+
+  /// Context for the given expression. Value is dependant on [ExpressionContext].
+  /// See docs for details: https://github.com/juntofoundation/Junto-Alpha-API/blob/master/docs/expression.md
+  final dynamic context;
+
+  /// list of channel UUIDs the expression will be shared to.
+  final List<String> channels;
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'type': type,
       'expression_data': expressionData,
       'context': context,
+      'channels': channels,
     };
+  }
+
+  CentralizedExpression copyWith({
+    String type,
+    Map<String, dynamic> expressionData,
+    dynamic context,
+    List<String> channels = const <String>[],
+  }) {
+    return CentralizedExpression(
+      type: type ?? this.type,
+      expressionData: expressionData ?? this.expressionData,
+      context: context ?? this.context,
+      channels: channels ?? this.channels,
+    );
   }
 }
 

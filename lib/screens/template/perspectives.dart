@@ -409,11 +409,11 @@ class _CreatePerspectiveBottomSheetState
                         bool isFocused,
                       }) =>
                           null,
-                      decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.all(0),
+                      decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.all(0),
                           border: InputBorder.none,
                           hintText: 'add members',
-                          hintStyle: const TextStyle(
+                          hintStyle: TextStyle(
                             fontSize: 15,
                             color: Color(0xff999999),
                           )),
