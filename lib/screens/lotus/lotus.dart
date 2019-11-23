@@ -67,6 +67,7 @@ class JuntoLotus extends StatelessWidget {
                             );
                           },
                           child: Container(
+                            color: Colors.transparent,
                             alignment: Alignment.center,
                             padding: EdgeInsets.only(left: 25),
                             width: MediaQuery.of(context).size.width * .5,
@@ -121,6 +122,7 @@ class JuntoLotus extends StatelessWidget {
                             );
                           },
                           child: Container(
+                            color: Colors.transparent,
                             alignment: Alignment.center,
                             padding: EdgeInsets.only(right: 25),
                             width: MediaQuery.of(context).size.width * .5,
@@ -184,6 +186,7 @@ class JuntoLotus extends StatelessWidget {
                             );
                           },
                           child: Container(
+                            color: Colors.transparent,
                             alignment: Alignment.center,
                             width: MediaQuery.of(context).size.width * .5,
                             child: Column(
@@ -238,6 +241,7 @@ class JuntoLotus extends StatelessWidget {
                           },
                           child: Container(
                             alignment: Alignment.center,
+                            color: Colors.transparent,
                             width: MediaQuery.of(context).size.width * .5,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -269,6 +273,7 @@ class JuntoLotus extends StatelessWidget {
                       Navigator.pop(context);
                     },
                     child: Container(
+                      color: Colors.transparent,
                       height: 50,
                       margin: EdgeInsets.only(bottom: 25),
                       child: Row(
