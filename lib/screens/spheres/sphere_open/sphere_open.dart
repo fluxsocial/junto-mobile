@@ -153,8 +153,11 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
             child: child,
           );
         },
-        child:
-            ExpressionCenterFAB(expressionLayer: widget.group.groupData.name),
+        child: ExpressionCenterFAB(
+          expressionLayer: widget.group.groupData.name,
+          address: widget.group.address,
+          expressionContext: ExpressionContext.Group,
+        ),
       ),
       body: DefaultTabController(
         length: _tabs.length,

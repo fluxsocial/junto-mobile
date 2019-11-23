@@ -163,7 +163,7 @@ class _JuntoAppBarState extends State<JuntoAppBar>
                     padding: const EdgeInsets.only(right: 10),
                     alignment: Alignment.centerRight,
                     color: Colors.transparent,
-                    child: Icon(
+                    child: const Icon(
                       Icons.search,
                     ),
                   ),

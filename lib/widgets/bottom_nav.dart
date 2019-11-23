@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
 
 // This widget is the bottom navigation on all of the main screens. Members can
@@ -61,8 +62,9 @@ class BottomNavState extends State<BottomNav> {
                         Animation<double> secondaryAnimation,
                       ) {
                         return const JuntoCreate(
-                          'collective',
-                          address: 'eeb72aa1-07f9-b304-f8e8-f58bbf7c5f93',
+                          'Collective',
+                          address: null,
+                          expressionContext: ExpressionContext.Collective,
                         );
                       },
                       transitionsBuilder: (
