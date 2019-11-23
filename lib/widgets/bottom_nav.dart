@@ -95,12 +95,14 @@ class BottomNavState extends State<BottomNav> {
                   ),
                 ),
               ),
-              _BottomNavButton(
-                index: 2,
-                selectedIndex: widget.currentIndex,
-                icon: CustomIcons.packs,
-                onTap: widget.setIndex,
-              ),
+              //FIXME: Integrate once https://github.com/juntofoundation/Junto-Alpha-API/issues/93
+              // is resolved
+//              _BottomNavButton(
+//                index: 2,
+//                selectedIndex: widget.currentIndex,
+//                icon: CustomIcons.packs,
+//                onTap: widget.setIndex,
+//              ),
               GestureDetector(
                 onTap: () => widget.setIndex(3),
                 child: Container(
