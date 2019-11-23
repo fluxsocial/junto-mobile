@@ -85,7 +85,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
           },
           child: Padding(
             padding: EdgeInsets.only(bottom: 25),
-            child: BottomNavNew(),
+            child: BottomNavNew(screen: 'den'),
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

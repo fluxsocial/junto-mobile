@@ -43,7 +43,9 @@ class JuntoGroupsState extends State<JuntoGroups> {
           ),
           floatingActionButton: Padding(
             padding: EdgeInsets.only(bottom: 25),
-            child: BottomNavNew(),
+            child: _currentIndex == 0
+                ? BottomNavNew(screen: 'spheres')
+                : BottomNavNew(screen: 'packs'),
           ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
@@ -65,18 +67,11 @@ class JuntoGroupsState extends State<JuntoGroups> {
                         _groupsController.jumpToPage(0);
                       },
                       child: Container(
-                        // width: MediaQuery.of(context).size.width * .5,
                         margin: EdgeInsets.only(right: 24),
                         color: Colors.transparent,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Icon(CustomIcons.spheres,
-                                size: 18,
-                                color: _currentIndex == 0
-                                    ? Theme.of(context).primaryColorDark
-                                    : Theme.of(context).primaryColorLight),
-                            const SizedBox(width: 8),
                             Text('Spheres',
                                 style: TextStyle(
                                     fontSize: 15,
@@ -93,17 +88,10 @@ class JuntoGroupsState extends State<JuntoGroups> {
                         _groupsController.jumpToPage(1);
                       },
                       child: Container(
-                        // width: MediaQuery.of(context).size.width * .5,
                         color: Colors.transparent,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Icon(CustomIcons.packs,
-                                size: 16,
-                                color: _currentIndex == 1
-                                    ? Theme.of(context).primaryColorDark
-                                    : Theme.of(context).primaryColorLight),
-                            const SizedBox(width: 8),
                             Text('Packs',
                                 style: TextStyle(
                                     fontSize: 15,

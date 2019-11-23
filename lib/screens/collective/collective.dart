@@ -31,7 +31,8 @@ class JuntoCollective extends StatefulWidget {
 }
 
 class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
-  final GlobalKey<ScaffoldState> _juntoCollectiveKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _juntoCollectiveKey =
+      GlobalKey<ScaffoldState>();
   AsyncMemoizer<void> readUserMemoizer = AsyncMemoizer<void>();
 
   // Default values for collective screen / JUNTO perspective - change dynamically.
@@ -235,7 +236,15 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
                 },
                 child: Padding(
                   padding: EdgeInsets.only(bottom: 25),
-                  child: BottomNavNew(),
+                  child: BottomNavNew(
+                      screen: 'collective',
+                      function: () {
+                        if (_dx == 0) {
+                          setState(() {
+                            _dx = MediaQuery.of(context).size.width * .9;
+                          });
+                        }
+                      }),
                 ),
               ),
 

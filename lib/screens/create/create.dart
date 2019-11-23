@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
+import 'package:junto_beta_mobile/widgets/bottom_nav_new.dart';
+import 'package:junto_beta_mobile/screens/den/den_drawer/den_drawer.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/event.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/longform.dart';
@@ -27,7 +29,8 @@ class JuntoCreateState extends State<JuntoCreate> {
   bool _photo = false;
   bool _events = false;
 
-  Icon _currentIcon = const Icon(CustomIcons.longform, color: Colors.white);
+  Icon _currentIcon =
+      Icon(CustomIcons.longform, color: Color(0xff333333), size: 17);
 
   ValueNotifier<bool> isEditing;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -104,22 +107,25 @@ class JuntoCreateState extends State<JuntoCreate> {
       setState(() {
         _longform = true;
         _currentIcon =
-            Icon(CustomIcons.longform, color: Colors.white, size: 20);
+            Icon(CustomIcons.longform, color: Color(0xff333333), size: 17);
       });
     } else if (templateType == 'ShortForm') {
       setState(() {
         _shortform = true;
-        _currentIcon = Icon(CustomIcons.feather, color: Colors.white, size: 20);
+        _currentIcon =
+            Icon(CustomIcons.feather, color: Color(0xff333333), size: 17);
       });
     } else if (templateType == 'PhotoForm') {
       setState(() {
         _photo = true;
-        _currentIcon = Icon(CustomIcons.camera, color: Colors.white, size: 20);
+        _currentIcon =
+            Icon(CustomIcons.camera, color: Color(0xff333333), size: 17);
       });
     } else if (templateType == 'EventForm') {
       setState(() {
         _events = true;
-        _currentIcon = Icon(CustomIcons.event, color: Colors.white, size: 20);
+        _currentIcon =
+            Icon(CustomIcons.event, color: Color(0xff333333), size: 17);
       });
     } else {
       print('not an expresion type');
@@ -169,6 +175,7 @@ class JuntoCreateState extends State<JuntoCreate> {
         child: AppBar(
           automaticallyImplyLeading: false,
           brightness: Brightness.light,
+          actions: <Widget>[Container()],
           iconTheme: const IconThemeData(color: JuntoPalette.juntoGrey),
           elevation: 0,
           titleSpacing: 0,
@@ -179,12 +186,17 @@ class JuntoCreateState extends State<JuntoCreate> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text('cancel',
-                      style: Theme.of(context).textTheme.caption),
+                Row(
+                  children: <Widget>[
+                    _currentIcon,
+                    SizedBox(width: 7.5),
+                    Text(_expressionType,
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xff333333),
+                        ))
+                  ],
                 ),
                 GestureDetector(
                   onTap: _onNextClick,
@@ -196,33 +208,15 @@ class JuntoCreateState extends State<JuntoCreate> {
           ),
         ),
       ),
-      floatingActionButton: Opacity(
-        opacity: .8,
-        child: GestureDetector(
-          onTap: () {
-            _openExpressionCenter();
-          },
-          child: Container(
-            height: 50,
-            width: 50,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(25),
-              border: Border.all(color: Colors.white, width: 2),
-              gradient: LinearGradient(
-                begin: Alignment.bottomLeft,
-                end: Alignment.topRight,
-                stops: <double>[0.1, 0.9],
-                colors: <Color>[
-                  Theme.of(context).colorScheme.secondary,
-                  Theme.of(context).colorScheme.primary
-                ],
-              ),
-            ),
-            child: _currentIcon,
-          ),
+      endDrawer: DenDrawer(),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 25),
+        child: BottomNavNew(
+          screen: 'create',
+          function: _openExpressionCenter,
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: Column(
         children: <Widget>[
           _buildTemplate(),
