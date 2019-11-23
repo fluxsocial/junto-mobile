@@ -80,7 +80,7 @@ class JuntoTemplateState extends State<JuntoTemplate> {
   @override
   Widget build(BuildContext context) {
     return Stack(children: <Widget>[
-      JuntoPerspectives(changePerspective: _changePerspective),
+      JuntoPerspectives(changePerspective: _changePerspective, profile: profile,),
       GestureDetector(
         onTap: () {
           print('yo');
