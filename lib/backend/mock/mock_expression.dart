@@ -279,4 +279,11 @@ class MockExpressionService implements ExpressionService {
     return List<CentralizedExpressionResponse>.generate(
         12, (int index) => kExpressionResponse);
   }
+
+  @override
+  Future<List<CentralizedExpressionResponse>> getCollectiveExpressions(
+      ExpressionQueryParams params) async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    return kSampleExpressions;
+  }
 }
