@@ -100,4 +100,24 @@ class ExpressionServiceCentralized implements ExpressionService {
     throw UnimplementedError(
         'Server is needed before this function can be implemented');
   }
+
+  @override
+  Future<List<CentralizedExpressionResponse>> getCollectiveExpressions(
+    ExpressionQueryParams params,
+  ) async {
+    final Map<String, dynamic> body = <String, dynamic>{
+      'context_type': 'Collective',
+      'channels': <String>[]
+    };
+    final http.Response response = await client.getWithStringBody(
+      '/expressions',
+      body: body,
+    );
+    final List<dynamic> results = JuntoHttp.handleResponse(response);
+    return results
+        .map(
+          (dynamic data) => CentralizedExpressionResponse.fromMap(data),
+        )
+        .toList(growable: false);
+  }
 }

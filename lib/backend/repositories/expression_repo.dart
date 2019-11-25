@@ -37,7 +37,8 @@ class ExpressionRepo {
       );
     } else {
       assert(address == null);
-      _expression = expression.copyWith(context: 'Collective');
+      _expression = expression
+          .copyWith(context: 'Collective', channels: <String>['channel1']);
     }
     return _expressionService.createExpression(_expression);
   }
@@ -78,6 +79,12 @@ class ExpressionRepo {
     String expressionAddress,
   ) {
     return _expressionService.getExpressionsComments(expressionAddress);
+  }
+
+  Future<List<CentralizedExpressionResponse>> getCollectiveExpressions(
+    ExpressionQueryParams params,
+  ) {
+    return _expressionService.getCollectiveExpressions(params);
   }
 
   List<CentralizedExpressionResponse> get collectiveExpressions =>
