@@ -58,6 +58,22 @@ class JuntoHttp {
     );
   }
 
+  //FIXME: Remove once https://github.com/juntofoundation/Junto-Alpha-API/issues/94
+  Future<http.Response> getWithStringBody(
+      String resource, {
+        Map<String, String> headers,
+        Map<String, dynamic> body,
+      }) async {
+    final Map<String, String> header = await _withPersistentHeaders(null);
+    final http.StreamedResponse _streamedResponse = await httpClient.send(
+      http.Request('GET', Uri.parse('$_endPoint$resource'))
+        ..headers['cookie'] = header['cookie']
+        ..headers['Content-Type'] = header['Content-Type']
+        ..body = '{"context_type": "Collective", "channels": ["channel1"]}',
+    );
+    return http.Response.fromStream(_streamedResponse);
+  }
+
   Future<http.Response> delete(
     String resource, {
     Map<String, String> headers,
