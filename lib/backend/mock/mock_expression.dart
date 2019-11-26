@@ -17,16 +17,15 @@ class MockExpressionService implements ExpressionService {
   static CentralizedExpressionResponse kExpressionResponse =
       CentralizedExpressionResponse(
     address: '123e4567-e89b-12d3-a456-426655440000',
-    comments: <Comment>[],
+    comments: 1,
     context: 'collective',
     createdAt: DateTime.now(),
     creator: kUserProfile,
     expressionData:
         CentralizedLongFormExpression(title: 'Mocking', body: 'Expressions'),
-    numberComments: 0,
     numberResonations: 0,
     privacy: 'Public',
-    resonations: <UserProfile>[],
+    resonations: 0,
     type: 'LongForm',
   );
 
@@ -35,7 +34,7 @@ class MockExpressionService implements ExpressionService {
     CentralizedExpressionResponse(
       address: '0xfee32zokie8',
       type: 'LongForm',
-      comments: <Comment>[],
+      comments: 1,
       context: '',
       createdAt: DateTime.now(),
       creator: UserProfile(
@@ -54,7 +53,7 @@ class MockExpressionService implements ExpressionService {
     CentralizedExpressionResponse(
       address: '0xfee32zokie8',
       type: 'ShortForm',
-      comments: <Comment>[],
+      comments: 1,
       context: '',
       createdAt: DateTime.now(),
       creator: UserProfile(
@@ -75,7 +74,7 @@ class MockExpressionService implements ExpressionService {
     CentralizedExpressionResponse(
       address: '0xfee32zokie8',
       type: 'PhotoForm',
-      comments: <Comment>[],
+      comments: 1,
       context: '',
       createdAt: DateTime.now(),
       creator: UserProfile(
@@ -94,7 +93,7 @@ class MockExpressionService implements ExpressionService {
     CentralizedExpressionResponse(
       address: '0xfee32zokie8',
       type: 'EventForm',
-      comments: <Comment>[],
+      comments: 1,
       context: '',
       createdAt: DateTime.now(),
       creator: UserProfile(
@@ -116,7 +115,7 @@ class MockExpressionService implements ExpressionService {
     CentralizedExpressionResponse(
       address: '0xfee32zokie8',
       type: 'LongForm',
-      comments: <Comment>[],
+      comments: 1,
       context: '',
       createdAt: DateTime.now(),
       creator: UserProfile(
@@ -140,7 +139,7 @@ class MockExpressionService implements ExpressionService {
     CentralizedExpressionResponse(
       address: '0xfee32zokie8',
       type: 'PhotoForm',
-      comments: <Comment>[],
+      comments: 1,
       context: '',
       createdAt: DateTime.now(),
       creator: UserProfile(
@@ -160,7 +159,7 @@ class MockExpressionService implements ExpressionService {
     CentralizedExpressionResponse(
       address: '0xfee32zokie8',
       type: 'LongForm',
-      comments: <Comment>[],
+      comments: 1,
       context: '',
       createdAt: DateTime.now(),
       creator: UserProfile(
@@ -181,7 +180,7 @@ class MockExpressionService implements ExpressionService {
     CentralizedExpressionResponse(
       address: '0xfee32zokie8',
       type: 'EventForm',
-      comments: <Comment>[],
+      comments: 1,
       context: '',
       createdAt: DateTime.now(),
       creator: UserProfile(
