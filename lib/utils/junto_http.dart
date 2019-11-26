@@ -47,31 +47,13 @@ class JuntoHttp {
     return body == null ? null : serializeHoloJson(body);
   }
 
-  Future<http.Response> get(
-    String resource, {
-    Map<String, String> headers,
-    Map<String, dynamic> body,
-  }) async {
+  Future<http.Response> get(String resource,
+      {Map<String, String> headers, Map<String, String> queryParams}) async {
+    final Uri _uri = Uri.http(END_POINT_without_prefix, resource, queryParams);
     return httpClient.get(
-      _encodeUrl(resource),
+      _uri,
       headers: await _withPersistentHeaders(headers),
     );
-  }
-
-  //FIXME: Remove once https://github.com/juntofoundation/Junto-Alpha-API/issues/94
-  Future<http.Response> getWithStringBody(
-      String resource, {
-        Map<String, String> headers,
-        Map<String, dynamic> body,
-      }) async {
-    final Map<String, String> header = await _withPersistentHeaders(null);
-    final http.StreamedResponse _streamedResponse = await httpClient.send(
-      http.Request('GET', Uri.parse('$_endPoint$resource'))
-        ..headers['cookie'] = header['cookie']
-        ..headers['Content-Type'] = header['Content-Type']
-        ..body = '{"context_type": "Collective", "channels": ["channel1"]}',
-    );
-    return http.Response.fromStream(_streamedResponse);
   }
 
   Future<http.Response> delete(
