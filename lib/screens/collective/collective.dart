@@ -77,7 +77,7 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
       color: Theme.of(context).colorScheme.background,
       child: FutureBuilder<List<CentralizedExpressionResponse>>(
         future:
-            Provider.of<ExpressionRepo>(context).getCollectiveExpressions(null),
+            Provider.of<ExpressionRepo>(context).getCollectiveExpressions(),
         builder: (
           BuildContext context,
           AsyncSnapshot<List<CentralizedExpressionResponse>> snapshot,

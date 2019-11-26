@@ -82,9 +82,8 @@ class ExpressionRepo {
   }
 
   Future<List<CentralizedExpressionResponse>> getCollectiveExpressions(
-    ExpressionQueryParams params,
   ) {
-    return _expressionService.getCollectiveExpressions(params);
+    return _expressionService.getCollectiveExpressions();
   }
 
   List<CentralizedExpressionResponse> get collectiveExpressions =>
