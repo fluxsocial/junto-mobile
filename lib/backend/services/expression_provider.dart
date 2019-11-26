@@ -37,7 +37,8 @@ class ExpressionServiceCentralized implements ExpressionService {
     final Map<String, dynamic> _postBody = <String, dynamic>{
       'target_expression': expressionAddress,
       'type': type,
-      'expression_data': data
+      'expression_data': data,
+      'channels': <String>[]
     };
     final http.Response _serverResponse = await client.postWithoutEncoding(
       '/expressions/$expressionAddress/comments',
@@ -113,11 +114,10 @@ class ExpressionServiceCentralized implements ExpressionService {
       '/expressions',
       queryParams: query,
     );
-    print(response.body);
     final List<dynamic> results = JuntoHttp.handleResponse(response);
     return results
         .map(
-          (dynamic data) => CentralizedExpressionResponse.fromMap(data),
+          (dynamic data) => CentralizedExpressionResponse.withCommentsAndResonations(data),
         )
         .toList(growable: false);
   }
