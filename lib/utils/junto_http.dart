@@ -47,13 +47,11 @@ class JuntoHttp {
     return body == null ? null : serializeHoloJson(body);
   }
 
-  Future<http.Response> get(
-    String resource, {
-    Map<String, String> headers,
-    Map<String, dynamic> body,
-  }) async {
+  Future<http.Response> get(String resource,
+      {Map<String, String> headers, Map<String, String> queryParams}) async {
+    final Uri _uri = Uri.http(END_POINT_without_prefix, resource, queryParams);
     return httpClient.get(
-      _encodeUrl(resource),
+      _uri,
       headers: await _withPersistentHeaders(headers),
     );
   }

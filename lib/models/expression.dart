@@ -174,13 +174,12 @@ class CentralizedExpressionResponse {
       this.type,
       this.expressionData,
       this.createdAt,
-      this.numberComments,
       this.numberResonations,
       this.creator,
       this.context,
       this.privacy,
-      this.comments = const <Comment>[],
-      this.resonations = const <UserProfile>[]});
+      this.comments = 0,
+      this.resonations = 0});
 
   factory CentralizedExpressionResponse.withCommentsAndResonations(
       Map<String, dynamic> json) {
@@ -191,26 +190,17 @@ class CentralizedExpressionResponse {
         json['type'],
         json['expression_data'],
       ),
-      createdAt: DateTime.parse(
+      createdAt: RFC3339.parseRfc3339(
         json['created_at'],
       ),
-      numberComments: json['comments'].length,
-      numberResonations: json['resonations'].length,
+      numberResonations: json['resonations'] as int,
       creator: UserProfile.fromMap(
         json['creator'],
       ),
       privacy: json['privacy'] ?? '',
       context: json['context'] ?? '',
-      comments: List<Comment>.from(
-        json['comments'].map(
-          (dynamic comment) => Comment.fromMap(comment),
-        ),
-      ),
-      resonations: List<UserProfile>.from(
-        json['resonations'].map(
-          (dynamic profile) => UserProfile.fromMap(profile),
-        ),
-      ),
+      comments: json['comments'],
+      resonations: json['resonations'] as int,
     );
   }
 
@@ -225,13 +215,13 @@ class CentralizedExpressionResponse {
       createdAt: RFC3339.parseRfc3339(
         json['created_at'],
       ),
-      numberComments: json['comments'] ?? 0,
       numberResonations: json['resonations'] ?? 0,
       creator: UserProfile.fromMap(
         json['creator'],
       ),
       privacy: json['privacy'] ?? '',
       context: json['context'] ?? '',
+      comments: json['comments'] as int,
     );
   }
 
@@ -239,10 +229,9 @@ class CentralizedExpressionResponse {
   final String type;
   final dynamic expressionData;
   final DateTime createdAt;
-  final int numberComments;
   final int numberResonations;
-  final List<Comment> comments;
-  final List<UserProfile> resonations;
+  final int comments;
+  final int resonations;
   final String privacy;
   final String context;
   final UserProfile creator;
@@ -253,7 +242,6 @@ class CentralizedExpressionResponse {
       'type': type,
       'expression_data': expressionData.toJson(),
       'created_at': createdAt.toIso8601String(),
-      'comments': numberComments,
       'resonations': numberResonations,
       'creator': creator.toMap(),
       'privacy': privacy ?? '',
@@ -302,7 +290,7 @@ class Comment {
       creator: UserProfile.fromMap(json['creator']),
       comments: json['comments'],
       resonations: json['resonations'],
-      createdAt: DateTime.parse(json['created_at']),
+      createdAt: RFC3339.parseRfc3339(json['created_at']),
       privacy: json['privacy'],
       context: json['context'],
     );

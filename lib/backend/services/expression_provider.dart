@@ -37,7 +37,8 @@ class ExpressionServiceCentralized implements ExpressionService {
     final Map<String, dynamic> _postBody = <String, dynamic>{
       'target_expression': expressionAddress,
       'type': type,
-      'expression_data': data
+      'expression_data': data,
+      'channels': <String>[]
     };
     final http.Response _serverResponse = await client.postWithoutEncoding(
       '/expressions/$expressionAddress/comments',
@@ -45,6 +46,7 @@ class ExpressionServiceCentralized implements ExpressionService {
     );
     final Map<String, dynamic> _parseResponse =
         JuntoHttp.handleResponse(_serverResponse);
+    print(_serverResponse.body);
     return CentralizedExpressionResponse.fromMap(_parseResponse);
   }
 
@@ -99,5 +101,24 @@ class ExpressionServiceCentralized implements ExpressionService {
   ) {
     throw UnimplementedError(
         'Server is needed before this function can be implemented');
+  }
+
+  @override
+  Future<List<CentralizedExpressionResponse>> getCollectiveExpressions(
+  ) async {
+    final Map<String, String> query = <String, String>{
+      'context_type': 'Collective',
+      'channel[0]': '1',
+    };
+    final http.Response response = await client.get(
+      '/expressions',
+      queryParams: query,
+    );
+    final List<dynamic> results = JuntoHttp.handleResponse(response);
+    return results
+        .map(
+          (dynamic data) => CentralizedExpressionResponse.withCommentsAndResonations(data),
+        )
+        .toList(growable: false);
   }
 }
