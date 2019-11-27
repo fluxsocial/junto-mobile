@@ -61,7 +61,6 @@ class ExpressionOpenState extends State<ExpressionOpen> {
     super.initState();
     commentController = TextEditingController();
     _focusNode = FocusNode();
-    print(widget.expression.comments.toString());
     canShowComments = widget.expression.comments != 0;
   }
 

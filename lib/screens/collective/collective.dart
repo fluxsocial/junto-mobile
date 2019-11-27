@@ -109,49 +109,4 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
       ),
     );
   }
-//  @override
-//  Widget build(BuildContext context) {
-//    return Container(
-//      color: Theme.of(context).colorScheme.background,
-//      child: ListView(
-//        controller: _collectiveController,
-//        children: <Widget>[
-//          Row(
-//            mainAxisAlignment: MainAxisAlignment.start,
-//            crossAxisAlignment: CrossAxisAlignment.start,
-//            children: <Widget>[
-//              Container(
-//                width: MediaQuery.of(context).size.width * .5,
-//                padding: const EdgeInsets.only(left: 10, right: 5, top: 10),
-//                child: Column(
-//                  mainAxisAlignment: MainAxisAlignment.start,
-//                  children: <Widget>[
-//                    for (int index = 0; index < initialData.length + 1; index++)
-//                      if (index == initialData.length)
-//                        const SizedBox()
-//                      else if (index.isEven)
-//                        ExpressionPreview(expression: initialData[index])
-//                  ],
-//                ),
-//              ),
-//              Container(
-//                width: MediaQuery.of(context).size.width * .5,
-//                padding: const EdgeInsets.only(left: 5, right: 10, top: 10),
-//                child: Column(
-//                  mainAxisAlignment: MainAxisAlignment.start,
-//                  children: <Widget>[
-//                    for (int index = 0; index < initialData.length + 1; index++)
-//                      if (index == initialData.length)
-//                        const SizedBox()
-//                      else if (index.isOdd)
-//                        ExpressionPreview(expression: initialData[index])
-//                  ],
-//                ),
-//              ),
-//            ],
-//          )
-//        ],
-//      ),
-//    );
-//  }
 }
