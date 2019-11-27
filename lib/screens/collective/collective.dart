@@ -7,7 +7,7 @@ import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_appbar.dart';
 
 import 'package:junto_beta_mobile/screens/den/den_drawer/den_drawer.dart';
-
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav_new.dart';
@@ -52,7 +52,7 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
       <CentralizedExpressionResponse>[];
 
   ScrollController _collectiveController;
-
+  String newappbartitle = 'yo';
   @override
   void initState() {
     super.initState();
@@ -216,16 +216,7 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
           child: Stack(children: <Widget>[
             Scaffold(
               key: _juntoCollectiveKey,
-              appBar: JuntoAppBar(
-                openPerspectivesDrawer: () {
-                  if (_dx == 0) {
-                    setState(() {
-                      _dx = MediaQuery.of(context).size.width * .9;
-                    });
-                  }
-                },
-                juntoAppBarTitle: _appbarTitle,
-              ),
+
               floatingActionButton: ValueListenableBuilder(
                 valueListenable: _isVisible,
                 builder: (BuildContext context, bool visible, Widget child) {
@@ -254,53 +245,85 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
               endDrawer: DenDrawer(),
 
               // dynamically render body
-              body: Container(
-                color: Theme.of(context).colorScheme.background,
-                child: ListView(
-                  controller: _collectiveController,
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          width: MediaQuery.of(context).size.width * .5,
-                          padding: EdgeInsets.only(left: 10, right: 5, top: 10),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              for (int index = 0;
-                                  index < initialData.length + 1;
-                                  index++)
-                                if (index == initialData.length)
-                                  SizedBox()
-                                else if (index.isEven)
-                                  ExpressionPreview(
-                                      expression: initialData[index])
-                            ],
-                          ),
+              body: CustomScrollView(
+                controller: _collectiveController,
+                slivers: <Widget>[
+                  // JuntoAppBar(
+                  //   openPerspectivesDrawer: () {
+                  //     if (_dx == 0) {
+                  //       setState(() {
+                  //         _dx = MediaQuery.of(context).size.width * .9;
+                  //       });
+                  //     }
+                  //   },
+                  //   juntoAppBarTitle: _appbarTitle,
+                  // ),
+                  SliverPersistentHeader(
+                      delegate: MySliverAppBar(
+                          expandedHeight: 85, newappbartitle: newappbartitle),
+                      pinned: false,
+                      floating: true),
+
+                  SliverList(
+                    delegate: SliverChildListDelegate([
+                      Container(
+                        color: Theme.of(context).backgroundColor,
+                        child: Column(
+                          children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                  width: MediaQuery.of(context).size.width * .5,
+                                  padding: EdgeInsets.only(
+                                    top: 10,
+                                    left: 10,
+                                    right: 5,
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: <Widget>[
+                                      for (int index = 0;
+                                          index < initialData.length + 1;
+                                          index++)
+                                        if (index == initialData.length)
+                                          SizedBox()
+                                        else if (index.isEven)
+                                          ExpressionPreview(
+                                              expression: initialData[index])
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  width: MediaQuery.of(context).size.width * .5,
+                                  padding: EdgeInsets.only(
+                                    top: 10,
+                                    left: 5,
+                                    right: 10,
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: <Widget>[
+                                      for (int index = 0;
+                                          index < initialData.length + 1;
+                                          index++)
+                                        if (index == initialData.length)
+                                          SizedBox()
+                                        else if (index.isOdd)
+                                          ExpressionPreview(
+                                              expression: initialData[index])
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
                         ),
-                        Container(
-                          width: MediaQuery.of(context).size.width * .5,
-                          padding: EdgeInsets.only(left: 5, right: 10, top: 10),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              for (int index = 0;
-                                  index < initialData.length + 1;
-                                  index++)
-                                if (index == initialData.length)
-                                  SizedBox()
-                                else if (index.isOdd)
-                                  ExpressionPreview(
-                                      expression: initialData[index])
-                            ],
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
+                      ),
+                    ]),
+                  ),
+                ],
               ),
             ),
             GestureDetector(
@@ -333,4 +356,107 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
       },
     );
   }
+}
+
+class MySliverAppBar extends SliverPersistentHeaderDelegate {
+  final double expandedHeight;
+  final String newappbartitle;
+
+  MySliverAppBar({@required this.expandedHeight, this.newappbartitle});
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      padding: const EdgeInsets.only(bottom: 10),
+      height: 85,
+      decoration: BoxDecoration(
+          border: const Border(
+            bottom: BorderSide(
+              color: Color(0xffeeeeee),
+              width: .75,
+            ),
+          ),
+          color: Theme.of(context).backgroundColor),
+
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: <Widget>[
+          GestureDetector(
+            onTap: () {},
+            child: Container(
+              alignment: Alignment.bottomLeft,
+              padding: const EdgeInsets.only(left: 10),
+              color: Colors.transparent,
+              height: 36,
+              child: Row(
+                children: <Widget>[
+                  Image.asset('assets/images/junto-mobile__logo.png',
+                      height: 22.0, width: 22.0),
+                  const SizedBox(width: 7.5),
+                  Text(
+                    newappbartitle,
+                    style: Theme.of(context).appBarTheme.textTheme.body1,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Row(
+            children: <Widget>[
+              GestureDetector(
+                onTap: () {},
+                child: Container(
+                  width: 42,
+                  padding: const EdgeInsets.only(right: 10),
+                  alignment: Alignment.bottomRight,
+                  color: Colors.transparent,
+                  child: Icon(
+                    Icons.search,
+                    size: 22,
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {},
+                child: Container(
+                  width: 42,
+                  color: Colors.transparent,
+                  alignment: Alignment.bottomRight,
+                  padding: const EdgeInsets.only(right: 10),
+                  child: const Icon(CustomIcons.moon, size: 22),
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
+      // Container(
+      //   margin: EdgeInsets.only(top: 10),
+      //   height: .5,
+      //   decoration: BoxDecoration(
+      //     gradient: LinearGradient(
+      //         begin: Alignment.centerLeft,
+      //         end: Alignment.centerRight,
+      //         stops: <double>[
+      //           0.1,
+      //           0.9
+      //         ],
+      //         colors: <Color>[
+      //           Theme.of(context).colorScheme.secondary,
+      //           Theme.of(context).colorScheme.primary,
+      //         ]),
+      //   ),
+      // )
+    );
+  }
+
+  @override
+  double get maxExtent => expandedHeight;
+
+  @override
+  double get minExtent => kToolbarHeight;
+
+  @override
+  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => true;
 }

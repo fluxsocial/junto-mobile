@@ -72,8 +72,11 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
   Widget build(BuildContext context) {
     return Scaffold(
         key: _juntoDenKey,
-        appBar: const JuntoAppBar(
-          juntoAppBarTitle: 'sunyata',
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(48),
+          child: JuntoAppBar(
+            juntoAppBarTitle: 'sunyata',
+          ),
         ),
         floatingActionButton: ValueListenableBuilder(
           valueListenable: ValueNotifier<bool>(true),

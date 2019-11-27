@@ -11,24 +11,33 @@ class JuntoGroupsAppbar extends StatelessWidget {
       elevation: 0,
       titleSpacing: 0.0,
       bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(.5),
-        child: Container(
-          height: .5,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                stops: <double>[
-                  0.1,
-                  0.9
-                ],
-                colors: <Color>[
-                  Theme.of(context).colorScheme.secondary,
-                  Theme.of(context).colorScheme.primary,
-                ]),
+          child: Container(
+        height: .5,
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(color: Color(0xffeeeeee), width: .75),
           ),
         ),
-      ),
+      )),
+      // bottom: PreferredSize(
+      //   preferredSize: const Size.fromHeight(.5),
+      //   child: Container(
+      //     height: .5,
+      //     decoration: BoxDecoration(
+      //       gradient: LinearGradient(
+      //           begin: Alignment.centerLeft,
+      //           end: Alignment.centerRight,
+      //           stops: <double>[
+      //             0.1,
+      //             0.9
+      //           ],
+      //           colors: <Color>[
+      //             Theme.of(context).colorScheme.secondary,
+      //             Theme.of(context).colorScheme.primary,
+      //           ]),
+      //     ),
+      //   ),
+      // ),
       title: Container(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

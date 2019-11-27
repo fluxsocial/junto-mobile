@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 
 class JuntoPerspectives extends StatefulWidget {
   const JuntoPerspectives({
@@ -128,24 +129,31 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(
-                            name,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 15,
-                              letterSpacing: 1.2,
-                              color: Colors.white,
-                            ),
+                          Row(
+                            children: <Widget>[
+                              Icon(CustomIcons.collective,
+                                  size: 10, color: Colors.white),
+                                  SizedBox(width: 30),
+                              Text(
+                                name,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 15,
+                                  letterSpacing: 1.2,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
                           ),
-                          const SizedBox(height: 5),
-                          Text(
-                            members + ' members',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 15,
-                                letterSpacing: 1.2,
-                                color: Colors.white),
-                          )
+                          // const SizedBox(height: 5),
+                          // Text(
+                          //   members + ' members',
+                          //   style: TextStyle(
+                          //       fontWeight: FontWeight.w400,
+                          //       fontSize: 15,
+                          //       letterSpacing: 1.2,
+                          //       color: Colors.white),
+                          // )
                         ],
                       ),
                     ],

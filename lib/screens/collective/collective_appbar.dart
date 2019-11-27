@@ -13,7 +13,7 @@ import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview
 import 'package:provider/provider.dart';
 
 // Junto app bar used throughout the main screens. Rendered in JuntoTemplate.
-class JuntoAppBar extends StatefulWidget implements PreferredSizeWidget {
+class JuntoAppBar extends StatefulWidget {
   const JuntoAppBar({
     Key key,
     this.openPerspectivesDrawer,
@@ -24,13 +24,10 @@ class JuntoAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String juntoAppBarTitle;
 
   @override
-  Size get preferredSize => const Size.fromHeight(48.0);
-
-  @override
   _JuntoAppBarState createState() => _JuntoAppBarState();
 }
 
-class _JuntoAppBarState extends State<JuntoAppBar>
+class _JuntoAppBarState extends State <JuntoAppBar>
     with AddUserToList<UserProfile> {
   Timer debounceTimer;
   ValueNotifier<List<UserProfile>> queriedUsers =
@@ -68,149 +65,149 @@ class _JuntoAppBarState extends State<JuntoAppBar>
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
+    return SliverAppBar(
       automaticallyImplyLeading: false,
+      backgroundColor: Colors.green,
       actions: <Widget>[Container()],
-      bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(.5),
-        child: Container(
-          height: .5,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                stops: <double>[
-                  0.1,
-                  0.9
-                ],
-                colors: <Color>[
-                  Theme.of(context).colorScheme.secondary,
-                  Theme.of(context).colorScheme.primary,
-                ]),
-          ),
-        ),
-      ),
+      floating: true,
       brightness: Brightness.light,
       elevation: 0,
       titleSpacing: 0.0,
       title: Container(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Column(
           children: <Widget>[
-            Builder(
-              builder: (BuildContext context) {
-                return GestureDetector(
-                  onTap: () {
-                    // Scaffold.of(context).openDrawer();
-                    widget.openPerspectivesDrawer();
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.only(left: 10),
-                    color: Colors.transparent,
-                    height: 48,
-                    child: Row(
-                      children: <Widget>[
-                        Image.asset('assets/images/junto-mobile__logo.png',
-                            height: 22.0, width: 22.0),
-                        const SizedBox(width: 7.5),
-                        Text(
-                          widget.juntoAppBarTitle,
-                          style: Theme.of(context).appBarTheme.textTheme.body1,
-                        ),
-                        const SizedBox(width: 2.5),
-                        Icon(
-                          Icons.keyboard_arrow_down,
-                          size: 17,
-                          color: Theme.of(context).primaryColorLight,
-                        )
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                GestureDetector(
-                  onTap: () {
-                    showModalBottomSheet(
-                      isScrollControlled: true,
-                      context: context,
-                      builder: (BuildContext context) {
-                        return ListenableProvider<
-                            ValueNotifier<SelectedUsers>>.value(
-                          value: _users,
-                          child: _SearchBottomSheet(
-                            results: queriedUsers,
-                            onProfileSelected: _onUserSelected,
-                            onTextChange: _onTextChange,
-                          ),
-                        );
+                Builder(
+                  builder: (BuildContext context) {
+                    return GestureDetector(
+                      onTap: () {
+                        // Scaffold.of(context).openDrawer();
+                        widget.openPerspectivesDrawer();
                       },
-                    );
-                  },
-                  child: Container(
-                    width: 42,
-                    padding: const EdgeInsets.only(right: 10),
-                    alignment: Alignment.centerRight,
-                    color: Colors.transparent,
-                    child: Icon(
-                      Icons.search,
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    showModalBottomSheet(
-                      isScrollControlled: true,
-                      context: context,
-                      builder: (BuildContext context) => Container(
+                      child: Container(
+                        padding: const EdgeInsets.only(left: 10),
                         color: Colors.transparent,
-                        child: Container(
-                          height: MediaQuery.of(context).size.height * .9,
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.background,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              topRight: Radius.circular(10),
+                        height: 36,
+                        child: Row(
+                          children: <Widget>[
+                            Image.asset('assets/images/junto-mobile__logo.png',
+                                height: 22.0, width: 22.0),
+                            const SizedBox(width: 7.5),
+                            Text(
+                              widget.juntoAppBarTitle,
+                              style:
+                                  Theme.of(context).appBarTheme.textTheme.body1,
                             ),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              const SizedBox(height: 10),
-                              Row(
-                                children: <Widget>[
-                                  Text(
-                                    'Notifications',
-                                    style: TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w700,
-                                      color: Theme.of(context).primaryColorDark,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 10),
-                              const Text('building this last...')
-                            ],
-                          ),
+                          ],
                         ),
                       ),
                     );
                   },
-                  child: Container(
-                    width: 42,
-                    color: Colors.transparent,
-                    alignment: Alignment.centerRight,
-                    padding: const EdgeInsets.only(right: 10),
-                    child: const Icon(
-                      CustomIcons.moon,
-                    ),
-                  ),
                 ),
+                Row(
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                          isScrollControlled: true,
+                          context: context,
+                          builder: (BuildContext context) {
+                            return ListenableProvider<
+                                ValueNotifier<SelectedUsers>>.value(
+                              value: _users,
+                              child: _SearchBottomSheet(
+                                results: queriedUsers,
+                                onProfileSelected: _onUserSelected,
+                                onTextChange: _onTextChange,
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      child: Container(
+                        width: 42,
+                        padding: const EdgeInsets.only(right: 10),
+                        alignment: Alignment.centerRight,
+                        color: Colors.transparent,
+                        child: Icon(
+                          Icons.search,
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                          isScrollControlled: true,
+                          context: context,
+                          builder: (BuildContext context) => Container(
+                            color: Colors.transparent,
+                            child: Container(
+                              height: MediaQuery.of(context).size.height * .9,
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.background,
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  topRight: Radius.circular(10),
+                                ),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  const SizedBox(height: 10),
+                                  Row(
+                                    children: <Widget>[
+                                      Text(
+                                        'Notifications',
+                                        style: TextStyle(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w700,
+                                          color: Theme.of(context)
+                                              .primaryColorDark,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 10),
+                                  const Text('building this last...')
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        width: 42,
+                        color: Colors.transparent,
+                        alignment: Alignment.centerRight,
+                        padding: const EdgeInsets.only(right: 10),
+                        child: const Icon(
+                          CustomIcons.moon,
+                        ),
+                      ),
+                    ),
+                  ],
+                )
               ],
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10),
+              height: .5,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    stops: <double>[
+                      0.1,
+                      0.9
+                    ],
+                    colors: <Color>[
+                      Theme.of(context).colorScheme.secondary,
+                      Theme.of(context).colorScheme.primary,
+                    ]),
+              ),
             )
           ],
         ),
