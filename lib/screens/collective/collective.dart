@@ -52,7 +52,7 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
       <CentralizedExpressionResponse>[];
 
   ScrollController _collectiveController;
-  String newappbartitle = 'yo';
+  String newappbartitle = 'JUNTO';
   @override
   void initState() {
     super.initState();
@@ -101,6 +101,13 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
     _collectiveController.removeListener(_onScrollingHasChanged());
   }
 
+  void _openPerspectivesDrawer() {
+    if (_dx == 0) {
+      setState(() {
+        _dx = MediaQuery.of(context).size.width * .9;
+      });
+    }
+  }
   // Future<void> _getData() async {
   //   if (!isLoading) {
   //     setState(() => isLoading = true);
@@ -248,22 +255,11 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
               body: CustomScrollView(
                 controller: _collectiveController,
                 slivers: <Widget>[
-                  // JuntoAppBar(
-                  //   openPerspectivesDrawer: () {
-                  //     if (_dx == 0) {
-                  //       setState(() {
-                  //         _dx = MediaQuery.of(context).size.width * .9;
-                  //       });
-                  //     }
-                  //   },
-                  //   juntoAppBarTitle: _appbarTitle,
-                  // ),
                   SliverPersistentHeader(
-                      delegate: MySliverAppBar(
-                          expandedHeight: 85, newappbartitle: newappbartitle),
+                      delegate: CollectiveAppBar(
+                          expandedHeight: 85, newappbartitle: newappbartitle, openPerspectivesDrawer: _openPerspectivesDrawer),
                       pinned: false,
                       floating: true),
-
                   SliverList(
                     delegate: SliverChildListDelegate([
                       Container(
@@ -356,107 +352,4 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
       },
     );
   }
-}
-
-class MySliverAppBar extends SliverPersistentHeaderDelegate {
-  final double expandedHeight;
-  final String newappbartitle;
-
-  MySliverAppBar({@required this.expandedHeight, this.newappbartitle});
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 10),
-      height: 85,
-      decoration: BoxDecoration(
-          border: const Border(
-            bottom: BorderSide(
-              color: Color(0xffeeeeee),
-              width: .75,
-            ),
-          ),
-          color: Theme.of(context).backgroundColor),
-
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: <Widget>[
-          GestureDetector(
-            onTap: () {},
-            child: Container(
-              alignment: Alignment.bottomLeft,
-              padding: const EdgeInsets.only(left: 10),
-              color: Colors.transparent,
-              height: 36,
-              child: Row(
-                children: <Widget>[
-                  Image.asset('assets/images/junto-mobile__logo.png',
-                      height: 22.0, width: 22.0),
-                  const SizedBox(width: 7.5),
-                  Text(
-                    newappbartitle,
-                    style: Theme.of(context).appBarTheme.textTheme.body1,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Row(
-            children: <Widget>[
-              GestureDetector(
-                onTap: () {},
-                child: Container(
-                  width: 42,
-                  padding: const EdgeInsets.only(right: 10),
-                  alignment: Alignment.bottomRight,
-                  color: Colors.transparent,
-                  child: Icon(
-                    Icons.search,
-                    size: 22,
-                  ),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {},
-                child: Container(
-                  width: 42,
-                  color: Colors.transparent,
-                  alignment: Alignment.bottomRight,
-                  padding: const EdgeInsets.only(right: 10),
-                  child: const Icon(CustomIcons.moon, size: 22),
-                ),
-              ),
-            ],
-          )
-        ],
-      ),
-      // Container(
-      //   margin: EdgeInsets.only(top: 10),
-      //   height: .5,
-      //   decoration: BoxDecoration(
-      //     gradient: LinearGradient(
-      //         begin: Alignment.centerLeft,
-      //         end: Alignment.centerRight,
-      //         stops: <double>[
-      //           0.1,
-      //           0.9
-      //         ],
-      //         colors: <Color>[
-      //           Theme.of(context).colorScheme.secondary,
-      //           Theme.of(context).colorScheme.primary,
-      //         ]),
-      //   ),
-      // )
-    );
-  }
-
-  @override
-  double get maxExtent => expandedHeight;
-
-  @override
-  double get minExtent => kToolbarHeight;
-
-  @override
-  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => true;
 }

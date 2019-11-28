@@ -13,207 +13,95 @@ import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview
 import 'package:provider/provider.dart';
 
 // Junto app bar used throughout the main screens. Rendered in JuntoTemplate.
-class JuntoAppBar extends StatefulWidget {
-  const JuntoAppBar({
-    Key key,
-    this.openPerspectivesDrawer,
-    @required this.juntoAppBarTitle,
-  }) : super(key: key);
-
+class CollectiveAppBar extends SliverPersistentHeaderDelegate {
+  final double expandedHeight;
+  final String newappbartitle;
   final Function openPerspectivesDrawer;
-  final String juntoAppBarTitle;
 
+  CollectiveAppBar(
+      {@required this.expandedHeight,
+      this.newappbartitle,
+      this.openPerspectivesDrawer});
   @override
-  _JuntoAppBarState createState() => _JuntoAppBarState();
-}
-
-class _JuntoAppBarState extends State <JuntoAppBar>
-    with AddUserToList<UserProfile> {
-  Timer debounceTimer;
-  ValueNotifier<List<UserProfile>> queriedUsers =
-      ValueNotifier<List<UserProfile>>(<UserProfile>[]);
-  final ValueNotifier<SelectedUsers> _users = ValueNotifier<SelectedUsers>(
-    SelectedUsers(),
-  );
-  void _onTextChange(String value) {
-    if (debounceTimer != null) {
-      debounceTimer.cancel();
-    }
-    debounceTimer = Timer(const Duration(milliseconds: 500), () async {
-      if (mounted) {
-        final List<UserProfile> result =
-            await Provider.of<SearchProvider>(context).searchMember(value);
-        if (result != null && result.isNotEmpty) {
-          queriedUsers.value = result;
-        }
-      }
-    });
-  }
-
-  void _onUserSelected(UserProfile value) {
-    _users.value.selection = placeUser(value, _users.value.selection);
-    // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
-    _users.notifyListeners();
-  }
-
-  @override
-  void dispose() {
-    debounceTimer?.cancel();
-    _users.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SliverAppBar(
-      automaticallyImplyLeading: false,
-      backgroundColor: Colors.green,
-      actions: <Widget>[Container()],
-      floating: true,
-      brightness: Brightness.light,
-      elevation: 0,
-      titleSpacing: 0.0,
-      title: Container(
-        child: Column(
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Builder(
-                  builder: (BuildContext context) {
-                    return GestureDetector(
-                      onTap: () {
-                        // Scaffold.of(context).openDrawer();
-                        widget.openPerspectivesDrawer();
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.only(left: 10),
-                        color: Colors.transparent,
-                        height: 36,
-                        child: Row(
-                          children: <Widget>[
-                            Image.asset('assets/images/junto-mobile__logo.png',
-                                height: 22.0, width: 22.0),
-                            const SizedBox(width: 7.5),
-                            Text(
-                              widget.juntoAppBarTitle,
-                              style:
-                                  Theme.of(context).appBarTheme.textTheme.body1,
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                Row(
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: () {
-                        showModalBottomSheet(
-                          isScrollControlled: true,
-                          context: context,
-                          builder: (BuildContext context) {
-                            return ListenableProvider<
-                                ValueNotifier<SelectedUsers>>.value(
-                              value: _users,
-                              child: _SearchBottomSheet(
-                                results: queriedUsers,
-                                onProfileSelected: _onUserSelected,
-                                onTextChange: _onTextChange,
-                              ),
-                            );
-                          },
-                        );
-                      },
-                      child: Container(
-                        width: 42,
-                        padding: const EdgeInsets.only(right: 10),
-                        alignment: Alignment.centerRight,
-                        color: Colors.transparent,
-                        child: Icon(
-                          Icons.search,
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        showModalBottomSheet(
-                          isScrollControlled: true,
-                          context: context,
-                          builder: (BuildContext context) => Container(
-                            color: Colors.transparent,
-                            child: Container(
-                              height: MediaQuery.of(context).size.height * .9,
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.background,
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  topRight: Radius.circular(10),
-                                ),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  const SizedBox(height: 10),
-                                  Row(
-                                    children: <Widget>[
-                                      Text(
-                                        'Notifications',
-                                        style: TextStyle(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w700,
-                                          color: Theme.of(context)
-                                              .primaryColorDark,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 10),
-                                  const Text('building this last...')
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        width: 42,
-                        color: Colors.transparent,
-                        alignment: Alignment.centerRight,
-                        padding: const EdgeInsets.only(right: 10),
-                        child: const Icon(
-                          CustomIcons.moon,
-                        ),
-                      ),
-                    ),
-                  ],
-                )
-              ],
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      padding: const EdgeInsets.only(bottom: 10),
+      height: 85,
+      decoration: BoxDecoration(
+          border: const Border(
+            bottom: BorderSide(
+              color: Color(0xffeeeeee),
+              width: .75,
             ),
-            Container(
-              margin: EdgeInsets.only(top: 10),
-              height: .5,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    stops: <double>[
-                      0.1,
-                      0.9
-                    ],
-                    colors: <Color>[
-                      Theme.of(context).colorScheme.secondary,
-                      Theme.of(context).colorScheme.primary,
-                    ]),
+          ),
+          color: Theme.of(context).backgroundColor),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: <Widget>[
+          GestureDetector(
+            onTap: () {
+              openPerspectivesDrawer();
+            },
+            child: Container(
+              alignment: Alignment.bottomLeft,
+              padding: const EdgeInsets.only(left: 10),
+              color: Colors.transparent,
+              height: 36,
+              child: Row(
+                children: <Widget>[
+                  Image.asset('assets/images/junto-mobile__logo.png',
+                      height: 22.0, width: 22.0),
+                  const SizedBox(width: 7.5),
+                  Text(
+                    newappbartitle,
+                    style: Theme.of(context).appBarTheme.textTheme.body1,
+                  ),
+                ],
               ),
-            )
-          ],
-        ),
+            ),
+          ),
+          Row(
+            children: <Widget>[
+              GestureDetector(
+                onTap: () {},
+                child: Container(
+                  width: 42,
+                  padding: const EdgeInsets.only(right: 10),
+                  alignment: Alignment.bottomRight,
+                  color: Colors.transparent,
+                  child: Icon(
+                    Icons.search,
+                    size: 22,
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {},
+                child: Container(
+                  width: 42,
+                  color: Colors.transparent,
+                  alignment: Alignment.bottomRight,
+                  padding: const EdgeInsets.only(right: 10),
+                  child: const Icon(CustomIcons.moon, size: 22),
+                ),
+              ),
+            ],
+          )
+        ],
       ),
     );
   }
+
+  @override
+  double get maxExtent => expandedHeight;
+
+  @override
+  double get minExtent => kToolbarHeight;
+
+  @override
+  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => true;
 }
 
 class _SearchBottomSheet extends StatefulWidget {

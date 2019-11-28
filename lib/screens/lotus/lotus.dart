@@ -23,7 +23,7 @@ class JuntoLotus extends StatelessWidget {
               Container(
                 margin: EdgeInsets.only(top: 100),
                 child: Text(
-                  'Where to?',
+                  '',
                   style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.w700,
