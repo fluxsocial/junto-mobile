@@ -10,7 +10,7 @@ import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/den/den_appbar.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
 import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/widgets/bottom_nav_new.dart';
+import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_appbar.dart';
 
@@ -88,7 +88,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
           },
           child: Padding(
             padding: const EdgeInsets.only(bottom: 25),
-            child: BottomNavNew(
+            child: BottomNav(
                 screen: 'den',
                 function: () {
                   // edit profile ?

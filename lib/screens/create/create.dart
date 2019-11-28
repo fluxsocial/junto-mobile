@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
-import 'package:junto_beta_mobile/widgets/bottom_nav_new.dart';
+import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/screens/den/den_drawer/den_drawer.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/event.dart';
@@ -211,7 +211,7 @@ class JuntoCreateState extends State<JuntoCreate> {
       endDrawer: DenDrawer(),
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 25),
-        child: BottomNavNew(
+        child: BottomNav(
           screen: 'create',
           function: _openExpressionCenter,
         ),

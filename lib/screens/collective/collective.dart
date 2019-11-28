@@ -10,7 +10,7 @@ import 'package:junto_beta_mobile/screens/den/den_drawer/den_drawer.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
-import 'package:junto_beta_mobile/widgets/bottom_nav_new.dart';
+import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
@@ -234,7 +234,7 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
                 },
                 child: Padding(
                   padding: EdgeInsets.only(bottom: 25),
-                  child: BottomNavNew(
+                  child: BottomNav(
                       screen: 'collective',
                       function: () {
                         if (_dx == 0) {
@@ -257,7 +257,9 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
                 slivers: <Widget>[
                   SliverPersistentHeader(
                       delegate: CollectiveAppBar(
-                          expandedHeight: 85, newappbartitle: newappbartitle, openPerspectivesDrawer: _openPerspectivesDrawer),
+                          expandedHeight: 85,
+                          newappbartitle: newappbartitle,
+                          openPerspectivesDrawer: _openPerspectivesDrawer),
                       pinned: false,
                       floating: true),
                   SliverList(

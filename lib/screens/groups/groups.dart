@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_appbar.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/widgets/bottom_nav_new.dart';
+import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/screens/spheres/spheres.dart';
 import 'package:junto_beta_mobile/screens/packs/packs.dart';
 import 'package:junto_beta_mobile/backend/mock/mock_packs.dart';
@@ -45,7 +45,7 @@ class JuntoGroupsState extends State<JuntoGroups> {
           floatingActionButton: Padding(
             padding: EdgeInsets.only(bottom: 25),
             child: _currentIndex == 0
-                ? BottomNavNew(
+                ? BottomNav(
                     screen: 'spheres',
                     function: () {
                       // open create sphere modal
@@ -58,7 +58,7 @@ class JuntoGroupsState extends State<JuntoGroups> {
                         ),
                       );
                     })
-                : BottomNavNew(screen: 'packs'),
+                : BottomNav(screen: 'packs'),
           ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,

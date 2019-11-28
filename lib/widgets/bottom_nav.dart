@@ -1,165 +1,175 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/screens/create/create.dart';
+import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 
-// This widget is the bottom navigation on all of the main screens. Members can
-// navigate to the home, spheres, create, packs, and den screens.
-class BottomNav extends StatefulWidget {
-  const BottomNav({
-    Key key,
-    @required this.currentIndex,
-    @required this.setIndex,
-  }) : super(key: key);
+class BottomNav extends StatelessWidget {
+  const BottomNav({this.screen, this.function});
+  final String screen;
+  final Function function;
 
-  final int currentIndex;
-  final ValueChanged<int> setIndex;
-
-  @override
-  State<StatefulWidget> createState() {
-    return BottomNavState();
-  }
-}
-
-class BottomNavState extends State<BottomNav> {
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      top: false,
-      left: false,
-      right: false,
-      child: SizedBox(
-        height: 48.0,
-        child: Material(
-          color: Theme.of(context).backgroundColor,
-          shape: Border(
-            top: BorderSide(
-              color: Theme.of(context).dividerColor,
-              width: .5,
+  Widget _uniqueActionItem(BuildContext context, String currentScreen) {
+    if (currentScreen == 'collective') {
+      return Expanded(
+        child: GestureDetector(
+          onTap: () {
+            function();
+          },
+          child: Container(
+            alignment: Alignment.center,
+            width: 60,
+            height: 50,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(100),
+            ),
+            child: Transform.translate(
+              offset: const Offset(-5, 0),
+              child: Container(
+                child: Icon(CustomIcons.collective,
+                    size: 10, color: Theme.of(context).primaryColor),
+              ),
             ),
           ),
-          child: Row(
-            children: <Widget>[
-              _BottomNavButton(
-                index: 0,
-                selectedIndex: widget.currentIndex,
-                icon: CustomIcons.enso,
-                onTap: widget.setIndex,
-              ),
-              _BottomNavButton(
-                index: 1,
-                selectedIndex: widget.currentIndex,
-                icon: CustomIcons.spheres,
-                onTap: widget.setIndex,
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(
-                    PageRouteBuilder<dynamic>(
-                      pageBuilder: (
-                        BuildContext context,
-                        Animation<double> animation,
-                        Animation<double> secondaryAnimation,
-                      ) {
-                        return const JuntoCreate(
-                          'collective',
-                          address: 'eeb72aa1-07f9-b304-f8e8-f58bbf7c5f93',
-                        );
-                      },
-                      transitionsBuilder: (
-                        BuildContext context,
-                        Animation<double> animation,
-                        Animation<double> secondaryAnimation,
-                        Widget child,
-                      ) {
-                        return FadeTransition(
-                          opacity: animation,
-                          child: child,
-                        );
-                      },
-                      transitionDuration: const Duration(
-                        milliseconds: 200,
-                      ),
-                    ),
-                  );
-                },
-                child: Container(
-                  width: MediaQuery.of(context).size.width * .2,
-                  height: 48,
-                  color: Colors.transparent,
-                  child: AnimatedSwitcher(
-                    duration: kThemeChangeDuration,
-                    child: Icon(CustomIcons.lotus,
-                        size: 20, color: Theme.of(context).primaryColorLight),
-                  ),
-                ),
-              ),
-              _BottomNavButton(
-                index: 2,
-                selectedIndex: widget.currentIndex,
-                icon: CustomIcons.packs,
-                onTap: widget.setIndex,
-              ),
-              GestureDetector(
-                onTap: () => widget.setIndex(3),
-                child: Container(
-                  width: MediaQuery.of(context).size.width * .2,
-                  height: 48,
-                  color: Colors.transparent,
-                  alignment: Alignment.center,
-                  child: Container(
-                    height: 30,
-                    width: 30,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                    ),
-                    child: ClipOval(
-                      child: Image.asset(
-                        'assets/images/junto-mobile__eric.png',
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
+        ),
+      );
+    } else if (currentScreen == 'spheres') {
+      return Expanded(
+        child: GestureDetector(
+          onTap: () {
+            function();
+          },
+          child: Container(
+            width: 60,
+            height: 50,
+            child: Icon(CustomIcons.spheres,
+                size: 17, color: Theme.of(context).primaryColor),
           ),
         ),
-      ),
-    );
+      );
+    } else if (currentScreen == 'packs') {
+      return Expanded(
+        child: GestureDetector(
+          onTap: () {
+            // allow member to invite people into app via referral
+          },
+          child: Container(
+            width: 60,
+            height: 50,
+            child: Icon(CustomIcons.packs,
+                size: 17, color: Theme.of(context).primaryColor),
+          ),
+        ),
+      );
+    } else if (currentScreen == 'den') {
+      return Expanded(
+        child: GestureDetector(
+          onTap: () {
+            function();
+          },
+          child: Container(
+            width: 60,
+            height: 50,
+            child: Icon(CustomIcons.create,
+                size: 17, color: Theme.of(context).primaryColor),
+          ),
+        ),
+      );
+    } else if (currentScreen == 'create') {
+      return Expanded(
+        child: GestureDetector(
+          onTap: () {
+            function();
+          },
+          child: Container(
+            width: 60,
+            height: 50,
+            child: Icon(CustomIcons.create,
+                size: 17, color: Theme.of(context).primaryColor),
+          ),
+        ),
+      );
+    } else {
+      return const SizedBox(width: 60);
+    }
   }
-}
-
-class _BottomNavButton extends StatelessWidget {
-  const _BottomNavButton({
-    Key key,
-    @required this.index,
-    @required this.selectedIndex,
-    @required this.icon,
-    @required this.onTap,
-  }) : super(key: key);
-
-  final int index;
-  final int selectedIndex;
-  final IconData icon;
-  final dynamic onTap;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => onTap(index),
-      child: Container(
-        width: MediaQuery.of(context).size.width * .2,
-        height: 48,
-        color: Colors.transparent,
-        child: AnimatedSwitcher(
-          duration: kThemeChangeDuration,
-          child: Icon(icon,
-              key: Key('index-$index-$selectedIndex'),
-              size: 20,
-              color: selectedIndex == index
-                  ? Theme.of(context).primaryColorDark
-                  : Theme.of(context).primaryColorLight),
-        ),
+    return Container(
+      height: 50,
+      width: 180,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(100),
+          color: Theme.of(context).backgroundColor,
+          boxShadow: [
+            BoxShadow(
+              color: Theme.of(context).dividerColor,
+              blurRadius: 3,
+              spreadRadius: 1,
+            )
+          ]),
+      child: Row(
+        children: <Widget>[
+          _uniqueActionItem(context, screen),
+          Expanded(
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  PageRouteBuilder<dynamic>(
+                    pageBuilder: (
+                      BuildContext context,
+                      Animation<double> animation,
+                      Animation<double> secondaryAnimation,
+                    ) {
+                      return JuntoLotus();
+                    },
+                    transitionsBuilder: (
+                      BuildContext context,
+                      Animation<double> animation,
+                      Animation<double> secondaryAnimation,
+                      Widget child,
+                    ) {
+                      return FadeTransition(
+                        opacity: animation,
+                        child: child,
+                      );
+                    },
+                    transitionDuration: const Duration(
+                      milliseconds: 400,
+                    ),
+                  ),
+                );
+              },
+              child: Container(
+                alignment: Alignment.center,
+                width: 60,
+                height: 50,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                child: Icon(CustomIcons.lotus,
+                    size: 28, color: Theme.of(context).primaryColor),
+              ),
+            ),
+          ),
+          Expanded(
+            child: GestureDetector(
+              onTap: () {
+                Scaffold.of(context).openEndDrawer();
+              },
+              child: Container(
+                alignment: Alignment.center,
+                width: 60,
+                height: 50,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                child: Icon(CustomIcons.morevertical,
+                    size: 17, color: Theme.of(context).primaryColor),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
