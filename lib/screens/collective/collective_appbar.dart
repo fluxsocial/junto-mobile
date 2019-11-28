@@ -29,9 +29,9 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
       padding: const EdgeInsets.only(bottom: 10),
       height: 85,
       decoration: BoxDecoration(
-          border: const Border(
+          border: Border(
             bottom: BorderSide(
-              color: Color(0xffeeeeee),
+              color: Theme.of(context).dividerColor,
               width: .75,
             ),
           ),
@@ -71,10 +71,8 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                   padding: const EdgeInsets.only(right: 10),
                   alignment: Alignment.bottomRight,
                   color: Colors.transparent,
-                  child: Icon(
-                    Icons.search,
-                    size: 22,
-                  ),
+                  child: Icon(Icons.search,
+                      size: 22, color: Theme.of(context).primaryColor),
                 ),
               ),
               GestureDetector(
@@ -84,7 +82,8 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                   color: Colors.transparent,
                   alignment: Alignment.bottomRight,
                   padding: const EdgeInsets.only(right: 10),
-                  child: const Icon(CustomIcons.moon, size: 22),
+                  child: Icon(CustomIcons.moon,
+                      size: 22, color: Theme.of(context).primaryColor),
                 ),
               ),
             ],

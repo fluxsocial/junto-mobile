@@ -6,7 +6,7 @@ import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_appbar.dart';
 
-import 'package:junto_beta_mobile/screens/den/den_drawer/den_drawer.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
@@ -249,7 +249,7 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.centerDocked,
 
-              endDrawer: DenDrawer(),
+              endDrawer: JuntoDrawer('Collective'),
 
               // dynamically render body
               body: CustomScrollView(
