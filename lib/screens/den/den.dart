@@ -12,7 +12,7 @@ import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
-import 'package:junto_beta_mobile/screens/collective/collective_appbar.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 
 /// Displays the user's DEN or "profile screen"
 class JuntoDen extends StatefulWidget {
@@ -97,8 +97,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-
-        // endDrawer: DenDrawer(),
+        endDrawer: JuntoDrawer('Den'),
 
         // dynamically render body
         body: DefaultTabController(

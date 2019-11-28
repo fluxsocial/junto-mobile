@@ -137,7 +137,7 @@ class JuntoLotus extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 10),
                                 Text(
-                                  'GROUPS',
+                                  'CONNECT',
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 14,

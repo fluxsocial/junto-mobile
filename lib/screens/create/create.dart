@@ -3,7 +3,7 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
-import 'package:junto_beta_mobile/screens/den/den_drawer/den_drawer.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/event.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/longform.dart';
@@ -208,7 +208,7 @@ class JuntoCreateState extends State<JuntoCreate> {
           ),
         ),
       ),
-      endDrawer: DenDrawer(),
+      endDrawer: JuntoDrawer('Create'),
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 25),
         child: BottomNav(

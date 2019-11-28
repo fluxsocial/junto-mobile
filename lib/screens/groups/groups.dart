@@ -7,6 +7,7 @@ import 'package:junto_beta_mobile/screens/packs/packs.dart';
 import 'package:junto_beta_mobile/backend/mock/mock_packs.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/fabs/create_sphere_fab.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 
 class JuntoGroups extends StatefulWidget {
   @override
@@ -39,11 +40,11 @@ class JuntoGroupsState extends State<JuntoGroups> {
       length: 2,
       child: Scaffold(
           appBar: PreferredSize(
-            preferredSize: Size.fromHeight(45),
+            preferredSize: const Size.fromHeight(45),
             child: JuntoGroupsAppbar(),
           ),
           floatingActionButton: Padding(
-            padding: EdgeInsets.only(bottom: 25),
+            padding: const EdgeInsets.only(bottom: 25),
             child: _currentIndex == 0
                 ? BottomNav(
                     screen: 'spheres',
@@ -58,10 +59,11 @@ class JuntoGroupsState extends State<JuntoGroups> {
                         ),
                       );
                     })
-                : BottomNav(screen: 'packs'),
+                : const BottomNav(screen: 'packs'),
           ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
+          endDrawer: const JuntoDrawer('Groups'),
           body: Column(
             children: <Widget>[
               Container(

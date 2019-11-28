@@ -97,7 +97,7 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
       child: Drawer(
         elevation: 0,
         child: Container(
-          color: Theme.of(context).colorScheme.background.withOpacity(.9),
+          color: Theme.of(context).colorScheme.background,
           padding: EdgeInsets.only(top: statusBarHeight),
           child: Column(
             children: <Widget>[
