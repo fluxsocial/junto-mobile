@@ -7,12 +7,13 @@ import 'package:junto_beta_mobile/backend/mock/mock_expression.dart';
 import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/screens/den/den_appbar.dart';
+import 'package:junto_beta_mobile/screens/den/den_sliver_appbar.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
+import 'package:junto_beta_mobile/screens/den/den_appbar_new.dart';
 
 /// Displays the user's DEN or "profile screen"
 class JuntoDen extends StatefulWidget {
@@ -72,12 +73,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
   Widget build(BuildContext context) {
     return Scaffold(
         key: _juntoDenKey,
-        // appBar: PreferredSize(
-        //   preferredSize: Size.fromHeight(48),
-        //   child: JuntoAppBar(
-        //     juntoAppBarTitle: 'sunyata',
-        //   ),
-        // ),
+        appBar: DenAppbar(),
         floatingActionButton: ValueListenableBuilder(
           valueListenable: ValueNotifier<bool>(true),
           builder: (BuildContext context, bool visible, Widget child) {
@@ -107,7 +103,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
             headerSliverBuilder:
                 (BuildContext context, bool innerBoxIsScrolled) {
               return <Widget>[
-                JuntoDenAppbar(
+                JuntoDenSliverAppbar(
                   handle: 'sunyata',
                   name: 'Eric Yang',
                   profilePicture: 'assets/images/junto-mobile__eric.png',

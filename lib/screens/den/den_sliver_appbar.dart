@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class JuntoDenAppbar extends StatelessWidget {
-  const JuntoDenAppbar({
+class JuntoDenSliverAppbar extends StatelessWidget {
+  const JuntoDenSliverAppbar({
     Key key,
     @required this.handle,
     @required this.name,
