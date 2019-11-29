@@ -167,7 +167,8 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
   @override
   Widget build(BuildContext context) {
     return Stack(children: <Widget>[
-      JuntoPerspectives(changePerspective: _changePerspective),
+      // FIXME(Nash): Pass user profile. 
+      JuntoPerspectives(changePerspective: _changePerspective, profile: null ,),
       GestureDetector(
         onTap: () {
           print('yo');
