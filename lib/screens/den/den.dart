@@ -14,12 +14,10 @@ import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/screens/den/den_appbar_new.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_edit_den.dart';
 
 /// Displays the user's DEN or "profile screen"
 class JuntoDen extends StatefulWidget {
-  JuntoDen({this.visibility});
-
-  final ValueNotifier<bool> visibility;
   @override
   State<StatefulWidget> createState() => JuntoDenState();
 }
@@ -45,6 +43,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
 
   ScrollController _denController;
   final GlobalKey<ScaffoldState> _juntoDenKey = GlobalKey<ScaffoldState>();
+  ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
 
   @override
   void initState() {
@@ -58,15 +57,15 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
     });
   }
 
+  _onScrollingHasChanged() {
+    super.hideFabOnScroll(_denController, _isVisible);
+  }
+
   @override
   void dispose() {
     super.dispose();
     _denController.dispose();
     _denController.removeListener(_onScrollingHasChanged());
-  }
-
-  _onScrollingHasChanged() {
-    super.hideFabOnScroll(_denController, widget.visibility);
   }
 
   @override
@@ -75,7 +74,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
         key: _juntoDenKey,
         appBar: DenAppbar(),
         floatingActionButton: ValueListenableBuilder(
-          valueListenable: ValueNotifier<bool>(true),
+          valueListenable: _isVisible,
           builder: (BuildContext context, bool visible, Widget child) {
             return AnimatedOpacity(
                 duration: const Duration(milliseconds: 300),
@@ -87,8 +86,12 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
             child: BottomNav(
                 screen: 'den',
                 function: () {
-                  // edit profile ?
-                  // eventually.. create collection
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (BuildContext context) => JuntoEditDen(),
+                    ),
+                  );
                 }),
           ),
         ),
@@ -99,6 +102,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
         body: DefaultTabController(
           length: _tabs.length,
           child: NestedScrollView(
+            controller: _denController,
             physics: const ClampingScrollPhysics(),
             headerSliverBuilder:
                 (BuildContext context, bool innerBoxIsScrolled) {
@@ -136,7 +140,6 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
             body: TabBarView(
               children: <Widget>[
                 ListView(
-                  // controller: _denController,
                   physics: const ClampingScrollPhysics(),
                   shrinkWrap: true,
                   padding: const EdgeInsets.only(left: 10),
