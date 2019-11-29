@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_appbar.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
-import 'package:junto_beta_mobile/screens/spheres/spheres.dart';
 import 'package:junto_beta_mobile/screens/packs/packs.dart';
 import 'package:junto_beta_mobile/backend/mock/mock_packs.dart';
 import 'package:junto_beta_mobile/models/models.dart';

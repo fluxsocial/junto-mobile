@@ -36,6 +36,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
   List<CentralizedExpressionResponse> mockExpressions =
       MockExpressionService().collectiveExpressions;
 
+  // ignore: unused_element
   Future<UserData> _retrieveUserInfo() async {
     final UserRepo _userProvider = Provider.of<UserRepo>(context);
     return userMemoizer.runOnce(() => _userProvider.readLocalUser());
@@ -65,7 +66,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
   void dispose() {
     super.dispose();
     _denController.dispose();
-    _denController.removeListener(_onScrollingHasChanged());
+    _denController.removeListener(_onScrollingHasChanged);
   }
 
   @override
@@ -107,6 +108,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
             headerSliverBuilder:
                 (BuildContext context, bool innerBoxIsScrolled) {
               return <Widget>[
+                //FIXME(Nash): Replace with dynamic server content. 
                 JuntoDenSliverAppbar(
                   handle: 'sunyata',
                   name: 'Eric Yang',

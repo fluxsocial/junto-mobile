@@ -144,6 +144,5 @@ class MockPackService {
     ),
   ];
 
-  @override
   List<Group> get packs => kSamplePacks;
 }

@@ -7,8 +7,8 @@ import 'package:junto_beta_mobile/widgets/comment_action_items.dart';
 class CommentOpen extends StatefulWidget {
   const CommentOpen(this.comment, this.expression);
 
-  final comment;
-  final expression;
+  final String comment;
+  final dynamic expression;
 
   @override
   State<StatefulWidget> createState() {
@@ -30,7 +30,7 @@ class CommentOpenState extends State<CommentOpen> {
             child: ListView(
               children: <Widget>[
                 Container(
-                  padding: EdgeInsets.only(left: 10, right: 10, top: 10),
+                  padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
                   child: Text(
                     'in response to ' + widget.expression.creator.firstName,
                     style: TextStyle(
@@ -87,7 +87,7 @@ class CommentOpenState extends State<CommentOpen> {
                         },
                         child: Container(
                           color: Colors.transparent,
-                          padding: EdgeInsets.all(5),
+                          padding: const EdgeInsets.all(5),
                           alignment: Alignment.centerRight,
                           child: Icon(
                             Icons.keyboard_arrow_down,

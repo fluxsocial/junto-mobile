@@ -6,11 +6,12 @@ import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/groups/groups.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
 
+// FIXME(Nash): Rethink API, should include group address and expression type. 
 class JuntoLotus extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(children: [
+      body: Stack(children: <Widget>[
         Container(
           child:
               Image.asset('assets/images/junto-mobile__background--lotus.png'),
@@ -47,7 +48,8 @@ class JuntoLotus extends StatelessWidget {
                                   Animation<double> animation,
                                   Animation<double> secondaryAnimation,
                                 ) {
-                                  return JuntoCreate('yo');
+                            
+                                  return const JuntoCreate('Channel name', address: '', expressionContext: null,);
                                 },
                                 transitionsBuilder: (
                                   BuildContext context,

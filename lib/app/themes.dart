@@ -165,16 +165,18 @@ class JuntoThemes {
       ),
       body1: TextStyle(
         fontSize: 13,
-        color: Color(0xfffbfbfb),
+        color: const Color(0xfffbfbfb),
         fontWeight: FontWeight.w500,
       ),
       body2: TextStyle(
-          color: Color(0xfff0f0f0), fontSize: 14, fontWeight: FontWeight.w500),
+          color: const Color(0xfff0f0f0),
+          fontSize: 14,
+          fontWeight: FontWeight.w500),
       caption: TextStyle(
         fontSize: 16,
         height: 1.4,
         fontWeight: FontWeight.w500,
-        color: Color(0xfff0f0f0),
+        color: const Color(0xfff0f0f0),
       ),
       overline: TextStyle(
           fontSize: 12,

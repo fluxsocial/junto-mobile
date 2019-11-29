@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_drawer.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open_appbar.dart';
@@ -57,7 +58,11 @@ class PackOpenState extends State<PackOpen> {
                 child: child,
               );
             },
-            child: const ExpressionCenterFAB(expressionLayer: 'my pack'),
+            child: ExpressionCenterFAB(
+              expressionLayer: 'my pack',
+              address: widget.pack.address,
+              expressionContext: ExpressionContext.Group,
+            ),
           ),
           endDrawer: PackDrawer(
             pack: widget.pack,
@@ -134,14 +139,14 @@ class PackOpenState extends State<PackOpen> {
               Expanded(
                 child: PageView(
                   controller: controller,
-                  onPageChanged: (index) {
+                  onPageChanged: (int index) {
                     setState(() {
                       _currentIndex = index;
                     });
                   },
                   children: <Widget>[
                     PackOpenPublic(fabVisible: _isVisible),
-                    Center(
+                    const Center(
                       child: Text('private pack expressions'),
                     )
                   ],

@@ -7,6 +7,8 @@ class UserRepo {
   final UserService _userService;
 
   Future<CentralizedPerspective> createPerspective(Perspective perspective) {
+    assert(perspective.name != null);
+    assert(perspective.members != null);
     return _userService.createPerspective(perspective);
   }
 

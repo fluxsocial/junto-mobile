@@ -6,7 +6,7 @@ class JuntoThemesProvider with ChangeNotifier {
 
   ThemeData currentTheme;
 
-  getTheme() => currentTheme;
+  ThemeData getTheme() => currentTheme;
 
   void setTheme(String theme) {
     if (theme == 'light-indigo') {

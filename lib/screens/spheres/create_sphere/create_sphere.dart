@@ -98,6 +98,7 @@ class _CreateSphereState extends State<CreateSphere>
     _users.notifyListeners();
   }
 
+  // ignore: unused_element
   void _onUserSelected(UserProfile value) {
     _users.value.selection = placeUser(value, _users.value.selection);
     // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member

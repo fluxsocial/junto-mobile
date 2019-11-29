@@ -37,7 +37,7 @@ class JuntoDenSliverAppbar extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.bottomLeft,
                   end: Alignment.topRight,
-                  stops: <double>[0.1, 0.6],
+                  stops: const <double>[0.1, 0.6],
                   colors: <Color>[
                     Theme.of(context).colorScheme.secondaryVariant,
                     Theme.of(context).colorScheme.primaryVariant,

@@ -1,6 +1,8 @@
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
+enum ExpressionContext { Group, Collection, Collective }
+
 class ExpressionRepo {
   ExpressionRepo(this._expressionService);
 
@@ -8,19 +10,54 @@ class ExpressionRepo {
 
   Future<CentralizedExpressionResponse> createExpression(
     CentralizedExpression expression,
-  ) {
-    return _expressionService.createExpression(expression);
+    ExpressionContext context, [
+    String address,
+  ]) {
+    // Server requires that channels is not null.
+    assert(expression.channels != null);
+
+    // Channels can only contain strings.
+    assert(expression.channels is List<String>);
+
+    CentralizedExpression _expression;
+
+    if (context == ExpressionContext.Group) {
+      assert(address != null);
+      _expression = expression.copyWith(
+        context: <String, dynamic>{
+          'Group': <String, dynamic>{'address': address}
+        },
+      );
+    } else if (context == ExpressionContext.Collection) {
+      assert(address != null);
+      _expression = expression.copyWith(
+        context: <String, dynamic>{
+          'Collection': <String, dynamic>{'address': address}
+        },
+      );
+    } else {
+      assert(address == null);
+      _expression = expression
+          .copyWith(context: 'Collective', channels: <String>['channel1']);
+    }
+    return _expressionService.createExpression(_expression);
   }
 
   Future<CentralizedExpressionResponse> getExpression(
     String expressionAddress,
   ) {
+    // Expression address must not be null or empty.
+    assert(expressionAddress != null);
+    assert(expressionAddress.isNotEmpty);
     return _expressionService.getExpression(expressionAddress);
   }
 
   Future<Resonation> postResonation(
     String expressionAddress,
   ) {
+    // Expression address must not be null or empty.
+    assert(expressionAddress != null);
+    assert(expressionAddress.isNotEmpty);
     return _expressionService.postResonation(expressionAddress);
   }
 
@@ -42,6 +79,11 @@ class ExpressionRepo {
     String expressionAddress,
   ) {
     return _expressionService.getExpressionsComments(expressionAddress);
+  }
+
+  Future<List<CentralizedExpressionResponse>> getCollectiveExpressions(
+  ) {
+    return _expressionService.getCollectiveExpressions();
   }
 
   List<CentralizedExpressionResponse> get collectiveExpressions =>

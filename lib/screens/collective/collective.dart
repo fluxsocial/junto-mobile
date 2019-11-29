@@ -7,7 +7,6 @@ import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_appbar.dart';
 
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
@@ -59,9 +58,10 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
     _collectiveController = ScrollController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _collectiveController.addListener(_onScrollingHasChanged);
-      _collectiveController.position.isScrollingNotifier.addListener(
-        _onScrollingHasChanged,
-      );
+      if (_collectiveController.hasClients)
+        _collectiveController.position.isScrollingNotifier.addListener(
+          _onScrollingHasChanged,
+        );
     });
   }
 

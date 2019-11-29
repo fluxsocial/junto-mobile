@@ -1,14 +1,11 @@
-import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives'
     '/create_perspective/create_perspective.dart' show SelectedUsers;
-import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
 import 'package:provider/provider.dart';
 
@@ -212,7 +209,7 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.background,
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(10),
             topRight: Radius.circular(10),
           ),
@@ -222,7 +219,7 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
           children: <Widget>[
             const SizedBox(height: 10),
             Container(
-              padding: EdgeInsets.only(bottom: 5),
+              padding: const EdgeInsets.only(bottom: 5),
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
@@ -242,7 +239,7 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                   const SizedBox(width: 10),
                   Expanded(
                     child: Transform.translate(
-                      offset: Offset(0.0, 2),
+                      offset: const Offset(0.0, 2),
                       child: TextField(
                         focusNode: textFieldFocusNode,
                         buildCounter: (
@@ -339,7 +336,7 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                     children: <Widget>[
                       Expanded(
                           child: ListView(
-                        children: <Widget>[
+                        children: const <Widget>[
                           // SpherePreviewSearch(group: spheres[0]),
                           // SpherePreviewSearch(group: spheres[1]),
                           // SpherePreviewSearch(group: spheres[2])

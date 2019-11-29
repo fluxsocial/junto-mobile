@@ -66,7 +66,7 @@ class _JuntoMemberState extends State<JuntoMember> {
                             gradient: LinearGradient(
                               begin: Alignment.centerLeft,
                               end: Alignment.centerRight,
-                              stops: <double>[0.1, 0.9],
+                              stops: const <double>[0.1, 0.9],
                               colors: <Color>[
                                 Theme.of(context).colorScheme.secondaryVariant,
                                 Theme.of(context).colorScheme.primaryVariant,
@@ -180,7 +180,7 @@ class _JuntoMemberState extends State<JuntoMember> {
                 shrinkWrap: true,
                 padding: const EdgeInsets.only(left: 10),
                 children: <Widget>[
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   Container(
                     padding: const EdgeInsets.only(top: 5, bottom: 5),
                     child: Column(
@@ -204,7 +204,7 @@ class _JuntoMemberState extends State<JuntoMember> {
                             ],
                           ),
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Container(
                           child: Row(
                             children: <Widget>[
@@ -226,7 +226,7 @@ class _JuntoMemberState extends State<JuntoMember> {
                             ],
                           ),
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Container(
                           child: Row(
                             children: <Widget>[
@@ -258,7 +258,7 @@ class _JuntoMemberState extends State<JuntoMember> {
                     enableInfiniteScroll: false,
                     items: <Widget>[
                       Container(
-                        padding: EdgeInsets.only(right: 10),
+                        padding: const EdgeInsets.only(right: 10),
                         width: MediaQuery.of(context).size.width,
                         child: Image.asset(
                             'assets/images/junto-mobile__eric.png',
@@ -266,7 +266,7 @@ class _JuntoMemberState extends State<JuntoMember> {
                       ),
                       Container(
                         width: MediaQuery.of(context).size.width,
-                        padding: EdgeInsets.only(right: 10),
+                        padding: const EdgeInsets.only(right: 10),
                         child: Image.asset(
                             'assets/images/junto-mobile__eric--qigong.png',
                             fit: BoxFit.cover),
@@ -275,13 +275,13 @@ class _JuntoMemberState extends State<JuntoMember> {
                   ),
                   const SizedBox(height: 15),
                   Container(
-                    child: Text("student of suffering and its cessation",
+                    child: Text('student of suffering and its cessation',
                         style: Theme.of(context).textTheme.caption),
                   ),
                 ],
               ),
               ListView(
-                children: <Widget>[],
+                children: const <Widget>[],
               )
             ],
           ),

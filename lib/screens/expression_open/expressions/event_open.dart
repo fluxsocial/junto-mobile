@@ -139,7 +139,7 @@ class EventOpen extends StatelessWidget {
                               const SizedBox(width: 5),
                             ],
                           ),
-                          SizedBox(height: 5),
+                          const SizedBox(height: 5),
                           Text('49 members',
                               style: Theme.of(context).textTheme.subtitle),
                         ],

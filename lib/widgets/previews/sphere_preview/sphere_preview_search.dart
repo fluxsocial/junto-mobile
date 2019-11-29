@@ -80,9 +80,9 @@ class SpherePreviewSearch extends StatelessWidget {
                       Text(
                         group.groupData.name,
                         textAlign: TextAlign.start,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 12,
-                          color: const Color(0xff555555),
+                          color: Color(0xff555555),
                           fontWeight: FontWeight.w500,
                         ),
                       )

@@ -2,15 +2,22 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
 
 /// Gradient [FloatingActionButton] used for filtering
 /// Collectives.
 class ExpressionCenterFAB extends StatelessWidget {
-  const ExpressionCenterFAB({Key key, @required this.expressionLayer})
-      : super(key: key);
+  const ExpressionCenterFAB({
+    Key key,
+    @required this.expressionLayer,
+    @required this.address,
+    @required this.expressionContext,
+  }) : super(key: key);
 
   final String expressionLayer;
+  final String address;
+  final ExpressionContext expressionContext;
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +29,10 @@ class ExpressionCenterFAB extends StatelessWidget {
             Animation<double> animation,
             Animation<double> secondaryAnimation,
           ) {
-            //FIXME(Nash): Refactor with Junto Collective
             return JuntoCreate(
               expressionLayer,
-              address: 'eeb72aa1-07f9-b304-f8e8-f58bbf7c5f93',
+              address: address,
+              expressionContext: expressionContext,
             );
           },
           transitionsBuilder: (

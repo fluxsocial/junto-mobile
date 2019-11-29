@@ -18,7 +18,7 @@ class CommentOpenAppbar extends StatelessWidget {
             GestureDetector(
               onTap: () => Navigator.pop(context),
               child: Container(
-                padding: EdgeInsets.only(left: 10),
+                padding: const EdgeInsets.only(left: 10),
                 color: Colors.transparent,
                 width: 42,
                 alignment: Alignment.centerLeft,

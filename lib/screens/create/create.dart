@@ -2,19 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
+import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/event.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/longform.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/photo.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/shortform.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 
 class JuntoCreate extends StatefulWidget {
-  const JuntoCreate(this.expressionLayer, {@required this.address});
+  const JuntoCreate(
+    this.channelName, {
+    @required this.address,
+    @required this.expressionContext,
+  });
 
-  final String expressionLayer;
+  final String channelName;
   final String address;
+  final ExpressionContext expressionContext;
 
   @override
   State<StatefulWidget> createState() {
@@ -30,7 +36,7 @@ class JuntoCreateState extends State<JuntoCreate> {
   bool _events = false;
 
   Icon _currentIcon =
-      Icon(CustomIcons.longform, color: Color(0xff333333), size: 17);
+      const Icon(CustomIcons.longform, color: Color(0xff333333), size: 17);
 
   ValueNotifier<bool> isEditing;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -140,9 +146,10 @@ class JuntoCreateState extends State<JuntoCreate> {
       MaterialPageRoute<dynamic>(
         builder: (BuildContext context) {
           return CreateActions(
-            address: widget.address,
-            expressionLayer: widget.expressionLayer,
             expressionType: _expressionType,
+            address: widget.address,
+            channelName: widget.channelName,
+            expressionContext: widget.expressionContext,
             expression: getExpression(),
           );
         },
@@ -208,7 +215,7 @@ class JuntoCreateState extends State<JuntoCreate> {
           ),
         ),
       ),
-      endDrawer: JuntoDrawer('Create'),
+      endDrawer: const JuntoDrawer('Create'),
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 25),
         child: BottomNav(

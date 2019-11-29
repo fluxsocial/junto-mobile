@@ -53,11 +53,15 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   /// [FocusNode] passed to Comments [TextField]
   FocusNode _focusNode;
 
+  /// If an expression has no comments, we do not show the option "show replies"
+  bool canShowComments = false;
+
   @override
   void initState() {
     super.initState();
     commentController = TextEditingController();
     _focusNode = FocusNode();
+    canShowComments = widget.expression.comments != 0;
   }
 
   @override
@@ -247,43 +251,73 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                   ExpressionOpenTop(expression: widget.expression),
                   _buildExpression(),
                   ExpressionOpenBottom(widget.expression, _focusTextField),
-                  GestureDetector(
-                    onTap: _showComments,
-                    child: Container(
-                      color: Colors.transparent,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 15),
-                      child: Row(
-                        children: <Widget>[
-                          Text(
-                            'Show replies (${comments.length})',
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontSize: 12),
-                          ),
-                          const SizedBox(width: 5),
-                          if (commentsVisible == false)
-                            Icon(Icons.keyboard_arrow_down,
-                                size: 14,
-                                color: Theme.of(context).primaryColor),
-                          if (commentsVisible != false)
-                            Icon(Icons.keyboard_arrow_up,
-                                size: 17,
-                                color: Theme.of(context).primaryColor),
-                        ],
+                  if (canShowComments)
+                    GestureDetector(
+                      onTap: _showComments,
+                      child: Container(
+                        color: Colors.transparent,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 15),
+                        child: Row(
+                          children: <Widget>[
+                            Text(
+                              'Show replies (${widget.expression.comments})',
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontSize: 12),
+                            ),
+                            const SizedBox(width: 5),
+                            if (commentsVisible == false)
+                              Icon(Icons.keyboard_arrow_down,
+                                  size: 14,
+                                  color: Theme.of(context).primaryColor),
+                            if (commentsVisible != false)
+                              Icon(Icons.keyboard_arrow_up,
+                                  size: 17,
+                                  color: Theme.of(context).primaryColor),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
                   if (commentsVisible)
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: const ClampingScrollPhysics(),
-                      itemCount: comments.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return CommentPreview(
-                          parent: widget.expression,
-                          commentText: comments[index],
-                        );
+                    FutureBuilder<List<Comment>>(
+                      future: Provider.of<ExpressionRepo>(context)
+                          .getExpressionsComments(
+                        widget.expression.address,
+                      ),
+                      builder: (
+                        BuildContext context,
+                        AsyncSnapshot<List<Comment>> snapshot,
+                      ) {
+                        if (snapshot.hasError) {
+                          return Container(
+                            child: const Text('Error occured'),
+                          );
+                        }
+                        if (!snapshot.hasData) {
+                          return Container(
+                            child: SizedBox.fromSize(
+                              size: const Size.fromHeight(25.0),
+                              child: const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            ),
+                          );
+                        }
+                        if (snapshot.hasData)
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            physics: const ClampingScrollPhysics(),
+                            itemCount: snapshot.data.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return CommentPreview(
+                                parent: widget.expression,
+                                commentText:
+                                    snapshot.data[index].expressionData.body,
+                              );
+                            },
+                          );
+                        return Container();
                       },
                     )
                 ],

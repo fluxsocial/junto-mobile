@@ -57,7 +57,7 @@ class ExpressionPreviewEmbed extends StatelessWidget {
                 Row(
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.only(right: 5),
+                      padding: const EdgeInsets.only(right: 5),
                       child: Icon(
                         Icons.keyboard_arrow_down,
                         size: 24,

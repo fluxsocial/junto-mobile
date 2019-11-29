@@ -43,7 +43,7 @@ class _PackOpenPublicState extends State<PackOpenPublic> with HideFab {
 
   @override
   void didChangeDependencies() {
-    super.didChangeDependencies(); 
+    super.didChangeDependencies();
     _expressionRepo = Provider.of<ExpressionRepo>(context);
     expression = _expressionRepo.collectiveExpressions;
   }
@@ -68,7 +68,7 @@ class _PackOpenPublicState extends State<PackOpenPublic> with HideFab {
             children: <Widget>[
               Container(
                 width: MediaQuery.of(context).size.width * .5,
-                padding: EdgeInsets.only(left: 10, right: 5, top: 10),
+                padding: const EdgeInsets.only(left: 10, right: 5, top: 10),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
@@ -81,7 +81,7 @@ class _PackOpenPublicState extends State<PackOpenPublic> with HideFab {
               ),
               Container(
                 width: MediaQuery.of(context).size.width * .5,
-                padding: EdgeInsets.only(left: 5, right: 10, top: 10),
+                padding: const EdgeInsets.only(left: 5, right: 10, top: 10),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[

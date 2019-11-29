@@ -42,6 +42,7 @@ class _DenDrawerState extends State<DenDrawer> {
 
 // FIXME(Nash): Look up the address and retrieve the user pack
 //  see: https://github.com/juntofoundation/junto-mobile/issues/170
+  // ignore: unused_element
   Future<void> _onPackPress() async {
     final UserGroupsResponse _userPack =
         await Provider.of<UserRepo>(context).getUserGroups(profile.address);
@@ -135,8 +136,8 @@ class _DenDrawerState extends State<DenDrawer> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          CupertinoPageRoute(
-                            builder: (context) => PackOpen(
+                          CupertinoPageRoute<dynamic>(
+                            builder: (BuildContext context) => PackOpen(
                               pack: Group(
                                 members: 1,
                                 facilitators: 0,
@@ -169,7 +170,7 @@ class _DenDrawerState extends State<DenDrawer> {
                         // nav
                         Navigator.push(
                           context,
-                          CupertinoPageRoute(
+                          CupertinoPageRoute<dynamic>(
                             builder: (BuildContext context) => DenThemes(),
                           ),
                         );

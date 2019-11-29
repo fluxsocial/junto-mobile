@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/utils/junto_dialog.dart';
+import 'package:junto_beta_mobile/utils/junto_exception.dart'
+    show JuntoException;
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 
@@ -8,15 +12,49 @@ class JuntoPerspectives extends StatefulWidget {
   const JuntoPerspectives({
     Key key,
     @required this.changePerspective,
+    @required this.profile,
   }) : super(key: key);
 
   final Function changePerspective;
+  final UserProfile profile;
 
   @override
   State<StatefulWidget> createState() => JuntoPerspectivesState();
 }
 
 class JuntoPerspectivesState extends State<JuntoPerspectives> {
+  Widget _buildUserPerspectives(BuildContext context) {
+    if (widget.profile?.address != null)
+      return FutureBuilder<List<CentralizedPerspective>>(
+        future: Provider.of<UserRepo>(context)
+            .getUserPerspective(widget.profile?.address),
+        builder: (
+          BuildContext context,
+          AsyncSnapshot<List<CentralizedPerspective>> snapshot,
+        ) {
+          if (snapshot.hasError) {
+            return Container();
+          }
+          if (snapshot.hasData) {
+            return ListView(
+              padding: const EdgeInsets.all(0),
+              shrinkWrap: true,
+              physics: const ClampingScrollPhysics(),
+              children: <Widget>[
+                for (CentralizedPerspective perspective in snapshot.data)
+                  _buildPerspective(
+                    perspective.name,
+                    perspective.userCount.toString(),
+                  )
+              ],
+            );
+          }
+          return Container();
+        },
+      );
+    return Container();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +64,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
           gradient: LinearGradient(
             begin: Alignment.bottomLeft,
             end: Alignment.topRight,
-            stops: <double>[0.2, 0.9],
+            stops: const <double>[0.2, 0.9],
             colors: <Color>[
               Theme.of(context).colorScheme.secondary,
               Theme.of(context).colorScheme.primary
@@ -97,9 +135,9 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                 child: ListView(
                   children: <Widget>[
                     _buildPerspective('JUNTO', 'all'),
-                    _buildPerspective('Connections', '99'),
-                    _buildPerspective('Subscriptions', '220'),
                     _buildPerspective('Degrees of separation', 'all'),
+                    _buildPerspective('Subscriptions', '220'),
+                    _buildUserPerspectives(context),
                   ],
                 ),
               )
@@ -112,72 +150,71 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
 
   Widget _buildPerspective(String name, String members) {
     return GestureDetector(
-      onTap: () {
-        widget.changePerspective(name);
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-        color: Colors.transparent,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Row(
+        onTap: () {
+          widget.changePerspective(name);
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+          color: Colors.transparent,
+          //FIXME(Nash): Revisit double rows
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Container(
-                  child: Row(
-                    children: <Widget>[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              Icon(CustomIcons.collective,
-                                  size: 10, color: Colors.white),
-                                  SizedBox(width: 30),
-                              Text(
-                                name,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 15,
-                                  letterSpacing: 1.2,
-                                  color: Colors.white,
+                Row(
+                  children: <Widget>[
+                    Container(
+                      child: Row(children: <Widget>[
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Row(
+                              children: <Widget>[
+                                Icon(CustomIcons.collective,
+                                    size: 10, color: Colors.white),
+                                SizedBox(width: 30),
+                                Text(
+                                  name,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 15,
+                                    letterSpacing: 1.2,
+                                    color: Colors.white,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          // const SizedBox(height: 5),
-                          // Text(
-                          //   members + ' members',
-                          //   style: TextStyle(
-                          //       fontWeight: FontWeight.w400,
-                          //       fontSize: 15,
-                          //       letterSpacing: 1.2,
-                          //       color: Colors.white),
-                          // )
-                        ],
+                              ],
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          members + ' members',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 15,
+                              letterSpacing: 1.2,
+                              color: Colors.white),
+                        )
+                      ]),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        _openPerspectiveBottomSheet(
+                          name,
+                        );
+                      },
+                      child: const Icon(
+                        Icons.keyboard_arrow_down,
+                        size: 20,
+                        color: Colors.white,
                       ),
-                    ],
-                  ),
+                    )
+                  ],
                 ),
-              ],
-            ),
-            GestureDetector(
-              onTap: () {
-                _openPerspectiveBottomSheet(name);
-              },
-              child: const Icon(
-                Icons.keyboard_arrow_down,
-                size: 20,
-                color: Colors.white,
-              ),
-            )
-          ],
-        ),
-      ),
-    );
+              ]),
+        ));
   }
 
-  String _perspectiveText(perspective) {
+  String _perspectiveText(String perspective) {
     if (perspective == 'JUNTO') {
       return 'The Junto perspective contains all public expressions from '
           'every member of Junto.';
@@ -185,7 +222,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
       return 'The Connections perspective contains all public expressions from '
           'your 1st degree connections.';
     } else if (perspective == 'Subscriptions') {
-      return 'The Subscriptions perspective contains all public expressions from ' +
+      return 'The Subscriptions perspective contains all public expressions from '
           "members you're subscribed to.";
     } else if (perspective == 'Degrees of separation') {
       return 'The Degrees of separation perspective allows you to discover expression from one to six degrees of separtion away from you!';
@@ -194,7 +231,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
     return '';
   }
 
-  void _openPerspectiveBottomSheet(perspective) {
+  void _openPerspectiveBottomSheet(String perspective) {
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
@@ -270,13 +307,31 @@ class _CreatePerspectiveBottomSheetState
     _textController.dispose();
   }
 
-  void _createPerspective() async {
-    final String perspectiveName = _textController.value.text;
-    Perspective perspective =
-        Perspective(name: perspectiveName, members: <String>[]);
-    final CentralizedPerspective response =
-        await userRepo.createPerspective(perspective);
-    print(response);
+  Future<void> _createPerspective() async {
+    final String name = _textController.value.text;
+    JuntoOverlay.showLoader(context);
+    try {
+      await Provider.of<UserRepo>(context)
+          .createPerspective(Perspective(name: name, members: <String>[]));
+      JuntoOverlay.hide();
+      Navigator.pop(context);
+    } on JuntoException catch (error, stacktrace) {
+      print(error);
+      print(stacktrace);
+      JuntoOverlay.hide();
+      JuntoDialog.showJuntoDialog(
+        context,
+        error.message,
+        <Widget>[
+          FlatButton(
+            onPressed: () {
+              return Navigator.pop(context);
+            },
+            child: const Text('Ok'),
+          ),
+        ],
+      );
+    }
   }
 
   @override
@@ -367,11 +422,11 @@ class _CreatePerspectiveBottomSheetState
                         bool isFocused,
                       }) =>
                           null,
-                      decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.all(0),
+                      decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.all(0),
                           border: InputBorder.none,
                           hintText: 'add members',
-                          hintStyle: const TextStyle(
+                          hintStyle: TextStyle(
                             fontSize: 15,
                             color: Color(0xff999999),
                           )),

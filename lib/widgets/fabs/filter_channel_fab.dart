@@ -22,7 +22,7 @@ class FilterChannelFAB extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.bottomLeft,
             end: Alignment.topRight,
-            stops: <double>[0.1, 0.9],
+            stops: const <double>[0.1, 0.9],
             colors: <Color>[
               Theme.of(context).colorScheme.secondary,
               Theme.of(context).colorScheme.primary,
@@ -89,7 +89,7 @@ class FilterChannelModalState extends State<FilterChannelModal> {
                   const SizedBox(width: 10),
                   Expanded(
                     child: Transform.translate(
-                      offset: Offset(0.0, 2),
+                      offset: const Offset(0.0, 2),
                       child: TextField(
                         buildCounter: (
                           BuildContext context, {

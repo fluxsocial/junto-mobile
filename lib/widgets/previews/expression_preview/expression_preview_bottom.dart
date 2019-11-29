@@ -8,6 +8,7 @@ class ExpressionPreviewBottom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
     final String expressionTime =
         MaterialLocalizations.of(context).formatFullDate(expression.createdAt);
     return Container(

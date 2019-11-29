@@ -13,15 +13,29 @@ import 'package:provider/provider.dart';
 class CreateActions extends StatefulWidget {
   const CreateActions({
     Key key,
-    @required this.expressionLayer,
     @required this.expressionType,
+    @required this.channelName,
+    @required this.expressionContext,
     @required this.expression,
     @required this.address,
   }) : super(key: key);
 
-  final String expressionLayer;
+  /// Represents the type of expression being created. Possible values include
+  /// "LongForm", "ShortForm", "EventForm", etc
   final String expressionType;
+
+  /// This is the name of the channel to which the expression is being posted.
+  final String channelName;
+
+  /// This represents the Expression's context. Please see [ExpressionContext]
+  final ExpressionContext expressionContext;
+
+  /// Represents the expression data. Value depends on the type of expression
+  /// being created.
   final dynamic expression;
+
+  /// Address of the [Group] or collection to which the expression is being posted.
+  /// Can also be null if the [expressionContext] == [ExpressionContext.Collective]
   final String address;
 
   @override
@@ -53,14 +67,15 @@ class CreateActionsState extends State<CreateActions> {
   Future<void> _createExpression() async {
     final CentralizedExpression _expression = CentralizedExpression(
       type: widget.expressionType,
-      context: <String, dynamic>{
-        'Group': <String, dynamic>{'address': widget.address}
-      },
       expressionData: widget.expression.toMap(),
     );
     JuntoOverlay.showLoader(context);
     try {
-      await Provider.of<ExpressionRepo>(context).createExpression(_expression);
+      await Provider.of<ExpressionRepo>(context).createExpression(
+        _expression,
+        widget.expressionContext,
+        widget.address,
+      );
       JuntoOverlay.hide();
       JuntoDialog.showJuntoDialog(
         context,
@@ -149,7 +164,7 @@ class CreateActionsState extends State<CreateActions> {
               ),
               child: Row(
                 children: <Widget>[
-                  Text('sharing to ' + widget.expressionLayer,
+                  Text('sharing to ' + widget.channelName,
                       style: Theme.of(context).textTheme.caption),
                   const SizedBox(width: 1),
                   Icon(Icons.keyboard_arrow_down,
@@ -253,7 +268,7 @@ class CreateActionsState extends State<CreateActions> {
                           }) =>
                               null,
                           decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(0),
+                            contentPadding: const EdgeInsets.all(0),
                             border: InputBorder.none,
                             hintText: 'add up to five channels',
                             hintStyle: Theme.of(context).textTheme.caption,
@@ -271,7 +286,7 @@ class CreateActionsState extends State<CreateActions> {
                 ),
                 Expanded(
                   child: ListView(
-                    children: <Widget>[
+                    children: const <Widget>[
                       ChannelPreview(
                         channel: 'design',
                       ),

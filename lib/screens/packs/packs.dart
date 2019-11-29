@@ -76,7 +76,7 @@ class JuntoPacksState extends State<JuntoPacks> with ListDistinct, HideFab {
     );
   }
 
-  List<Group> _packs = MockPackService().packs;
+  final List<Group> _packs = MockPackService().packs;
 
   @override
   void dispose() {

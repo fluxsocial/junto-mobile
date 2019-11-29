@@ -69,8 +69,8 @@ class _CreatePerspectiveState extends State<CreatePerspective>
     final String name = controller.value.text;
     JuntoOverlay.showLoader(context);
     try {
-      await Provider.of<UserService>(context)
-          .createPerspective(Perspective(name: name));
+      await Provider.of<UserRepo>(context)
+          .createPerspective(Perspective(name: name, members: <String>[]));
       JuntoOverlay.hide();
       Navigator.pop(context);
     } on JuntoException catch (error) {
@@ -224,10 +224,12 @@ class _CreatePerspectiveState extends State<CreatePerspective>
                         child: ListenableProvider<
                             ValueNotifier<SelectedUsers>>.value(
                           value: _users,
+                          //FIXME(Nash): Revisit child param
                           child: SearchMembersModal(
                             onTextChange: _onTextChange,
                             results: queriedUsers,
                             onProfileSelected: _onUserSelected,
+                            child: Container(),
                           ),
                         ),
                       ),

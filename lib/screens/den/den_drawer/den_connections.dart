@@ -57,7 +57,7 @@ class DenConnections extends StatelessWidget {
         children: <Widget>[
           Expanded(
             child: ListView(
-              children: <Widget>[],
+              children: const <Widget>[],
             ),
           )
         ],

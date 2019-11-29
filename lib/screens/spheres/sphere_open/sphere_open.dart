@@ -86,7 +86,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   }
 
   Future<void> _getMembers() async {
-
     try {
       JuntoOverlay.showLoader(context);
       final List<Users> _members =
@@ -154,8 +153,11 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
             child: child,
           );
         },
-        child:
-            ExpressionCenterFAB(expressionLayer: widget.group.groupData.name),
+        child: ExpressionCenterFAB(
+          expressionLayer: widget.group.groupData.name,
+          address: widget.group.address,
+          expressionContext: ExpressionContext.Group,
+        ),
       ),
       body: DefaultTabController(
         length: _tabs.length,
@@ -436,7 +438,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   }
 
   Widget _buildExpressionView() {
-
     return FutureBuilder<List<CentralizedExpressionResponse>>(
       future: Provider.of<GroupRepo>(context)
           .getGroupExpressions(widget.group.address, null),
@@ -480,7 +481,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   Widget _buildEventsView() {
     return ListView(
       physics: const ClampingScrollPhysics(),
-      children: <Widget>[Text('Events')],
+      children: const <Widget>[Text('Events')],
     );
   }
 }
