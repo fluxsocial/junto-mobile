@@ -4,7 +4,7 @@ import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions_appbar.dart';
-import 'package:junto_beta_mobile/screens/template/template.dart';
+import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/previews/channel_preview.dart';
@@ -84,7 +84,7 @@ class CreateActionsState extends State<CreateActions> {
           FlatButton(
             onPressed: () {
               Navigator.of(context).pushAndRemoveUntil(
-                JuntoTemplate.route(),
+                JuntoCollective.route(),
                 (_) => false,
               );
             },
@@ -101,7 +101,7 @@ class CreateActionsState extends State<CreateActions> {
           FlatButton(
             onPressed: () {
               Navigator.of(context).pushAndRemoveUntil(
-                JuntoTemplate.route(),
+                JuntoCollective.route(),
                 (_) => false,
               );
             },

@@ -30,4 +30,6 @@ class CustomIcons {
   static const IconData gender = IconData(0xe919, fontFamily: 'j_home');
   static const IconData pawprints = IconData(0xe91a, fontFamily: 'j_home');
   static const IconData morevertical = IconData(0xe91b, fontFamily: 'j_home');
+  static const IconData create = IconData(0xe91c, fontFamily: 'j_home');
+  static const IconData collective = IconData(0xe91d, fontFamily: 'j_home');
 }

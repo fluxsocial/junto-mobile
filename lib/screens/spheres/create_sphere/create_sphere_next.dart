@@ -4,7 +4,7 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/sphere.dart';
-import 'package:junto_beta_mobile/screens/template/template.dart';
+import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
@@ -46,7 +46,7 @@ class _CreateSphereNextState extends State<CreateSphereNext> {
       Navigator.pushAndRemoveUntil(
           context,
           CupertinoPageRoute<dynamic>(
-            builder: (BuildContext context) => JuntoTemplate(),
+            builder: (BuildContext context) => JuntoCollective(),
           ),
           (_) => false);
     } on JuntoException catch (error) {

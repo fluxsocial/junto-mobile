@@ -1,23 +1,29 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/den/den_drawer/den_connections.dart';
 import 'package:junto_beta_mobile/screens/den/den_drawer/den_edit_profile.dart';
 import 'package:junto_beta_mobile/screens/den/den_drawer/den_followers.dart';
-import 'package:junto_beta_mobile/screens/den/den_drawer/den_themes.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_themes.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_edit_den.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open.dart';
 import 'package:junto_beta_mobile/screens/sign_in/sign_in.dart';
 import 'package:provider/provider.dart';
 
-class DenDrawer extends StatefulWidget {
+class JuntoDrawer extends StatefulWidget {
+  const JuntoDrawer(this.screen);
+
+  final String screen;
+
   @override
-  _DenDrawerState createState() => _DenDrawerState();
+  _JuntoDrawerState createState() => _JuntoDrawerState();
 }
 
-class _DenDrawerState extends State<DenDrawer> {
+class _JuntoDrawerState extends State<JuntoDrawer> {
   UserProfile profile;
 
   @override
@@ -42,7 +48,6 @@ class _DenDrawerState extends State<DenDrawer> {
 
 // FIXME(Nash): Look up the address and retrieve the user pack
 //  see: https://github.com/juntofoundation/junto-mobile/issues/170
-  // ignore: unused_element
   Future<void> _onPackPress() async {
     final UserGroupsResponse _userPack =
         await Provider.of<UserRepo>(context).getUserGroups(profile.address);
@@ -110,13 +115,13 @@ class _DenDrawerState extends State<DenDrawer> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text('Collective',
+                    Text(widget.screen,
                         style: Theme.of(context).textTheme.title),
                     ClipOval(
                       child: Image.asset(
                         'assets/images/junto-mobile__eric.png',
-                        height: 38.0,
-                        width: 38.0,
+                        height: 32.0,
+                        width: 32.0,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -130,14 +135,13 @@ class _DenDrawerState extends State<DenDrawer> {
                   ),
                   children: <Widget>[
                     // relationships
-                    DenDrawerItem(
+                    JuntoDrawerItem(
                       title: 'My Pack',
-                      // onTap: _onPackPress,
                       onTap: () {
                         Navigator.push(
                           context,
-                          CupertinoPageRoute<dynamic>(
-                            builder: (BuildContext context) => PackOpen(
+                          CupertinoPageRoute(
+                            builder: (context) => PackOpen(
                               pack: Group(
                                 members: 1,
                                 facilitators: 0,
@@ -152,52 +156,39 @@ class _DenDrawerState extends State<DenDrawer> {
                           ),
                         );
                       },
-                      arrow: true,
                     ),
-                    DenDrawerItem(
-                      title: 'Connections',
+                    JuntoDrawerItem(
+                      title: 'Relationships',
                       onTap: _onConnectionsPress,
-                      arrow: true,
                     ),
-                    DenDrawerItem(
-                      title: 'Subscribers/Subscriptions',
-                      onTap: _onFollowersPress,
-                      arrow: true,
-                    ),
-                    DenDrawerItem(
+
+                    JuntoDrawerItem(
                       title: 'Themes',
                       onTap: () {
                         // nav
                         Navigator.push(
                           context,
-                          CupertinoPageRoute<dynamic>(
-                            builder: (BuildContext context) => DenThemes(),
+                          CupertinoPageRoute(
+                            builder: (BuildContext context) => JuntoThemes(),
                           ),
                         );
                       },
-                      arrow: true,
-                    ),
-                    DenDrawerItem(
-                      title: 'Edit den',
-                      onTap: _onEditPress,
-                      arrow: true,
                     ),
 
-                    // DenDrawerItem(
-                    //   title: 'Manage account',
-                    //   onTap: () {
-                    //     // nav
-                    //   },
-                    //   arrow: true,
-                    // ),
-                    // DenDrawerItem(
-                    //   title: 'Resources',
-                    //   onTap: () {
-                    //     // nav
-                    //   },
-                    //   arrow: true,
-                    // ),
-                    DenDrawerItem(
+                    JuntoDrawerItem(
+                      title: 'Edit Den',
+                      onTap: () {
+                        // nav
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (BuildContext context) => JuntoEditDen(),
+                          ),
+                        );
+                      },
+                    ),
+
+                    JuntoDrawerItem(
                       title: 'Logout',
                       onTap: () async {
                         await Provider.of<AuthRepo>(context).logoutUser();
@@ -209,7 +200,6 @@ class _DenDrawerState extends State<DenDrawer> {
                           ),
                         );
                       },
-                      arrow: true,
                     ),
                   ],
                 ),
@@ -222,16 +212,15 @@ class _DenDrawerState extends State<DenDrawer> {
   }
 }
 
-class DenDrawerItem extends StatelessWidget {
-  const DenDrawerItem({
+class JuntoDrawerItem extends StatelessWidget {
+  const JuntoDrawerItem({
     Key key,
     @required this.title,
-    @required this.arrow,
     @required this.onTap,
   }) : super(key: key);
 
   final String title;
-  final bool arrow;
+
   final VoidCallback onTap;
 
   @override
@@ -239,19 +228,16 @@ class DenDrawerItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        color: Theme.of(context).colorScheme.background,
+        color: Colors.transparent,
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text(title, style: Theme.of(context).textTheme.caption),
-            arrow == true
-                ? Icon(
-                    Icons.keyboard_arrow_right,
-                    size: 17,
-                    color: Theme.of(context).primaryColor,
-                  )
-                : const SizedBox()
+            Row(
+              children: <Widget>[
+                Text(title, style: Theme.of(context).textTheme.caption),
+              ],
+            ),
           ],
         ),
       ),

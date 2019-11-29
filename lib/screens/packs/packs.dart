@@ -7,17 +7,37 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/previews/pack_preview.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 
 // This class renders the screen of packs a user belongs to
 class JuntoPacks extends StatefulWidget {
+  const JuntoPacks({this.visibility});
+  final visibility;
   @override
   State<StatefulWidget> createState() => JuntoPacksState();
 }
 
-class JuntoPacksState extends State<JuntoPacks> with ListDistinct {
+class JuntoPacksState extends State<JuntoPacks> with ListDistinct, HideFab {
   UserRepo _userProvider;
   final AsyncMemoizer<UserGroupsResponse> _memoizer =
       AsyncMemoizer<UserGroupsResponse>();
+
+  ScrollController _packsScrollController;
+  @override
+  void initState() {
+    super.initState();
+    _packsScrollController = ScrollController();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _packsScrollController.addListener(_onScrollingHasChanged);
+      _packsScrollController.position.isScrollingNotifier.addListener(
+        _onScrollingHasChanged,
+      );
+    });
+  }
+
+  _onScrollingHasChanged() {
+    super.hideFabOnScroll(_packsScrollController, widget.visibility);
+  }
 
   @override
   void didChangeDependencies() {
@@ -59,10 +79,19 @@ class JuntoPacksState extends State<JuntoPacks> with ListDistinct {
   final List<Group> _packs = MockPackService().packs;
 
   @override
+  void dispose() {
+    _packsScrollController.dispose();
+    _packsScrollController.removeListener(
+      _onScrollingHasChanged(),
+    );
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: ListView(children: <Widget>[
+      child: ListView(controller: _packsScrollController, children: <Widget>[
         PackPreview(group: _packs[0]),
         PackPreview(group: _packs[1]),
         PackPreview(group: _packs[2]),

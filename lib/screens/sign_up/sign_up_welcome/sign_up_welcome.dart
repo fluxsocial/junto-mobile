@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/screens/template/template.dart';
+import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
@@ -72,7 +72,7 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
         ..setString('user_id', results.user.address);
       JuntoOverlay.hide();
       Navigator.of(context).pushAndRemoveUntil(
-        JuntoTemplate.route(),
+        JuntoCollective.route(),
         (Route<dynamic> route) => false,
       );
     } on JuntoException catch (error) {
