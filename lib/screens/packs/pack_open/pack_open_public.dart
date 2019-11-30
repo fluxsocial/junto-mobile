@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
 
@@ -71,11 +70,11 @@ class _PackOpenPublicState extends State<PackOpenPublic> with HideFab {
                 padding: const EdgeInsets.only(left: 10, right: 5, top: 10),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    ExpressionPreview(expression: expression[0]),
-                    ExpressionPreview(expression: expression[2]),
-                    ExpressionPreview(expression: expression[4]),
-                    ExpressionPreview(expression: expression[6]),
+                  children: const <Widget>[
+//                    ExpressionPreview(expression: expression[0]),
+//                    ExpressionPreview(expression: expression[2]),
+//                    ExpressionPreview(expression: expression[4]),
+//                    ExpressionPreview(expression: expression[6]),
                   ],
                 ),
               ),
@@ -84,11 +83,11 @@ class _PackOpenPublicState extends State<PackOpenPublic> with HideFab {
                 padding: const EdgeInsets.only(left: 5, right: 10, top: 10),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    ExpressionPreview(expression: expression[1]),
-                    ExpressionPreview(expression: expression[3]),
-                    ExpressionPreview(expression: expression[5]),
-                    ExpressionPreview(expression: expression[7]),
+                  children: const <Widget>[
+//                    ExpressionPreview(expression: expression[1]),
+//                    ExpressionPreview(expression: expression[3]),
+//                    ExpressionPreview(expression: expression[5]),
+//                    ExpressionPreview(expression: expression[7]),
                   ],
                 ),
               ),
