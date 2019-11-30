@@ -395,45 +395,130 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
     return SafeArea(
       top: false,
       child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: JuntoStyles.horizontalPadding,
-          vertical: 5,
-        ),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
-          border: Border(
-            top: BorderSide(
-              width: .75,
-              color: Theme.of(context).dividerColor,
+          padding: const EdgeInsets.symmetric(
+            horizontal: JuntoStyles.horizontalPadding,
+            vertical: 5,
+          ),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.background,
+            border: Border(
+              top: BorderSide(
+                width: .75,
+                color: Theme.of(context).dividerColor,
+              ),
             ),
           ),
-        ),
-        child: ValueListenableBuilder<MessageType>(
-            valueListenable: _type,
-            builder: (BuildContext context, MessageType type, _) {
-              return Column(
+          child: Column(
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  if (type == MessageType.gif && selectedUrl != null)
-                    SizedBox(
-                      height: 150.0,
-                      width: 150.0,
-                      child: CachedNetworkImage(
-                        placeholder: (BuildContext context, String _) {
-                          return Image.asset(
-                            'assets/images/junto-mobile__placeholder--member.png',
-                          );
-                        },
-                        imageUrl: selectedUrl,
+                  Container(
+                    margin: const EdgeInsets.only(right: 10),
+                    child: ClipOval(
+                      child: Image.asset(
+                        'assets/images/junto-mobile__eric.png',
+                        height: 38.0,
+                        width: 38.0,
                         fit: BoxFit.cover,
                       ),
                     ),
-                  const SizedBox(height: 4.0),
-                  _buildCommentRow(context),
-                  _buildBottomStrip()
+                  ),
+                  Expanded(
+                    flex: 7,
+                    child: Container(
+                      padding: const EdgeInsets.only(left: 15),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.surface,
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          ValueListenableBuilder<MessageType>(
+                              valueListenable: _type,
+                              builder:
+                                  (BuildContext context, MessageType type, _) {
+                                return type == MessageType.gif &&
+                                        selectedUrl != null
+                                    ? Container(
+                                        height: 120.0,
+                                        width: 120.0,
+                                        margin:
+                                            EdgeInsets.symmetric(vertical: 5),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(25),
+                                        ),
+                                        child: CachedNetworkImage(
+                                          placeholder:
+                                              (BuildContext context, String _) {
+                                            return Container(
+                                              height: 120,
+                                              width: 120,
+                                              decoration: BoxDecoration(
+                                                gradient: LinearGradient(
+                                                  begin: Alignment.bottomLeft,
+                                                  end: Alignment.topRight,
+                                                  stops: const <double>[
+                                                    0.2,
+                                                    0.9
+                                                  ],
+                                                  colors: <Color>[
+                                                    Theme.of(context)
+                                                        .colorScheme
+                                                        .secondary,
+                                                    Theme.of(context)
+                                                        .colorScheme
+                                                        .primary
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          imageUrl: selectedUrl,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      )
+                                    : SizedBox();
+                              }),
+                          Container(
+                            width: MediaQuery.of(context).size.width - 140,
+                            constraints: const BoxConstraints(maxHeight: 180),
+                            child: TextField(
+                              focusNode: widget.focusNode,
+                              controller: widget.commentController,
+                              onChanged: widget.onTextChange,
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                              ),
+                              maxLines: null,
+                              cursorColor: JuntoPalette.juntoGrey,
+                              cursorWidth: 2,
+                              style: Theme.of(context).textTheme.caption,
+                              textInputAction: TextInputAction.newline,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: AnimatedBuilder(
+                      animation: widget.focusNode,
+                      builder: (BuildContext context, _) {
+                        return _createCommentIcon(
+                          widget.focusNode.hasFocus,
+                        );
+                      },
+                    ),
+                  )
                 ],
-              );
-            }),
-      ),
+              ),
+              _buildBottomStrip()
+            ],
+          )),
     );
   }
 
@@ -466,8 +551,8 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
                   onTap: () async {
                     await showModalBottomSheet(
                       context: context,
-                      isScrollControlled: false,
-                      backgroundColor: Theme.of(context).colorScheme.background,
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
                       builder: (BuildContext context) => _GiphyPanel(
                         onGifSelected: (String selected) {
                           selectedUrl = selected;
@@ -484,66 +569,6 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
           );
         return const SizedBox();
       },
-    );
-  }
-
-  Row _buildCommentRow(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Container(
-          margin: const EdgeInsets.only(right: 10),
-          child: ClipOval(
-            child: Image.asset(
-              'assets/images/junto-mobile__eric.png',
-              height: 38.0,
-              width: 38.0,
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-        Expanded(
-          flex: 7,
-          child: Container(
-            padding: const EdgeInsets.only(left: 15),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              borderRadius: BorderRadius.circular(25),
-            ),
-            width: widget.focusNode.hasFocus
-                ? MediaQuery.of(context).size.width - 100
-                : MediaQuery.of(context).size.width - 68,
-            constraints: const BoxConstraints(maxHeight: 180),
-            child: Container(
-              width: MediaQuery.of(context).size.width - 140,
-              child: TextField(
-                focusNode: widget.focusNode,
-                controller: widget.commentController,
-                onChanged: widget.onTextChange,
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
-                ),
-                maxLines: null,
-                cursorColor: JuntoPalette.juntoGrey,
-                cursorWidth: 2,
-                style: Theme.of(context).textTheme.caption,
-                textInputAction: TextInputAction.newline,
-              ),
-            ),
-          ),
-        ),
-        Expanded(
-          flex: 1,
-          child: AnimatedBuilder(
-            animation: widget.focusNode,
-            builder: (BuildContext context, _) {
-              return _createCommentIcon(
-                widget.focusNode.hasFocus,
-              );
-            },
-          ),
-        )
-      ],
     );
   }
 }
@@ -588,7 +613,7 @@ class _GiphyPanelState extends State<_GiphyPanel> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height,
+      height: MediaQuery.of(context).size.height * .9,
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.background,
@@ -600,11 +625,22 @@ class _GiphyPanelState extends State<_GiphyPanel> {
       child: CustomScrollView(
         slivers: <Widget>[
           SliverPadding(
-            padding: const EdgeInsets.all(12.0),
+            padding: const EdgeInsets.symmetric(vertical: 10),
             sliver: SliverToBoxAdapter(
-              child: TextField(
-                decoration: const InputDecoration(hintText: 'Search Giphy...'),
-                onChanged: onTextChange,
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                        color: Theme.of(context).dividerColor, width: .75),
+                  ),
+                ),
+                child: TextField(
+                  decoration: InputDecoration(
+                      hintText: 'Search for GIFs',
+                      hintStyle: TextStyle(),
+                      border: InputBorder.none),
+                  onChanged: onTextChange,
+                ),
               ),
             ),
           ),
@@ -638,8 +674,18 @@ class _GiphyPanelState extends State<_GiphyPanel> {
                           },
                           child: CachedNetworkImage(
                             placeholder: (BuildContext context, String _) {
-                              return Image.asset(
-                                'assets/images/junto-mobile__placeholder--member.png',
+                              return Container(
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.bottomLeft,
+                                    end: Alignment.topRight,
+                                    stops: const <double>[0.2, 0.9],
+                                    colors: <Color>[
+                                      Theme.of(context).colorScheme.secondary,
+                                      Theme.of(context).colorScheme.primary
+                                    ],
+                                  ),
+                                ),
                               );
                             },
                             imageUrl: _gifs.images.downsized.url,
