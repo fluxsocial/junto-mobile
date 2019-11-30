@@ -44,7 +44,6 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                 for (CentralizedPerspective perspective in snapshot.data)
                   _buildPerspective(
                     perspective.name,
-                    perspective.userCount.toString(),
                   )
               ],
             );
@@ -134,9 +133,9 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
               Expanded(
                 child: ListView(
                   children: <Widget>[
-                    _buildPerspective('JUNTO', 'all'),
-                    _buildPerspective('Degrees of separation', 'all'),
-                    _buildPerspective('Subscriptions', '220'),
+                    _buildPerspective('JUNTO'),
+                    _buildPerspective('Degrees of separation'),
+                    _buildPerspective('Subscriptions'),
                     _buildUserPerspectives(context),
                   ],
                 ),
@@ -148,7 +147,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
     );
   }
 
-  Widget _buildPerspective(String name, String members) {
+  Widget _buildPerspective(String name) {
     return GestureDetector(
         onTap: () {
           widget.changePerspective(name);
@@ -185,15 +184,6 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 5),
-                        Text(
-                          members + ' members',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 15,
-                              letterSpacing: 1.2,
-                              color: Colors.white),
-                        )
                       ]),
                     ),
                     GestureDetector(

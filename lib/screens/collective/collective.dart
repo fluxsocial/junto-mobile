@@ -13,6 +13,7 @@ import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/backend/mock/mock_expression.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 
 // This class is a collective screen
@@ -55,6 +56,7 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
   @override
   void initState() {
     super.initState();
+    initialData = MockExpressionService().collectiveExpressions;
     _collectiveController = ScrollController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _collectiveController.addListener(_onScrollingHasChanged);
@@ -69,8 +71,8 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _readUser();
-    initialData
-        .addAll(Provider.of<ExpressionRepo>(context).collectiveExpressions);
+    // initialData
+    //     .addAll(Provider.of<ExpressionRepo>(context).collectiveExpressions);
     super.didChangeDependencies();
   }
 
@@ -167,8 +169,8 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
   @override
   Widget build(BuildContext context) {
     return Stack(children: <Widget>[
-      // FIXME(Nash): Pass user profile. 
-      JuntoPerspectives(changePerspective: _changePerspective, profile: null ,),
+      // FIXME(Nash): Pass user profile.
+      JuntoPerspectives(changePerspective: _changePerspective, profile: null),
       GestureDetector(
         onTap: () {
           print('yo');
