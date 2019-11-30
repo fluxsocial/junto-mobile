@@ -23,7 +23,7 @@ class JuntoLotus extends StatelessWidget {
             children: <Widget>[
               Container(
                 margin: const EdgeInsets.only(top: 100),
-                child: Text(
+                child: const Text(
                   '',
                   style: TextStyle(
                     fontSize: 24,
@@ -87,7 +87,7 @@ class JuntoLotus extends StatelessWidget {
                                       size: 20, color: Colors.white),
                                 ),
                                 const SizedBox(height: 10),
-                                Text(
+                                const Text(
                                   'CREATE',
                                   style: TextStyle(
                                       color: Colors.white,
@@ -142,7 +142,7 @@ class JuntoLotus extends StatelessWidget {
                                       size: 15, color: Colors.white),
                                 ),
                                 const SizedBox(height: 10),
-                                Text(
+                                const Text(
                                   'CONNECT',
                                   style: TextStyle(
                                       color: Colors.white,
@@ -205,7 +205,7 @@ class JuntoLotus extends StatelessWidget {
                                       size: 15, color: Colors.white),
                                 ),
                                 const SizedBox(height: 10),
-                                Text(
+                                const Text(
                                   'DISCOVER',
                                   style: TextStyle(
                                       color: Colors.white,
@@ -259,7 +259,7 @@ class JuntoLotus extends StatelessWidget {
                                       size: 15, color: Colors.white),
                                 ),
                                 const SizedBox(height: 10),
-                                Text(
+                                const Text(
                                   'REFLECT',
                                   style: TextStyle(
                                       color: Colors.white,

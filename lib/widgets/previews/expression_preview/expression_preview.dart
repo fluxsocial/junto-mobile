@@ -35,19 +35,15 @@ class ExpressionPreview extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.background,
-                border:
-                    Border.all(color: Theme.of(context).dividerColor, width: 1),
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  // expression preview body
-                  _returnExpression(),
-                ],
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.background,
+                  border:
+                      Border.all(color: Theme.of(context).dividerColor, width: 1),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: _returnExpression(),
               ),
             ),
             const SizedBox(height: 5),
