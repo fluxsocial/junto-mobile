@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
@@ -7,6 +8,7 @@ import 'package:junto_beta_mobile/utils/junto_exception.dart'
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/edit_perspective/edit_perspective.dart';
 
 class JuntoPerspectives extends StatefulWidget {
   const JuntoPerspectives({
@@ -42,9 +44,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
               physics: const ClampingScrollPhysics(),
               children: <Widget>[
                 for (CentralizedPerspective perspective in snapshot.data)
-                  _buildPerspective(
-                    perspective.name,
-                  )
+                  _buildPerspective(perspective.name, true)
               ],
             );
           }
@@ -133,9 +133,9 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
               Expanded(
                 child: ListView(
                   children: <Widget>[
-                    _buildPerspective('JUNTO'),
-                    _buildPerspective('Degrees of separation'),
-                    _buildPerspective('Subscriptions'),
+                    _buildPerspective('JUNTO', false),
+                    _buildPerspective('Degrees of separation', false),
+                    _buildPerspective('Subscriptions', false),
                     _buildUserPerspectives(context),
                   ],
                 ),
@@ -147,59 +147,76 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
     );
   }
 
-  Widget _buildPerspective(String name) {
+  Widget _buildPerspective(String name, bool customPerspective) {
     return GestureDetector(
         onTap: () {
           widget.changePerspective(name);
         },
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
           color: Colors.transparent,
-          //FIXME(Nash): Revisit double rows
           child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    Container(
-                      child: Row(children: <Widget>[
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Row(
                           children: <Widget>[
-                            Row(
-                              children: <Widget>[
-                                Icon(CustomIcons.collective,
-                                    size: 10, color: Colors.white),
-                                SizedBox(width: 30),
-                                Text(
-                                  name,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 15,
-                                    letterSpacing: 1.2,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
+                            Icon(CustomIcons.collective,
+                                size: 10, color: Colors.white),
+                            SizedBox(width: 30),
+                            Text(
+                              name,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 15,
+                                letterSpacing: 1.2,
+                                color: Colors.white,
+                              ),
                             ),
                           ],
                         ),
-                      ]),
+                      ],
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        _openPerspectiveBottomSheet(
-                          name,
-                        );
-                      },
-                      child: const Icon(
-                        Icons.keyboard_arrow_down,
-                        size: 20,
-                        color: Colors.white,
-                      ),
-                    )
                   ],
                 ),
+                customPerspective
+                    ? GestureDetector(
+                        onTap: () {
+                          // edit perspective
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                                builder: (context) => EditPerspective()),
+                          );
+                        },
+                        child: const Icon(
+                          Icons.edit,
+                          size: 20,
+                          color: Colors.white,
+                        ),
+                      )
+                    : GestureDetector(
+                        onTap: () {
+                          // _openPerspectiveBottomSheet(
+                          //   name,
+                          // );
+
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                                builder: (context) => EditPerspective()),
+                          );
+                        },
+                        child: const Icon(
+                          Icons.keyboard_arrow_down,
+                          size: 20,
+                          color: Colors.white,
+                        ),
+                      )
               ]),
         ));
   }
@@ -228,7 +245,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
       backgroundColor: Colors.transparent,
       builder: (BuildContext context) {
         return Container(
-          height: MediaQuery.of(context).size.height * .9,
+          height: MediaQuery.of(context).size.height * .4,
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.background,

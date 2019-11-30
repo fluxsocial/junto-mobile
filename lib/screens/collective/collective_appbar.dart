@@ -15,7 +15,7 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
   final String newappbartitle;
   final Function openPerspectivesDrawer;
 
-  CollectiveAppBar(
+  const CollectiveAppBar(
       {@required this.expandedHeight,
       this.newappbartitle,
       this.openPerspectivesDrawer});

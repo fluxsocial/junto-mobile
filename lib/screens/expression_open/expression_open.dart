@@ -493,7 +493,7 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
                                                 ),
                                                 alignment: Alignment.center,
                                                 child: Text(
-                                                  'X',
+                                                  'x',
                                                   style: TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 13,
@@ -508,7 +508,6 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
                                     : const SizedBox();
                               }),
                           Container(
-                            // width: MediaQuery.of(context).size.width - 140,
                             constraints: const BoxConstraints(maxHeight: 180),
                             child: TextField(
                               focusNode: widget.focusNode,
