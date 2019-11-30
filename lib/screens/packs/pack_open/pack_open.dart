@@ -8,6 +8,7 @@ import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open_appbar.dart'
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open_public.dart';
 import 'package:junto_beta_mobile/widgets/fabs/expression_center_fab.dart';
 
+//FIXME(Nash): Condition statements can be cleaned up.
 class PackOpen extends StatefulWidget {
   const PackOpen({
     Key key,

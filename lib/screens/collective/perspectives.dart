@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
@@ -6,7 +7,6 @@ import 'package:junto_beta_mobile/utils/junto_exception.dart'
     show JuntoException;
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 
 class JuntoPerspectives extends StatefulWidget {
   const JuntoPerspectives({
@@ -170,7 +170,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                               children: <Widget>[
                                 Icon(CustomIcons.collective,
                                     size: 10, color: Colors.white),
-                                SizedBox(width: 30),
+                                const SizedBox(width: 30),
                                 Text(
                                   name,
                                   style: const TextStyle(

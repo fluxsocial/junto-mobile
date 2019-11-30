@@ -55,7 +55,7 @@ class PackPreview extends StatelessWidget {
                   )
                 : ClipOval(
                     child: Image.asset(
-                      group.address,
+                      'assets/images/junto-mobile__placeholder--sphere.png',
                       height: 45.0,
                       width: 45.0,
                       fit: BoxFit.cover,

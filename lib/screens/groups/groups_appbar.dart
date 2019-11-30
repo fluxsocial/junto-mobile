@@ -11,15 +11,15 @@ class JuntoGroupsAppbar extends StatelessWidget {
       elevation: 0,
       titleSpacing: 0.0,
       bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(.5),
+          preferredSize: const Size.fromHeight(.5),
           child: Container(
-        height: .5,
-        decoration: const BoxDecoration(
-          border: Border(
-            bottom: BorderSide(color: Color(0xffeeeeee), width: .75),
-          ),
-        ),
-      )),
+            height: .5,
+            decoration: const BoxDecoration(
+              border: Border(
+                bottom: BorderSide(color: Color(0xffeeeeee), width: .75),
+              ),
+            ),
+          )),
       // bottom: PreferredSize(
       //   preferredSize: const Size.fromHeight(.5),
       //   child: Container(
@@ -92,7 +92,7 @@ class JuntoGroupsAppbar extends StatelessWidget {
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.background,
-                            borderRadius: BorderRadius.only(
+                            borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(10),
                               topRight: Radius.circular(10),
                             ),

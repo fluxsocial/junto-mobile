@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
@@ -11,14 +10,16 @@ import 'package:provider/provider.dart';
 
 // Junto app bar used throughout the main screens. Rendered in JuntoTemplate.
 class CollectiveAppBar extends SliverPersistentHeaderDelegate {
+  CollectiveAppBar({
+    @required this.expandedHeight,
+    this.newAppBarTitle,
+    this.openPerspectivesDrawer,
+  });
+
   final double expandedHeight;
-  final String newappbartitle;
+  final String newAppBarTitle;
   final Function openPerspectivesDrawer;
 
-  CollectiveAppBar(
-      {@required this.expandedHeight,
-      this.newappbartitle,
-      this.openPerspectivesDrawer});
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
@@ -52,7 +53,7 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                       height: 22.0, width: 22.0),
                   const SizedBox(width: 7.5),
                   Text(
-                    newappbartitle,
+                    newAppBarTitle,
                     style: Theme.of(context).appBarTheme.textTheme.body1,
                   ),
                 ],
@@ -135,6 +136,7 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
 
   FocusNode textFieldFocusNode = FocusNode();
 
+//FIXME(Nash): Remove placeholder data
   List<UserProfile> profiles = <UserProfile>[
     UserProfile(
         name: 'Eric Yang',
@@ -183,7 +185,7 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
   @override
   void initState() {
     super.initState();
-
+//FIXME(Nash): Rethink this, is calling setState in `initSate` really necessary
     setState(() {
       currentIndex = 0;
     });
@@ -192,7 +194,6 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
   @override
   void dispose() {
     super.dispose();
-
     pageController.dispose();
   }
 

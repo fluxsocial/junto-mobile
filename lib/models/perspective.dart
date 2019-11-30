@@ -23,7 +23,7 @@ class Perspective {
       const Perspective(name: 'Design', members: <String>[]),
       const Perspective(name: 'Meditation', members: <String>[]),
       const Perspective(name: 'Hoops 🏀', members: <String>[]),
-      const Perspective(name: 'Austrian Economics📈', members:<String> []),
+      const Perspective(name: 'Austrian Economics📈', members: <String>[]),
       const Perspective(name: 'Holochain ♓', members: <String>[]),
     ];
   }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/sign_in/sign_in.dart';
 import 'package:junto_beta_mobile/screens/sign_up/sign_up.dart';
-import 'package:junto_beta_mobile/screens/collective/collective.dart';
 
 class Welcome extends StatelessWidget {
   static Route<dynamic> route() {

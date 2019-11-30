@@ -1,17 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/den/den_drawer/den_connections.dart';
 import 'package:junto_beta_mobile/screens/den/den_drawer/den_edit_profile.dart';
 import 'package:junto_beta_mobile/screens/den/den_drawer/den_followers.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_themes.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_edit_den.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open.dart';
 import 'package:junto_beta_mobile/screens/sign_in/sign_in.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_edit_den.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_themes.dart';
 import 'package:provider/provider.dart';
 
 class JuntoDrawer extends StatefulWidget {
@@ -48,6 +47,7 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
 
 // FIXME(Nash): Look up the address and retrieve the user pack
 //  see: https://github.com/juntofoundation/junto-mobile/issues/170
+  // ignore: unused_element
   Future<void> _onPackPress() async {
     final UserGroupsResponse _userPack =
         await Provider.of<UserRepo>(context).getUserGroups(profile.address);
@@ -72,6 +72,7 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
     );
   }
 
+  // ignore: unused_element
   void _onFollowersPress() {
     Navigator.push(
       context,
@@ -81,6 +82,7 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
     );
   }
 
+  // ignore: unused_element
   void _onEditPress() {
     Navigator.push(
       context,
@@ -135,13 +137,14 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                   ),
                   children: <Widget>[
                     // relationships
+                    //FIXME(Nash): Pass server data.
                     JuntoDrawerItem(
                       title: 'My Pack',
                       onTap: () {
                         Navigator.push(
                           context,
-                          CupertinoPageRoute(
-                            builder: (context) => PackOpen(
+                          CupertinoPageRoute<dynamic>(
+                            builder: (BuildContext context) => PackOpen(
                               pack: Group(
                                 members: 1,
                                 facilitators: 0,
@@ -168,7 +171,7 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                         // nav
                         Navigator.push(
                           context,
-                          CupertinoPageRoute(
+                          CupertinoPageRoute<dynamic>(
                             builder: (BuildContext context) => JuntoThemes(),
                           ),
                         );
@@ -181,7 +184,7 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                         // nav
                         Navigator.push(
                           context,
-                          CupertinoPageRoute(
+                          CupertinoPageRoute<dynamic>(
                             builder: (BuildContext context) => JuntoEditDen(),
                           ),
                         );

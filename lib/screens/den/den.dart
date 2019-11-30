@@ -7,14 +7,14 @@ import 'package:junto_beta_mobile/backend/mock/mock_expression.dart';
 import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/screens/den/den_sliver_appbar.dart';
-import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
-import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
-import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/screens/den/den_appbar_new.dart';
+import 'package:junto_beta_mobile/screens/den/den_sliver_appbar.dart';
+import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_edit_den.dart';
+import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
+import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
+import 'package:provider/provider.dart';
 
 /// Displays the user's DEN or "profile screen"
 class JuntoDen extends StatefulWidget {
@@ -44,7 +44,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
 
   ScrollController _denController;
   final GlobalKey<ScaffoldState> _juntoDenKey = GlobalKey<ScaffoldState>();
-  ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
+  final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
 
   @override
   void initState() {
@@ -58,7 +58,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
     });
   }
 
-  _onScrollingHasChanged() {
+  void _onScrollingHasChanged() {
     super.hideFabOnScroll(_denController, _isVisible);
   }
 
@@ -74,22 +74,23 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
     return Scaffold(
         key: _juntoDenKey,
         appBar: DenAppbar(),
-        floatingActionButton: ValueListenableBuilder(
+        floatingActionButton: ValueListenableBuilder<bool>(
           valueListenable: _isVisible,
           builder: (BuildContext context, bool visible, Widget child) {
             return AnimatedOpacity(
-                duration: const Duration(milliseconds: 300),
-                opacity: visible ? 1.0 : 0.0,
-                child: child);
+              duration: const Duration(milliseconds: 300),
+              opacity: visible ? 1.0 : 0.0,
+              child: child,
+            );
           },
           child: Padding(
             padding: const EdgeInsets.only(bottom: 25),
             child: BottomNav(
                 screen: 'den',
-                function: () {
+                onTap: () {
                   Navigator.push(
                     context,
-                    CupertinoPageRoute(
+                    CupertinoPageRoute<dynamic>(
                       builder: (BuildContext context) => JuntoEditDen(),
                     ),
                   );
@@ -97,7 +98,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        endDrawer: JuntoDrawer('Den'),
+        endDrawer: const JuntoDrawer('Den'),
 
         // dynamically render body
         body: DefaultTabController(
@@ -108,8 +109,8 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
             headerSliverBuilder:
                 (BuildContext context, bool innerBoxIsScrolled) {
               return <Widget>[
-                //FIXME(Nash): Replace with dynamic server content. 
-                JuntoDenSliverAppbar(
+                //FIXME(Nash): Replace with dynamic server content.
+                const JuntoDenSliverAppbar(
                   handle: 'sunyata',
                   name: 'Eric Yang',
                   profilePicture: 'assets/images/junto-mobile__eric.png',
@@ -146,7 +147,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                   shrinkWrap: true,
                   padding: const EdgeInsets.only(left: 10),
                   children: <Widget>[
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     Container(
                       padding: const EdgeInsets.only(top: 5, bottom: 5),
                       child: Column(
@@ -170,7 +171,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                               ],
                             ),
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           Container(
                             child: Row(
                               children: <Widget>[
@@ -192,7 +193,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                               ],
                             ),
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           Container(
                             child: Row(
                               children: <Widget>[
@@ -224,7 +225,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                       enableInfiniteScroll: false,
                       items: <Widget>[
                         Container(
-                          padding: EdgeInsets.only(right: 10),
+                          padding: const EdgeInsets.only(right: 10),
                           width: MediaQuery.of(context).size.width,
                           child: Image.asset(
                               'assets/images/junto-mobile__eric.png',
@@ -232,7 +233,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                         ),
                         Container(
                           width: MediaQuery.of(context).size.width,
-                          padding: EdgeInsets.only(right: 10),
+                          padding: const EdgeInsets.only(right: 10),
                           child: Image.asset(
                               'assets/images/junto-mobile__eric--qigong.png',
                               fit: BoxFit.cover),
@@ -241,7 +242,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                     ),
                     const SizedBox(height: 15),
                     Container(
-                      child: Text("student of suffering and its cessation",
+                      child: Text('student of suffering and its cessation',
                           style: Theme.of(context).textTheme.caption),
                     ),
                   ],
@@ -621,107 +622,3 @@ class _UserExpressionsState extends State<UserExpressions> {
     );
   }
 }
-
-// class DenToggle extends StatelessWidget {
-//   const DenToggle({
-//     Key key,
-//     @required this.onCollectionsTap,
-//     @required this.onLotusTap,
-//     @required this.active,
-//   }) : super(key: key);
-
-//   final VoidCallback onCollectionsTap;
-//   final VoidCallback onLotusTap;
-//   final bool active;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 10),
-//       child: Column(
-//         children: <Widget>[
-//           Row(
-//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//             children: <Widget>[
-//               Container(
-//                 padding: const EdgeInsets.all(2.5),
-//                 height: 30,
-//                 width: 80,
-//                 decoration: BoxDecoration(
-//                   color: constTheme.of(context).dividerColor,
-//                   borderRadius: BorderRadius.circular(5),
-//                 ),
-//                 child: Row(
-//                   children: <Widget>[
-//                     GestureDetector(
-//                       onTap: onLotusTap,
-//                       child: Container(
-//                         height: 30,
-//                         // half width of parent container minus horizontal padding
-//                         width: 37.5,
-//                         decoration: BoxDecoration(
-//                           color:
-//                               active ? Colors.white : constTheme.of(context).dividerColor,
-//                           borderRadius: BorderRadius.circular(5),
-//                         ),
-//                         child: Icon(
-//                           CustomIcons.half_lotus,
-//                           size: 12,
-//                           color: active
-//                               ? const Color(0xff555555)
-//                               : const Color(0xff999999),
-//                         ),
-//                       ),
-//                     ),
-//                     GestureDetector(
-//                       onTap: onCollectionsTap,
-//                       child: Container(
-//                         height: 30,
-//                         // half width of parent container minus horizontal padding
-//                         width: 37.5,
-//                         decoration: BoxDecoration(
-//                           color:
-//                               active ? Colors.white : constTheme.of(context).dividerColor,
-//                           borderRadius: BorderRadius.circular(5),
-//                         ),
-//                         child: Icon(
-//                           Icons.collections,
-//                           size: 12,
-//                           color: active
-//                               ? const Color(0xff555555)
-//                               : const Color(0xff999999),
-//                         ),
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//               active
-//                   ? GestureDetector(
-//                       onTap: () {
-//                         Navigator.push(
-//                           context,
-//                           CupertinoPageRoute<dynamic>(
-//                             builder: (BuildContext context) =>
-//                                 DenCreateCollection(),
-//                           ),
-//                         );
-//                       },
-//                       child: Container(
-//                         width: 38,
-//                         alignment: Alignment.centerRight,
-//                         child: Icon(
-//                           Icons.add,
-//                           size: 20,
-//                           color: const Color(0xff555555),
-//                         ),
-//                       ),
-//                     )
-//                   : const SizedBox()
-//             ],
-//           )
-//         ],
-//       ),
-//     );
-//   }
-// }

@@ -25,7 +25,7 @@ class _DenAppbarState extends State<DenAppbar> {
             gradient: LinearGradient(
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
-                stops: <double>[
+                stops: const <double>[
                   0.1,
                   0.9
                 ],
@@ -85,7 +85,7 @@ class _DenAppbarState extends State<DenAppbar> {
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.background,
-                            borderRadius: BorderRadius.only(
+                            borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(10),
                               topRight: Radius.circular(10),
                             ),

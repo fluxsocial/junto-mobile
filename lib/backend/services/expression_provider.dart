@@ -104,8 +104,7 @@ class ExpressionServiceCentralized implements ExpressionService {
   }
 
   @override
-  Future<List<CentralizedExpressionResponse>> getCollectiveExpressions(
-  ) async {
+  Future<List<CentralizedExpressionResponse>> getCollectiveExpressions() async {
     final Map<String, String> query = <String, String>{
       'context_type': 'Collective',
       'channel[0]': '1',
@@ -117,7 +116,8 @@ class ExpressionServiceCentralized implements ExpressionService {
     final List<dynamic> results = JuntoHttp.handleResponse(response);
     return results
         .map(
-          (dynamic data) => CentralizedExpressionResponse.withCommentsAndResonations(data),
+          (dynamic data) =>
+              CentralizedExpressionResponse.withCommentsAndResonations(data),
         )
         .toList(growable: false);
   }

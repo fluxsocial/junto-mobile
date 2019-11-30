@@ -30,7 +30,7 @@ class ChannelPreview extends StatelessWidget {
                   ),
                   borderRadius: BorderRadius.circular(100),
                 ),
-                child: Icon(
+                child: const Icon(
                   CustomIcons.hash,
                   color: Colors.white,
                   size: 15,
