@@ -6,6 +6,7 @@ import 'package:giphy_client/giphy_client.dart';
 import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_appbar.dart';
@@ -442,45 +443,81 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
                                 return type == MessageType.gif &&
                                         selectedUrl != null
                                     ? Container(
-                                        height: 120.0,
-                                        width: 120.0,
-                                        margin:
-                                            EdgeInsets.symmetric(vertical: 5),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(25),
-                                        ),
-                                        child: CachedNetworkImage(
-                                          placeholder:
-                                              (BuildContext context, String _) {
-                                            return Container(
-                                              height: 120,
-                                              width: 120,
-                                              decoration: BoxDecoration(
-                                                gradient: LinearGradient(
-                                                  begin: Alignment.bottomLeft,
-                                                  end: Alignment.topRight,
-                                                  stops: const <double>[
-                                                    0.2,
-                                                    0.9
-                                                  ],
-                                                  colors: <Color>[
-                                                    Theme.of(context)
-                                                        .colorScheme
-                                                        .secondary,
-                                                    Theme.of(context)
-                                                        .colorScheme
-                                                        .primary
-                                                  ],
+                                        margin: const EdgeInsets.only(top: 10),
+                                        child: Stack(children: [
+                                          Container(
+                                            height: 150.0,
+                                            width: 150.0,
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              child: CachedNetworkImage(
+                                                placeholder:
+                                                    (BuildContext context,
+                                                        String _) {
+                                                  return Container(
+                                                    height: 120,
+                                                    width: 120,
+                                                    decoration: BoxDecoration(
+                                                      gradient: LinearGradient(
+                                                        begin: Alignment
+                                                            .bottomLeft,
+                                                        end: Alignment.topRight,
+                                                        stops: const <double>[
+                                                          0.2,
+                                                          0.9
+                                                        ],
+                                                        colors: <Color>[
+                                                          Theme.of(context)
+                                                              .colorScheme
+                                                              .secondary,
+                                                          Theme.of(context)
+                                                              .colorScheme
+                                                              .primary
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                imageUrl: selectedUrl,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ),
+                                          Positioned(
+                                            top: 5,
+                                            right: 5,
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  selectedUrl = null;
+                                                });
+                                              },
+                                              child: Container(
+                                                height: 30,
+                                                width: 30,
+                                                decoration: BoxDecoration(
+                                                  color: const Color(0xff222222)
+                                                      .withOpacity(.8),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          100),
+                                                ),
+                                                alignment: Alignment.center,
+                                                child: Text(
+                                                  'X',
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 13,
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
                                                 ),
                                               ),
-                                            );
-                                          },
-                                          imageUrl: selectedUrl,
-                                          fit: BoxFit.cover,
-                                        ),
+                                            ),
+                                          )
+                                        ]),
                                       )
-                                    : SizedBox();
+                                    : const SizedBox();
                               }),
                           Container(
                             width: MediaQuery.of(context).size.width - 140,
