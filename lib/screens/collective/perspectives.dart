@@ -149,59 +149,37 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
 
   Widget _buildPerspective(String name) {
     return GestureDetector(
-        onTap: () {
-          widget.changePerspective(name);
-        },
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-          color: Colors.transparent,
-          //FIXME(Nash): Revisit double rows
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Container(
-                      child: Row(children: <Widget>[
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Row(
-                              children: <Widget>[
-                                Icon(CustomIcons.collective,
-                                    size: 10, color: Colors.white),
-                                const SizedBox(width: 30),
-                                Text(
-                                  name,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 15,
-                                    letterSpacing: 1.2,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ]),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        _openPerspectiveBottomSheet(
-                          name,
-                        );
-                      },
-                      child: const Icon(
-                        Icons.keyboard_arrow_down,
-                        size: 20,
-                        color: Colors.white,
-                      ),
-                    )
-                  ],
+      onTap: () => widget.changePerspective(name),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+        color: Colors.transparent,
+        child: Row(
+          children: <Widget>[
+            Icon(CustomIcons.collective, size: 10, color: Colors.white),
+            const SizedBox(width: 30),
+            Expanded(
+              child: Text(
+                name,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 15,
+                  letterSpacing: 1.2,
+                  color: Colors.white,
                 ),
-              ]),
-        ));
+              ),
+            ),
+            GestureDetector(
+              onTap: () => _openPerspectiveBottomSheet(name),
+              child: const Icon(
+                Icons.keyboard_arrow_down,
+                size: 20,
+                color: Colors.white,
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   String _perspectiveText(String perspective) {
