@@ -92,12 +92,13 @@ class ShortformPreviewState extends State<ShortformPreview> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            shortformBody,
-            maxLines: 7,
-            textAlign: TextAlign.center,
-            style: JuntoStyles.shortformPreviewTitle,
-            overflow: TextOverflow.ellipsis,
+          Expanded(
+            child: Text(
+              shortformBody,
+              textAlign: TextAlign.center,
+              style: JuntoStyles.shortformPreviewTitle,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ],
       ),
