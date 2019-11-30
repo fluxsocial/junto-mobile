@@ -414,19 +414,7 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Container(
-                    margin: const EdgeInsets.only(right: 10),
-                    child: ClipOval(
-                      child: Image.asset(
-                        'assets/images/junto-mobile__eric.png',
-                        height: 38.0,
-                        width: 38.0,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
                   Expanded(
-                    flex: 7,
                     child: Container(
                       padding: const EdgeInsets.only(left: 15),
                       decoration: BoxDecoration(
@@ -520,7 +508,7 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
                                     : const SizedBox();
                               }),
                           Container(
-                            width: MediaQuery.of(context).size.width - 140,
+                            // width: MediaQuery.of(context).size.width - 140,
                             constraints: const BoxConstraints(maxHeight: 180),
                             child: TextField(
                               focusNode: widget.focusNode,
@@ -528,6 +516,10 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
                               onChanged: widget.onTextChange,
                               decoration: const InputDecoration(
                                 border: InputBorder.none,
+                                hintText: 'write a reply...',
+                                hintStyle: TextStyle(
+                                  fontSize: 13,
+                                ),
                               ),
                               maxLines: null,
                               cursorColor: JuntoPalette.juntoGrey,
@@ -540,17 +532,6 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
                       ),
                     ),
                   ),
-                  Expanded(
-                    flex: 1,
-                    child: AnimatedBuilder(
-                      animation: widget.focusNode,
-                      builder: (BuildContext context, _) {
-                        return _createCommentIcon(
-                          widget.focusNode.hasFocus,
-                        );
-                      },
-                    ),
-                  )
                 ],
               ),
               _buildBottomStrip()
@@ -565,41 +546,55 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
       builder: (BuildContext context, _) {
         if (widget.focusNode.hasFocus)
           return Container(
-            padding: const EdgeInsets.symmetric(vertical: 10),
+            padding: const EdgeInsets.symmetric(vertical: 15),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                GestureDetector(
-                  onTap: widget.showPrivacySheet,
-                  child: Container(
-                    color: Colors.transparent,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Text(widget.commentPrivacy,
-                            style: Theme.of(context).textTheme.body2),
-                        Icon(Icons.keyboard_arrow_down,
-                            size: 14, color: Theme.of(context).primaryColorDark)
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                GestureDetector(
-                  onTap: () async {
-                    await showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      backgroundColor: Colors.transparent,
-                      builder: (BuildContext context) => _GiphyPanel(
-                        onGifSelected: (String selected) {
-                          selectedUrl = selected;
-                          _type.value = MessageType.gif;
-                          widget.onGifSelected(selected);
-                        },
+                Row(
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: widget.showPrivacySheet,
+                      child: Container(
+                        color: Colors.transparent,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Text(widget.commentPrivacy,
+                                style: Theme.of(context).textTheme.body2),
+                            Icon(Icons.keyboard_arrow_down,
+                                size: 14,
+                                color: Theme.of(context).primaryColorDark)
+                          ],
+                        ),
                       ),
+                    ),
+                    const SizedBox(width: 10),
+                    GestureDetector(
+                      onTap: () async {
+                        await showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          builder: (BuildContext context) => _GiphyPanel(
+                            onGifSelected: (String selected) {
+                              selectedUrl = selected;
+                              _type.value = MessageType.gif;
+                              widget.onGifSelected(selected);
+                            },
+                          ),
+                        );
+                      },
+                      child: const Text('GIF'),
+                    ),
+                  ],
+                ),
+                AnimatedBuilder(
+                  animation: widget.focusNode,
+                  builder: (BuildContext context, _) {
+                    return _createCommentIcon(
+                      widget.focusNode.hasFocus,
                     );
                   },
-                  child: const Text('GIF'),
                 ),
               ],
             ),
