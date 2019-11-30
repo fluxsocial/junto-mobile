@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
@@ -8,6 +9,16 @@ import 'package:junto_beta_mobile/screens/groups/groups.dart';
 
 // FIXME(Nash): Rethink API, should include group address and expression type.
 class JuntoLotus extends StatelessWidget {
+  const JuntoLotus({
+    Key key,
+    @required this.expressionContext,
+    @required this.address,
+  })  : assert(expressionContext != null),
+        assert(address != ''),
+        super(key: key);
+  final ExpressionContext expressionContext;
+  final String address;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,10 +60,10 @@ class JuntoLotus extends StatelessWidget {
                                   Animation<double> animation,
                                   Animation<double> secondaryAnimation,
                                 ) {
-                                  return const JuntoCreate(
+                                  return JuntoCreate(
                                     'Channel name',
-                                    address: '',
-                                    expressionContext: null,
+                                    address: address,
+                                    expressionContext: expressionContext,
                                   );
                                 },
                                 transitionsBuilder: (

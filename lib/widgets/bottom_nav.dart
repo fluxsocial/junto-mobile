@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 
 class BottomNav extends StatelessWidget {
@@ -121,7 +122,10 @@ class BottomNav extends StatelessWidget {
                       Animation<double> animation,
                       Animation<double> secondaryAnimation,
                     ) {
-                      return JuntoLotus();
+                      return const JuntoLotus(
+                        address: null,
+                        expressionContext: ExpressionContext.Collective,
+                      );
                     },
                     transitionsBuilder: (
                       BuildContext context,
