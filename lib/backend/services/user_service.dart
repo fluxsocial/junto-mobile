@@ -25,7 +25,8 @@ class UserServiceCentralized implements UserService {
       Perspective perspective) async {
     final Map<String, dynamic> _postBody = <String, dynamic>{
       'name': perspective.name,
-      'members': perspective.members
+      'members': perspective.members,
+      'about': perspective.about,
     };
     final http.Response _serverResponse = await client.postWithoutEncoding(
       '/perspectives',
@@ -149,8 +150,10 @@ class UserServiceCentralized implements UserService {
     final bool isReady = await _storage.ready;
     if (isReady) {
       final dynamic data = _storage.getItem('data');
-      final UserData profile = UserData.fromMap(data);
-      return profile;
+      if (data != null) {
+        final UserData profile = UserData.fromMap(data);
+        return profile;
+      }
     }
     throw const JuntoException('Unable to read local user');
   }

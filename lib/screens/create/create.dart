@@ -198,10 +198,10 @@ class JuntoCreateState extends State<JuntoCreate> {
                     _currentIcon,
                     const SizedBox(width: 7.5),
                     Text(_expressionType,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w600,
-                          color: const Color(0xff333333),
+                          color: Color(0xff333333),
                         ))
                   ],
                 ),

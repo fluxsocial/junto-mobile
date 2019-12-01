@@ -99,6 +99,7 @@ void main() {
         await _userProvider.createPerspective(
       const Perspective(
         name: 'Test Perspective',
+        about: 'This is the great test.',
         members: <String>['40118b16-a07e-47c0-8369-e6624cdc7988'],
       ),
     );
