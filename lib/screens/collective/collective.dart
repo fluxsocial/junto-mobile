@@ -110,133 +110,138 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: <Widget>[
-      JuntoPerspectives(
-        changePerspective: _changePerspective,
-        profile: profile,
-      ),
-      GestureDetector(
-        onHorizontalDragUpdate: (DragUpdateDetails details) {
-          // only enable drag on collective screen
-          if (_dx == 0.0 &&
-              details.globalPosition.dy != 0.0 &&
-              details.delta.direction > 0) {
-            return;
-          } else {
-            if (details.globalPosition.dx > 0 &&
-                details.globalPosition.dx <
-                    MediaQuery.of(context).size.width * .9) {
-              setState(() {
-                _dx = details.globalPosition.dx;
-                if (details.delta.direction > 0) {
-                  setState(() {
-                    _scrollDirection = 'left';
-                  });
-                } else if (details.delta.direction < 0) {
-                  setState(() {
-                    _scrollDirection = 'right';
-                  });
-                }
-              });
-            }
-          }
-        },
-        onHorizontalDragEnd: (DragEndDetails details) {
-          if (_scrollDirection == 'right') {
-            if (_dx >= MediaQuery.of(context).size.width * .2) {
-              setState(() {
-                _dx = MediaQuery.of(context).size.width * .9;
-              });
-            } else if (_dx < MediaQuery.of(context).size.width * .2) {
-              _dx = 0.0;
-            }
-          } else if (_scrollDirection == 'left') {
-            if (_dx < MediaQuery.of(context).size.width * .7) {
-              setState(() {
-                _dx = 0.0;
-              });
-            } else if (_dx >= MediaQuery.of(context).size.width * .7) {
-              setState(() {
-                _dx = MediaQuery.of(context).size.width * .9;
-              });
-            }
-          }
-        },
-        child: Transform.translate(
-          offset: Offset(_dx, 0.0),
-          child: Stack(children: <Widget>[
-            Scaffold(
-              key: _juntoCollectiveKey,
-
-              floatingActionButton: ValueListenableBuilder<bool>(
-                valueListenable: _isVisible,
-                builder: (BuildContext context, bool visible, Widget child) {
-                  return AnimatedOpacity(
-                      duration: const Duration(milliseconds: 300),
-                      opacity: visible ? 1.0 : 0.0,
-                      child: child);
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 25),
-                  child: BottomNav(
-                      screen: 'collective',
-                      onTap: () {
-                        if (_dx == 0) {
-                          setState(() {
-                            _dx = MediaQuery.of(context).size.width * .9;
-                          });
-                        }
-                      }),
-                ),
-              ),
-
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerDocked,
-
-              endDrawer: const JuntoDrawer('Collective'),
-
-              // dynamically render body
-              body: Padding(
-                padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).viewPadding.bottom,
-                  left: MediaQuery.of(context).viewPadding.left + 4.0,
-                  right: MediaQuery.of(context).viewPadding.right + 4.0,
-                ),
-                child: CustomScrollView(
-                  controller: _collectiveController,
-                  slivers: <Widget>[
-                    SliverPersistentHeader(
-                      delegate: CollectiveAppBar(
-                        expandedHeight: 85,
-                        newAppBarTitle: newAppBarTitle,
-                        openPerspectivesDrawer: _openPerspectivesDrawer,
-                      ),
-                      pinned: false,
-                      floating: true,
-                    ),
-                    _buildSliverList(context),
-                  ],
-                ),
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                if (_dx == MediaQuery.of(context).size.width * .9) {
-                  setState(() {
-                    _dx = 0;
-                  });
-                }
-              },
-              child: _dx > 0
-                  ? Container(
-                      color: Theme.of(context).backgroundColor.withOpacity(.5),
-                    )
-                  : const SizedBox(),
-            )
-          ]),
+    return Stack(
+      children: <Widget>[
+        JuntoPerspectives(
+          changePerspective: _changePerspective,
+          profile: profile,
         ),
-      ),
-    ]);
+        GestureDetector(
+          onHorizontalDragUpdate: (DragUpdateDetails details) {
+            // only enable drag on collective screen
+            if (_dx == 0.0 &&
+                details.globalPosition.dy != 0.0 &&
+                details.delta.direction > 0) {
+              return;
+            } else {
+              if (details.globalPosition.dx > 0 &&
+                  details.globalPosition.dx <
+                      MediaQuery.of(context).size.width * .9) {
+                setState(() {
+                  _dx = details.globalPosition.dx;
+                  if (details.delta.direction > 0) {
+                    setState(() {
+                      _scrollDirection = 'left';
+                    });
+                  } else if (details.delta.direction < 0) {
+                    setState(() {
+                      _scrollDirection = 'right';
+                    });
+                  }
+                });
+              }
+            }
+          },
+          onHorizontalDragEnd: (DragEndDetails details) {
+            if (_scrollDirection == 'right') {
+              if (_dx >= MediaQuery.of(context).size.width * .2) {
+                setState(() {
+                  _dx = MediaQuery.of(context).size.width * .9;
+                });
+              } else if (_dx < MediaQuery.of(context).size.width * .2) {
+                _dx = 0.0;
+              }
+            } else if (_scrollDirection == 'left') {
+              if (_dx < MediaQuery.of(context).size.width * .7) {
+                setState(() {
+                  _dx = 0.0;
+                });
+              } else if (_dx >= MediaQuery.of(context).size.width * .7) {
+                setState(() {
+                  _dx = MediaQuery.of(context).size.width * .9;
+                });
+              }
+            }
+          },
+          child: Transform.translate(
+            offset: Offset(_dx, 0.0),
+            child: Stack(
+              children: <Widget>[
+                Scaffold(
+                  key: _juntoCollectiveKey,
+                  floatingActionButton: ValueListenableBuilder<bool>(
+                    valueListenable: _isVisible,
+                    builder:
+                        (BuildContext context, bool visible, Widget child) {
+                      return AnimatedOpacity(
+                          duration: const Duration(milliseconds: 300),
+                          opacity: visible ? 1.0 : 0.0,
+                          child: child);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 25),
+                      child: BottomNav(
+                          screen: 'collective',
+                          onTap: () {
+                            if (_dx == 0) {
+                              setState(() {
+                                _dx = MediaQuery.of(context).size.width * .9;
+                              });
+                            }
+                          }),
+                    ),
+                  ),
+
+                  floatingActionButtonLocation:
+                      FloatingActionButtonLocation.centerDocked,
+
+                  endDrawer: const JuntoDrawer('Collective'),
+
+                  // dynamically render body
+                  body: Padding(
+                    padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewPadding.bottom,
+                      left: MediaQuery.of(context).viewPadding.left + 4.0,
+                      right: MediaQuery.of(context).viewPadding.right + 4.0,
+                    ),
+                    child: CustomScrollView(
+                      controller: _collectiveController,
+                      slivers: <Widget>[
+                        SliverPersistentHeader(
+                          delegate: CollectiveAppBar(
+                            expandedHeight: 85,
+                            newAppBarTitle: newAppBarTitle,
+                            openPerspectivesDrawer: _openPerspectivesDrawer,
+                          ),
+                          pinned: false,
+                          floating: true,
+                        ),
+                        _buildSliverList(context),
+                      ],
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    if (_dx == MediaQuery.of(context).size.width * .9) {
+                      setState(() {
+                        _dx = 0;
+                      });
+                    }
+                  },
+                  child: _dx > 0
+                      ? Container(
+                          color:
+                              Theme.of(context).backgroundColor.withOpacity(.5),
+                        )
+                      : const SizedBox(),
+                )
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   Widget _buildSliverList(BuildContext context) {

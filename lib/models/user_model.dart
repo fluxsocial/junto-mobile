@@ -174,7 +174,7 @@ class UserData {
       privateDen: map['private_den'] != null
           ? CentralizedDen.fromMap(map['private_den'])
           : null,
-      publicDen: map['private_den'] != null
+      publicDen: map['public_den'] != null
           ? CentralizedDen.fromMap(map['public_den'])
           : null,
       pack: CentralizedPack.fromMap(map['pack']),
