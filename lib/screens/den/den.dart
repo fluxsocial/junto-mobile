@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
-import 'package:junto_beta_mobile/screens/den/den_appbar_new.dart';
+import 'package:junto_beta_mobile/widgets/appbar/den_appbar_new.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_edit_den.dart';
 
 /// Displays the user's DEN or "profile screen"
