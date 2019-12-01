@@ -5,7 +5,6 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives'
     '/create_perspective/create_perspective.dart' show SelectedUsers;
-import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
 import 'package:provider/provider.dart';
 
 // Junto app bar used throughout the main screens. Rendered in JuntoTemplate.
@@ -19,6 +18,12 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
   final double expandedHeight;
   final String newAppBarTitle;
   final Function openPerspectivesDrawer;
+
+  @override
+  double get maxExtent => expandedHeight;
+
+  @override
+  double get minExtent => kToolbarHeight;
 
   @override
   Widget build(
@@ -92,12 +97,6 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => expandedHeight;
-
-  @override
-  double get minExtent => kToolbarHeight;
-
-  @override
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => true;
 }
 
@@ -136,59 +135,20 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
 
   FocusNode textFieldFocusNode = FocusNode();
 
-//FIXME(Nash): Remove placeholder data
-  List<UserProfile> profiles = <UserProfile>[
-    UserProfile(
-        name: 'Eric Yang',
-        username: 'sunyata',
-        profilePicture: 'assets/images/junto-mobile__eric.png'),
-    UserProfile(
-        name: 'Riley Wagner',
-        username: 'wags',
-        profilePicture: 'assets/images/junto-mobile__riley.png'),
-    UserProfile(
-        name: 'Dora Czovek',
-        username: 'wingedmessenger',
-        profilePicture: 'assets/images/junto-mobile__dora.png'),
-    UserProfile(name: 'Urk', username: 'sunyata', profilePicture: ''),
-  ];
 
-  List<Sphere> spheres = <Sphere>[
-    const Sphere(
-      sphereTitle: 'Ecstatic Dance',
-      sphereMembers: '12000',
-      sphereImage: 'assets/images/junto-mobile__ecstatic.png',
-      sphereHandle: 'ecstaticdance',
-      sphereDescription:
-          'Ecstatic dance is a space for movement, rhythm, non-judgment, and '
-          'expression in its purest form. Come groove out with us!',
-    ),
-    const Sphere(
-      sphereTitle: 'Flutter NYC',
-      sphereMembers: '690',
-      sphereImage: 'assets/images/junto-mobile__flutter.png',
-      sphereHandle: 'flutternyc',
-      sphereDescription:
-          'Connect with other members in the Flutter NYC community and learn'
-          ' about this amazing technology!',
-    ),
-    const Sphere(
-      sphereTitle: 'Zen',
-      sphereMembers: '77',
-      sphereImage: 'assets/images/junto-mobile__stillmind.png',
-      sphereHandle: 'zen',
-      sphereDescription:
-          '"To a mind that is still, the whole universe surrenders"',
-    ),
-  ];
+  // ignore: unused_field
+  ValueNotifier<SelectedUsers> _selectedUsers;
 
   @override
   void initState() {
     super.initState();
-//FIXME(Nash): Rethink this, is calling setState in `initSate` really necessary
-    setState(() {
-      currentIndex = 0;
-    });
+    currentIndex = 0;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _selectedUsers = Provider.of<ValueNotifier<SelectedUsers>>(context);
   }
 
   @override
@@ -197,12 +157,44 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
     pageController.dispose();
   }
 
+  //TODO(Nash): Refactor to display connections when this feature is implemented
+  Widget _buildMemeberSearch() {
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: ListView(
+            children: const <Widget>[
+//              MemberPreview(profile: null),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  // TODO(Nash): Refactor to display a list of user spheres.
+  Widget _buildSphereSearch() {
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: ListView(
+            children: const <Widget>[
+              // SpherePreviewSearch(group: spheres[0]),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  void _handlePageChange(int value) {
+    setState(() {
+      currentIndex = value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    // ignore:unused_local_variable
-    final ValueNotifier<SelectedUsers> _selectedUsers =
-        Provider.of<ValueNotifier<SelectedUsers>>(context);
-
     return Container(
       color: Colors.transparent,
       child: Container(
@@ -313,41 +305,13 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
             Expanded(
               child: PageView(
                 controller: pageController,
-                onPageChanged: (int index) {
-                  setState(() {
-                    currentIndex = index;
-                  });
-                },
+                onPageChanged: _handlePageChange,
                 children: <Widget>[
-                  // search members
-                  Column(
-                    children: <Widget>[
-                      Expanded(
-                        child: ListView(children: <Widget>[
-                          MemberPreview(profile: profiles[0]),
-                          MemberPreview(profile: profiles[1]),
-                          MemberPreview(profile: profiles[2]),
-                          MemberPreview(profile: profiles[3]),
-                        ]),
-                      )
-                    ],
-                  ),
-                  // search spheres
-                  Column(
-                    children: <Widget>[
-                      Expanded(
-                          child: ListView(
-                        children: const <Widget>[
-                          // SpherePreviewSearch(group: spheres[0]),
-                          // SpherePreviewSearch(group: spheres[1]),
-                          // SpherePreviewSearch(group: spheres[2])
-                        ],
-                      ))
-                    ],
-                  )
+                  _buildSphereSearch(),
+                  _buildMemeberSearch(),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
