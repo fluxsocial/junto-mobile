@@ -18,11 +18,13 @@ class SelectedUsers extends ChangeNotifier {
   List<UserProfile> selection = <UserProfile>[];
 }
 
+@Deprecated('Deprecated in favor of lib/screens/collective/perspectives.dart')
 class CreatePerspective extends StatefulWidget {
   @override
   _CreatePerspectiveState createState() => _CreatePerspectiveState();
 }
 
+@Deprecated('Deprecated in favor of lib/screens/collective/perspectives.dart')
 class _CreatePerspectiveState extends State<CreatePerspective>
     with AddUserToList<UserProfile> {
   TextEditingController controller;
@@ -67,10 +69,16 @@ class _CreatePerspectiveState extends State<CreatePerspective>
 
   Future<void> createPerspective() async {
     final String name = controller.value.text;
+    final String about = controller.value.text;
     JuntoOverlay.showLoader(context);
     try {
-      await Provider.of<UserRepo>(context)
-          .createPerspective(Perspective(name: name, members: <String>[]));
+      await Provider.of<UserRepo>(context).createPerspective(
+        Perspective(
+          name: name,
+          members: <String>[],
+          about: about,
+        ),
+      );
       JuntoOverlay.hide();
       Navigator.pop(context);
     } on JuntoException catch (error) {
@@ -174,6 +182,46 @@ class _CreatePerspectiveState extends State<CreatePerspective>
                     children: <Widget>[
                       Container(
                         // padding: EdgeInsets.symmetric(vertical: 15),
+                        width: MediaQuery.of(context).size.width - 20,
+                        decoration: const BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: Color(0xffeeeeee),
+                              width: .75,
+                            ),
+                          ),
+                        ),
+                        child: TextField(
+                          controller: controller,
+                          buildCounter: (
+                            BuildContext context, {
+                            int currentLength,
+                            int maxLength,
+                            bool isFocused,
+                          }) =>
+                              null,
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Name your perspective',
+                            hintStyle: TextStyle(
+                                color: Color(0xff999999),
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700),
+                          ),
+                          cursorColor: const Color(0xff333333),
+                          cursorWidth: 2,
+                          maxLines: null,
+                          style: const TextStyle(
+                              color: Color(0xff333333),
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700),
+                          maxLength: 80,
+                          textInputAction: TextInputAction.done,
+                        ),
+                      ),
+                      // About field.
+                      Container(
+                        padding: const EdgeInsets.symmetric(vertical: 15),
                         width: MediaQuery.of(context).size.width - 20,
                         decoration: const BoxDecoration(
                           border: Border(

@@ -3,12 +3,12 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
-import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/event.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/longform.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/photo.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/shortform.dart';
+import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 
 class JuntoCreate extends StatefulWidget {
@@ -112,26 +112,26 @@ class JuntoCreateState extends State<JuntoCreate> {
     if (templateType == 'LongForm' || templateType == 'dynamic') {
       setState(() {
         _longform = true;
-        _currentIcon =
-            Icon(CustomIcons.longform, color: Color(0xff333333), size: 17);
+        _currentIcon = const Icon(CustomIcons.longform,
+            color: Color(0xff333333), size: 17);
       });
     } else if (templateType == 'ShortForm') {
       setState(() {
         _shortform = true;
         _currentIcon =
-            Icon(CustomIcons.feather, color: Color(0xff333333), size: 17);
+            const Icon(CustomIcons.feather, color: Color(0xff333333), size: 17);
       });
     } else if (templateType == 'PhotoForm') {
       setState(() {
         _photo = true;
         _currentIcon =
-            Icon(CustomIcons.camera, color: Color(0xff333333), size: 17);
+            const Icon(CustomIcons.camera, color: Color(0xff333333), size: 17);
       });
     } else if (templateType == 'EventForm') {
       setState(() {
         _events = true;
         _currentIcon =
-            Icon(CustomIcons.event, color: Color(0xff333333), size: 17);
+            const Icon(CustomIcons.event, color: Color(0xff333333), size: 17);
       });
     } else {
       print('not an expresion type');
@@ -196,9 +196,9 @@ class JuntoCreateState extends State<JuntoCreate> {
                 Row(
                   children: <Widget>[
                     _currentIcon,
-                    SizedBox(width: 7.5),
+                    const SizedBox(width: 7.5),
                     Text(_expressionType,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w600,
                           color: Color(0xff333333),
@@ -220,7 +220,7 @@ class JuntoCreateState extends State<JuntoCreate> {
         padding: const EdgeInsets.only(bottom: 25),
         child: BottomNav(
           screen: 'create',
-          function: _openExpressionCenter,
+          onTap: _openExpressionCenter,
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

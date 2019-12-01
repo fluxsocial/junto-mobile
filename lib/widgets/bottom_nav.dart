@@ -1,20 +1,20 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 
 class BottomNav extends StatelessWidget {
-  const BottomNav({this.screen, this.function});
+  const BottomNav({this.screen, this.onTap});
+
   final String screen;
-  final Function function;
+  final VoidCallback onTap;
 
   Widget _uniqueActionItem(BuildContext context, String currentScreen) {
     if (currentScreen == 'collective') {
       return Expanded(
         child: GestureDetector(
-          onTap: () {
-            function();
-          },
+          onTap: onTap,
           child: Container(
             alignment: Alignment.center,
             width: 60,
@@ -36,7 +36,7 @@ class BottomNav extends StatelessWidget {
       return Expanded(
         child: GestureDetector(
           onTap: () {
-            function();
+            onTap();
           },
           child: Container(
             width: 60,
@@ -64,7 +64,7 @@ class BottomNav extends StatelessWidget {
       return Expanded(
         child: GestureDetector(
           onTap: () {
-            function();
+            onTap();
           },
           child: Container(
             width: 60,
@@ -78,7 +78,7 @@ class BottomNav extends StatelessWidget {
       return Expanded(
         child: GestureDetector(
           onTap: () {
-            function();
+            onTap();
           },
           child: Container(
             width: 60,
@@ -99,15 +99,16 @@ class BottomNav extends StatelessWidget {
       height: 50,
       width: 180,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(100),
-          color: Theme.of(context).backgroundColor,
-          boxShadow: [
-            BoxShadow(
-              color: Theme.of(context).dividerColor,
-              blurRadius: 3,
-              spreadRadius: 1,
-            )
-          ]),
+        borderRadius: BorderRadius.circular(100),
+        color: Theme.of(context).backgroundColor,
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+            color: Theme.of(context).dividerColor,
+            blurRadius: 3,
+            spreadRadius: 1,
+          )
+        ],
+      ),
       child: Row(
         children: <Widget>[
           _uniqueActionItem(context, screen),
@@ -121,7 +122,10 @@ class BottomNav extends StatelessWidget {
                       Animation<double> animation,
                       Animation<double> secondaryAnimation,
                     ) {
-                      return JuntoLotus();
+                      return const JuntoLotus(
+                        address: null,
+                        expressionContext: ExpressionContext.Collective,
+                      );
                     },
                     transitionsBuilder: (
                       BuildContext context,
@@ -135,7 +139,7 @@ class BottomNav extends StatelessWidget {
                       );
                     },
                     transitionDuration: const Duration(
-                      milliseconds: 400,
+                      milliseconds: 300,
                     ),
                   ),
                 );

@@ -149,76 +149,37 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
 
   Widget _buildPerspective(String name, bool customPerspective) {
     return GestureDetector(
-        onTap: () {
-          widget.changePerspective(name);
-        },
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-          color: Colors.transparent,
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Icon(CustomIcons.collective,
-                                size: 10, color: Colors.white),
-                            SizedBox(width: 30),
-                            Text(
-                              name,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 15,
-                                letterSpacing: 1.2,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
+      onTap: () => widget.changePerspective(name),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+        color: Colors.transparent,
+        child: Row(
+          children: <Widget>[
+            Icon(CustomIcons.collective, size: 10, color: Colors.white),
+            const SizedBox(width: 30),
+            Expanded(
+              child: Text(
+                name,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 15,
+                  letterSpacing: 1.2,
+                  color: Colors.white,
                 ),
-                customPerspective
-                    ? GestureDetector(
-                        onTap: () {
-                          // edit perspective
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                                builder: (context) => EditPerspective()),
-                          );
-                        },
-                        child: const Icon(
-                          Icons.edit,
-                          size: 20,
-                          color: Colors.white,
-                        ),
-                      )
-                    : GestureDetector(
-                        onTap: () {
-                          // _openPerspectiveBottomSheet(
-                          //   name,
-                          // );
-
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                                builder: (context) => EditPerspective()),
-                          );
-                        },
-                        child: const Icon(
-                          Icons.keyboard_arrow_down,
-                          size: 20,
-                          color: Colors.white,
-                        ),
-                      )
-              ]),
-        ));
+              ),
+            ),
+            GestureDetector(
+              onTap: () => _openPerspectiveBottomSheet(name),
+              child: const Icon(
+                Icons.keyboard_arrow_down,
+                size: 20,
+                color: Colors.white,
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   String _perspectiveText(String perspective) {
@@ -292,11 +253,13 @@ class _CreatePerspectiveBottomSheetState
 
   UserRepo userRepo;
   TextEditingController _textController;
+  TextEditingController _aboutController;
 
   @override
   void initState() {
     super.initState();
     _textController = TextEditingController();
+    _aboutController = TextEditingController();
   }
 
   @override
@@ -312,14 +275,21 @@ class _CreatePerspectiveBottomSheetState
     super.dispose();
     _searchMembersController.dispose();
     _textController.dispose();
+    _aboutController.dispose();
   }
 
   Future<void> _createPerspective() async {
     final String name = _textController.value.text;
+    final String about = _aboutController.value.text;
     JuntoOverlay.showLoader(context);
     try {
-      await Provider.of<UserRepo>(context)
-          .createPerspective(Perspective(name: name, members: <String>[]));
+      await Provider.of<UserRepo>(context).createPerspective(
+        Perspective(
+          name: name,
+          members: <String>[],
+          about: about,
+        ),
+      );
       JuntoOverlay.hide();
       Navigator.pop(context);
     } on JuntoException catch (error, stacktrace) {
@@ -339,6 +309,41 @@ class _CreatePerspectiveBottomSheetState
         ],
       );
     }
+  }
+
+  Widget _buildPerspectiveTextField(
+    TextEditingController controller,
+    String name,
+  ) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child: TextField(
+        controller: controller,
+        buildCounter: (
+          BuildContext context, {
+          int currentLength,
+          int maxLength,
+          bool isFocused,
+        }) =>
+            null,
+        decoration: InputDecoration(
+          contentPadding: const EdgeInsets.all(0),
+          border: InputBorder.none,
+          hintText: name,
+          hintStyle: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w500,
+            color: Theme.of(context).primaryColorLight,
+          ),
+        ),
+        cursorColor: Theme.of(context).primaryColorDark,
+        cursorWidth: 2,
+        maxLines: 1,
+        style: Theme.of(context).textTheme.caption,
+        maxLength: 80,
+        textInputAction: TextInputAction.done,
+      ),
+    );
   }
 
   @override
@@ -371,36 +376,9 @@ class _CreatePerspectiveBottomSheetState
             ],
           ),
           const SizedBox(height: 20),
-          Container(
-            width: MediaQuery.of(context).size.width,
-            color: Colors.green,
-            child: TextField(
-              controller: _textController,
-              buildCounter: (
-                BuildContext context, {
-                int currentLength,
-                int maxLength,
-                bool isFocused,
-              }) =>
-                  null,
-              decoration: InputDecoration(
-                contentPadding: const EdgeInsets.all(0),
-                border: InputBorder.none,
-                hintText: 'Name perspective',
-                hintStyle: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
-                    color: Theme.of(context).primaryColorLight),
-              ),
-              cursorColor: Theme.of(context).primaryColorDark,
-              cursorWidth: 2,
-              maxLines: 1,
-              style: Theme.of(context).textTheme.caption,
-              maxLength: 80,
-              textInputAction: TextInputAction.done,
-            ),
-          ),
-          // const SizedBox(height: 10),
+          _buildPerspectiveTextField(_textController, 'Name Perspective'),
+          _buildPerspectiveTextField(_aboutController, 'Perspective Purpose'),
+          const SizedBox(height: 10),
           Container(
             padding: const EdgeInsets.only(bottom: 5),
             decoration: BoxDecoration(

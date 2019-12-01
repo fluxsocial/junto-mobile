@@ -45,115 +45,131 @@ class PackOpenState extends State<PackOpen> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-          appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(45),
-            child: PackOpenAppbar(pack: widget.pack),
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(45),
+          child: PackOpenAppbar(pack: widget.pack),
+        ),
+        floatingActionButton: ValueListenableBuilder<bool>(
+          valueListenable: _isVisible,
+          builder: (BuildContext context, bool visible, Widget child) {
+            return AnimatedOpacity(
+              duration: const Duration(milliseconds: 300),
+              opacity: visible ? 1.0 : 0.0,
+              child: child,
+            );
+          },
+          child: ExpressionCenterFAB(
+            expressionLayer: 'my pack',
+            address: widget.pack.address,
+            expressionContext: ExpressionContext.Group,
           ),
-          floatingActionButton: ValueListenableBuilder<bool>(
-            valueListenable: _isVisible,
-            builder: (BuildContext context, bool visible, Widget child) {
-              return AnimatedOpacity(
-                duration: const Duration(milliseconds: 300),
-                opacity: visible ? 1.0 : 0.0,
-                child: child,
-              );
-            },
-            child: ExpressionCenterFAB(
-              expressionLayer: 'my pack',
-              address: widget.pack.address,
-              expressionContext: ExpressionContext.Group,
-            ),
-          ),
-          endDrawer: PackDrawer(
-            pack: widget.pack,
-          ),
-          body: Column(
-            children: <Widget>[
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 15),
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                        color: Theme.of(context).dividerColor, width: .75),
+        ),
+        endDrawer: PackDrawer(
+          pack: widget.pack,
+        ),
+        body: Column(
+          children: <Widget>[
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 15),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                      color: Theme.of(context).dividerColor, width: .75),
+                ),
+              ),
+              child: Row(
+                children: <Widget>[
+                  GestureDetector(
+                    onTap: () => controller.jumpToPage(0),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * .5,
+                      color: Colors.transparent,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          if (_currentIndex == 0)
+                            Icon(
+                              CustomIcons.lotus,
+                              size: 20,
+                              color: Theme.of(context).primaryColorDark,
+                            ),
+                          if (_currentIndex != 0)
+                            Icon(
+                              CustomIcons.lotus,
+                              size: 20,
+                              color: Theme.of(context).primaryColorLight,
+                            ),
+                          const SizedBox(width: 10),
+                          Text(
+                            'Public',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                              color: _currentIndex == 0
+                                  ? Theme.of(context).primaryColorDark
+                                  : Theme.of(context).primaryColorLight,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-                child: Row(
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: () {
-                        controller.jumpToPage(0);
-                      },
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * .5,
-                        color: Colors.transparent,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(CustomIcons.lotus,
-                                size: 20,
-                                color: _currentIndex == 0
-                                    ? Theme.of(context).primaryColorDark
-                                    : Theme.of(context).primaryColorLight),
-                            const SizedBox(width: 10),
-                            Text('Public',
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w600,
-                                    color: _currentIndex == 0
-                                        ? Theme.of(context).primaryColorDark
-                                        : Theme.of(context).primaryColorLight))
-                          ],
-                        ),
+                  GestureDetector(
+                    onTap: () {
+                      controller.jumpToPage(1);
+                    },
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * .5,
+                      color: Colors.transparent,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(
+                            CustomIcons.packs,
+                            size: 17,
+                            color: _currentIndex == 1
+                                ? Theme.of(context).primaryColorDark
+                                : Theme.of(context).primaryColorLight,
+                          ),
+                          const SizedBox(width: 10),
+                          Text(
+                            'Pack',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                              color: _currentIndex == 1
+                                  ? Theme.of(context).primaryColorDark
+                                  : Theme.of(context).primaryColorLight,
+                            ),
+                          )
+                        ],
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        controller.jumpToPage(1);
-                      },
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * .5,
-                        color: Colors.transparent,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(CustomIcons.packs,
-                                size: 17,
-                                color: _currentIndex == 1
-                                    ? Theme.of(context).primaryColorDark
-                                    : Theme.of(context).primaryColorLight),
-                            const SizedBox(width: 10),
-                            Text('Pack',
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w600,
-                                    color: _currentIndex == 1
-                                        ? Theme.of(context).primaryColorDark
-                                        : Theme.of(context).primaryColorLight))
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              Expanded(
-                child: PageView(
-                  controller: controller,
-                  onPageChanged: (int index) {
-                    setState(() {
+            ),
+            Expanded(
+              child: PageView(
+                controller: controller,
+                onPageChanged: (int index) {
+                  setState(
+                    () {
                       _currentIndex = index;
-                    });
-                  },
-                  children: <Widget>[
-                    PackOpenPublic(fabVisible: _isVisible),
-                    const Center(
-                      child: Text('private pack expressions'),
-                    )
-                  ],
-                ),
+                    },
+                  );
+                },
+                children: <Widget>[
+                  PackOpenPublic(fabVisible: _isVisible),
+                  const Center(
+                    child: Text('private pack expressions'),
+                  )
+                ],
               ),
-            ],
-          )),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

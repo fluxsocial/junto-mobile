@@ -1,8 +1,103 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives'
     '/create_perspective/create_perspective.dart' show SelectedUsers;
 import 'package:junto_beta_mobile/models/user_model.dart';
+
+// Junto app bar used throughout the main screens. Rendered in JuntoTemplate.
+class CollectiveAppBar extends SliverPersistentHeaderDelegate {
+  CollectiveAppBar({
+    @required this.expandedHeight,
+    this.newAppBarTitle,
+    this.openPerspectivesDrawer,
+  });
+
+  final double expandedHeight;
+  final String newAppBarTitle;
+  final Function openPerspectivesDrawer;
+
+  @override
+  double get maxExtent => expandedHeight;
+
+  @override
+  double get minExtent => kToolbarHeight;
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      padding: const EdgeInsets.only(bottom: 10),
+      height: 85,
+      decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: Theme.of(context).dividerColor,
+              width: .75,
+            ),
+          ),
+          color: Theme.of(context).backgroundColor),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: <Widget>[
+          GestureDetector(
+            onTap: () {
+              openPerspectivesDrawer();
+            },
+            child: Container(
+              alignment: Alignment.bottomLeft,
+              padding: const EdgeInsets.only(left: 10),
+              color: Colors.transparent,
+              height: 36,
+              child: Row(
+                children: <Widget>[
+                  Image.asset('assets/images/junto-mobile__logo.png',
+                      height: 22.0, width: 22.0),
+                  const SizedBox(width: 7.5),
+                  Text(
+                    newAppBarTitle,
+                    style: Theme.of(context).appBarTheme.textTheme.body1,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Row(
+            children: <Widget>[
+              GestureDetector(
+                onTap: () {},
+                child: Container(
+                  width: 42,
+                  padding: const EdgeInsets.only(right: 10),
+                  alignment: Alignment.bottomRight,
+                  color: Colors.transparent,
+                  child: Icon(Icons.search,
+                      size: 22, color: Theme.of(context).primaryColor),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {},
+                child: Container(
+                  width: 42,
+                  color: Colors.transparent,
+                  alignment: Alignment.bottomRight,
+                  padding: const EdgeInsets.only(right: 10),
+                  child: Icon(CustomIcons.moon,
+                      size: 22, color: Theme.of(context).primaryColor),
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  @override
+  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => true;
+}
 
 class JuntoAppbarSearch extends StatefulWidget {
   const JuntoAppbarSearch({
@@ -39,28 +134,74 @@ class _JuntoAppbarSearchState extends State<JuntoAppbarSearch> {
 
   FocusNode textFieldFocusNode = FocusNode();
 
+  // ignore: unused_field
+  ValueNotifier<SelectedUsers> _selectedUsers;
+
   @override
   void initState() {
     super.initState();
+    currentIndex = 0;
+  }
 
-    setState(() {
-      currentIndex = 0;
-    });
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _selectedUsers = Provider.of<ValueNotifier<SelectedUsers>>(context);
   }
 
   @override
   void dispose() {
     super.dispose();
-
     pageController.dispose();
+  }
+
+  //TODO(Nash): Refactor to display connections when this feature is implemented
+  Widget _buildChannelsSearch() {
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: ListView(
+            children: const <Widget>[],
+          ),
+        )
+      ],
+    );
+  }
+
+  //TODO(Nash): Refactor to display connections when this feature is implemented
+  Widget _buildMemeberSearch() {
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: ListView(
+            children: const <Widget>[],
+          ),
+        )
+      ],
+    );
+  }
+
+  // TODO(Nash): Refactor to display a list of user spheres.
+  Widget _buildSphereSearch() {
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: ListView(
+            children: const <Widget>[],
+          ),
+        )
+      ],
+    );
+  }
+
+  void _handlePageChange(int value) {
+    setState(() {
+      currentIndex = value;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    //ignore:unused_local_variable
-    final ValueNotifier<SelectedUsers> _selectedUsers =
-        Provider.of<ValueNotifier<SelectedUsers>>(context);
-
     return Container(
       color: Colors.transparent,
       child: Container(
@@ -187,61 +328,14 @@ class _JuntoAppbarSearchState extends State<JuntoAppbarSearch> {
             Expanded(
               child: PageView(
                 controller: pageController,
-                onPageChanged: (int index) {
-                  setState(() {
-                    currentIndex = index;
-                  });
-                },
+                onPageChanged: _handlePageChange,
                 children: <Widget>[
-                  // search channels
-                  Column(
-                    children: <Widget>[
-                      Expanded(
-                        child: ListView(children: <Widget>[
-                          // list of channels
-                          Container(
-                            height: 200,
-                            color: Colors.blue,
-                            child: const Text('channels'),
-                          )
-                        ]),
-                      )
-                    ],
-                  ),
-                  // search members
-                  Column(
-                    children: <Widget>[
-                      Expanded(
-                        child: ListView(children: <Widget>[
-                          // list of members
-                          Container(
-                            height: 200,
-                            color: Colors.blue,
-                            child: const Text('members'),
-                          )
-                        ]),
-                      )
-                    ],
-                  ),
-                  // search spheres
-                  Column(
-                    children: <Widget>[
-                      Expanded(
-                          child: ListView(
-                        children: <Widget>[
-                          // list of spheres
-                          Container(
-                            height: 200,
-                            color: Colors.blue,
-                            child: const Text('spheres'),
-                          )
-                        ],
-                      ))
-                    ],
-                  )
+                  _buildChannelsSearch(),
+                  _buildSphereSearch(),
+                  _buildMemeberSearch(),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),

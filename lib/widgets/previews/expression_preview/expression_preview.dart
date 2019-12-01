@@ -13,9 +13,11 @@ class ExpressionPreview extends StatelessWidget {
   const ExpressionPreview({
     Key key,
     @required this.expression,
+    this.inScrollable = false,
   }) : super(key: key);
 
   final CentralizedExpressionResponse expression;
+  final bool inScrollable;
 
   @override
   Widget build(BuildContext context) {
@@ -35,21 +37,28 @@ class ExpressionPreview extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.background,
-                border:
-                    Border.all(color: Theme.of(context).dividerColor, width: 1),
-                borderRadius: BorderRadius.circular(5),
+            if (inScrollable)
+              Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.background,
+                  border: Border.all(
+                      color: Theme.of(context).dividerColor, width: 1),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: _returnExpression(),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  // expression preview body
-                  _returnExpression(),
-                ],
+            if (!inScrollable)
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.background,
+                    border: Border.all(
+                        color: Theme.of(context).dividerColor, width: 1),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: _returnExpression(),
+                ),
               ),
-            ),
             const SizedBox(height: 5),
             ExpressionPreviewTop(expression: expression),
           ],
@@ -62,7 +71,10 @@ class ExpressionPreview extends StatelessWidget {
     if (expression.type == 'LongForm') {
       return LongformPreview(expression: expression);
     } else if (expression.type == 'ShortForm') {
-      return ShortformPreview(expression);
+      return ShortformPreview(
+        expression: expression,
+        inScrollable: inScrollable,
+      );
     } else if (expression.type == 'PhotoForm') {
       return PhotoPreview(expression: expression);
     } else if (expression.type == 'EventForm') {

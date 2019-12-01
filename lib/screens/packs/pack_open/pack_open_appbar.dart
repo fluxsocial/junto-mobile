@@ -44,36 +44,31 @@ class PackOpenAppbar extends StatelessWidget {
               onTap: () {
                 Scaffold.of(context).openEndDrawer();
               },
-              child: pack.address == ''
-                  ? Container(
-                      alignment: Alignment.center,
-                      height: 32.0,
-                      width: 32.0,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.bottomLeft,
-                          end: Alignment.topRight,
-                          stops: const <double>[0.3, 0.9],
-                          colors: const <Color>[
-                            JuntoPalette.juntoSecondary,
-                            JuntoPalette.juntoPrimary,
-                          ],
-                        ),
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      child: Transform.translate(
-                        offset: const Offset(-1.0, 0),
-                        child: Icon(
-                          CustomIcons.packs,
-                          color: Colors.white,
-                          size: 14,
-                        ),
-                      ),
-                    )
-                  : ClipOval(
-                      child: Image.asset(pack.address,
-                          height: 32, width: 32, fit: BoxFit.cover),
-                    ),
+              child: Container(
+                alignment: Alignment.center,
+                height: 32.0,
+                width: 32.0,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
+                    stops: const <double>[0.3, 0.9],
+                    colors: const <Color>[
+                      JuntoPalette.juntoSecondary,
+                      JuntoPalette.juntoPrimary,
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                child: Transform.translate(
+                  offset: const Offset(-1.0, 0),
+                  child: Icon(
+                    CustomIcons.packs,
+                    color: Colors.white,
+                    size: 14,
+                  ),
+                ),
+              ),
             )
           ],
         ),

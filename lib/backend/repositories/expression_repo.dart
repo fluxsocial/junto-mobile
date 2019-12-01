@@ -81,8 +81,7 @@ class ExpressionRepo {
     return _expressionService.getExpressionsComments(expressionAddress);
   }
 
-  Future<List<CentralizedExpressionResponse>> getCollectiveExpressions(
-  ) {
+  Future<List<CentralizedExpressionResponse>> getCollectiveExpressions() {
     return _expressionService.getCollectiveExpressions();
   }
 

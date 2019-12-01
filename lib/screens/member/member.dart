@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/member/member_appbar.dart';
+import 'package:junto_beta_mobile/widgets/user_expressions.dart';
 
 class JuntoMember extends StatefulWidget {
   const JuntoMember({
@@ -88,14 +89,14 @@ class _JuntoMemberState extends State<JuntoMember> {
                               children: <Widget>[
                                 Flexible(
                                   child: Text(
-                                    // name,
-                                    'Eric Yang',
+                                    widget.profile.name,
                                     style: TextStyle(
-                                        fontSize: 28,
-                                        fontWeight: FontWeight.w600,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onPrimary),
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.w600,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary,
+                                    ),
                                   ),
                                 ),
                                 GestureDetector(
@@ -275,13 +276,14 @@ class _JuntoMemberState extends State<JuntoMember> {
                   ),
                   const SizedBox(height: 15),
                   Container(
-                    child: Text('student of suffering and its cessation',
+                    child: Text(widget.profile.bio,
                         style: Theme.of(context).textTheme.caption),
                   ),
                 ],
               ),
-              ListView(
-                children: const <Widget>[],
+              UserExpressions(
+                privacy: 'Public',
+                userProfile: widget.profile,
               )
             ],
           ),

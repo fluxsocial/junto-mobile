@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
@@ -9,6 +8,8 @@ import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_themes.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_edit_den.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open.dart';
 import 'package:junto_beta_mobile/screens/sign_in/sign_in.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_edit_den.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_themes.dart';
 import 'package:provider/provider.dart';
 
 class JuntoDrawer extends StatefulWidget {
@@ -43,8 +44,6 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
     }
   }
 
-// FIXME(Nash): Look up the address and retrieve the user pack
-//  see: https://github.com/juntofoundation/junto-mobile/issues/170
   Future<void> _onPackPress() async {
     final UserGroupsResponse _userPack =
         await Provider.of<UserRepo>(context).getUserGroups(profile.address);
@@ -114,27 +113,10 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                   ),
                   children: <Widget>[
                     // relationships
+
                     JuntoDrawerItem(
                       title: 'My Pack',
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                            builder: (context) => PackOpen(
-                              pack: Group(
-                                members: 1,
-                                facilitators: 0,
-                                address: '',
-                                createdAt: DateTime.now(),
-                                creator: 'Eric Yang',
-                                privacy: 'public',
-                                groupType: 'sphere',
-                                groupData: GroupDataPack(name: 'Urksters'),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
+                      onTap: _onPackPress,
                     ),
                     JuntoDrawerItem(
                       title: 'Relationships',
@@ -149,7 +131,7 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                         // nav
                         Navigator.push(
                           context,
-                          CupertinoPageRoute(
+                          CupertinoPageRoute<dynamic>(
                             builder: (BuildContext context) => JuntoThemes(),
                           ),
                         );
@@ -162,7 +144,7 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                         // nav
                         Navigator.push(
                           context,
-                          CupertinoPageRoute(
+                          CupertinoPageRoute<dynamic>(
                             builder: (BuildContext context) => JuntoEditDen(),
                           ),
                         );

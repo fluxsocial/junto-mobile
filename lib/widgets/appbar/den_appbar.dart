@@ -9,6 +9,9 @@ import 'package:junto_beta_mobile/widgets/appbar/appbar_search.dart';
 
 // Junto app bar used throughout the main screens. Rendered in JuntoTemplate.
 class DenAppbar extends StatefulWidget implements PreferredSizeWidget {
+  const DenAppbar({Key key, @required this.heading}) : super(key: key);
+  final String heading;
+
   @override
   Size get preferredSize => const Size.fromHeight(48.0);
 
@@ -31,7 +34,7 @@ class _DenAppbarState extends State<DenAppbar> {
             gradient: LinearGradient(
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
-                stops: <double>[
+                stops: const <double>[
                   0.1,
                   0.9
                 ],
@@ -59,7 +62,7 @@ class _DenAppbarState extends State<DenAppbar> {
                       height: 22.0, width: 22.0),
                   const SizedBox(width: 7.5),
                   Text(
-                    'sunyata',
+                    widget.heading,
                     style: Theme.of(context).appBarTheme.textTheme.body1,
                   ),
                 ],
@@ -104,7 +107,7 @@ class _DenAppbarState extends State<DenAppbar> {
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.background,
-                            borderRadius: BorderRadius.only(
+                            borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(10),
                               topRight: Radius.circular(10),
                             ),

@@ -68,7 +68,9 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
   Widget build(BuildContext context) {
     return Scaffold(
         key: _juntoDenKey,
-        appBar: DenAppbar(),
+        appBar: DenAppbar(
+          heading: 'sunyata',
+        ),
         floatingActionButton: ValueListenableBuilder(
           valueListenable: _isVisible,
           builder: (BuildContext context, bool visible, Widget child) {
@@ -81,7 +83,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
             padding: const EdgeInsets.only(bottom: 25),
             child: BottomNav(
                 screen: 'den',
-                function: () {
+                onTap: () {
                   Navigator.push(
                     context,
                     CupertinoPageRoute(
@@ -259,8 +261,6 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
                                 // even number indexes
-                                ExpressionPreview(
-                                    expression: mockExpressions[0]),
                               ],
                             ),
                           ),
@@ -272,8 +272,6 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
                                 // odd number indexes
-                                ExpressionPreview(
-                                    expression: mockExpressions[0]),
                               ],
                             ),
                           ),
@@ -300,8 +298,6 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
                                 // even number indexes
-                                ExpressionPreview(
-                                    expression: mockExpressions[0]),
                               ],
                             ),
                           ),
@@ -313,8 +309,6 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
                                 // odd number indexes
-                                ExpressionPreview(
-                                    expression: mockExpressions[0]),
                               ],
                             ),
                           ),
@@ -323,96 +317,9 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                     ],
                   ),
                 ),
-
-                // UserExpressions(
-                //   key: const PageStorageKey<String>('public-user-expressions'),
-                //   privacy: 'Public',
-                //   userProfile: snapshot.data,
-                // ),
-                // UserExpressions(
-                //   key: const PageStorageKey<String>('private-user-expressions'),
-                //   privacy: 'Private',
-                //   userProfile: snapshot.data,
-                // )
               ],
             ),
           ),
         ));
-  }
-}
-
-/// Linear list of expressions created by the given [userProfile].
-class UserExpressions extends StatefulWidget {
-  const UserExpressions({
-    Key key,
-    @required this.userProfile,
-    @required this.privacy,
-  }) : super(key: key);
-
-  /// [UserProfile] of the user
-  final UserProfile userProfile;
-
-  /// Either Public or Private;
-  final String privacy;
-
-  @override
-  _UserExpressionsState createState() => _UserExpressionsState();
-}
-
-class _UserExpressionsState extends State<UserExpressions> {
-  UserRepo _userProvider;
-  AsyncMemoizer<List<CentralizedExpressionResponse>> memoizer =
-      AsyncMemoizer<List<CentralizedExpressionResponse>>();
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _userProvider = Provider.of<UserRepo>(context);
-  }
-
-  Future<List<CentralizedExpressionResponse>> getExpressions() {
-    return memoizer.runOnce(
-        () => _userProvider.getUsersExpressions(widget.userProfile.address));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final MediaQueryData media = MediaQuery.of(context);
-    return FutureBuilder<List<CentralizedExpressionResponse>>(
-      future: getExpressions(),
-      builder: (BuildContext context,
-          AsyncSnapshot<List<CentralizedExpressionResponse>> snapshot) {
-        if (snapshot.hasData) {
-          final List<CentralizedExpressionResponse> _data = snapshot.data
-              .where((CentralizedExpressionResponse expression) =>
-                  expression.privacy == widget.privacy)
-              .toList(growable: false);
-          return ListView.builder(
-            itemCount: _data.length,
-            itemBuilder: (BuildContext context, int index) {
-              return ExpressionPreview(
-                expression: _data[index],
-              );
-            },
-          );
-        }
-        if (snapshot.hasError) {
-          return Container(
-            height: media.size.height,
-            width: media.size.width,
-            child: Center(
-              child: Text('Error occured ${snapshot.error}'),
-            ),
-          );
-        }
-        return Container(
-          height: media.size.height,
-          width: media.size.width,
-          child: const Center(
-            child: CircularProgressIndicator(),
-          ),
-        );
-      },
-    );
   }
 }
