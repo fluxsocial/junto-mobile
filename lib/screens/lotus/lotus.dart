@@ -7,7 +7,6 @@ import 'package:junto_beta_mobile/screens/create/create.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/groups/groups.dart';
 
-// FIXME(Nash): Rethink API, should include group address and expression type.
 class JuntoLotus extends StatelessWidget {
   const JuntoLotus({
     Key key,

@@ -4,6 +4,9 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 
 // Junto app bar used throughout the main screens. Rendered in JuntoTemplate.
 class DenAppbar extends StatefulWidget implements PreferredSizeWidget {
+  const DenAppbar({Key key, @required this.heading}) : super(key: key);
+  final String heading;
+
   @override
   Size get preferredSize => const Size.fromHeight(48.0);
 
@@ -53,7 +56,7 @@ class _DenAppbarState extends State<DenAppbar> {
                       height: 22.0, width: 22.0),
                   const SizedBox(width: 7.5),
                   Text(
-                    'sunyata',
+                    widget.heading,
                     style: Theme.of(context).appBarTheme.textTheme.body1,
                   ),
                 ],
