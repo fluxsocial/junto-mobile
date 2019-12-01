@@ -45,9 +45,6 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
     }
   }
 
-// FIXME(Nash): Look up the address and retrieve the user pack
-//  see: https://github.com/juntofoundation/junto-mobile/issues/170
-  // ignore: unused_element
   Future<void> _onPackPress() async {
     final UserGroupsResponse _userPack =
         await Provider.of<UserRepo>(context).getUserGroups(profile.address);
@@ -137,28 +134,10 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                   ),
                   children: <Widget>[
                     // relationships
-                    //FIXME(Nash): Pass server data.
+
                     JuntoDrawerItem(
                       title: 'My Pack',
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          CupertinoPageRoute<dynamic>(
-                            builder: (BuildContext context) => PackOpen(
-                              pack: Group(
-                                members: 1,
-                                facilitators: 0,
-                                address: '',
-                                createdAt: DateTime.now(),
-                                creator: 'Eric Yang',
-                                privacy: 'public',
-                                groupType: 'sphere',
-                                groupData: GroupDataPack(name: 'Urksters'),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
+                      onTap: _onPackPress,
                     ),
                     JuntoDrawerItem(
                       title: 'Relationships',
