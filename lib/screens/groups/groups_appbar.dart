@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/widgets/appbar/appbar_search.dart';
+import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives'
+    '/create_perspective/create_perspective.dart' show SelectedUsers;
 
 class JuntoGroupsAppbar extends StatelessWidget {
+  var _users;
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -11,34 +16,15 @@ class JuntoGroupsAppbar extends StatelessWidget {
       elevation: 0,
       titleSpacing: 0.0,
       bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(.5),
+          preferredSize: const Size.fromHeight(.5),
           child: Container(
-        height: .5,
-        decoration: const BoxDecoration(
-          border: Border(
-            bottom: BorderSide(color: Color(0xffeeeeee), width: .75),
-          ),
-        ),
-      )),
-      // bottom: PreferredSize(
-      //   preferredSize: const Size.fromHeight(.5),
-      //   child: Container(
-      //     height: .5,
-      //     decoration: BoxDecoration(
-      //       gradient: LinearGradient(
-      //           begin: Alignment.centerLeft,
-      //           end: Alignment.centerRight,
-      //           stops: <double>[
-      //             0.1,
-      //             0.9
-      //           ],
-      //           colors: <Color>[
-      //             Theme.of(context).colorScheme.secondary,
-      //             Theme.of(context).colorScheme.primary,
-      //           ]),
-      //     ),
-      //   ),
-      // ),
+            height: .5,
+            decoration: const BoxDecoration(
+              border: Border(
+                bottom: BorderSide(color: Color(0xffeeeeee), width: .75),
+              ),
+            ),
+          )),
       title: Container(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -69,7 +55,31 @@ class JuntoGroupsAppbar extends StatelessWidget {
             Row(
               children: <Widget>[
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    showModalBottomSheet(
+                      isScrollControlled: true,
+                      context: context,
+                      backgroundColor: Colors.transparent,
+                      builder: (BuildContext context) {
+                        // return Container(
+                        //   height: MediaQuery.of(context).size.height * .9,
+                        //   padding: const EdgeInsets.all(10),
+                        //   decoration: BoxDecoration(
+                        //     color: Theme.of(context).colorScheme.background,
+                        //     borderRadius: const BorderRadius.only(
+                        //       topLeft: Radius.circular(10),
+                        //       topRight: Radius.circular(10),
+                        //     ),
+                        //   ),
+                        // );
+                        return ListenableProvider<
+                            ValueNotifier<SelectedUsers>>.value(
+                          value: _users,
+                          child: JuntoAppbarSearch(),
+                        );
+                      },
+                    );
+                  },
                   child: Container(
                     width: 42,
                     padding: const EdgeInsets.only(right: 10),

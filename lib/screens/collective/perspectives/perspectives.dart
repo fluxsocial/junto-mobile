@@ -373,6 +373,7 @@ class _CreatePerspectiveBottomSheetState
           const SizedBox(height: 20),
           Container(
             width: MediaQuery.of(context).size.width,
+            color: Colors.green,
             child: TextField(
               controller: _textController,
               buildCounter: (
@@ -399,10 +400,11 @@ class _CreatePerspectiveBottomSheetState
               textInputAction: TextInputAction.done,
             ),
           ),
-          const SizedBox(height: 10),
+          // const SizedBox(height: 10),
           Container(
             padding: const EdgeInsets.only(bottom: 5),
             decoration: BoxDecoration(
+              color: Colors.orange,
               border: Border(
                 bottom: BorderSide(
                   color: Theme.of(context).dividerColor,
