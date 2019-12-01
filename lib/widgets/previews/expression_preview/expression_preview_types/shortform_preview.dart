@@ -5,10 +5,14 @@ import 'package:junto_beta_mobile/models/expression.dart';
 
 /// Takes an un-named [ExpressionResult] to be displayed
 class ShortformPreview extends StatefulWidget {
-  const ShortformPreview(this.expression);
+  const ShortformPreview({
+    @required this.expression,
+    this.inScrollable = false,
+  });
 
   /// [CentralizedExpressionResponse] to be displayed
   final CentralizedExpressionResponse expression;
+  final bool inScrollable;
 
   @override
   State<StatefulWidget> createState() => ShortformPreviewState();
@@ -92,14 +96,22 @@ class ShortformPreviewState extends State<ShortformPreview> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Expanded(
-            child: Text(
+          if (!widget.inScrollable)
+            Expanded(
+              child: Text(
+                shortformBody,
+                textAlign: TextAlign.center,
+                style: JuntoStyles.shortformPreviewTitle,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          if (widget.inScrollable)
+            Text(
               shortformBody,
               textAlign: TextAlign.center,
               style: JuntoStyles.shortformPreviewTitle,
               overflow: TextOverflow.ellipsis,
             ),
-          ),
         ],
       ),
     );

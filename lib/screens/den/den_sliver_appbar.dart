@@ -54,8 +54,7 @@ class JuntoDenSliverAppbar extends StatelessWidget {
                     children: <Widget>[
                       Flexible(
                         child: Text(
-                          // name,
-                          'Eric Yang',
+                          name,
                           style: TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.w600,

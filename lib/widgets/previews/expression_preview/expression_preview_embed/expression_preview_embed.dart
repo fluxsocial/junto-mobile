@@ -104,7 +104,7 @@ class ExpressionPreviewEmbed extends StatelessWidget {
     if (expression.type == 'LongForm') {
       return LongformPreview(expression: expression);
     } else if (expression.type == 'ShortForm') {
-      return ShortformPreview(expression);
+      return ShortformPreview(expression: expression);
     } else if (expression.type == 'PhotoForm') {
       return PhotoPreview(expression: expression);
     } else if (expression.type == 'EventForm') {
