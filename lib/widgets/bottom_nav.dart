@@ -139,7 +139,7 @@ class BottomNav extends StatelessWidget {
                       );
                     },
                     transitionDuration: const Duration(
-                      milliseconds: 400,
+                      milliseconds: 300,
                     ),
                   ),
                 );
