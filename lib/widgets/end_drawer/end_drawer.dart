@@ -4,9 +4,8 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/screens/den/den_drawer/den_connections.dart';
-import 'package:junto_beta_mobile/screens/den/den_drawer/den_edit_profile.dart';
-import 'package:junto_beta_mobile/screens/den/den_drawer/den_followers.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_themes.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_edit_den.dart';
 import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open.dart';
 import 'package:junto_beta_mobile/screens/sign_in/sign_in.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_edit_den.dart';
@@ -60,31 +59,11 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
     );
   }
 
-  void _onConnectionsPress() {
-    Navigator.push(
-      context,
-      CupertinoPageRoute<dynamic>(
-        builder: (BuildContext context) => DenConnections(),
-      ),
-    );
-  }
-
-  // ignore: unused_element
-  void _onFollowersPress() {
-    Navigator.push(
-      context,
-      CupertinoPageRoute<dynamic>(
-        builder: (BuildContext context) => DenFollowers(),
-      ),
-    );
-  }
-
-  // ignore: unused_element
   void _onEditPress() {
     Navigator.push(
       context,
       CupertinoPageRoute<dynamic>(
-        builder: (BuildContext context) => DenEditProfile(),
+        builder: (BuildContext context) => JuntoEditDen(),
       ),
     );
   }
@@ -141,7 +120,9 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                     ),
                     JuntoDrawerItem(
                       title: 'Relationships',
-                      onTap: _onConnectionsPress,
+                      onTap: () {
+                        // open relationships
+                      },
                     ),
 
                     JuntoDrawerItem(

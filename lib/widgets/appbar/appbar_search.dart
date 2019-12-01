@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives'
     '/create_perspective/create_perspective.dart' show SelectedUsers;
-import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
 
 // Junto app bar used throughout the main screens. Rendered in JuntoTemplate.
 class CollectiveAppBar extends SliverPersistentHeaderDelegate {
@@ -100,12 +99,12 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => true;
 }
 
-class _SearchBottomSheet extends StatefulWidget {
-  const _SearchBottomSheet({
+class JuntoAppbarSearch extends StatefulWidget {
+  const JuntoAppbarSearch({
     Key key,
-    @required this.onTextChange,
-    @required this.onProfileSelected,
-    @required this.results,
+    this.onTextChange,
+    this.onProfileSelected,
+    this.results,
   }) : super(key: key);
 
   /// [ValueChanged] callback which exposes the text typed by the user
@@ -119,10 +118,10 @@ class _SearchBottomSheet extends StatefulWidget {
   final ValueNotifier<List<UserProfile>> results;
 
   @override
-  __SearchBottomSheetState createState() => __SearchBottomSheetState();
+  _JuntoAppbarSearchState createState() => _JuntoAppbarSearchState();
 }
 
-class __SearchBottomSheetState extends State<_SearchBottomSheet> {
+class _JuntoAppbarSearchState extends State<JuntoAppbarSearch> {
   PageController pageController = PageController(
     initialPage: 0,
   );
@@ -134,7 +133,6 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
   bool searchSpheresPage = false;
 
   FocusNode textFieldFocusNode = FocusNode();
-
 
   // ignore: unused_field
   ValueNotifier<SelectedUsers> _selectedUsers;
@@ -158,14 +156,25 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
   }
 
   //TODO(Nash): Refactor to display connections when this feature is implemented
+  Widget _buildChannelsSearch() {
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: ListView(
+            children: const <Widget>[],
+          ),
+        )
+      ],
+    );
+  }
+
+  //TODO(Nash): Refactor to display connections when this feature is implemented
   Widget _buildMemeberSearch() {
     return Column(
       children: <Widget>[
         Expanded(
           child: ListView(
-            children: const <Widget>[
-//              MemberPreview(profile: null),
-            ],
+            children: const <Widget>[],
           ),
         )
       ],
@@ -178,9 +187,7 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
       children: <Widget>[
         Expanded(
           child: ListView(
-            children: const <Widget>[
-              // SpherePreviewSearch(group: spheres[0]),
-            ],
+            children: const <Widget>[],
           ),
         )
       ],
@@ -212,7 +219,6 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
           children: <Widget>[
             const SizedBox(height: 10),
             Container(
-              padding: const EdgeInsets.only(bottom: 5),
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
@@ -229,7 +235,7 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                     size: 20,
                     color: Theme.of(context).primaryColorLight,
                   ),
-                  const SizedBox(width: 10),
+                  const SizedBox(width: 7.5),
                   Expanded(
                     child: Transform.translate(
                       offset: const Offset(0.0, 2),
@@ -243,7 +249,7 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                         }) =>
                             null,
                         decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.all(0.0),
+                          contentPadding: const EdgeInsets.all(0),
                           border: InputBorder.none,
                           hintStyle: TextStyle(
                               color: Theme.of(context).primaryColorLight,
@@ -273,12 +279,29 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                   onTap: () {
                     pageController.jumpToPage(0);
                   },
+                  child: Container(
+                    margin: const EdgeInsets.only(right: 20),
+                    child: Text(
+                      'Channels',
+                      style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                          color: currentIndex == 0
+                              ? Theme.of(context).primaryColorDark
+                              : Theme.of(context).primaryColorLight),
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    pageController.jumpToPage(1);
+                  },
                   child: Text(
                     'Members',
                     style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
-                        color: currentIndex == 0
+                        color: currentIndex == 1
                             ? Theme.of(context).primaryColorDark
                             : Theme.of(context).primaryColorLight),
                   ),
@@ -286,14 +309,14 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                 const SizedBox(width: 20),
                 GestureDetector(
                   onTap: () {
-                    pageController.jumpToPage(1);
+                    pageController.jumpToPage(2);
                   },
                   child: Text(
                     'Spheres',
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w700,
-                      color: currentIndex == 1
+                      color: currentIndex == 2
                           ? Theme.of(context).primaryColorDark
                           : Theme.of(context).primaryColorLight,
                     ),
@@ -307,6 +330,7 @@ class __SearchBottomSheetState extends State<_SearchBottomSheet> {
                 controller: pageController,
                 onPageChanged: _handlePageChange,
                 children: <Widget>[
+                  _buildChannelsSearch(),
                   _buildSphereSearch(),
                   _buildMemeberSearch(),
                 ],

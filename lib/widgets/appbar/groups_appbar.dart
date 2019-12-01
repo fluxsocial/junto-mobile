@@ -1,71 +1,74 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/widgets/appbar/appbar_search.dart';
+import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives'
+    '/create_perspective/create_perspective.dart' show SelectedUsers;
 
-// Junto app bar used throughout the main screens. Rendered in JuntoTemplate.
-class DenAppbar extends StatefulWidget implements PreferredSizeWidget {
-  const DenAppbar({Key key, @required this.heading}) : super(key: key);
-  final String heading;
-
-  @override
-  Size get preferredSize => const Size.fromHeight(48.0);
-
-  @override
-  _DenAppbarState createState() => _DenAppbarState();
-}
-
-class _DenAppbarState extends State<DenAppbar> {
+class JuntoGroupsAppbar extends StatelessWidget {
+  var _users;
   @override
   Widget build(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
       actions: <Widget>[Container()],
-      bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(.75),
-        child: Container(
-          height: .5,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                stops: const <double>[
-                  0.1,
-                  0.9
-                ],
-                colors: <Color>[
-                  Theme.of(context).colorScheme.secondary,
-                  Theme.of(context).colorScheme.primary,
-                ]),
-          ),
-        ),
-      ),
       brightness: Brightness.light,
       elevation: 0,
       titleSpacing: 0.0,
+      bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(.5),
+          child: Container(
+            height: .5,
+            decoration: const BoxDecoration(
+              border: Border(
+                bottom: BorderSide(color: Color(0xffeeeeee), width: .75),
+              ),
+            ),
+          )),
       title: Container(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Container(
-              padding: const EdgeInsets.only(left: 10),
-              color: Colors.transparent,
-              height: 48,
-              child: Row(
-                children: <Widget>[
-                  Image.asset('assets/images/junto-mobile__logo.png',
-                      height: 22.0, width: 22.0),
-                  const SizedBox(width: 7.5),
-                  Text(
-                    widget.heading,
-                    style: Theme.of(context).appBarTheme.textTheme.body1,
+            Builder(
+              builder: (BuildContext context) {
+                return GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    padding: const EdgeInsets.only(left: 10),
+                    color: Colors.transparent,
+                    height: 48,
+                    child: Row(
+                      children: <Widget>[
+                        Image.asset('assets/images/junto-mobile__logo.png',
+                            height: 22.0, width: 22.0),
+                        const SizedBox(width: 7.5),
+                        Text(
+                          'GROUPS',
+                          style: Theme.of(context).appBarTheme.textTheme.body1,
+                        ),
+                      ],
+                    ),
                   ),
-                ],
-              ),
+                );
+              },
             ),
             Row(
               children: <Widget>[
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    showModalBottomSheet(
+                      isScrollControlled: true,
+                      context: context,
+                      backgroundColor: Colors.transparent,
+                      builder: (BuildContext context) {
+                        return ListenableProvider<
+                            ValueNotifier<SelectedUsers>>.value(
+                          value: _users,
+                          child: JuntoAppbarSearch(),
+                        );
+                      },
+                    );
+                  },
                   child: Container(
                     width: 42,
                     padding: const EdgeInsets.only(right: 10),

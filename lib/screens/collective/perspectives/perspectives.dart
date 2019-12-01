@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
@@ -7,6 +7,8 @@ import 'package:junto_beta_mobile/utils/junto_exception.dart'
     show JuntoException;
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/edit_perspective/edit_perspective.dart';
 
 class JuntoPerspectives extends StatefulWidget {
   const JuntoPerspectives({
@@ -42,9 +44,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
               physics: const ClampingScrollPhysics(),
               children: <Widget>[
                 for (CentralizedPerspective perspective in snapshot.data)
-                  _buildPerspective(
-                    perspective.name,
-                  )
+                  _buildPerspective(perspective.name, true)
               ],
             );
           }
@@ -57,20 +57,20 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Container(
-          width: MediaQuery.of(context).size.width * .9,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.bottomLeft,
-              end: Alignment.topRight,
-              stops: const <double>[0.2, 0.9],
-              colors: <Color>[
-                Theme.of(context).colorScheme.secondary,
-                Theme.of(context).colorScheme.primary
-              ],
-            ),
+      body: Container(
+        width: MediaQuery.of(context).size.width * .9,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.bottomLeft,
+            end: Alignment.topRight,
+            stops: const <double>[0.2, 0.9],
+            colors: <Color>[
+              Theme.of(context).colorScheme.secondary,
+              Theme.of(context).colorScheme.primary
+            ],
           ),
+        ),
+        child: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -133,9 +133,9 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
               Expanded(
                 child: ListView(
                   children: <Widget>[
-                    _buildPerspective('JUNTO'),
-                    _buildPerspective('Degrees of separation'),
-                    _buildPerspective('Subscriptions'),
+                    _buildPerspective('JUNTO', false),
+                    _buildPerspective('Degrees of separation', false),
+                    _buildPerspective('Subscriptions', false),
                     _buildUserPerspectives(context),
                   ],
                 ),
@@ -147,11 +147,11 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
     );
   }
 
-  Widget _buildPerspective(String name) {
+  Widget _buildPerspective(String name, bool customPerspective) {
     return GestureDetector(
       onTap: () => widget.changePerspective(name),
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
         color: Colors.transparent,
         child: Row(
           children: <Widget>[
@@ -206,7 +206,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
       backgroundColor: Colors.transparent,
       builder: (BuildContext context) {
         return Container(
-          height: MediaQuery.of(context).size.height * .9,
+          height: MediaQuery.of(context).size.height * .4,
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.background,
@@ -382,6 +382,7 @@ class _CreatePerspectiveBottomSheetState
           Container(
             padding: const EdgeInsets.only(bottom: 5),
             decoration: BoxDecoration(
+              color: Colors.orange,
               border: Border(
                 bottom: BorderSide(
                   color: Theme.of(context).dividerColor,
