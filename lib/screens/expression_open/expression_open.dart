@@ -218,6 +218,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
           ),
         ],
       );
+      setState(() {});
     } catch (error) {
       debugPrint('Error posting comment $error');
       JuntoDialog.showJuntoDialog(

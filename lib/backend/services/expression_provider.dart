@@ -46,7 +46,6 @@ class ExpressionServiceCentralized implements ExpressionService {
     );
     final Map<String, dynamic> _parseResponse =
         JuntoHttp.handleResponse(_serverResponse);
-    print(_serverResponse.body);
     return CentralizedExpressionResponse.fromMap(_parseResponse);
   }
 
