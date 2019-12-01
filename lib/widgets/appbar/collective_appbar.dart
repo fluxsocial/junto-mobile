@@ -70,17 +70,6 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                     context: context,
                     backgroundColor: Colors.transparent,
                     builder: (BuildContext context) {
-                      // return Container(
-                      //   height: MediaQuery.of(context).size.height * .9,
-                      //   padding: const EdgeInsets.all(10),
-                      //   decoration: BoxDecoration(
-                      //     color: Theme.of(context).colorScheme.background,
-                      //     borderRadius: const BorderRadius.only(
-                      //       topLeft: Radius.circular(10),
-                      //       topRight: Radius.circular(10),
-                      //     ),
-                      //   ),
-                      // );
                       return ListenableProvider<
                           ValueNotifier<SelectedUsers>>.value(
                         value: _users,
