@@ -200,27 +200,20 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
                   endDrawer: const JuntoDrawer('Collective'),
 
                   // dynamically render body
-                  body: Padding(
-                    padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewPadding.bottom,
-                      left: MediaQuery.of(context).viewPadding.left + 4.0,
-                      right: MediaQuery.of(context).viewPadding.right + 4.0,
-                    ),
-                    child: CustomScrollView(
-                      controller: _collectiveController,
-                      slivers: <Widget>[
-                        SliverPersistentHeader(
-                          delegate: CollectiveAppBar(
-                            expandedHeight: 85,
-                            newappbartitle: newAppBarTitle,
-                            openPerspectivesDrawer: _openPerspectivesDrawer,
-                          ),
-                          pinned: false,
-                          floating: true,
+                  body: CustomScrollView(
+                    controller: _collectiveController,
+                    slivers: <Widget>[
+                      SliverPersistentHeader(
+                        delegate: CollectiveAppBar(
+                          expandedHeight: 85,
+                          newappbartitle: newAppBarTitle,
+                          openPerspectivesDrawer: _openPerspectivesDrawer,
                         ),
-                        _buildSliverList(context),
-                      ],
-                    ),
+                        pinned: false,
+                        floating: true,
+                      ),
+                      _buildSliverList(context),
+                    ],
                   ),
                 ),
                 GestureDetector(
@@ -270,22 +263,149 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
               ),
             ),
           );
-        return SliverGrid(
-          delegate: SliverChildBuilderDelegate(
-            (
-              BuildContext context,
-              int index,
-            ) {
-              return ExpressionPreview(expression: snapshot.data[index]);
-            },
-            childCount: snapshot.data.length,
-          ),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 2.0,
-            mainAxisSpacing: 2.0,
-          ),
+        print(snapshot.data);
+
+        return SliverList(
+          delegate: SliverChildListDelegate(<Widget>[
+            Container(
+              color: Theme.of(context).backgroundColor,
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        width: MediaQuery.of(context).size.width * .5,
+                        padding: EdgeInsets.only(
+                          top: 10,
+                          left: 10,
+                          right: 5,
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            for (int index = 0;
+                                index < snapshot.data.length + 1;
+                                index++)
+                              if (index == snapshot.data.length)
+                                const SizedBox()
+                              else if (index.isEven)
+                                ExpressionPreview(
+                                  expression: snapshot.data[index],
+                                )
+                          ],
+                        ),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width * .5,
+                        padding: EdgeInsets.only(
+                          top: 10,
+                          left: 5,
+                          right: 10,
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            for (int index = 0;
+                                index < snapshot.data.length + 1;
+                                index++)
+                              if (index == snapshot.data.length)
+                                const SizedBox()
+                              else if (index.isOdd)
+                                ExpressionPreview(
+                                  expression: snapshot.data[index],
+                                )
+                          ],
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ]),
         );
+
+        // snapshot.data
+        //     .map((expression) => ExpressionPreview(
+        //         expression: expression, inScrollable: true))
+        //     .toList(),
+
+        // return SliverList(delegate: SliverChildListDelegate([
+        //            Container(
+        //               color: Theme.of(context).backgroundColor,
+        //               child: Column(
+        //                 children: <Widget>[
+        //                   Row(
+        //                     mainAxisAlignment: MainAxisAlignment.start,
+        //                     crossAxisAlignment: CrossAxisAlignment.start,
+        //                     children: <Widget>[
+        //                       Container(
+        //                         width: MediaQuery.of(context).size.width * .5,
+        //                         padding: EdgeInsets.only(
+        //                           top: 10,
+        //                           left: 10,
+        //                           right: 5,
+        //                         ),
+        //                         child: Column(
+        //                           mainAxisAlignment: MainAxisAlignment.start,
+        //                           children: <Widget>[
+        //                             for (int index = 0;
+        //                                 index < initialData.length + 1;
+        //                                 index++)
+        //                               if (index == initialData.length)
+        //                                 SizedBox()
+        //                               else if (index.isEven)
+        //                                 ExpressionPreview(
+        //                                     expression: initialData[index])
+        //                           ],
+        //                         ),
+        //                       ),
+        //                       Container(
+        //                         width: MediaQuery.of(context).size.width * .5,
+        //                         padding: EdgeInsets.only(
+        //                           top: 10,
+        //                           left: 5,
+        //                           right: 10,
+        //                         ),
+        //                         child: Column(
+        //                           mainAxisAlignment: MainAxisAlignment.start,
+        //                           children: <Widget>[
+        //                             for (int index = 0;
+        //                                 index < initialData.length + 1;
+        //                                 index++)
+        //                               if (index == initialData.length)
+        //                                 SizedBox()
+        //                               else if (index.isOdd)
+        //                                 ExpressionPreview(
+        //                                     expression: initialData[index])
+        //                           ],
+        //                         ),
+        //                       ),
+        //                     ],
+        //                   )
+        //                 ],
+        //               ),
+        //             ),
+        // ]),);
+
+        // return SliverGrid(
+        //   delegate: SliverChildBuilderDelegate(
+        //     (
+        //       BuildContext context,
+        //       int index,
+        //     ) {
+        //       return ExpressionPreview(expression: snapshot.data[index]);
+        //     },
+        //     childCount: snapshot.data.length,
+        //   ),
+        //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        //     crossAxisCount: 2,
+        //     crossAxisSpacing: 2.0,
+        //     mainAxisSpacing: 2.0,
+        //   ),
+        // );
       },
     );
   }

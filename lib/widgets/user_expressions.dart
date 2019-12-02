@@ -56,7 +56,6 @@ class _UserExpressionsState extends State<UserExpressions> {
             itemBuilder: (BuildContext context, int index) {
               return ExpressionPreview(
                 expression: _data[index],
-                inScrollable: true,
               );
             },
           );

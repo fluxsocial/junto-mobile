@@ -10,14 +10,11 @@ import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression
 
 /// Renders a concise overview of one given [ExpressionResult].
 class ExpressionPreview extends StatelessWidget {
-  const ExpressionPreview({
-    Key key,
-    @required this.expression,
-    this.inScrollable = false,
-  }) : super(key: key);
+  const ExpressionPreview(
+      {Key key, @required this.expression})
+      : super(key: key);
 
   final CentralizedExpressionResponse expression;
-  final bool inScrollable;
 
   @override
   Widget build(BuildContext context) {
@@ -37,28 +34,21 @@ class ExpressionPreview extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            if (inScrollable)
-              Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.background,
-                  border: Border.all(
-                      color: Theme.of(context).dividerColor, width: 1),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: _returnExpression(),
+            Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.background,
+                border:
+                    Border.all(color: Theme.of(context).dividerColor, width: 1),
+                borderRadius: BorderRadius.circular(5),
               ),
-            if (!inScrollable)
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.background,
-                    border: Border.all(
-                        color: Theme.of(context).dividerColor, width: 1),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: _returnExpression(),
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  // expression preview body
+                  _returnExpression(),
+                ],
               ),
+            ),
             const SizedBox(height: 5),
             ExpressionPreviewTop(expression: expression),
           ],
@@ -71,10 +61,7 @@ class ExpressionPreview extends StatelessWidget {
     if (expression.type == 'LongForm') {
       return LongformPreview(expression: expression);
     } else if (expression.type == 'ShortForm') {
-      return ShortformPreview(
-        expression: expression,
-        inScrollable: inScrollable,
-      );
+      return ShortformPreview(expression: expression);
     } else if (expression.type == 'PhotoForm') {
       return PhotoPreview(expression: expression);
     } else if (expression.type == 'EventForm') {

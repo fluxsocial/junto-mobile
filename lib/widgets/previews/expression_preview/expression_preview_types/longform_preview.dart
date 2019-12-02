@@ -14,6 +14,7 @@ class LongformPreview extends StatelessWidget {
     final String expressionBody = expression.expressionData.body;
     return Container(
       padding: const EdgeInsets.all(10),
+      width: MediaQuery.of(context).size.width,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
