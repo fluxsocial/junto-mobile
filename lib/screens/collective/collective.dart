@@ -120,7 +120,6 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
         ),
         GestureDetector(
           onHorizontalDragUpdate: (DragUpdateDetails details) {
-            // only enable drag on collective screen
             if (_dx == 0.0 &&
                 details.globalPosition.dy != 0.0 &&
                 details.delta.direction > 0) {
@@ -263,7 +262,6 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
               ),
             ),
           );
-        print(snapshot.data);
 
         return SliverList(
           delegate: SliverChildListDelegate(<Widget>[
@@ -277,7 +275,7 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
                     children: <Widget>[
                       Container(
                         width: MediaQuery.of(context).size.width * .5,
-                        padding: EdgeInsets.only(
+                        padding: const EdgeInsets.only(
                           top: 10,
                           left: 10,
                           right: 5,
@@ -299,7 +297,7 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
                       ),
                       Container(
                         width: MediaQuery.of(context).size.width * .5,
-                        padding: EdgeInsets.only(
+                        padding: const EdgeInsets.only(
                           top: 10,
                           left: 5,
                           right: 10,
@@ -326,86 +324,6 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
             ),
           ]),
         );
-
-        // snapshot.data
-        //     .map((expression) => ExpressionPreview(
-        //         expression: expression, inScrollable: true))
-        //     .toList(),
-
-        // return SliverList(delegate: SliverChildListDelegate([
-        //            Container(
-        //               color: Theme.of(context).backgroundColor,
-        //               child: Column(
-        //                 children: <Widget>[
-        //                   Row(
-        //                     mainAxisAlignment: MainAxisAlignment.start,
-        //                     crossAxisAlignment: CrossAxisAlignment.start,
-        //                     children: <Widget>[
-        //                       Container(
-        //                         width: MediaQuery.of(context).size.width * .5,
-        //                         padding: EdgeInsets.only(
-        //                           top: 10,
-        //                           left: 10,
-        //                           right: 5,
-        //                         ),
-        //                         child: Column(
-        //                           mainAxisAlignment: MainAxisAlignment.start,
-        //                           children: <Widget>[
-        //                             for (int index = 0;
-        //                                 index < initialData.length + 1;
-        //                                 index++)
-        //                               if (index == initialData.length)
-        //                                 SizedBox()
-        //                               else if (index.isEven)
-        //                                 ExpressionPreview(
-        //                                     expression: initialData[index])
-        //                           ],
-        //                         ),
-        //                       ),
-        //                       Container(
-        //                         width: MediaQuery.of(context).size.width * .5,
-        //                         padding: EdgeInsets.only(
-        //                           top: 10,
-        //                           left: 5,
-        //                           right: 10,
-        //                         ),
-        //                         child: Column(
-        //                           mainAxisAlignment: MainAxisAlignment.start,
-        //                           children: <Widget>[
-        //                             for (int index = 0;
-        //                                 index < initialData.length + 1;
-        //                                 index++)
-        //                               if (index == initialData.length)
-        //                                 SizedBox()
-        //                               else if (index.isOdd)
-        //                                 ExpressionPreview(
-        //                                     expression: initialData[index])
-        //                           ],
-        //                         ),
-        //                       ),
-        //                     ],
-        //                   )
-        //                 ],
-        //               ),
-        //             ),
-        // ]),);
-
-        // return SliverGrid(
-        //   delegate: SliverChildBuilderDelegate(
-        //     (
-        //       BuildContext context,
-        //       int index,
-        //     ) {
-        //       return ExpressionPreview(expression: snapshot.data[index]);
-        //     },
-        //     childCount: snapshot.data.length,
-        //   ),
-        //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        //     crossAxisCount: 2,
-        //     crossAxisSpacing: 2.0,
-        //     mainAxisSpacing: 2.0,
-        //   ),
-        // );
       },
     );
   }
