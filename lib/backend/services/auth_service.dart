@@ -50,9 +50,10 @@ class AuthenticationServiceCentralized implements AuthenticationService {
       'email': details.email,
       'password': details.password,
       'confirm_password': details.password,
-      'name': '${details.firstName} ${details.lastName}',
+      'name': details.name,
       'bio': details.bio,
       'username': details.username,
+      // 'location': 'New York',
       'profile_picture': details.profileImage ?? ''
     };
 

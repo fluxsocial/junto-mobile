@@ -159,6 +159,8 @@ class JuntoCreateState extends State<JuntoCreate> {
 
   dynamic getExpression() {
     if (_expressionType == 'LongForm') {
+      print(_longFormKey.currentState.createExpression());
+
       return _longFormKey.currentState.createExpression();
     }
     if (_expressionType == 'ShortForm') {

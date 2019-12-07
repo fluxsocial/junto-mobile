@@ -4,16 +4,10 @@ import 'package:flutter/material.dart';
 class JuntoDenSliverAppbar extends StatelessWidget {
   const JuntoDenSliverAppbar({
     Key key,
-    @required this.handle,
     @required this.name,
-    @required this.profilePicture,
-    @required this.bio,
   }) : super(key: key);
 
-  final String handle;
   final String name;
-  final String profilePicture;
-  final String bio;
 
   @override
   Widget build(BuildContext context) {
