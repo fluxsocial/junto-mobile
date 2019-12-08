@@ -26,7 +26,7 @@ class JuntoSpheres extends StatefulWidget {
 class JuntoSpheresState extends State<JuntoSpheres> with ListDistinct {
   UserRepo _userProvider;
   final AsyncMemoizer<UserGroupsResponse> _memoizer =
-      AsyncMemoizer<UserGroupsResponse>();
+      AsyncMemoizer<UserGroupsResponse>(); 
 
   @override
   void didChangeDependencies() {

@@ -10,7 +10,7 @@ class UserProfile {
   UserProfile({
     this.address,
     this.parent,
-    this.name,
+    this.name, 
     this.bio,
     this.location,
     this.profilePicture,

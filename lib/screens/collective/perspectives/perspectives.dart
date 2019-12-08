@@ -39,7 +39,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
             return Container(
               child: Text(
                 snapshot.error.toString(),
-                style: TextStyle(fontSize: 14, color: Colors.white),
+                style: const TextStyle(fontSize: 14, color: Colors.white),
               ),
             );
           }
@@ -140,9 +140,8 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                 child: ListView(
                   children: <Widget>[
                     _buildPerspective('JUNTO', false),
-                    _buildPerspective('Degrees of separation', false),
                     _buildPerspective('Subscriptions', false),
-                    _buildUserPerspectives(context),
+                    _buildUserPerspectives(context), 
                   ],
                 ),
               )

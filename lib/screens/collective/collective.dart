@@ -7,6 +7,7 @@ import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/widgets/appbar/collective_appbar.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspectives.dart';
@@ -202,6 +203,73 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
                   body: CustomScrollView(
                     controller: _collectiveController,
                     slivers: <Widget>[
+                      // SliverAppBar(
+                      //   automaticallyImplyLeading: false,
+                      //   backgroundColor: Colors.orange,
+                      //   actions: <Widget>[Container()],
+                      //   title: Container(
+                      //     child: Row(
+                      //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //       crossAxisAlignment: CrossAxisAlignment.end,
+                      //       children: <Widget>[
+                      //         GestureDetector(
+                      //           onTap: () {
+                      //           },
+                      //           child: Container(
+                      //             alignment: Alignment.bottomLeft,
+                      //             color: Colors.transparent,
+                      //             height: 36,
+                      //             child: Row(
+                      //               children: <Widget>[
+                      //                 Image.asset(
+                      //                     'assets/images/junto-mobile__logo.png',
+                      //                     height: 22.0,
+                      //                     width: 22.0),
+                      //                 const SizedBox(width: 7.5),
+                      //                 Text(
+                      //                   'JUNTO',
+                      //                   style: Theme.of(context)
+                      //                       .appBarTheme
+                      //                       .textTheme
+                      //                       .body1,
+                      //                 ),
+                      //               ],
+                      //             ),
+                      //           ),
+                      //         ),
+                      //         Row(
+                      //           children: <Widget>[
+                      //             GestureDetector(
+                      //               onTap: () {
+
+                      //               },
+                      //               child: Container(
+                      //                 width: 42,
+                      //                 alignment: Alignment.bottomRight,
+                      //                 color: Colors.transparent,
+                      //                 child: Icon(Icons.search,
+                      //                     size: 22,
+                      //                     color: Theme.of(context).primaryColor),
+                      //               ),
+                      //             ),
+                      //             GestureDetector(
+                      //               onTap: () {},
+                      //               child: Container(
+                      //                 width: 42,
+                      //                 color: Colors.transparent,
+                      //                 alignment: Alignment.bottomRight,
+                      //                 padding: const EdgeInsets.only(right: 10),
+                      //                 child: Icon(CustomIcons.moon,
+                      //                     size: 22,
+                      //                     color: Theme.of(context).primaryColor),
+                      //               ),
+                      //             ),
+                      //           ],
+                      //         )
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
                       SliverPersistentHeader(
                         delegate: CollectiveAppBar(
                           expandedHeight: 85,
@@ -337,5 +405,11 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
         _dx = 0;
       },
     );
+    _collectiveController
+      ..animateTo(
+        0.0,
+        curve: Curves.easeOut,
+        duration: const Duration(milliseconds: 300),
+      );
   }
 }
