@@ -48,6 +48,8 @@ class AuthRepo {
       await SharedPreferences.getInstance()
         ..setBool('isLoggedIn', true);
       return _user;
+
+      
     } catch (error) {
       rethrow;
     }
