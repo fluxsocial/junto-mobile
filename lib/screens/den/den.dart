@@ -3,18 +3,17 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/backend/mock/mock_expression.dart';
 import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
-import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/den/den_sliver_appbar.dart';
-import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
-import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
-import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/appbar/den_appbar.dart';
+import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_edit_den.dart';
+import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
+import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
+import 'package:provider/provider.dart';
 
 /// Displays the user's DEN or "profile screen"
 class JuntoDen extends StatefulWidget {
@@ -44,7 +43,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
     });
   }
 
-  _onScrollingHasChanged() {
+  void _onScrollingHasChanged() {
     super.hideFabOnScroll(_denController, _isVisible);
   }
 
@@ -55,9 +54,11 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
         userProfile = _profile.user;
         print(userProfile);
       });
+      return _profile;
     } catch (error) {
       print(error);
     }
+    return null;
   }
 
   @override
@@ -81,8 +82,8 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _juntoDenKey,
-      appBar: DenAppbar(heading: 'sunyata'),
-      floatingActionButton: ValueListenableBuilder(
+      appBar: DenAppbar(heading: userProfile?.username ?? 'DEN'),
+      floatingActionButton: ValueListenableBuilder<bool>(
         valueListenable: _isVisible,
         builder: (BuildContext context, bool visible, Widget child) {
           return AnimatedOpacity(
@@ -97,7 +98,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
               onTap: () {
                 Navigator.push(
                   context,
-                  CupertinoPageRoute(
+                  CupertinoPageRoute<dynamic>(
                     builder: (BuildContext context) => JuntoEditDen(),
                   ),
                 );
@@ -105,8 +106,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      endDrawer: JuntoDrawer('Den'),
-      // body: Center(child: Text('yo')),
+      endDrawer: const JuntoDrawer('Den'),
       body: DefaultTabController(
         length: _tabs.length,
         child: NestedScrollView(
@@ -115,7 +115,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               JuntoDenSliverAppbar(
-                name: userProfile.name,
+                name: userProfile?.name,
               ),
               SliverPersistentHeader(
                 delegate: JuntoAppBarDelegate(
@@ -148,7 +148,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                 shrinkWrap: true,
                 padding: const EdgeInsets.only(left: 10),
                 children: <Widget>[
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   Container(
                     padding: const EdgeInsets.only(top: 5, bottom: 5),
                     child: Column(
@@ -226,7 +226,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                     enableInfiniteScroll: false,
                     items: <Widget>[
                       Container(
-                        padding: EdgeInsets.only(right: 10),
+                        padding: const EdgeInsets.only(right: 10),
                         width: MediaQuery.of(context).size.width,
                         child: Image.asset(
                             'assets/images/junto-mobile__eric.png',
@@ -234,7 +234,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                       ),
                       Container(
                         width: MediaQuery.of(context).size.width,
-                        padding: EdgeInsets.only(right: 10),
+                        padding: const EdgeInsets.only(right: 10),
                         child: Image.asset(
                             'assets/images/junto-mobile__eric--qigong.png',
                             fit: BoxFit.cover),
@@ -243,7 +243,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                   ),
                   const SizedBox(height: 15),
                   Container(
-                    child: Text("student of suffering and its cessation",
+                    child: Text(userProfile.bio ?? '',
                         style: Theme.of(context).textTheme.caption),
                   ),
                 ],
@@ -264,7 +264,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                               left: 10, right: 5, top: 10),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
+                            children: const <Widget>[
                               // even number indexes
                             ],
                           ),
@@ -275,7 +275,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                               left: 5, right: 10, top: 10),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
+                            children: const <Widget>[
                               // odd number indexes
                             ],
                           ),
@@ -301,7 +301,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                               left: 10, right: 5, top: 10),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
+                            children: const <Widget>[
                               // even number indexes
                             ],
                           ),
@@ -312,7 +312,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                               left: 5, right: 10, top: 10),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
+                            children: const <Widget>[
                               // odd number indexes
                             ],
                           ),
@@ -330,60 +330,73 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
   }
 }
 
-// class _UserExpressionsState extends State<UserExpressions> {
-//   UserRepo _userProvider;
-//   AsyncMemoizer<List<CentralizedExpressionResponse>> memoizer =
-//       AsyncMemoizer<List<CentralizedExpressionResponse>>();
+class UserExpressions extends StatefulWidget {
+  const UserExpressions({
+    Key key,
+    @required this.userProfile,
+    @required this.privacy,
+  }) : super(key: key);
+  final UserProfile userProfile;
+  final String privacy;
 
-//   @override
-//   void didChangeDependencies() {
-//     super.didChangeDependencies();
-//     _userProvider = Provider.of<UserRepo>(context);
-//   }
+  @override
+  _UserExpressionsState createState() => _UserExpressionsState();
+}
 
-//   Future<List<CentralizedExpressionResponse>> getExpressions() {
-//     return memoizer.runOnce(
-//         () => _userProvider.getUsersExpressions(widget.userProfile.address));
-//   }
+class _UserExpressionsState extends State<UserExpressions> {
+  UserRepo _userProvider;
+  AsyncMemoizer<List<CentralizedExpressionResponse>> memoizer =
+      AsyncMemoizer<List<CentralizedExpressionResponse>>();
 
-//   @override
-//   Widget build(BuildContext context) {
-//     final MediaQueryData media = MediaQuery.of(context);
-//     return FutureBuilder<List<CentralizedExpressionResponse>>(
-//       future: getExpressions(),
-//       builder: (BuildContext context,
-//           AsyncSnapshot<List<CentralizedExpressionResponse>> snapshot) {
-//         if (snapshot.hasData) {
-//           final List<CentralizedExpressionResponse> _data = snapshot.data
-//               .where((CentralizedExpressionResponse expression) =>
-//                   expression.privacy == widget.privacy)
-//               .toList(growable: false);
-//           return ListView.builder(
-//             itemCount: _data.length,
-//             itemBuilder: (BuildContext context, int index) {
-//               return ExpressionPreview(
-//                 expression: _data[index],
-//               );
-//             },
-//           );
-//         }
-//         if (snapshot.hasError) {
-//           return Container(
-//             height: media.size.height,
-//             width: media.size.width,
-//             child: Center(
-//               child: Text('Error occured ${snapshot.error}'),
-//             ),
-//           );
-//         }
-//         return Container(
-//           height: media.size.height,
-//           width: media.size.width,
-//           child: const Center(
-//             child: CircularProgressIndicator(),
-//           ),
-//         );
-//       },
-//     );
-//   }
-// }
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _userProvider = Provider.of<UserRepo>(context);
+  }
+
+  Future<List<CentralizedExpressionResponse>> getExpressions() {
+    return memoizer.runOnce(
+        () => _userProvider.getUsersExpressions(widget.userProfile.address));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final MediaQueryData media = MediaQuery.of(context);
+    return FutureBuilder<List<CentralizedExpressionResponse>>(
+      future: getExpressions(),
+      builder: (BuildContext context,
+          AsyncSnapshot<List<CentralizedExpressionResponse>> snapshot) {
+        if (snapshot.hasData) {
+          final List<CentralizedExpressionResponse> _data = snapshot.data
+              .where((CentralizedExpressionResponse expression) =>
+                  expression.privacy == widget.privacy)
+              .toList(growable: false);
+          return ListView.builder(
+            itemCount: _data.length,
+            itemBuilder: (BuildContext context, int index) {
+              return ExpressionPreview(
+                expression: _data[index],
+              );
+            },
+          );
+        }
+        if (snapshot.hasError) {
+          return Container(
+            height: media.size.height,
+            width: media.size.width,
+            child: Center(
+              child: Text('Error occured ${snapshot.error}'),
+            ),
+          );
+        }
+        return Container(
+          height: media.size.height,
+          width: media.size.width,
+          child: const Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      },
+    );
+  }
+}

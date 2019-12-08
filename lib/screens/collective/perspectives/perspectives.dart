@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
@@ -7,8 +8,6 @@ import 'package:junto_beta_mobile/utils/junto_exception.dart'
     show JuntoException;
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/screens/collective/perspectives/edit_perspective/edit_perspective.dart';
 
 class JuntoPerspectives extends StatefulWidget {
   const JuntoPerspectives({
@@ -141,7 +140,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                   children: <Widget>[
                     _buildPerspective('JUNTO', false),
                     _buildPerspective('Subscriptions', false),
-                    _buildUserPerspectives(context), 
+                    _buildUserPerspectives(context),
                   ],
                 ),
               )

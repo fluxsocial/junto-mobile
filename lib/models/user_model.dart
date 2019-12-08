@@ -10,7 +10,7 @@ class UserProfile {
   UserProfile({
     this.address,
     this.parent,
-    this.name, 
+    this.name,
     this.bio,
     this.location,
     this.profilePicture,
@@ -44,7 +44,7 @@ class UserProfile {
   final String bio;
 
   /// Author's location
-  final String location;  
+  final String location;
 
   /// Url of the author's profile image
   final String profilePicture;
@@ -150,7 +150,6 @@ class UserAuthRegistrationDetails implements UserAuthDetails {
   final String bio;
   final String location;
   final String profileImage;
-
 
   @override
   bool get isComplete => email != null && password != null && name != null;
