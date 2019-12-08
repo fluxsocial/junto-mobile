@@ -6,12 +6,11 @@ import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+
 import 'package:junto_beta_mobile/widgets/appbar/collective_appbar.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-
-import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspectives.dart';
-import 'package:junto_beta_mobile/backend/repositories.dart';
+import 'package:junto_beta_mobile/widgets/appbar/collective_appbar.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
@@ -111,6 +110,52 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
     }
   }
 
+  void _onHorizontalDragUpdate(DragUpdateDetails details) {
+    if (_dx == 0.0 &&
+        details.globalPosition.dy != 0.0 &&
+        details.delta.direction > 0) {
+      return;
+    } else {
+      if (details.globalPosition.dx > 0 &&
+          details.globalPosition.dx < MediaQuery.of(context).size.width * .9) {
+        setState(() {
+          _dx = details.globalPosition.dx;
+          if (details.delta.direction > 0) {
+            setState(() {
+              _scrollDirection = 'left';
+            });
+          } else if (details.delta.direction < 0) {
+            setState(() {
+              _scrollDirection = 'right';
+            });
+          }
+        });
+      }
+    }
+  }
+
+  void _onHorizontalDragEnd(DragEndDetails details) {
+    if (_scrollDirection == 'right') {
+      if (_dx >= MediaQuery.of(context).size.width * .2) {
+        setState(() {
+          _dx = MediaQuery.of(context).size.width * .9;
+        });
+      } else if (_dx < MediaQuery.of(context).size.width * .2) {
+        _dx = 0.0;
+      }
+    } else if (_scrollDirection == 'left') {
+      if (_dx < MediaQuery.of(context).size.width * .7) {
+        setState(() {
+          _dx = 0.0;
+        });
+      } else if (_dx >= MediaQuery.of(context).size.width * .7) {
+        setState(() {
+          _dx = MediaQuery.of(context).size.width * .9;
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -120,51 +165,8 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
           profile: profile,
         ),
         GestureDetector(
-          onHorizontalDragUpdate: (DragUpdateDetails details) {
-            if (_dx == 0.0 &&
-                details.globalPosition.dy != 0.0 &&
-                details.delta.direction > 0) {
-              return;
-            } else {
-              if (details.globalPosition.dx > 0 &&
-                  details.globalPosition.dx <
-                      MediaQuery.of(context).size.width * .9) {
-                setState(() {
-                  _dx = details.globalPosition.dx;
-                  if (details.delta.direction > 0) {
-                    setState(() {
-                      _scrollDirection = 'left';
-                    });
-                  } else if (details.delta.direction < 0) {
-                    setState(() {
-                      _scrollDirection = 'right';
-                    });
-                  }
-                });
-              }
-            }
-          },
-          onHorizontalDragEnd: (DragEndDetails details) {
-            if (_scrollDirection == 'right') {
-              if (_dx >= MediaQuery.of(context).size.width * .2) {
-                setState(() {
-                  _dx = MediaQuery.of(context).size.width * .9;
-                });
-              } else if (_dx < MediaQuery.of(context).size.width * .2) {
-                _dx = 0.0;
-              }
-            } else if (_scrollDirection == 'left') {
-              if (_dx < MediaQuery.of(context).size.width * .7) {
-                setState(() {
-                  _dx = 0.0;
-                });
-              } else if (_dx >= MediaQuery.of(context).size.width * .7) {
-                setState(() {
-                  _dx = MediaQuery.of(context).size.width * .9;
-                });
-              }
-            }
-          },
+          onHorizontalDragUpdate: _onHorizontalDragUpdate,
+          onHorizontalDragEnd: _onHorizontalDragEnd,
           child: Transform.translate(
             offset: Offset(_dx, 0.0),
             child: Stack(
@@ -198,8 +200,21 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
                       FloatingActionButtonLocation.centerDocked,
 
                   endDrawer: const JuntoDrawer('Collective'),
-
                   // dynamically render body
+                  body: RefreshIndicator(
+                    onRefresh: () async => setState(() => print('Refresh')),
+                    child: CustomScrollView(
+                      controller: _collectiveController,
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      slivers: <Widget>[
+                        SliverPersistentHeader(
+                          delegate: CollectiveAppBar(
+                            expandedHeight: 85,
+                            newappbartitle: newAppBarTitle,
+                            openPerspectivesDrawer: _openPerspectivesDrawer,
+                          ),
+                          pinned: false,
+                          floating: true,
                   body: CustomScrollView(
                     controller: _collectiveController,
                     slivers: <Widget>[
@@ -276,11 +291,9 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
                           newappbartitle: newAppBarTitle,
                           openPerspectivesDrawer: _openPerspectivesDrawer,
                         ),
-                        pinned: false,
-                        floating: true,
-                      ),
-                      _buildSliverList(context),
-                    ],
+                        _buildSliverList(context),
+                      ],
+                    ),
                   ),
                 ),
                 GestureDetector(
@@ -332,65 +345,73 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
           );
 
         return SliverList(
-          delegate: SliverChildListDelegate(<Widget>[
-            Container(
-              color: Theme.of(context).backgroundColor,
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        width: MediaQuery.of(context).size.width * .5,
-                        padding: const EdgeInsets.only(
-                          top: 10,
-                          left: 10,
-                          right: 5,
+          delegate: SliverChildListDelegate(
+            <Widget>[
+              Container(
+                color: Theme.of(context).backgroundColor,
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          width: MediaQuery.of(context).size.width * .5,
+                          padding: const EdgeInsets.only(
+                            top: 10,
+                            left: 10,
+                            right: 5,
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              for (int index = 0;
+                                  index < snapshot.data.length + 1;
+                                  index++)
+                                if (index == snapshot.data.length)
+                                  const SizedBox()
+                                else if (index.isEven)
+                                  ExpressionPreview(
+                                    key: ValueKey<String>(
+                                      snapshot.data[index].address,
+                                    ),
+                                    expression: snapshot.data[index],
+                                  )
+                            ],
+                          ),
                         ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            for (int index = 0;
-                                index < snapshot.data.length + 1;
-                                index++)
-                              if (index == snapshot.data.length)
-                                const SizedBox()
-                              else if (index.isEven)
-                                ExpressionPreview(
-                                  expression: snapshot.data[index],
-                                )
-                          ],
+                        Container(
+                          width: MediaQuery.of(context).size.width * .5,
+                          padding: const EdgeInsets.only(
+                            top: 10,
+                            left: 5,
+                            right: 10,
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              for (int index = 0;
+                                  index < snapshot.data.length + 1;
+                                  index++)
+                                if (index == snapshot.data.length)
+                                  const SizedBox()
+                                else if (index.isOdd)
+                                  ExpressionPreview(
+                                    key: ValueKey<String>(
+                                      snapshot.data[index].address,
+                                    ),
+                                    expression: snapshot.data[index],
+                                  )
+                            ],
+                          ),
                         ),
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width * .5,
-                        padding: const EdgeInsets.only(
-                          top: 10,
-                          left: 5,
-                          right: 10,
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            for (int index = 0;
-                                index < snapshot.data.length + 1;
-                                index++)
-                              if (index == snapshot.data.length)
-                                const SizedBox()
-                              else if (index.isOdd)
-                                ExpressionPreview(
-                                  expression: snapshot.data[index],
-                                )
-                          ],
-                        ),
-                      ),
-                    ],
-                  )
-                ],
+                      ],
+                    )
+                  ],
+                ),
               ),
-            ),
-          ]),
+            ],
+          ),
         );
       },
     );
