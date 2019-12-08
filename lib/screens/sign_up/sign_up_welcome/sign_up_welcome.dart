@@ -52,14 +52,13 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
   /// to [JuntoTemplate]
   Future<void> _handleSignUp() async {
     final UserAuthRegistrationDetails details = UserAuthRegistrationDetails(
-      email: widget.email,
-      firstName: widget.firstName,
-      lastName: widget.lastName,
-      password: widget.password,
-      bio: widget.bio,
-      username: widget.username,
-      profileImage: widget.profilePicture ?? '',
-    );
+        email: widget.email,
+        name: widget.firstName + widget.lastName,
+        password: widget.password,
+        bio: widget.bio,
+        location: 'New York',
+        username: widget.username,
+        profileImage: widget.profilePicture ?? '');
     try {
       JuntoOverlay.showLoader(context);
       final UserData results =

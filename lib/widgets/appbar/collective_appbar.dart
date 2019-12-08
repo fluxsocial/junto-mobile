@@ -25,8 +25,9 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
+      width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.only(bottom: 10),
-      height: 85,
+      // height: 85,
       decoration: BoxDecoration(
           border: Border(
             bottom: BorderSide(
@@ -103,6 +104,7 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
         ],
       ),
     );
+    // Container(height: 45, color: Colors.orange)
   }
 
   @override

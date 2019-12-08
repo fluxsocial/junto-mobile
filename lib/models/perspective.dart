@@ -88,7 +88,7 @@ class PerspectiveResponse {
       channelType: json['entry']['channel_type'],
     );
   }
-
+ 
   /// Address of the given [Perspective] on the server
   final String address;
 

@@ -29,13 +29,19 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
     if (widget.profile?.address != null)
       return FutureBuilder<List<CentralizedPerspective>>(
         future: Provider.of<UserRepo>(context)
-            .getUserPerspective(widget.profile?.address),
+            .getUserPerspective(widget.profile.address),
         builder: (
           BuildContext context,
           AsyncSnapshot<List<CentralizedPerspective>> snapshot,
         ) {
           if (snapshot.hasError) {
-            return Container();
+            print(snapshot.error);
+            return Container(
+              child: Text(
+                snapshot.error.toString(),
+                style: const TextStyle(fontSize: 14, color: Colors.white),
+              ),
+            );
           }
           if (snapshot.hasData) {
             return ListView(
@@ -134,9 +140,8 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                 child: ListView(
                   children: <Widget>[
                     _buildPerspective('JUNTO', false),
-                    _buildPerspective('Degrees of separation', false),
                     _buildPerspective('Subscriptions', false),
-                    _buildUserPerspectives(context),
+                    _buildUserPerspectives(context), 
                   ],
                 ),
               )

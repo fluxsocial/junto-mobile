@@ -152,6 +152,7 @@ class UserServiceCentralized implements UserService {
       final dynamic data = _storage.getItem('data');
       if (data != null) {
         final UserData profile = UserData.fromMap(data);
+
         return profile;
       }
     }

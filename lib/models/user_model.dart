@@ -10,8 +10,9 @@ class UserProfile {
   UserProfile({
     this.address,
     this.parent,
-    this.name,
+    this.name, 
     this.bio,
+    this.location,
     this.profilePicture,
     this.verified,
     this.username,
@@ -24,6 +25,7 @@ class UserProfile {
         parent: json['parent'] ?? '',
         name: json['name'],
         bio: json['bio'],
+        location: json['location'],
         profilePicture: json['profile_picture'] ?? '',
         verified: json['verified'],
         username: json['username'] ?? '');
@@ -41,6 +43,9 @@ class UserProfile {
   /// Author's biography
   final String bio;
 
+  /// Author's location
+  final String location;  
+
   /// Url of the author's profile image
   final String profilePicture;
 
@@ -56,6 +61,7 @@ class UserProfile {
         'parent': parent,
         'name': name,
         'bio': bio,
+        'location': location,
         'profile_picture': profilePicture,
         'verified': verified,
         'username': username
@@ -65,6 +71,7 @@ class UserProfile {
   String toString() {
     return 'UserProfile: address: $address, parent: $parent, name: '
         '$name, bio: $bio,'
+        ' location: $location,'
         ' profilePicture: $profilePicture, verified: $verified,'
         ' username: $username';
   }
@@ -78,6 +85,7 @@ class UserProfile {
           parent == other.parent &&
           name == other.name &&
           bio == other.bio &&
+          location == other.location &&
           profilePicture == other.profilePicture &&
           verified == other.verified &&
           username == other.username;
@@ -88,6 +96,7 @@ class UserProfile {
       parent.hashCode ^
       name.hashCode ^
       bio.hashCode ^
+      location.hashCode ^
       profilePicture.hashCode ^
       verified.hashCode ^
       username.hashCode;
@@ -125,10 +134,10 @@ class UserAuthRegistrationDetails implements UserAuthDetails {
   UserAuthRegistrationDetails({
     @required this.email,
     @required this.password,
-    @required this.firstName,
-    @required this.lastName,
+    @required this.name,
     @required this.username,
     @required this.bio,
+    this.location,
     this.profileImage,
   });
 
@@ -136,24 +145,20 @@ class UserAuthRegistrationDetails implements UserAuthDetails {
   final String email;
   @override
   final String password;
-  final String firstName;
-  final String lastName;
+  final String name;
   final String username;
-  final String profileImage;
   final String bio;
+  final String location;
+  final String profileImage;
+
 
   @override
-  bool get isComplete =>
-      email != null &&
-      password != null &&
-      firstName != null &&
-      lastName != null;
+  bool get isComplete => email != null && password != null && name != null;
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'username': username,
-      'first_name': firstName,
-      'last_name': lastName,
+      'name': name,
       'profile_picture': profileImage,
       'bio': bio
     };

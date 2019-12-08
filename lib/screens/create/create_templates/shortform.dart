@@ -20,7 +20,7 @@ class CreateShortformState extends State<CreateShortform> {
   Color gradientTwo;
 
   // ignore: unused_field
-  String _currentBackground = 'none';
+  String _currentBackground = 'zero';
   TextEditingController _bodyController;
 
   /// Creates a [CentralizedShortFormExpression] from the given data entered
@@ -62,11 +62,11 @@ class CreateShortformState extends State<CreateShortform> {
     // final String _bodyValue = _bodyController.text
 
     void _setBackground(String background) {
-      if (background == 'none') {
+      if (background == 'zero') {
         setState(() {
           gradientOne = Colors.white;
           gradientTwo = Colors.white;
-          _currentBackground = 'none';
+          _currentBackground = 'zero';
         });
       } else if (background == 'one') {
         setState(

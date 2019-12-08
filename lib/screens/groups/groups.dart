@@ -1,11 +1,16 @@
+import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/appbar/groups_appbar.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/screens/packs/packs.dart';
-import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/fabs/create_sphere_fab.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
+import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/widgets/previews/sphere_preview/sphere_preview.dart';
+import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 
 class JuntoGroups extends StatefulWidget {
   @override
@@ -14,15 +19,42 @@ class JuntoGroups extends StatefulWidget {
   }
 }
 
-class JuntoGroupsState extends State<JuntoGroups> with HideFab {
+class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
   int _currentIndex = 0;
   PageController _groupsPageController;
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
+
+  UserRepo _userProvider;
+  UserProfile userProfile;
 
   @override
   void initState() {
     super.initState();
     _groupsPageController = PageController(initialPage: 0);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    setState(() {
+      _userProvider = Provider.of<UserRepo>(context);
+    });
+    _retrieveUserInfo();
+  }
+
+  Future<void> _retrieveUserInfo() async {
+    try {
+      final UserData _profile = await _userProvider.readLocalUser();
+      setState(() {
+        userProfile = _profile.user;
+      });
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  Future<UserGroupsResponse> getUserGroups() async {
+    return _userProvider.getUserGroups(userProfile.address);
   }
 
   @override
@@ -141,8 +173,55 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab {
                   });
                 },
                 children: <Widget>[
-                  const Center(
-                    child: Text('spheres'),
+                  FutureBuilder(
+                    future: getUserGroups(),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      if (snapshot.hasError) {
+                        return const Center(
+                          child: Text('something is up'),
+                        );
+                      }
+                      if (snapshot.hasData) {
+                        final List<Group> ownedGroups = snapshot.data.owned;
+                        final List<Group> associatedGroups =
+                            snapshot.data.associated;
+                        final List<Group> userGroups = distinct<Group>(
+                                ownedGroups, associatedGroups)
+                            .where((Group group) => group.groupType == 'Sphere')
+                            .toList();
+
+                        return userGroups.isEmpty
+                            ? Center(
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 36),
+                                  child: Text(
+                                    'Discover communities to join by pressing the search icon in the top navigation bar or create your own by pressing the icon left of the center lotus below!',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : ListView(
+                                shrinkWrap: true,
+                                physics: const ClampingScrollPhysics(),
+                                children: <Widget>[
+                                  Container(
+                                    height: 100,
+                                    child: const Text('success'),
+                                  ),
+                                  for (Group group in userGroups)
+                                    SpherePreview(
+                                      group: group,
+                                    )
+                                ],
+                              );
+                      }
+                      return const SizedBox();
+                    },
                   ),
                   JuntoPacks(
                     visibility: _isVisible,
