@@ -40,7 +40,7 @@ class ExpressionPreviewEmbed extends StatelessWidget {
                       // profile picture
                       ClipOval(
                         child: Image.asset(
-                          expression.creator.profilePicture,
+                          'assets/images/junto-mobile__placeholder--member.png',
                           height: 38.0,
                           width: 38.0,
                           fit: BoxFit.cover,
