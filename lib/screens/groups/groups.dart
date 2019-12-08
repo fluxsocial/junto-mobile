@@ -40,7 +40,6 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
       _userProvider = Provider.of<UserRepo>(context);
     });
     _retrieveUserInfo();
-    print(userProfile);
   }
 
   Future<void> _retrieveUserInfo() async {

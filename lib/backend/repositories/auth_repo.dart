@@ -14,8 +14,8 @@ class AuthRepo {
   String get authKey => _authKey;
 
   Future<bool> isLoggedIn() async {
-    final SharedPreferences preferences = await SharedPreferences.getInstance();
-    _isLoggedIn = preferences.getBool('isLoggedIn');
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    _isLoggedIn = prefs.getBool('isLoggedIn');
     return _isLoggedIn;
   }
 

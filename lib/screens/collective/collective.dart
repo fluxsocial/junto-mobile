@@ -298,7 +298,7 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
                         )
                       : const SizedBox(),
                 )
-              ],
+              ], 
             ),
           ),
         ),

@@ -26,7 +26,6 @@ class UserRepo {
   }
 
   Future<List<CentralizedPerspective>> getUserPerspective(String userAddress) {
-    print('yo');
     return _userService.getUserPerspective(userAddress);
   }
 
