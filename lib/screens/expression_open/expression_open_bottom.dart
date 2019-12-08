@@ -2,8 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
+import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/widgets/resonate_bottom_sheet.dart';
+import 'package:provider/provider.dart';
 
 class ExpressionOpenBottom extends StatefulWidget {
   const ExpressionOpenBottom(this.expression, this.focusTextField);
@@ -54,9 +58,7 @@ class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {
-                        _buildResonationModal();
-                      },
+                      onTap: _buildResonationModal,
                       child: Container(
                         color: Colors.transparent,
                         padding: const EdgeInsets.only(left: 12.5),
@@ -79,7 +81,30 @@ class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
-        return ResonateBottomSheet(expression: widget.expression);
+        return ResonateBottomSheet(
+          expression: widget.expression,
+          onResonationPress: () async {
+            Provider.of<ExpressionRepo>(context)
+                .postResonation(
+              widget.expression.address,
+            )
+                .then((Resonation resonation) {
+              JuntoDialog.showJuntoDialog(
+                context,
+                'Resonation Created',
+                <Widget>[
+                  FlatButton(
+                    child: const Text('Ok'),
+                    onPressed: () => Navigator.pop(context),
+                  )
+                ],
+              );
+            }).catchError(
+              (Object error, StackTrace stacktrace) =>
+                  print('Error posting resonnation $error'),
+            );
+          },
+        );
       },
     );
   }
