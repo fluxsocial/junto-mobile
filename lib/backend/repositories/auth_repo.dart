@@ -28,6 +28,7 @@ class AuthRepo {
     _isLoggedIn = true;
     await SharedPreferences.getInstance()
       ..setBool('isLoggedIn', true);
+    
     return _data;
   }
 

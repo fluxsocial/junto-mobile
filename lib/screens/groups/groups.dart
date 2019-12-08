@@ -11,6 +11,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/previews/sphere_preview/sphere_preview.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class JuntoGroups extends StatefulWidget {
   @override
@@ -25,12 +26,14 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
 
   UserRepo _userProvider;
-  UserProfile userProfile;
+  String _userAddress;
+  var _userProfile;
 
   @override
   void initState() {
     super.initState();
     _groupsPageController = PageController(initialPage: 0);
+    getUserInfo();
   }
 
   @override
@@ -39,22 +42,25 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
     setState(() {
       _userProvider = Provider.of<UserRepo>(context);
     });
-    _retrieveUserInfo();
+    getUserInfo();
   }
 
-  Future<void> _retrieveUserInfo() async {
-    try {
-      final UserData _profile = await _userProvider.readLocalUser();
-      setState(() {
-        userProfile = _profile.user;
-      });
-    } catch (error) {
-      print(error);
-    }
+  Future<void> getUserInfo() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _userAddress = prefs.getString('user_id');
+    });
+    getUser();
+  }
+
+  Future<void> getUser() async {
+    setState(() {
+      _userProfile = _userProvider.getUser(_userAddress);
+    });
   }
 
   Future<UserGroupsResponse> getUserGroups() async {
-    return _userProvider.getUserGroups(userProfile.address);
+    return _userProvider.getUserGroups(_userAddress);
   }
 
   @override

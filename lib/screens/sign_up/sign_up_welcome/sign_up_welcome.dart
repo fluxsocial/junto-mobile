@@ -65,7 +65,7 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
           await Provider.of<AuthRepo>(context).registerUser(details);
       await SharedPreferences.getInstance()
         ..setBool(
-          'isLoggedIn',
+          'isLoggedIn', 
           true,
         )
         ..setString('user_id', results.user.address);
