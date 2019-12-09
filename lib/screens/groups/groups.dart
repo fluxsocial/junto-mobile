@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/packs/packs.dart';
 import 'package:junto_beta_mobile/screens/groups/spheres/spheres.dart';
@@ -10,10 +9,11 @@ import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/fabs/create_sphere_fab.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
-import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+// This screen displays groups a member belongs two. Currently, there are two types of
+// groups: spheres (communities) and packs (agent-centric communities)
 class JuntoGroups extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -26,7 +26,6 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
   PageController _groupsPageController;
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
 
-  UserRepo _userProvider;
   String _userAddress;
   UserData _userProfile;
 
@@ -34,14 +33,12 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
   void initState() {
     super.initState();
     _groupsPageController = PageController(initialPage: 0);
+    getUserInformation();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
-    _userProvider = Provider.of<UserRepo>(context);
-    getUserInformation();
   }
 
   Future<void> getUserInformation() async {
