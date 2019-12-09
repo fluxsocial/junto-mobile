@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:async/async.dart' show AsyncMemoizer;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +26,8 @@ class JuntoDen extends StatefulWidget {
 class JuntoDenState extends State<JuntoDen> with HideFab {
   final List<String> _tabs = <String>['About', 'Public', 'Private'];
   UserRepo _userProvider;
-  UserProfile userProfile;
+  String _userAddress;
+  UserData _userProfile;
 
   ScrollController _denController;
   final GlobalKey<ScaffoldState> _juntoDenKey = GlobalKey<ScaffoldState>();
@@ -43,22 +46,14 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
     });
   }
 
-  void _onScrollingHasChanged() {
-    super.hideFabOnScroll(_denController, _isVisible);
-  }
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
-  Future<UserData> _retrieveUserInfo() async {
-    try {
-      final UserData _profile = await _userProvider.readLocalUser();
-      setState(() {
-        userProfile = _profile.user;
-        print(userProfile);
-      });
-      return _profile;
-    } catch (error) {
-      print(error);
-    }
-    return null;
+    setState(() {
+      _userProvider = Provider.of<UserRepo>(context);
+    });
+    getUserInformation();
   }
 
   @override
@@ -68,335 +63,403 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
     _denController.removeListener(_onScrollingHasChanged);
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  _onScrollingHasChanged() {
+    super.hideFabOnScroll(_denController, _isVisible);
+  }
+
+  Future<void> getUserInformation() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final Map<String, dynamic> decodedUserData =
+        jsonDecode(prefs.getString('user_data'));
 
     setState(() {
-      _userProvider = Provider.of<UserRepo>(context);
+      _userAddress = prefs.getString('user_id');
+      _userProfile = UserData.fromMap(decodedUserData);
     });
-    _retrieveUserInfo();
+  }
+
+  Future getUserPublicExpressions() async {
+    return _userProvider.getUsersExpressions(_userAddress);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _juntoDenKey,
-      appBar: DenAppbar(heading: userProfile?.username ?? 'DEN'),
-      floatingActionButton: ValueListenableBuilder<bool>(
-        valueListenable: _isVisible,
-        builder: (BuildContext context, bool visible, Widget child) {
-          return AnimatedOpacity(
-              duration: const Duration(milliseconds: 300),
-              opacity: visible ? 1.0 : 0.0,
-              child: child);
-        },
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 25),
-          child: BottomNav(
-              screen: 'den',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute<dynamic>(
-                    builder: (BuildContext context) => JuntoEditDen(),
-                  ),
-                );
-              }),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      endDrawer: const JuntoDrawer('Den'),
-      body: DefaultTabController(
-        length: _tabs.length,
-        child: NestedScrollView(
-          controller: _denController,
-          physics: const ClampingScrollPhysics(),
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return <Widget>[
-              JuntoDenSliverAppbar(
-                name: userProfile?.name,
+        key: _juntoDenKey,
+        appBar: _userProfile != null
+            ? DenAppbar(heading: _userProfile.user.username)
+            : const PreferredSize(
+                preferredSize: Size.fromHeight(45),
+                child: SizedBox(),
+
               ),
-              SliverPersistentHeader(
-                delegate: JuntoAppBarDelegate(
-                  TabBar(
-                    labelPadding: const EdgeInsets.all(0),
-                    isScrollable: true,
-                    labelColor: Theme.of(context).primaryColorDark,
-                    labelStyle: Theme.of(context).textTheme.subhead,
-                    indicatorWeight: 0.0001,
-                    tabs: <Widget>[
-                      for (String name in _tabs)
-                        Container(
-                          margin: const EdgeInsets.only(right: 24),
-                          color: Theme.of(context).colorScheme.background,
-                          child: Tab(
-                            text: name,
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
-                pinned: true,
-              ),
-            ];
+        floatingActionButton: ValueListenableBuilder(
+          valueListenable: _isVisible,
+          builder: (BuildContext context, bool visible, Widget child) {
+            return AnimatedOpacity(
+                duration: const Duration(milliseconds: 300),
+                opacity: visible ? 1.0 : 0.0,
+                child: child);
           },
-          body: TabBarView(
-            children: <Widget>[
-              ListView(
-                physics: const ClampingScrollPhysics(),
-                shrinkWrap: true,
-                padding: const EdgeInsets.only(left: 10),
-                children: <Widget>[
-                  const SizedBox(height: 5),
-                  Container(
-                    padding: const EdgeInsets.only(top: 5, bottom: 5),
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          child: Row(
-                            children: <Widget>[
-                              Icon(CustomIcons.gender,
-                                  size: 17,
-                                  color: Theme.of(context).primaryColor),
-                              const SizedBox(width: 5),
-                              Text(
-                                'he/him',
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    color: Theme.of(context).primaryColor,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Container(
-                          child: Row(
-                            children: <Widget>[
-                              Image.asset(
-                                'assets/images/junto-mobile__location.png',
-                                height: 15,
-                                color: Theme.of(context).primaryColor,
-                              ),
-                              const SizedBox(width: 5),
-                              Text(
-                                'Spirit',
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    color: Theme.of(context).primaryColor,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Container(
-                          child: Row(
-                            children: <Widget>[
-                              Image.asset(
-                                'assets/images/junto-mobile__link.png',
-                                height: 15,
-                                color: Theme.of(context).primaryColor,
-                              ),
-                              const SizedBox(width: 5),
-                              Text(
-                                'junto.foundation',
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                                style: TextStyle(
-                                    color: Theme.of(context).primaryColor,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 25),
+            child: BottomNav(
+                screen: 'den',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (BuildContext context) => JuntoEditDen(),
                     ),
-                  ),
-                  const SizedBox(height: 15),
-                  CarouselSlider(
-                    viewportFraction: 1.0,
-                    height: MediaQuery.of(context).size.width - 20,
-                    enableInfiniteScroll: false,
-                    items: <Widget>[
-                      Container(
-                        padding: const EdgeInsets.only(right: 10),
-                        width: MediaQuery.of(context).size.width,
-                        child: Image.asset(
-                            'assets/images/junto-mobile__eric.png',
-                            fit: BoxFit.cover),
+                  );
+                }),
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        endDrawer: JuntoDrawer('Den'),
+        body: _userProfile != null
+            ? DefaultTabController(
+                length: _tabs.length,
+                child: NestedScrollView(
+                  controller: _denController,
+                  physics: const ClampingScrollPhysics(),
+                  headerSliverBuilder:
+                      (BuildContext context, bool innerBoxIsScrolled) {
+                    return <Widget>[
+                      JuntoDenSliverAppbar(
+                        name: _userProfile.user.name,
                       ),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        padding: const EdgeInsets.only(right: 10),
-                        child: Image.asset(
-                            'assets/images/junto-mobile__eric--qigong.png',
-                            fit: BoxFit.cover),
+                      SliverPersistentHeader(
+                        delegate: JuntoAppBarDelegate(
+                          TabBar(
+                            labelPadding: const EdgeInsets.all(0),
+                            isScrollable: true,
+                            labelColor: Theme.of(context).primaryColorDark,
+                            labelStyle: Theme.of(context).textTheme.subhead,
+                            indicatorWeight: 0.0001,
+                            tabs: <Widget>[
+                              for (String name in _tabs)
+                                Container(
+                                  margin: const EdgeInsets.only(right: 24),
+                                  color:
+                                      Theme.of(context).colorScheme.background,
+                                  child: Tab(
+                                    text: name,
+                                  ),
+                                ),
+
+                            ],
+                          ),
+                        ),
+                        pinned: true,
+                      ),
+                    ];
+                  },
+                  body: TabBarView(
+                    children: <Widget>[
+                      ListView(
+                        physics: const ClampingScrollPhysics(),
+                        shrinkWrap: true,
+                        padding: const EdgeInsets.only(left: 10),
+                        children: <Widget>[
+                          const SizedBox(height: 5),
+                          Container(
+                            padding: const EdgeInsets.only(top: 5, bottom: 5),
+                            child: Column(
+                              children: <Widget>[
+                                Container(
+                                  child: Row(
+                                    children: <Widget>[
+                                      Icon(CustomIcons.gender,
+                                          size: 17,
+                                          color:
+                                              Theme.of(context).primaryColor),
+                                      const SizedBox(width: 5),
+                                      Text(
+                                        'he/him',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                Container(
+                                  child: Row(
+                                    children: <Widget>[
+                                      Image.asset(
+                                        'assets/images/junto-mobile__location.png',
+                                        height: 15,
+                                        color: Theme.of(context).primaryColor,
+                                      ),
+                                      const SizedBox(width: 5),
+                                      Text(
+                                        'Spirit',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                Container(
+                                  child: Row(
+                                    children: <Widget>[
+                                      Image.asset(
+                                        'assets/images/junto-mobile__link.png',
+                                        height: 15,
+                                        color: Theme.of(context).primaryColor,
+                                      ),
+                                      const SizedBox(width: 5),
+                                      Text(
+                                        'junto.foundation',
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                        style: TextStyle(
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 15),
+                          CarouselSlider(
+                            viewportFraction: 1.0,
+                            height: MediaQuery.of(context).size.width - 20,
+                            enableInfiniteScroll: false,
+                            items: <Widget>[
+                              Container(
+                                padding: const EdgeInsets.only(right: 10),
+                                width: MediaQuery.of(context).size.width,
+                                child: Image.asset(
+                                    'assets/images/junto-mobile__eric.png',
+                                    fit: BoxFit.cover),
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                padding: const EdgeInsets.only(right: 10),
+                                child: Image.asset(
+                                    'assets/images/junto-mobile__eric--qigong.png',
+                                    fit: BoxFit.cover),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 15),
+                          Container(
+                            child: Text(_userProfile.user.bio,
+                                style: Theme.of(context).textTheme.caption),
+                          ),
+                        ],
+                      ),
+
+                      // public expressions of user
+                      FutureBuilder<dynamic>(
+                        future: getUserPublicExpressions(),
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          if (snapshot.hasError) {
+                            return const Center(
+                              child: Text('something is up'),
+                            );
+                          }
+                          if (snapshot.hasData) {
+                            print(snapshot.data);
+                            return
+                                // public mock expressions
+                                Container(
+                              color: Theme.of(context).colorScheme.background,
+                              child: ListView(
+                                children: <Widget>[
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .5,
+                                        padding: const EdgeInsets.only(
+                                            left: 10, right: 5, top: 10),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: <Widget>[
+                                            for (int index = 0;
+                                                index <
+                                                    snapshot.data.length + 1;
+                                                index++)
+                                              if (index == snapshot.data.length)
+                                                const SizedBox()
+                                              else if (index.isEven &&
+                                                  snapshot.data[index]
+                                                          .privacy ==
+                                                      'Public')
+                                                ExpressionPreview(
+                                                  expression:
+                                                      snapshot.data[index],
+                                                )
+                                              else
+                                                const SizedBox()
+
+                                            // even number indexes
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .5,
+                                        padding: const EdgeInsets.only(
+                                            left: 5, right: 10, top: 10),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: <Widget>[
+                                            // odd number indexes
+                                            for (int index = 0;
+                                                index <
+                                                    snapshot.data.length + 1;
+                                                index++)
+                                              if (index == snapshot.data.length)
+                                                const SizedBox()
+                                              else if (index.isOdd &&
+                                                  snapshot.data[index]
+                                                          .privacy ==
+                                                      'Public')
+                                                ExpressionPreview(
+                                                  expression:
+                                                      snapshot.data[index],
+                                                )
+                                              else
+                                                const SizedBox()
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            );
+                          }
+                          return const SizedBox();
+                        },
+                      ),
+
+                      // private expressions of user
+                      FutureBuilder<dynamic>(
+                        future: getUserPublicExpressions(),
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          if (snapshot.hasError) {
+                            return const Center(
+                              child: Text('something is up'),
+                            );
+                          }
+                          if (snapshot.hasData) {
+                            print(snapshot.data);
+                            return Container(
+                              color: Theme.of(context).colorScheme.background,
+                              child: ListView(
+                                children: <Widget>[
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .5,
+                                        padding: const EdgeInsets.only(
+                                            left: 10, right: 5, top: 10),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: <Widget>[
+                                            for (int index = 0;
+                                                index <
+                                                    snapshot.data.length + 1;
+                                                index++)
+                                              if (index == snapshot.data.length)
+                                                const SizedBox()
+                                              else if (index.isEven &&
+                                                  snapshot.data[index]
+                                                          .privacy ==
+                                                      'Private')
+                                                ExpressionPreview(
+                                                  expression:
+                                                      snapshot.data[index],
+                                                )
+                                              else
+                                                const SizedBox()
+
+                                            // even number indexes
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .5,
+                                        padding: const EdgeInsets.only(
+                                            left: 5, right: 10, top: 10),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: <Widget>[
+                                            // odd number indexes
+                                            for (int index = 0;
+                                                index <
+                                                    snapshot.data.length + 1;
+                                                index++)
+                                              if (index == snapshot.data.length)
+                                                const SizedBox()
+                                              else if (index.isOdd &&
+                                                  snapshot.data[index]
+                                                          .privacy ==
+                                                      'Private')
+                                                ExpressionPreview(
+                                                  expression:
+                                                      snapshot.data[index],
+                                                )
+                                              else
+                                                const SizedBox()
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            );
+                          }
+                          return const SizedBox();
+                        },
                       ),
                     ],
                   ),
-                  const SizedBox(height: 15),
-                  Container(
-                    child: Text(userProfile.bio ?? '',
-                        style: Theme.of(context).textTheme.caption),
-                  ),
-                ],
-              ),
 
-              // public mock expressions
-              Container(
-                color: Theme.of(context).colorScheme.background,
-                child: ListView(
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          width: MediaQuery.of(context).size.width * .5,
-                          padding: const EdgeInsets.only(
-                              left: 10, right: 5, top: 10),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: const <Widget>[
-                              // even number indexes
-                            ],
-                          ),
-                        ),
-                        Container(
-                          width: MediaQuery.of(context).size.width * .5,
-                          padding: const EdgeInsets.only(
-                              left: 5, right: 10, top: 10),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: const <Widget>[
-                              // odd number indexes
-                            ],
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
                 ),
-              ),
-
-              // private mock expressions
-              Container(
-                color: Theme.of(context).colorScheme.background,
-                child: ListView(
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          width: MediaQuery.of(context).size.width * .5,
-                          padding: const EdgeInsets.only(
-                              left: 10, right: 5, top: 10),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: const <Widget>[
-                              // even number indexes
-                            ],
-                          ),
-                        ),
-                        Container(
-                          width: MediaQuery.of(context).size.width * .5,
-                          padding: const EdgeInsets.only(
-                              left: 5, right: 10, top: 10),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: const <Widget>[
-                              // odd number indexes
-                            ],
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+              )
+            : Center(
+                child: Text('loading'),
+              ));
   }
 }
 
-class UserExpressions extends StatefulWidget {
-  const UserExpressions({
-    Key key,
-    @required this.userProfile,
-    @required this.privacy,
-  }) : super(key: key);
-  final UserProfile userProfile;
-  final String privacy;
-
-  @override
-  _UserExpressionsState createState() => _UserExpressionsState();
-}
-
-class _UserExpressionsState extends State<UserExpressions> {
-  UserRepo _userProvider;
-  AsyncMemoizer<List<CentralizedExpressionResponse>> memoizer =
-      AsyncMemoizer<List<CentralizedExpressionResponse>>();
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _userProvider = Provider.of<UserRepo>(context);
-  }
-
-  Future<List<CentralizedExpressionResponse>> getExpressions() {
-    return memoizer.runOnce(
-        () => _userProvider.getUsersExpressions(widget.userProfile.address));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final MediaQueryData media = MediaQuery.of(context);
-    return FutureBuilder<List<CentralizedExpressionResponse>>(
-      future: getExpressions(),
-      builder: (BuildContext context,
-          AsyncSnapshot<List<CentralizedExpressionResponse>> snapshot) {
-        if (snapshot.hasData) {
-          final List<CentralizedExpressionResponse> _data = snapshot.data
-              .where((CentralizedExpressionResponse expression) =>
-                  expression.privacy == widget.privacy)
-              .toList(growable: false);
-          return ListView.builder(
-            itemCount: _data.length,
-            itemBuilder: (BuildContext context, int index) {
-              return ExpressionPreview(
-                expression: _data[index],
-              );
-            },
-          );
-        }
-        if (snapshot.hasError) {
-          return Container(
-            height: media.size.height,
-            width: media.size.width,
-            child: Center(
-              child: Text('Error occured ${snapshot.error}'),
-            ),
-          );
-        }
-        return Container(
-          height: media.size.height,
-          width: media.size.width,
-          child: const Center(
-            child: CircularProgressIndicator(),
-          ),
-        );
-      },
-    );
-  }
-}

@@ -37,7 +37,7 @@ class _SignInState extends State<SignIn> {
     final String email = _emailController.value.text;
     final String password = _passwordController.value.text;
     final UserAuthLoginDetails loginDetails =
-        UserAuthLoginDetails(email: email, password: password);
+        UserAuthLoginDetails(email: email, password: password); 
     JuntoOverlay.showLoader(context);
     try {
       await Provider.of<AuthRepo>(context).loginUser(loginDetails);
@@ -49,6 +49,7 @@ class _SignInState extends State<SignIn> {
         ),
       );
     } catch (error) {
+      print(error);
       JuntoOverlay.hide();
       JuntoDialog.showJuntoDialog(
           context,
