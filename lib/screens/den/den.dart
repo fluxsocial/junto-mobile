@@ -87,7 +87,12 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
   Widget build(BuildContext context) {
     return Scaffold(
         key: _juntoDenKey,
-        appBar: DenAppbar(heading: 'sunyata'),
+        appBar: _userProfile != null
+            ? DenAppbar(heading: _userProfile.user.username)
+            : const PreferredSize(
+                preferredSize: Size.fromHeight(45),
+                child: SizedBox(),
+              ),
         floatingActionButton: ValueListenableBuilder(
           valueListenable: _isVisible,
           builder: (BuildContext context, bool visible, Widget child) {
@@ -156,7 +161,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                         shrinkWrap: true,
                         padding: const EdgeInsets.only(left: 10),
                         children: <Widget>[
-                          SizedBox(height: 5),
+                          const SizedBox(height: 5),
                           Container(
                             padding: const EdgeInsets.only(top: 5, bottom: 5),
                             child: Column(
@@ -238,7 +243,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                             enableInfiniteScroll: false,
                             items: <Widget>[
                               Container(
-                                padding: EdgeInsets.only(right: 10),
+                                padding: const EdgeInsets.only(right: 10),
                                 width: MediaQuery.of(context).size.width,
                                 child: Image.asset(
                                     'assets/images/junto-mobile__eric.png',
@@ -246,7 +251,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                               ),
                               Container(
                                 width: MediaQuery.of(context).size.width,
-                                padding: EdgeInsets.only(right: 10),
+                                padding: const EdgeInsets.only(right: 10),
                                 child: Image.asset(
                                     'assets/images/junto-mobile__eric--qigong.png',
                                     fit: BoxFit.cover),
@@ -261,7 +266,8 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                         ],
                       ),
 
-                      FutureBuilder(
+                      // public expressions of user
+                      FutureBuilder<dynamic>(
                         future: getUserPublicExpressions(),
                         builder:
                             (BuildContext context, AsyncSnapshot snapshot) {
@@ -308,7 +314,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                                                       snapshot.data[index],
                                                 )
                                               else
-                                                SizedBox()
+                                                const SizedBox()
 
                                             // even number indexes
                                           ],
@@ -340,7 +346,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                                                       snapshot.data[index],
                                                 )
                                               else
-                                                SizedBox()
+                                                const SizedBox()
                                           ],
                                         ),
                                       ),
@@ -354,41 +360,96 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                         },
                       ),
 
-                      // private mock expressions
-                      Container(
-                        color: Theme.of(context).colorScheme.background,
-                        child: ListView(
-                          children: <Widget>[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Container(
-                                  width: MediaQuery.of(context).size.width * .5,
-                                  padding: const EdgeInsets.only(
-                                      left: 10, right: 5, top: 10),
-                                  child: Column(
+                      // private expressions of user
+                      FutureBuilder<dynamic>(
+                        future: getUserPublicExpressions(),
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          if (snapshot.hasError) {
+                            return const Center(
+                              child: Text('something is up'),
+                            );
+                          }
+                          if (snapshot.hasData) {
+                            print(snapshot.data);
+                            return Container(
+                              color: Theme.of(context).colorScheme.background,
+                              child: ListView(
+                                children: <Widget>[
+                                  Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: <Widget>[
-                                      // even number indexes
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .5,
+                                        padding: const EdgeInsets.only(
+                                            left: 10, right: 5, top: 10),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: <Widget>[
+                                            for (int index = 0;
+                                                index <
+                                                    snapshot.data.length + 1;
+                                                index++)
+                                              if (index == snapshot.data.length)
+                                                const SizedBox()
+                                              else if (index.isEven &&
+                                                  snapshot.data[index]
+                                                          .privacy ==
+                                                      'Private')
+                                                ExpressionPreview(
+                                                  expression:
+                                                      snapshot.data[index],
+                                                )
+                                              else
+                                                const SizedBox()
+
+                                            // even number indexes
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .5,
+                                        padding: const EdgeInsets.only(
+                                            left: 5, right: 10, top: 10),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: <Widget>[
+                                            // odd number indexes
+                                            for (int index = 0;
+                                                index <
+                                                    snapshot.data.length + 1;
+                                                index++)
+                                              if (index == snapshot.data.length)
+                                                const SizedBox()
+                                              else if (index.isOdd &&
+                                                  snapshot.data[index]
+                                                          .privacy ==
+                                                      'Private')
+                                                ExpressionPreview(
+                                                  expression:
+                                                      snapshot.data[index],
+                                                )
+                                              else
+                                                const SizedBox()
+                                          ],
+                                        ),
+                                      ),
                                     ],
-                                  ),
-                                ),
-                                Container(
-                                  width: MediaQuery.of(context).size.width * .5,
-                                  padding: const EdgeInsets.only(
-                                      left: 5, right: 10, top: 10),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: <Widget>[
-                                      // odd number indexes
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
+                                  )
+                                ],
+                              ),
+                            );
+                          }
+                          return const SizedBox();
+                        },
                       ),
                     ],
                   ),
