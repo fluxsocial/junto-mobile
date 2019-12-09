@@ -3,9 +3,9 @@ import 'package:flutter/rendering.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/packs/pack_open/pack_drawer.dart';
-import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open_appbar.dart';
-import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open_public.dart';
+import 'package:junto_beta_mobile/screens/groups/packs/pack_open/pack_drawer.dart';
+import 'package:junto_beta_mobile/screens/groups/packs/pack_open/pack_open_appbar.dart';
+import 'package:junto_beta_mobile/screens/groups/packs/pack_open/pack_open_public.dart';
 import 'package:junto_beta_mobile/widgets/fabs/expression_center_fab.dart';
 
 class PackOpen extends StatefulWidget {

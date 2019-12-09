@@ -1,19 +1,18 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/packs/packs.dart';
+import 'package:junto_beta_mobile/screens/groups/packs/packs.dart';
+import 'package:junto_beta_mobile/screens/groups/spheres/spheres.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/appbar/groups_appbar.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/fabs/create_sphere_fab.dart';
-import 'package:junto_beta_mobile/widgets/previews/sphere_preview/sphere_preview.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 
 class JuntoGroups extends StatefulWidget {
   @override
@@ -29,40 +28,31 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
 
   UserRepo _userProvider;
   String _userAddress;
-  var _userProfile;
+  UserData _userProfile;
 
   @override
   void initState() {
     super.initState();
     _groupsPageController = PageController(initialPage: 0);
-    getUserInfo();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    setState(() {
-      _userProvider = Provider.of<UserRepo>(context);
-    });
-    getUserInfo();
+
+    _userProvider = Provider.of<UserRepo>(context);
+    getUserInformation();
   }
 
-  Future<void> getUserInfo() async {
+  Future<void> getUserInformation() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final Map<String, dynamic> decodedUserData =
+        jsonDecode(prefs.getString('user_data'));
+
     setState(() {
       _userAddress = prefs.getString('user_id');
+      _userProfile = UserData.fromMap(decodedUserData);
     });
-    getUser();
-  }
-
-  Future<void> getUser() async {
-    setState(() {
-      _userProfile = _userProvider.getUser(_userAddress);
-    });
-  }
-
-  Future<UserGroupsResponse> getUserGroups() async {
-    return _userProvider.getUserGroups(_userAddress);
   }
 
   @override
@@ -182,67 +172,8 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
                   });
                 },
                 children: <Widget>[
-                  FutureBuilder(
-                    future: getUserGroups(),
-                    builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      if (snapshot.hasError) {
-                        return const Center(
-                          child: Text('something is up'),
-                        );
-                      }
-                      if (snapshot.hasData) {
-                        final List<Group> ownedGroups = snapshot.data.owned;
-                        final List<Group> associatedGroups =
-                            snapshot.data.associated;
-                        final List<Group> userGroups = distinct<Group>(
-                                ownedGroups, associatedGroups)
-                            .where((Group group) => group.groupType == 'Sphere')
-                            .toList();
-
-                        return userGroups.isEmpty
-                            ? Center(
-                                child: Transform.translate(
-                                  offset: const Offset(0.0, -50.0),
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 36),
-                                    child: Text(
-                                      'Discover communities to join by pressing the search icon in the top navigation bar or create your own by pressing the icon left of the center lotus below!',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              )
-                            : ListView(
-                                shrinkWrap: true,
-                                physics: const ClampingScrollPhysics(),
-                                children: <Widget>[
-                                  Container(
-                                    height: 100,
-                                    child: const Text('success'),
-                                  ),
-                                  for (Group group in userGroups)
-                                    SpherePreview(
-                                      group: group,
-                                    )
-                                ],
-                              );
-                      }
-                      return Center(
-                        child: Transform.translate(
-                          offset: const Offset(0.0, -50),
-                          child: JuntoProgressIndicator(),
-                        ),
-                      );
-                    },
-                  ),
-                  JuntoPacks(
-                    visibility: _isVisible,
-                  )
+                  JuntoSpheres(userProfile: _userProfile),
+                  JuntoPacks(visibility: _isVisible, userProfile: _userProfile)
                 ],
               ),
             ),

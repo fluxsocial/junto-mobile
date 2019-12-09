@@ -9,7 +9,7 @@ import 'package:junto_beta_mobile/models/sphere.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/create_perspective/create_perspective.dart'
     show SelectedUsers;
-import 'package:junto_beta_mobile/screens/spheres/create_sphere/create_sphere_next.dart';
+import 'package:junto_beta_mobile/screens/groups/spheres/create_sphere/create_sphere_next.dart';
 import 'package:junto_beta_mobile/utils/utils.dart' show AddUserToList;
 import 'package:junto_beta_mobile/widgets/search_members_modal.dart';
 import 'package:junto_beta_mobile/widgets/user_preview.dart';

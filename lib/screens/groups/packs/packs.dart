@@ -10,9 +10,10 @@ import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 
 // This class renders the screen of packs a user belongs to
 class JuntoPacks extends StatefulWidget {
-  const JuntoPacks({this.visibility});
+  const JuntoPacks({this.visibility, this.userProfile});
 
   final ValueNotifier<bool> visibility;
+  final UserData userProfile;
 
   @override
   State<StatefulWidget> createState() => JuntoPacksState();
@@ -51,7 +52,7 @@ class JuntoPacksState extends State<JuntoPacks> with ListDistinct, HideFab {
   Future<UserGroupsResponse> getUserPacks() async {
     final UserData _profile = await _userProvider.readLocalUser();
     return _memoizer.runOnce(
-      () async => _userProvider.getUserGroups(_profile.user.address),
+      () async => _userProvider.getUserGroups(widget.userProfile.user.address),
     );
   }
 

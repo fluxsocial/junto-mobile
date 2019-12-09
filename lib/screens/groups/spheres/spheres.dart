@@ -8,8 +8,9 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/previews/sphere_preview/sphere_preview.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 
-/// This class renders the main screen for Spheres. It includes a widget to
+/// This class renders the list of spheres a member belongs to. It includes a widget to
 /// create a screen as well as a ListView of all the sphere previews
 class JuntoSpheres extends StatefulWidget {
   const JuntoSpheres({
@@ -17,7 +18,7 @@ class JuntoSpheres extends StatefulWidget {
     @required this.userProfile,
   }) : super(key: key);
 
-  final UserProfile userProfile;
+  final UserData userProfile;
 
   @override
   State<StatefulWidget> createState() => JuntoSpheresState();
@@ -34,20 +35,9 @@ class JuntoSpheresState extends State<JuntoSpheres> with ListDistinct {
     _userProvider = Provider.of<UserRepo>(context);
   }
 
-  Widget buildError() {
-    return Container(
-      height: 400,
-      alignment: Alignment.center,
-      child: const Text(
-        'Oops, something is wrong!',
-        style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-      ),
-    );
-  }
-
   Future<UserGroupsResponse> getUserGroups() async {
     return _memoizer.runOnce(
-      () => _userProvider.getUserGroups(widget.userProfile.address),
+      () => _userProvider.getUserGroups(widget.userProfile.user.address),
     );
   }
 
@@ -55,44 +45,70 @@ class JuntoSpheresState extends State<JuntoSpheres> with ListDistinct {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: ListView(
-        children: <Widget>[
-          FutureBuilder<UserGroupsResponse>(
-            future: getUserGroups(),
-            builder: (BuildContext context,
-                AsyncSnapshot<UserGroupsResponse> snapshot) {
-              if (snapshot.hasError) {
-                return buildError();
-              }
-              if (snapshot.hasData && !snapshot.hasError) {
-                final List<Group> ownedGroups = snapshot.data.owned;
-                final List<Group> associatedGroups = snapshot.data.associated;
-                final List<Group> userGroups =
-                    distinct<Group>(ownedGroups, associatedGroups)
-                        .where((Group group) => group.groupType == 'Sphere')
-                        .toList();
-                return ListView(
-                  shrinkWrap: true,
-                  physics: const ClampingScrollPhysics(),
-                  children: <Widget>[
-                    for (Group group in userGroups)
-                      SpherePreview(
-                        group: group,
-                      ),
-                  ],
+      child: widget.userProfile != null
+          ? FutureBuilder(
+              future: getUserGroups(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.hasError) {
+                  return const Center(
+                    child: Text('something is up'),
+                  );
+                }
+                if (snapshot.hasData) {
+                  final List<Group> ownedGroups = snapshot.data.owned;
+                  final List<Group> associatedGroups = snapshot.data.associated;
+                  final List<Group> userGroups =
+                      distinct<Group>(ownedGroups, associatedGroups)
+                          .where((Group group) => group.groupType == 'Sphere')
+                          .toList();
+
+                  return userGroups.isEmpty
+                      ? Center(
+                          child: Transform.translate(
+                            offset: const Offset(0.0, -50.0),
+                            child: Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 36),
+                              child: Text(
+                                'Discover communities to join by pressing the search icon in the top navigation bar or create your own by pressing the icon left of the center lotus below!',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      : ListView(
+                          shrinkWrap: true,
+                          physics: const ClampingScrollPhysics(),
+                          children: <Widget>[
+                            Container(
+                              height: 100,
+                              child: const Text('success'),
+                            ),
+                            for (Group group in userGroups)
+                              SpherePreview(
+                                group: group,
+                              )
+                          ],
+                        );
+                }
+                return Center(
+                  child: Transform.translate(
+                    offset: const Offset(0.0, -50),
+                    child: JuntoProgressIndicator(),
+                  ),
                 );
-              }
-              return Container(
-                height: 100.0,
-                width: 100.0,
-                child: const Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
-            },
-          ),
-        ],
-      ),
+              },
+            )
+          : Center(
+              child: Transform.translate(
+                offset: const Offset(0.0, -50),
+                child: JuntoProgressIndicator(),
+              ),
+            ),
     );
   }
 }
