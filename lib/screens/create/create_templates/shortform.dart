@@ -27,7 +27,9 @@ class CreateShortformState extends State<CreateShortform> {
   /// by the user.
   CentralizedShortFormExpression createExpression() {
     return CentralizedShortFormExpression(
-        body: _bodyController.value.text, background: _currentBackground);
+      body: _bodyController.value.text,
+      background: _currentBackground,
+    );
   }
 
   @override
@@ -37,7 +39,6 @@ class CreateShortformState extends State<CreateShortform> {
     gradientTwo = JuntoPalette.juntoSecondary;
     _bodyController = TextEditingController();
     _bodyController.addListener(bodyListener);
-    _bodyController.text = 'gradients are fully customizeable and tbd';
   }
 
   void bodyListener() {
@@ -206,7 +207,14 @@ class CreateShortformState extends State<CreateShortform> {
                       bool isFocused,
                     }) =>
                         null,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
+                      hintText: 'gradients are fully customizeable and tbd',
+                      hintMaxLines: 25,
+                      hintStyle: TextStyle(
+                        color: Colors.white.withOpacity(0.5),
+                        fontSize: 24,
+                        fontWeight: FontWeight.w700,
+                      ),
                       border: InputBorder.none,
                     ),
                     cursorColor: Colors.white,

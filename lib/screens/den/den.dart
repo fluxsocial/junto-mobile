@@ -5,18 +5,17 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/backend/mock/mock_expression.dart';
 import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
-import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/den/den_sliver_appbar.dart';
-import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
-import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
-import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/appbar/den_appbar.dart';
+import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_edit_den.dart';
+import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
+import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
+import 'package:provider/provider.dart';
 
 /// Displays the user's DEN or "profile screen"
 class JuntoDen extends StatefulWidget {
@@ -92,6 +91,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
             : const PreferredSize(
                 preferredSize: Size.fromHeight(45),
                 child: SizedBox(),
+
               ),
         floatingActionButton: ValueListenableBuilder(
           valueListenable: _isVisible,
@@ -147,6 +147,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                                     text: name,
                                   ),
                                 ),
+
                             ],
                           ),
                         ),
@@ -453,6 +454,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                       ),
                     ],
                   ),
+
                 ),
               )
             : Center(
@@ -460,3 +462,4 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
               ));
   }
 }
+

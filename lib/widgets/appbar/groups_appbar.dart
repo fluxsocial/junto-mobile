@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/widgets/appbar/appbar_search.dart';
-import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives'
     '/create_perspective/create_perspective.dart' show SelectedUsers;
+import 'package:junto_beta_mobile/widgets/appbar/appbar_search.dart';
+import 'package:provider/provider.dart';
 
 class JuntoGroupsAppbar extends StatelessWidget {
   var _users;
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
