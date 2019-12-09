@@ -12,7 +12,7 @@ import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 
 class JuntoGroups extends StatefulWidget {
   @override
@@ -199,15 +199,18 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
 
                         return userGroups.isEmpty
                             ? Center(
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 36),
-                                  child: Text(
-                                    'Discover communities to join by pressing the search icon in the top navigation bar or create your own by pressing the icon left of the center lotus below!',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w500,
+                                child: Transform.translate(
+                                  offset: const Offset(0.0, -50.0),
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 36),
+                                    child: Text(
+                                      'Discover communities to join by pressing the search icon in the top navigation bar or create your own by pressing the icon left of the center lotus below!',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -227,7 +230,12 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
                                 ],
                               );
                       }
-                      return const SizedBox();
+                      return Center(
+                        child: Transform.translate(
+                          offset: const Offset(0.0, -50),
+                          child: JuntoProgressIndicator(),
+                        ),
+                      );
                     },
                   ),
                   JuntoPacks(

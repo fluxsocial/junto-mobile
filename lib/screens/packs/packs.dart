@@ -1,12 +1,12 @@
 import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/previews/pack_preview.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 
 // This class renders the screen of packs a user belongs to
 class JuntoPacks extends StatefulWidget {
@@ -55,30 +55,6 @@ class JuntoPacksState extends State<JuntoPacks> with ListDistinct, HideFab {
     );
   }
 
-  Widget buildError() {
-    return Center(
-      child: Container(
-        height: 300.0,
-        width: 300.0,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Image.asset(
-              'assets/images/junto-mobile__logo.png',
-              height: 50.0,
-            ),
-            const SizedBox(height: 12.0),
-            const Text(
-              'Something went wrong :(',
-              style: JuntoStyles.body,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   @override
   void dispose() {
     _packsScrollController.dispose();
@@ -94,7 +70,12 @@ class JuntoPacksState extends State<JuntoPacks> with ListDistinct, HideFab {
         builder:
             (BuildContext context, AsyncSnapshot<UserGroupsResponse> snapshot) {
           if (snapshot.hasError) {
-            return buildError();
+            return Center(
+              child: Transform.translate(
+                offset: const Offset(0.0, -50),
+                child: const Text('Hmmm, something is up with our servers'),
+              ),
+            );
           }
           if (snapshot.hasData && !snapshot.hasError) {
             final List<Group> ownedGroups = snapshot.data.owned;
@@ -113,11 +94,10 @@ class JuntoPacksState extends State<JuntoPacks> with ListDistinct, HideFab {
               ],
             );
           }
-          return Container(
-            height: 100.0,
-            width: 100.0,
-            child: const Center(
-              child: CircularProgressIndicator(),
+          return Center(
+            child: Transform.translate(
+              offset: const Offset(0.0, -50),
+              child: JuntoProgressIndicator(),
             ),
           );
         },
