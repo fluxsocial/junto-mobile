@@ -1,4 +1,7 @@
 import 'dart:convert';
+import 'package:async/async.dart' show AsyncMemoizer;
+import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/packs/packs.dart';
@@ -11,6 +14,7 @@ import 'package:junto_beta_mobile/widgets/fabs/create_sphere_fab.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 
 // This screen displays groups a member belongs two. Currently, there are two types of
 // groups: spheres (communities) and packs (agent-centric communities)
@@ -25,7 +29,10 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
   int _currentIndex = 0;
   PageController _groupsPageController;
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
+  final AsyncMemoizer<UserGroupsResponse> _memoizer =
+      AsyncMemoizer<UserGroupsResponse>();
 
+  UserRepo _userProvider;
   String _userAddress;
   UserData _userProfile;
 
@@ -39,6 +46,10 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
+    setState(() {
+      _userProvider = Provider.of<UserRepo>(context);
+    });
   }
 
   Future<void> getUserInformation() async {
@@ -50,6 +61,12 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
       _userAddress = prefs.getString('user_id');
       _userProfile = UserData.fromMap(decodedUserData);
     });
+  }
+
+  Future<UserGroupsResponse> getUserGroups() async {
+    return _memoizer.runOnce(
+      () => _userProvider.getUserGroups(_userProfile.user.address),
+    );
   }
 
   @override
@@ -160,20 +177,72 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
                 ],
               ),
             ),
-            Expanded(
-              child: PageView(
-                controller: _groupsPageController,
-                onPageChanged: (int index) {
-                  setState(() {
-                    _currentIndex = index;
-                  });
-                },
-                children: <Widget>[
-                  JuntoSpheres(userProfile: _userProfile),
-                  JuntoPacks(visibility: _isVisible, userProfile: _userProfile)
-                ],
-              ),
-            ),
+            _userProfile != null
+                ? FutureBuilder<dynamic>(
+                    future: getUserGroups(),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      if (snapshot.hasError) {
+                        print(snapshot.error);
+                        return Expanded(
+                          child: Center(
+                            child: Transform.translate(
+                              offset: const Offset(0.0, -50),
+                              child: const Text(
+                                  'Hmm, something is up with our server'),
+                            ),
+                          ),
+                        );
+                      }
+                      if (snapshot.hasData) {
+                        final List<Group> ownedGroups = snapshot.data.owned;
+                        final List<Group> associatedGroups =
+                            snapshot.data.associated;
+                        final List<Group> userPacks = distinct<Group>(
+                                ownedGroups, associatedGroups)
+                            .where((Group group) => group.groupType == 'Pack')
+                            .toList();
+                        final List<Group> userSpheres = distinct<Group>(
+                                ownedGroups, associatedGroups)
+                            .where((Group group) => group.groupType == 'Sphere')
+                            .toList();
+                        return Expanded(
+                          child: PageView(
+                            controller: _groupsPageController,
+                            onPageChanged: (int index) {
+                              setState(() {
+                                _currentIndex = index;
+                              });
+                            },
+                            children: <Widget>[
+                              JuntoSpheres(
+                                  userProfile: _userProfile,
+                                  userSpheres: userSpheres),
+                              JuntoPacks(
+                                  visibility: _isVisible,
+                                  userProfile: _userProfile,
+                                  userPacks: userPacks)
+                            ],
+                          ),
+                        );
+                      }
+                      return Expanded(
+                        child: Center(
+                          child: Transform.translate(
+                            offset: const Offset(0.0, -50),
+                            child: JuntoProgressIndicator(),
+                          ),
+                        ),
+                      );
+                    },
+                  )
+                : Expanded(
+                    child: Center(
+                      child: Transform.translate(
+                        offset: const Offset(0.0, -50),
+                        child: JuntoProgressIndicator(),
+                      ),
+                    ),
+                  )
           ],
         ),
       ),

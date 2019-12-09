@@ -1,6 +1,5 @@
-import 'package:async/async.dart' show AsyncMemoizer;
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
@@ -8,7 +7,6 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/previews/sphere_preview/sphere_preview.dart';
 import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 
 /// This class renders the list of spheres a member belongs to. It includes a widget to
 /// create a screen as well as a ListView of all the sphere previews
@@ -16,100 +14,35 @@ class JuntoSpheres extends StatefulWidget {
   const JuntoSpheres({
     Key key,
     @required this.userProfile,
+    @required this.userSpheres,
   }) : super(key: key);
 
   final UserData userProfile;
+  final userSpheres;
 
   @override
   State<StatefulWidget> createState() => JuntoSpheresState();
 }
 
 class JuntoSpheresState extends State<JuntoSpheres> with ListDistinct {
-  UserRepo _userProvider;
-  final AsyncMemoizer<UserGroupsResponse> _memoizer =
-      AsyncMemoizer<UserGroupsResponse>();
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _userProvider = Provider.of<UserRepo>(context);
-  }
-
-  Future<UserGroupsResponse> getUserGroups() async {
-    return _memoizer.runOnce(
-      () => _userProvider.getUserGroups(widget.userProfile.user.address),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: widget.userProfile != null
-          ? FutureBuilder(
-              future: getUserGroups(),
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                if (snapshot.hasError) {
-                  return const Center(
-                    child: Text('something is up'),
-                  );
-                }
-                if (snapshot.hasData) {
-                  final List<Group> ownedGroups = snapshot.data.owned;
-                  final List<Group> associatedGroups = snapshot.data.associated;
-                  final List<Group> userGroups =
-                      distinct<Group>(ownedGroups, associatedGroups)
-                          .where((Group group) => group.groupType == 'Sphere')
-                          .toList();
-
-                  return userGroups.isEmpty
-                      ? Center(
-                          child: Transform.translate(
-                            offset: const Offset(0.0, -50.0),
-                            child: Container(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 36),
-                              child: Text(
-                                'Discover communities to join by pressing the search icon in the top navigation bar or create your own by pressing the icon left of the center lotus below!',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
-                      : ListView(
-                          shrinkWrap: true,
-                          physics: const ClampingScrollPhysics(),
-                          children: <Widget>[
-                            Container(
-                              height: 100,
-                              child: const Text('success'),
-                            ),
-                            for (Group group in userGroups)
-                              SpherePreview(
-                                group: group,
-                              )
-                          ],
-                        );
-                }
-                return Center(
-                  child: Transform.translate(
-                    offset: const Offset(0.0, -50),
-                    child: JuntoProgressIndicator(),
-                  ),
-                );
-              },
-            )
-          : Center(
-              child: Transform.translate(
-                offset: const Offset(0.0, -50),
-                child: JuntoProgressIndicator(),
-              ),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: ListView(
+          shrinkWrap: true,
+          physics: const ClampingScrollPhysics(),
+          children: <Widget>[
+            Container(
+              height: 100,
+              child: const Text('success'),
             ),
-    );
+            for (Group group in widget.userSpheres)
+              SpherePreview(
+                group: group,
+              )
+          ],
+        ));
   }
 }
 
