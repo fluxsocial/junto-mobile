@@ -9,11 +9,13 @@ import 'package:junto_beta_mobile/screens/sign_in/sign_in.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_edit_den.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_themes.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 
 class JuntoDrawer extends StatefulWidget {
-  const JuntoDrawer(this.screen);
+  const JuntoDrawer({this.screen, this.icon});
 
   final String screen;
+  final icon;
 
   @override
   _JuntoDrawerState createState() => _JuntoDrawerState();
@@ -66,6 +68,20 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
     );
   }
 
+  _displayIcon(screen) {
+    if (screen == 'Collective') {
+      return Container(
+          margin: const EdgeInsets.only(right: 18),
+          child: Icon(widget.icon, size: 12));
+    } else if (screen == 'Create') {
+      return Icon(widget.icon, size: 17);
+    } else if (screen == 'Groups') {
+      return Icon(widget.icon, size: 17);
+    } else if (screen == 'Den') {
+      return Icon(widget.icon, size: 17);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
@@ -91,8 +107,14 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text(widget.screen,
-                        style: Theme.of(context).textTheme.title),
+                    Row(
+                      children: <Widget>[
+                        _displayIcon(widget.screen),
+                        const SizedBox(width: 10),
+                        Text(widget.screen,
+                            style: Theme.of(context).textTheme.title),
+                      ],
+                    ),
                     ClipOval(
                       child: Image.asset(
                         'assets/images/junto-mobile__eric.png',

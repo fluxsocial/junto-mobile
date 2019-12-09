@@ -13,6 +13,7 @@ import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 
 // This class is a collective screen
 class JuntoCollective extends StatefulWidget {
@@ -193,7 +194,8 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
                   floatingActionButtonLocation:
                       FloatingActionButtonLocation.centerDocked,
 
-                  endDrawer: const JuntoDrawer('Collective'),
+                  endDrawer: const JuntoDrawer(
+                      screen: 'Collective', icon: CustomIcons.collective),
 
                   // dynamically render body
                   body: RefreshIndicator(

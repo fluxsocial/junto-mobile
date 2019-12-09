@@ -217,7 +217,7 @@ class JuntoCreateState extends State<JuntoCreate> {
           ),
         ),
       ),
-      endDrawer: const JuntoDrawer('Create'),
+      endDrawer: const JuntoDrawer(screen: 'Create', icon: CustomIcons.create),
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 25),
         child: BottomNav(

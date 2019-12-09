@@ -11,6 +11,7 @@ import 'package:junto_beta_mobile/widgets/previews/sphere_preview/sphere_preview
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 
@@ -108,7 +109,8 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        endDrawer: const JuntoDrawer('Groups'),
+        endDrawer:
+            const JuntoDrawer(screen: 'Groups', icon: CustomIcons.spheres),
         body: Column(
           children: <Widget>[
             Container(

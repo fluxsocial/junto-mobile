@@ -16,6 +16,7 @@ import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_edit_den.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 
 /// Displays the user's DEN or "profile screen"
 class JuntoDen extends StatefulWidget {
@@ -85,381 +86,370 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: _juntoDenKey,
-        appBar: _userProfile != null
-            ? DenAppbar(heading: _userProfile.user.username)
-            : const PreferredSize(
-                preferredSize: Size.fromHeight(45),
-                child: SizedBox(),
-
-              ),
-        floatingActionButton: ValueListenableBuilder(
-          valueListenable: _isVisible,
-          builder: (BuildContext context, bool visible, Widget child) {
-            return AnimatedOpacity(
-                duration: const Duration(milliseconds: 300),
-                opacity: visible ? 1.0 : 0.0,
-                child: child);
-          },
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 25),
-            child: BottomNav(
-                screen: 'den',
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    CupertinoPageRoute(
-                      builder: (BuildContext context) => JuntoEditDen(),
-                    ),
-                  );
-                }),
-          ),
+      key: _juntoDenKey,
+      appBar: _userProfile != null
+          ? DenAppbar(heading: _userProfile.user.username)
+          : const PreferredSize(
+              preferredSize: Size.fromHeight(45),
+              child: SizedBox(),
+            ),
+      floatingActionButton: ValueListenableBuilder(
+        valueListenable: _isVisible,
+        builder: (BuildContext context, bool visible, Widget child) {
+          return AnimatedOpacity(
+              duration: const Duration(milliseconds: 300),
+              opacity: visible ? 1.0 : 0.0,
+              child: child);
+        },
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 25),
+          child: BottomNav(
+              screen: 'den',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (BuildContext context) => JuntoEditDen(),
+                  ),
+                );
+              }),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        endDrawer: JuntoDrawer('Den'),
-        body: _userProfile != null
-            ? DefaultTabController(
-                length: _tabs.length,
-                child: NestedScrollView(
-                  controller: _denController,
-                  physics: const ClampingScrollPhysics(),
-                  headerSliverBuilder:
-                      (BuildContext context, bool innerBoxIsScrolled) {
-                    return <Widget>[
-                      JuntoDenSliverAppbar(
-                        name: _userProfile.user.name,
-                      ),
-                      SliverPersistentHeader(
-                        delegate: JuntoAppBarDelegate(
-                          TabBar(
-                            labelPadding: const EdgeInsets.all(0),
-                            isScrollable: true,
-                            labelColor: Theme.of(context).primaryColorDark,
-                            labelStyle: Theme.of(context).textTheme.subhead,
-                            indicatorWeight: 0.0001,
-                            tabs: <Widget>[
-                              for (String name in _tabs)
-                                Container(
-                                  margin: const EdgeInsets.only(right: 24),
-                                  color:
-                                      Theme.of(context).colorScheme.background,
-                                  child: Tab(
-                                    text: name,
-                                  ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      endDrawer: const JuntoDrawer(screen: 'Den', icon: CustomIcons.half_lotus),
+      body: _userProfile != null
+          ? DefaultTabController(
+              length: _tabs.length,
+              child: NestedScrollView(
+                controller: _denController,
+                physics: const ClampingScrollPhysics(),
+                headerSliverBuilder:
+                    (BuildContext context, bool innerBoxIsScrolled) {
+                  return <Widget>[
+                    JuntoDenSliverAppbar(
+                      name: _userProfile.user.name,
+                    ),
+                    SliverPersistentHeader(
+                      delegate: JuntoAppBarDelegate(
+                        TabBar(
+                          labelPadding: const EdgeInsets.all(0),
+                          isScrollable: true,
+                          labelColor: Theme.of(context).primaryColorDark,
+                          labelStyle: Theme.of(context).textTheme.subhead,
+                          indicatorWeight: 0.0001,
+                          tabs: <Widget>[
+                            for (String name in _tabs)
+                              Container(
+                                margin: const EdgeInsets.only(right: 24),
+                                color: Theme.of(context).colorScheme.background,
+                                child: Tab(
+                                  text: name,
                                 ),
-
+                              ),
+                          ],
+                        ),
+                      ),
+                      pinned: true,
+                    ),
+                  ];
+                },
+                body: TabBarView(
+                  children: <Widget>[
+                    ListView(
+                      physics: const ClampingScrollPhysics(),
+                      shrinkWrap: true,
+                      padding: const EdgeInsets.only(left: 10),
+                      children: <Widget>[
+                        const SizedBox(height: 5),
+                        Container(
+                          padding: const EdgeInsets.only(top: 5, bottom: 5),
+                          child: Column(
+                            children: <Widget>[
+                              Container(
+                                child: Row(
+                                  children: <Widget>[
+                                    Icon(CustomIcons.gender,
+                                        size: 17,
+                                        color: Theme.of(context).primaryColor),
+                                    const SizedBox(width: 5),
+                                    Text(
+                                      'he/him',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          color: Theme.of(context).primaryColor,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              Container(
+                                child: Row(
+                                  children: <Widget>[
+                                    Image.asset(
+                                      'assets/images/junto-mobile__location.png',
+                                      height: 15,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                    const SizedBox(width: 5),
+                                    Text(
+                                      'Spirit',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          color: Theme.of(context).primaryColor,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              Container(
+                                child: Row(
+                                  children: <Widget>[
+                                    Image.asset(
+                                      'assets/images/junto-mobile__link.png',
+                                      height: 15,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                    const SizedBox(width: 5),
+                                    Text(
+                                      'junto.foundation',
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                          color: Theme.of(context).primaryColor,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                         ),
-                        pinned: true,
-                      ),
-                    ];
-                  },
-                  body: TabBarView(
-                    children: <Widget>[
-                      ListView(
-                        physics: const ClampingScrollPhysics(),
-                        shrinkWrap: true,
-                        padding: const EdgeInsets.only(left: 10),
-                        children: <Widget>[
-                          const SizedBox(height: 5),
-                          Container(
-                            padding: const EdgeInsets.only(top: 5, bottom: 5),
-                            child: Column(
+                        const SizedBox(height: 15),
+                        CarouselSlider(
+                          viewportFraction: 1.0,
+                          height: MediaQuery.of(context).size.width - 20,
+                          enableInfiniteScroll: false,
+                          items: <Widget>[
+                            Container(
+                              padding: const EdgeInsets.only(right: 10),
+                              width: MediaQuery.of(context).size.width,
+                              child: Image.asset(
+                                  'assets/images/junto-mobile__eric.png',
+                                  fit: BoxFit.cover),
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              padding: const EdgeInsets.only(right: 10),
+                              child: Image.asset(
+                                  'assets/images/junto-mobile__eric--qigong.png',
+                                  fit: BoxFit.cover),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 15),
+                        Container(
+                          child: Text(_userProfile.user.bio,
+                              style: Theme.of(context).textTheme.caption),
+                        ),
+                      ],
+                    ),
+
+                    // public expressions of user
+                    FutureBuilder<dynamic>(
+                      future: getUserPublicExpressions(),
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        if (snapshot.hasError) {
+                          return Center(
+                            child: Transform.translate(
+                              offset: const Offset(0.0, -50),
+                              child: const Text(
+                                  'Hmm, something is up with our server'),
+                            ),
+                          );
+                        }
+                        if (snapshot.hasData) {
+                          return Container(
+                            color: Theme.of(context).colorScheme.background,
+                            child: ListView(
                               children: <Widget>[
-                                Container(
-                                  child: Row(
-                                    children: <Widget>[
-                                      Icon(CustomIcons.gender,
-                                          size: 17,
-                                          color:
-                                              Theme.of(context).primaryColor),
-                                      const SizedBox(width: 5),
-                                      Text(
-                                        'he/him',
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w600),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          .5,
+                                      padding: const EdgeInsets.only(
+                                          left: 10, right: 5, top: 10),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: <Widget>[
+                                          for (int index = 0;
+                                              index < snapshot.data.length + 1;
+                                              index++)
+                                            if (index == snapshot.data.length)
+                                              const SizedBox()
+                                            else if (index.isEven &&
+                                                snapshot.data[index].privacy ==
+                                                    'Public')
+                                              ExpressionPreview(
+                                                expression:
+                                                    snapshot.data[index],
+                                              )
+                                            else
+                                              const SizedBox()
+
+                                          // even number indexes
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                                Container(
-                                  child: Row(
-                                    children: <Widget>[
-                                      Image.asset(
-                                        'assets/images/junto-mobile__location.png',
-                                        height: 15,
-                                        color: Theme.of(context).primaryColor,
+                                    ),
+                                    Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          .5,
+                                      padding: const EdgeInsets.only(
+                                          left: 5, right: 10, top: 10),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: <Widget>[
+                                          // odd number indexes
+                                          for (int index = 0;
+                                              index < snapshot.data.length + 1;
+                                              index++)
+                                            if (index == snapshot.data.length)
+                                              const SizedBox()
+                                            else if (index.isOdd &&
+                                                snapshot.data[index].privacy ==
+                                                    'Public')
+                                              ExpressionPreview(
+                                                expression:
+                                                    snapshot.data[index],
+                                              )
+                                            else
+                                              const SizedBox()
+                                        ],
                                       ),
-                                      const SizedBox(width: 5),
-                                      Text(
-                                        'Spirit',
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                                Container(
-                                  child: Row(
-                                    children: <Widget>[
-                                      Image.asset(
-                                        'assets/images/junto-mobile__link.png',
-                                        height: 15,
-                                        color: Theme.of(context).primaryColor,
-                                      ),
-                                      const SizedBox(width: 5),
-                                      Text(
-                                        'junto.foundation',
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 1,
-                                        style: TextStyle(
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                                    ),
+                                  ],
+                                )
                               ],
                             ),
+                          );
+                        }
+                        return Center(
+                          child: Transform.translate(
+                            offset: const Offset(0.0, -50),
+                            child: JuntoProgressIndicator(),
                           ),
-                          const SizedBox(height: 15),
-                          CarouselSlider(
-                            viewportFraction: 1.0,
-                            height: MediaQuery.of(context).size.width - 20,
-                            enableInfiniteScroll: false,
-                            items: <Widget>[
-                              Container(
-                                padding: const EdgeInsets.only(right: 10),
-                                width: MediaQuery.of(context).size.width,
-                                child: Image.asset(
-                                    'assets/images/junto-mobile__eric.png',
-                                    fit: BoxFit.cover),
-                              ),
-                              Container(
-                                width: MediaQuery.of(context).size.width,
-                                padding: const EdgeInsets.only(right: 10),
-                                child: Image.asset(
-                                    'assets/images/junto-mobile__eric--qigong.png',
-                                    fit: BoxFit.cover),
-                              ),
-                            ],
+                        );
+                      },
+                    ),
+
+                    // private expressions of user
+                    FutureBuilder<dynamic>(
+                      future: getUserPublicExpressions(),
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        if (snapshot.hasError) {
+                          return const Center(
+                            child: Text('something is up'),
+                          );
+                        }
+                        if (snapshot.hasData) {
+                          return Container(
+                            color: Theme.of(context).colorScheme.background,
+                            child: ListView(
+                              children: <Widget>[
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          .5,
+                                      padding: const EdgeInsets.only(
+                                          left: 10, right: 5, top: 10),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: <Widget>[
+                                          for (int index = 0;
+                                              index < snapshot.data.length + 1;
+                                              index++)
+                                            if (index == snapshot.data.length)
+                                              const SizedBox()
+                                            else if (index.isEven &&
+                                                snapshot.data[index].privacy ==
+                                                    'Private')
+                                              ExpressionPreview(
+                                                expression:
+                                                    snapshot.data[index],
+                                              )
+                                            else
+                                              const SizedBox()
+
+                                          // even number indexes
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          .5,
+                                      padding: const EdgeInsets.only(
+                                          left: 5, right: 10, top: 10),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: <Widget>[
+                                          // odd number indexes
+                                          for (int index = 0;
+                                              index < snapshot.data.length + 1;
+                                              index++)
+                                            if (index == snapshot.data.length)
+                                              const SizedBox()
+                                            else if (index.isOdd &&
+                                                snapshot.data[index].privacy ==
+                                                    'Private')
+                                              ExpressionPreview(
+                                                expression:
+                                                    snapshot.data[index],
+                                              )
+                                            else
+                                              const SizedBox()
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          );
+                        }
+                        return Center(
+                          child: Transform.translate(
+                            offset: const Offset(0.0, -50),
+                            child: JuntoProgressIndicator(),
                           ),
-                          const SizedBox(height: 15),
-                          Container(
-                            child: Text(_userProfile.user.bio,
-                                style: Theme.of(context).textTheme.caption),
-                          ),
-                        ],
-                      ),
-
-                      // public expressions of user
-                      FutureBuilder<dynamic>(
-                        future: getUserPublicExpressions(),
-                        builder:
-                            (BuildContext context, AsyncSnapshot snapshot) {
-                          if (snapshot.hasError) {
-                            return const Center(
-                              child: Text('something is up'),
-                            );
-                          }
-                          if (snapshot.hasData) {
-                            print(snapshot.data);
-                            return
-                                // public mock expressions
-                                Container(
-                              color: Theme.of(context).colorScheme.background,
-                              child: ListView(
-                                children: <Widget>[
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                .5,
-                                        padding: const EdgeInsets.only(
-                                            left: 10, right: 5, top: 10),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: <Widget>[
-                                            for (int index = 0;
-                                                index <
-                                                    snapshot.data.length + 1;
-                                                index++)
-                                              if (index == snapshot.data.length)
-                                                const SizedBox()
-                                              else if (index.isEven &&
-                                                  snapshot.data[index]
-                                                          .privacy ==
-                                                      'Public')
-                                                ExpressionPreview(
-                                                  expression:
-                                                      snapshot.data[index],
-                                                )
-                                              else
-                                                const SizedBox()
-
-                                            // even number indexes
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                .5,
-                                        padding: const EdgeInsets.only(
-                                            left: 5, right: 10, top: 10),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: <Widget>[
-                                            // odd number indexes
-                                            for (int index = 0;
-                                                index <
-                                                    snapshot.data.length + 1;
-                                                index++)
-                                              if (index == snapshot.data.length)
-                                                const SizedBox()
-                                              else if (index.isOdd &&
-                                                  snapshot.data[index]
-                                                          .privacy ==
-                                                      'Public')
-                                                ExpressionPreview(
-                                                  expression:
-                                                      snapshot.data[index],
-                                                )
-                                              else
-                                                const SizedBox()
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            );
-                          }
-                          return const SizedBox();
-                        },
-                      ),
-
-                      // private expressions of user
-                      FutureBuilder<dynamic>(
-                        future: getUserPublicExpressions(),
-                        builder:
-                            (BuildContext context, AsyncSnapshot snapshot) {
-                          if (snapshot.hasError) {
-                            return const Center(
-                              child: Text('something is up'),
-                            );
-                          }
-                          if (snapshot.hasData) {
-                            print(snapshot.data);
-                            return Container(
-                              color: Theme.of(context).colorScheme.background,
-                              child: ListView(
-                                children: <Widget>[
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                .5,
-                                        padding: const EdgeInsets.only(
-                                            left: 10, right: 5, top: 10),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: <Widget>[
-                                            for (int index = 0;
-                                                index <
-                                                    snapshot.data.length + 1;
-                                                index++)
-                                              if (index == snapshot.data.length)
-                                                const SizedBox()
-                                              else if (index.isEven &&
-                                                  snapshot.data[index]
-                                                          .privacy ==
-                                                      'Private')
-                                                ExpressionPreview(
-                                                  expression:
-                                                      snapshot.data[index],
-                                                )
-                                              else
-                                                const SizedBox()
-
-                                            // even number indexes
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                .5,
-                                        padding: const EdgeInsets.only(
-                                            left: 5, right: 10, top: 10),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: <Widget>[
-                                            // odd number indexes
-                                            for (int index = 0;
-                                                index <
-                                                    snapshot.data.length + 1;
-                                                index++)
-                                              if (index == snapshot.data.length)
-                                                const SizedBox()
-                                              else if (index.isOdd &&
-                                                  snapshot.data[index]
-                                                          .privacy ==
-                                                      'Private')
-                                                ExpressionPreview(
-                                                  expression:
-                                                      snapshot.data[index],
-                                                )
-                                              else
-                                                const SizedBox()
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            );
-                          }
-                          return const SizedBox();
-                        },
-                      ),
-                    ],
-                  ),
-
+                        );
+                      },
+                    ),
+                  ],
                 ),
-              )
-            : Center(
-                child: Text('loading'),
-              ));
+              ),
+            )
+          : Center(
+              child: Transform.translate(
+                offset: const Offset(0.0, -50),
+                child: JuntoProgressIndicator(),
+              ),
+            ),
+    );
   }
 }
-
