@@ -32,7 +32,9 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
 
   ScrollController _denController;
   final GlobalKey<ScaffoldState> _juntoDenKey = GlobalKey<ScaffoldState>();
-  ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
+  final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
+  final AsyncMemoizer<List<CentralizedExpressionResponse>> _memoizer =
+      AsyncMemoizer<List<CentralizedExpressionResponse>>();
 
   @override
   void initState() {
@@ -45,6 +47,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
         _onScrollingHasChanged,
       );
     });
+    getUserInformation();
   }
 
   @override
@@ -54,7 +57,6 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
     setState(() {
       _userProvider = Provider.of<UserRepo>(context);
     });
-    getUserInformation();
   }
 
   @override
@@ -79,8 +81,10 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
     });
   }
 
-  Future getUserPublicExpressions() async {
-    return _userProvider.getUsersExpressions(_userAddress);
+  Future<List<CentralizedExpressionResponse>> getUsersExpressions() async {
+    return _memoizer.runOnce(
+      () => _userProvider.getUsersExpressions(_userAddress),
+    );
   }
 
   @override
@@ -93,7 +97,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
               preferredSize: Size.fromHeight(45),
               child: SizedBox(),
             ),
-      floatingActionButton: ValueListenableBuilder(
+      floatingActionButton: ValueListenableBuilder<bool>(
         valueListenable: _isVisible,
         builder: (BuildContext context, bool visible, Widget child) {
           return AnimatedOpacity(
@@ -108,7 +112,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
               onTap: () {
                 Navigator.push(
                   context,
-                  CupertinoPageRoute(
+                  CupertinoPageRoute<Widget>(
                     builder: (BuildContext context) => JuntoEditDen(),
                   ),
                 );
@@ -263,7 +267,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
 
                     // public expressions of user
                     FutureBuilder<dynamic>(
-                      future: getUserPublicExpressions(),
+                      future: getUsersExpressions(),
                       builder: (BuildContext context, AsyncSnapshot snapshot) {
                         if (snapshot.hasError) {
                           return Center(
@@ -355,7 +359,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
 
                     // private expressions of user
                     FutureBuilder<dynamic>(
-                      future: getUserPublicExpressions(),
+                      future: getUsersExpressions(),
                       builder: (BuildContext context, AsyncSnapshot snapshot) {
                         if (snapshot.hasError) {
                           return const Center(

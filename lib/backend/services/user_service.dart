@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:junto_beta_mobile/api.dart';
-import 'package:junto_beta_mobile/backend/services.dart'; 
+import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
@@ -137,6 +137,7 @@ class UserServiceCentralized implements UserService {
     final http.Response response =
         await client.get('/users/$userAddress/expressions');
     final List<dynamic> _responseMap = JuntoHttp.handleResponse(response);
+
     return _responseMap
         .map(
           (dynamic data) => CentralizedExpressionResponse.fromMap(data),
