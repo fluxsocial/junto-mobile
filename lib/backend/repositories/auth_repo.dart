@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:localstorage/localstorage.dart';
@@ -28,7 +29,7 @@ class AuthRepo {
     _isLoggedIn = true;
     await SharedPreferences.getInstance()
       ..setBool('isLoggedIn', true);
-    
+
     return _data;
   }
 
@@ -38,7 +39,9 @@ class AuthRepo {
   Future<UserData> loginUser(UserAuthLoginDetails details) async {
     try {
       final UserData _user = await _authService.loginUser(details);
-
+      final Map _userToMap = _user.toMap();
+      final String _userMapToString = json.encode(_userToMap);
+      print(_userMapToString);
       final LocalStorage _storage = LocalStorage('user-details');
       final bool ready = await _storage.ready;
       if (ready) {
@@ -46,10 +49,9 @@ class AuthRepo {
       }
       _isLoggedIn = true;
       await SharedPreferences.getInstance()
-        ..setBool('isLoggedIn', true);
+        ..setBool('isLoggedIn', true)
+        ..setString('user_data', _userMapToString);
       return _user;
-
-      
     } catch (error) {
       rethrow;
     }

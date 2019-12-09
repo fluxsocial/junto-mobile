@@ -63,6 +63,7 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
       JuntoOverlay.showLoader(context);
       final UserData results =
           await Provider.of<AuthRepo>(context).registerUser(details);
+          
       await SharedPreferences.getInstance()
         ..setBool(
           'isLoggedIn', 

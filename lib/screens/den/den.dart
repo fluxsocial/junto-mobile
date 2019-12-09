@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -27,7 +28,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
   final List<String> _tabs = <String>['About', 'Public', 'Private'];
   UserRepo _userProvider;
   String _userAddress;
-  String yo;
+  UserData _userProfile;
 
   ScrollController _denController;
   final GlobalKey<ScaffoldState> _juntoDenKey = GlobalKey<ScaffoldState>();
@@ -53,7 +54,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
     setState(() {
       _userProvider = Provider.of<UserRepo>(context);
     });
-    getUserAddress();
+    getUserInformation();
   }
 
   @override
@@ -67,51 +68,52 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
     super.hideFabOnScroll(_denController, _isVisible);
   }
 
-  Future<void> getUserAddress() async {
+  Future<void> getUserInformation() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final Map<String, dynamic> decodedUserData =
+        jsonDecode(prefs.getString('user_data'));
+
     setState(() {
       _userAddress = prefs.getString('user_id');
+      _userProfile = UserData.fromMap(decodedUserData);
     });
   }
 
-  Future<UserData> getUser() async {
-    return _userProvider.getUser(_userAddress);
+  Future getUserPublicExpressions() async {
+    return _userProvider.getUsersExpressions(_userAddress);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _juntoDenKey,
-      appBar: DenAppbar(heading: 'sunyata'),
-      floatingActionButton: ValueListenableBuilder(
-        valueListenable: _isVisible,
-        builder: (BuildContext context, bool visible, Widget child) {
-          return AnimatedOpacity(
-              duration: const Duration(milliseconds: 300),
-              opacity: visible ? 1.0 : 0.0,
-              child: child);
-        },
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 25),
-          child: BottomNav(
-              screen: 'den',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                    builder: (BuildContext context) => JuntoEditDen(),
-                  ),
-                );
-              }),
+        key: _juntoDenKey,
+        appBar: DenAppbar(heading: 'sunyata'),
+        floatingActionButton: ValueListenableBuilder(
+          valueListenable: _isVisible,
+          builder: (BuildContext context, bool visible, Widget child) {
+            return AnimatedOpacity(
+                duration: const Duration(milliseconds: 300),
+                opacity: visible ? 1.0 : 0.0,
+                child: child);
+          },
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 25),
+            child: BottomNav(
+                screen: 'den',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (BuildContext context) => JuntoEditDen(),
+                    ),
+                  );
+                }),
+          ),
         ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      endDrawer: JuntoDrawer('Den'),
-      body: FutureBuilder(
-          future: getUser(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.hasData)
-              return DefaultTabController(
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        endDrawer: JuntoDrawer('Den'),
+        body: _userProfile != null
+            ? DefaultTabController(
                 length: _tabs.length,
                 child: NestedScrollView(
                   controller: _denController,
@@ -120,7 +122,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                       (BuildContext context, bool innerBoxIsScrolled) {
                     return <Widget>[
                       JuntoDenSliverAppbar(
-                        name: snapshot.data.user.name,
+                        name: _userProfile.user.name,
                       ),
                       SliverPersistentHeader(
                         delegate: JuntoAppBarDelegate(
@@ -253,47 +255,103 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                           ),
                           const SizedBox(height: 15),
                           Container(
-                            child: Text(snapshot.data.user.bio,
+                            child: Text(_userProfile.user.bio,
                                 style: Theme.of(context).textTheme.caption),
                           ),
                         ],
                       ),
 
-                      // public mock expressions
-                      Container(
-                        color: Theme.of(context).colorScheme.background,
-                        child: ListView(
-                          children: <Widget>[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
+                      FutureBuilder(
+                        future: getUserPublicExpressions(),
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          if (snapshot.hasError) {
+                            return const Center(
+                              child: Text('something is up'),
+                            );
+                          }
+                          if (snapshot.hasData) {
+                            print(snapshot.data);
+                            return
+                                // public mock expressions
                                 Container(
-                                  width: MediaQuery.of(context).size.width * .5,
-                                  padding: const EdgeInsets.only(
-                                      left: 10, right: 5, top: 10),
-                                  child: Column(
+                              color: Theme.of(context).colorScheme.background,
+                              child: ListView(
+                                children: <Widget>[
+                                  Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: <Widget>[
-                                      // even number indexes
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .5,
+                                        padding: const EdgeInsets.only(
+                                            left: 10, right: 5, top: 10),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: <Widget>[
+                                            for (int index = 0;
+                                                index <
+                                                    snapshot.data.length + 1;
+                                                index++)
+                                              if (index == snapshot.data.length)
+                                                const SizedBox()
+                                              else if (index.isEven &&
+                                                  snapshot.data[index]
+                                                          .privacy ==
+                                                      'Public')
+                                                ExpressionPreview(
+                                                  expression:
+                                                      snapshot.data[index],
+                                                )
+                                              else
+                                                SizedBox()
+
+                                            // even number indexes
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .5,
+                                        padding: const EdgeInsets.only(
+                                            left: 5, right: 10, top: 10),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: <Widget>[
+                                            // odd number indexes
+                                            for (int index = 0;
+                                                index <
+                                                    snapshot.data.length + 1;
+                                                index++)
+                                              if (index == snapshot.data.length)
+                                                const SizedBox()
+                                              else if (index.isOdd &&
+                                                  snapshot.data[index]
+                                                          .privacy ==
+                                                      'Public')
+                                                ExpressionPreview(
+                                                  expression:
+                                                      snapshot.data[index],
+                                                )
+                                              else
+                                                SizedBox()
+                                          ],
+                                        ),
+                                      ),
                                     ],
-                                  ),
-                                ),
-                                Container(
-                                  width: MediaQuery.of(context).size.width * .5,
-                                  padding: const EdgeInsets.only(
-                                      left: 5, right: 10, top: 10),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: <Widget>[
-                                      // odd number indexes
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
+                                  )
+                                ],
+                              ),
+                            );
+                          }
+                          return const SizedBox();
+                        },
                       ),
 
                       // private mock expressions
@@ -335,12 +393,9 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                     ],
                   ),
                 ),
-              );
-
-            return Center(
-              child: Text('something is up'),
-            );
-          }),
-    );
+              )
+            : Center(
+                child: Text('loading'),
+              ));
   }
 }
