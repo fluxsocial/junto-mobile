@@ -28,21 +28,18 @@ class JuntoSpheresState extends State<JuntoSpheres> with ListDistinct {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: ListView(
-          shrinkWrap: true,
-          physics: const ClampingScrollPhysics(),
-          children: <Widget>[
-            Container(
-              height: 100,
-              child: const Text('success'),
-            ),
-            for (Group group in widget.userSpheres)
-              SpherePreview(
-                group: group,
-              )
-          ],
-        ));
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: ListView(
+        shrinkWrap: true,
+        physics: const ClampingScrollPhysics(),
+        children: <Widget>[
+          for (Group group in widget.userSpheres)
+            SpherePreview(
+              group: group,
+            )
+        ],
+      ),
+    );
   }
 }
 

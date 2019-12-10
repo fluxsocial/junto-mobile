@@ -14,6 +14,7 @@ import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 
 // This class is a collective screen
 class JuntoCollective extends StatefulWidget {
@@ -167,123 +168,162 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
             child: Stack(
               children: <Widget>[
                 Scaffold(
-                  key: _juntoCollectiveKey,
-                  floatingActionButton: ValueListenableBuilder<bool>(
-                    valueListenable: _isVisible,
-                    builder:
-                        (BuildContext context, bool visible, Widget child) {
-                      return AnimatedOpacity(
-                          duration: const Duration(milliseconds: 300),
-                          opacity: visible ? 1.0 : 0.0,
-                          child: child);
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 25),
-                      child: BottomNav(
-                          screen: 'collective',
-                          onTap: () {
-                            if (_dx == 0) {
-                              setState(() {
-                                _dx = MediaQuery.of(context).size.width * .9;
-                              });
-                            }
-                          }),
+                    key: _juntoCollectiveKey,
+                    floatingActionButton: ValueListenableBuilder<bool>(
+                      valueListenable: _isVisible,
+                      builder:
+                          (BuildContext context, bool visible, Widget child) {
+                        return AnimatedOpacity(
+                            duration: const Duration(milliseconds: 300),
+                            opacity: visible ? 1.0 : 0.0,
+                            child: child);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 25),
+                        child: BottomNav(
+                            screen: 'collective',
+                            onTap: () {
+                              if (_dx == 0) {
+                                setState(() {
+                                  _dx = MediaQuery.of(context).size.width * .9;
+                                });
+                              }
+                            }),
+                      ),
                     ),
-                  ),
+                    floatingActionButtonLocation:
+                        FloatingActionButtonLocation.centerDocked,
+                    endDrawer: const JuntoDrawer(
+                        screen: 'Collective', icon: CustomIcons.collective),
 
-                  floatingActionButtonLocation:
-                      FloatingActionButtonLocation.centerDocked,
+                    // dynamically render body
+                    body: FutureBuilder<List<CentralizedExpressionResponse>>(
+                      future: Provider.of<ExpressionRepo>(context)
+                          .getCollectiveExpressions(),
+                      builder: (
+                        BuildContext context,
+                        AsyncSnapshot<List<CentralizedExpressionResponse>>
+                            snapshot,
+                      ) {
+                        if (snapshot.hasError) {
+                          return Center(
+                            child: Transform.translate(
+                              offset: const Offset(0.0, 0.0),
+                              child: JuntoProgressIndicator(),
+                            ),
+                          );
+                        }
 
-                  endDrawer: const JuntoDrawer(
-                      screen: 'Collective', icon: CustomIcons.collective),
-
-                  // dynamically render body
-                  body: RefreshIndicator(
-                    onRefresh: () async => setState(() => print('Refresh')),
-                    child: CustomScrollView(
-                      controller: _collectiveController,
-                      slivers: <Widget>[
-                        // SliverAppBar(
-                        //   automaticallyImplyLeading: false,
-                        //   backgroundColor: Colors.orange,
-                        //   actions: <Widget>[Container()],
-                        //   title: Container(
-                        //     child: Row(
-                        //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //       crossAxisAlignment: CrossAxisAlignment.end,
-                        //       children: <Widget>[
-                        //         GestureDetector(
-                        //           onTap: () {
-                        //           },
-                        //           child: Container(
-                        //             alignment: Alignment.bottomLeft,
-                        //             color: Colors.transparent,
-                        //             height: 36,
-                        //             child: Row(
-                        //               children: <Widget>[
-                        //                 Image.asset(
-                        //                     'assets/images/junto-mobile__logo.png',
-                        //                     height: 22.0,
-                        //                     width: 22.0),
-                        //                 const SizedBox(width: 7.5),
-                        //                 Text(
-                        //                   'JUNTO',
-                        //                   style: Theme.of(context)
-                        //                       .appBarTheme
-                        //                       .textTheme
-                        //                       .body1,
-                        //                 ),
-                        //               ],
-                        //             ),
-                        //           ),
-                        //         ),
-                        //         Row(
-                        //           children: <Widget>[
-                        //             GestureDetector(
-                        //               onTap: () {
-
-                        //               },
-                        //               child: Container(
-                        //                 width: 42,
-                        //                 alignment: Alignment.bottomRight,
-                        //                 color: Colors.transparent,
-                        //                 child: Icon(Icons.search,
-                        //                     size: 22,
-                        //                     color: Theme.of(context).primaryColor),
-                        //               ),
-                        //             ),
-                        //             GestureDetector(
-                        //               onTap: () {},
-                        //               child: Container(
-                        //                 width: 42,
-                        //                 color: Colors.transparent,
-                        //                 alignment: Alignment.bottomRight,
-                        //                 padding: const EdgeInsets.only(right: 10),
-                        //                 child: Icon(CustomIcons.moon,
-                        //                     size: 22,
-                        //                     color: Theme.of(context).primaryColor),
-                        //               ),
-                        //             ),
-                        //           ],
-                        //         )
-                        //       ],
-                        //     ),
-                        //   ),
-                        // ),
-                        SliverPersistentHeader(
-                          delegate: CollectiveAppBar(
-                            expandedHeight: 85,
-                            newappbartitle: newAppBarTitle,
-                            openPerspectivesDrawer: _openPerspectivesDrawer,
+                        if (snapshot.hasData) {
+                          return RefreshIndicator(
+                            onRefresh: () async =>
+                                setState(() => print('Refresh')),
+                            child: CustomScrollView(
+                              controller: _collectiveController,
+                              slivers: <Widget>[
+                                SliverPersistentHeader(
+                                  delegate: CollectiveAppBar(
+                                    expandedHeight: 85,
+                                    newappbartitle: newAppBarTitle,
+                                    openPerspectivesDrawer:
+                                        _openPerspectivesDrawer,
+                                  ),
+                                  pinned: false,
+                                  floating: true,
+                                ),
+                                SliverList(
+                                  delegate: SliverChildListDelegate(<Widget>[
+                                    Container(
+                                      color: Theme.of(context).backgroundColor,
+                                      child: Column(
+                                        children: <Widget>[
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    .5,
+                                                padding: const EdgeInsets.only(
+                                                  top: 10,
+                                                  left: 10,
+                                                  right: 5,
+                                                ),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: <Widget>[
+                                                    for (int index = 0;
+                                                        index <
+                                                            snapshot.data
+                                                                    .length +
+                                                                1;
+                                                        index++)
+                                                      if (index ==
+                                                          snapshot.data.length)
+                                                        const SizedBox()
+                                                      else if (index.isEven)
+                                                        ExpressionPreview(
+                                                          expression: snapshot
+                                                              .data[index],
+                                                        )
+                                                  ],
+                                                ),
+                                              ),
+                                              Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    .5,
+                                                padding: const EdgeInsets.only(
+                                                  top: 10,
+                                                  left: 5,
+                                                  right: 10,
+                                                ),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: <Widget>[
+                                                    for (int index = 0;
+                                                        index <
+                                                            snapshot.data
+                                                                    .length +
+                                                                1;
+                                                        index++)
+                                                      if (index ==
+                                                          snapshot.data.length)
+                                                        const SizedBox()
+                                                      else if (index.isOdd)
+                                                        ExpressionPreview(
+                                                          expression: snapshot
+                                                              .data[index],
+                                                        )
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ]),
+                                )
+                              ],
+                            ),
+                          );
+                        }
+                        return Center(
+                          child: Transform.translate(
+                            offset: const Offset(0.0, 0.0),
+                            child: JuntoProgressIndicator(),
                           ),
-                          pinned: false,
-                          floating: true,
-                        ),
-                        _buildSliverList(context),
-                      ],
-                    ),
-                  ),
-                ),
+                        );
+                      },
+                    )),
                 GestureDetector(
                   onTap: () {
                     if (_dx == MediaQuery.of(context).size.width * .9) {
@@ -304,96 +344,6 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildSliverList(BuildContext context) {
-    return FutureBuilder<List<CentralizedExpressionResponse>>(
-      future: Provider.of<ExpressionRepo>(context).getCollectiveExpressions(),
-      builder: (
-        BuildContext context,
-        AsyncSnapshot<List<CentralizedExpressionResponse>> snapshot,
-      ) {
-        if (snapshot.hasError)
-          return SliverToBoxAdapter(
-            child: Container(
-              child: const Text('Error occured'),
-            ),
-          );
-        if (!snapshot.hasData)
-          return SliverToBoxAdapter(
-            child: Container(
-              child: SizedBox.fromSize(
-                size: const Size.fromHeight(25.0),
-                child: const Center(
-                  child: CircularProgressIndicator(),
-                ),
-              ),
-            ),
-          );
-
-        return SliverList(
-          delegate: SliverChildListDelegate(<Widget>[
-            Container(
-              color: Theme.of(context).backgroundColor,
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        width: MediaQuery.of(context).size.width * .5,
-                        padding: const EdgeInsets.only(
-                          top: 10,
-                          left: 10,
-                          right: 5,
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            for (int index = 0;
-                                index < snapshot.data.length + 1;
-                                index++)
-                              if (index == snapshot.data.length)
-                                const SizedBox()
-                              else if (index.isEven)
-                                ExpressionPreview(
-                                  expression: snapshot.data[index],
-                                )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width * .5,
-                        padding: const EdgeInsets.only(
-                          top: 10,
-                          left: 5,
-                          right: 10,
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            for (int index = 0;
-                                index < snapshot.data.length + 1;
-                                index++)
-                              if (index == snapshot.data.length)
-                                const SizedBox()
-                              else if (index.isOdd)
-                                ExpressionPreview(
-                                  expression: snapshot.data[index],
-                                )
-                          ],
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ]),
-        );
-      },
     );
   }
 
