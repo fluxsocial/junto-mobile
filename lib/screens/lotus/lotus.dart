@@ -60,7 +60,7 @@ class JuntoLotus extends StatelessWidget {
                                   Animation<double> secondaryAnimation,
                                 ) {
                                   return JuntoCreate(
-                                    'Channel name',
+                                    channels: [],
                                     address: address,
                                     expressionContext: expressionContext,
                                   );
@@ -77,7 +77,7 @@ class JuntoLotus extends StatelessWidget {
                                   );
                                 },
                                 transitionDuration: const Duration(
-                                  milliseconds: 400,
+                                  milliseconds: 300,
                                 ),
                               ),
                             );
@@ -132,7 +132,7 @@ class JuntoLotus extends StatelessWidget {
                                   );
                                 },
                                 transitionDuration: const Duration(
-                                  milliseconds: 400,
+                                  milliseconds: 300,
                                 ),
                               ),
                             );
@@ -196,7 +196,7 @@ class JuntoLotus extends StatelessWidget {
                                   );
                                 },
                                 transitionDuration: const Duration(
-                                  milliseconds: 400,
+                                  milliseconds: 300,
                                 ),
                               ),
                             );
@@ -250,7 +250,7 @@ class JuntoLotus extends StatelessWidget {
                                   );
                                 },
                                 transitionDuration: const Duration(
-                                  milliseconds: 400,
+                                  milliseconds: 300,
                                 ),
                               ),
                             );

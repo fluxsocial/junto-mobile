@@ -8,7 +8,7 @@ class JuntoOverlay extends StatelessWidget {
     this.width = 250.0,
     this.height = 250.0,
   }) : super(key: key);
-  final double width;
+  final double width; 
   final double height;
   static OverlayEntry currentLoader;
 

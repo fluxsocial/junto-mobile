@@ -11,7 +11,7 @@ class EventOpen extends StatelessWidget {
     final CentralizedEventFormExpression eventExpression =
         expression.expressionData as CentralizedEventFormExpression;
     final String eventTitle = eventExpression.title;
-    final String eventTime = eventExpression.startTime;
+    final String eventTime = DateTime.now().toIso8601String();
     final String eventLocation = eventExpression.location;
     final String eventImage = eventExpression.photo;
     final String eventDescription = eventExpression.description;

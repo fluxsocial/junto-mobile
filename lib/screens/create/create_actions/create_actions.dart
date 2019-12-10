@@ -15,7 +15,7 @@ class CreateActions extends StatefulWidget {
   const CreateActions({
     Key key,
     @required this.expressionType,
-    @required this.channelName,
+    @required this.channels,
     @required this.expressionContext,
     @required this.expression,
     @required this.address,
@@ -26,7 +26,7 @@ class CreateActions extends StatefulWidget {
   final String expressionType;
 
   /// This is the name of the channel to which the expression is being posted.
-  final String channelName;
+  final List<String> channels;
 
   /// This represents the Expression's context. Please see [ExpressionContext]
   final ExpressionContext expressionContext;
@@ -44,9 +44,6 @@ class CreateActions extends StatefulWidget {
 }
 
 class CreateActionsState extends State<CreateActions> {
-  //ignore: unused_field
-  final List<String> _channels = <String>[];
-
   String _selectedType = 'Collective';
 
   String _address;
@@ -60,14 +57,10 @@ class CreateActionsState extends State<CreateActions> {
     super.initState();
     _channelController = TextEditingController();
     _address = widget.address;
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
     _expression = CentralizedExpression(
       type: widget.expressionType,
       expressionData: widget.expression.toMap(),
+      context: widget.expressionContext
     );
   }
 
@@ -78,14 +71,16 @@ class CreateActionsState extends State<CreateActions> {
   }
 
   Future<void> _createExpression() async {
-    JuntoOverlay.showLoader(context);
+    print(widget.address);
+    print(widget.expression);
+    print(widget.expressionContext);
     try {
       await Provider.of<ExpressionRepo>(context).createExpression(
         _expression,
         _expression.context,
         _address,
       );
-      JuntoOverlay.hide();
+      // JuntoOverlay.hide();
       JuntoDialog.showJuntoDialog(
         context,
         'Expression Created!',
@@ -102,22 +97,25 @@ class CreateActionsState extends State<CreateActions> {
         ],
       );
     } catch (error) {
-      JuntoOverlay.hide();
-      JuntoDialog.showJuntoDialog(
-        context,
-        'Something went wrong ${error?.code}',
-        <Widget>[
-          FlatButton(
-            onPressed: () {
-              Navigator.of(context).pushAndRemoveUntil(
-                JuntoCollective.route(),
-                (_) => false,
-              );
-            },
-            child: const Text('Ok'),
-          )
-        ],
-      );
+      print(error);
+      print(error.message);
+      print('something is up');
+      // JuntoOverlay.hide();
+      // JuntoDialog.showJuntoDialog(
+      //   context,
+      //   'Something went wrong ${error?.code}',
+      //   <Widget>[
+      //     FlatButton(
+      //       onPressed: () {
+      //         Navigator.of(context).pushAndRemoveUntil(
+      //           JuntoCollective.route(),
+      //           (_) => false,
+      //         );
+      //       },
+      //       child: const Text('Ok'),
+      //     )
+      //   ],
+      // );
     }
   }
 

@@ -10,9 +10,9 @@ class ExpressionRepo {
 
   Future<CentralizedExpressionResponse> createExpression(
     CentralizedExpression expression,
-    ExpressionContext context, [
+    ExpressionContext context,
     String address,
-  ]) {
+  ) {
     // Server requires that channels is not null.
     assert(expression.channels != null);
 
@@ -37,8 +37,8 @@ class ExpressionRepo {
       );
     } else {
       assert(address == null);
-      _expression = expression
-          .copyWith(context: 'Collective', channels: <String>['channel1']);
+      _expression = expression.copyWith(
+          context: 'Collective', channels: expression.channels);
     }
     return _expressionService.createExpression(_expression);
   }

@@ -115,7 +115,7 @@ class BottomNav extends StatelessWidget {
           Expanded(
             child: GestureDetector(
               onTap: () {
-                Navigator.of(context).push(
+                Navigator.of(context).push( 
                   PageRouteBuilder<dynamic>(
                     pageBuilder: (
                       BuildContext context,

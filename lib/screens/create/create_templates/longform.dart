@@ -3,8 +3,7 @@ import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 class CreateLongform extends StatefulWidget {
-  const CreateLongform({Key key, @required this.isEditing}) : super(key: key);
-  final ValueNotifier<bool> isEditing;
+  const CreateLongform({Key key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -16,40 +15,11 @@ class CreateLongformState extends State<CreateLongform> {
   TextEditingController _titleController;
   TextEditingController _bodyController;
 
-  //ignore:unused_field
-  String _titleValue;
-
-  //ignore:unused_field
-  String _bodyValue;
-
   @override
   void initState() {
     super.initState();
     _titleController = TextEditingController();
     _bodyController = TextEditingController();
-    _titleValue = _titleController.text;
-    _bodyValue = _bodyController.text;
-
-    _titleController.addListener(titleListener);
-    _bodyController.addListener(bodyListener);
-  }
-
-  void titleListener() {
-    if (_titleController.value.text.isNotEmpty) {
-      widget.isEditing.value = true;
-    }
-    if (_titleController.value.text.isEmpty) {
-      widget.isEditing.value = false;
-    }
-  }
-
-  void bodyListener() {
-    if (_bodyController.value.text.isNotEmpty) {
-      widget.isEditing.value = true;
-    }
-    if (_bodyController.value.text.isEmpty) {
-      widget.isEditing.value = false;
-    }
   }
 
   /// Creates a [CentralizedLongFormExpression] from the given data entered
@@ -64,8 +34,6 @@ class CreateLongformState extends State<CreateLongform> {
   @override
   void dispose() {
     super.dispose();
-    _titleController.removeListener(titleListener);
-    _bodyController.removeListener(bodyListener);
     _titleController.dispose();
     _bodyController.dispose();
   }

@@ -30,7 +30,7 @@ class ExpressionCenterFAB extends StatelessWidget {
             Animation<double> secondaryAnimation,
           ) {
             return JuntoCreate(
-              expressionLayer,
+              channels: [],
               address: address,
               expressionContext: expressionContext,
             );

@@ -12,13 +12,13 @@ import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 
 class JuntoCreate extends StatefulWidget {
-  const JuntoCreate(
-    this.channelName, {
+  const JuntoCreate({
+    @required this.channels,
     @required this.address,
     @required this.expressionContext,
   });
 
-  final String channelName;
+  final List<String> channels;
   final String address;
   final ExpressionContext expressionContext;
 
@@ -35,8 +35,7 @@ class JuntoCreateState extends State<JuntoCreate> {
   bool _photo = false;
   bool _events = false;
 
-  Icon _currentIcon =
-      const Icon(CustomIcons.longform, color: Color(0xff333333), size: 17);
+  Icon _currentIcon;
 
   ValueNotifier<bool> isEditing;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -57,6 +56,13 @@ class JuntoCreateState extends State<JuntoCreate> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _currentIcon = Icon(CustomIcons.longform,
+        color: Theme.of(context).primaryColorDark, size: 17);
+  }
+
+  @override
   void dispose() {
     isEditing.dispose();
     super.dispose();
@@ -67,18 +73,15 @@ class JuntoCreateState extends State<JuntoCreate> {
     if (_longform) {
       return CreateLongform(
         key: _longFormKey,
-        isEditing: isEditing,
       );
     } else if (_shortform) {
       return CreateShortform(
         key: _shortFormKey,
-        isEditing: isEditing,
       );
     } else if (_photo) {
       return CreatePhoto(
         key: _photoFormKey,
         toggleBottomNavVisibility: () {},
-        isEditing: isEditing,
       );
     } else if (_events) {
       return CreateEvent(
@@ -112,26 +115,26 @@ class JuntoCreateState extends State<JuntoCreate> {
     if (templateType == 'LongForm' || templateType == 'dynamic') {
       setState(() {
         _longform = true;
-        _currentIcon = const Icon(CustomIcons.longform,
-            color: Color(0xff333333), size: 17);
+        _currentIcon = Icon(CustomIcons.longform,
+            color: Theme.of(context).primaryColorDark, size: 17);
       });
     } else if (templateType == 'ShortForm') {
       setState(() {
         _shortform = true;
-        _currentIcon =
-            const Icon(CustomIcons.feather, color: Color(0xff333333), size: 17);
+        _currentIcon = Icon(CustomIcons.feather,
+            color: Theme.of(context).primaryColorDark, size: 17);
       });
     } else if (templateType == 'PhotoForm') {
       setState(() {
         _photo = true;
-        _currentIcon =
-            const Icon(CustomIcons.camera, color: Color(0xff333333), size: 17);
+        _currentIcon = Icon(CustomIcons.camera,
+            color: Theme.of(context).primaryColorDark, size: 17);
       });
     } else if (templateType == 'EventForm') {
       setState(() {
         _events = true;
-        _currentIcon =
-            const Icon(CustomIcons.event, color: Color(0xff333333), size: 17);
+        _currentIcon = Icon(CustomIcons.event,
+            color: Theme.of(context).primaryColorDark, size: 17);
       });
     } else {
       print('not an expresion type');
@@ -141,6 +144,7 @@ class JuntoCreateState extends State<JuntoCreate> {
   }
 
   void _onNextClick() {
+    print(widget.expressionContext);
     Navigator.push(
       context,
       MaterialPageRoute<dynamic>(
@@ -148,7 +152,7 @@ class JuntoCreateState extends State<JuntoCreate> {
           return CreateActions(
             expressionType: _expressionType,
             address: widget.address,
-            channelName: widget.channelName,
+            channels: widget.channels,
             expressionContext: widget.expressionContext,
             expression: getExpression(),
           );
@@ -159,8 +163,6 @@ class JuntoCreateState extends State<JuntoCreate> {
 
   dynamic getExpression() {
     if (_expressionType == 'LongForm') {
-      print(_longFormKey.currentState.createExpression());
-
       return _longFormKey.currentState.createExpression();
     }
     if (_expressionType == 'ShortForm') {
@@ -200,11 +202,7 @@ class JuntoCreateState extends State<JuntoCreate> {
                     _currentIcon,
                     const SizedBox(width: 7.5),
                     Text(_expressionType,
-                        style: const TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xff333333),
-                        ))
+                        style: Theme.of(context).textTheme.title)
                   ],
                 ),
                 GestureDetector(

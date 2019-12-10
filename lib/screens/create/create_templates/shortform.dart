@@ -6,10 +6,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 class CreateShortform extends StatefulWidget {
   const CreateShortform({
     Key key,
-    @required this.isEditing,
   }) : super(key: key);
-
-  final ValueNotifier<bool> isEditing;
 
   @override
   State<StatefulWidget> createState() => CreateShortformState();
@@ -38,21 +35,11 @@ class CreateShortformState extends State<CreateShortform> {
     gradientOne = JuntoPalette.juntoPrimary;
     gradientTwo = JuntoPalette.juntoSecondary;
     _bodyController = TextEditingController();
-    _bodyController.addListener(bodyListener);
   }
 
-  void bodyListener() {
-    if (_bodyController.value.text.isEmpty) {
-      widget.isEditing.value = false;
-    }
-    if (_bodyController.value.text.isNotEmpty) {
-      widget.isEditing.value = true;
-    }
-  }
 
   @override
   void dispose() {
-    _bodyController.removeListener(bodyListener);
     _bodyController.dispose();
     super.dispose();
   }

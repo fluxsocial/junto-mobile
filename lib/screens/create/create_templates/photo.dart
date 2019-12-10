@@ -15,10 +15,8 @@ class CreatePhoto extends StatefulWidget {
   const CreatePhoto({
     Key key,
     @required this.toggleBottomNavVisibility,
-    @required this.isEditing,
   }) : super(key: key);
 
-  final ValueNotifier<bool> isEditing;
   final Function toggleBottomNavVisibility;
 
   @override
@@ -41,7 +39,7 @@ class CreatePhotoState extends State<CreatePhoto> {
   /// Creates a [CentralizedPhotoFormExpression] from the given data entered
   /// by the user.
   CentralizedPhotoFormExpression createExpression() {
-    return CentralizedPhotoFormExpression(image: '', caption: '');
+    return CentralizedPhotoFormExpression(image: 'test-image', caption: 'photo caption');
   }
 
   // Function to retrieve image from source (i.e. library or camera)
@@ -81,7 +79,6 @@ class CreatePhotoState extends State<CreatePhoto> {
         maxWidth: 512,
         maxHeight: 512,
       );
-      widget.isEditing.value = true;
       setState(() {
         _croppedFile = croppedFile;
       });
