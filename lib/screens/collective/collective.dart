@@ -112,10 +112,12 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        JuntoPerspectives(
-          changePerspective: _changePerspective,
-          profile: _userProfile,
-        ),
+        _userProfile != null
+            ? JuntoPerspectives(
+                changePerspective: _changePerspective,
+                profile: _userProfile,
+              )
+            : const SizedBox(),
         GestureDetector(
           onHorizontalDragUpdate: (DragUpdateDetails details) {
             if (_dx == 0.0 &&
