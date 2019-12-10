@@ -112,6 +112,7 @@ class ExpressionServiceCentralized implements ExpressionService {
       '/expressions',
       queryParams: query,
     );
+    print('got collective expressions ! ');
     final List<dynamic> results = JuntoHttp.handleResponse(response);
     return results
         .map(

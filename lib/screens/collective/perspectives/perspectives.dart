@@ -13,11 +13,11 @@ class JuntoPerspectives extends StatefulWidget {
   const JuntoPerspectives({
     Key key,
     @required this.changePerspective,
-    @required this.profile,
+    this.profile,
   }) : super(key: key);
 
   final Function changePerspective;
-  final UserProfile profile;
+  final UserData profile;
 
   @override
   State<StatefulWidget> createState() => JuntoPerspectivesState();
@@ -25,10 +25,10 @@ class JuntoPerspectives extends StatefulWidget {
 
 class JuntoPerspectivesState extends State<JuntoPerspectives> {
   Widget _buildUserPerspectives(BuildContext context) {
-    if (widget.profile?.address != null)
+    if (widget.profile.user.address != null)
       return FutureBuilder<List<CentralizedPerspective>>(
         future: Provider.of<UserRepo>(context)
-            .getUserPerspective(widget.profile.address),
+            .getUserPerspective(widget.profile.user.address),
         builder: (
           BuildContext context,
           AsyncSnapshot<List<CentralizedPerspective>> snapshot,

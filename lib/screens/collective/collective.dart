@@ -1,9 +1,10 @@
+import 'dart:convert';
 import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
-import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspectives.dart';
@@ -33,19 +34,14 @@ class JuntoCollective extends StatefulWidget {
 class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
   final GlobalKey<ScaffoldState> _juntoCollectiveKey =
       GlobalKey<ScaffoldState>();
-  AsyncMemoizer<void> readUserMemoizer = AsyncMemoizer<void>();
-
-  // Default values for collective screen / JUNTO perspective - change dynamically.
-  // ignore: unused_field
-  String _currentPerspective = 'JUNTO';
-
-  // ignore: unused_field
-  String _appbarTitle = 'JUNTO';
 
   double _dx = 0.0;
   String _scrollDirection;
 
-  UserProfile profile;
+  final AsyncMemoizer _memoizer = AsyncMemoizer();
+  ExpressionRepo _expressionProvider;
+  String _userAddress;
+  UserData _userProfile;
 
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
   bool lotusVisible = false;
@@ -64,34 +60,37 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
           _onScrollingHasChanged,
         );
     });
+
+    getUserInformation();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _readUser();
 
-    super.didChangeDependencies();
+    setState(() {
+      _expressionProvider = Provider.of<ExpressionRepo>(context);
+    });
   }
 
   void _onScrollingHasChanged() {
     super.hideFabOnScroll(_collectiveController, _isVisible);
   }
 
-  Future<void> _readUser() {
-    return readUserMemoizer.runOnce(() => _retrieveUserInfo());
+  Future<void> getUserInformation() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final Map<String, dynamic> decodedUserData =
+        jsonDecode(prefs.getString('user_data'));
+
+    setState(() {
+      _userAddress = prefs.getString('user_id');
+      _userProfile = UserData.fromMap(decodedUserData);
+    });
   }
 
-  Future<void> _retrieveUserInfo() async {
-    final UserRepo _userProvider = Provider.of<UserRepo>(context);
-    try {
-      final UserData _profile = await _userProvider.readLocalUser();
-      setState(() {
-        profile = _profile.user;
-      });
-    } catch (error, stack) {
-      debugPrint('Error occured in _retrieveUserInfo: $error,  $stack');
-    }
+  Future<dynamic> getCollectiveExpressions() async {
+    return _memoizer
+        .runOnce(() => _expressionProvider.getCollectiveExpressions());
   }
 
   @override
@@ -115,7 +114,7 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
       children: <Widget>[
         JuntoPerspectives(
           changePerspective: _changePerspective,
-          profile: profile,
+          profile: _userProfile,
         ),
         GestureDetector(
           onHorizontalDragUpdate: (DragUpdateDetails details) {
@@ -197,23 +196,22 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
                         screen: 'Collective', icon: CustomIcons.collective),
 
                     // dynamically render body
-                    body: FutureBuilder<List<CentralizedExpressionResponse>>(
-                      future: Provider.of<ExpressionRepo>(context)
-                          .getCollectiveExpressions(),
+                    body: FutureBuilder<dynamic>(
+                      future: getCollectiveExpressions(),
                       builder: (
                         BuildContext context,
-                        AsyncSnapshot<List<CentralizedExpressionResponse>>
-                            snapshot,
+                        AsyncSnapshot<dynamic> snapshot,
                       ) {
                         if (snapshot.hasError) {
+                          print(snapshot.error);
                           return Center(
                             child: Transform.translate(
                               offset: const Offset(0.0, 0.0),
-                              child: JuntoProgressIndicator(),
+                              child: const Text(
+                                  'hmm, something is up with our servers'),
                             ),
                           );
                         }
-
                         if (snapshot.hasData) {
                           return RefreshIndicator(
                             onRefresh: () async =>
@@ -351,8 +349,6 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
   void _changePerspective(String perspective) {
     setState(
       () {
-        _currentPerspective = perspective;
-        _appbarTitle = perspective;
         _dx = 0;
       },
     );
