@@ -48,6 +48,7 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
   ScrollController _collectiveController;
   final String newAppBarTitle = 'JUNTO';
   bool _showDegrees = true;
+  String currentDegree = 'oo';
 
   @override
   void initState() {
@@ -91,6 +92,12 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
   Future<dynamic> getCollectiveExpressions() async {
     return _memoizer
         .runOnce(() => _expressionProvider.getCollectiveExpressions());
+  }
+
+  switchDegree(degree) {
+    setState(() {
+      currentDegree = degree;
+    });
   }
 
   @override
@@ -223,6 +230,8 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
                                   expandedHeight:
                                       _showDegrees == true ? 135 : 85,
                                   degrees: _showDegrees,
+                                  currentDegree: currentDegree,
+                                  switchDegree: switchDegree,
                                   newappbartitle: newAppBarTitle,
                                   openPerspectivesDrawer:
                                       _openPerspectivesDrawer,

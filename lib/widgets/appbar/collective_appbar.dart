@@ -6,11 +6,13 @@ import 'package:junto_beta_mobile/screens/collective/perspectives'
 import 'package:junto_beta_mobile/widgets/appbar/appbar_search.dart';
 import 'package:provider/provider.dart';
 
-// Junto app bar used throughout the main screens. Rendered in JuntoTemplate.
+// Junto app bar used in collective screen.
 class CollectiveAppBar extends SliverPersistentHeaderDelegate {
   CollectiveAppBar(
       {@required this.expandedHeight,
       this.degrees,
+      this.currentDegree,
+      this.switchDegree,
       this.newappbartitle,
       this.openPerspectivesDrawer});
 
@@ -18,6 +20,8 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
   final String newappbartitle;
   final Function openPerspectivesDrawer;
   final bool degrees;
+  final String currentDegree;
+  final Function switchDegree;
 
   var _users;
 
@@ -78,7 +82,7 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                             return ListenableProvider<
                                 ValueNotifier<SelectedUsers>>.value(
                               value: _users,
-                              child: JuntoAppbarSearch(),
+                              child: const JuntoAppbarSearch(),
                             );
                           },
                         );
@@ -108,40 +112,68 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
               ],
             ),
           ),
-          degrees == true ? Container(
-            height: 50,
-            padding: const EdgeInsets.symmetric(
-              horizontal: 10,
-            ),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: Theme.of(context).dividerColor,
-                    width: .75,
-                  ),
-                ),
-                color: Theme.of(context).backgroundColor),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    const Text('oo'),
-                    const Text('i'),
-                    const Text('ii'),
-                    const Text('iii'),
-                    const Text('iv'),
-                    const Text('v'),
-                    const Text('vi'),
-                  ],
-                ),
-              ],
-            ),
-          ) : const SizedBox(),
+          degrees == true ? _degreesOfSeparation(context) : const SizedBox(),
         ],
+      ),
+    );
+  }
+
+  // Creates a row of degrees of separation; displayed if on 'Junto' perspective
+  Widget _degreesOfSeparation(
+    BuildContext context,
+  ) {
+    return Container(
+      height: 50,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: Theme.of(context).dividerColor,
+              width: .75,
+            ),
+          ),
+          color: Theme.of(context).backgroundColor),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              _degree(context, 'oo', currentDegree),
+              _degree(context, 'i', currentDegree),
+              _degree(context, 'ii', currentDegree),
+              _degree(context, 'iii', currentDegree),
+              _degree(context, 'iv', currentDegree),
+              _degree(context, 'v', currentDegree),
+              _degree(context, 'vi', currentDegree),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Function to return a single degree of separation; used in the _degreesOfSeparation
+  // function above
+  Widget _degree(BuildContext context, String degree, String currentDegree) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: () {
+          switchDegree(degree);
+        },
+        child: Container(
+          alignment: Alignment.center,
+          height: 49.25,
+          color: Colors.transparent,
+          child: Text(
+            degree,
+            style: degree == currentDegree
+                ? TextStyle(
+                    color: Theme.of(context).primaryColorDark,
+                    fontWeight: FontWeight.w700)
+                : TextStyle(color: Theme.of(context).primaryColorLight),
+          ),
+        ),
       ),
     );
   }
