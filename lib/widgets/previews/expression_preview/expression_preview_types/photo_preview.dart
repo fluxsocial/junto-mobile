@@ -16,8 +16,10 @@ class PhotoPreview extends StatelessWidget {
       borderRadius: BorderRadius.circular(5),
       child: Container(
         height: MediaQuery.of(context).size.height * .3,
-        child:
-            Image.asset(expression.expressionData.image, fit: BoxFit.fitHeight),
+        child: expression.expressionData.image == 'test-image'
+            ? SizedBox()
+            : Image.asset('assets/images/' + expression.expressionData.image,
+                fit: BoxFit.fitHeight),
       ),
     );
   }

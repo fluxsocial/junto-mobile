@@ -41,7 +41,7 @@ class BottomNav extends StatelessWidget {
           child: Container(
             width: 60,
             height: 50,
-            child: Icon(CustomIcons.spheres,
+            child: Icon(CustomIcons.groups,
                 size: 17, color: Theme.of(context).primaryColor),
           ),
         ),

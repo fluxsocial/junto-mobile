@@ -39,7 +39,7 @@ class CreatePhotoState extends State<CreatePhoto> {
   /// Creates a [CentralizedPhotoFormExpression] from the given data entered
   /// by the user.
   CentralizedPhotoFormExpression createExpression() {
-    return CentralizedPhotoFormExpression(image: 'test-image', caption: 'photo caption');
+    return CentralizedPhotoFormExpression(image: 'junto-mobile__mock--image.png', caption: 'mossy');
   }
 
   // Function to retrieve image from source (i.e. library or camera)
@@ -50,7 +50,7 @@ class CreatePhotoState extends State<CreatePhoto> {
       });
       _cropImage(image);
       if (_onFirstScreen) {
-        widget.toggleBottomNavVisibility();
+        widget.toggleBottomNavVisibility(); 
         _onFirstScreen = false;
         _photoEdit = true;
       }
