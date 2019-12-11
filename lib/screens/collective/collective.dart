@@ -16,6 +16,7 @@ import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 // This class is a collective screen
 class JuntoCollective extends StatefulWidget {
@@ -44,10 +45,9 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
   UserData _userProfile;
 
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
-  bool lotusVisible = false;
-
   ScrollController _collectiveController;
   final String newAppBarTitle = 'JUNTO';
+  bool _showDegrees = true;
 
   @override
   void initState() {
@@ -215,105 +215,101 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
                           );
                         }
                         if (snapshot.hasData) {
-                          return RefreshIndicator(
-                            onRefresh: () async =>
-                                setState(() => print('Refresh')),
-                            child: CustomScrollView(
-                              controller: _collectiveController,
-                              slivers: <Widget>[
-                                SliverPersistentHeader(
-                                  delegate: CollectiveAppBar(
-                                    expandedHeight: 85,
-                                    newappbartitle: newAppBarTitle,
-                                    openPerspectivesDrawer:
-                                        _openPerspectivesDrawer,
-                                  ),
-                                  pinned: false,
-                                  floating: true,
+                          return CustomScrollView(
+                            controller: _collectiveController,
+                            slivers: <Widget>[
+                              SliverPersistentHeader(
+                                delegate: CollectiveAppBar(
+                                  expandedHeight:
+                                      _showDegrees == true ? 135 : 85,
+                                  degrees: _showDegrees,
+                                  newappbartitle: newAppBarTitle,
+                                  openPerspectivesDrawer:
+                                      _openPerspectivesDrawer,
                                 ),
-                                SliverList(
-                                  delegate: SliverChildListDelegate(<Widget>[
-                                    Container(
-                                      color: Theme.of(context).backgroundColor,
-                                      child: Column(
-                                        children: <Widget>[
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              Container(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    .5,
-                                                padding: const EdgeInsets.only(
-                                                  top: 10,
-                                                  left: 10,
-                                                  right: 5,
-                                                ),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  children: <Widget>[
-                                                    for (int index = 0;
-                                                        index <
-                                                            snapshot.data
-                                                                    .length +
-                                                                1;
-                                                        index++)
-                                                      if (index ==
-                                                          snapshot.data.length)
-                                                        const SizedBox()
-                                                      else if (index.isEven)
-                                                        ExpressionPreview(
-                                                          expression: snapshot
-                                                              .data[index],
-                                                        )
-                                                  ],
-                                                ),
+                                pinned: false,
+                                floating: true,
+                              ),
+                              SliverList(
+                                delegate: SliverChildListDelegate(<Widget>[
+                                  Container(
+                                    color: Theme.of(context).backgroundColor,
+                                    child: Column(
+                                      children: <Widget>[
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  .5,
+                                              padding: const EdgeInsets.only(
+                                                top: 10,
+                                                left: 10,
+                                                right: 5,
                                               ),
-                                              Container(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    .5,
-                                                padding: const EdgeInsets.only(
-                                                  top: 10,
-                                                  left: 5,
-                                                  right: 10,
-                                                ),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  children: <Widget>[
-                                                    for (int index = 0;
-                                                        index <
-                                                            snapshot.data
-                                                                    .length +
-                                                                1;
-                                                        index++)
-                                                      if (index ==
-                                                          snapshot.data.length)
-                                                        const SizedBox()
-                                                      else if (index.isOdd)
-                                                        ExpressionPreview(
-                                                          expression: snapshot
-                                                              .data[index],
-                                                        )
-                                                  ],
-                                                ),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: <Widget>[
+                                                  for (int index = 0;
+                                                      index <
+                                                          snapshot.data.length +
+                                                              1;
+                                                      index++)
+                                                    if (index ==
+                                                        snapshot.data.length)
+                                                      const SizedBox()
+                                                    else if (index.isEven)
+                                                      ExpressionPreview(
+                                                        expression: snapshot
+                                                            .data[index],
+                                                      )
+                                                ],
                                               ),
-                                            ],
-                                          )
-                                        ],
-                                      ),
+                                            ),
+                                            Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  .5,
+                                              padding: const EdgeInsets.only(
+                                                top: 10,
+                                                left: 5,
+                                                right: 10,
+                                              ),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: <Widget>[
+                                                  for (int index = 0;
+                                                      index <
+                                                          snapshot.data.length +
+                                                              1;
+                                                      index++)
+                                                    if (index ==
+                                                        snapshot.data.length)
+                                                      const SizedBox()
+                                                    else if (index.isOdd)
+                                                      ExpressionPreview(
+                                                        expression: snapshot
+                                                            .data[index],
+                                                      )
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      ],
                                     ),
-                                  ]),
-                                )
-                              ],
-                            ),
+                                  ),
+                                ]),
+                              )
+                            ],
                           );
                         }
                         return Center(
