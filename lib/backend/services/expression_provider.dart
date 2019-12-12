@@ -107,17 +107,19 @@ class ExpressionServiceCentralized implements ExpressionService {
   Future<List<CentralizedExpressionResponse>> getCollectiveExpressions(
       params) async {
     print(params);
-    print(params['contextType']);
+
+    // final ExpressionQueryParams query = ExpressionQueryParams(channels: [], dos: params['dos'], context: params['contextId'], contextType: params['contextType']);
     final Map<String, String> query = <String, String>{
       'context_type': params['contextType'],
       'context': params['contextId'],
       'channel[0]': '1',
+      'dos': params['dos']
     };
     final http.Response response = await client.get(
       '/expressions',
       queryParams: query,
     );
-    print('got collective expressions ! ');
+    print('got collective expressions !');
     final List<dynamic> results = JuntoHttp.handleResponse(response);
     return results
         .map(

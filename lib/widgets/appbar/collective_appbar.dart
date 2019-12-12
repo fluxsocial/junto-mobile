@@ -13,11 +13,11 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
       this.degrees,
       this.currentDegree,
       this.switchDegree,
-      this.newappbartitle,
+      this.appbarTitle,
       this.openPerspectivesDrawer});
 
   final double expandedHeight;
-  final String newappbartitle;
+  final String appbarTitle;
   final Function openPerspectivesDrawer;
   final bool degrees;
   final String currentDegree;
@@ -63,7 +63,7 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                             height: 22.0, width: 22.0),
                         const SizedBox(width: 7.5),
                         Text(
-                          newappbartitle,
+                          appbarTitle,
                           style: Theme.of(context).appBarTheme.textTheme.body1,
                         ),
                       ],
@@ -139,13 +139,41 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
         children: <Widget>[
           Row(
             children: <Widget>[
-              _degree(context, 'oo', currentDegree),
-              _degree(context, 'i', currentDegree),
-              _degree(context, 'ii', currentDegree),
-              _degree(context, 'iii', currentDegree),
-              _degree(context, 'iv', currentDegree),
-              _degree(context, 'v', currentDegree),
-              _degree(context, 'vi', currentDegree),
+              _degree(
+                  context: context,
+                  degreeName: 'oo',
+                  currentDegree: currentDegree,
+                  degreeNumber: 0),
+              _degree(
+                  context: context,
+                  degreeName: 'i',
+                  currentDegree: currentDegree,
+                  degreeNumber: 1),
+              _degree(
+                  context: context,
+                  degreeName: 'ii',
+                  currentDegree: currentDegree,
+                  degreeNumber: 2),
+              _degree(
+                  context: context,
+                  degreeName: 'iii',
+                  currentDegree: currentDegree,
+                  degreeNumber: 3),
+              _degree(
+                  context: context,
+                  degreeName: 'iv',
+                  currentDegree: currentDegree,
+                  degreeNumber: 4),
+              _degree(
+                  context: context,
+                  degreeName: 'v',
+                  currentDegree: currentDegree,
+                  degreeNumber: 5),
+              _degree(
+                  context: context,
+                  degreeName: 'vi',
+                  currentDegree: currentDegree,
+                  degreeNumber: 6),
             ],
           ),
         ],
@@ -155,19 +183,23 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
 
   // Function to return a single degree of separation; used in the _degreesOfSeparation
   // function above
-  Widget _degree(BuildContext context, String degree, String currentDegree) {
+  Widget _degree(
+      {BuildContext context,
+      String degreeName,
+      int degreeNumber,
+      String currentDegree}) {
     return Expanded(
       child: GestureDetector(
         onTap: () {
-          switchDegree(degree);
+          switchDegree(degreeName: degreeName, degreeNumber: degreeNumber);
         },
         child: Container(
           alignment: Alignment.center,
           height: 49.25,
           color: Colors.transparent,
           child: Text(
-            degree,
-            style: degree == currentDegree
+            degreeName,
+            style: degreeName == currentDegree
                 ? TextStyle(
                     color: Theme.of(context).primaryColorDark,
                     fontWeight: FontWeight.w700)

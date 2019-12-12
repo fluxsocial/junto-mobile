@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -47,7 +46,7 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
 
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
   ScrollController _collectiveController;
-  final String newAppBarTitle = 'JUNTO';
+  String _appbarTitle = 'JUNTO';
   bool _showDegrees = true;
   String currentDegree = 'oo';
   Future _currentFeed;
@@ -103,12 +102,6 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
       'contextId': contextId
     };
     return await _expressionProvider.getCollectiveExpressions(_params);
-  }
-
-  void _switchDegree(String degree) {
-    setState(() {
-      currentDegree = degree;
-    });
   }
 
   @override
@@ -243,7 +236,7 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
                                   degrees: _showDegrees,
                                   currentDegree: currentDegree,
                                   switchDegree: _switchDegree,
-                                  newappbartitle: newAppBarTitle,
+                                  appbarTitle: _appbarTitle,
                                   openPerspectivesDrawer:
                                       _openPerspectivesDrawer,
                                 ),
@@ -363,20 +356,40 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
     );
   }
 
+// switch bgetween degrees of separation
+  void _switchDegree({String degreeName, int degreeNumber}) {
+    setState(() {
+      // _currentFeed = getCollectiveExpressions(
+      //     contextId: null, contextType: 'Dos', dos: degreeNumber);
+      _showDegrees = true;
+    });
+    setState(() {
+      currentDegree = degreeName;
+    });
+  }
+
 // Switch between perspectives; used in perspectives side drawer.
   void _changePerspective(dynamic perspective) {
-    // print('change to ' + perspective.name + ' perspective');
     if (perspective == 'JUNTO') {
       setState(() {
         _currentFeed = getCollectiveExpressions(
-            contextId: null, contextType: 'Collective');
+            contextId: null, contextType: 'Collective', dos: null);
         _showDegrees = true;
+        _appbarTitle = 'JUNTO';
       });
     } else {
       setState(() {
         _currentFeed = getCollectiveExpressions(
-            contextId: perspective.address, contextType: 'FollowPerspective');
+            contextId: perspective.address,
+            contextType: 'FollowPerspective',
+            dos: null);
         _showDegrees = false;
+        if (perspective.name ==
+            _userProfile.user.name + "'s Follow Perspective") {
+          _appbarTitle = 'Subscriptions';
+        } else {
+          _appbarTitle = perspective.name;
+        }
       });
     }
 
