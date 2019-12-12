@@ -331,7 +331,7 @@ class MemberRelationshipsModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * .3,
+      height: MediaQuery.of(context).size.height * .36,
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.background,
@@ -389,6 +389,23 @@ class MemberRelationshipsModal extends StatelessWidget {
                     const SizedBox(width: 15),
                     Text(
                       'Connect',
+                      style: Theme.of(context).textTheme.headline,
+                    ),
+                  ],
+                ),
+              ),
+              ListTile(
+                contentPadding: const EdgeInsets.all(0),
+                title: Row(
+                  children: <Widget>[
+                    Icon(
+                      CustomIcons.packs,
+                      size: 17,
+                      color: Theme.of(context).primaryColorDark,
+                    ),
+                    const SizedBox(width: 15),
+                    Text(
+                      'Invite to my pack',
                       style: Theme.of(context).textTheme.headline,
                     ),
                   ],

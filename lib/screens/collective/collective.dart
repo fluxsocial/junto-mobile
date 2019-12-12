@@ -101,6 +101,8 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
       'contextType': contextType,
       'contextId': contextId
     };
+    print('from collective ');
+
     return await _expressionProvider.getCollectiveExpressions(_params);
   }
 

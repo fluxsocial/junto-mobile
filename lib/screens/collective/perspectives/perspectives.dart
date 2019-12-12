@@ -52,7 +52,6 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                   if (perspective.name !=
                       widget.profile.user.name + "'s Connection Perspective") {
                     if (perspective == snapshot.data[0]) {
-                      print(perspective.address);
                       return _buildPerspective(
                           name: 'Subscriptions',
                           isCustomPerspective: false,

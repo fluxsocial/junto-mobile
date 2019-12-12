@@ -106,8 +106,6 @@ class ExpressionServiceCentralized implements ExpressionService {
   @override
   Future<List<CentralizedExpressionResponse>> getCollectiveExpressions(
       params) async {
-    print(params);
-
     // final ExpressionQueryParams query = ExpressionQueryParams(channels: [], dos: params['dos'], context: params['contextId'], contextType: params['contextType']);
     final Map<String, String> query = <String, String>{
       'context_type': params['contextType'],
