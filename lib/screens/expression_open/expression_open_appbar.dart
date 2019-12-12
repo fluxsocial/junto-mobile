@@ -68,7 +68,7 @@ class ExpressionOpenAppbar extends StatelessWidget {
 }
 
 class ExpressionOpenContext extends StatelessWidget {
-  ExpressionOpenContext(this.expression);
+  const ExpressionOpenContext(this.expression);
   final expression;
 
   Widget _contextIcon(BuildContext context, String contextType) {
@@ -86,6 +86,7 @@ class ExpressionOpenContext extends StatelessWidget {
             color: Theme.of(context).primaryColor, size: 17),
       );
     }
+    return const SizedBox();
   }
 
   @override

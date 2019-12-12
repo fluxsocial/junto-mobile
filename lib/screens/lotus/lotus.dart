@@ -153,7 +153,7 @@ class JuntoLotus extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 10),
                                 const Text(
-                                  'CONNECT',
+                                  'GROUPS',
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 14,
@@ -216,7 +216,7 @@ class JuntoLotus extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 10),
                                 const Text(
-                                  'DISCOVER',
+                                  'COLLECTIVE',
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 14,
@@ -270,7 +270,7 @@ class JuntoLotus extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 10),
                                 const Text(
-                                  'REFLECT',
+                                  'DEN',
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 14,
