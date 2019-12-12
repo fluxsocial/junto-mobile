@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 
 class EventOpen extends StatelessWidget {
@@ -12,7 +11,7 @@ class EventOpen extends StatelessWidget {
     final CentralizedEventFormExpression eventExpression =
         expression.expressionData as CentralizedEventFormExpression;
     final String eventTitle = eventExpression.title;
-    final String eventTime = eventExpression.startTime;
+    final String eventTime = DateTime.now().toIso8601String();
     final String eventLocation = eventExpression.location;
     final String eventImage = eventExpression.photo;
     final String eventDescription = eventExpression.description;
@@ -140,7 +139,7 @@ class EventOpen extends StatelessWidget {
                               const SizedBox(width: 5),
                             ],
                           ),
-                          SizedBox(height: 5),
+                          const SizedBox(height: 5),
                           Text('49 members',
                               style: Theme.of(context).textTheme.subtitle),
                         ],

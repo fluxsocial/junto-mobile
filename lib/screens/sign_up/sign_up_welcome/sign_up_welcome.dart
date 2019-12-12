@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/screens/template/template.dart';
+import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
@@ -13,8 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SignUpWelcome extends StatefulWidget {
   const SignUpWelcome({
     Key key,
-    @required this.firstName,
-    @required this.lastName,
+    @required this.name,
     @required this.username,
     @required this.password,
     @required this.bio,
@@ -22,11 +21,8 @@ class SignUpWelcome extends StatefulWidget {
     @required this.email,
   }) : super(key: key);
 
-  /// First Name of the user
-  final String firstName;
-
-  /// Last Name of the user
-  final String lastName;
+  // Full name of user
+  final String name;
 
   /// Username chosen by the user
   final String username;
@@ -52,18 +48,18 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
   /// to [JuntoTemplate]
   Future<void> _handleSignUp() async {
     final UserAuthRegistrationDetails details = UserAuthRegistrationDetails(
-      email: widget.email,
-      firstName: widget.firstName,
-      lastName: widget.lastName,
-      password: widget.password,
-      bio: widget.bio,
-      username: widget.username,
-      profileImage: widget.profilePicture ?? '',
-    );
+        email: widget.email,
+        name: widget.name,
+        password: widget.password,
+        bio: widget.bio,
+        location: 'New York',
+        username: widget.username,
+        profileImage: widget.profilePicture ?? '');
     try {
       JuntoOverlay.showLoader(context);
       final UserData results =
           await Provider.of<AuthRepo>(context).registerUser(details);
+
       await SharedPreferences.getInstance()
         ..setBool(
           'isLoggedIn',
@@ -72,7 +68,7 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
         ..setString('user_id', results.user.address);
       JuntoOverlay.hide();
       Navigator.of(context).pushAndRemoveUntil(
-        JuntoTemplate.route(),
+        JuntoCollective.route(),
         (Route<dynamic> route) => false,
       );
     } on JuntoException catch (error) {
@@ -131,12 +127,10 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
                   ),
                   Container(
                     padding: EdgeInsets.symmetric(
-                        horizontal: MediaQuery.of(context).size.width * .10),
+                        horizontal: MediaQuery.of(context).size.width * .05),
                     margin: const EdgeInsets.only(bottom: 40),
                     child: Text(
-                      'Hey ' +
-                          widget.firstName +
-                          '! We are stoked to have you here.',
+                      'Junto Community Agreements',
                       style: const TextStyle(
                           color: Color(0xff333333),
                           fontWeight: FontWeight.w700,
@@ -157,15 +151,27 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
                   ),
                   Container(
                     padding: EdgeInsets.symmetric(
-                        horizontal: MediaQuery.of(context).size.width * .10),
-                    child: const Text(
-                      'Junto is a community of individuals working together to'
-                      ' inspire authenticity and meaningful collaboration.',
-                      style: TextStyle(
-                        color: Color(0xff333333),
-                        fontSize: 17,
-                      ),
-                      textAlign: TextAlign.center,
+                        horizontal: MediaQuery.of(context).size.width * .05),
+                    child: Column(
+                      children: <Widget>[
+                        Text(
+                          '1. Be aware of the impact your words and actions have. Embrace kindness and compassion when interacting with others.',
+                          style: Theme.of(context).textTheme.caption,
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          '2. Accept everyone else\'s experience as valid, even if it doesn\'t look like yours',
+                          style: Theme.of(context).textTheme.caption,
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          '3. Expresson yourself freely. Be real and hold space for authenticity.',
+                          style: Theme.of(context).textTheme.caption,
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
                     ),
                   ),
                 ],
@@ -173,13 +179,13 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
               Container(
                 width: 200,
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(
+                  gradient: LinearGradient(
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
                     stops: <double>[0.1, 0.9],
                     colors: <Color>[
-                      Color(0xff5E54D0),
-                      Color(0xff307FAB),
+                      Theme.of(context).colorScheme.secondary,
+                      Theme.of(context).colorScheme.primary
                     ],
                   ),
                   borderRadius: BorderRadius.circular(
@@ -194,12 +200,9 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
                   ),
                   color: Colors.transparent,
                   elevation: 0,
-                  // shape: RoundedRectangleBorder(borderRadius: BorderRadius
-                  // .circular(100),),
                   child: const Text(
-                    'LET\'S GO!',
+                    'Yus, this looks good',
                     style: TextStyle(
-                      // color: JuntoPalette.juntoBlue,
                       color: Colors.white,
                       fontWeight: FontWeight.w700,
                       fontSize: 14,

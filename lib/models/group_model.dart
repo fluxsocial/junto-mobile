@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/utils/utils.dart';
 
 /// Object representing a group and a sphere. [groupType] determines the
 /// return type of [groupData]. Should [groupType] == 'Pack', [GroupDataPack]
@@ -11,14 +12,18 @@ class Group {
     @required this.privacy,
     @required this.groupType,
     @required this.groupData,
+    @required this.facilitators,
+    @required this.members,
   });
 
   factory Group.fromMap(Map<String, dynamic> json) => Group(
         address: json['address'],
         creator: json['creator'],
-        createdAt: DateTime.parse(json['created_at']),
+        createdAt: RFC3339.parseRfc3339(json['created_at']),
         privacy: json['privacy'],
         groupType: json['group_type'],
+        members: json['members'] as int,
+        facilitators: json['facilitators'] as int,
         groupData: json['group_type'] == 'Sphere'
             ? GroupDataSphere.fromJson(json['group_data'])
             : GroupDataPack.fromMap(json['group_data']),
@@ -38,6 +43,8 @@ class Group {
 
   /// Type of group. Ie: Sphere or Pack
   final String groupType;
+  final int facilitators;
+  final int members;
 
   /// Object representation of group type. Value is based on [groupType].
   /// Please see [GroupDataPack] and [GroupDataSphere].
@@ -49,6 +56,8 @@ class Group {
         'created_at': createdAt.toIso8601String(),
         'privacy': privacy,
         'group_type': groupType,
+        'members': members.toString(),
+        'facilitators': facilitators.toString(),
         'group_data': groupData.toJson(),
       };
 

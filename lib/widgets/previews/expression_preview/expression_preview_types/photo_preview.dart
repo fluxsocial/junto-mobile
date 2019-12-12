@@ -10,40 +10,17 @@ class PhotoPreview extends StatelessWidget {
 
   final CentralizedExpressionResponse expression;
 
-  // Widget _generateCaption() {
-  //   if (imageCaption == '' || imageCaption == null) {
-  //     return Container(height: 0, width: 0);
-  //   } else {
-  //     return Container(
-  //       margin: const EdgeInsets.only(top: 10, left: 10),
-  //       child: Text(
-  //         imageCaption,
-  //         maxLines: 2,
-  //         textAlign: TextAlign.start,
-  //       ),
-  //     );
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Container(
-          width: MediaQuery.of(context).size.width,
-          child: Image.asset(expression.expressionData.image,
-              fit: BoxFit.fitWidth),
-        ),
-        const SizedBox(height: 10),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Text(
-            expression.expressionData.caption,
-            style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
-          ),
-        )
-      ],
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(5),
+      child: Container(
+        height: MediaQuery.of(context).size.height * .3,
+        child: expression.expressionData.image == 'test-image'
+            ? SizedBox()
+            : Image.asset(expression.expressionData.image,
+                fit: BoxFit.fitHeight),
+      ),
     );
   }
 }

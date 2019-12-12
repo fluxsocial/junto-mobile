@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:junto_beta_mobile/models/group_model.dart';
-import 'package:junto_beta_mobile/screens/spheres/sphere_open/sphere_open.dart';
+import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/models/group_model.dart';
+import 'package:junto_beta_mobile/screens/groups/spheres/sphere_open/sphere_open.dart';
 
 // This class renders a preview of a sphere
 class SpherePreviewSearch extends StatelessWidget {
@@ -80,9 +80,9 @@ class SpherePreviewSearch extends StatelessWidget {
                       Text(
                         group.groupData.name,
                         textAlign: TextAlign.start,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 12,
-                          color: const Color(0xff555555),
+                          color: Color(0xff555555),
                           fontWeight: FontWeight.w500,
                         ),
                       )

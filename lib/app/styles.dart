@@ -3,6 +3,7 @@ import 'package:junto_beta_mobile/app/palette.dart';
 
 class JuntoStyles with ChangeNotifier {
   JuntoStyles(this.theme);
+
   final String theme;
 
   // horizontal padding for widgets across app
@@ -77,6 +78,13 @@ class JuntoStyles with ChangeNotifier {
     fontWeight: FontWeight.w600,
     fontFamily: 'Avenir Heavy',
     color: JuntoPalette.juntoGrey,
+  );
+  static const TextStyle lotusLongformBodyLight = TextStyle(
+    height: 1.25,
+    fontSize: 17.0,
+    fontWeight: FontWeight.w600,
+    fontFamily: 'Avenir Heavy',
+    color: JuntoPalette.juntoWhite,
   );
 
   static const TextStyle perspectiveTitle = TextStyle(

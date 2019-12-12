@@ -70,7 +70,7 @@ class CentralizedDen {
   final String privacy;
   final bool isDefault;
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'address': address,
       'name': name,

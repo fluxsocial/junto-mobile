@@ -3,25 +3,40 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/widgets/previews/channel_preview.dart';
+import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions_appbar.dart';
-import 'package:junto_beta_mobile/screens/template/template.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:junto_beta_mobile/widgets/previews/channel_preview.dart';
 import 'package:provider/provider.dart';
 
 class CreateActions extends StatefulWidget {
   const CreateActions({
     Key key,
-    @required this.expressionLayer,
     @required this.expressionType,
+    @required this.channels,
+    @required this.expressionContext,
     @required this.expression,
     @required this.address,
   }) : super(key: key);
 
-  final String expressionLayer;
+  /// Represents the type of expression being created. Possible values include
+  /// "LongForm", "ShortForm", "EventForm", etc
   final String expressionType;
+
+  /// This is the name of the channel to which the expression is being posted.
+  final List<String> channels;
+
+  /// This represents the Expression's context. Please see [ExpressionContext]
+  final ExpressionContext expressionContext;
+
+  /// Represents the expression data. Value depends on the type of expression
+  /// being created.
   final dynamic expression;
+
+  /// Address of the [Group] or collection to which the expression is being posted.
+  /// Can also be null if the [expressionContext] == [ExpressionContext.Collective]
   final String address;
 
   @override
@@ -29,11 +44,10 @@ class CreateActions extends StatefulWidget {
 }
 
 class CreateActionsState extends State<CreateActions> {
-  //ignore: unused_field
-  final List<String> _channels = <String>[];
+  String _selectedType = 'Collective';
 
-  //ignore: unused_field
-  final String _selectedType = 'Collective';
+  String _address;
+  CentralizedExpression _expression;
 
   // instantiate TextEditingController to pass to TextField widget
   TextEditingController _channelController;
@@ -42,6 +56,12 @@ class CreateActionsState extends State<CreateActions> {
   void initState() {
     super.initState();
     _channelController = TextEditingController();
+    _address = widget.address;
+    _expression = CentralizedExpression(
+      type: widget.expressionType,
+      expressionData: widget.expression.toMap(),
+      context: widget.expressionContext
+    );
   }
 
   @override
@@ -51,17 +71,16 @@ class CreateActionsState extends State<CreateActions> {
   }
 
   Future<void> _createExpression() async {
-    final CentralizedExpression _expression = CentralizedExpression(
-      type: widget.expressionType,
-      context: <String, dynamic>{
-        'Group': <String, dynamic>{'address': widget.address}
-      },
-      expressionData: widget.expression.toMap(),
-    );
-    JuntoOverlay.showLoader(context);
+    print(widget.address);
+    print(widget.expression);
+    print(widget.expressionContext);
     try {
-      await Provider.of<ExpressionRepo>(context).createExpression(_expression);
-      JuntoOverlay.hide();
+      await Provider.of<ExpressionRepo>(context).createExpression(
+        _expression,
+        _expression.context,
+        _address,
+      );
+      // JuntoOverlay.hide();
       JuntoDialog.showJuntoDialog(
         context,
         'Expression Created!',
@@ -69,7 +88,7 @@ class CreateActionsState extends State<CreateActions> {
           FlatButton(
             onPressed: () {
               Navigator.of(context).pushAndRemoveUntil(
-                JuntoTemplate.route(),
+                JuntoCollective.route(),
                 (_) => false,
               );
             },
@@ -78,23 +97,40 @@ class CreateActionsState extends State<CreateActions> {
         ],
       );
     } catch (error) {
-      JuntoOverlay.hide();
-      JuntoDialog.showJuntoDialog(
-        context,
-        'Something went wrong ${error?.code}',
-        <Widget>[
-          FlatButton(
-            onPressed: () {
-              Navigator.of(context).pushAndRemoveUntil(
-                JuntoTemplate.route(),
-                (_) => false,
-              );
-            },
-            child: const Text('Ok'),
-          )
-        ],
-      );
+      print(error);
+      print(error.message);
+      print('something is up');
+      // JuntoOverlay.hide();
+      // JuntoDialog.showJuntoDialog(
+      //   context,
+      //   'Something went wrong ${error?.code}',
+      //   <Widget>[
+      //     FlatButton(
+      //       onPressed: () {
+      //         Navigator.of(context).pushAndRemoveUntil(
+      //           JuntoCollective.route(),
+      //           (_) => false,
+      //         );
+      //       },
+      //       child: const Text('Ok'),
+      //     )
+      //   ],
+      // );
     }
+  }
+
+  void _onSharingClick(String layer, String resource) {
+    Navigator.pop(context);
+    if (layer == 'Public Den') {
+      _expression = _expression.copyWith(context: ExpressionContext.Group);
+    } else if (layer == 'My Pack') {
+      _expression = _expression.copyWith(context: ExpressionContext.Group);
+    } else {
+      _expression = _expression.copyWith(context: ExpressionContext.Collective);
+    }
+
+    _address = resource;
+    setState(() => _selectedType = layer);
   }
 
   @override
@@ -103,8 +139,7 @@ class CreateActionsState extends State<CreateActions> {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(45),
         child: CreateActionsAppbar(
-          // onCreateTap: _createExpression,
-          onCreateTap: null,
+          onCreateTap: _createExpression,
         ),
       ),
       body: ListView(
@@ -132,7 +167,9 @@ class CreateActionsState extends State<CreateActions> {
                 isScrollControlled: true,
                 context: context,
                 builder: (BuildContext context) {
-                  return _ExpressionLayerBottomSheet();
+                  return _ExpressionLayerBottomSheet(
+                    onItemClick: _onSharingClick,
+                  );
                 },
               );
             },
@@ -150,8 +187,10 @@ class CreateActionsState extends State<CreateActions> {
               ),
               child: Row(
                 children: <Widget>[
-                  Text('sharing to ' + widget.expressionLayer,
-                      style: Theme.of(context).textTheme.caption),
+                  Text(
+                    'sharing to ' + _selectedType,
+                    style: Theme.of(context).textTheme.caption,
+                  ),
                   const SizedBox(width: 1),
                   Icon(Icons.keyboard_arrow_down,
                       color: Theme.of(context).primaryColorDark, size: 17)
@@ -254,7 +293,7 @@ class CreateActionsState extends State<CreateActions> {
                           }) =>
                               null,
                           decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(0),
+                            contentPadding: const EdgeInsets.all(0),
                             border: InputBorder.none,
                             hintText: 'add up to five channels',
                             hintStyle: Theme.of(context).textTheme.caption,
@@ -272,7 +311,7 @@ class CreateActionsState extends State<CreateActions> {
                 ),
                 Expanded(
                   child: ListView(
-                    children: <Widget>[
+                    children: const <Widget>[
                       ChannelPreview(
                         channel: 'design',
                       ),
@@ -294,7 +333,16 @@ class CreateActionsState extends State<CreateActions> {
   }
 }
 
+typedef OnItemClick = Function(String name, String resourceAddress);
+
 class _ExpressionLayerBottomSheet extends StatefulWidget {
+  const _ExpressionLayerBottomSheet({
+    Key key,
+    @required this.onItemClick,
+  }) : super(key: key);
+
+  final OnItemClick onItemClick;
+
   @override
   State<StatefulWidget> createState() => _ExpressionLayerBottomSheetState();
 }
@@ -304,6 +352,8 @@ class _ExpressionLayerBottomSheetState
   PageController _pageController;
   bool _chooseBase = true;
   bool _chooseSpheres = false;
+  UserData user;
+  String resourceAddress;
 
   @override
   void initState() {
@@ -312,9 +362,77 @@ class _ExpressionLayerBottomSheetState
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _readUser();
+  }
+
+  Future<void> _readUser() async {
+    final UserData _user = await Provider.of<UserRepo>(context).readLocalUser();
+    if (_user != null) {
+      user = _user;
+    }
+  }
+
+  @override
   void dispose() {
     super.dispose();
     _pageController.dispose();
+  }
+
+  Widget _expressionLayerWidget(String layer) {
+    dynamic expressionLayerIcon;
+
+    if (layer == 'Collective') {
+      resourceAddress = null;
+      expressionLayerIcon = Icon(
+        CustomIcons.lotus,
+        color: Colors.white,
+        size: 15,
+      );
+    } else if (layer == 'My Pack') {
+      resourceAddress = user?.pack?.address;
+      expressionLayerIcon = Icon(
+        CustomIcons.packs,
+        color: Colors.white,
+        size: 15,
+      );
+    } else if (layer == 'Public Den') {
+      resourceAddress = user?.publicDen?.address;
+      expressionLayerIcon = Image.asset(
+        'assets/images/junto-mobile__logo--white.png',
+        color: Colors.white,
+        height: 18,
+      );
+    }
+
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+      onTap: () => widget.onItemClick(layer, resourceAddress),
+      title: Row(
+        children: <Widget>[
+          Container(
+              alignment: Alignment.center,
+              height: 45.0,
+              width: 45.0,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomLeft,
+                  end: Alignment.topRight,
+                  stops: const <double>[0.2, 0.9],
+                  colors: <Color>[
+                    Theme.of(context).colorScheme.secondary,
+                    Theme.of(context).colorScheme.primary
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(100),
+              ),
+              child: expressionLayerIcon),
+          const SizedBox(width: 20),
+          Text(layer, style: Theme.of(context).textTheme.caption)
+        ],
+      ),
+    );
   }
 
   @override
@@ -411,7 +529,7 @@ class _ExpressionLayerBottomSheetState
                             children: <Widget>[
                               _expressionLayerWidget('Collective'),
                               _expressionLayerWidget('My Pack'),
-                              _expressionLayerWidget('Private Den'),
+                              _expressionLayerWidget('Public Den'),
                             ],
                           )),
                         ],
@@ -426,57 +544,6 @@ class _ExpressionLayerBottomSheetState
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _expressionLayerWidget(String layer) {
-    dynamic expressionLayerIcon;
-
-    if (layer == 'Collective') {
-      expressionLayerIcon = Icon(
-        CustomIcons.lotus,
-        color: Colors.white,
-        size: 15,
-      );
-    } else if (layer == 'My Pack') {
-      expressionLayerIcon = Icon(
-        CustomIcons.packs,
-        color: Colors.white,
-        size: 15,
-      );
-    } else if (layer == 'Private Den') {
-      expressionLayerIcon = Image.asset(
-        'assets/images/junto-mobile__logo--white.png',
-        color: Colors.white,
-        height: 18,
-      );
-    }
-
-    return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
-      title: Row(
-        children: <Widget>[
-          Container(
-              alignment: Alignment.center,
-              height: 45.0,
-              width: 45.0,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.bottomLeft,
-                  end: Alignment.topRight,
-                  stops: const <double>[0.2, 0.9],
-                  colors: <Color>[
-                    Theme.of(context).colorScheme.secondary,
-                    Theme.of(context).colorScheme.primary
-                  ],
-                ),
-                borderRadius: BorderRadius.circular(100),
-              ),
-              child: expressionLayerIcon),
-          const SizedBox(width: 20),
-          Text(layer, style: Theme.of(context).textTheme.caption)
-        ],
       ),
     );
   }

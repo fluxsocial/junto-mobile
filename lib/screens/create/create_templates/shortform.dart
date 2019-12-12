@@ -6,10 +6,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 class CreateShortform extends StatefulWidget {
   const CreateShortform({
     Key key,
-    @required this.isEditing,
   }) : super(key: key);
-
-  final ValueNotifier<bool> isEditing;
 
   @override
   State<StatefulWidget> createState() => CreateShortformState();
@@ -20,15 +17,16 @@ class CreateShortformState extends State<CreateShortform> {
   Color gradientTwo;
 
   // ignore: unused_field
-  String _currentBackground = 'none';
+  String _currentBackground = 'zero';
   TextEditingController _bodyController;
 
   /// Creates a [CentralizedShortFormExpression] from the given data entered
   /// by the user.
   CentralizedShortFormExpression createExpression() {
     return CentralizedShortFormExpression(
-        body: _bodyController.value.text,
-        background: gradientOne.value.toRadixString(16));
+      body: _bodyController.value.text,
+      background: _currentBackground,
+    );
   }
 
   @override
@@ -37,22 +35,10 @@ class CreateShortformState extends State<CreateShortform> {
     gradientOne = JuntoPalette.juntoPrimary;
     gradientTwo = JuntoPalette.juntoSecondary;
     _bodyController = TextEditingController();
-    _bodyController.addListener(bodyListener);
-    _bodyController.text = 'gradients are fully customizeable and tbd';
-  }
-
-  void bodyListener() {
-    if (_bodyController.value.text.isEmpty) {
-      widget.isEditing.value = false;
-    }
-    if (_bodyController.value.text.isNotEmpty) {
-      widget.isEditing.value = true;
-    }
   }
 
   @override
   void dispose() {
-    _bodyController.removeListener(bodyListener);
     _bodyController.dispose();
     super.dispose();
   }
@@ -62,11 +48,11 @@ class CreateShortformState extends State<CreateShortform> {
     // final String _bodyValue = _bodyController.text
 
     void _setBackground(String background) {
-      if (background == 'none') {
+      if (background == 'zero') {
         setState(() {
           gradientOne = Colors.white;
           gradientTwo = Colors.white;
-          _currentBackground = 'none';
+          _currentBackground = 'zero';
         });
       } else if (background == 'one') {
         setState(
@@ -136,51 +122,51 @@ class CreateShortformState extends State<CreateShortform> {
             child: ListView(
               padding: const EdgeInsets.all(0),
               children: <Widget>[
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  margin: const EdgeInsets.only(top: 10, bottom: 15),
-                  child: Row(
-                    children: <Widget>[
-                      GestureDetector(
-                        onTap: () {
-                          _setBackground('one');
-                        },
-                        child: _buildBackgroundPicker(JuntoPalette.juntoPrimary,
-                            JuntoPalette.juntoSecondary),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          _setBackground('two');
-                        },
-                        child: _buildBackgroundPicker(
-                            JuntoPalette.juntoSecondaryLight,
-                            JuntoPalette.juntoSecondary),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          _setBackground('three');
-                        },
-                        child: _buildBackgroundPicker(
-                            JuntoPalette.juntoPrimaryLight,
-                            JuntoPalette.juntoPrimary),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          _setBackground('four');
-                        },
-                        child: _buildBackgroundPicker(
-                            JuntoPalette.juntoGreen, JuntoPalette.juntoPrimary),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          _setBackground('five');
-                        },
-                        child: _buildBackgroundPicker(JuntoPalette.juntoGreen,
-                            JuntoPalette.juntoSecondary),
-                      ),
-                    ],
-                  ),
-                ),
+                // Container(
+                //   padding: const EdgeInsets.symmetric(horizontal: 10),
+                //   margin: const EdgeInsets.only(top: 10, bottom: 15),
+                //   child: Row(
+                //     children: <Widget>[
+                //       GestureDetector(
+                //         onTap: () {
+                //           _setBackground('one');
+                //         },
+                //         child: _buildBackgroundPicker(JuntoPalette.juntoPrimary,
+                //             JuntoPalette.juntoSecondary),
+                //       ),
+                //       GestureDetector(
+                //         onTap: () {
+                //           _setBackground('two');
+                //         },
+                //         child: _buildBackgroundPicker(
+                //             JuntoPalette.juntoSecondaryLight,
+                //             JuntoPalette.juntoSecondary),
+                //       ),
+                //       GestureDetector(
+                //         onTap: () {
+                //           _setBackground('three');
+                //         },
+                //         child: _buildBackgroundPicker(
+                //             JuntoPalette.juntoPrimaryLight,
+                //             JuntoPalette.juntoPrimary),
+                //       ),
+                //       GestureDetector(
+                //         onTap: () {
+                //           _setBackground('four');
+                //         },
+                //         child: _buildBackgroundPicker(
+                //             JuntoPalette.juntoGreen, JuntoPalette.juntoPrimary),
+                //       ),
+                //       GestureDetector(
+                //         onTap: () {
+                //           _setBackground('five');
+                //         },
+                //         child: _buildBackgroundPicker(JuntoPalette.juntoGreen,
+                //             JuntoPalette.juntoSecondary),
+                //       ),
+                //     ],
+                //   ),
+                // ),
                 Container(
                   padding: EdgeInsets.only(
                       left: 10.0,
@@ -207,7 +193,14 @@ class CreateShortformState extends State<CreateShortform> {
                       bool isFocused,
                     }) =>
                         null,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
+                      hintText: 'will soon be custom gradient picker...',
+                      hintMaxLines: 25,
+                      hintStyle: TextStyle(
+                        color: Colors.white.withOpacity(0.5),
+                        fontSize: 24,
+                        fontWeight: FontWeight.w700,
+                      ),
                       border: InputBorder.none,
                     ),
                     cursorColor: Colors.white,

@@ -3,9 +3,10 @@ import 'package:junto_beta_mobile/app/themes.dart';
 
 class JuntoThemesProvider with ChangeNotifier {
   JuntoThemesProvider(this.currentTheme);
+
   ThemeData currentTheme;
 
-  getTheme() => currentTheme;
+  ThemeData getTheme() => currentTheme;
 
   void setTheme(String theme) {
     if (theme == 'light-indigo') {

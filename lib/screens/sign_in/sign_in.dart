@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/template/template.dart';
+import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +32,7 @@ class _SignInState extends State<SignIn> {
 
   /// Called when the user hits the `Sign In` button.
   /// Makes a call to [SharedPreferences] then replaces the current route
-  /// with [JuntoTemplate].
+  /// with [JuntoCollective].
   Future<void> _handleSignIn(BuildContext context) async {
     final String email = _emailController.value.text;
     final String password = _passwordController.value.text;
@@ -45,10 +45,11 @@ class _SignInState extends State<SignIn> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute<dynamic>(
-          builder: (BuildContext context) => JuntoTemplate(),
+          builder: (BuildContext context) => JuntoCollective(),
         ),
       );
     } catch (error) {
+      print(error);
       JuntoOverlay.hide();
       JuntoDialog.showJuntoDialog(
           context,
@@ -69,18 +70,11 @@ class _SignInState extends State<SignIn> {
       body: Stack(
         children: <Widget>[
           Container(
+            child: Image.asset(
+                'assets/images/junto-mobile__background--lotus.png'),
+          ),
+          Container(
             width: MediaQuery.of(context).size.width,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.bottomLeft,
-                end: Alignment.topRight,
-                stops: <double>[0.1, 0.9],
-                colors: <Color>[
-                  Color(0xff5E54D0),
-                  Color(0xff307FAB),
-                ],
-              ),
-            ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               // crossAxisAlignment: CrossAxisAlignment.center,
@@ -152,23 +146,15 @@ class _SignInState extends State<SignIn> {
                   ),
                 ),
                 Container(
-                  child: RaisedButton(
+                  child: FlatButton(
                     onPressed: () => _handleSignIn(context),
                     padding: const EdgeInsets.symmetric(
                         horizontal: 100, vertical: 20),
-                    // color: Colors.white,
-                    color: const Color(0xff4968BF),
                     child: const Text('SIGN IN',
                         style: TextStyle(
-                            // color: JuntoPalette.juntoBlue,
                             color: Colors.white,
                             fontWeight: FontWeight.w700,
                             fontSize: 14)),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                        100,
-                      ),
-                    ),
                   ),
                 ),
               ],

@@ -32,7 +32,7 @@ void main() {
         QueryType.email,
       );
       expect(_profile, isNotNull);
-      expect(_profile.lastName, 'Ramdial');
+      expect(_profile.name, 'Neevash Ramdial');
       expect(_profile.username, isNotNull);
       expect(_profile.address, isNotNull);
     });
@@ -42,7 +42,7 @@ void main() {
         QueryType.address,
       );
       expect(_profile, isNotNull);
-      expect(_profile.lastName, 'Ramdial');
+      expect(_profile.name, 'Neevash Ramdial');
       expect(_profile.username, isNotNull);
       expect(_profile.address, isNotNull);
     });
@@ -52,7 +52,7 @@ void main() {
         QueryType.username,
       );
       expect(_profile, isNotNull);
-      expect(_profile.lastName, 'Ramdial');
+      expect(_profile.name, 'Neevash Ramdial');
       expect(_profile.username, isNotNull);
       expect(_profile.address, isNotNull);
     });
@@ -62,7 +62,7 @@ void main() {
     final UserData _profile =
         await _userProvider.getUser('40118b16-a07e-47c0-8369-e6624cdc7988');
     expect(_profile.user, isNotNull);
-    expect(_profile.user.firstName, 'joshua');
+    expect(_profile.user.name, 'joshua');
   });
 
   test('Get user perspective', () async {
@@ -99,6 +99,7 @@ void main() {
         await _userProvider.createPerspective(
       const Perspective(
         name: 'Test Perspective',
+        about: 'This is the great test.',
         members: <String>['40118b16-a07e-47c0-8369-e6624cdc7988'],
       ),
     );

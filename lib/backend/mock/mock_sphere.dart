@@ -24,8 +24,7 @@ class MockSphere with ChangeNotifier implements GroupService {
   @override
   Future<void> addGroupMember(
     String groupAddress,
-    String userAddress,
-    String perms,
+    List<Map<String, dynamic>> users,
   ) {
     throw UnimplementedError();
   }
@@ -42,7 +41,7 @@ class MockSphere with ChangeNotifier implements GroupService {
 
   @override
   Future<List<CentralizedExpressionResponse>> getGroupExpressions(
-      ExpressionQueryParams params) {
+      String groupAddress, ExpressionQueryParams params) {
     throw UnimplementedError();
   }
 }

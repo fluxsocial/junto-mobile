@@ -8,6 +8,8 @@ class MockPackService {
       creator: 'Eric Yang',
       privacy: 'public',
       groupType: 'sphere',
+      members: 0,
+      facilitators: 2,
       groupData: GroupDataPack(name: 'Yang Gang'),
     ),
     Group(
@@ -16,6 +18,8 @@ class MockPackService {
       creator: 'Riley Wagner',
       privacy: 'public',
       groupType: 'sphere',
+      members: 1,
+      facilitators: 0,
       groupData: GroupDataPack(name: 'Wags'),
     ),
     Group(
@@ -24,6 +28,8 @@ class MockPackService {
       creator: 'Josh Parkin',
       privacy: 'public',
       groupType: 'sphere',
+      members: 1,
+      facilitators: 0,
       groupData: GroupDataPack(name: 'The Way'),
     ),
     Group(
@@ -32,6 +38,8 @@ class MockPackService {
       creator: 'Yaz Owainati',
       privacy: 'public',
       groupType: 'sphere',
+      members: 0,
+      facilitators: 2,
       groupData: GroupDataPack(name: 'Jasmine Flowers'),
     ),
     Group(
@@ -40,6 +48,8 @@ class MockPackService {
       creator: 'Tomis Parker',
       privacy: 'public',
       groupType: 'sphere',
+      members: 1,
+      facilitators: 0,
       groupData: GroupDataPack(name: 'Self-Directed AF'),
     ),
     Group(
@@ -48,6 +58,8 @@ class MockPackService {
       creator: 'Nash Ramdial',
       privacy: 'public',
       groupType: 'sphere',
+      members: 1,
+      facilitators: 0,
       groupData: GroupDataPack(name: 'Nash Flash'),
     ),
     Group(
@@ -56,6 +68,8 @@ class MockPackService {
       creator: 'Drea Bennett',
       privacy: 'public',
       groupType: 'sphere',
+      members: 1,
+      facilitators: 0,
       groupData: GroupDataPack(name: 'Greene House'),
     ),
     Group(
@@ -64,6 +78,8 @@ class MockPackService {
       creator: 'Dora Czovek',
       privacy: 'public',
       groupType: 'sphere',
+      members: 1,
+      facilitators: 0,
       groupData: GroupDataPack(name: 'The Spaceship'),
     ),
     Group(
@@ -72,6 +88,8 @@ class MockPackService {
       creator: 'Kevin Yang',
       privacy: 'public',
       groupType: 'sphere',
+      members: 1,
+      facilitators: 0,
       groupData: GroupDataPack(name: 'Yangsters'),
     ),
     Group(
@@ -80,6 +98,8 @@ class MockPackService {
       creator: 'Ekene Nkem-Mmekam',
       privacy: 'public',
       groupType: 'sphere',
+      members: 1,
+      facilitators: 0,
       groupData: GroupDataPack(name: 'FlatTops'),
     ),
     Group(
@@ -88,6 +108,8 @@ class MockPackService {
       creator: 'David Wu',
       privacy: 'public',
       groupType: 'sphere',
+      members: 1,
+      facilitators: 0,
       groupData: GroupDataPack(name: 'Wuseph'),
     ),
     Group(
@@ -96,6 +118,8 @@ class MockPackService {
       creator: 'Ali Makhdoom',
       privacy: 'public',
       groupType: 'sphere',
+      members: 1,
+      facilitators: 0,
       groupData: GroupDataPack(name: 'Mopbroomsters'),
     ),
     Group(
@@ -104,6 +128,8 @@ class MockPackService {
       creator: 'Vidit Gupta',
       privacy: 'public',
       groupType: 'sphere',
+      members: 1,
+      facilitators: 0,
       groupData: GroupDataPack(name: 'Wanderers'),
     ),
     Group(
@@ -112,10 +138,11 @@ class MockPackService {
       creator: 'Diana Ruan',
       privacy: 'public',
       groupType: 'sphere',
+      members: 1,
+      facilitators: 0,
       groupData: GroupDataPack(name: 'The Playgruand'),
     ),
   ];
 
-  @override
   List<Group> get packs => kSamplePacks;
 }

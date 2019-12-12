@@ -123,14 +123,14 @@ class GlobalSearchState extends State<GlobalSearch> {
     );
   }
 
-  // void onTextChanged(String value) {
-  //   _delay?.cancel();
-  //   _delay = Timer(const Duration(milliseconds: 500), () {
-  //     setState(() {
-  //       searchedTerm = value;
-  //     });
-  //   });
-  // }
+// void onTextChanged(String value) {
+//   _delay?.cancel();
+//   _delay = Timer(const Duration(milliseconds: 500), () {
+//     setState(() {
+//       searchedTerm = value;
+//     });
+//   });
+// }
 }
 
 // Save search term, wait for 1 second, after 1 sec give the treamBuilder the stream with the entered/saved search term.

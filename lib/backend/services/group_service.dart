@@ -5,6 +5,7 @@ import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/sphere.dart';
 import 'package:junto_beta_mobile/utils/junto_http.dart';
 import 'package:meta/meta.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 @immutable
 class GroupServiceCentralized implements GroupService {
@@ -37,17 +38,10 @@ class GroupServiceCentralized implements GroupService {
 
   @override
   Future<void> addGroupMember(
-    String groupAddress,
-    String userAddress,
-    String perms,
-  ) async {
-    final Map<String, String> _postBody = <String, String>{
-      'user_address': userAddress,
-      'permission_level': perms,
-    };
-    final http.Response _serverResponse = await client.post(
+      String groupAddress, List<Map<String, dynamic>> users) async {
+    final http.Response _serverResponse = await client.postWithoutEncoding(
       '/groups/$groupAddress/members',
-      body: _postBody,
+      body: users,
     );
     JuntoHttp.handleResponse(_serverResponse);
   }
@@ -84,10 +78,28 @@ class GroupServiceCentralized implements GroupService {
 
   @override
   Future<List<CentralizedExpressionResponse>> getGroupExpressions(
+    String groupAddress,
     ExpressionQueryParams params,
-  ) {
-    throw UnimplementedError(
-      'Querying is not currently supported by the server',
+  ) async {
+    final SharedPreferences _prefs = await SharedPreferences.getInstance();
+    final String authKey = _prefs.getString('auth');
+    final Uri _uri = Uri.http(
+      '18.191.236.123',
+      '/groups/$groupAddress/expressions',
+      <String, String>{'direct_expressions': 'true'},
     );
+    final http.Response _serverResponse = await http.get(
+      _uri,
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        'cookie': 'auth=$authKey',
+      },
+    );
+
+    final Map<String, dynamic> items =
+        JuntoHttp.handleResponse(_serverResponse);
+    return (items['direct_posts'] as List<dynamic>)
+        .map((dynamic data) => CentralizedExpressionResponse.fromMap(data))
+        .toList();
   }
 }

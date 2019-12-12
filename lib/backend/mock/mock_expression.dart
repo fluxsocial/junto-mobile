@@ -7,8 +7,7 @@ class MockExpressionService implements ExpressionService {
   static UserProfile kUserProfile = UserProfile(
     address: '123e4567-e89b-23s3-a256-426655440000',
     bio: 'Hi there, this is a mock user profile',
-    firstName: 'Testy',
-    lastName: 'Testing',
+    name: 'Testy',
     parent: null,
     profilePicture: 'assets/images/junto-mobile__junto.png',
     username: 'mcTesty',
@@ -18,16 +17,15 @@ class MockExpressionService implements ExpressionService {
   static CentralizedExpressionResponse kExpressionResponse =
       CentralizedExpressionResponse(
     address: '123e4567-e89b-12d3-a456-426655440000',
-    comments: <Comment>[],
+    comments: 1,
     context: 'collective',
     createdAt: DateTime.now(),
     creator: kUserProfile,
     expressionData:
         CentralizedLongFormExpression(title: 'Mocking', body: 'Expressions'),
-    numberComments: 0,
     numberResonations: 0,
     privacy: 'Public',
-    resonations: <UserProfile>[],
+    resonations: 0,
     type: 'LongForm',
   );
 
@@ -36,13 +34,12 @@ class MockExpressionService implements ExpressionService {
     CentralizedExpressionResponse(
       address: '0xfee32zokie8',
       type: 'LongForm',
-      comments: <Comment>[],
+      comments: 1,
       context: '',
       createdAt: DateTime.now(),
       creator: UserProfile(
         bio: 'hellooo',
-        firstName: 'Eric',
-        lastName: 'Yang',
+        name: 'Eric',
         profilePicture: 'assets/images/junto-mobile__eric.png',
         username: 'sunyata',
         verified: true,
@@ -56,12 +53,11 @@ class MockExpressionService implements ExpressionService {
     CentralizedExpressionResponse(
       address: '0xfee32zokie8',
       type: 'ShortForm',
-      comments: <Comment>[],
+      comments: 1,
       context: '',
       createdAt: DateTime.now(),
       creator: UserProfile(
-        firstName: 'Dora',
-        lastName: 'Czovek',
+        name: 'Dora',
         profilePicture: 'assets/images/junto-mobile__dora.png',
         bio: 'hellooo',
         username: 'wingedmessenger',
@@ -78,12 +74,11 @@ class MockExpressionService implements ExpressionService {
     CentralizedExpressionResponse(
       address: '0xfee32zokie8',
       type: 'PhotoForm',
-      comments: <Comment>[],
+      comments: 1,
       context: '',
       createdAt: DateTime.now(),
       creator: UserProfile(
-        firstName: 'Josh',
-        lastName: 'Parkin',
+        name: 'Josh',
         profilePicture: 'assets/images/junto-mobile__josh.png',
         bio: 'hellooo',
         parent: 'parent-address',
@@ -98,14 +93,13 @@ class MockExpressionService implements ExpressionService {
     CentralizedExpressionResponse(
       address: '0xfee32zokie8',
       type: 'EventForm',
-      comments: <Comment>[],
+      comments: 1,
       context: '',
       createdAt: DateTime.now(),
       creator: UserProfile(
         parent: 'parent-address',
         bio: "I'm Drea.",
-        firstName: 'Drea',
-        lastName: 'Bennett',
+        name: 'Drea',
         profilePicture: 'assets/images/junto-mobile__drea.png',
         verified: true,
         username: 'DMONEY',
@@ -121,15 +115,14 @@ class MockExpressionService implements ExpressionService {
     CentralizedExpressionResponse(
       address: '0xfee32zokie8',
       type: 'LongForm',
-      comments: <Comment>[],
+      comments: 1,
       context: '',
       createdAt: DateTime.now(),
       creator: UserProfile(
         address: '0vefoiwiafjvkbr32r243r5',
         parent: 'parent-address',
         bio: 'hellooo',
-        firstName: 'Nash',
-        lastName: 'Ramdial',
+        name: 'Nash',
         profilePicture: 'assets/images/junto-mobile__nash.png',
         verified: true,
         username: 'Nash',
@@ -146,13 +139,12 @@ class MockExpressionService implements ExpressionService {
     CentralizedExpressionResponse(
       address: '0xfee32zokie8',
       type: 'PhotoForm',
-      comments: <Comment>[],
+      comments: 1,
       context: '',
       createdAt: DateTime.now(),
       creator: UserProfile(
         address: '0vefoiwiafjvkbr32r243r5',
-        firstName: 'Yaz',
-        lastName: 'Owainati',
+        name: 'Yaz',
         profilePicture: 'assets/images/junto-mobile__yaz.png',
         bio: 'hellooo',
         parent: 'parent-address',
@@ -167,14 +159,13 @@ class MockExpressionService implements ExpressionService {
     CentralizedExpressionResponse(
       address: '0xfee32zokie8',
       type: 'LongForm',
-      comments: <Comment>[],
+      comments: 1,
       context: '',
       createdAt: DateTime.now(),
       creator: UserProfile(
         address: '0vefoiwiafjvkbr32r243r5',
         parent: 'parent-address',
-        firstName: 'Tomis',
-        lastName: 'Parker',
+        name: 'Tomis',
         profilePicture: 'assets/images/junto-mobile__tomis.png',
         verified: true,
         bio: 'hellooo',
@@ -189,15 +180,14 @@ class MockExpressionService implements ExpressionService {
     CentralizedExpressionResponse(
       address: '0xfee32zokie8',
       type: 'EventForm',
-      comments: <Comment>[],
+      comments: 1,
       context: '',
       createdAt: DateTime.now(),
       creator: UserProfile(
         address: '0vefoiwiafjvkbr32r243r5',
         parent: 'parent-address',
         bio: "I'm Leif.",
-        firstName: 'Leif',
-        lastName: 'Lioness',
+        name: 'Leif',
         profilePicture: 'assets/images/junto-mobile__leif.png',
         verified: true,
         username: 'leifthelion',
@@ -287,5 +277,12 @@ class MockExpressionService implements ExpressionService {
     await Future<void>.delayed(const Duration(seconds: 3));
     return List<CentralizedExpressionResponse>.generate(
         12, (int index) => kExpressionResponse);
+  }
+
+  @override
+  Future<List<CentralizedExpressionResponse>> getCollectiveExpressions(
+      params) async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    return kSampleExpressions;
   }
 }

@@ -1,3 +1,4 @@
+import 'package:junto_beta_mobile/utils/utils.dart' show RFC3339;
 import 'package:meta/meta.dart';
 
 class Pack {
@@ -111,7 +112,7 @@ class PackResponse {
   }
 }
 
-class CentralizedPack {
+class CentralizedPack with RFC3339 {
   CentralizedPack({
     @required this.address,
     @required this.name,
@@ -126,7 +127,7 @@ class CentralizedPack {
       address: map['address'] as String,
       name: map['name'] as String,
       creator: map['creator'] as String,
-      createdAt: DateTime.parse(map['created_at']),
+      createdAt: RFC3339.parseRfc3339(map['created_at']),
       privacy: map['privacy'] as String,
       isDefault: map['is_default'] as bool,
     );
@@ -144,7 +145,7 @@ class CentralizedPack {
       'address': address,
       'name': name,
       'creator': creator,
-      'created_at': createdAt.toIso8601String(),
+      'created_at': createdAt?.toIso8601String(),
       'privacy': privacy,
       'is_default': isDefault,
     };

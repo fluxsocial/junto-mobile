@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 
 /// A generic [Overlay] which displays a [CircularProgressIndicator] to the user
 /// to indicate some background action is ongoing.
@@ -43,8 +44,8 @@ class JuntoOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: CircularProgressIndicator(),
+    return Center(
+      child: JuntoProgressIndicator(),
     );
   }
 }

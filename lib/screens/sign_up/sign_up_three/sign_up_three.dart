@@ -3,12 +3,10 @@ import 'package:junto_beta_mobile/screens/sign_up/sign_up_four/sign_up_four.dart
 import 'package:junto_beta_mobile/screens/sign_up/sign_up_logo/sign_up_logo.dart';
 
 class SignUpThree extends StatefulWidget {
-  const SignUpThree(
-      {Key key, this.firstName, this.lastName, this.username, this.email})
+  const SignUpThree({Key key, this.name, this.username, this.email})
       : super(key: key);
 
-  final String firstName;
-  final String lastName;
+  final String name;
   final String username;
   final String email;
 
@@ -28,18 +26,11 @@ class SignUpThreeState extends State<SignUpThree> {
       body: Stack(
         children: <Widget>[
           Container(
+            child: Image.asset(
+                'assets/images/junto-mobile__background--lotus.png'),
+          ),
+          Container(
             width: MediaQuery.of(context).size.width,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.bottomLeft,
-                end: Alignment.topRight,
-                stops: <double>[0.1, 0.9],
-                colors: <Color>[
-                  Color(0xff5E54D0),
-                  Color(0xff307FAB),
-                ],
-              ),
-            ),
             child: Container(
               margin: EdgeInsets.only(
                   top: MediaQuery.of(context).size.height * .10 + 18),
@@ -122,8 +113,7 @@ class SignUpThreeState extends State<SignUpThree> {
                 GestureDetector(
                   onTap: () {
                     passwordController.text = '';
-                    if (widget.firstName != '' &&
-                        widget.lastName != '' &&
+                    if (widget.name != '' &&
                         widget.username != '' &&
                         password != '' &&
                         password.length > 4) {
@@ -131,8 +121,7 @@ class SignUpThreeState extends State<SignUpThree> {
                         context,
                         MaterialPageRoute<dynamic>(
                           builder: (BuildContext context) => SignUpFour(
-                              firstName: widget.firstName,
-                              lastName: widget.lastName,
+                              name: widget.name,
                               username: widget.username,
                               password: password,
                               email: widget.email),

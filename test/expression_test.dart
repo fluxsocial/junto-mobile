@@ -2,19 +2,18 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:junto_beta_mobile/api.dart';
+import 'package:junto_beta_mobile/backend/mock/mock_expression.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
-import 'package:junto_beta_mobile/backend/services/expression_provider.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/utils/junto_http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-//TODO(Nash): For server testing, test currently make live http calls. Once
+
 //server and functions becomes stable, these should be mocked.
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = null;
   final ExpressionService _collectiveProvider =
-      ExpressionServiceCentralized(JuntoHttp());
+      MockExpressionService();
 
   setUpAll(() {
     SharedPreferences.setMockInitialValues(<String, String>{

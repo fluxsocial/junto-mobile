@@ -13,7 +13,7 @@ abstract class AuthenticationService {
   /// Authenticates a registered user. Returns the [UserProfile]  for the
   /// given user. Their cookie is stored locally on device and is used for
   /// all future request.
-  Future<void> loginUser(UserAuthLoginDetails details);
+  Future<UserData> loginUser(UserAuthLoginDetails details);
 
   /// Logs out a user and removes their auth token from the device.
   Future<void> logoutUser();
@@ -74,6 +74,9 @@ abstract class ExpressionService {
   Future<List<CentralizedExpressionResponse>> queryExpression(
       ExpressionQueryParams params);
 
+  /// Returns a list of expressions posted to the collective.
+  Future<List<CentralizedExpressionResponse>> getCollectiveExpressions(params);
+
   /// Returns mock expression data.
   List<CentralizedExpressionResponse> get collectiveExpressions;
 }
@@ -93,14 +96,14 @@ abstract class GroupService {
 
   /// Adds the given user address to a group
   Future<void> addGroupMember(
-      String groupAddress, String userAddress, String perms);
+      String groupAddress, List<Map<String, dynamic>> users);
 
   /// Removes a user from the given group. Sufficient permission is required
   /// to perform this action.
   Future<void> removeGroupMember(String groupAddress, String userAddress);
 
   Future<List<CentralizedExpressionResponse>> getGroupExpressions(
-      ExpressionQueryParams params);
+      String groupAddress, ExpressionQueryParams params);
 }
 
 enum QueryType { address, email, username }
@@ -111,8 +114,8 @@ abstract class UserService {
 
   /// Adds the given user to a perspective. The perspective address and user
   /// address must be supplied.
-  Future<String> addUserToPerspective(
-      String perspectiveAddress, String userAddress);
+  Future<UserProfile> addUserToPerspective(
+      String perspectiveAddress, List<String> userAddress);
 
   /// Gets the user
   Future<UserData> getUser(String userAddress);
@@ -139,7 +142,7 @@ abstract class UserService {
   );
 
   /// Reads the cached user from the device.
-  Future<UserProfile> readLocalUser();
+  Future<UserData> readLocalUser();
 
   /// Returns a list of perspectives owned by the given user
   Future<List<CentralizedPerspective>> userPerspectives(String userAddress);

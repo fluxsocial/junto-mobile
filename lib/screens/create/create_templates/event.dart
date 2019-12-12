@@ -56,26 +56,37 @@ class CreateEventState extends State<CreateEvent> with DateParser {
 
   /// Creates a [CentralizedLongFormExpression] from the given data entered
   /// by the user.
+  // CentralizedEventFormExpression createExpression() {
+  //   return CentralizedEventFormExpression(
+  //     startTime: DateTime(
+  //       int.parse(startYear),
+  //       transformMonthToInt(startMonth),
+  //       int.parse(startDay),
+  //       int.parse(startHour),
+  //       int.parse(startMinute),
+  //     ).toIso8601String(),
+  //     endTime: DateTime(
+  //       int.parse(endYear),
+  //       transformMonthToInt(endMonth),
+  //       int.parse(endDay),
+  //       int.parse(endHour),
+  //       int.parse(endMinute),
+  //     ).toIso8601String(),
+  //     description: detailsController.value.text,
+  //     location: locationController.value.text,
+  //     photo: '',
+  //     title: titleController.value.text,
+  //   );
+  // }
+
   CentralizedEventFormExpression createExpression() {
     return CentralizedEventFormExpression(
-      startTime: DateTime(
-        int.parse(startYear),
-        transformMonthToInt(startMonth),
-        int.parse(startDay),
-        int.parse(startHour),
-        int.parse(startMinute),
-      ).toIso8601String(),
-      endTime: DateTime(
-        int.parse(endYear),
-        transformMonthToInt(endMonth),
-        int.parse(endDay),
-        int.parse(endHour),
-        int.parse(endMinute),
-      ).toIso8601String(),
-      description: detailsController.value.text,
-      location: locationController.value.text,
-      photo: '',
-      title: titleController.value.text,
+      startTime: 'test timestamp',
+      endTime: 'test timestamp',
+      description: 'event description',
+      location: 'location',
+      photo: 'photo',
+      title: 'event title',
     );
   }
 

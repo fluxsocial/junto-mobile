@@ -17,7 +17,14 @@ class PhotoOpen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Image.asset(photoImage, fit: BoxFit.fitWidth),
+          photoImage == 'test-image'
+              ? const SizedBox()
+              : Container(
+                  height: MediaQuery.of(context).size.width,
+                  width: MediaQuery.of(context).size.width,
+                  child: Image.asset(photoImage,
+                      fit: BoxFit.fitWidth),
+                ),
           const SizedBox(height: 10),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10),

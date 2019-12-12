@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview_types/event_preview.dart';
@@ -41,7 +40,7 @@ class ExpressionPreviewEmbed extends StatelessWidget {
                       // profile picture
                       ClipOval(
                         child: Image.asset(
-                          expression.creator.profilePicture,
+                          'assets/images/junto-mobile__placeholder--member.png',
                           height: 38.0,
                           width: 38.0,
                           fit: BoxFit.cover,
@@ -58,7 +57,7 @@ class ExpressionPreviewEmbed extends StatelessWidget {
                 Row(
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.only(right: 5),
+                      padding: const EdgeInsets.only(right: 5),
                       child: Icon(
                         Icons.keyboard_arrow_down,
                         size: 24,
@@ -105,7 +104,7 @@ class ExpressionPreviewEmbed extends StatelessWidget {
     if (expression.type == 'LongForm') {
       return LongformPreview(expression: expression);
     } else if (expression.type == 'ShortForm') {
-      return ShortformPreview(expression);
+      return ShortformPreview(expression: expression);
     } else if (expression.type == 'PhotoForm') {
       return PhotoPreview(expression: expression);
     } else if (expression.type == 'EventForm') {

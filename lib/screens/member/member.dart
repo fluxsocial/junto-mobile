@@ -1,12 +1,11 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/member/member_appbar.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:junto_beta_mobile/widgets/user_expressions.dart';
 
-//FIXME: Build method and bottom sheet should be broken up
 class JuntoMember extends StatefulWidget {
   const JuntoMember({
     Key key,
@@ -68,7 +67,7 @@ class _JuntoMemberState extends State<JuntoMember> {
                             gradient: LinearGradient(
                               begin: Alignment.centerLeft,
                               end: Alignment.centerRight,
-                              stops: <double>[0.1, 0.9],
+                              stops: const <double>[0.1, 0.9],
                               colors: <Color>[
                                 Theme.of(context).colorScheme.secondaryVariant,
                                 Theme.of(context).colorScheme.primaryVariant,
@@ -90,14 +89,14 @@ class _JuntoMemberState extends State<JuntoMember> {
                               children: <Widget>[
                                 Flexible(
                                   child: Text(
-                                    // name,
-                                    'Eric Yang',
+                                    widget.profile.name,
                                     style: TextStyle(
-                                        fontSize: 28,
-                                        fontWeight: FontWeight.w600,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onPrimary),
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.w600,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary,
+                                    ),
                                   ),
                                 ),
                                 GestureDetector(
@@ -182,7 +181,7 @@ class _JuntoMemberState extends State<JuntoMember> {
                 shrinkWrap: true,
                 padding: const EdgeInsets.only(left: 10),
                 children: <Widget>[
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   Container(
                     padding: const EdgeInsets.only(top: 5, bottom: 5),
                     child: Column(
@@ -206,7 +205,7 @@ class _JuntoMemberState extends State<JuntoMember> {
                             ],
                           ),
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Container(
                           child: Row(
                             children: <Widget>[
@@ -228,7 +227,7 @@ class _JuntoMemberState extends State<JuntoMember> {
                             ],
                           ),
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Container(
                           child: Row(
                             children: <Widget>[
@@ -260,30 +259,31 @@ class _JuntoMemberState extends State<JuntoMember> {
                     enableInfiniteScroll: false,
                     items: <Widget>[
                       Container(
-                        padding: EdgeInsets.only(right: 10),
+                        padding: const EdgeInsets.only(right: 10),
                         width: MediaQuery.of(context).size.width,
                         child: Image.asset(
-                            'assets/images/junto-mobile__eric.png',
+                            'assets/images/junto-mobile__mockprofpic--one.png',
                             fit: BoxFit.cover),
                       ),
                       Container(
                         width: MediaQuery.of(context).size.width,
-                        padding: EdgeInsets.only(right: 10),
+                        padding: const EdgeInsets.only(right: 10),
                         child: Image.asset(
-                            'assets/images/junto-mobile__eric--qigong.png',
+                            'assets/images/junto-mobile__mockprofpic--two.png',
                             fit: BoxFit.cover),
                       ),
                     ],
                   ),
                   const SizedBox(height: 15),
                   Container(
-                    child: Text("student of suffering and its cessation",
+                    child: Text(widget.profile.bio,
                         style: Theme.of(context).textTheme.caption),
                   ),
                 ],
               ),
-              ListView(
-                children: <Widget>[],
+              UserExpressions(
+                privacy: 'Public',
+                userProfile: widget.profile,
               )
             ],
           ),
@@ -331,7 +331,7 @@ class MemberRelationshipsModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * .3,
+      height: MediaQuery.of(context).size.height * .36,
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.background,
@@ -389,6 +389,23 @@ class MemberRelationshipsModal extends StatelessWidget {
                     const SizedBox(width: 15),
                     Text(
                       'Connect',
+                      style: Theme.of(context).textTheme.headline,
+                    ),
+                  ],
+                ),
+              ),
+              ListTile(
+                contentPadding: const EdgeInsets.all(0),
+                title: Row(
+                  children: <Widget>[
+                    Icon(
+                      CustomIcons.packs,
+                      size: 17,
+                      color: Theme.of(context).primaryColorDark,
+                    ),
+                    const SizedBox(width: 15),
+                    Text(
+                      'Invite to my pack',
                       style: Theme.of(context).textTheme.headline,
                     ),
                   ],

@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
-import 'package:junto_beta_mobile/app/styles.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 
 class MemberPreview extends StatelessWidget {
@@ -68,7 +65,7 @@ class MemberPreview extends StatelessWidget {
                       textAlign: TextAlign.start,
                       style: Theme.of(context).textTheme.subhead,
                     ),
-                    Text(profile.firstName,
+                    Text(profile.name,
                         textAlign: TextAlign.start,
                         style: Theme.of(context).textTheme.body1)
                   ],

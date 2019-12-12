@@ -19,11 +19,23 @@ class GroupRepo {
   }
 
   Future<void> addGroupMember(
-      String groupAddress, String userAddress, String perms) {
-    return _groupService.addGroupMember(groupAddress, userAddress, perms);
+      String groupAddress, List<UserProfile> userProfile, String perms) {
+    final List<Map<String, dynamic>> _users = <Map<String, dynamic>>[];
+    for (final UserProfile _profile in userProfile) {
+      _users.add(<String, dynamic>{
+        'user_address': _profile.address,
+        'permission_level': perms
+      });
+    }
+    return _groupService.addGroupMember(groupAddress, _users);
   }
 
   Future<void> removeGroupMember(String groupAddress, String userAddress) {
     return _groupService.removeGroupMember(groupAddress, userAddress);
+  }
+
+  Future<List<CentralizedExpressionResponse>> getGroupExpressions(
+      String groupAddress, ExpressionQueryParams params) {
+    return _groupService.getGroupExpressions(groupAddress, params);
   }
 }

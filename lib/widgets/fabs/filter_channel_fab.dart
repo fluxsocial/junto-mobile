@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/widgets/previews/channel_preview.dart';
 
 class FilterChannelFAB extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return GestureDetector(
       onTap: () {
         showModalBottomSheet(
@@ -23,7 +22,7 @@ class FilterChannelFAB extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.bottomLeft,
             end: Alignment.topRight,
-            stops: <double>[0.1, 0.9],
+            stops: const <double>[0.1, 0.9],
             colors: <Color>[
               Theme.of(context).colorScheme.secondary,
               Theme.of(context).colorScheme.primary,
@@ -90,7 +89,7 @@ class FilterChannelModalState extends State<FilterChannelModal> {
                   const SizedBox(width: 10),
                   Expanded(
                     child: Transform.translate(
-                      offset: Offset(0.0, 2),
+                      offset: const Offset(0.0, 2),
                       child: TextField(
                         buildCounter: (
                           BuildContext context, {

@@ -1,10 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:junto_beta_mobile/models/group_model.dart';
-import 'package:junto_beta_mobile/screens/packs/pack_open/pack_open.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
-import 'package:junto_beta_mobile/app/styles.dart';
+import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/models/group_model.dart';
+import 'package:junto_beta_mobile/screens/groups/packs/pack_open/pack_open.dart';
 
 // This class renders a pack preview (usually shown in a list of packs)
 class PackPreview extends StatelessWidget {
@@ -47,7 +45,7 @@ class PackPreview extends StatelessWidget {
                       borderRadius: BorderRadius.circular(100),
                     ),
                     child: Transform.translate(
-                      offset: Offset(-1.0, 0),
+                      offset: const Offset(-1.0, 0),
                       child: Icon(
                         CustomIcons.packs,
                         color: Theme.of(context).colorScheme.onPrimary,
@@ -57,7 +55,7 @@ class PackPreview extends StatelessWidget {
                   )
                 : ClipOval(
                     child: Image.asset(
-                      group.address,
+                      'assets/images/junto-mobile__placeholder--sphere.png',
                       height: 45.0,
                       width: 45.0,
                       fit: BoxFit.cover,

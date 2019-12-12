@@ -2,11 +2,11 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show PlatformException;
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
-import 'package:flutter/services.dart' show PlatformException;
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 
@@ -15,10 +15,8 @@ class CreatePhoto extends StatefulWidget {
   const CreatePhoto({
     Key key,
     @required this.toggleBottomNavVisibility,
-    @required this.isEditing,
   }) : super(key: key);
 
-  final ValueNotifier<bool> isEditing;
   final Function toggleBottomNavVisibility;
 
   @override
@@ -41,7 +39,8 @@ class CreatePhotoState extends State<CreatePhoto> {
   /// Creates a [CentralizedPhotoFormExpression] from the given data entered
   /// by the user.
   CentralizedPhotoFormExpression createExpression() {
-    return CentralizedPhotoFormExpression(image: '', caption: '');
+    return CentralizedPhotoFormExpression(
+        image: 'assets/images/junto-mobile__mock--image.png', caption: 'mossy');
   }
 
   // Function to retrieve image from source (i.e. library or camera)
@@ -81,7 +80,6 @@ class CreatePhotoState extends State<CreatePhoto> {
         maxWidth: 512,
         maxHeight: 512,
       );
-      widget.isEditing.value = true;
       setState(() {
         _croppedFile = croppedFile;
       });
@@ -400,7 +398,7 @@ class CreatePhotoState extends State<CreatePhoto> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return const Expanded(
         child: Center(
       child: Text('share a photo'),
     )
@@ -409,6 +407,7 @@ class CreatePhotoState extends State<CreatePhoto> {
   }
 
   // Render current screen conditionally
+  // ignore: unused_element
   Widget _currentScreen() {
     if (_croppedFile == null) {
       return _photoTypeTemplate();

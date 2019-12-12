@@ -2,17 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
+import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/event.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/longform.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/photo.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/shortform.dart';
+import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 
 class JuntoCreate extends StatefulWidget {
-  const JuntoCreate(this.expressionLayer, {this.address});
+  const JuntoCreate({
+    @required this.channels,
+    @required this.address,
+    @required this.expressionContext,
+  });
 
-  final String expressionLayer;
+  final List<String> channels;
   final String address;
+  final ExpressionContext expressionContext;
 
   @override
   State<StatefulWidget> createState() {
@@ -22,12 +30,13 @@ class JuntoCreate extends StatefulWidget {
 
 class JuntoCreateState extends State<JuntoCreate> {
   String _expressionType = 'LongForm';
+  String _expressionTypeDisplay = 'dynamic';
   bool _longform = true;
   bool _shortform = false;
   bool _photo = false;
   bool _events = false;
 
-  Icon _currentIcon = const Icon(CustomIcons.longform, color: Colors.white);
+  Icon _currentIcon;
 
   ValueNotifier<bool> isEditing;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -48,6 +57,13 @@ class JuntoCreateState extends State<JuntoCreate> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _currentIcon = Icon(CustomIcons.longform,
+        color: Theme.of(context).primaryColorDark, size: 17);
+  }
+
+  @override
   void dispose() {
     isEditing.dispose();
     super.dispose();
@@ -58,18 +74,15 @@ class JuntoCreateState extends State<JuntoCreate> {
     if (_longform) {
       return CreateLongform(
         key: _longFormKey,
-        isEditing: isEditing,
       );
     } else if (_shortform) {
       return CreateShortform(
         key: _shortFormKey,
-        isEditing: isEditing,
       );
     } else if (_photo) {
       return CreatePhoto(
         key: _photoFormKey,
         toggleBottomNavVisibility: () {},
-        isEditing: isEditing,
       );
     } else if (_events) {
       return CreateEvent(
@@ -103,23 +116,30 @@ class JuntoCreateState extends State<JuntoCreate> {
     if (templateType == 'LongForm' || templateType == 'dynamic') {
       setState(() {
         _longform = true;
-        _currentIcon =
-            Icon(CustomIcons.longform, color: Colors.white, size: 20);
+        _currentIcon = Icon(CustomIcons.longform,
+            color: Theme.of(context).primaryColorDark, size: 17);
+        _expressionTypeDisplay = 'dynamic';
       });
     } else if (templateType == 'ShortForm') {
       setState(() {
         _shortform = true;
-        _currentIcon = Icon(CustomIcons.feather, color: Colors.white, size: 20);
+        _currentIcon = Icon(CustomIcons.feather,
+            color: Theme.of(context).primaryColorDark, size: 17);
+        _expressionTypeDisplay = 'shortform';
       });
     } else if (templateType == 'PhotoForm') {
       setState(() {
         _photo = true;
-        _currentIcon = Icon(CustomIcons.camera, color: Colors.white, size: 20);
+        _currentIcon = Icon(CustomIcons.camera,
+            color: Theme.of(context).primaryColorDark, size: 17);
+        _expressionTypeDisplay = 'photo';
       });
     } else if (templateType == 'EventForm') {
       setState(() {
         _events = true;
-        _currentIcon = Icon(CustomIcons.event, color: Colors.white, size: 20);
+        _currentIcon = Icon(CustomIcons.event,
+            color: Theme.of(context).primaryColorDark, size: 17);
+        _expressionTypeDisplay = 'event';
       });
     } else {
       print('not an expresion type');
@@ -129,14 +149,16 @@ class JuntoCreateState extends State<JuntoCreate> {
   }
 
   void _onNextClick() {
+    print(widget.expressionContext);
     Navigator.push(
       context,
       MaterialPageRoute<dynamic>(
         builder: (BuildContext context) {
           return CreateActions(
-            address: widget.address,
-            expressionLayer: widget.expressionLayer,
             expressionType: _expressionType,
+            address: widget.address,
+            channels: widget.channels,
+            expressionContext: widget.expressionContext,
             expression: getExpression(),
           );
         },
@@ -169,6 +191,7 @@ class JuntoCreateState extends State<JuntoCreate> {
         child: AppBar(
           automaticallyImplyLeading: false,
           brightness: Brightness.light,
+          actions: <Widget>[Container()],
           iconTheme: const IconThemeData(color: JuntoPalette.juntoGrey),
           elevation: 0,
           titleSpacing: 0,
@@ -179,12 +202,13 @@ class JuntoCreateState extends State<JuntoCreate> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text('cancel',
-                      style: Theme.of(context).textTheme.caption),
+                Row(
+                  children: <Widget>[
+                    _currentIcon,
+                    const SizedBox(width: 7.5),
+                    Text(_expressionTypeDisplay,
+                        style: Theme.of(context).textTheme.caption)
+                  ],
                 ),
                 GestureDetector(
                   onTap: _onNextClick,
@@ -196,33 +220,15 @@ class JuntoCreateState extends State<JuntoCreate> {
           ),
         ),
       ),
-      floatingActionButton: Opacity(
-        opacity: .8,
-        child: GestureDetector(
-          onTap: () {
-            _openExpressionCenter();
-          },
-          child: Container(
-            height: 50,
-            width: 50,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(25),
-              border: Border.all(color: Colors.white, width: 2),
-              gradient: LinearGradient(
-                begin: Alignment.bottomLeft,
-                end: Alignment.topRight,
-                stops: <double>[0.1, 0.9],
-                colors: <Color>[
-                  Theme.of(context).colorScheme.secondary,
-                  Theme.of(context).colorScheme.primary
-                ],
-              ),
-            ),
-            child: _currentIcon,
-          ),
+      endDrawer: const JuntoDrawer(screen: 'Create', icon: CustomIcons.create),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 25),
+        child: BottomNav(
+          screen: 'create',
+          onTap: _openExpressionCenter,
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: Column(
         children: <Widget>[
           _buildTemplate(),

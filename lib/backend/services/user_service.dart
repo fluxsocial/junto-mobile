@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
@@ -23,7 +25,8 @@ class UserServiceCentralized implements UserService {
       Perspective perspective) async {
     final Map<String, dynamic> _postBody = <String, dynamic>{
       'name': perspective.name,
-      'members': perspective.members
+      'members': perspective.members,
+      'about': perspective.about,
     };
     final http.Response _serverResponse = await client.postWithoutEncoding(
       '/perspectives',
@@ -35,9 +38,21 @@ class UserServiceCentralized implements UserService {
   }
 
   @override
-  Future<String> addUserToPerspective(
-      String perspectiveAddress, String userAddress) async {
-    throw UnimplementedError('Not implemented in centralized API');
+  Future<UserProfile> addUserToPerspective(
+      String perspectiveAddress, List<String> userAddress) async {
+    final List<dynamic> users = <dynamic>[];
+    userAddress.map(
+      (String uid) => users.add(
+        <String, dynamic>{'user_address': uid},
+      ),
+    );
+    final http.Response _serverResponse = await client.postWithoutEncoding(
+      '/perspectives/$perspectiveAddress/users',
+      body: users,
+    );
+    final Map<String, dynamic> _body =
+        JuntoHttp.handleResponse(_serverResponse);
+    return UserProfile.fromMap(_body);
   }
 
   @override
@@ -56,7 +71,7 @@ class UserServiceCentralized implements UserService {
     final String authKey = _prefs.getString('auth');
 
     final Uri _uri = Uri.http(
-      '198.199.67.10',
+      END_POINT_without_prefix,
       '/users',
       _buildQueryParam(param, queryType),
     );
@@ -95,6 +110,7 @@ class UserServiceCentralized implements UserService {
   Future<UserGroupsResponse> getUserGroups(String userAddress) async {
     final http.Response response =
         await client.get('/users/$userAddress/groups');
+        print('got groups!');
     final Map<String, dynamic> _responseMap =
         JuntoHttp.handleResponse(response);
     return UserGroupsResponse.fromMap(_responseMap);
@@ -122,6 +138,7 @@ class UserServiceCentralized implements UserService {
     final http.Response response =
         await client.get('/users/$userAddress/expressions');
     final List<dynamic> _responseMap = JuntoHttp.handleResponse(response);
+
     return _responseMap
         .map(
           (dynamic data) => CentralizedExpressionResponse.fromMap(data),
@@ -130,13 +147,16 @@ class UserServiceCentralized implements UserService {
   }
 
   @override
-  Future<UserProfile> readLocalUser() async {
+  Future<UserData> readLocalUser() async {
     final LocalStorage _storage = LocalStorage('user-details');
     final bool isReady = await _storage.ready;
     if (isReady) {
-      final String _data = _storage.getItem('data');
-      final UserProfile profile = UserProfile.fromMap(json.decode(_data));
-      return profile;
+      final dynamic data = _storage.getItem('data');
+      if (data != null) {
+        final UserData profile = UserData.fromMap(data);
+
+        return profile;
+      }
     }
     throw const JuntoException('Unable to read local user');
   }

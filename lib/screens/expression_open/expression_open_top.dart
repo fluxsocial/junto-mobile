@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
@@ -13,10 +12,10 @@ class ExpressionOpenTop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String username = expression.creator.username;
-    final String firstName = expression.creator.firstName;
-    final String lastName = expression.creator.lastName;
-    final String profilePicture = expression.creator.profilePicture;
+    final String username = expression.creator.username ?? '';
+    final String name = expression.creator.name ?? '';
+    final String bio = expression.creator.bio ?? '';
+    final String address = expression.creator.address ?? '';
 
     return Container(
       padding: const EdgeInsets.only(top: 15, bottom: 15, left: 10),
@@ -31,13 +30,12 @@ class ExpressionOpenTop extends StatelessWidget {
                 CupertinoPageRoute<dynamic>(
                   builder: (BuildContext context) => JuntoMember(
                     profile: UserProfile(
-                      address: '',
-                      firstName: firstName,
-                      lastName: lastName,
-                      bio: 'This is a test',
+                      address: address,
+                      name: name,
+                      bio: bio,
                       profilePicture:
                           'assets/images/junto-mobile__placeholder--member.png',
-                      username: 'Gmail',
+                      username: username,
                       verified: false,
                     ),
                   ),
@@ -50,8 +48,7 @@ class ExpressionOpenTop extends StatelessWidget {
                 // profile picture
                 ClipOval(
                   child: Image.asset(
-                    profilePicture,
-                    // 'assets/images/junto-mobile__placeholder--member.png',
+                    'assets/images/junto-mobile__placeholder--member.png',
                     height: 45.0,
                     width: 45.0,
                     fit: BoxFit.cover,
@@ -66,8 +63,7 @@ class ExpressionOpenTop extends StatelessWidget {
                     children: <Widget>[
                       Text(username.toLowerCase() ?? '',
                           style: Theme.of(context).textTheme.subhead),
-                      Text(firstName + ' ' + lastName,
-                          style: Theme.of(context).textTheme.body1),
+                      Text('$name', style: Theme.of(context).textTheme.body1),
                     ],
                   ),
                 ),
@@ -86,9 +82,9 @@ class ExpressionOpenTop extends StatelessWidget {
               padding: const EdgeInsets.all(5),
               alignment: Alignment.centerRight,
               child: Icon(
-                Icons.keyboard_arrow_down,
-                color: Theme.of(context).primaryColorLight,
-                size: 24,
+                CustomIcons.morevertical,
+                color: Theme.of(context).primaryColor,
+                size: 20,
               ),
             ),
           ),

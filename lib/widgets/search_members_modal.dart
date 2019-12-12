@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/screens/collective/perspectives/create_perspective/create_perspective.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives'
+    '/create_perspective/create_perspective.dart' show SelectedUsers;
 import 'package:junto_beta_mobile/widgets/user_preview.dart';
 import 'package:provider/provider.dart';
 
@@ -15,6 +15,7 @@ class SearchMembersModal extends StatefulWidget {
     @required this.onTextChange,
     @required this.results,
     @required this.onProfileSelected,
+    @required this.child,
   }) : super(key: key);
 
   /// [ValueChanged] callback which exposes the text typed by the user
@@ -27,6 +28,9 @@ class SearchMembersModal extends StatefulWidget {
   /// sent back from the server.
   final ValueNotifier<List<UserProfile>> results;
 
+  /// Icon to be displayed
+  final Widget child;
+
   @override
   _SearchMembersModalState createState() => _SearchMembersModalState();
 }
@@ -36,6 +40,7 @@ class _SearchMembersModalState extends State<SearchMembersModal> {
   Widget build(BuildContext context) {
     final ValueNotifier<SelectedUsers> _selectedUsers =
         Provider.of<ValueNotifier<SelectedUsers>>(context);
+
     return GestureDetector(
       onTap: () {
         showModalBottomSheet(
@@ -152,23 +157,7 @@ class _SearchMembersModalState extends State<SearchMembersModal> {
       },
       child: Container(
         color: Colors.white,
-        child: Row(
-          children: const <Widget>[
-            Icon(
-              CustomIcons.half_lotus,
-              size: 17,
-              color: Color(0xff333333),
-            ),
-            SizedBox(width: 20),
-            Text(
-              'add members',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ],
-        ),
+        child: widget.child,
       ),
     );
   }

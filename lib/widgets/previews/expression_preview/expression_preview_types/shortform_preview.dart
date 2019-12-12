@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
+import 'package:junto_beta_mobile/models/expression.dart';
 
 /// Takes an un-named [ExpressionResult] to be displayed
 class ShortformPreview extends StatefulWidget {
-  const ShortformPreview(this.expression);
+  const ShortformPreview({
+    @required this.expression,
+  });
 
   /// [CentralizedExpressionResponse] to be displayed
   final CentralizedExpressionResponse expression;
@@ -62,8 +64,8 @@ class ShortformPreviewState extends State<ShortformPreview> {
       });
     } else {
       setState(() {
-        _gradientOne = JuntoPalette.juntoBlack;
-        _gradientTwo = JuntoPalette.juntoBlack;
+        _gradientOne = JuntoPalette.juntoPrimary;
+        _gradientTwo = JuntoPalette.juntoSecondary;
       });
     }
   }
@@ -72,29 +74,29 @@ class ShortformPreviewState extends State<ShortformPreview> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
         gradient: LinearGradient(
           begin: Alignment.bottomLeft,
           end: Alignment.topRight,
           stops: const <double>[0.1, 0.9],
           colors: <Color>[
-            _gradientOne,
-            _gradientTwo,
+            Theme.of(context).colorScheme.secondary,
+            Theme.of(context).colorScheme.primary
           ],
         ),
       ),
       constraints: const BoxConstraints(
         minHeight: 240,
       ),
-      width: MediaQuery.of(context).size.width,
       alignment: Alignment.center,
+      width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 50.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(shortformBody,
-              textAlign: TextAlign.center,
-              style: JuntoStyles.shortformPreviewTitle),
-        ],
+      child: Text(
+        shortformBody,
+        maxLines: 5,
+        textAlign: TextAlign.center,
+        style: JuntoStyles.shortformPreviewTitle,
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }

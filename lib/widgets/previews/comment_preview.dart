@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/screens/member/member.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/comment_open/comment_open.dart';
+import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/widgets/comment_action_items.dart';
 
 /// Shows a preview of the comments. Takes a un-named [String] as a param.
@@ -23,7 +24,7 @@ class CommentPreview extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          CupertinoPageRoute(
+          CupertinoPageRoute<dynamic>(
             builder: (BuildContext context) => CommentOpen(commentText, parent),
           ),
         );
@@ -49,8 +50,7 @@ class CommentPreview extends StatelessWidget {
                           builder: (BuildContext context) => JuntoMember(
                             profile: UserProfile(
                               address: '',
-                              firstName: 'Eric',
-                              lastName: 'Yang',
+                              name: 'Eric Yang',
                               bio: 'This is a test',
                               profilePicture:
                                   'assets/images/junto-mobile__logo.png',
@@ -96,9 +96,9 @@ class CommentPreview extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       padding: const EdgeInsets.all(5),
                       child: Icon(
-                        Icons.keyboard_arrow_down,
-                        size: 24,
-                        color: Theme.of(context).primaryColorLight,
+                        CustomIcons.morevertical,
+                        size: 20,
+                        color: Theme.of(context).primaryColor,
                       ),
                     ),
                   ),

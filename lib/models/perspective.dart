@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/utils/utils.dart';
 
 class Perspective {
-  const Perspective({@required this.name, this.members});
+  const Perspective({
+    @required this.name,
+    @required this.about,
+    @required this.members,
+  });
 
   factory Perspective.fromMap(Map<String, dynamic> map) {
     return Perspective(
       name: map['name'],
+      about: map['about'],
       members: List<String>.from(
         map['name'].map((dynamic data) => data.toString()).toList(),
       ),
@@ -14,16 +20,41 @@ class Perspective {
   }
 
   final String name;
+  final String about;
   final List<String> members;
 
   static List<Perspective> fetchAll() {
     return <Perspective>[
-      const Perspective(name: 'NYC 🗽🏙️  '),
-      const Perspective(name: 'Design'),
-      const Perspective(name: 'Meditation'),
-      const Perspective(name: 'Hoops 🏀'),
-      const Perspective(name: 'Austrian Economics📈'),
-      const Perspective(name: 'Holochain ♓'),
+      const Perspective(
+        name: 'NYC 🗽🏙️  ',
+        members: <String>[],
+        about: '',
+      ),
+      const Perspective(
+        name: 'Design',
+        members: <String>[],
+        about: '',
+      ),
+      const Perspective(
+        name: 'Meditation',
+        members: <String>[],
+        about: '',
+      ),
+      const Perspective(
+        name: 'Hoops 🏀',
+        members: <String>[],
+        about: '',
+      ),
+      const Perspective(
+        name: 'Austrian Economics📈',
+        members: <String>[],
+        about: '',
+      ),
+      const Perspective(
+        name: 'Holochain ♓',
+        members: <String>[],
+        about: '',
+      ),
     ];
   }
 
@@ -31,6 +62,7 @@ class Perspective {
     return <String, dynamic>{
       'name': name,
       'members': members,
+      'about': about,
     };
   }
 }
@@ -90,6 +122,8 @@ class CentralizedPerspective {
     @required this.creator,
     @required this.createdAt,
     @required this.isDefault,
+    @required this.about,
+    this.userCount,
     this.users,
   });
 
@@ -97,10 +131,12 @@ class CentralizedPerspective {
     return CentralizedPerspective(
       address: map['address'] as String,
       name: map['name'] as String,
+      about: map['about'] as String,
       creator: map['creator'] as String,
-      createdAt: DateTime.parse(map['created_at']),
+      createdAt: RFC3339.parseRfc3339(map['created_at']),
       isDefault: map['is_default'] as bool,
-      users: _parseUsers(map['users']),
+      userCount: map['user_count'] != null ? map['user_count'] as int : null,
+      users: map['users'] != null ? _parseUsers(map['users']) : null,
     );
   }
 
@@ -117,16 +153,24 @@ class CentralizedPerspective {
   final DateTime createdAt;
   final bool isDefault;
 
+  /// Number of users in the given perspective
+  final int userCount;
+
   /// List of users associated with the given perspective.
   final List<UserProfile> users;
+
+  /// Purpose of the given perspective
+  final String about;
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'address': address,
       'name': name,
       'creator': creator,
-      'createdAt': createdAt.toIso8601String(),
-      'isDefault': isDefault,
+      'created_at': createdAt?.toIso8601String(),
+      'is_default': isDefault,
+      'user_count': userCount,
+      'about': about,
     };
   }
 

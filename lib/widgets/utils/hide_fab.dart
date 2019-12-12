@@ -11,6 +11,10 @@ mixin HideFab {
       if (controller.position.userScrollDirection == ScrollDirection.forward) {
         isVisible.value = true;
       }
+
+      if (controller.position.userScrollDirection == ScrollDirection.idle) {
+        isVisible.value = true;
+      }
     } else {
       isVisible.value = true;
     }

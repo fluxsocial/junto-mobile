@@ -2,15 +2,22 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
 
 /// Gradient [FloatingActionButton] used for filtering
 /// Collectives.
 class ExpressionCenterFAB extends StatelessWidget {
-  const ExpressionCenterFAB({Key key, @required this.expressionLayer})
-      : super(key: key);
+  const ExpressionCenterFAB({
+    Key key,
+    @required this.expressionLayer,
+    @required this.address,
+    @required this.expressionContext,
+  }) : super(key: key);
 
   final String expressionLayer;
+  final String address;
+  final ExpressionContext expressionContext;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +30,9 @@ class ExpressionCenterFAB extends StatelessWidget {
             Animation<double> secondaryAnimation,
           ) {
             return JuntoCreate(
-              expressionLayer,
+              channels: [],
+              address: address,
+              expressionContext: expressionContext,
             );
           },
           transitionsBuilder: (
@@ -53,7 +62,6 @@ class ExpressionCenterFAB extends StatelessWidget {
               colors: <Color>[
                 Theme.of(context).colorScheme.secondary,
                 Theme.of(context).colorScheme.primary,
-
               ],
             ),
             color: JuntoPalette.juntoWhite.withOpacity(.9),

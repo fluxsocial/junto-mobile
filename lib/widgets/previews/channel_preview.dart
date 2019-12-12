@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
-import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
 
 class ChannelPreview extends StatelessWidget {
   const ChannelPreview({Key key, this.channel}) : super(key: key);
@@ -33,7 +30,7 @@ class ChannelPreview extends StatelessWidget {
                   ),
                   borderRadius: BorderRadius.circular(100),
                 ),
-                child: Icon(
+                child: const Icon(
                   CustomIcons.hash,
                   color: Colors.white,
                   size: 15,

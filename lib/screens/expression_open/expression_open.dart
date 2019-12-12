@@ -1,8 +1,12 @@
 import 'dart:async' show Timer;
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:giphy_client/giphy_client.dart';
 import 'package:junto_beta_mobile/api.dart';
+import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:junto_beta_mobile/app/styles.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_appbar.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_bottom.dart';
@@ -10,10 +14,10 @@ import 'package:junto_beta_mobile/screens/expression_open/expression_open_top.da
 import 'package:junto_beta_mobile/screens/expression_open/expressions/event_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/longform_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/photo_open.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
-import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/shortform_open.dart';
+import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/widgets/previews/comment_preview.dart';
+import 'package:provider/provider.dart';
 
 class ExpressionOpen extends StatefulWidget {
   const ExpressionOpen(this.expression);
@@ -33,6 +37,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
     'In Junto, comments are treated like expressions. You can resonate them or reply to a comment (nested comments). This is quite complex so we are tacklign this once the rest of the core functionality is finished.',
     "And yes, I know what you're thinking. 'Comments??' We need a new semantic!",
   ];
+
   //  whether the comments are visible or not
   bool commentsVisible = false;
 
@@ -48,11 +53,15 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   /// [FocusNode] passed to Comments [TextField]
   FocusNode _focusNode;
 
+  /// If an expression has no comments, we do not show the option "show replies"
+  bool canShowComments = false;
+
   @override
   void initState() {
     super.initState();
     commentController = TextEditingController();
     _focusNode = FocusNode();
+    canShowComments = widget.expression.comments != 0;
   }
 
   @override
@@ -188,12 +197,49 @@ class ExpressionOpenState extends State<ExpressionOpen> {
     }
   }
 
+  Future<void> _createComment() async {
+    try {
+      await Provider.of<ExpressionRepo>(context).postCommentExpression(
+        widget.expression.address,
+        'LongForm',
+        CentralizedLongFormExpression(
+          title: 'Expression Comment',
+          body: commentController.value.text,
+        ).toMap(),
+      );
+      commentController.clear();
+      JuntoDialog.showJuntoDialog(
+        context,
+        'Comment Created',
+        <Widget>[
+          FlatButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Ok'),
+          ),
+        ],
+      );
+      setState(() {});
+    } catch (error) {
+      debugPrint('Error posting comment $error');
+      JuntoDialog.showJuntoDialog(
+        context,
+        'Error posting comment',
+        <Widget>[
+          FlatButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Ok'),
+          ),
+        ],
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(45.0),
-        child: ExpressionOpenAppbar(),
+        child: ExpressionOpenAppbar(expression: widget.expression),
       ),
       backgroundColor: Theme.of(context).backgroundColor,
       body: Column(
@@ -206,42 +252,66 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                   ExpressionOpenTop(expression: widget.expression),
                   _buildExpression(),
                   ExpressionOpenBottom(widget.expression, _focusTextField),
-                  GestureDetector(
-                    onTap: _showComments,
-                    child: Container(
-                      color: Colors.transparent,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 15),
-                      child: Row(
-                        children: <Widget>[
-                          Text(
-                            'Show replies (${comments.length})',
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontSize: 12),
-                          ),
-                          const SizedBox(width: 5),
-                          if (commentsVisible == false)
-                            Icon(Icons.keyboard_arrow_down,
-                                size: 14,
-                                color: Theme.of(context).primaryColor),
-                          if (commentsVisible != false)
-                            Icon(Icons.keyboard_arrow_up,
-                                size: 17,
-                                color: Theme.of(context).primaryColor),
-                        ],
+                  if (canShowComments)
+                    GestureDetector(
+                      onTap: _showComments,
+                      child: Container(
+                        color: Colors.transparent,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 15),
+                        child: Row(
+                          children: <Widget>[
+                            Text(
+                              'Show replies',
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontSize: 12),
+                            ),
+                            const SizedBox(width: 5),
+                            if (commentsVisible == false)
+                              Icon(Icons.keyboard_arrow_down,
+                                  size: 14,
+                                  color: Theme.of(context).primaryColor),
+                            if (commentsVisible != false)
+                              Icon(Icons.keyboard_arrow_up,
+                                  size: 17,
+                                  color: Theme.of(context).primaryColor),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
                   if (commentsVisible)
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: const ClampingScrollPhysics(),
-                      itemCount: comments.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return CommentPreview(
-                          parent: widget.expression,
-                          commentText: comments[index],
+                    FutureBuilder<List<Comment>>(
+                      future: Provider.of<ExpressionRepo>(context)
+                          .getExpressionsComments(
+                        widget.expression.address,
+                      ),
+                      builder: (
+                        BuildContext context,
+                        AsyncSnapshot<List<Comment>> snapshot,
+                      ) {
+                        if (snapshot.hasError) {
+                          return Container(
+                            child: const Text('Error occured'),
+                          );
+                        }
+
+                        if (snapshot.hasData)
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            physics: const ClampingScrollPhysics(),
+                            itemCount: snapshot.data.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return CommentPreview(
+                                parent: widget.expression,
+                                commentText:
+                                    snapshot.data[index].expressionData.body,
+                              );
+                            },
+                          );
+                        return Container(
+                          margin: const EdgeInsets.only(top: 75),
+                          child: JuntoProgressIndicator(),
                         );
                       },
                     )
@@ -250,8 +320,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
             ),
           ),
           _BottomCommentBar(
-            postComment: () {},
-            canCreateComment: createComment,
+            postComment: _createComment,
             commentController: commentController,
             commentPrivacy: _commentPrivacy,
             focusNode: _focusNode,
@@ -273,7 +342,6 @@ class _BottomCommentBar extends StatefulWidget {
     @required this.focusNode,
     @required this.onTextChange,
     @required this.commentController,
-    @required this.canCreateComment,
     @required this.showPrivacySheet,
     @required this.commentPrivacy,
     @required this.onGifSelected,
@@ -282,11 +350,11 @@ class _BottomCommentBar extends StatefulWidget {
   final FocusNode focusNode;
   final ValueChanged<String> onTextChange;
   final TextEditingController commentController;
-  final ValueNotifier<bool> canCreateComment;
   final VoidCallback showPrivacySheet;
   final String commentPrivacy;
   final ValueChanged<String> onGifSelected;
   final VoidCallback postComment;
+
   @override
   _BottomCommentBarState createState() => _BottomCommentBarState();
 }
@@ -297,6 +365,7 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
   final ValueNotifier<MessageType> _type =
       ValueNotifier<MessageType>(MessageType.regular);
   String selectedUrl;
+
   Widget _createCommentIcon(bool createComment) {
     if (createComment == true) {
       return GestureDetector(
@@ -321,136 +390,210 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
     return SafeArea(
       top: false,
       child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: JuntoStyles.horizontalPadding,
-          vertical: 5,
-        ),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
-          border: Border(
-            top: BorderSide(
-              width: .75,
-              color: Theme.of(context).dividerColor,
+          padding: const EdgeInsets.symmetric(
+            horizontal: JuntoStyles.horizontalPadding,
+            vertical: 5,
+          ),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.background,
+            border: Border(
+              top: BorderSide(
+                width: .75,
+                color: Theme.of(context).dividerColor,
+              ),
             ),
           ),
-        ),
-        child: ValueListenableBuilder<MessageType>(
-            valueListenable: _type,
-            builder: (BuildContext context, MessageType type, _) {
-              return Column(
+          child: Column(
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  if (type == MessageType.gif && selectedUrl != null)
-                    SizedBox(
-                      height: 150.0,
-                      width: 150.0,
-                      child: CachedNetworkImage(
-                        placeholder: (BuildContext context, String _) {
-                          return Image.asset(
-                            'assets/images/junto-mobile__placeholder--member.png',
-                          );
-                        },
-                        imageUrl: selectedUrl,
-                        fit: BoxFit.cover,
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.only(left: 15),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.surface,
+                        borderRadius: BorderRadius.circular(25),
                       ),
-                    ),
-                  const SizedBox(height: 4.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Container(
-                        margin: const EdgeInsets.only(right: 10),
-                        child: ClipOval(
-                          child: Image.asset(
-                            'assets/images/junto-mobile__eric.png',
-                            height: 38.0,
-                            width: 38.0,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.only(left: 15),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.surface,
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                        width: widget.focusNode.hasFocus
-                            ? MediaQuery.of(context).size.width - 100
-                            : MediaQuery.of(context).size.width - 68,
-                        constraints: const BoxConstraints(maxHeight: 180),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Container(
-                              width: MediaQuery.of(context).size.width - 140,
-                              child: TextField(
-                                focusNode: widget.focusNode,
-                                controller: widget.commentController,
-                                onChanged: widget.onTextChange,
-                                decoration: const InputDecoration(
-                                  border: InputBorder.none,
-                                ),
-                                maxLines: null,
-                                cursorColor: JuntoPalette.juntoGrey,
-                                cursorWidth: 2,
-                                style: Theme.of(context).textTheme.caption,
-                                textInputAction: TextInputAction.newline,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      if (widget.focusNode.hasFocus)
-                        _createCommentIcon(widget.canCreateComment.value)
-                    ],
-                  ),
-                  if (widget.focusNode.hasFocus)
-                    Container(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: Row(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          GestureDetector(
-                            onTap: widget.showPrivacySheet,
-                            child: Container(
-                              color: Colors.transparent,
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  Text(widget.commentPrivacy,
-                                      style: Theme.of(context).textTheme.body2),
-                                  Icon(Icons.keyboard_arrow_down,
-                                      size: 14,
-                                      color: Theme.of(context).primaryColorDark)
-                                ],
+                          ValueListenableBuilder<MessageType>(
+                              valueListenable: _type,
+                              builder:
+                                  (BuildContext context, MessageType type, _) {
+                                return type == MessageType.gif &&
+                                        selectedUrl != null
+                                    ? Container(
+                                        margin: const EdgeInsets.only(top: 10),
+                                        child: Stack(children: [
+                                          Container(
+                                            height: 150.0,
+                                            width: 150.0,
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              child: CachedNetworkImage(
+                                                placeholder:
+                                                    (BuildContext context,
+                                                        String _) {
+                                                  return Container(
+                                                    height: 120,
+                                                    width: 120,
+                                                    decoration: BoxDecoration(
+                                                      gradient: LinearGradient(
+                                                        begin: Alignment
+                                                            .bottomLeft,
+                                                        end: Alignment.topRight,
+                                                        stops: const <double>[
+                                                          0.2,
+                                                          0.9
+                                                        ],
+                                                        colors: <Color>[
+                                                          Theme.of(context)
+                                                              .colorScheme
+                                                              .secondary,
+                                                          Theme.of(context)
+                                                              .colorScheme
+                                                              .primary
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                imageUrl: selectedUrl,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ),
+                                          Positioned(
+                                            top: 5,
+                                            right: 5,
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  selectedUrl = null;
+                                                });
+                                              },
+                                              child: Container(
+                                                height: 30,
+                                                width: 30,
+                                                decoration: BoxDecoration(
+                                                  color: const Color(0xff222222)
+                                                      .withOpacity(.8),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          100),
+                                                ),
+                                                alignment: Alignment.center,
+                                                child: Text(
+                                                  'x',
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 13,
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                        ]),
+                                      )
+                                    : const SizedBox();
+                              }),
+                          Container(
+                            constraints: const BoxConstraints(maxHeight: 180),
+                            child: TextField(
+                              focusNode: widget.focusNode,
+                              controller: widget.commentController,
+                              onChanged: widget.onTextChange,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'write a reply...',
+                                hintStyle: TextStyle(
+                                    fontSize: 13,
+                                    color: Theme.of(context).primaryColor),
                               ),
+                              maxLines: null,
+                              cursorColor: Theme.of(context).primaryColor,
+                              cursorWidth: 2,
+                              style: Theme.of(context).textTheme.caption,
+                              textInputAction: TextInputAction.newline,
                             ),
-                          ),
-                          SizedBox(width: 10),
-                          GestureDetector(
-                            onTap: () async {
-                              await showModalBottomSheet(
-                                context: context,
-                                isScrollControlled: false,
-                                backgroundColor:
-                                    Theme.of(context).colorScheme.background,
-                                builder: (BuildContext context) => _GiphyPanel(
-                                  onGifSelected: (String selected) {
-                                    selectedUrl = selected;
-                                    _type.value = MessageType.gif;
-                                    widget.onGifSelected(selected);
-                                  },
-                                ),
-                              );
-                            },
-                            child: const Text('GIF'),
                           ),
                         ],
                       ),
                     ),
+                  ),
                 ],
-              );
-            }),
-      ),
+              ),
+              _buildBottomStrip()
+            ],
+          )),
+    );
+  }
+
+  Widget _buildBottomStrip() {
+    return AnimatedBuilder(
+      animation: widget.focusNode,
+      builder: (BuildContext context, _) {
+        if (widget.focusNode.hasFocus)
+          return Container(
+            padding: const EdgeInsets.symmetric(vertical: 15),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: widget.showPrivacySheet,
+                      child: Container(
+                        color: Colors.transparent,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Text(widget.commentPrivacy,
+                                style: Theme.of(context).textTheme.body2),
+                            Icon(Icons.keyboard_arrow_down,
+                                size: 14,
+                                color: Theme.of(context).primaryColorDark)
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    GestureDetector(
+                      onTap: () async {
+                        await showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          builder: (BuildContext context) => _GiphyPanel(
+                            onGifSelected: (String selected) {
+                              selectedUrl = selected;
+                              _type.value = MessageType.gif;
+                              widget.onGifSelected(selected);
+                            },
+                          ),
+                        );
+                      },
+                      child: const Text('GIF'),
+                    ),
+                  ],
+                ),
+                AnimatedBuilder(
+                  animation: widget.focusNode,
+                  builder: (BuildContext context, _) {
+                    return _createCommentIcon(
+                      widget.focusNode.hasFocus,
+                    );
+                  },
+                ),
+              ],
+            ),
+          );
+        return const SizedBox();
+      },
     );
   }
 }
@@ -495,7 +638,7 @@ class _GiphyPanelState extends State<_GiphyPanel> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height,
+      height: MediaQuery.of(context).size.height * .9,
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.background,
@@ -507,11 +650,22 @@ class _GiphyPanelState extends State<_GiphyPanel> {
       child: CustomScrollView(
         slivers: <Widget>[
           SliverPadding(
-            padding: const EdgeInsets.all(12.0),
+            padding: const EdgeInsets.symmetric(vertical: 10),
             sliver: SliverToBoxAdapter(
-              child: TextField(
-                decoration: const InputDecoration(hintText: 'Search Giphy...'),
-                onChanged: onTextChange,
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                        color: Theme.of(context).dividerColor, width: .75),
+                  ),
+                ),
+                child: TextField(
+                  decoration: InputDecoration(
+                      hintText: 'Search for GIFs',
+                      hintStyle: TextStyle(),
+                      border: InputBorder.none),
+                  onChanged: onTextChange,
+                ),
               ),
             ),
           ),
@@ -545,8 +699,18 @@ class _GiphyPanelState extends State<_GiphyPanel> {
                           },
                           child: CachedNetworkImage(
                             placeholder: (BuildContext context, String _) {
-                              return Image.asset(
-                                'assets/images/junto-mobile__placeholder--member.png',
+                              return Container(
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.bottomLeft,
+                                    end: Alignment.topRight,
+                                    stops: const <double>[0.2, 0.9],
+                                    colors: <Color>[
+                                      Theme.of(context).colorScheme.secondary,
+                                      Theme.of(context).colorScheme.primary
+                                    ],
+                                  ),
+                                ),
                               );
                             },
                             imageUrl: _gifs.images.downsized.url,

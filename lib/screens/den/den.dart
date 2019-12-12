@@ -1,17 +1,22 @@
+import 'dart:convert';
+import 'package:async/async.dart' show AsyncMemoizer;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/backend/mock/mock_expression.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/screens/den/den_create_collection.dart';
+import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
+import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/screens/den/den_sliver_appbar.dart';
+import 'package:junto_beta_mobile/widgets/appbar/den_appbar.dart';
+import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_edit_den.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
-import 'package:junto_beta_mobile/screens/den/den_appbar.dart';
+import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:async/async.dart' show AsyncMemoizer;
+import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 
 /// Displays the user's DEN or "profile screen"
 class JuntoDen extends StatefulWidget {
@@ -19,577 +24,436 @@ class JuntoDen extends StatefulWidget {
   State<StatefulWidget> createState() => JuntoDenState();
 }
 
-class JuntoDenState extends State<JuntoDen> {
-  String profilePicture = 'assets/images/junto-mobile__logo.png';
+class JuntoDenState extends State<JuntoDen> with HideFab {
   final List<String> _tabs = <String>['About', 'Public', 'Private'];
+  UserRepo _userProvider;
+  String _userAddress;
+  UserData _userProfile;
 
-  bool publicExpressionsActive = true;
-  bool publicCollectionActive = false;
-  bool privateExpressionsActive = true;
-  bool privateCollectionActive = false;
-
-  AsyncMemoizer<UserProfile> userMemoizer = AsyncMemoizer<UserProfile>();
-  List<CentralizedExpressionResponse> expressions;
-  List<CentralizedExpressionResponse> mockExpressions =
-      MockExpressionService().collectiveExpressions;
-
-  Future<UserProfile> _retrieveUserInfo() async {
-    final UserService _userProvider = Provider.of<UserService>(context);
-    return userMemoizer.runOnce(() => _userProvider.readLocalUser());
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: _tabs.length,
-      child: NestedScrollView(
-        physics: const ClampingScrollPhysics(),
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return <Widget>[
-            JuntoDenAppbar(
-              handle: 'sunyata',
-              name: 'Eric Yang',
-              profilePicture: 'assets/images/junto-mobile__eric.png',
-              bio: 'student of suffering and its cessation',
-            ),
-            SliverPersistentHeader(
-              delegate: JuntoAppBarDelegate(
-                TabBar(
-                  labelPadding: const EdgeInsets.all(0),
-                  isScrollable: true,
-                  labelColor: Theme.of(context).primaryColorDark,
-                  labelStyle: Theme.of(context).textTheme.subhead,
-                  indicatorWeight: 0.0001,
-                  tabs: <Widget>[
-                    for (String name in _tabs)
-                      Container(
-                        margin: const EdgeInsets.only(right: 24),
-                        color: Theme.of(context).colorScheme.background,
-                        child: Tab(
-                          text: name,
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-              pinned: true,
-            ),
-          ];
-        },
-        body: TabBarView(
-          children: <Widget>[
-            ListView(
-              physics: const ClampingScrollPhysics(),
-              shrinkWrap: true,
-              padding: const EdgeInsets.only(left: 10),
-              children: <Widget>[
-                SizedBox(height: 5),
-                Container(
-                  padding: const EdgeInsets.only(top: 5, bottom: 5),
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        child: Row(
-                          children: <Widget>[
-                            Icon(CustomIcons.gender,
-                                size: 17,
-                                color: Theme.of(context).primaryColor),
-                            const SizedBox(width: 5),
-                            Text(
-                              'he/him',
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      Container(
-                        child: Row(
-                          children: <Widget>[
-                            Image.asset(
-                              'assets/images/junto-mobile__location.png',
-                              height: 15,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                            const SizedBox(width: 5),
-                            Text(
-                              'Spirit',
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      Container(
-                        child: Row(
-                          children: <Widget>[
-                            Image.asset(
-                              'assets/images/junto-mobile__link.png',
-                              height: 15,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                            const SizedBox(width: 5),
-                            Text(
-                              'junto.foundation',
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 15),
-                CarouselSlider(
-                  viewportFraction: 1.0,
-                  height: MediaQuery.of(context).size.width - 20,
-                  enableInfiniteScroll: false,
-                  items: <Widget>[
-                    Container(
-                      padding: EdgeInsets.only(right: 10),
-                      width: MediaQuery.of(context).size.width,
-                      child: Image.asset('assets/images/junto-mobile__eric.png',
-                          fit: BoxFit.cover),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      padding: EdgeInsets.only(right: 10),
-                      child: Image.asset(
-                          'assets/images/junto-mobile__eric--qigong.png',
-                          fit: BoxFit.cover),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 15),
-                Container(
-                  child: Text("student of suffering and its cessation",
-                      style: Theme.of(context).textTheme.caption),
-                ),
-              ],
-            ),
-            // public mock expressions
-            ListView(
-              shrinkWrap: true,
-              physics: ClampingScrollPhysics(),
-              children: <Widget>[
-                ExpressionPreview(expression: mockExpressions[0])
-              ],
-            ),
-
-            // private mock expressions
-            ListView(
-              shrinkWrap: true,
-              physics: ClampingScrollPhysics(),
-              children: <Widget>[
-                ExpressionPreview(expression: mockExpressions[0])
-              ],
-            ),
-            // UserExpressions(
-            //   key: const PageStorageKey<String>('public-user-expressions'),
-            //   privacy: 'Public',
-            //   userProfile: snapshot.data,
-            // ),
-            // UserExpressions(
-            //   key: const PageStorageKey<String>('private-user-expressions'),
-            //   privacy: 'Private',
-            //   userProfile: snapshot.data,
-            // )
-          ],
-        ),
-      ),
-    );
-    // final MediaQueryData media = MediaQuery.of(context);
-    // return FutureBuilder<UserProfile>(
-    //   future: _retrieveUserInfo(),
-    //   builder: (BuildContext context, AsyncSnapshot<UserProfile> snapshot) {
-    //     if (!snapshot.hasData) {
-    //       return Container(
-    //         height: media.size.height,
-    //         width: media.size.width,
-    //         child: const Center(
-    //           child: CircularProgressIndicator(),
-    //         ),
-    //       );
-    //     }
-    //     if (snapshot.hasError) {
-    //       return Container(
-    //         height: media.size.height,
-    //         width: media.size.width,
-    //         child: Center(
-    //           child: Text('Unable to load user ${snapshot.error}'),
-    //         ),
-    //       );
-    //     }
-    //     return DefaultTabController(
-    //       length: _tabs.length,
-    //       child: NestedScrollView(
-    //         physics: const ClampingScrollPhysics(),
-    //         headerSliverBuilder:
-    //             (BuildContext context, bool innerBoxIsScrolled) {
-    //           return <Widget>[
-    //             JuntoDenAppbar(
-    //               handle: snapshot.data.username,
-    //               name: '${snapshot.data.firstName} ${snapshot.data.lastName}',
-    //               profilePicture: profilePicture,
-    //               bio: snapshot.data.bio,
-    //             ),
-    //             SliverPersistentHeader(
-    //               delegate: JuntoAppBarDelegate(
-    //                 TabBar(
-    //                   labelPadding: const EdgeInsets.all(0),
-    //                   isScrollable: true,
-    //                   labelColor: Theme.of(context).primaryColorDark,
-    //                   labelStyle: Theme.of(context).textTheme.subhead,
-    //                   indicatorWeight: 0.0001,
-    //                   tabs: <Widget>[
-    //                     for (String name in _tabs)
-    //                       Container(
-    //                         margin: const EdgeInsets.only(right: 24),
-    //                         color: Theme.of(context).colorScheme.background,
-    //                         child: Tab(
-    //                           text: name,
-    //                         ),
-    //                       ),
-    //                   ],
-    //                 ),
-    //               ),
-    //               pinned: true,
-    //             ),
-    //           ];
-    //         },
-    //         body: TabBarView(
-    //           children: <Widget>[
-    //             ListView(
-    //               physics: const ClampingScrollPhysics(),
-    //               shrinkWrap: true,
-    //               padding: const EdgeInsets.only(left: 10),
-    //               children: <Widget>[
-    //                 SizedBox(height: 5),
-    //                 Container(
-    //                   padding: const EdgeInsets.only(top: 5, bottom: 5),
-    //                   child: Column(
-    //                     children: <Widget>[
-    //                       Container(
-    //                         child: Row(
-    //                           children: <Widget>[
-    //                             Icon(CustomIcons.gender,
-    //                                 size: 17,
-    //                                 color: Theme.of(context).primaryColor),
-    //                             const SizedBox(width: 5),
-    //                             Text(
-    //                               'he/him',
-    //                               maxLines: 1,
-    //                               overflow: TextOverflow.ellipsis,
-    //                               style: TextStyle(
-    //                                   color: Theme.of(context).primaryColor,
-    //                                   fontSize: 15,
-    //                                   fontWeight: FontWeight.w600),
-    //                             ),
-    //                           ],
-    //                         ),
-    //                       ),
-    //                       SizedBox(height: 10),
-    //                       Container(
-    //                         child: Row(
-    //                           children: <Widget>[
-    //                             Image.asset(
-    //                               'assets/images/junto-mobile__location.png',
-    //                               height: 15,
-    //                               color: Theme.of(context).primaryColor,
-    //                             ),
-    //                             const SizedBox(width: 5),
-    //                             Text(
-    //                               'Spirit',
-    //                               maxLines: 1,
-    //                               overflow: TextOverflow.ellipsis,
-    //                               style: TextStyle(
-    //                                   color: Theme.of(context).primaryColor,
-    //                                   fontSize: 15,
-    //                                   fontWeight: FontWeight.w600),
-    //                             ),
-    //                           ],
-    //                         ),
-    //                       ),
-    //                       SizedBox(height: 10),
-    //                       Container(
-    //                         child: Row(
-    //                           children: <Widget>[
-    //                             Image.asset(
-    //                               'assets/images/junto-mobile__link.png',
-    //                               height: 15,
-    //                               color: Theme.of(context).primaryColor,
-    //                             ),
-    //                             const SizedBox(width: 5),
-    //                             Text(
-    //                               'junto.foundation',
-    //                               overflow: TextOverflow.ellipsis,
-    //                               maxLines: 1,
-    //                               style: TextStyle(
-    //                                   color: Theme.of(context).primaryColor,
-    //                                   fontSize: 15,
-    //                                   fontWeight: FontWeight.w600),
-    //                             ),
-    //                           ],
-    //                         ),
-    //                       ),
-    //                     ],
-    //                   ),
-    //                 ),
-    //                 const SizedBox(height: 15),
-    //                 CarouselSlider(
-    //                   viewportFraction: 1.0,
-    //                   height: MediaQuery.of(context).size.width - 20,
-    //                   enableInfiniteScroll: false,
-    //                   items: <Widget>[
-    //                     Container(
-    //                       padding: EdgeInsets.only(right: 10),
-    //                       width: MediaQuery.of(context).size.width,
-    //                       child: Image.asset(
-    //                           'assets/images/junto-mobile__eric.png',
-    //                           fit: BoxFit.cover),
-    //                     ),
-    //                     Container(
-    //                       width: MediaQuery.of(context).size.width,
-    //                       padding: EdgeInsets.only(right: 10),
-    //                       child: Image.asset(
-    //                           'assets/images/junto-mobile__eric--qigong.png',
-    //                           fit: BoxFit.cover),
-    //                     ),
-    //                   ],
-    //                 ),
-    //                 const SizedBox(height: 15),
-    //                 Container(
-    //                   child: Text("student of suffering and its cessation",
-    //                       style: Theme.of(context).textTheme.caption),
-    //                 ),
-    //               ],
-    //             ),
-    //             // public mock expressions
-    //             ListView(
-    //               shrinkWrap: true,
-    //               physics: ClampingScrollPhysics(),
-    //               children: <Widget>[
-    //                 ExpressionPreview(expression: mockExpressions[0])
-    //               ],
-    //             ),
-
-    //             // private mock expressions
-    //             ListView(
-    //               shrinkWrap: true,
-    //               physics: ClampingScrollPhysics(),
-    //               children: <Widget>[
-    //                 ExpressionPreview(expression: mockExpressions[0])
-    //               ],
-    //             ),
-    //             // UserExpressions(
-    //             //   key: const PageStorageKey<String>('public-user-expressions'),
-    //             //   privacy: 'Public',
-    //             //   userProfile: snapshot.data,
-    //             // ),
-    //             // UserExpressions(
-    //             //   key: const PageStorageKey<String>('private-user-expressions'),
-    //             //   privacy: 'Private',
-    //             //   userProfile: snapshot.data,
-    //             // )
-    //           ],
-    //         ),
-    //       ),
-    //     );
-    //   },
-    // );
-  }
-}
-
-/// Linear list of expressions created by the given [userProfile].
-class UserExpressions extends StatefulWidget {
-  const UserExpressions({
-    Key key,
-    @required this.userProfile,
-    @required this.privacy,
-  }) : super(key: key);
-
-  /// [UserProfile] of the user
-  final UserProfile userProfile;
-
-  /// Either Public or Private;
-  final String privacy;
-
-  @override
-  _UserExpressionsState createState() => _UserExpressionsState();
-}
-
-class _UserExpressionsState extends State<UserExpressions> {
-  UserService _userProvider;
-  AsyncMemoizer<List<CentralizedExpressionResponse>> memoizer =
+  ScrollController _denController;
+  final GlobalKey<ScaffoldState> _juntoDenKey = GlobalKey<ScaffoldState>();
+  final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
+  final AsyncMemoizer<List<CentralizedExpressionResponse>> _memoizer =
       AsyncMemoizer<List<CentralizedExpressionResponse>>();
+
+  @override
+  void initState() {
+    super.initState();
+    _denController = ScrollController();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _denController.addListener(_onScrollingHasChanged);
+      _denController.position.isScrollingNotifier.addListener(
+        _onScrollingHasChanged,
+      );
+    });
+    getUserInformation();
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _userProvider = Provider.of<UserService>(context);
+
+    setState(() {
+      _userProvider = Provider.of<UserRepo>(context);
+    });
   }
 
-  Future<List<CentralizedExpressionResponse>> getExpressions() {
-    return memoizer.runOnce(
-        () => _userProvider.getUsersExpressions(widget.userProfile.address));
+  @override
+  void dispose() {
+    super.dispose();
+    _denController.dispose();
+    _denController.removeListener(_onScrollingHasChanged);
+  }
+
+  _onScrollingHasChanged() {
+    super.hideFabOnScroll(_denController, _isVisible);
+  }
+
+  Future<void> getUserInformation() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final Map<String, dynamic> decodedUserData =
+        jsonDecode(prefs.getString('user_data'));
+
+    setState(() {
+      _userAddress = prefs.getString('user_id');
+      _userProfile = UserData.fromMap(decodedUserData);
+    });
+  }
+
+  Future<List<CentralizedExpressionResponse>> getUsersExpressions() async {
+    return _memoizer.runOnce(
+      () => _userProvider.getUsersExpressions(_userAddress),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final MediaQueryData media = MediaQuery.of(context);
-    return FutureBuilder<List<CentralizedExpressionResponse>>(
-      future: getExpressions(),
-      builder: (BuildContext context,
-          AsyncSnapshot<List<CentralizedExpressionResponse>> snapshot) {
-        if (snapshot.hasData) {
-          final List<CentralizedExpressionResponse> _data = snapshot.data
-              .where((CentralizedExpressionResponse expression) =>
-                  expression.privacy == widget.privacy)
-              .toList(growable: false);
-          return ListView.builder(
-            itemCount: _data.length,
-            itemBuilder: (BuildContext context, int index) {
-              return ExpressionPreview(
-                expression: _data[index],
-              );
-            },
-          );
-        }
-        if (snapshot.hasError) {
-          return Container(
-            height: media.size.height,
-            width: media.size.width,
-            child: Center(
-              child: Text('Error occured ${snapshot.error}'),
+    return Scaffold(
+      key: _juntoDenKey,
+      appBar: _userProfile != null
+          ? DenAppbar(heading: _userProfile.user.username)
+          : const PreferredSize(
+              preferredSize: Size.fromHeight(45),
+              child: SizedBox(),
             ),
-          );
-        }
-        return Container(
-          height: media.size.height,
-          width: media.size.width,
-          child: const Center(
-            child: CircularProgressIndicator(),
-          ),
-        );
-      },
+      floatingActionButton: ValueListenableBuilder<bool>(
+        valueListenable: _isVisible,
+        builder: (BuildContext context, bool visible, Widget child) {
+          return AnimatedOpacity(
+              duration: const Duration(milliseconds: 300),
+              opacity: visible ? 1.0 : 0.0,
+              child: child);
+        },
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 25),
+          child: BottomNav(
+              screen: 'den',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute<Widget>(
+                    builder: (BuildContext context) => JuntoEditDen(),
+                  ),
+                );
+              }),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      endDrawer: const JuntoDrawer(screen: 'Den', icon: CustomIcons.half_lotus),
+      body: _userProfile != null
+          ? DefaultTabController(
+              length: _tabs.length,
+              child: NestedScrollView(
+                controller: _denController,
+                physics: const ClampingScrollPhysics(),
+                headerSliverBuilder:
+                    (BuildContext context, bool innerBoxIsScrolled) {
+                  return <Widget>[
+                    JuntoDenSliverAppbar(
+                      name: _userProfile.user.name,
+                    ),
+                    SliverPersistentHeader(
+                      delegate: JuntoAppBarDelegate(
+                        TabBar(
+                          labelPadding: const EdgeInsets.all(0),
+                          isScrollable: true,
+                          labelColor: Theme.of(context).primaryColorDark,
+                          labelStyle: Theme.of(context).textTheme.subhead,
+                          indicatorWeight: 0.0001,
+                          tabs: <Widget>[
+                            for (String name in _tabs)
+                              Container(
+                                margin: const EdgeInsets.only(right: 24),
+                                color: Theme.of(context).colorScheme.background,
+                                child: Tab(
+                                  text: name,
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                      pinned: true,
+                    ),
+                  ];
+                },
+                body: TabBarView(
+                  children: <Widget>[
+                    ListView(
+                      physics: const ClampingScrollPhysics(),
+                      shrinkWrap: true,
+                      padding: const EdgeInsets.only(left: 10),
+                      children: <Widget>[
+                        const SizedBox(height: 5),
+                        Container(
+                          padding: const EdgeInsets.only(top: 5, bottom: 5),
+                          child: Column(
+                            children: <Widget>[
+                              Container(
+                                child: Row(
+                                  children: <Widget>[
+                                    Icon(CustomIcons.gender,
+                                        size: 17,
+                                        color: Theme.of(context).primaryColor),
+                                    const SizedBox(width: 5),
+                                    Text(
+                                      'gender',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          color: Theme.of(context).primaryColor,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              Container(
+                                child: Row(
+                                  children: <Widget>[
+                                    Image.asset(
+                                      'assets/images/junto-mobile__location.png',
+                                      height: 15,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                    const SizedBox(width: 5),
+                                    Text(
+                                      'location',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          color: Theme.of(context).primaryColor,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              Container(
+                                child: Row(
+                                  children: <Widget>[
+                                    Image.asset(
+                                      'assets/images/junto-mobile__link.png',
+                                      height: 15,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                    const SizedBox(width: 5),
+                                    Text(
+                                      'website',
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                          color: Theme.of(context).primaryColor,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                        CarouselSlider(
+                          viewportFraction: 1.0,
+                          height: MediaQuery.of(context).size.width - 20,
+                          enableInfiniteScroll: false,
+                          items: <Widget>[
+                            Container(
+                              padding: const EdgeInsets.only(right: 10),
+                              width: MediaQuery.of(context).size.width,
+                              child: Image.asset(
+                                  'assets/images/junto-mobile__mockprofpic--one.png',
+                                  fit: BoxFit.cover),
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              padding: const EdgeInsets.only(right: 10),
+                              child: Image.asset(
+                                  'assets/images/junto-mobile__mockprofpic--two.png',
+                                  fit: BoxFit.cover),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 15),
+                        Container(
+                          child: Text(_userProfile.user.bio,
+                              style: Theme.of(context).textTheme.caption),
+                        ),
+                      ],
+                    ),
+
+                    // public expressions of user
+                    FutureBuilder<dynamic>(
+                      future: getUsersExpressions(),
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        if (snapshot.hasError) {
+                          return Center(
+                            child: Transform.translate(
+                              offset: const Offset(0.0, -50),
+                              child: const Text(
+                                  'Hmm, something is up with our server'),
+                            ),
+                          );
+                        }
+                        if (snapshot.hasData) {
+                          return Container(
+                            color: Theme.of(context).colorScheme.background,
+                            child: ListView(
+                              children: <Widget>[
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          .5,
+                                      padding: const EdgeInsets.only(
+                                          left: 10, right: 5, top: 10),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: <Widget>[
+                                          for (int index = 0;
+                                              index < snapshot.data.length + 1;
+                                              index++)
+                                            if (index == snapshot.data.length)
+                                              const SizedBox()
+                                            else if (index.isEven &&
+                                                snapshot.data[index].privacy ==
+                                                    'Public')
+                                              ExpressionPreview(
+                                                expression:
+                                                    snapshot.data[index],
+                                              )
+                                            else
+                                              const SizedBox()
+
+                                          // even number indexes
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          .5,
+                                      padding: const EdgeInsets.only(
+                                          left: 5, right: 10, top: 10),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: <Widget>[
+                                          // odd number indexes
+                                          for (int index = 0;
+                                              index < snapshot.data.length + 1;
+                                              index++)
+                                            if (index == snapshot.data.length)
+                                              const SizedBox()
+                                            else if (index.isOdd &&
+                                                snapshot.data[index].privacy ==
+                                                    'Public')
+                                              ExpressionPreview(
+                                                expression:
+                                                    snapshot.data[index],
+                                              )
+                                            else
+                                              const SizedBox()
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          );
+                        }
+                        return Center(
+                          child: Transform.translate(
+                            offset: const Offset(0.0, -50),
+                            child: JuntoProgressIndicator(),
+                          ),
+                        );
+                      },
+                    ),
+
+                    // private expressions of user
+                    FutureBuilder<dynamic>(
+                      future: getUsersExpressions(),
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        if (snapshot.hasError) {
+                          return const Center(
+                            child: Text('something is up'),
+                          );
+                        }
+                        if (snapshot.hasData) {
+                          return Container(
+                            color: Theme.of(context).colorScheme.background,
+                            child: ListView(
+                              children: <Widget>[
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          .5,
+                                      padding: const EdgeInsets.only(
+                                          left: 10, right: 5, top: 10),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: <Widget>[
+                                          for (int index = 0;
+                                              index < snapshot.data.length + 1;
+                                              index++)
+                                            if (index == snapshot.data.length)
+                                              const SizedBox()
+                                            else if (index.isEven &&
+                                                snapshot.data[index].privacy ==
+                                                    'Private')
+                                              ExpressionPreview(
+                                                expression:
+                                                    snapshot.data[index],
+                                              )
+                                            else
+                                              const SizedBox()
+
+                                          // even number indexes
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          .5,
+                                      padding: const EdgeInsets.only(
+                                          left: 5, right: 10, top: 10),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: <Widget>[
+                                          // odd number indexes
+                                          for (int index = 0;
+                                              index < snapshot.data.length + 1;
+                                              index++)
+                                            if (index == snapshot.data.length)
+                                              const SizedBox()
+                                            else if (index.isOdd &&
+                                                snapshot.data[index].privacy ==
+                                                    'Private')
+                                              ExpressionPreview(
+                                                expression:
+                                                    snapshot.data[index],
+                                              )
+                                            else
+                                              const SizedBox()
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          );
+                        }
+                        return Center(
+                          child: Transform.translate(
+                            offset: const Offset(0.0, -50),
+                            child: JuntoProgressIndicator(),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            )
+          : Center(
+              child: Transform.translate(
+                offset: const Offset(0.0, -50),
+                child: JuntoProgressIndicator(),
+              ),
+            ),
     );
   }
 }
-
-// class DenToggle extends StatelessWidget {
-//   const DenToggle({
-//     Key key,
-//     @required this.onCollectionsTap,
-//     @required this.onLotusTap,
-//     @required this.active,
-//   }) : super(key: key);
-
-//   final VoidCallback onCollectionsTap;
-//   final VoidCallback onLotusTap;
-//   final bool active;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 10),
-//       child: Column(
-//         children: <Widget>[
-//           Row(
-//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//             children: <Widget>[
-//               Container(
-//                 padding: const EdgeInsets.all(2.5),
-//                 height: 30,
-//                 width: 80,
-//                 decoration: BoxDecoration(
-//                   color: constTheme.of(context).dividerColor,
-//                   borderRadius: BorderRadius.circular(5),
-//                 ),
-//                 child: Row(
-//                   children: <Widget>[
-//                     GestureDetector(
-//                       onTap: onLotusTap,
-//                       child: Container(
-//                         height: 30,
-//                         // half width of parent container minus horizontal padding
-//                         width: 37.5,
-//                         decoration: BoxDecoration(
-//                           color:
-//                               active ? Colors.white : constTheme.of(context).dividerColor,
-//                           borderRadius: BorderRadius.circular(5),
-//                         ),
-//                         child: Icon(
-//                           CustomIcons.half_lotus,
-//                           size: 12,
-//                           color: active
-//                               ? const Color(0xff555555)
-//                               : const Color(0xff999999),
-//                         ),
-//                       ),
-//                     ),
-//                     GestureDetector(
-//                       onTap: onCollectionsTap,
-//                       child: Container(
-//                         height: 30,
-//                         // half width of parent container minus horizontal padding
-//                         width: 37.5,
-//                         decoration: BoxDecoration(
-//                           color:
-//                               active ? Colors.white : constTheme.of(context).dividerColor,
-//                           borderRadius: BorderRadius.circular(5),
-//                         ),
-//                         child: Icon(
-//                           Icons.collections,
-//                           size: 12,
-//                           color: active
-//                               ? const Color(0xff555555)
-//                               : const Color(0xff999999),
-//                         ),
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//               active
-//                   ? GestureDetector(
-//                       onTap: () {
-//                         Navigator.push(
-//                           context,
-//                           CupertinoPageRoute<dynamic>(
-//                             builder: (BuildContext context) =>
-//                                 DenCreateCollection(),
-//                           ),
-//                         );
-//                       },
-//                       child: Container(
-//                         width: 38,
-//                         alignment: Alignment.centerRight,
-//                         child: Icon(
-//                           Icons.add,
-//                           size: 20,
-//                           color: const Color(0xff555555),
-//                         ),
-//                       ),
-//                     )
-//                   : const SizedBox()
-//             ],
-//           )
-//         ],
-//       ),
-//     );
-//   }
-// }

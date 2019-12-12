@@ -7,9 +7,11 @@ class ResonateBottomSheet extends StatelessWidget {
   const ResonateBottomSheet({
     Key key,
     @required this.expression,
+    @required this.onResonationPress,
   }) : super(key: key);
 
   final CentralizedExpressionResponse expression;
+  final VoidCallback onResonationPress;
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +48,7 @@ class ResonateBottomSheet extends StatelessWidget {
                   ],
                 ),
                 ListTile(
+                  onTap: onResonationPress,
                   contentPadding:
                       const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
                   title: Row(

@@ -20,7 +20,7 @@ class SearchProviderCentralized implements SearchProvider {
     final String authKey = _prefs.getString('auth');
 
     final Uri _uri = Uri.http(
-      '198.199.67.10',
+      '18.191.236.123',
       '/users',
       <String, String>{'username': query},
     );

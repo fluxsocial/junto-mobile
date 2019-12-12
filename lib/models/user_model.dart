@@ -10,9 +10,9 @@ class UserProfile {
   UserProfile({
     this.address,
     this.parent,
-    this.firstName,
-    this.lastName,
+    this.name,
     this.bio,
+    this.location,
     this.profilePicture,
     this.verified,
     this.username,
@@ -23,9 +23,9 @@ class UserProfile {
     return UserProfile(
         address: json['address'],
         parent: json['parent'] ?? '',
-        firstName: json['first_name'],
-        lastName: json['last_name'],
+        name: json['name'],
         bio: json['bio'],
+        location: json['location'],
         profilePicture: json['profile_picture'] ?? '',
         verified: json['verified'],
         username: json['username'] ?? '');
@@ -37,14 +37,14 @@ class UserProfile {
   /// Parent's address
   final String parent;
 
-  /// First Name of the author
-  final String firstName;
-
-  /// Last Name of the author
-  final String lastName;
+  ///  Name of the author
+  final String name;
 
   /// Author's biography
   final String bio;
+
+  /// Author's location
+  final String location;
 
   /// Url of the author's profile image
   final String profilePicture;
@@ -59,9 +59,9 @@ class UserProfile {
   Map<String, dynamic> toMap() => <String, dynamic>{
         'address': address,
         'parent': parent,
-        'first_name': firstName,
-        'last_name': lastName,
+        'name': name,
         'bio': bio,
+        'location': location,
         'profile_picture': profilePicture,
         'verified': verified,
         'username': username
@@ -69,8 +69,9 @@ class UserProfile {
 
   @override
   String toString() {
-    return 'UserProfile: address: $address, parent: $parent, firstName: '
-        '$firstName, lastName: $lastName, bio: $bio,'
+    return 'UserProfile: address: $address, parent: $parent, name: '
+        '$name, bio: $bio,'
+        ' location: $location,'
         ' profilePicture: $profilePicture, verified: $verified,'
         ' username: $username';
   }
@@ -82,9 +83,9 @@ class UserProfile {
           runtimeType == other.runtimeType &&
           address == other.address &&
           parent == other.parent &&
-          firstName == other.firstName &&
-          lastName == other.lastName &&
+          name == other.name &&
           bio == other.bio &&
+          location == other.location &&
           profilePicture == other.profilePicture &&
           verified == other.verified &&
           username == other.username;
@@ -93,9 +94,9 @@ class UserProfile {
   int get hashCode =>
       address.hashCode ^
       parent.hashCode ^
-      firstName.hashCode ^
-      lastName.hashCode ^
+      name.hashCode ^
       bio.hashCode ^
+      location.hashCode ^
       profilePicture.hashCode ^
       verified.hashCode ^
       username.hashCode;
@@ -133,10 +134,10 @@ class UserAuthRegistrationDetails implements UserAuthDetails {
   UserAuthRegistrationDetails({
     @required this.email,
     @required this.password,
-    @required this.firstName,
-    @required this.lastName,
+    @required this.name,
     @required this.username,
     @required this.bio,
+    this.location,
     this.profileImage,
   });
 
@@ -144,24 +145,19 @@ class UserAuthRegistrationDetails implements UserAuthDetails {
   final String email;
   @override
   final String password;
-  final String firstName;
-  final String lastName;
+  final String name;
   final String username;
-  final String profileImage;
   final String bio;
+  final String location;
+  final String profileImage;
 
   @override
-  bool get isComplete =>
-      email != null &&
-      password != null &&
-      firstName != null &&
-      lastName != null;
+  bool get isComplete => email != null && password != null && name != null;
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'username': username,
-      'first_name': firstName,
-      'last_name': lastName,
+      'name': name,
       'profile_picture': profileImage,
       'bio': bio
     };
@@ -182,7 +178,7 @@ class UserData {
       privateDen: map['private_den'] != null
           ? CentralizedDen.fromMap(map['private_den'])
           : null,
-      publicDen: map['private_den'] != null
+      publicDen: map['public_den'] != null
           ? CentralizedDen.fromMap(map['public_den'])
           : null,
       pack: CentralizedPack.fromMap(map['pack']),
@@ -201,11 +197,11 @@ class UserData {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'privateDen': privateDen,
-      'publicDen': publicDen,
+      'private_den': privateDen.toJson(),
+      'public_den': publicDen.toJson(),
       'pack': pack.toMap(),
-      'user': user,
-      'userPerspective': userPerspective,
+      'user': user.toMap(),
+      'user_perspective': userPerspective.toMap(),
     };
   }
 

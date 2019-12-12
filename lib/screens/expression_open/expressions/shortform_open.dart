@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/models/expression.dart';
 
 class ShortformOpen extends StatefulWidget {
   const ShortformOpen(this.expression);
@@ -75,7 +75,10 @@ class ShortformOpenState extends State<ShortformOpen> {
           begin: Alignment.bottomLeft,
           end: Alignment.topRight,
           stops: const <double>[0.1, 0.9],
-          colors: <Color>[_gradientOne, _gradientTwo],
+          colors: <Color>[
+            Theme.of(context).colorScheme.secondary,
+            Theme.of(context).colorScheme.primary
+          ],
         ),
       ),
       constraints: BoxConstraints(

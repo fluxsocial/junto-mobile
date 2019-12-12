@@ -22,6 +22,7 @@ class ExpressionServiceCentralized implements ExpressionService {
   Future<CentralizedExpressionResponse> createExpression(
       CentralizedExpression expression) async {
     final Map<String, dynamic> _postBody = expression.toMap();
+    print(_postBody);
     final http.Response _serverResponse =
         await client.postWithoutEncoding('/expressions', body: _postBody);
     final Map<String, dynamic> parseData =
@@ -37,9 +38,10 @@ class ExpressionServiceCentralized implements ExpressionService {
     final Map<String, dynamic> _postBody = <String, dynamic>{
       'target_expression': expressionAddress,
       'type': type,
-      'expression_data': data
+      'expression_data': data,
+      'channels': <String>[]
     };
-    final http.Response _serverResponse = await client.post(
+    final http.Response _serverResponse = await client.postWithoutEncoding(
       '/expressions/$expressionAddress/comments',
       body: _postBody,
     );
@@ -99,5 +101,29 @@ class ExpressionServiceCentralized implements ExpressionService {
   ) {
     throw UnimplementedError(
         'Server is needed before this function can be implemented');
+  }
+
+  @override
+  Future<List<CentralizedExpressionResponse>> getCollectiveExpressions(
+      params) async {
+    // final ExpressionQueryParams query = ExpressionQueryParams(channels: [], dos: params['dos'], context: params['contextId'], contextType: params['contextType']);
+    final Map<String, String> query = <String, String>{
+      'context_type': params['contextType'],
+      'context': params['contextId'],
+      'channel[0]': '1',
+      'dos': params['dos']
+    };
+    final http.Response response = await client.get(
+      '/expressions',
+      queryParams: query,
+    );
+    print('got collective expressions !');
+    final List<dynamic> results = JuntoHttp.handleResponse(response);
+    return results
+        .map(
+          (dynamic data) =>
+              CentralizedExpressionResponse.withCommentsAndResonations(data),
+        )
+        .toList(growable: false);
   }
 }
