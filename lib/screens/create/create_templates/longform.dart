@@ -51,9 +51,10 @@ class CreateLongformState extends State<CreateLongform> {
                   child: TextField(
                       controller: _titleController,
                       textInputAction: TextInputAction.done,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                           border: InputBorder.none,
-                          hintText: 'write a title (optional)'),
+                          hintText: 'write a title (optional)',
+                          hintStyle: Theme.of(context).textTheme.title),
                       cursorColor: JuntoPalette.juntoGrey,
                       cursorWidth: 2,
                       maxLines: null,
@@ -67,12 +68,13 @@ class CreateLongformState extends State<CreateLongform> {
                     controller: _bodyController,
                     // keyboardType: TextInputType.multiline,
                     textInputAction: TextInputAction.done,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       border: InputBorder.none,
                     ),
-                    cursorColor: JuntoPalette.juntoGrey,
+                    cursorColor: Theme.of(context).primaryColorLight,
                     cursorWidth: 2,
                     maxLines: null,
+                    style: Theme.of(context).textTheme.caption
                   ),
                 ),
               ],

@@ -194,7 +194,7 @@ class _JuntoMemberState extends State<JuntoMember> {
                                   color: Theme.of(context).primaryColor),
                               const SizedBox(width: 5),
                               Text(
-                                'he/him',
+                                'gender',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
@@ -216,7 +216,7 @@ class _JuntoMemberState extends State<JuntoMember> {
                               ),
                               const SizedBox(width: 5),
                               Text(
-                                'Spirit',
+                                'location',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
@@ -238,7 +238,7 @@ class _JuntoMemberState extends State<JuntoMember> {
                               ),
                               const SizedBox(width: 5),
                               Text(
-                                'junto.foundation',
+                                'website',
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
                                 style: TextStyle(

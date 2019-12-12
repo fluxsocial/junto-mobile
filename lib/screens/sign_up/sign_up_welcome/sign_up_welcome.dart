@@ -99,16 +99,14 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
         child: Container(
           margin: EdgeInsets.only(
             top: MediaQuery.of(context).size.height * .15,
-            bottom: MediaQuery.of(context).size.height * .15,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Column(
                 children: <Widget>[
                   Container(
-                    margin: const EdgeInsets.only(bottom: 40),
+                    margin: const EdgeInsets.only(bottom: 25),
                     child: Image.asset(
                       'assets/images/junto-mobile__outlinelogo--gradient.png',
                       height: 69,
@@ -116,7 +114,7 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width * .5,
-                    margin: const EdgeInsets.only(bottom: 40),
+                    margin: const EdgeInsets.only(bottom: 25),
                     decoration: const BoxDecoration(
                       border: Border(
                         bottom: BorderSide(
@@ -128,7 +126,7 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
                   Container(
                     padding: EdgeInsets.symmetric(
                         horizontal: MediaQuery.of(context).size.width * .05),
-                    margin: const EdgeInsets.only(bottom: 40),
+                    margin: const EdgeInsets.only(bottom: 25),
                     child: Text(
                       'Junto Community Agreements',
                       style: const TextStyle(
@@ -177,6 +175,7 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
                 ],
               ),
               Container(
+                margin: EdgeInsets.only(top: 50),
                 width: 200,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(

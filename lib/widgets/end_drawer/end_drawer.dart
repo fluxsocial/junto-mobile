@@ -5,11 +5,10 @@ import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/groups/packs/pack_open/pack_open.dart';
-import 'package:junto_beta_mobile/screens/sign_in/sign_in.dart';
+import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_edit_den.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_themes.dart';
 import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 
 class JuntoDrawer extends StatefulWidget {
   const JuntoDrawer({this.screen, this.icon});
@@ -72,13 +71,23 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
     if (screen == 'Collective') {
       return Container(
           margin: const EdgeInsets.only(right: 18),
-          child: Icon(widget.icon, size: 12));
+          child: Icon(widget.icon,
+              size: 12, color: Theme.of(context).primaryColor));
     } else if (screen == 'Create') {
-      return Icon(widget.icon, size: 17);
+      return Container(
+          margin: const EdgeInsets.only(right: 5),
+          child: Icon(widget.icon,
+              size: 17, color: Theme.of(context).primaryColor));
     } else if (screen == 'Groups') {
-      return Icon(widget.icon, size: 17);
+      return Container(
+          margin: const EdgeInsets.only(right: 10),
+          child: Icon(widget.icon,
+              size: 17, color: Theme.of(context).primaryColor));
     } else if (screen == 'Den') {
-      return Icon(widget.icon, size: 17);
+      return Container(
+          margin: const EdgeInsets.only(right: 5),
+          child: Icon(widget.icon,
+              size: 17, color: Theme.of(context).primaryColor));
     }
   }
 
@@ -178,7 +187,7 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                         Navigator.of(context).pushReplacement(
                           CupertinoPageRoute<dynamic>(
                             builder: (BuildContext context) {
-                              return SignIn();
+                              return Welcome();
                             },
                           ),
                         );

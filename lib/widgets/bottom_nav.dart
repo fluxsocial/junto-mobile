@@ -32,7 +32,7 @@ class BottomNav extends StatelessWidget {
           ),
         ),
       );
-    } else if (currentScreen == 'spheres') {
+    } else if (currentScreen == 'groups') {
       return Expanded(
         child: GestureDetector(
           onTap: () {
@@ -42,20 +42,6 @@ class BottomNav extends StatelessWidget {
             width: 60,
             height: 50,
             child: Icon(CustomIcons.groups,
-                size: 17, color: Theme.of(context).primaryColor),
-          ),
-        ),
-      );
-    } else if (currentScreen == 'packs') {
-      return Expanded(
-        child: GestureDetector(
-          onTap: () {
-            // allow member to invite people into app via referral
-          },
-          child: Container(
-            width: 60,
-            height: 50,
-            child: Icon(CustomIcons.packs,
                 size: 17, color: Theme.of(context).primaryColor),
           ),
         ),
@@ -115,7 +101,7 @@ class BottomNav extends StatelessWidget {
           Expanded(
             child: GestureDetector(
               onTap: () {
-                Navigator.of(context).push( 
+                Navigator.of(context).push(
                   PageRouteBuilder<dynamic>(
                     pageBuilder: (
                       BuildContext context,
