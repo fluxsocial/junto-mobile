@@ -177,7 +177,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                                         color: Theme.of(context).primaryColor),
                                     const SizedBox(width: 5),
                                     Text(
-                                      'he/him',
+                                      'gender',
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
@@ -199,7 +199,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                                     ),
                                     const SizedBox(width: 5),
                                     Text(
-                                      'Spirit',
+                                      'location',
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
@@ -221,7 +221,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                                     ),
                                     const SizedBox(width: 5),
                                     Text(
-                                      'junto.foundation',
+                                      'website',
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 1,
                                       style: TextStyle(
@@ -245,14 +245,14 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                               padding: const EdgeInsets.only(right: 10),
                               width: MediaQuery.of(context).size.width,
                               child: Image.asset(
-                                  'assets/images/junto-mobile__eric.png',
+                                  'assets/images/junto-mobile__mockprofpic--one.png',
                                   fit: BoxFit.cover),
                             ),
                             Container(
                               width: MediaQuery.of(context).size.width,
                               padding: const EdgeInsets.only(right: 10),
                               child: Image.asset(
-                                  'assets/images/junto-mobile__eric--qigong.png',
+                                  'assets/images/junto-mobile__mockprofpic--two.png',
                                   fit: BoxFit.cover),
                             ),
                           ],

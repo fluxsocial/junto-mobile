@@ -22,7 +22,7 @@ class PhotoOpen extends StatelessWidget {
               : Container(
                   height: MediaQuery.of(context).size.width,
                   width: MediaQuery.of(context).size.width,
-                  child: Image.asset('assets/images/' + photoImage,
+                  child: Image.asset(photoImage,
                       fit: BoxFit.fitWidth),
                 ),
           const SizedBox(height: 10),

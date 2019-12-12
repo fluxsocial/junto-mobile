@@ -262,14 +262,14 @@ class _JuntoMemberState extends State<JuntoMember> {
                         padding: const EdgeInsets.only(right: 10),
                         width: MediaQuery.of(context).size.width,
                         child: Image.asset(
-                            'assets/images/junto-mobile__eric.png',
+                            'assets/images/junto-mobile__mockprofpic--one.png',
                             fit: BoxFit.cover),
                       ),
                       Container(
                         width: MediaQuery.of(context).size.width,
                         padding: const EdgeInsets.only(right: 10),
                         child: Image.asset(
-                            'assets/images/junto-mobile__eric--qigong.png',
+                            'assets/images/junto-mobile__mockprofpic--two.png',
                             fit: BoxFit.cover),
                       ),
                     ],

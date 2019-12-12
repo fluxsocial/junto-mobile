@@ -18,7 +18,7 @@ class PhotoPreview extends StatelessWidget {
         height: MediaQuery.of(context).size.height * .3,
         child: expression.expressionData.image == 'test-image'
             ? SizedBox()
-            : Image.asset('assets/images/' + expression.expressionData.image,
+            : Image.asset(expression.expressionData.image,
                 fit: BoxFit.fitHeight),
       ),
     );

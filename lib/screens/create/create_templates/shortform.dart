@@ -37,7 +37,6 @@ class CreateShortformState extends State<CreateShortform> {
     _bodyController = TextEditingController();
   }
 
-
   @override
   void dispose() {
     _bodyController.dispose();
@@ -123,51 +122,51 @@ class CreateShortformState extends State<CreateShortform> {
             child: ListView(
               padding: const EdgeInsets.all(0),
               children: <Widget>[
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  margin: const EdgeInsets.only(top: 10, bottom: 15),
-                  child: Row(
-                    children: <Widget>[
-                      GestureDetector(
-                        onTap: () {
-                          _setBackground('one');
-                        },
-                        child: _buildBackgroundPicker(JuntoPalette.juntoPrimary,
-                            JuntoPalette.juntoSecondary),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          _setBackground('two');
-                        },
-                        child: _buildBackgroundPicker(
-                            JuntoPalette.juntoSecondaryLight,
-                            JuntoPalette.juntoSecondary),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          _setBackground('three');
-                        },
-                        child: _buildBackgroundPicker(
-                            JuntoPalette.juntoPrimaryLight,
-                            JuntoPalette.juntoPrimary),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          _setBackground('four');
-                        },
-                        child: _buildBackgroundPicker(
-                            JuntoPalette.juntoGreen, JuntoPalette.juntoPrimary),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          _setBackground('five');
-                        },
-                        child: _buildBackgroundPicker(JuntoPalette.juntoGreen,
-                            JuntoPalette.juntoSecondary),
-                      ),
-                    ],
-                  ),
-                ),
+                // Container(
+                //   padding: const EdgeInsets.symmetric(horizontal: 10),
+                //   margin: const EdgeInsets.only(top: 10, bottom: 15),
+                //   child: Row(
+                //     children: <Widget>[
+                //       GestureDetector(
+                //         onTap: () {
+                //           _setBackground('one');
+                //         },
+                //         child: _buildBackgroundPicker(JuntoPalette.juntoPrimary,
+                //             JuntoPalette.juntoSecondary),
+                //       ),
+                //       GestureDetector(
+                //         onTap: () {
+                //           _setBackground('two');
+                //         },
+                //         child: _buildBackgroundPicker(
+                //             JuntoPalette.juntoSecondaryLight,
+                //             JuntoPalette.juntoSecondary),
+                //       ),
+                //       GestureDetector(
+                //         onTap: () {
+                //           _setBackground('three');
+                //         },
+                //         child: _buildBackgroundPicker(
+                //             JuntoPalette.juntoPrimaryLight,
+                //             JuntoPalette.juntoPrimary),
+                //       ),
+                //       GestureDetector(
+                //         onTap: () {
+                //           _setBackground('four');
+                //         },
+                //         child: _buildBackgroundPicker(
+                //             JuntoPalette.juntoGreen, JuntoPalette.juntoPrimary),
+                //       ),
+                //       GestureDetector(
+                //         onTap: () {
+                //           _setBackground('five');
+                //         },
+                //         child: _buildBackgroundPicker(JuntoPalette.juntoGreen,
+                //             JuntoPalette.juntoSecondary),
+                //       ),
+                //     ],
+                //   ),
+                // ),
                 Container(
                   padding: EdgeInsets.only(
                       left: 10.0,
@@ -195,7 +194,7 @@ class CreateShortformState extends State<CreateShortform> {
                     }) =>
                         null,
                     decoration: InputDecoration(
-                      hintText: 'gradients are fully customizeable and tbd',
+                      hintText: 'will soon be custom gradient picker...',
                       hintMaxLines: 25,
                       hintStyle: TextStyle(
                         color: Colors.white.withOpacity(0.5),
