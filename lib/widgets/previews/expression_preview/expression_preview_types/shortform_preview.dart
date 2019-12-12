@@ -79,7 +79,10 @@ class ShortformPreviewState extends State<ShortformPreview> {
           begin: Alignment.bottomLeft,
           end: Alignment.topRight,
           stops: const <double>[0.1, 0.9],
-          colors: <Color>[_gradientOne, _gradientTwo],
+          colors: <Color>[
+            Theme.of(context).colorScheme.secondary,
+            Theme.of(context).colorScheme.primary
+          ],
         ),
       ),
       constraints: const BoxConstraints(
