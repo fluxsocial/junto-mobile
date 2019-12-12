@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/comment_open/comment_open.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/widgets/comment_action_items.dart';
@@ -95,9 +96,9 @@ class CommentPreview extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       padding: const EdgeInsets.all(5),
                       child: Icon(
-                        Icons.keyboard_arrow_down,
-                        size: 24,
-                        color: Theme.of(context).primaryColorLight,
+                        CustomIcons.morevertical,
+                        size: 20,
+                        color: Theme.of(context).primaryColor,
                       ),
                     ),
                   ),

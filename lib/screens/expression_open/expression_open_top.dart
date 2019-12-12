@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/widgets/expression_action_items.dart';
@@ -81,9 +82,9 @@ class ExpressionOpenTop extends StatelessWidget {
               padding: const EdgeInsets.all(5),
               alignment: Alignment.centerRight,
               child: Icon(
-                Icons.keyboard_arrow_down,
-                color: Theme.of(context).primaryColorLight,
-                size: 24,
+                CustomIcons.morevertical,
+                color: Theme.of(context).primaryColor,
+                size: 20,
               ),
             ),
           ),

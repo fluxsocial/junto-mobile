@@ -40,35 +40,33 @@ class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
                   //   widget.expression.createdAt ?? DateTime.now(),
                   // ),
                   'today',
+                  // widget.expression.createdAt.toString(),
                   style: JuntoStyles.expressionTimestamp,
                 ),
                 Row(
                   children: <Widget>[
-                    GestureDetector(
-                      onTap: () {
-                        widget.focusTextField();
-                      },
-                      child: Container(
-                        color: Colors.transparent,
-                        padding: const EdgeInsets.only(
-                          right: 12.5,
-                        ),
-                        child: Icon(CustomIcons.commenticon,
-                            size: 20, color: Theme.of(context).primaryColor),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: _buildResonationModal,
-                      child: Container(
-                        color: Colors.transparent,
-                        padding: const EdgeInsets.only(left: 12.5),
-                        child: Image.asset(
-                          'assets/images/junto-mobile__resonation.png',
-                          height: 20,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                      ),
-                    ),
+                    // GestureDetector(
+                    //   onTap: () {
+                    //     widget.focusTextField();®
+                    //   },
+                    //   child: Container(
+                    //     color: Colors.transparent,
+                    //     child: Icon(CustomIcons.commenticon,
+                    //         size: 20, color: Theme.of(context).primaryColor),
+                    //   ),
+                    // ),
+                    // GestureDetector(
+                    //   onTap: _buildResonationModal,
+                    //   child: Container(
+                    //     color: Colors.transparent,
+                    //     padding: const EdgeInsets.only(left: 12.5),
+                    //     child: Image.asset(
+                    //       'assets/images/junto-mobile__resonation.png',
+                    //       height: 20,
+                    //       color: Theme.of(context).primaryColor,
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ]),

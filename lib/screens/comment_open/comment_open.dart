@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/comment_open/comment_open_appbar.dart';
 import 'package:junto_beta_mobile/widgets/comment_action_items.dart';
 
@@ -32,7 +33,7 @@ class CommentOpenState extends State<CommentOpen> {
                 Container(
                   padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
                   child: Text(
-                    'in response to ' + widget.expression.creator.firstName,
+                    'in response to ' + widget.expression.creator.name,
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       color: Theme.of(context).primaryColorLight,
@@ -90,9 +91,9 @@ class CommentOpenState extends State<CommentOpen> {
                           padding: const EdgeInsets.all(5),
                           alignment: Alignment.centerRight,
                           child: Icon(
-                            Icons.keyboard_arrow_down,
-                            color: Theme.of(context).primaryColorLight,
-                            size: 24,
+                            CustomIcons.morevertical,
+                            color: Theme.of(context).primaryColor,
+                            size: 20,
                           ),
                         ),
                       ),

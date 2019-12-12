@@ -4,7 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:giphy_client/giphy_client.dart';
 import 'package:junto_beta_mobile/api.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
@@ -262,7 +262,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                         child: Row(
                           children: <Widget>[
                             Text(
-                              'Show replies (${widget.expression.comments})',
+                              'Show replies',
                               style: TextStyle(
                                   color: Theme.of(context).primaryColor,
                                   fontSize: 12),
@@ -295,16 +295,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                             child: const Text('Error occured'),
                           );
                         }
-                        if (!snapshot.hasData) {
-                          return Container(
-                            child: SizedBox.fromSize(
-                              size: const Size.fromHeight(25.0),
-                              child: const Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                            ),
-                          );
-                        }
+
                         if (snapshot.hasData)
                           return ListView.builder(
                             shrinkWrap: true,
@@ -318,7 +309,10 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                               );
                             },
                           );
-                        return Container();
+                        return Container(
+                          margin: const EdgeInsets.only(top: 75),
+                          child: JuntoProgressIndicator(),
+                        );
                       },
                     )
                 ],
@@ -513,15 +507,15 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
                               focusNode: widget.focusNode,
                               controller: widget.commentController,
                               onChanged: widget.onTextChange,
-                              decoration: const InputDecoration(
+                              decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: 'write a reply...',
                                 hintStyle: TextStyle(
-                                  fontSize: 13,
-                                ),
+                                    fontSize: 13,
+                                    color: Theme.of(context).primaryColor),
                               ),
                               maxLines: null,
-                              cursorColor: JuntoPalette.juntoGrey,
+                              cursorColor: Theme.of(context).primaryColor,
                               cursorWidth: 2,
                               style: Theme.of(context).textTheme.caption,
                               textInputAction: TextInputAction.newline,
