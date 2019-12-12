@@ -33,13 +33,14 @@ class JuntoCollective extends StatefulWidget {
 }
 
 class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
+  // Global key to uniquely identify Junto Collective
   final GlobalKey<ScaffoldState> _juntoCollectiveKey =
       GlobalKey<ScaffoldState>();
 
+  // for custom swipe to open perspectives drawer animation
   double _dx = 0.0;
   String _scrollDirection;
 
-  final AsyncMemoizer _memoizer = AsyncMemoizer();
   ExpressionRepo _expressionProvider;
   String _userAddress;
   UserData _userProfile;
@@ -49,7 +50,6 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
   final String newAppBarTitle = 'JUNTO';
   bool _showDegrees = true;
   String currentDegree = 'oo';
-
   Future _currentFeed;
 
   @override
@@ -94,7 +94,10 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
   }
 
   Future<dynamic> getCollectiveExpressions(
-      {dynamic dos, String contextType, List<String> channels, dynamic contextId}) async {
+      {dynamic dos,
+      String contextType,
+      List<String> channels,
+      dynamic contextId}) async {
     final Map<String, dynamic> _params = <String, dynamic>{
       'contextType': contextType,
       'contextId': contextId
@@ -367,11 +370,13 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
       setState(() {
         _currentFeed = getCollectiveExpressions(
             contextId: null, contextType: 'Collective');
+        _showDegrees = true;
       });
     } else {
       setState(() {
         _currentFeed = getCollectiveExpressions(
             contextId: perspective.address, contextType: 'FollowPerspective');
+        _showDegrees = false;
       });
     }
 
