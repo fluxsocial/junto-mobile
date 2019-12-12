@@ -239,7 +239,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(45.0),
-        child: ExpressionOpenAppbar(),
+        child: ExpressionOpenAppbar(expression: widget.expression),
       ),
       backgroundColor: Theme.of(context).backgroundColor,
       body: Column(

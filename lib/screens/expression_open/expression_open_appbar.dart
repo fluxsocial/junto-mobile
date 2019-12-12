@@ -3,6 +3,10 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 
 class ExpressionOpenAppbar extends StatelessWidget {
+  const ExpressionOpenAppbar({this.expression});
+
+  final expression;
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -32,18 +36,19 @@ class ExpressionOpenAppbar extends StatelessWidget {
                   isScrollControlled: true,
                   context: context,
                   builder: (BuildContext context) {
-                    return ExpressionOpenContext();
+                    return ExpressionOpenContext(expression);
                   },
                 );
               },
               child: Container(
                 color: Colors.transparent,
                 padding: const EdgeInsets.only(right: 10),
+                margin: const EdgeInsets.only(right: 20),
                 width: 42,
                 alignment: Alignment.centerRight,
                 child: Icon(
-                  CustomIcons.enso,
-                  size: 20,
+                  CustomIcons.collective,
+                  size: 10,
                   color: Theme.of(context).primaryColorDark,
                 ),
               ),
@@ -63,12 +68,32 @@ class ExpressionOpenAppbar extends StatelessWidget {
 }
 
 class ExpressionOpenContext extends StatelessWidget {
+  ExpressionOpenContext(this.expression);
+  final expression;
+
+  Widget _contextIcon(BuildContext context, String contextType) {
+    if (contextType == 'collective') {
+      return Container(
+        width: 45,
+        child: Icon(CustomIcons.collective,
+            color: Theme.of(context).primaryColor, size: 10),
+      );
+    } else if (contextType == 'channels') {
+      return Container(
+        width: 45,
+        alignment: Alignment.center,
+        child: Icon(CustomIcons.hash,
+            color: Theme.of(context).primaryColor, size: 17),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.transparent,
       child: Container(
-        height: MediaQuery.of(context).size.height * .5,
+        height: MediaQuery.of(context).size.height * .4,
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.background,
@@ -83,76 +108,22 @@ class ExpressionOpenContext extends StatelessWidget {
             const SizedBox(height: 10),
             Row(
               children: <Widget>[
-                Container(
-                  alignment: Alignment.center,
-                  height: 45.0,
-                  width: 45.0,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.bottomLeft,
-                      end: Alignment.topRight,
-                      stops: const <double>[0.3, 0.9],
-                      colors: <Color>[
-                        Theme.of(context).colorScheme.secondary,
-                        Theme.of(context).colorScheme.primary
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                  child: const Icon(
-                    CustomIcons.enso,
-                    color: Colors.white,
-                    size: 17,
-                  ),
-                ),
+                _contextIcon(context, expression.context),
                 const SizedBox(width: 10),
-                Text("shared to 'Collective'",
+                Text('shared to ' + expression.context,
                     style: Theme.of(context).textTheme.caption)
               ],
             ),
-            const SizedBox(height: 15),
+            const SizedBox(height: 20),
             Row(
               children: <Widget>[
-                Container(
-                  alignment: Alignment.center,
-                  height: 45.0,
-                  width: 45.0,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.bottomLeft,
-                      end: Alignment.topRight,
-                      stops: const <double>[0.3, 0.9],
-                      colors: <Color>[
-                        Theme.of(context).colorScheme.secondary,
-                        Theme.of(context).colorScheme.primary
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                  child: const Icon(
-                    CustomIcons.hash,
-                    color: Colors.white,
-                    size: 17,
-                  ),
-                ),
+                _contextIcon(context, 'channels'),
                 const SizedBox(width: 10),
                 Flexible(
-                  child: Text(
-                      'tagged in #sustainability, #permaculture, #design',
-                      style: Theme.of(context).textTheme.caption),
-                )
+                    child: Text('tagged in no channels',
+                        style: Theme.of(context).textTheme.caption))
               ],
             ),
-            const SizedBox(height: 25),
-            Text(
-              'Intention',
-              style: Theme.of(context).textTheme.subhead,
-            ),
-            const SizedBox(height: 10),
-            Text(
-              'Looking for feedback!',
-              style: Theme.of(context).textTheme.caption,
-            )
           ],
         ),
       ),
