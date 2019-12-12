@@ -30,6 +30,7 @@ class JuntoCreate extends StatefulWidget {
 
 class JuntoCreateState extends State<JuntoCreate> {
   String _expressionType = 'LongForm';
+  String _expressionTypeDisplay = 'dynamic';
   bool _longform = true;
   bool _shortform = false;
   bool _photo = false;
@@ -117,24 +118,28 @@ class JuntoCreateState extends State<JuntoCreate> {
         _longform = true;
         _currentIcon = Icon(CustomIcons.longform,
             color: Theme.of(context).primaryColorDark, size: 17);
+        _expressionTypeDisplay = 'dynamic';
       });
     } else if (templateType == 'ShortForm') {
       setState(() {
         _shortform = true;
         _currentIcon = Icon(CustomIcons.feather,
             color: Theme.of(context).primaryColorDark, size: 17);
+        _expressionTypeDisplay = 'shortform';
       });
     } else if (templateType == 'PhotoForm') {
       setState(() {
         _photo = true;
         _currentIcon = Icon(CustomIcons.camera,
             color: Theme.of(context).primaryColorDark, size: 17);
+        _expressionTypeDisplay = 'photo';
       });
     } else if (templateType == 'EventForm') {
       setState(() {
         _events = true;
         _currentIcon = Icon(CustomIcons.event,
             color: Theme.of(context).primaryColorDark, size: 17);
+        _expressionTypeDisplay = 'event';
       });
     } else {
       print('not an expresion type');
@@ -201,8 +206,8 @@ class JuntoCreateState extends State<JuntoCreate> {
                   children: <Widget>[
                     _currentIcon,
                     const SizedBox(width: 7.5),
-                    Text(_expressionType,
-                        style: Theme.of(context).textTheme.title)
+                    Text(_expressionTypeDisplay,
+                        style: Theme.of(context).textTheme.caption)
                   ],
                 ),
                 GestureDetector(

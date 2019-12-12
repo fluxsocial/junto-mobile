@@ -48,6 +48,18 @@ class CreateLongformState extends State<CreateLongform> {
               padding: const EdgeInsets.symmetric(horizontal: 10),
               children: <Widget>[
                 Container(
+                  child: TextField(
+                      controller: _titleController,
+                      textInputAction: TextInputAction.done,
+                      decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'write a title (optional)'),
+                      cursorColor: JuntoPalette.juntoGrey,
+                      cursorWidth: 2,
+                      maxLines: null,
+                      style: Theme.of(context).textTheme.title),
+                ),
+                Container(
                   constraints: BoxConstraints(
                     minHeight: MediaQuery.of(context).size.height * .7,
                   ),
