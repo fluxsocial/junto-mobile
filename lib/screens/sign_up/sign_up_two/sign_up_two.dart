@@ -3,11 +3,9 @@ import 'package:junto_beta_mobile/screens/sign_up/sign_up_logo/sign_up_logo.dart
 import 'package:junto_beta_mobile/screens/sign_up/sign_up_three/sign_up_three.dart';
 
 class SignUpTwo extends StatefulWidget {
-  const SignUpTwo({Key key, this.firstName, this.lastName, this.email})
-      : super(key: key);
+  const SignUpTwo({Key key, this.name, this.email}) : super(key: key);
 
-  final String firstName;
-  final String lastName;
+  final String name;
   final String email;
 
   @override
@@ -30,18 +28,11 @@ class SignUpTwoState extends State<SignUpTwo> {
       body: Stack(
         children: <Widget>[
           Container(
+            child: Image.asset(
+                'assets/images/junto-mobile__background--lotus.png'),
+          ),
+          Container(
             width: MediaQuery.of(context).size.width,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.bottomLeft,
-                end: Alignment.topRight,
-                stops: <double>[0.1, 0.9],
-                colors: <Color>[
-                  Color(0xff5E54D0),
-                  Color(0xff307FAB),
-                ],
-              ),
-            ),
             child: Container(
               margin: EdgeInsets.only(
                   top: MediaQuery.of(context).size.height * .10 + 18),
@@ -125,15 +116,12 @@ class SignUpTwoState extends State<SignUpTwo> {
                 GestureDetector(
                   onTap: () {
                     usernameController.text = '';
-                    if (widget.firstName != '' &&
-                        widget.lastName != '' &&
-                        username != '') {
+                    if (widget.name != '' && username != '') {
                       Navigator.push(
                         context,
                         MaterialPageRoute<dynamic>(
                           builder: (BuildContext context) => SignUpThree(
-                            firstName: widget.firstName,
-                            lastName: widget.lastName,
+                            name: widget.name,
                             email: widget.email,
                             username: username,
                           ),

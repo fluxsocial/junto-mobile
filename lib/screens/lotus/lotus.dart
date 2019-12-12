@@ -85,7 +85,7 @@ class JuntoLotus extends StatelessWidget {
                           child: Container(
                             color: Colors.transparent,
                             alignment: Alignment.center,
-                            padding: const EdgeInsets.only(left: 25),
+                            padding: const EdgeInsets.only(left: 40),
                             width: MediaQuery.of(context).size.width * .5,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -140,7 +140,7 @@ class JuntoLotus extends StatelessWidget {
                           child: Container(
                             color: Colors.transparent,
                             alignment: Alignment.center,
-                            padding: const EdgeInsets.only(right: 25),
+                            padding: const EdgeInsets.only(right: 40),
                             width: MediaQuery.of(context).size.width * .5,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,

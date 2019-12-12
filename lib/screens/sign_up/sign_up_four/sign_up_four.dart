@@ -5,15 +5,13 @@ import 'package:junto_beta_mobile/screens/sign_up/sign_up_welcome/sign_up_welcom
 class SignUpFour extends StatefulWidget {
   const SignUpFour({
     Key key,
-    this.firstName,
-    this.lastName,
+    this.name,
     this.username,
     this.password,
     this.email,
   }) : super(key: key);
 
-  final String firstName;
-  final String lastName;
+  final String name;
   final String username;
   final String password;
   final String email;
@@ -35,18 +33,11 @@ class SignUpFourState extends State<SignUpFour> {
       body: Stack(
         children: <Widget>[
           Container(
+            child: Image.asset(
+                'assets/images/junto-mobile__background--lotus.png'),
+          ),
+          Container(
             width: MediaQuery.of(context).size.width,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.bottomLeft,
-                end: Alignment.topRight,
-                stops: <double>[0.1, 0.9],
-                colors: <Color>[
-                  Color(0xff5E54D0),
-                  Color(0xff307FAB),
-                ],
-              ),
-            ),
             child: Container(
               margin: EdgeInsets.only(
                 top: MediaQuery.of(context).size.height * .10 + 18,
@@ -129,16 +120,14 @@ class SignUpFourState extends State<SignUpFour> {
                 GestureDetector(
                   onTap: () async {
                     bioController.text = '';
-                    if (widget.firstName != '' &&
-                        widget.lastName != '' &&
+                    if (widget.name != '' &&
                         widget.username != '' &&
                         widget.password != '') {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute<dynamic>(
                           builder: (BuildContext context) => SignUpWelcome(
-                            firstName: widget.firstName,
-                            lastName: widget.lastName,
+                            name: widget.name,
                             username: widget.username,
                             password: widget.password,
                             bio: bio,

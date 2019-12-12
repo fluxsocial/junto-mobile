@@ -51,11 +51,11 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                     snapshot.data.map((CentralizedPerspective perspective) {
                   if (perspective.name !=
                       widget.profile.user.name + "'s Connection Perspective") {
-                    if (perspective == snapshot.data[0]) {
+                    if (perspective.name == widget.profile.user.name + "'s Follow Perspective") {
                       return _buildPerspective(
                           name: 'Subscriptions',
                           isCustomPerspective: false,
-                          perspective: snapshot.data[0]);
+                          perspective: perspective);
                     } else {
                       return _buildPerspective(
                           name: perspective.name,
@@ -394,11 +394,9 @@ class _CreatePerspectiveBottomSheetState
           const SizedBox(height: 20),
           _buildPerspectiveTextField(_textController, 'Name Perspective'),
           _buildPerspectiveTextField(_aboutController, 'Perspective Purpose'),
-          const SizedBox(height: 10),
           Container(
             padding: const EdgeInsets.only(bottom: 5),
             decoration: BoxDecoration(
-              color: Colors.orange,
               border: Border(
                 bottom: BorderSide(
                   color: Theme.of(context).dividerColor,

@@ -37,7 +37,7 @@ class _SignInState extends State<SignIn> {
     final String email = _emailController.value.text;
     final String password = _passwordController.value.text;
     final UserAuthLoginDetails loginDetails =
-        UserAuthLoginDetails(email: email, password: password); 
+        UserAuthLoginDetails(email: email, password: password);
     JuntoOverlay.showLoader(context);
     try {
       await Provider.of<AuthRepo>(context).loginUser(loginDetails);
@@ -70,18 +70,11 @@ class _SignInState extends State<SignIn> {
       body: Stack(
         children: <Widget>[
           Container(
+            child: Image.asset(
+                'assets/images/junto-mobile__background--lotus.png'),
+          ),
+          Container(
             width: MediaQuery.of(context).size.width,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.bottomLeft,
-                end: Alignment.topRight,
-                stops: <double>[0.1, 0.9],
-                colors: <Color>[
-                  Color(0xff5E54D0),
-                  Color(0xff307FAB),
-                ],
-              ),
-            ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               // crossAxisAlignment: CrossAxisAlignment.center,
@@ -153,23 +146,15 @@ class _SignInState extends State<SignIn> {
                   ),
                 ),
                 Container(
-                  child: RaisedButton(
+                  child: FlatButton(
                     onPressed: () => _handleSignIn(context),
                     padding: const EdgeInsets.symmetric(
                         horizontal: 100, vertical: 20),
-                    // color: Colors.white,
-                    color: const Color(0xff4968BF),
                     child: const Text('SIGN IN',
                         style: TextStyle(
-                            // color: JuntoPalette.juntoBlue,
                             color: Colors.white,
                             fontWeight: FontWeight.w700,
                             fontSize: 14)),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                        100,
-                      ),
-                    ),
                   ),
                 ),
               ],

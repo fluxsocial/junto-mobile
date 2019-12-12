@@ -310,58 +310,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
             ],
           ),
         ),
-        GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              CupertinoPageRoute<dynamic>(
-                builder: (BuildContext context) => const SphereOpenFacilitators(
-                  users: <Users>[],
-                ),
-              ),
-            );
-          },
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: Theme.of(context).dividerColor,
-                  width: .75,
-                ),
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text('Facilitators',
-                              style: Theme.of(context).textTheme.title),
-                          const SizedBox(height: 10),
-                          Text(
-                              '${widget.group.creator} and ${widget.group.facilitators - 0} others',
-                              style: Theme.of(context).textTheme.body2),
-                        ]),
-                    ClipOval(
-                      child: Image.asset(
-                        'assets/images/junto-mobile__eric.png',
-                        height: 45.0,
-                        width: 45.0,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ),
-        ),
         if (principles.isNotEmpty)
           Container(
             padding: const EdgeInsets.only(left: 10, right: 10, top: 10),

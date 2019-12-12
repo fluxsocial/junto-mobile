@@ -10,27 +10,23 @@ class SignUp extends StatefulWidget {
 }
 
 class SignUpState extends State<SignUp> {
-  TextEditingController firstNameController;
-  TextEditingController lastNameController;
+  TextEditingController nameController;
   TextEditingController emailController;
 
-  String firstName = '';
-  String lastName = '';
+  String name = '';
   String email = '';
 
   @override
   void initState() {
     super.initState();
-    firstNameController = TextEditingController();
-    lastNameController = TextEditingController();
+    nameController = TextEditingController();
     emailController = TextEditingController();
   }
 
   @override
   void dispose() {
     super.dispose();
-    firstNameController.dispose();
-    lastNameController.dispose();
+    nameController.dispose();
     emailController.dispose();
   }
 
@@ -40,18 +36,11 @@ class SignUpState extends State<SignUp> {
       body: Stack(
         children: <Widget>[
           Container(
+            child: Image.asset(
+                'assets/images/junto-mobile__background--lotus.png'),
+          ),
+          Container(
             width: MediaQuery.of(context).size.width,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.bottomLeft,
-                end: Alignment.topRight,
-                stops: <double>[0.1, 0.9],
-                colors: <Color>[
-                  Color(0xff5E54D0),
-                  Color(0xff307FAB),
-                ],
-              ),
-            ),
             child: Container(
               margin: EdgeInsets.only(
                   top: MediaQuery.of(context).size.height * .10 + 18),
@@ -75,13 +64,12 @@ class SignUpState extends State<SignUp> {
                     child: Column(
                       children: <Widget>[
                         Container(
-                          margin: const EdgeInsets.only(bottom: 36),
                           child: TextField(
-                            controller: firstNameController,
+                            controller: nameController,
                             onChanged: (String text) {
                               setState(
                                 () {
-                                  firstName = text;
+                                  name = text;
                                 },
                               );
                             },
@@ -89,36 +77,7 @@ class SignUpState extends State<SignUp> {
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
                               labelStyle: TextStyle(color: Colors.green),
-                              hintText: 'FIRST NAME',
-                              hintStyle: TextStyle(
-                                color: Colors.white,
-                                fontSize: 17,
-                                fontWeight: FontWeight.w400,
-                              ),
-                              fillColor: Colors.white,
-                            ),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 17,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          child: TextField(
-                            controller: lastNameController,
-                            onChanged: (String text) {
-                              setState(
-                                () {
-                                  lastName = text;
-                                },
-                              );
-                            },
-                            decoration: InputDecoration(
-                              enabledBorder: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              labelStyle: TextStyle(color: Colors.green),
-                              hintText: 'LAST NAME',
+                              hintText: 'FULL NAME',
                               hintStyle: TextStyle(
                                 color: Colors.white,
                                 fontSize: 17,
@@ -191,16 +150,13 @@ class SignUpState extends State<SignUp> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    firstNameController.text = '';
-                    lastNameController.text = '';
-                    if (firstName != '' && lastName != '') {
+                    nameController.text = '';
+                    if (name != '') {
                       Navigator.push(
                         context,
                         MaterialPageRoute<dynamic>(
-                          builder: (BuildContext context) => SignUpTwo(
-                              firstName: firstName,
-                              lastName: lastName,
-                              email: email),
+                          builder: (BuildContext context) =>
+                              SignUpTwo(name: name, email: email),
                         ),
                       );
                     }
