@@ -44,14 +44,29 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
           }
           if (snapshot.hasData) {
             return ListView(
-              padding: const EdgeInsets.all(0),
-              shrinkWrap: true,
-              physics: const ClampingScrollPhysics(),
-              children: <Widget>[
-                for (CentralizedPerspective perspective in snapshot.data)
-                  _buildPerspective(perspective.name, true)
-              ],
-            );
+                padding: const EdgeInsets.all(0),
+                shrinkWrap: true,
+                physics: const ClampingScrollPhysics(),
+                children:
+                    snapshot.data.map((CentralizedPerspective perspective) {
+                  if (perspective.name !=
+                      widget.profile.user.name + "'s Connection Perspective") {
+                    if (perspective == snapshot.data[0]) {
+                      print(perspective.address);
+                      return _buildPerspective(
+                          name: 'Subscriptions',
+                          isCustomPerspective: false,
+                          perspective: snapshot.data[0]);
+                    } else {
+                      return _buildPerspective(
+                          name: perspective.name,
+                          isCustomPerspective: true,
+                          perspective: perspective);
+                    }
+                  } else {
+                    return const SizedBox();
+                  }
+                }).toList());
           }
           return Container();
         },
@@ -138,8 +153,10 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
               Expanded(
                 child: ListView(
                   children: <Widget>[
-                    _buildPerspective('JUNTO', false),
-                    _buildPerspective('Subscriptions', false),
+                    _buildPerspective(
+                        name: 'JUNTO',
+                        isCustomPerspective: false,
+                        perspective: 'JUNTO'),
                     _buildUserPerspectives(context),
                   ],
                 ),
@@ -151,9 +168,10 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
     );
   }
 
-  Widget _buildPerspective(String name, bool customPerspective) {
+  Widget _buildPerspective(
+      {dynamic perspective, String name, bool isCustomPerspective}) {
     return GestureDetector(
-      onTap: () => widget.changePerspective(name),
+      onTap: () => widget.changePerspective(perspective),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
         color: Colors.transparent,
@@ -190,17 +208,12 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
     if (perspective == 'JUNTO') {
       return 'The Junto perspective contains all public expressions from '
           'every member of Junto.';
-    } else if (perspective == 'Connections') {
-      return 'The Connections perspective contains all public expressions from '
-          'your 1st degree connections.';
     } else if (perspective == 'Subscriptions') {
       return 'The Subscriptions perspective contains all public expressions from '
           "members you're subscribed to.";
-    } else if (perspective == 'Degrees of separation') {
-      return 'The Degrees of separation perspective allows you to discover expression from one to six degrees of separtion away from you!';
     }
     //
-    return '';
+    return 'hi';
   }
 
   void _openPerspectiveBottomSheet(String perspective) {

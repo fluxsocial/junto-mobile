@@ -75,7 +75,7 @@ abstract class ExpressionService {
       ExpressionQueryParams params);
 
   /// Returns a list of expressions posted to the collective.
-  Future<List<CentralizedExpressionResponse>> getCollectiveExpressions();
+  Future<List<CentralizedExpressionResponse>> getCollectiveExpressions(params);
 
   /// Returns mock expression data.
   List<CentralizedExpressionResponse> get collectiveExpressions;

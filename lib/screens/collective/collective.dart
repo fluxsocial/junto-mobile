@@ -50,6 +50,8 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
   bool _showDegrees = true;
   String currentDegree = 'oo';
 
+  Future _currentFeed;
+
   @override
   void initState() {
     super.initState();
@@ -71,6 +73,8 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
 
     setState(() {
       _expressionProvider = Provider.of<ExpressionRepo>(context);
+      _currentFeed =
+          getCollectiveExpressions(contextType: 'Collective', contextId: null);
     });
   }
 
@@ -89,12 +93,16 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
     });
   }
 
-  Future<dynamic> getCollectiveExpressions() async {
-    return _memoizer
-        .runOnce(() => _expressionProvider.getCollectiveExpressions());
+  Future<dynamic> getCollectiveExpressions(
+      {dynamic dos, String contextType, List<String> channels, dynamic contextId}) async {
+    final Map<String, dynamic> _params = <String, dynamic>{
+      'contextType': contextType,
+      'contextId': contextId
+    };
+    return await _expressionProvider.getCollectiveExpressions(_params);
   }
 
-  switchDegree(degree) {
+  void _switchDegree(String degree) {
     setState(() {
       currentDegree = degree;
     });
@@ -206,7 +214,7 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
 
                     // dynamically render body
                     body: FutureBuilder<dynamic>(
-                      future: getCollectiveExpressions(),
+                      future: _currentFeed,
                       builder: (
                         BuildContext context,
                         AsyncSnapshot<dynamic> snapshot,
@@ -231,7 +239,7 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
                                       _showDegrees == true ? 135 : 85,
                                   degrees: _showDegrees,
                                   currentDegree: currentDegree,
-                                  switchDegree: switchDegree,
+                                  switchDegree: _switchDegree,
                                   newappbartitle: newAppBarTitle,
                                   openPerspectivesDrawer:
                                       _openPerspectivesDrawer,
@@ -353,7 +361,20 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
   }
 
 // Switch between perspectives; used in perspectives side drawer.
-  void _changePerspective(String perspective) {
+  void _changePerspective(dynamic perspective) {
+    // print('change to ' + perspective.name + ' perspective');
+    if (perspective == 'JUNTO') {
+      setState(() {
+        _currentFeed = getCollectiveExpressions(
+            contextId: null, contextType: 'Collective');
+      });
+    } else {
+      setState(() {
+        _currentFeed = getCollectiveExpressions(
+            contextId: perspective.address, contextType: 'FollowPerspective');
+      });
+    }
+
     setState(
       () {
         _dx = 0;
