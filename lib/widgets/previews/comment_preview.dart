@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/comment_open/comment_open.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
@@ -8,14 +7,13 @@ import 'package:junto_beta_mobile/widgets/comment_action_items.dart';
 
 /// Shows a preview of the comments. Takes a un-named [String] as a param.
 class CommentPreview extends StatelessWidget {
-  const CommentPreview(
-      {Key key, @required this.commentText, @required this.parent})
+  const CommentPreview({Key key, @required this.comment, @required this.parent})
       : super(key: key);
 
-  /// String to be displayed as comment
-  final String commentText;
+  /// comment
+  final dynamic comment;
 
-  /// Represents the expression
+  // parent expression of comment
   final dynamic parent;
 
   @override
@@ -25,7 +23,7 @@ class CommentPreview extends StatelessWidget {
         Navigator.push(
           context,
           CupertinoPageRoute<dynamic>(
-            builder: (BuildContext context) => CommentOpen(commentText, parent),
+            builder: (BuildContext context) => CommentOpen(comment, parent),
           ),
         );
       },
@@ -47,17 +45,8 @@ class CommentPreview extends StatelessWidget {
                       Navigator.push(
                         context,
                         CupertinoPageRoute<dynamic>(
-                          builder: (BuildContext context) => JuntoMember(
-                            profile: UserProfile(
-                              address: '',
-                              name: 'Eric Yang',
-                              bio: 'This is a test',
-                              profilePicture:
-                                  'assets/images/junto-mobile__logo.png',
-                              username: 'Gmail',
-                              verified: false,
-                            ),
-                          ),
+                          builder: (BuildContext context) =>
+                              JuntoMember(profile: comment.creator),
                         ),
                       );
                     },
@@ -66,7 +55,7 @@ class CommentPreview extends StatelessWidget {
                         children: <Widget>[
                           ClipOval(
                             child: Image.asset(
-                              'assets/images/junto-mobile__eric.png',
+                              'assets/images/junto-mobile__placeholder--member.png',
                               height: 38.0,
                               width: 38.0,
                               fit: BoxFit.cover,
@@ -74,7 +63,7 @@ class CommentPreview extends StatelessWidget {
                           ),
                           const SizedBox(width: 10),
                           Container(
-                            child: Text('sunyata',
+                            child: Text(comment.creator.username,
                                 style: Theme.of(context).textTheme.subhead),
                           ),
                         ],
@@ -109,7 +98,7 @@ class CommentPreview extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Text(
-                commentText,
+                comment.expressionData.body,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 3,
                 style: Theme.of(context).textTheme.caption,

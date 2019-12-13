@@ -18,19 +18,23 @@ class LongformOpen extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
         children: <Widget>[
-          longformTitle != '' ?Container(
-            width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.only(bottom: 5),
-            child: Text(longformTitle,
-                textAlign: TextAlign.start,
-                style: Theme.of(context).textTheme.title),
-          ) : const SizedBox(), 
-          Container(
-            width: MediaQuery.of(context).size.width,
-            child: Text(longformBody,
-                textAlign: TextAlign.start,
-                style: Theme.of(context).textTheme.caption),
-          ),
+          longformTitle != ''
+              ? Container(
+                  width: MediaQuery.of(context).size.width,
+                  margin: const EdgeInsets.only(bottom: 5),
+                  child: Text(longformTitle,
+                      textAlign: TextAlign.start,
+                      style: Theme.of(context).textTheme.title),
+                )
+              : const SizedBox(),
+          longformBody != ''
+              ? Container(
+                  width: MediaQuery.of(context).size.width,
+                  child: Text(longformBody,
+                      textAlign: TextAlign.start,
+                      style: Theme.of(context).textTheme.caption),
+                )
+              : const SizedBox(),
         ],
       ),
     );

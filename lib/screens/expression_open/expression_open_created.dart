@@ -278,44 +278,12 @@ class ExpressionOpenCreatedState extends State<ExpressionOpenCreated> {
                         ListView(
                           shrinkWrap: true,
                           physics: const ClampingScrollPhysics(),
-                          children: <Widget>[
-                            CommentPreview(
-                              parent: widget.expression,
-                              commentText:
-                                  'Hey there! This is what a comment preview looks like.',
-                            ),
-                            CommentPreview(
-                              parent: widget.expression,
-                              commentText:
-                                  'All comments are hidden initially so the viewer can have complete independence of thought while viewing expressions.',
-                            ),
-                            CommentPreview(
-                              parent: widget.expression,
-                              commentText:
-                                  'In Junto, comments are treated like expressions. You can resonate them or reply to a comment (nested comments). This is quite complex so we are tacklign this once the rest of the core functionality is finished.',
-                            ),
-                          ],
+                          children: <Widget>[],
                         ),
                         ListView(
                           shrinkWrap: true,
                           physics: const ClampingScrollPhysics(),
-                          children: <Widget>[
-                            CommentPreview(
-                              parent: widget.expression,
-                              commentText:
-                                  'Hey there! This is what a comment preview looks like.',
-                            ),
-                            CommentPreview(
-                              parent: widget.expression,
-                              commentText:
-                                  'All comments are hidden initially so the viewer can have complete independence of thought while viewing expressions.',
-                            ),
-                            CommentPreview(
-                              parent: widget.expression,
-                              commentText:
-                                  'In Junto, comments are treated like expressions. You can resonate them or reply to a comment (nested comments). This is quite complex so we are tacklign this once the rest of the core functionality is finished.',
-                            ),
-                          ],
+                          children: <Widget>[],
                         ),
                       ],
                     ),

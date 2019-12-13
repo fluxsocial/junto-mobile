@@ -17,20 +17,7 @@ class LongformPreview extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          _buildTitle(context),
-          Text(
-            expressionBody,
-            maxLines: 7,
-            overflow: TextOverflow.ellipsis,
-            // style: Theme.of(context).textTheme.caption,
-            style: TextStyle(
-              height: 1.7,
-              color: Theme.of(context).primaryColorDark,
-              fontSize: 15,
-            ),
-          ),
-        ],
+        children: <Widget>[_buildTitle(context), _buildBody(context)],
       ),
     );
   }
@@ -44,6 +31,25 @@ class LongformPreview extends StatelessWidget {
           expressionTitle,
           textAlign: TextAlign.left,
           style: Theme.of(context).textTheme.title,
+        ),
+      );
+    } else {
+      return const SizedBox();
+    }
+  }
+
+  Widget _buildBody(BuildContext context) {
+    final String expressionBody = expression.expressionData.body;
+    if (expressionBody.isNotEmpty) {
+      return Text(
+        expressionBody,
+        maxLines: 7,
+        overflow: TextOverflow.ellipsis,
+        // style: Theme.of(context).textTheme.caption,
+        style: TextStyle(
+          height: 1.7,
+          color: Theme.of(context).primaryColorDark,
+          fontSize: 15,
         ),
       );
     } else {
