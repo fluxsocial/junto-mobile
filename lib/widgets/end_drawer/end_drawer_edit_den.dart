@@ -3,10 +3,10 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 
 class JuntoEditDen extends StatelessWidget {
-  final String name = 'Eric Yang';
-  final String bio = '"To a mind that is still, the whole universe surrenders"';
-  final String location = 'Spirit';
-  final String website = 'junto.foundation';
+  final String name = 'Name';
+  final String bio = 'bio';
+  final String location = 'location';
+  final String website = 'website';
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +83,7 @@ class JuntoEditDen extends StatelessWidget {
                     children: <Widget>[
                       ClipOval(
                         child: Image.asset(
-                          'assets/images/junto-mobile__eric.png',
+                          'assets/images/junto-mobile__mockprofpic--one.png',
                           height: 45.0,
                           width: 45.0,
                           fit: BoxFit.cover,

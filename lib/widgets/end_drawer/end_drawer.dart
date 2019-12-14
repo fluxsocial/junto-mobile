@@ -124,14 +124,6 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                             style: Theme.of(context).textTheme.title),
                       ],
                     ),
-                    ClipOval(
-                      child: Image.asset(
-                        'assets/images/junto-mobile__eric.png',
-                        height: 32.0,
-                        width: 32.0,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
                   ],
                 ),
               ),
