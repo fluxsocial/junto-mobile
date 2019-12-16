@@ -25,7 +25,7 @@ class JuntoHttp {
     final String authKey = await _getAuthKey();
     return <String, String>{
       'Content-Type': 'application/json',
-      'cookie': 'auth=$authKey',
+      'Authorization': 'auth=$authKey',
     };
   }
 
@@ -49,7 +49,8 @@ class JuntoHttp {
 
   Future<http.Response> get(String resource,
       {Map<String, String> headers, Map<String, String> queryParams}) async {
-    final Uri _uri = Uri.http(END_POINT_without_prefix, resource, queryParams);
+    final Uri _uri = Uri.http(
+        END_POINT_without_prefix, '/$kServerVersion$resource', queryParams);
     return httpClient.get(
       _uri,
       headers: await _withPersistentHeaders(headers),
@@ -64,7 +65,7 @@ class JuntoHttp {
     final Map<String, String> header = await _withPersistentHeaders(null);
     final http.StreamedResponse _streamedResponse = await httpClient.send(
       http.Request('DELETE', Uri.parse('$_endPoint$resource'))
-        ..headers['cookie'] = header['cookie']
+        ..headers['Authorization'] = header['cookie']
         ..headers['Content-Type'] = header['Content-Type']
         ..body = convert.json.encode(body),
     );

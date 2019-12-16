@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/comment_open/comment_open.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
@@ -48,15 +47,7 @@ class CommentPreview extends StatelessWidget {
                         context,
                         CupertinoPageRoute<dynamic>(
                           builder: (BuildContext context) => JuntoMember(
-                            profile: UserProfile(
-                              address: '',
-                              name: 'Eric Yang',
-                              bio: 'This is a test',
-                              profilePicture:
-                                  'assets/images/junto-mobile__logo.png',
-                              username: 'Gmail',
-                              verified: false,
-                            ),
+                            profile: parent.creator,
                           ),
                         ),
                       );

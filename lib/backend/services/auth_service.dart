@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:junto_beta_mobile/backend/services.dart';
@@ -24,11 +22,9 @@ class AuthenticationServiceCentralized implements AuthenticationService {
       },
     );
     if (response.statusCode == 200) {
-      // Decodes the server cookie.
-      final Cookie responseCookie =
-          Cookie.fromSetCookieValue(response.headers['set-cookie']);
+      final String authorization = response.headers['authorization'];
       final SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('auth', responseCookie.value);
+      prefs.setString('auth', authorization);
       return UserData.fromMap(JuntoHttp.handleResponse(response));
     } else {
       final Map<String, dynamic> errorResponse =
