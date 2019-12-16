@@ -4,14 +4,16 @@ import 'package:junto_beta_mobile/models/resonation_model.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 
 class MockExpressionService implements ExpressionService {
-  static UserProfile kUserProfile = UserProfile(
+  static UserProfile kUserProfile = const UserProfile(
     address: '123e4567-e89b-23s3-a256-426655440000',
     bio: 'Hi there, this is a mock user profile',
     name: 'Testy',
-    parent: null,
     profilePicture: 'assets/images/junto-mobile__junto.png',
     username: 'mcTesty',
     verified: false,
+    website: <String>['https://www.twitter.com/Nash0x7E2'],
+    location: <String>['Somewhere on Earth'],
+    gender: <String>['Male'],
   );
 
   static CentralizedExpressionResponse kExpressionResponse =
@@ -37,12 +39,16 @@ class MockExpressionService implements ExpressionService {
       comments: 1,
       context: '',
       createdAt: DateTime.now(),
-      creator: UserProfile(
+      creator: const UserProfile(
         bio: 'hellooo',
         name: 'Eric',
         profilePicture: 'assets/images/junto-mobile__eric.png',
         username: 'sunyata',
         verified: true,
+        website: <String>['https://www.twitter.com/Junto'],
+        location: <String>['Somewhere on Earth'],
+        gender: <String>[],
+        address: 'ajdsbasbd-4234jdsf-dfmbjs',
       ),
       expressionData: CentralizedLongFormExpression(
         title: 'Dynamic form is in motion!',
@@ -56,13 +62,16 @@ class MockExpressionService implements ExpressionService {
       comments: 1,
       context: '',
       createdAt: DateTime.now(),
-      creator: UserProfile(
+      creator: const UserProfile(
         name: 'Dora',
         profilePicture: 'assets/images/junto-mobile__dora.png',
         bio: 'hellooo',
         username: 'wingedmessenger',
-        parent: 'parent-address',
         verified: true,
+        website: <String>['https://www.twitter.com/Junto'],
+        location: <String>['Somewhere on Earth'],
+        gender: <String>[],
+        address: 'testing-address',
       ),
       expressionData: CentralizedShortFormExpression(
         background: 'four',
@@ -77,13 +86,16 @@ class MockExpressionService implements ExpressionService {
       comments: 1,
       context: '',
       createdAt: DateTime.now(),
-      creator: UserProfile(
+      creator: const UserProfile(
         name: 'Josh',
         profilePicture: 'assets/images/junto-mobile__josh.png',
         bio: 'hellooo',
-        parent: 'parent-address',
+        address: 'parent-address',
         verified: true,
         username: 'jdlparkin',
+        website: <String>['https://www.twitter.com/Junto'],
+        location: <String>['Somewhere on Earth'],
+        gender: <String>[],
       ),
       expressionData: CentralizedPhotoFormExpression(
         image: 'assets/images/junto-mobile__photo--one.png',
@@ -96,13 +108,16 @@ class MockExpressionService implements ExpressionService {
       comments: 1,
       context: '',
       createdAt: DateTime.now(),
-      creator: UserProfile(
-        parent: 'parent-address',
+      creator: const UserProfile(
+        address: 'parent-address',
         bio: "I'm Drea.",
         name: 'Drea',
         profilePicture: 'assets/images/junto-mobile__drea.png',
         verified: true,
         username: 'DMONEY',
+        website: <String>['https://www.twitter.com/Junto'],
+        location: <String>['Somewhere on Earth'],
+        gender: <String>[],
       ),
       expressionData: CentralizedEventFormExpression(
           title: 'Junto Presents: Jazz and Draw',
@@ -118,14 +133,16 @@ class MockExpressionService implements ExpressionService {
       comments: 1,
       context: '',
       createdAt: DateTime.now(),
-      creator: UserProfile(
+      creator: const UserProfile(
         address: '0vefoiwiafjvkbr32r243r5',
-        parent: 'parent-address',
         bio: 'hellooo',
         name: 'Nash',
         profilePicture: 'assets/images/junto-mobile__nash.png',
         verified: true,
         username: 'Nash',
+        website: <String>['https://www.twitter.com/Junto'],
+        location: <String>['Somewhere on Earth'],
+        gender: <String>[],
       ),
       expressionData: CentralizedLongFormExpression(
         // title: 'Welcome to Junto!',
@@ -142,12 +159,14 @@ class MockExpressionService implements ExpressionService {
       comments: 1,
       context: '',
       createdAt: DateTime.now(),
-      creator: UserProfile(
+      creator: const UserProfile(
         address: '0vefoiwiafjvkbr32r243r5',
         name: 'Yaz',
         profilePicture: 'assets/images/junto-mobile__yaz.png',
         bio: 'hellooo',
-        parent: 'parent-address',
+        website: <String>['https://www.twitter.com/Junto'],
+        location: <String>['Somewhere on Earth'],
+        gender: <String>[],
         verified: true,
         username: 'yaz',
       ),
@@ -162,9 +181,11 @@ class MockExpressionService implements ExpressionService {
       comments: 1,
       context: '',
       createdAt: DateTime.now(),
-      creator: UserProfile(
+      creator: const UserProfile(
         address: '0vefoiwiafjvkbr32r243r5',
-        parent: 'parent-address',
+        website: <String>['https://www.twitter.com/Junto'],
+        location: <String>['Somewhere on Earth'],
+        gender: <String>[],
         name: 'Tomis',
         profilePicture: 'assets/images/junto-mobile__tomis.png',
         verified: true,
@@ -183,9 +204,11 @@ class MockExpressionService implements ExpressionService {
       comments: 1,
       context: '',
       createdAt: DateTime.now(),
-      creator: UserProfile(
+      creator: const UserProfile(
         address: '0vefoiwiafjvkbr32r243r5',
-        parent: 'parent-address',
+        website: <String>['https://www.twitter.com/Junto'],
+        location: <String>['Somewhere on Earth'],
+        gender: <String>[],
         bio: "I'm Leif.",
         name: 'Leif',
         profilePicture: 'assets/images/junto-mobile__leif.png',

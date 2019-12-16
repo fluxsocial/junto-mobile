@@ -7,35 +7,34 @@ import 'package:meta/meta.dart';
 /// Contains the [address], [parent], [firstName], [lastName], [bio],
 /// [profilePicture], [verified].
 class UserProfile {
-  UserProfile({
-    this.address,
-    this.parent,
-    this.name,
-    this.bio,
-    this.location,
-    this.profilePicture,
-    this.verified,
-    this.username,
+  const UserProfile({
+    @required this.address,
+    @required this.name,
+    @required this.bio,
+    @required this.location,
+    @required this.profilePicture,
+    @required this.verified,
+    @required this.username,
+    @required this.website,
+    @required this.gender,
   });
 
-  /// Converts the information contained in this class to a map
-  factory UserProfile.fromMap(Map<String, dynamic> json) {
+  factory UserProfile.fromMap(Map<String, dynamic> map) {
     return UserProfile(
-        address: json['address'],
-        parent: json['parent'] ?? '',
-        name: json['name'],
-        bio: json['bio'],
-        location: json['location'],
-        profilePicture: json['profile_picture'] ?? '',
-        verified: json['verified'],
-        username: json['username'] ?? '');
+      address: map['address'] as String,
+      name: map['name'] as String,
+      bio: map['bio'] as String,
+      location: List<String>.from(map['location']),
+      profilePicture: map['profilePicture'] as String,
+      verified: map['verified'] as bool,
+      username: map['username'] as String,
+      website: List<String>.from(map['website']),
+      gender: List<String>.from(map['gender']),
+    );
   }
 
   /// Location
   final String address;
-
-  /// Parent's address
-  final String parent;
 
   ///  Name of the author
   final String name;
@@ -44,7 +43,7 @@ class UserProfile {
   final String bio;
 
   /// Author's location
-  final String location;
+  final List<String> location;
 
   /// Url of the author's profile image
   final String profilePicture;
@@ -55,51 +54,92 @@ class UserProfile {
   /// Username of the given user.
   final String username;
 
-  /// Converts the class to a map
-  Map<String, dynamic> toMap() => <String, dynamic>{
-        'address': address,
-        'parent': parent,
-        'name': name,
-        'bio': bio,
-        'location': location,
-        'profile_picture': profilePicture,
-        'verified': verified,
-        'username': username
-      };
+  /// List of websites a user can upload
+  final List<String> website;
 
-  @override
-  String toString() {
-    return 'UserProfile: address: $address, parent: $parent, name: '
-        '$name, bio: $bio,'
-        ' location: $location,'
-        ' profilePicture: $profilePicture, verified: $verified,'
-        ' username: $username';
-  }
+  /// Gender of the user.
+  final List<String> gender;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is UserProfile &&
+      (other is UserProfile &&
           runtimeType == other.runtimeType &&
           address == other.address &&
-          parent == other.parent &&
           name == other.name &&
           bio == other.bio &&
           location == other.location &&
           profilePicture == other.profilePicture &&
           verified == other.verified &&
-          username == other.username;
+          username == other.username &&
+          website == other.website &&
+          gender == other.gender);
 
   @override
   int get hashCode =>
       address.hashCode ^
-      parent.hashCode ^
       name.hashCode ^
       bio.hashCode ^
       location.hashCode ^
       profilePicture.hashCode ^
       verified.hashCode ^
-      username.hashCode;
+      username.hashCode ^
+      website.hashCode ^
+      gender.hashCode;
+
+  @override
+  String toString() {
+    return 'UserProfile{' +
+        ' address: $address,' +
+        ' name: $name,' +
+        ' bio: $bio,' +
+        ' location: $location,' +
+        ' profilePicture: $profilePicture,' +
+        ' verified: $verified,' +
+        ' username: $username,' +
+        ' website: $website,' +
+        ' gender: $gender,' +
+        '}';
+  }
+
+  UserProfile copyWith({
+    String address,
+    String parent,
+    String name,
+    String bio,
+    List<String> location,
+    String profilePicture,
+    bool verified,
+    String username,
+    List<String> website,
+    List<String> gender,
+  }) {
+    return UserProfile(
+      address: address ?? this.address,
+      name: name ?? this.name,
+      bio: bio ?? this.bio,
+      location: location ?? this.location,
+      profilePicture: profilePicture ?? this.profilePicture,
+      verified: verified ?? this.verified,
+      username: username ?? this.username,
+      website: website ?? this.website,
+      gender: gender ?? this.gender,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'address': address,
+      'name': name,
+      'bio': bio,
+      'location': location,
+      'profile_picture': profilePicture,
+      'verified': verified,
+      'username': username,
+      'website': website,
+      'gender': gender,
+    };
+  }
 }
 
 /// Detials used during user authentication.
@@ -171,6 +211,7 @@ class UserData {
     @required this.pack,
     @required this.user,
     @required this.userPerspective,
+    @required this.connectionPerspective,
   });
 
   factory UserData.fromMap(Map<String, dynamic> map) {
@@ -186,6 +227,9 @@ class UserData {
       userPerspective: CentralizedPerspective.fromMap(
         map['user_perspective'],
       ),
+      connectionPerspective: CentralizedPerspective.fromMap(
+        map['connection_perspective'],
+      ),
     );
   }
 
@@ -194,6 +238,7 @@ class UserData {
   final CentralizedPack pack;
   final UserProfile user;
   final CentralizedPerspective userPerspective;
+  final CentralizedPerspective connectionPerspective;
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -202,11 +247,12 @@ class UserData {
       'pack': pack.toMap(),
       'user': user.toMap(),
       'user_perspective': userPerspective.toMap(),
+      'connection_perspective': connectionPerspective.toMap(),
     };
   }
 
   @override
   String toString() {
-    return 'UserData{privateDen: $privateDen, publicDen: $publicDen, pack: $pack, user: $user, userPerspective: $userPerspective}';
+    return 'User Data: privateDen: $privateDen, publicDen: $publicDen, pack: $pack, user: $user, userPerspective: $userPerspective connectionPerspective $connectionPerspective ';
   }
 }
