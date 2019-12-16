@@ -36,8 +36,11 @@ class SignUpState extends State<SignUp> {
       body: Stack(
         children: <Widget>[
           Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
             child: Image.asset(
-                'assets/images/junto-mobile__background--lotus.png'),
+                'assets/images/junto-mobile__background--lotus.png',
+                fit: BoxFit.cover),
           ),
           Container(
             width: MediaQuery.of(context).size.width,

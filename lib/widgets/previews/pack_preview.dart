@@ -53,12 +53,26 @@ class PackPreview extends StatelessWidget {
                       ),
                     ),
                   )
-                : ClipOval(
-                    child: Image.asset(
-                      'assets/images/junto-mobile__placeholder--sphere.png',
-                      height: 45.0,
-                      width: 45.0,
-                      fit: BoxFit.cover,
+                : Container(
+                    alignment: Alignment.center,
+                    height: 45.0,
+                    width: 45.0,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.bottomLeft,
+                        end: Alignment.topRight,
+                        stops: const <double>[0.3, 0.9],
+                        colors: <Color>[
+                          Theme.of(context).colorScheme.secondary,
+                          Theme.of(context).colorScheme.primary,
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    child: Icon(
+                      CustomIcons.packs,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                      size: 17,
                     ),
                   ),
             Container(

@@ -120,7 +120,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      endDrawer: const JuntoDrawer(screen: 'Den', icon: CustomIcons.half_lotus),
+      endDrawer: const JuntoDrawer(screen: 'Den', icon: CustomIcons.create),
       body: _userProfile != null
           ? DefaultTabController(
               length: _tabs.length,

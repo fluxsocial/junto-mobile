@@ -37,7 +37,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
             print(snapshot.error);
             return Container(
               child: Text(
-                snapshot.error.toString(),
+                'hmm, something is up...',
                 style: const TextStyle(fontSize: 14, color: Colors.white),
               ),
             );
@@ -51,7 +51,8 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                     snapshot.data.map((CentralizedPerspective perspective) {
                   if (perspective.name !=
                       widget.profile.user.name + "'s Connection Perspective") {
-                    if (perspective.name == widget.profile.user.name + "'s Follow Perspective") {
+                    if (perspective.name ==
+                        widget.profile.user.name + "'s Follow Perspective") {
                       return _buildPerspective(
                           name: 'Subscriptions',
                           isCustomPerspective: false,

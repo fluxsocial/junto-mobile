@@ -47,7 +47,7 @@ class ExpressionPreview extends StatelessWidget {
                   // expression preview body
                   _returnExpression(),
                 ],
-              ),
+              ), 
             ),
             const SizedBox(height: 5),
 

@@ -303,9 +303,8 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                             itemCount: snapshot.data.length,
                             itemBuilder: (BuildContext context, int index) {
                               return CommentPreview(
-                                parent: widget.expression,
-                                commentText:
-                                    snapshot.data[index].expressionData.body,
+                                comment: snapshot.data[index],
+                                parent: widget.expression
                               );
                             },
                           );

@@ -94,27 +94,24 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
             );
           },
           child: Padding(
-            padding: const EdgeInsets.only(bottom: 25),
-            child: _currentIndex == 0
-                ? BottomNav(
-                    screen: 'spheres',
-                    onTap: () {
-                      // open create sphere modal
-                      showModalBottomSheet(
-                        isScrollControlled: true,
-                        context: context,
-                        builder: (BuildContext context) => Container(
-                          color: Colors.transparent,
-                          child: CreateSphereBottomSheet(),
-                        ),
-                      );
-                    })
-                : const BottomNav(screen: 'packs'),
-          ),
+              padding: const EdgeInsets.only(bottom: 25),
+              child: BottomNav(
+                  screen: 'groups',
+                  onTap: () {
+                    // open create sphere modal
+                    showModalBottomSheet(
+                      isScrollControlled: true,
+                      context: context,
+                      builder: (BuildContext context) => Container(
+                        color: Colors.transparent,
+                        child: CreateSphereBottomSheet(),
+                      ),
+                    );
+                  })),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         endDrawer:
-            const JuntoDrawer(screen: 'Groups', icon: CustomIcons.spheres),
+            const JuntoDrawer(screen: 'Groups', icon: CustomIcons.groups),
         body: Column(
           children: <Widget>[
             Container(
@@ -137,6 +134,14 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
+                          Icon(
+                            CustomIcons.spheres,
+                            size: 17,
+                            color: _currentIndex == 0
+                                ? Theme.of(context).primaryColorDark
+                                : Theme.of(context).primaryColorLight,
+                          ),
+                          const SizedBox(width: 5),
                           Text(
                             'Spheres',
                             style: TextStyle(
@@ -160,6 +165,14 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
+                          Icon(
+                            CustomIcons.packs,
+                            size: 17,
+                            color: _currentIndex == 1
+                                ? Theme.of(context).primaryColorDark
+                                : Theme.of(context).primaryColorLight,
+                          ),
+                          const SizedBox(width: 7.5),
                           Text(
                             'Packs',
                             style: TextStyle(

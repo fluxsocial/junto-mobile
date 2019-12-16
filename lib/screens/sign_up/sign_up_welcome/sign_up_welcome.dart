@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
@@ -59,13 +60,17 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
       JuntoOverlay.showLoader(context);
       final UserData results =
           await Provider.of<AuthRepo>(context).registerUser(details);
+      final Map resultsMap = results.toMap();
+      final String resultsMapToString = json.encode(resultsMap);
 
       await SharedPreferences.getInstance()
         ..setBool(
           'isLoggedIn',
           true,
         )
-        ..setString('user_id', results.user.address);
+        ..setString('user_id', results.user.address)
+        ..setString('user_data', resultsMapToString);
+
       JuntoOverlay.hide();
       Navigator.of(context).pushAndRemoveUntil(
         JuntoCollective.route(),
@@ -99,16 +104,14 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
         child: Container(
           margin: EdgeInsets.only(
             top: MediaQuery.of(context).size.height * .15,
-            bottom: MediaQuery.of(context).size.height * .15,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Column(
                 children: <Widget>[
                   Container(
-                    margin: const EdgeInsets.only(bottom: 40),
+                    margin: const EdgeInsets.only(bottom: 25),
                     child: Image.asset(
                       'assets/images/junto-mobile__outlinelogo--gradient.png',
                       height: 69,
@@ -116,11 +119,11 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width * .5,
-                    margin: const EdgeInsets.only(bottom: 40),
-                    decoration: const BoxDecoration(
+                    margin: const EdgeInsets.only(bottom: 25),
+                    decoration: BoxDecoration(
                       border: Border(
                         bottom: BorderSide(
-                          color: Color(0xffeeeeee),
+                          color: Theme.of(context).dividerColor,
                         ),
                       ),
                     ),
@@ -128,11 +131,11 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
                   Container(
                     padding: EdgeInsets.symmetric(
                         horizontal: MediaQuery.of(context).size.width * .05),
-                    margin: const EdgeInsets.only(bottom: 40),
+                    margin: const EdgeInsets.only(bottom: 25),
                     child: Text(
                       'Junto Community Agreements',
-                      style: const TextStyle(
-                          color: Color(0xff333333),
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColorDark,
                           fontWeight: FontWeight.w700,
                           fontSize: 22),
                       textAlign: TextAlign.center,
@@ -141,10 +144,10 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
                   Container(
                     width: MediaQuery.of(context).size.width * .5,
                     margin: const EdgeInsets.only(bottom: 40),
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       border: Border(
                         bottom: BorderSide(
-                          color: Color(0xffeeeeee),
+                          color: Theme.of(context).dividerColor,
                         ),
                       ),
                     ),
@@ -177,6 +180,7 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
                 ],
               ),
               Container(
+                margin: EdgeInsets.only(top: 50),
                 width: 200,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(

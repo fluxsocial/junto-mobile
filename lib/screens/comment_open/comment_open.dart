@@ -6,10 +6,10 @@ import 'package:junto_beta_mobile/screens/comment_open/comment_open_appbar.dart'
 import 'package:junto_beta_mobile/widgets/comment_action_items.dart';
 
 class CommentOpen extends StatefulWidget {
-  const CommentOpen(this.comment, this.expression);
+  const CommentOpen(this.comment, this.parent);
 
-  final String comment;
-  final dynamic expression;
+  final dynamic comment;
+  final dynamic parent;
 
   @override
   State<StatefulWidget> createState() {
@@ -33,7 +33,7 @@ class CommentOpenState extends State<CommentOpen> {
                 Container(
                   padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
                   child: Text(
-                    'in response to ' + widget.expression.creator.name,
+                    'in response to ' + widget.parent.creator.name,
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       color: Theme.of(context).primaryColorLight,
@@ -54,7 +54,7 @@ class CommentOpenState extends State<CommentOpen> {
                             // profile picture
                             ClipOval(
                               child: Image.asset(
-                                'assets/images/junto-mobile__eric.png',
+                                'assets/images/junto-mobile__placeholder--member.png',
                                 height: 45.0,
                                 width: 45.0,
                                 fit: BoxFit.cover,
@@ -67,10 +67,10 @@ class CommentOpenState extends State<CommentOpen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  Text('sunyata' ?? '',
+                                  Text(widget.comment.creator.username,
                                       style:
                                           Theme.of(context).textTheme.subhead),
-                                  Text('Eric Yang',
+                                  Text(widget.comment.creator.name,
                                       style: Theme.of(context).textTheme.body1),
                                 ],
                               ),
@@ -106,7 +106,7 @@ class CommentOpenState extends State<CommentOpen> {
                     children: <Widget>[
                       Container(
                         width: MediaQuery.of(context).size.width,
-                        child: Text(widget.comment,
+                        child: Text(widget.comment.expressionData.body,
                             textAlign: TextAlign.start,
                             style: Theme.of(context).textTheme.caption),
                       ),
