@@ -22,9 +22,9 @@ class ExpressionServiceCentralized implements ExpressionService {
   Future<CentralizedExpressionResponse> createExpression(
       CentralizedExpression expression) async {
     final Map<String, dynamic> _postBody = expression.toMap();
-    print(_postBody);
     final http.Response _serverResponse =
         await client.postWithoutEncoding('/expressions', body: _postBody);
+    print(_serverResponse.body);
     final Map<String, dynamic> parseData =
         JuntoHttp.handleResponse(_serverResponse);
     final CentralizedExpressionResponse response =
@@ -104,24 +104,23 @@ class ExpressionServiceCentralized implements ExpressionService {
   }
 
   @override
-  Future<List<CentralizedExpressionResponse>> getCollectiveExpressions(
-      params) async {
+  Future<QueryExpressionResults> getCollectiveExpressions(params) async {
     // final ExpressionQueryParams query = ExpressionQueryParams(channels: [], dos: params['dos'], context: params['contextId'], contextType: params['contextType']);
     final Map<String, String> query = <String, String>{
-      'context_type': params['contextType'],
-      'pagination_position': '0',
+      'context_type': 'Collective',
+      'pagination_position': 0.toString(),
     };
     final http.Response response = await client.get(
       '/expressions',
       queryParams: query,
     );
-    print('got collective expressions ! ${response.body}');
-    final List<dynamic> results = JuntoHttp.handleResponse(response);
-    return results
-        .map(
-          (dynamic data) =>
-              CentralizedExpressionResponse.withCommentsAndResonations(data),
-        )
-        .toList(growable: false);
+    final Map<String, dynamic> results = JuntoHttp.handleResponse(response);
+    return QueryExpressionResults(
+      results: <CentralizedExpressionResponse>[
+        for (dynamic data in results['results'])
+          CentralizedExpressionResponse.withCommentsAndResonations(data)
+      ],
+      lastTimestamp: results['last_timestamp'],
+    );
   }
 }

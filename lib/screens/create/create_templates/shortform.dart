@@ -17,7 +17,7 @@ class CreateShortformState extends State<CreateShortform> {
   Color gradientTwo;
 
   // ignore: unused_field
-  String _currentBackground = 'zero';
+  String _currentBackground = '';
   TextEditingController _bodyController;
 
   /// Creates a [CentralizedShortFormExpression] from the given data entered

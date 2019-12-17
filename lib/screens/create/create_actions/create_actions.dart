@@ -58,10 +58,9 @@ class CreateActionsState extends State<CreateActions> {
     _channelController = TextEditingController();
     _address = widget.address;
     _expression = CentralizedExpression(
-      type: widget.expressionType,
-      expressionData: widget.expression.toMap(),
-      context: widget.expressionContext
-    );
+        type: widget.expressionType,
+        expressionData: widget.expression.toMap(),
+        context: widget.expressionContext);
   }
 
   @override
@@ -71,9 +70,6 @@ class CreateActionsState extends State<CreateActions> {
   }
 
   Future<void> _createExpression() async {
-    print(widget.address);
-    print(widget.expression);
-    print(widget.expressionContext);
     try {
       await Provider.of<ExpressionRepo>(context).createExpression(
         _expression,
@@ -100,22 +96,22 @@ class CreateActionsState extends State<CreateActions> {
       print(error);
       print(error.message);
       print('something is up');
-      // JuntoOverlay.hide();
-      // JuntoDialog.showJuntoDialog(
-      //   context,
-      //   'Something went wrong ${error?.code}',
-      //   <Widget>[
-      //     FlatButton(
-      //       onPressed: () {
-      //         Navigator.of(context).pushAndRemoveUntil(
-      //           JuntoCollective.route(),
-      //           (_) => false,
-      //         );
-      //       },
-      //       child: const Text('Ok'),
-      //     )
-      //   ],
-      // );
+      JuntoOverlay.hide();
+      JuntoDialog.showJuntoDialog(
+        context,
+        'Something went wrong ${error?.code}',
+        <Widget>[
+          FlatButton(
+            onPressed: () {
+              Navigator.of(context).pushAndRemoveUntil(
+                JuntoCollective.route(),
+                (_) => false,
+              );
+            },
+            child: const Text('Ok'),
+          )
+        ],
+      );
     }
   }
 
