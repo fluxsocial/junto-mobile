@@ -336,3 +336,15 @@ class ExpressionQueryParams {
 }
 
 enum ExpressionContextType { dos, perspective, random, collective }
+
+/// Encapsulates the response sent back from the server after querying an
+/// expression.
+class QueryExpressionResults {
+  QueryExpressionResults({
+    @required this.results,
+    @required this.lastTimestamp,
+  });
+
+  final List<CentralizedExpressionResponse> results;
+  final String lastTimestamp;
+}
