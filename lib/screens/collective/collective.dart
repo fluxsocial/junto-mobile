@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
@@ -36,12 +37,16 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
   final GlobalKey<ScaffoldState> _juntoCollectiveKey =
       GlobalKey<ScaffoldState>();
 
+  // Completer which controls expressions querying.
+  Completer<List<CentralizedExpressionResponse>> _expressionCompleter;
+
   // for custom swipe to open perspectives drawer animation
   double _dx = 0.0;
   String _scrollDirection;
 
   ExpressionRepo _expressionProvider;
-  String _userAddress;
+
+  String _userAddress; // ignore: unused_field
   UserData _userProfile;
 
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
@@ -49,11 +54,11 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
   String _appbarTitle = 'JUNTO';
   bool _showDegrees = true;
   String currentDegree = 'oo';
-  Future _currentFeed;
 
   @override
   void initState() {
     super.initState();
+    _expressionCompleter = Completer<List<CentralizedExpressionResponse>>();
     _collectiveController = ScrollController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _collectiveController.addListener(_onScrollingHasChanged);
@@ -62,19 +67,17 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
           _onScrollingHasChanged,
         );
     });
-
     getUserInformation();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
-    setState(() {
-      _expressionProvider = Provider.of<ExpressionRepo>(context);
-      _currentFeed =
-          getCollectiveExpressions(contextType: 'Collective', contextId: null);
-    });
+    _expressionProvider = Provider.of<ExpressionRepo>(context);
+    _expressionCompleter = Completer<List<CentralizedExpressionResponse>>()
+      ..complete(
+        getCollectiveExpressions(contextType: 'Collective', contextId: null),
+      );
   }
 
   void _onScrollingHasChanged() {
@@ -92,14 +95,15 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
     });
   }
 
-  Future<dynamic> getCollectiveExpressions(
-      {dynamic dos,
-      String contextType,
-      List<String> channels,
-      dynamic contextId}) async {
+  Future<List<CentralizedExpressionResponse>> getCollectiveExpressions({
+    dynamic dos,
+    String contextType,
+    List<String> channels,
+    dynamic contextId,
+  }) async {
     final Map<String, dynamic> _params = <String, dynamic>{
-      'contextType': contextType,
-      'contextId': contextId
+      'context_type': contextType,
+      'context_id': contextId
     };
 
     return await _expressionProvider.getCollectiveExpressions(_params);
@@ -120,62 +124,64 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
     }
   }
 
+  void _onDragUpdate(DragUpdateDetails details) {
+    if (_dx == 0.0 &&
+        details.globalPosition.dy != 0.0 &&
+        details.delta.direction > 0) {
+      return;
+    } else {
+      if (details.globalPosition.dx > 0 &&
+          details.globalPosition.dx < MediaQuery.of(context).size.width * .9) {
+        setState(() {
+          _dx = details.globalPosition.dx;
+          if (details.delta.direction > 0) {
+            setState(() {
+              _scrollDirection = 'left';
+            });
+          } else if (details.delta.direction < 0) {
+            setState(() {
+              _scrollDirection = 'right';
+            });
+          }
+        });
+      }
+    }
+  }
+
+  void _dragEnd(DragEndDetails details) {
+    if (_scrollDirection == 'right') {
+      if (_dx >= MediaQuery.of(context).size.width * .2) {
+        setState(() {
+          _dx = MediaQuery.of(context).size.width * .9;
+        });
+      } else if (_dx < MediaQuery.of(context).size.width * .2) {
+        _dx = 0.0;
+      }
+    } else if (_scrollDirection == 'left') {
+      if (_dx < MediaQuery.of(context).size.width * .7) {
+        setState(() {
+          _dx = 0.0;
+        });
+      } else if (_dx >= MediaQuery.of(context).size.width * .7) {
+        setState(() {
+          _dx = MediaQuery.of(context).size.width * .9;
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        _userProfile != null
-            ? JuntoPerspectives(
-                changePerspective: _changePerspective,
-                profile: _userProfile,
-              )
-            : const SizedBox(),
+        if (_userProfile != null)
+          JuntoPerspectives(
+            changePerspective: _changePerspective,
+            profile: _userProfile,
+          ),
         GestureDetector(
-          onHorizontalDragUpdate: (DragUpdateDetails details) {
-            if (_dx == 0.0 &&
-                details.globalPosition.dy != 0.0 &&
-                details.delta.direction > 0) {
-              return;
-            } else {
-              if (details.globalPosition.dx > 0 &&
-                  details.globalPosition.dx <
-                      MediaQuery.of(context).size.width * .9) {
-                setState(() {
-                  _dx = details.globalPosition.dx;
-                  if (details.delta.direction > 0) {
-                    setState(() {
-                      _scrollDirection = 'left';
-                    });
-                  } else if (details.delta.direction < 0) {
-                    setState(() {
-                      _scrollDirection = 'right';
-                    });
-                  }
-                });
-              }
-            }
-          },
-          onHorizontalDragEnd: (DragEndDetails details) {
-            if (_scrollDirection == 'right') {
-              if (_dx >= MediaQuery.of(context).size.width * .2) {
-                setState(() {
-                  _dx = MediaQuery.of(context).size.width * .9;
-                });
-              } else if (_dx < MediaQuery.of(context).size.width * .2) {
-                _dx = 0.0;
-              }
-            } else if (_scrollDirection == 'left') {
-              if (_dx < MediaQuery.of(context).size.width * .7) {
-                setState(() {
-                  _dx = 0.0;
-                });
-              } else if (_dx >= MediaQuery.of(context).size.width * .7) {
-                setState(() {
-                  _dx = MediaQuery.of(context).size.width * .9;
-                });
-              }
-            }
-          },
+          onHorizontalDragUpdate: _onDragUpdate,
+          onHorizontalDragEnd: _dragEnd,
           child: Transform.translate(
             offset: Offset(_dx, 0.0),
             child: Stack(
@@ -211,13 +217,13 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
 
                   // dynamically render body
                   body: FutureBuilder<dynamic>(
-                    future: _currentFeed,
+                    future: _expressionCompleter.future,
                     builder: (
                       BuildContext context,
                       AsyncSnapshot<dynamic> snapshot,
                     ) {
                       if (snapshot.hasError) {
-                        print(snapshot.error);
+                        print('Error: ${snapshot.error}');
                         return Center(
                           child: Transform.translate(
                             offset: const Offset(0.0, 0.0),
@@ -356,11 +362,12 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
     );
   }
 
-// switch bgetween degrees of separation
+// switch between degrees of separation
   void _switchDegree({String degreeName, int degreeNumber}) {
+    _expressionCompleter = Completer<List<CentralizedExpressionResponse>>()
+      ..complete(getCollectiveExpressions(
+          contextId: null, contextType: 'Collective', dos: degreeNumber));
     setState(() {
-      // _currentFeed = getCollectiveExpressions(
-      //     contextId: null, contextType: 'Dos', dos: degreeNumber);
       _showDegrees = true;
     });
     setState(() {
@@ -372,17 +379,20 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
   void _changePerspective(dynamic perspective) {
     if (perspective == 'JUNTO') {
       setState(() {
-        _currentFeed = getCollectiveExpressions(
-            contextId: null, contextType: 'Collective', dos: null);
+        _expressionCompleter.complete(getCollectiveExpressions(
+            contextId: null, contextType: 'Collective', dos: null));
         _showDegrees = true;
         _appbarTitle = 'JUNTO';
       });
     } else {
+      _expressionCompleter = Completer<List<CentralizedExpressionResponse>>()
+        ..complete(
+          getCollectiveExpressions(
+              contextId: perspective.address,
+              contextType: 'FollowPerspective',
+              dos: null),
+        );
       setState(() {
-        _currentFeed = getCollectiveExpressions(
-            contextId: perspective.address,
-            contextType: 'FollowPerspective',
-            dos: null);
         _showDegrees = false;
         if (perspective.name ==
             _userProfile.user.name + "'s Follow Perspective") {
