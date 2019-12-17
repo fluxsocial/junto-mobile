@@ -130,6 +130,7 @@ class CreateSphereBottomSheetState extends State<CreateSphereBottomSheet> {
       await Provider.of<GroupRepo>(context).createSphere(sphere);
       JuntoOverlay.hide();
       Navigator.pop(context);
+      setState(() {});
     } catch (error) {
       JuntoOverlay.hide();
       print(error);
@@ -176,9 +177,7 @@ class CreateSphereBottomSheetState extends State<CreateSphereBottomSheet> {
                     ),
               _currentPage == 4
                   ? GestureDetector(
-                      onTap: () {
-                        _createSphere();
-                      },
+                      onTap: _createSphere,
                       child: const Text('create'),
                     )
                   : GestureDetector(

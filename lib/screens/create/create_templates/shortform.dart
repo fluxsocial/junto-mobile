@@ -45,8 +45,7 @@ class CreateShortformState extends State<CreateShortform> {
 
   @override
   Widget build(BuildContext context) {
-    // final String _bodyValue = _bodyController.text
-
+    //ignore:unused_element
     void _setBackground(String background) {
       if (background == 'zero') {
         setState(() {
@@ -95,6 +94,7 @@ class CreateShortformState extends State<CreateShortform> {
       }
     }
 
+    //ignore:unused_element
     Widget _buildBackgroundPicker(Color colorOne, Color colorTwo) {
       return Container(
         decoration: BoxDecoration(

@@ -18,7 +18,7 @@ class JuntoSpheres extends StatefulWidget {
   }) : super(key: key);
 
   final UserData userProfile;
-  final userSpheres;
+  final List<Group> userSpheres;
 
   @override
   State<StatefulWidget> createState() => JuntoSpheresState();

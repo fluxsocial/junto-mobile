@@ -49,7 +49,7 @@ class JuntoDenSliverAppbar extends StatelessWidget {
                       Flexible(
                         child: Text(
                           name,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.w600,
                             color: Colors.white,

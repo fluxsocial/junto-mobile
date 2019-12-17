@@ -39,9 +39,8 @@ class AuthRepo {
   Future<UserData> loginUser(UserAuthLoginDetails details) async {
     try {
       final UserData _user = await _authService.loginUser(details);
-      final Map _userToMap = _user.toMap();
+      final Map<String, dynamic> _userToMap = _user.toMap();
       final String _userMapToString = json.encode(_userToMap);
-      print(_userMapToString);
       final LocalStorage _storage = LocalStorage('user-details');
       final bool ready = await _storage.ready;
       if (ready) {

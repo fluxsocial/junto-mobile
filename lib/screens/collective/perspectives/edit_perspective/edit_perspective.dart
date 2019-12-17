@@ -88,9 +88,10 @@ class EditPerspective extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      CupertinoPageRoute(
-                          builder: (BuildContext context) =>
-                              EditPerspectiveMembers()),
+                      CupertinoPageRoute<dynamic>(
+                        builder: (BuildContext context) =>
+                            EditPerspectiveMembers(),
+                      ),
                     );
                   },
                   child: Container(

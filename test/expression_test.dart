@@ -7,13 +7,11 @@ import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 //server and functions becomes stable, these should be mocked.
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = null;
-  final ExpressionService _collectiveProvider =
-      MockExpressionService();
+  final ExpressionService _collectiveProvider = MockExpressionService();
 
   setUpAll(() {
     SharedPreferences.setMockInitialValues(<String, String>{

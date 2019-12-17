@@ -61,7 +61,9 @@ class MockExpressionService implements ExpressionService {
   }
 
   @override
-  Future<QueryExpressionResults> getCollectiveExpressions(params) async {
+  Future<QueryExpressionResults> getCollectiveExpressions(
+    Map<String, String> params,
+  ) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     return QueryExpressionResults(
       results: kSampleExpressions,

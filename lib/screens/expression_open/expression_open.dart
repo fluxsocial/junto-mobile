@@ -303,9 +303,8 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                             itemCount: snapshot.data.length,
                             itemBuilder: (BuildContext context, int index) {
                               return CommentPreview(
-                                comment: snapshot.data[index],
-                                parent: widget.expression
-                              );
+                                  comment: snapshot.data[index],
+                                  parent: widget.expression);
                             },
                           );
                         return Container(
@@ -389,146 +388,148 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
     return SafeArea(
       top: false,
       child: Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: JuntoStyles.horizontalPadding,
-            vertical: 5,
-          ),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.background,
-            border: Border(
-              top: BorderSide(
-                width: .75,
-                color: Theme.of(context).dividerColor,
-              ),
+        padding: const EdgeInsets.symmetric(
+          horizontal: JuntoStyles.horizontalPadding,
+          vertical: 5,
+        ),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.background,
+          border: Border(
+            top: BorderSide(
+              width: .75,
+              color: Theme.of(context).dividerColor,
             ),
           ),
-          child: Column(
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.only(left: 15),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surface,
-                        borderRadius: BorderRadius.circular(25),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          ValueListenableBuilder<MessageType>(
-                              valueListenable: _type,
-                              builder:
-                                  (BuildContext context, MessageType type, _) {
-                                return type == MessageType.gif &&
-                                        selectedUrl != null
-                                    ? Container(
-                                        margin: const EdgeInsets.only(top: 10),
-                                        child: Stack(children: [
-                                          Container(
-                                            height: 150.0,
-                                            width: 150.0,
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              child: CachedNetworkImage(
-                                                placeholder:
-                                                    (BuildContext context,
-                                                        String _) {
-                                                  return Container(
-                                                    height: 120,
-                                                    width: 120,
-                                                    decoration: BoxDecoration(
-                                                      gradient: LinearGradient(
-                                                        begin: Alignment
-                                                            .bottomLeft,
-                                                        end: Alignment.topRight,
-                                                        stops: const <double>[
-                                                          0.2,
-                                                          0.9
-                                                        ],
-                                                        colors: <Color>[
-                                                          Theme.of(context)
-                                                              .colorScheme
-                                                              .secondary,
-                                                          Theme.of(context)
-                                                              .colorScheme
-                                                              .primary
-                                                        ],
-                                                      ),
+        ),
+        child: Column(
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.only(left: 15),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surface,
+                      borderRadius: BorderRadius.circular(25),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        ValueListenableBuilder<MessageType>(
+                          valueListenable: _type,
+                          builder: (BuildContext context, MessageType type, _) {
+                            return type == MessageType.gif &&
+                                    selectedUrl != null
+                                ? Container(
+                                    margin: const EdgeInsets.only(top: 10),
+                                    child: Stack(
+                                      children: <Widget>[
+                                        Container(
+                                          height: 150.0,
+                                          width: 150.0,
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            child: CachedNetworkImage(
+                                              placeholder:
+                                                  (BuildContext context,
+                                                      String _) {
+                                                return Container(
+                                                  height: 120,
+                                                  width: 120,
+                                                  decoration: BoxDecoration(
+                                                    gradient: LinearGradient(
+                                                      begin:
+                                                          Alignment.bottomLeft,
+                                                      end: Alignment.topRight,
+                                                      stops: const <double>[
+                                                        0.2,
+                                                        0.9
+                                                      ],
+                                                      colors: <Color>[
+                                                        Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary,
+                                                        Theme.of(context)
+                                                            .colorScheme
+                                                            .primary
+                                                      ],
                                                     ),
-                                                  );
-                                                },
-                                                imageUrl: selectedUrl,
-                                                fit: BoxFit.cover,
+                                                  ),
+                                                );
+                                              },
+                                              imageUrl: selectedUrl,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                        Positioned(
+                                          top: 5,
+                                          right: 5,
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                selectedUrl = null;
+                                              });
+                                            },
+                                            child: Container(
+                                              height: 30,
+                                              width: 30,
+                                              decoration: BoxDecoration(
+                                                color: const Color(0xff222222)
+                                                    .withOpacity(.8),
+                                                borderRadius:
+                                                    BorderRadius.circular(100),
+                                              ),
+                                              alignment: Alignment.center,
+                                              child: const Text(
+                                                'x',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
                                               ),
                                             ),
                                           ),
-                                          Positioned(
-                                            top: 5,
-                                            right: 5,
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                setState(() {
-                                                  selectedUrl = null;
-                                                });
-                                              },
-                                              child: Container(
-                                                height: 30,
-                                                width: 30,
-                                                decoration: BoxDecoration(
-                                                  color: const Color(0xff222222)
-                                                      .withOpacity(.8),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          100),
-                                                ),
-                                                alignment: Alignment.center,
-                                                child: Text(
-                                                  'x',
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 13,
-                                                    fontWeight: FontWeight.w700,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          )
-                                        ]),
-                                      )
-                                    : const SizedBox();
-                              }),
-                          Container(
-                            constraints: const BoxConstraints(maxHeight: 180),
-                            child: TextField(
-                              focusNode: widget.focusNode,
-                              controller: widget.commentController,
-                              onChanged: widget.onTextChange,
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'write a reply...',
-                                hintStyle: TextStyle(
-                                    fontSize: 13,
-                                    color: Theme.of(context).primaryColor),
-                              ),
-                              maxLines: null,
-                              cursorColor: Theme.of(context).primaryColor,
-                              cursorWidth: 2,
-                              style: Theme.of(context).textTheme.caption,
-                              textInputAction: TextInputAction.newline,
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                : const SizedBox();
+                          },
+                        ),
+                        Container(
+                          constraints: const BoxConstraints(maxHeight: 180),
+                          child: TextField(
+                            focusNode: widget.focusNode,
+                            controller: widget.commentController,
+                            onChanged: widget.onTextChange,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'write a reply...',
+                              hintStyle: TextStyle(
+                                  fontSize: 13,
+                                  color: Theme.of(context).primaryColor),
                             ),
+                            maxLines: null,
+                            cursorColor: Theme.of(context).primaryColor,
+                            cursorWidth: 2,
+                            style: Theme.of(context).textTheme.caption,
+                            textInputAction: TextInputAction.newline,
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
-              _buildBottomStrip()
-            ],
-          )),
+                ),
+              ],
+            ),
+            _buildBottomStrip()
+          ],
+        ),
+      ),
     );
   }
 
@@ -659,10 +660,8 @@ class _GiphyPanelState extends State<_GiphyPanel> {
                   ),
                 ),
                 child: TextField(
-                  decoration: InputDecoration(
-                      hintText: 'Search for GIFs',
-                      hintStyle: TextStyle(),
-                      border: InputBorder.none),
+                  decoration: const InputDecoration(
+                      hintText: 'Search for GIFs', border: InputBorder.none),
                   onChanged: onTextChange,
                 ),
               ),

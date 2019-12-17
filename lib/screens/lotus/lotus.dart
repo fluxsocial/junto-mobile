@@ -25,8 +25,9 @@ class JuntoLotus extends StatelessWidget {
         Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          child:
-              Image.asset('assets/images/junto-mobile__background--lotus.png',fit: BoxFit.cover),
+          child: Image.asset(
+              'assets/images/junto-mobile__background--lotus.png',
+              fit: BoxFit.cover),
         ),
         Container(
           height: MediaQuery.of(context).size.height,
@@ -62,7 +63,7 @@ class JuntoLotus extends StatelessWidget {
                                   Animation<double> secondaryAnimation,
                                 ) {
                                   return JuntoCreate(
-                                    channels: [],
+                                    channels: const <String>[],
                                     address: address,
                                     expressionContext: expressionContext,
                                   );
@@ -95,8 +96,11 @@ class JuntoLotus extends StatelessWidget {
                               children: <Widget>[
                                 Container(
                                   width: 27,
-                                  child: Icon(CustomIcons.create,
-                                      size: 20, color: Colors.white),
+                                  child: const Icon(
+                                    CustomIcons.create,
+                                    size: 20,
+                                    color: Colors.white,
+                                  ),
                                 ),
                                 const SizedBox(height: 10),
                                 const Text(
@@ -150,8 +154,11 @@ class JuntoLotus extends StatelessWidget {
                               children: <Widget>[
                                 Transform.translate(
                                   offset: const Offset(-5, 0),
-                                  child: Icon(CustomIcons.groups,
-                                      size: 20, color: Colors.white),
+                                  child: const Icon(
+                                    CustomIcons.groups,
+                                    size: 20,
+                                    color: Colors.white,
+                                  ),
                                 ),
                                 const SizedBox(height: 10),
                                 const Text(
@@ -213,8 +220,11 @@ class JuntoLotus extends StatelessWidget {
                               children: <Widget>[
                                 Container(
                                   width: 45,
-                                  child: Icon(CustomIcons.collective,
-                                      size: 15, color: Colors.white),
+                                  child: const Icon(
+                                    CustomIcons.collective,
+                                    size: 15,
+                                    color: Colors.white,
+                                  ),
                                 ),
                                 const SizedBox(height: 10),
                                 const Text(
@@ -267,8 +277,11 @@ class JuntoLotus extends StatelessWidget {
                               children: <Widget>[
                                 Transform.translate(
                                   offset: const Offset(-15, 0),
-                                  child: Icon(CustomIcons.collective,
-                                      size: 15, color: Colors.white),
+                                  child: const Icon(
+                                    CustomIcons.collective,
+                                    size: 15,
+                                    color: Colors.white,
+                                  ),
                                 ),
                                 const SizedBox(height: 10),
                                 const Text(

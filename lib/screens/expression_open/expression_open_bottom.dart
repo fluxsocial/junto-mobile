@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
@@ -36,15 +35,14 @@ class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  // MaterialLocalizations.of(context).formatFullDate(
-                  //   widget.expression.createdAt ?? DateTime.now(),
-                  // ),
-                  'today',
+                  MaterialLocalizations.of(context).formatFullDate(
+                    widget.expression.createdAt ?? DateTime.now(),
+                  ),
                   // widget.expression.createdAt.toString(),
                   style: JuntoStyles.expressionTimestamp,
                 ),
                 Row(
-                  children: <Widget>[
+                  children: const <Widget>[
                     // GestureDetector(
                     //   onTap: () {
                     //     widget.focusTextField();®
@@ -75,6 +73,7 @@ class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
     );
   }
 
+  //ignore: unused_element
   void _buildResonationModal() {
     showModalBottomSheet(
       context: context,

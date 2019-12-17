@@ -17,7 +17,9 @@ class ShortformPreview extends StatefulWidget {
 }
 
 class ShortformPreviewState extends State<ShortformPreview> {
+  //ignore:unused_field
   Color _gradientOne;
+  //ignore:unused_field
   Color _gradientTwo;
   String shortformBody = '';
 

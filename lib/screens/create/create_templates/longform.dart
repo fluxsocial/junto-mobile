@@ -65,17 +65,16 @@ class CreateLongformState extends State<CreateLongform> {
                     minHeight: MediaQuery.of(context).size.height * .7,
                   ),
                   child: TextField(
-                    controller: _bodyController,
-                    // keyboardType: TextInputType.multiline,
-                    textInputAction: TextInputAction.done,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                    ),
-                    cursorColor: Theme.of(context).primaryColorLight,
-                    cursorWidth: 2,
-                    maxLines: null,
-                    style: Theme.of(context).textTheme.caption
-                  ),
+                      controller: _bodyController,
+                      // keyboardType: TextInputType.multiline,
+                      textInputAction: TextInputAction.done,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                      ),
+                      cursorColor: Theme.of(context).primaryColorLight,
+                      cursorWidth: 2,
+                      maxLines: null,
+                      style: Theme.of(context).textTheme.caption),
                 ),
               ],
             ),

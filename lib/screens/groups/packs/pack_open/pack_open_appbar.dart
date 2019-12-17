@@ -49,11 +49,11 @@ class PackOpenAppbar extends StatelessWidget {
                 height: 32.0,
                 width: 32.0,
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
+                  gradient: const LinearGradient(
                     begin: Alignment.bottomLeft,
                     end: Alignment.topRight,
-                    stops: const <double>[0.3, 0.9],
-                    colors: const <Color>[
+                    stops: <double>[0.3, 0.9],
+                    colors: <Color>[
                       JuntoPalette.juntoSecondary,
                       JuntoPalette.juntoPrimary,
                     ],

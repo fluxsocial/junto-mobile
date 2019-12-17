@@ -187,13 +187,13 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
                 ],
               ),
               Container(
-                margin: EdgeInsets.only(top: 50),
+                margin: const EdgeInsets.only(top: 50),
                 width: 200,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
-                    stops: <double>[0.1, 0.9],
+                    stops: const <double>[0.1, 0.9],
                     colors: <Color>[
                       Theme.of(context).colorScheme.secondary,
                       Theme.of(context).colorScheme.primary

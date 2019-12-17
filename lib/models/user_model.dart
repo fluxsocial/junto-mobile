@@ -89,16 +89,16 @@ class UserProfile {
 
   @override
   String toString() {
-    return 'UserProfile{' +
-        ' address: $address,' +
-        ' name: $name,' +
-        ' bio: $bio,' +
-        ' location: $location,' +
-        ' profilePicture: $profilePicture,' +
-        ' verified: $verified,' +
-        ' username: $username,' +
-        ' website: $website,' +
-        ' gender: $gender,' +
+    return 'UserProfile{'
+        ' address: $address,'
+        ' name: $name,'
+        ' bio: $bio,'
+        ' location: $location,'
+        ' profilePicture: $profilePicture,'
+        ' verified: $verified,'
+        ' username: $username,'
+        ' website: $website,'
+        ' gender: $gender,'
         '}';
   }
 
