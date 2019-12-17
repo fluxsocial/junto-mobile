@@ -36,9 +36,9 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
           if (snapshot.hasError) {
             print(snapshot.error);
             return Container(
-              child: Text(
+              child: const Text(
                 'hmm, something is up...',
-                style: const TextStyle(fontSize: 14, color: Colors.white),
+                style: TextStyle(fontSize: 14, color: Colors.white),
               ),
             );
           }
