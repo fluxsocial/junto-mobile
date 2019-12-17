@@ -325,16 +325,14 @@ class ExpressionQueryParams {
     @required this.context,
     @required this.channels,
     @required this.contextType,
+    @required this.paginationPos,
   });
 
   final int dos;
   final int context;
   final List<String> channels;
   final ExpressionContextType contextType;
+  final int paginationPos;
 }
 
-enum ExpressionContextType {
-  dos,
-  perspective,
-  random,
-}
+enum ExpressionContextType { dos, perspective, random, collective }

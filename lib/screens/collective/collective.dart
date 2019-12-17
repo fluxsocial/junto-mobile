@@ -76,7 +76,8 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
     _expressionProvider = Provider.of<ExpressionRepo>(context);
     _expressionCompleter = Completer<List<CentralizedExpressionResponse>>()
       ..complete(
-        getCollectiveExpressions(contextType: 'Collective', contextId: null),
+        getCollectiveExpressions(
+            contextType: 'Collective', paginationPos: null),
       );
   }
 
@@ -99,11 +100,11 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
     dynamic dos,
     String contextType,
     List<String> channels,
-    dynamic contextId,
+    int paginationPos = 0,
   }) async {
-    final Map<String, dynamic> _params = <String, dynamic>{
+    final Map<String, dynamic> _params = <String, String>{
       'context_type': contextType,
-      'context_id': contextId
+      'pagination_position': paginationPos.toString(),
     };
 
     return await _expressionProvider.getCollectiveExpressions(_params);
@@ -366,7 +367,7 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
   void _switchDegree({String degreeName, int degreeNumber}) {
     _expressionCompleter = Completer<List<CentralizedExpressionResponse>>()
       ..complete(getCollectiveExpressions(
-          contextId: null, contextType: 'Collective', dos: degreeNumber));
+          paginationPos: null, contextType: 'Collective', dos: degreeNumber));
     setState(() {
       _showDegrees = true;
     });
@@ -380,7 +381,7 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
     if (perspective == 'JUNTO') {
       setState(() {
         _expressionCompleter.complete(getCollectiveExpressions(
-            contextId: null, contextType: 'Collective', dos: null));
+            paginationPos: null, contextType: 'Collective', dos: null));
         _showDegrees = true;
         _appbarTitle = 'JUNTO';
       });
@@ -388,7 +389,7 @@ class JuntoCollectiveState extends State<JuntoCollective> with HideFab {
       _expressionCompleter = Completer<List<CentralizedExpressionResponse>>()
         ..complete(
           getCollectiveExpressions(
-              contextId: perspective.address,
+              paginationPos: perspective.address,
               contextType: 'FollowPerspective',
               dos: null),
         );

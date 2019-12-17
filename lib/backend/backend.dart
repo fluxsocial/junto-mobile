@@ -8,6 +8,7 @@ import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/backend/services/auth_service.dart';
 import 'package:junto_beta_mobile/backend/services/collective_provider.dart';
+import 'package:junto_beta_mobile/backend/services/expression_provider.dart';
 import 'package:junto_beta_mobile/backend/services/group_service.dart';
 import 'package:junto_beta_mobile/backend/services/search_provider.dart';
 import 'package:junto_beta_mobile/backend/services/user_service.dart';
@@ -32,7 +33,7 @@ class Backend {
         AuthenticationServiceCentralized(client);
     final UserService userService = UserServiceCentralized(client);
     final ExpressionService expressionService =
-        MockExpressionService(); // ExpressionServiceCentralized(client);
+        ExpressionServiceCentralized(client);
     final GroupService groupService = GroupServiceCentralized(client);
     return Backend._(
       searchProvider: SearchProviderCentralized(client),
