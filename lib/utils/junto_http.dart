@@ -25,7 +25,7 @@ class JuntoHttp {
     final String authKey = await _getAuthKey();
     return <String, String>{
       'Content-Type': 'application/json',
-      'Authorization': 'auth=$authKey',
+      'Authorization': authKey,
     };
   }
 
