@@ -66,7 +66,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
     _denController.removeListener(_onScrollingHasChanged);
   }
 
-  _onScrollingHasChanged() {
+  void _onScrollingHasChanged() {
     super.hideFabOnScroll(_denController, _isVisible);
   }
 
@@ -266,9 +266,11 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                     ),
 
                     // public expressions of user
-                    FutureBuilder<dynamic>(
+                    FutureBuilder<List<CentralizedExpressionResponse>>(
                       future: getUsersExpressions(),
-                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      builder: (BuildContext context,
+                          AsyncSnapshot<List<CentralizedExpressionResponse>>
+                              snapshot) {
                         if (snapshot.hasError) {
                           return Center(
                             child: Transform.translate(
@@ -358,9 +360,11 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                     ),
 
                     // private expressions of user
-                    FutureBuilder<dynamic>(
+                    FutureBuilder<List<CentralizedExpressionResponse>>(
                       future: getUsersExpressions(),
-                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      builder: (BuildContext context,
+                          AsyncSnapshot<List<CentralizedExpressionResponse>>
+                              snapshot) {
                         if (snapshot.hasError) {
                           return const Center(
                             child: Text('something is up'),

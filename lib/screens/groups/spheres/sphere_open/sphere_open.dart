@@ -6,7 +6,6 @@ import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/spheres/sphere_open/sphere_open_appbar.dart';
-import 'package:junto_beta_mobile/screens/groups/spheres/sphere_open/sphere_open_facilitators.dart';
 import 'package:junto_beta_mobile/screens/groups/spheres/sphere_open/sphere_open_members.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';

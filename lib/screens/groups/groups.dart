@@ -33,6 +33,7 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
       AsyncMemoizer<UserGroupsResponse>();
 
   UserRepo _userProvider;
+  //ignore:unused_field
   String _userAddress;
   UserData _userProfile;
 
@@ -80,8 +81,8 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(45),
+        appBar: const PreferredSize(
+          preferredSize: Size.fromHeight(45),
           child: JuntoGroupsAppbar(),
         ),
         floatingActionButton: ValueListenableBuilder<bool>(
@@ -190,72 +191,74 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
                 ],
               ),
             ),
-            _userProfile != null
-                ? FutureBuilder<dynamic>(
-                    future: getUserGroups(),
-                    builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      if (snapshot.hasError) {
-                        print(snapshot.error);
-                        return Expanded(
-                          child: Center(
-                            child: Transform.translate(
-                              offset: const Offset(0.0, -50),
-                              child: const Text(
-                                  'Hmm, something is up with our server'),
-                            ),
-                          ),
-                        );
-                      }
-                      if (snapshot.hasData) {
-                        final List<Group> ownedGroups = snapshot.data.owned;
-                        final List<Group> associatedGroups =
-                            snapshot.data.associated;
-                        final List<Group> userPacks = distinct<Group>(
-                                ownedGroups, associatedGroups)
+            if (_userProfile != null)
+              FutureBuilder<UserGroupsResponse>(
+                future: getUserGroups(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<UserGroupsResponse> snapshot) {
+                  if (snapshot.hasError) {
+                    print(snapshot.error);
+                    return Expanded(
+                      child: Center(
+                        child: Transform.translate(
+                          offset: const Offset(0.0, -50),
+                          child: const Text(
+                              'Hmm, something is up with our server'),
+                        ),
+                      ),
+                    );
+                  }
+                  if (snapshot.hasData) {
+                    final List<Group> ownedGroups = snapshot.data.owned;
+                    final List<Group> associatedGroups =
+                        snapshot.data.associated;
+                    final List<Group> userPacks =
+                        distinct<Group>(ownedGroups, associatedGroups)
                             .where((Group group) => group.groupType == 'Pack')
                             .toList();
-                        final List<Group> userSpheres = distinct<Group>(
-                                ownedGroups, associatedGroups)
+                    final List<Group> userSpheres =
+                        distinct<Group>(ownedGroups, associatedGroups)
                             .where((Group group) => group.groupType == 'Sphere')
                             .toList();
-                        return Expanded(
-                          child: PageView(
-                            controller: _groupsPageController,
-                            onPageChanged: (int index) {
-                              setState(() {
-                                _currentIndex = index;
-                              });
-                            },
-                            children: <Widget>[
-                              JuntoSpheres(
-                                  userProfile: _userProfile,
-                                  userSpheres: userSpheres),
-                              JuntoPacks(
-                                  visibility: _isVisible,
-                                  userProfile: _userProfile,
-                                  userPacks: userPacks)
-                            ],
-                          ),
-                        );
-                      }
-                      return Expanded(
-                        child: Center(
-                          child: Transform.translate(
-                            offset: const Offset(0.0, -50),
-                            child: JuntoProgressIndicator(),
-                          ),
-                        ),
-                      );
-                    },
-                  )
-                : Expanded(
+                    return Expanded(
+                      child: PageView(
+                        controller: _groupsPageController,
+                        onPageChanged: (int index) {
+                          setState(() {
+                            _currentIndex = index;
+                          });
+                        },
+                        children: <Widget>[
+                          JuntoSpheres(
+                              userProfile: _userProfile,
+                              userSpheres: userSpheres),
+                          JuntoPacks(
+                              visibility: _isVisible,
+                              userProfile: _userProfile,
+                              userPacks: userPacks)
+                        ],
+                      ),
+                    );
+                  }
+                  return Expanded(
                     child: Center(
                       child: Transform.translate(
                         offset: const Offset(0.0, -50),
                         child: JuntoProgressIndicator(),
                       ),
                     ),
-                  )
+                  );
+                },
+              ),
+            if (_userProfile == null)
+              Expanded(
+                child: Center(
+                  child: Transform.translate(
+                    offset: const Offset(0.0, -50),
+                    child: JuntoProgressIndicator(),
+                  ),
+                ),
+              )
           ],
         ),
       ),

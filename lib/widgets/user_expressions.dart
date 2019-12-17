@@ -43,9 +43,12 @@ class _UserExpressionsState extends State<UserExpressions> {
   @override
   Widget build(BuildContext context) {
     // public expressions of user
-    return FutureBuilder<dynamic>(
+    return FutureBuilder<List<CentralizedExpressionResponse>>(
       future: getExpressions(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
+      builder: (
+        BuildContext context,
+        AsyncSnapshot<List<CentralizedExpressionResponse>> snapshot,
+      ) {
         if (snapshot.hasError) {
           return Center(
             child: Transform.translate(

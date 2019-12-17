@@ -14,7 +14,7 @@ class JuntoDrawer extends StatefulWidget {
   const JuntoDrawer({this.screen, this.icon});
 
   final String screen;
-  final icon;
+  final IconData icon;
 
   @override
   _JuntoDrawerState createState() => _JuntoDrawerState();
@@ -58,6 +58,7 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
     );
   }
 
+//ignore:unused_element
   void _onEditPress() {
     Navigator.push(
       context,
@@ -67,7 +68,8 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
     );
   }
 
-  _displayIcon(screen) {
+//ignore:unused_element
+  Widget _displayIcon(String screen) {
     if (screen == 'Collective') {
       return Container(
           margin: const EdgeInsets.only(right: 18),
@@ -89,6 +91,7 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
           child: Icon(widget.icon,
               size: 17, color: Theme.of(context).primaryColor));
     }
+    return Container();
   }
 
   @override

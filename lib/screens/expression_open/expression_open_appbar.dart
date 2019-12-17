@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/models/expression.dart';
 
 class ExpressionOpenAppbar extends StatelessWidget {
   const ExpressionOpenAppbar({this.expression});
 
-  final expression;
+  final CentralizedExpressionResponse expression;
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +70,7 @@ class ExpressionOpenAppbar extends StatelessWidget {
 
 class ExpressionOpenContext extends StatelessWidget {
   const ExpressionOpenContext(this.expression);
-  final expression;
+  final CentralizedExpressionResponse expression;
 
   Widget _contextIcon(BuildContext context, String contextType) {
     if (contextType == 'collective') {

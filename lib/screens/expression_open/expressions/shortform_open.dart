@@ -16,7 +16,9 @@ class ShortformOpen extends StatefulWidget {
 class ShortformOpenState extends State<ShortformOpen> {
   String _shortformBackground;
   String _shortformBody;
+  //ignore:unused_field
   Color _gradientOne;
+  //ignore:unused_field
   Color _gradientTwo;
 
   void _buildBackground() {

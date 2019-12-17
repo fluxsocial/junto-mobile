@@ -36,7 +36,7 @@ class FilterChannelFAB extends StatelessWidget {
           borderRadius: BorderRadius.circular(100),
         ),
         alignment: Alignment.center,
-        child: Icon(CustomIcons.hash, size: 17, color: Colors.white),
+        child: const Icon(CustomIcons.hash, size: 17, color: Colors.white),
       ),
     );
   }

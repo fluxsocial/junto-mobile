@@ -12,7 +12,10 @@ import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression
 
 /// Renders a concise overview of one given [ExpressionResult].
 class ExpressionPreview extends StatelessWidget {
-  ExpressionPreview({Key key, @required this.expression}) : super(key: key);
+  const ExpressionPreview({
+    Key key,
+    @required this.expression,
+  }) : super(key: key);
 
   final CentralizedExpressionResponse expression;
 
@@ -47,7 +50,7 @@ class ExpressionPreview extends StatelessWidget {
                   // expression preview body
                   _returnExpression(),
                 ],
-              ), 
+              ),
             ),
             const SizedBox(height: 5),
 

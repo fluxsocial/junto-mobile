@@ -11,7 +11,6 @@ class LongformPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String expressionBody = expression.expressionData.body;
     return Container(
       padding: const EdgeInsets.all(10),
       width: MediaQuery.of(context).size.width,

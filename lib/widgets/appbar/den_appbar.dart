@@ -19,7 +19,7 @@ class DenAppbar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _DenAppbarState extends State<DenAppbar> {
-  var _users;
+  ValueNotifier<SelectedUsers> _users;
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +80,7 @@ class _DenAppbarState extends State<DenAppbar> {
                         return ListenableProvider<
                             ValueNotifier<SelectedUsers>>.value(
                           value: _users,
-                          child: JuntoAppbarSearch(),
+                          child: const JuntoAppbarSearch(),
                         );
                       },
                     );
@@ -90,7 +90,7 @@ class _DenAppbarState extends State<DenAppbar> {
                     padding: const EdgeInsets.only(right: 10),
                     alignment: Alignment.centerRight,
                     color: Colors.transparent,
-                    child: Icon(
+                    child: const Icon(
                       Icons.search,
                     ),
                   ),
