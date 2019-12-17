@@ -46,110 +46,7 @@ class _JuntoMemberState extends State<JuntoMember> {
           physics: const ClampingScrollPhysics(),
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
-              SliverAppBar(
-                brightness: Brightness.light,
-                automaticallyImplyLeading: false,
-                primary: false,
-                actions: const <Widget>[SizedBox(height: 0, width: 0)],
-                backgroundColor: Theme.of(context).colorScheme.background,
-                pinned: false,
-                flexibleSpace: FlexibleSpaceBar(
-                  collapseMode: CollapseMode.pin,
-                  background: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        height: MediaQuery.of(context).size.height * .24,
-                        padding: const EdgeInsets.only(
-                            left: 10, right: 10, bottom: 10),
-                        alignment: Alignment.bottomLeft,
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                              stops: const <double>[0.1, 0.9],
-                              colors: <Color>[
-                                Theme.of(context).colorScheme.secondaryVariant,
-                                Theme.of(context).colorScheme.primaryVariant,
-                              ],
-                            ),
-                            border: Border(
-                              bottom: BorderSide(
-                                  color: Theme.of(context).dividerColor,
-                                  width: .75),
-                            )),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            const SizedBox(),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: <Widget>[
-                                Flexible(
-                                  child: Text(
-                                    widget.profile.name,
-                                    style: TextStyle(
-                                      fontSize: 28,
-                                      fontWeight: FontWeight.w600,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onPrimary,
-                                    ),
-                                  ),
-                                ),
-                                GestureDetector(
-                                    onTap: () {
-                                      showModalBottomSheet(
-                                        context: context,
-                                        builder: (BuildContext context) =>
-                                            Container(
-                                          color: Colors.transparent,
-                                          child: MemberRelationshipsModal(),
-                                        ),
-                                      );
-                                    },
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 7.5),
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onPrimary,
-                                            width: 1.5),
-                                        borderRadius: BorderRadius.circular(25),
-                                      ),
-                                      child: Row(
-                                        children: <Widget>[
-                                          const SizedBox(width: 14),
-                                          Image.asset(
-                                              'assets/images/junto-mobile__infinity.png',
-                                              height: 14,
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .onPrimary),
-                                          const SizedBox(width: 2),
-                                          Icon(Icons.keyboard_arrow_down,
-                                              size: 12,
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .onPrimary)
-                                        ],
-                                      ),
-                                    )),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                expandedHeight: MediaQuery.of(context).size.height * .24,
-                forceElevated: false,
-              ),
+              _MemberDenAppbar(profile: widget.profile),
               SliverPersistentHeader(
                 delegate: JuntoAppBarDelegate(
                   TabBar(
@@ -186,68 +83,22 @@ class _JuntoMemberState extends State<JuntoMember> {
                     padding: const EdgeInsets.only(top: 5, bottom: 5),
                     child: Column(
                       children: <Widget>[
-                        Container(
-                          child: Row(
-                            children: <Widget>[
-                              Icon(CustomIcons.gender,
-                                  size: 17,
-                                  color: Theme.of(context).primaryColor),
-                              const SizedBox(width: 5),
-                              Text(
-                                'gender',
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    color: Theme.of(context).primaryColor,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ],
-                          ),
+                        _ProfileDetails(
+                          iconData: CustomIcons.gender,
+                          item: widget.profile.gender,
+                          placeholderText: 'Gender',
                         ),
                         const SizedBox(height: 10),
-                        Container(
-                          child: Row(
-                            children: <Widget>[
-                              Image.asset(
-                                'assets/images/junto-mobile__location.png',
-                                height: 15,
-                                color: Theme.of(context).primaryColor,
-                              ),
-                              const SizedBox(width: 5),
-                              Text(
-                                'location',
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    color: Theme.of(context).primaryColor,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ],
-                          ),
+                        _ProfileDetails(
+                          imageUri: 'assets/images/junto-mobile__location.png',
+                          item: widget.profile.location,
+                          placeholderText: 'Location',
                         ),
                         const SizedBox(height: 10),
-                        Container(
-                          child: Row(
-                            children: <Widget>[
-                              Image.asset(
-                                'assets/images/junto-mobile__link.png',
-                                height: 15,
-                                color: Theme.of(context).primaryColor,
-                              ),
-                              const SizedBox(width: 5),
-                              Text(
-                                'website',
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                                style: TextStyle(
-                                    color: Theme.of(context).primaryColor,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ],
-                          ),
+                        _ProfileDetails(
+                          imageUri: 'assets/images/junto-mobile__link.png',
+                          item: widget.profile.website,
+                          placeholderText: 'Website',
                         ),
                       ],
                     ),
@@ -288,6 +139,63 @@ class _JuntoMemberState extends State<JuntoMember> {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// Used to display the user's location, gender and website. Image and Icon data
+/// cannot be supplied at the same time.
+class _ProfileDetails extends StatelessWidget {
+  const _ProfileDetails({
+    Key key,
+    @required this.item,
+    @required this.placeholderText,
+    this.iconData,
+    this.imageUri,
+  }) : super(key: key);
+
+  final List<String> item;
+  final String placeholderText;
+  final IconData iconData;
+  final String imageUri;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Row(
+        children: <Widget>[
+          if (imageUri != null)
+            Image.asset(
+              imageUri,
+              height: 15,
+              color: Theme.of(context).primaryColor,
+            ),
+          if (iconData != null)
+            Icon(CustomIcons.gender,
+                size: 17, color: Theme.of(context).primaryColor),
+          const SizedBox(width: 5),
+          if (item.isNotEmpty)
+            Text(
+              item.first ?? '',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600),
+            ),
+          if (item.isEmpty)
+            Text(
+              placeholderText,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600),
+            ),
+        ],
       ),
     );
   }
@@ -415,6 +323,116 @@ class MemberRelationshipsModal extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _MemberDenAppbar extends StatelessWidget {
+  const _MemberDenAppbar({
+    Key key,
+    @required this.profile,
+  }) : super(key: key);
+
+  final UserProfile profile;
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverAppBar(
+      brightness: Brightness.light,
+      automaticallyImplyLeading: false,
+      primary: false,
+      actions: const <Widget>[SizedBox(height: 0, width: 0)],
+      backgroundColor: Theme.of(context).colorScheme.background,
+      pinned: false,
+      flexibleSpace: FlexibleSpaceBar(
+        collapseMode: CollapseMode.pin,
+        background: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              height: MediaQuery.of(context).size.height * .24,
+              padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+              alignment: Alignment.bottomLeft,
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    stops: const <double>[0.1, 0.9],
+                    colors: <Color>[
+                      Theme.of(context).colorScheme.secondaryVariant,
+                      Theme.of(context).colorScheme.primaryVariant,
+                    ],
+                  ),
+                  border: Border(
+                    bottom: BorderSide(
+                        color: Theme.of(context).dividerColor, width: .75),
+                  )),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  const SizedBox(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      Flexible(
+                        child: Text(
+                          profile.name,
+                          style: TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.w600,
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                          onTap: () {
+                            showModalBottomSheet(
+                              context: context,
+                              builder: (BuildContext context) => Container(
+                                color: Colors.transparent,
+                                child: MemberRelationshipsModal(),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 7.5),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
+                                  width: 1.5),
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                            child: Row(
+                              children: <Widget>[
+                                const SizedBox(width: 14),
+                                Image.asset(
+                                    'assets/images/junto-mobile__infinity.png',
+                                    height: 14,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimary),
+                                const SizedBox(width: 2),
+                                Icon(Icons.keyboard_arrow_down,
+                                    size: 12,
+                                    color:
+                                        Theme.of(context).colorScheme.onPrimary)
+                              ],
+                            ),
+                          )),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+      expandedHeight: MediaQuery.of(context).size.height * .24,
+      forceElevated: false,
     );
   }
 }

@@ -12,8 +12,6 @@ class ExpressionOpenTop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //Expression creator.
-    final UserProfile _creator = expression.creator;
     return Container(
       padding: const EdgeInsets.only(top: 15, bottom: 15, left: 10),
       child: Row(
@@ -26,7 +24,7 @@ class ExpressionOpenTop extends StatelessWidget {
                 context,
                 CupertinoPageRoute<dynamic>(
                   builder: (BuildContext context) => JuntoMember(
-                    profile: _creator,
+                    profile: expression.creator,
                   ),
                 ),
               );
@@ -50,9 +48,9 @@ class ExpressionOpenTop extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(_creator.username.toLowerCase() ?? '',
+                      Text(expression.creator.username.toLowerCase() ?? '',
                           style: Theme.of(context).textTheme.subhead),
-                      Text('${_creator.name}',
+                      Text('${expression.creator.name}',
                           style: Theme.of(context).textTheme.body1),
                     ],
                   ),
