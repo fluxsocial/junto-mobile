@@ -71,7 +71,6 @@ class JuntoHttp {
     );
     return http.Response.fromStream(_streamedResponse);
   }
-
   Future<http.Response> post(
     String resource, {
     Map<String, String> headers,

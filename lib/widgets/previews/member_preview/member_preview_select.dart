@@ -16,7 +16,7 @@ class MemberPreviewSelect extends StatelessWidget {
             children: <Widget>[
               ClipOval(
                 child: Image.asset(
-                  profile.profilePicture,
+                  profile.profilePicture[0],
                   height: 45.0,
                   width: 45.0,
                   fit: BoxFit.cover,

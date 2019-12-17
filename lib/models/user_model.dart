@@ -24,12 +24,12 @@ class UserProfile {
       address: map['address'] as String,
       name: map['name'] as String,
       bio: map['bio'] as String,
-      location: List<String>.from(map['location']),
-      profilePicture: map['profilePicture'] as String,
+      location: map['location'] != null ? List<String>.from(map['location']) : null ,
+      profilePicture: map['profile_picture'] != null ? List<String>.from(map['profile_picture']): null ,
       verified: map['verified'] as bool,
       username: map['username'] as String,
-      website: List<String>.from(map['website']),
-      gender: List<String>.from(map['gender']),
+      website: map['website'] !=null  ?  List<String>.from(map['website']) : null ,
+      gender: map['gender'] != null ? List<String>.from(map['gender']) : null ,
     );
   }
 
@@ -46,7 +46,7 @@ class UserProfile {
   final List<String> location;
 
   /// Url of the author's profile image
-  final String profilePicture;
+  final List<String> profilePicture;
 
   /// Whether the given user account has been verified
   final bool verified;
@@ -108,7 +108,7 @@ class UserProfile {
     String name,
     String bio,
     List<String> location,
-    String profilePicture,
+    List<String> profilePicture,
     bool verified,
     String username,
     List<String> website,
@@ -142,7 +142,7 @@ class UserProfile {
   }
 }
 
-/// Detials used during user authentication.
+/// Details used during user authentication.
 abstract class UserAuthDetails {
   String get email;
 
@@ -171,15 +171,16 @@ class UserAuthLoginDetails implements UserAuthDetails {
 /// Implementation of UserAuthDetails for registering a new user.
 /// All fields must not null or blank.
 class UserAuthRegistrationDetails implements UserAuthDetails {
-  UserAuthRegistrationDetails({
-    @required this.email,
-    @required this.password,
-    @required this.name,
-    @required this.username,
-    @required this.bio,
-    this.location,
-    this.profileImage,
-  });
+  UserAuthRegistrationDetails(
+      {@required this.email,
+      @required this.password,
+      @required this.name,
+      @required this.username,
+      @required this.bio,
+      @required this.location,
+      @required this.profileImage,
+      @required this.gender,
+      @required this.website});
 
   @override
   final String email;
@@ -188,8 +189,10 @@ class UserAuthRegistrationDetails implements UserAuthDetails {
   final String name;
   final String username;
   final String bio;
-  final String location;
-  final String profileImage;
+  final List<String> location;
+  final List<String> profileImage;
+  final List<String> gender;
+  final List<String> website;
 
   @override
   bool get isComplete => email != null && password != null && name != null;
@@ -198,8 +201,11 @@ class UserAuthRegistrationDetails implements UserAuthDetails {
     return <String, dynamic>{
       'username': username,
       'name': name,
-      'profile_picture': profileImage,
-      'bio': bio
+      'bio': bio,
+      'profileImage': profileImage,
+      'gender': gender,
+      'website': website,
+      'location': location
     };
   }
 }

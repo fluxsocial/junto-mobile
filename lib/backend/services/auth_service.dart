@@ -49,11 +49,13 @@ class AuthenticationServiceCentralized implements AuthenticationService {
       'name': details.name,
       'bio': details.bio,
       'username': details.username,
-      // 'location': 'New York',
-      'profile_picture': details.profileImage ?? ''
+      'website': details.website,
+      'gender': details.gender,
+      'location': details.location,
+      'profile_picture': details.profileImage
     };
 
-    final http.Response response = await client.post(
+    final http.Response response = await client.postWithoutEncoding(
       '/users',
       body: _body,
     );

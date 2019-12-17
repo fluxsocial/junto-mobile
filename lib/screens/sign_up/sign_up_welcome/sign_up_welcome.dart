@@ -53,14 +53,19 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
         name: widget.name,
         password: widget.password,
         bio: widget.bio,
-        location: 'New York',
+        gender: <String>['he/him'],
+        website: <String>['junto.foundation', 'hello'],
+        location: <String>['New York'],
         username: widget.username,
-        profileImage: widget.profilePicture ?? '');
+        profileImage: <String>[
+          'assets/images/junto-mobile__mockprofpic--one.png',
+          'assets/images/junto-mobile__mockprofpic--two.png'
+        ]);
     try {
       JuntoOverlay.showLoader(context);
       final UserData results =
           await Provider.of<AuthRepo>(context).registerUser(details);
-      final Map resultsMap = results.toMap();
+      final Map<String, dynamic> resultsMap = results.toMap();
       final String resultsMapToString = json.encode(resultsMap);
 
       await SharedPreferences.getInstance()
@@ -77,16 +82,18 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
         (Route<dynamic> route) => false,
       );
     } on JuntoException catch (error) {
+      print(details.profileImage);
       JuntoOverlay.hide();
       JuntoDialog.showJuntoDialog(
         context,
         error.message,
         <Widget>[
           FlatButton(
-            onPressed: () => Navigator.of(context).pushAndRemoveUntil(
-              Welcome.route(),
-              (Route<dynamic> route) => false,
-            ),
+            onPressed: () => Navigator.pop(context),
+            // onPressed: () => Navigator.of(context).pushAndRemoveUntil(
+            //   Welcome.route(),
+            //   (Route<dynamic> route) => false,
+            // ),
             child: const Text('OK'),
           ),
         ],
