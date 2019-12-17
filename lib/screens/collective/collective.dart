@@ -39,7 +39,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
       GlobalKey<ScaffoldState>();
 
   // Completer which controls expressions querying.
-  Completer<QueryExpressionResults> _expressionCompleter;
+  Future<QueryExpressionResults> _expressionCompleter;
 
   // for custom swipe to open perspectives drawer animation
   double _dx = 0.0;
@@ -59,7 +59,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
   @override
   void initState() {
     super.initState();
-    _expressionCompleter = Completer<QueryExpressionResults>();
     _collectiveController = ScrollController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _collectiveController.addListener(_onScrollingHasChanged);
@@ -75,11 +74,8 @@ class JuntoCollectiveState extends State<JuntoCollective>
   void didChangeDependencies() {
     super.didChangeDependencies();
     _expressionProvider = Provider.of<ExpressionRepo>(context);
-    _expressionCompleter = Completer<QueryExpressionResults>()
-      ..complete(
-        getCollectiveExpressions(
-            contextType: 'Collective', paginationPos: null),
-      );
+    _expressionCompleter =
+        getCollectiveExpressions(contextType: 'Collective', paginationPos: 0);
   }
 
   void _onScrollingHasChanged() {
@@ -98,16 +94,24 @@ class JuntoCollectiveState extends State<JuntoCollective>
   }
 
   Future<QueryExpressionResults> getCollectiveExpressions({
-    dynamic dos,
+    int dos,
     String contextType,
     List<String> channels,
     int paginationPos = 0,
   }) async {
-    final Map<String, dynamic> _params = <String, String>{
-      'context_type': contextType,
-      'pagination_position': paginationPos.toString(),
-    };
-
+    Map<String, dynamic> _params;
+    if (contextType == 'Dos' && dos != 0) {
+      _params = <String, String>{
+        'context_type': contextType,
+        'pagination_position': paginationPos.toString(),
+        'dos': dos.toString(),
+      };
+    } else {
+      _params = <String, String>{
+        'context_type': contextType,
+        'pagination_position': paginationPos.toString(),
+      };
+    }
     return await _expressionProvider.getCollectiveExpressions(_params);
   }
 
@@ -205,7 +209,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
 
       // dynamically render body
       body: FutureBuilder<QueryExpressionResults>(
-        future: _expressionCompleter.future,
+        future: _expressionCompleter,
         builder: (
           BuildContext context,
           AsyncSnapshot<QueryExpressionResults> snapshot,
@@ -338,13 +342,12 @@ class JuntoCollectiveState extends State<JuntoCollective>
 
 // switch between degrees of separation
   void _switchDegree({String degreeName, int degreeNumber}) {
-    _expressionCompleter = Completer<QueryExpressionResults>()
-      ..complete(getCollectiveExpressions(
-          paginationPos: null, contextType: 'Collective', dos: degreeNumber));
     setState(() {
       _showDegrees = true;
-    });
-    setState(() {
+      _expressionCompleter = getCollectiveExpressions(
+          paginationPos: 0,
+          contextType: degreeNumber == 0 ? 'Collective' : 'Dos',
+          dos: degreeNumber);
       currentDegree = degreeName;
     });
   }
@@ -353,20 +356,17 @@ class JuntoCollectiveState extends State<JuntoCollective>
   void _changePerspective(dynamic perspective) {
     if (perspective == 'JUNTO') {
       setState(() {
-        _expressionCompleter.complete(getCollectiveExpressions(
-            paginationPos: null, contextType: 'Collective', dos: null));
+        _expressionCompleter = getCollectiveExpressions(
+            paginationPos: null, contextType: 'Collective', dos: null);
         _showDegrees = true;
         _appbarTitle = 'JUNTO';
       });
     } else {
-      _expressionCompleter = Completer<QueryExpressionResults>()
-        ..complete(
-          getCollectiveExpressions(
-            paginationPos: perspective.address,
-            contextType: 'FollowPerspective',
-            dos: null,
-          ),
-        );
+      _expressionCompleter = getCollectiveExpressions(
+        paginationPos: perspective.address,
+        contextType: 'FollowPerspective',
+        dos: null,
+      );
       setState(() {
         _showDegrees = false;
         if (perspective.name ==
