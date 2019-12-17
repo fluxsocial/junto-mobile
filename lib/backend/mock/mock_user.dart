@@ -42,7 +42,7 @@ class MockUserService implements UserService {
   @override
   Future<UserData> getUser(String userAddress) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
-    throw UnimplementedError();
+    return kUserData;
   }
 
   @override
@@ -80,8 +80,8 @@ class MockUserService implements UserService {
 
   @override
   Future<UserData> readLocalUser() async {
-    await Future<void>.delayed(const Duration(milliseconds: 500));
-    throw UnimplementedError();
+    await Future<void>.delayed(const Duration(milliseconds: 700));
+    return kUserData;
   }
 
   @override

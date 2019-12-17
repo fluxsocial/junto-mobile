@@ -13,6 +13,39 @@ UserProfile kUserProfile = const UserProfile(
   gender: <String>['Male'],
 );
 
+UserData kUserData = UserData(
+  userPerspective: kPerspectives.first,
+  user: kUserProfile,
+  pack: kPack,
+  publicDen: kPublicDen,
+  privateDen: kPrivateDen,
+  connectionPerspective: kPerspectives[1],
+);
+
+CentralizedDen kPublicDen = CentralizedDen(
+  creator: kUserProfile.address,
+  privacy: 'Public',
+  isDefault: false,
+  name: 'Mock Public Den',
+  address: '123123-34345345-23422423',
+);
+CentralizedDen kPrivateDen = CentralizedDen(
+  creator: kUserProfile.address,
+  privacy: 'Private',
+  isDefault: false,
+  name: 'Mock Public Den',
+  address: '123123-34345345-23422423',
+);
+
+CentralizedPack kPack = CentralizedPack(
+  createdAt: DateTime(2019, 07, 04),
+  privacy: 'Public',
+  creator: kUserProfile.address,
+  isDefault: false,
+  name: 'Mock Pack',
+  address: '12123123-345345-2321',
+);
+
 Comment kComment = Comment(
   address: '123e4567-e89b-23s3-a256-426655440000',
   comments: 0,
