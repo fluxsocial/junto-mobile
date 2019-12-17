@@ -192,13 +192,13 @@ class CentralizedSphereResponse {
 }
 
 class Users {
-  Users._({
+  Users({
     @required this.user,
     @required this.permissionLevel,
   });
 
   factory Users.fromJson(Map<String, dynamic> json) {
-    return Users._(
+    return Users(
       user: UserProfile.fromMap(json['user']),
       permissionLevel: json['permission_level'],
     );
