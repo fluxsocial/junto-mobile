@@ -170,12 +170,12 @@ abstract class UserService {
   /// Removes the user's connection with the given address
   Future<void> removeUserConnection(String userAddress);
 
-  /// Retrives a list of pending user connections
+  /// Gets a list of pending user connections
   Future<List<UserProfile>> pendingConnections(String userAddress);
 
   /// Responds to the connection with either `true` or `false`
   Future<void> respondToConnection(String userAddress, bool response);
 
-    /// Retrives a list of pending user connections
+  /// Gets a list of pending user connections
   Future<List<UserProfile>> connectedUsers(String userAddress);
 }

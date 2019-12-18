@@ -2,9 +2,14 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/member/member_appbar.dart';
+import 'package:junto_beta_mobile/utils/junto_dialog.dart';
+import 'package:junto_beta_mobile/utils/junto_exception.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/user_expressions.dart';
+import 'package:provider/provider.dart';
 
 class JuntoMember extends StatefulWidget {
   const JuntoMember({
@@ -292,7 +297,7 @@ class MemberRelationshipsModal extends StatelessWidget {
                 ),
               ),
               ListTile(
-                onTap: () {},
+                onTap: onConnectTap,
                 contentPadding: const EdgeInsets.all(0),
                 title: Row(
                   children: <Widget>[
@@ -341,6 +346,31 @@ class _MemberDenAppbar extends StatelessWidget {
   }) : super(key: key);
 
   final UserProfile profile;
+
+  Future<void> _connectWithUser(BuildContext context) async {
+    print('Call');
+    final UserRepo _userRepo = Provider.of<UserRepo>(context);
+    try {
+      JuntoLoader.showLoader(context);
+      await _userRepo.connectUser(profile.address);
+      JuntoLoader.hide();
+      JuntoDialog.showJuntoDialog(context, 'Connection Sent', <Widget>[
+        FlatButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Ok'),
+        )
+      ]);
+    } on JuntoException catch (error) {
+      JuntoLoader.hide();
+      JuntoDialog.showJuntoDialog(
+          context, 'Error occured ${error?.message}', <Widget>[
+        FlatButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Ok'),
+        )
+      ]);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -400,7 +430,7 @@ class _MemberDenAppbar extends StatelessWidget {
                               builder: (BuildContext context) => Container(
                                 color: Colors.transparent,
                                 child: MemberRelationshipsModal(
-                                  onConnectTap: () {},
+                                  onConnectTap: () => _connectWithUser(context),
                                 ),
                               ),
                             );

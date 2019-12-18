@@ -41,6 +41,7 @@ class UserRepo {
   Future<List<CentralizedExpressionResponse>> getUsersExpressions(
     String userAddress,
   ) {
+    assert(userAddress != null && userAddress.isNotEmpty);
     return _userService.getUsersExpressions(userAddress);
   }
 

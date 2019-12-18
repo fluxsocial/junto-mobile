@@ -213,6 +213,56 @@ class UserServiceCentralized implements UserService {
         .toList();
   }
 
+  @override
+  Future<void> connectUser(String userAddress) async {
+    final http.Response _serverResponse = await client.postWithoutEncoding(
+      '/users/$userAddress/connect',
+    );
+    JuntoHttp.handleResponse(_serverResponse);
+  }
+
+  @override
+  Future<void> removeUserConnection(String userAddress) async {
+    final http.Response _serverResponse = await client.delete(
+      '/users/$userAddress/connect',
+    );
+    JuntoHttp.handleResponse(_serverResponse);
+  }
+
+  @override
+  Future<List<UserProfile>> connectedUsers(String userAddress) async {
+    final http.Response _serverResponse = await client.get(
+      '/users/$userAddress/connections',
+    );
+    final List<dynamic> _results = JuntoHttp.handleResponse(_serverResponse);
+    return <UserProfile>[
+      for (dynamic data in _results) UserProfile.fromMap(data)
+    ];
+  }
+
+  @override
+  Future<List<UserProfile>> pendingConnections(String userAddress) async {
+    final http.Response _serverResponse = await client.get(
+      '/notifications',
+    );
+    final List<dynamic> _results = JuntoHttp.handleResponse(_serverResponse);
+    return <UserProfile>[
+      for (dynamic data in _results) UserProfile.fromMap(data)
+    ];
+  }
+
+//TODO(Nash): This should send back a success result of either true or false.
+  @override
+  Future<void> respondToConnection(String userAddress, bool response) async {
+    final http.Response _serverResponse = await client.postWithoutEncoding(
+      '/users/$userAddress/connect/respond',
+      body: <String, String>{
+        'status': response.toString(),
+      },
+    );
+    JuntoHttp.handleResponse(_serverResponse);
+  }
+
   /// Private function which returns the correct query param for the given
   /// [QueryType]
   Map<String, dynamic> _buildQueryParam(String param, QueryType queryType) {
@@ -229,35 +279,5 @@ class UserServiceCentralized implements UserService {
         'username': param,
       };
     }
-  }
-
-  @override
-  Future<void> connectUser(String userAddress) {
-    // TODO: implement connectUser
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<List<UserProfile>> connectedUsers(String userAddress) {
-    // TODO: implement connectedUsers
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<List<UserProfile>> pendingConnections(String userAddress) {
-    // TODO: implement pendingConnections
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> removeUserConnection(String userAddress) {
-    // TODO: implement removeUserConnection
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> respondToConnection(String userAddress, bool response) {
-    // TODO: implement respondToConnection
-    throw UnimplementedError();
   }
 }
