@@ -236,6 +236,12 @@ class JuntoAppBarDelegate extends SliverPersistentHeaderDelegate {
 }
 
 class MemberRelationshipsModal extends StatelessWidget {
+  const MemberRelationshipsModal({
+    Key key,
+    @required this.onConnectTap,
+  }) : super(key: key);
+  final VoidCallback onConnectTap;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -286,6 +292,7 @@ class MemberRelationshipsModal extends StatelessWidget {
                 ),
               ),
               ListTile(
+                onTap: () {},
                 contentPadding: const EdgeInsets.all(0),
                 title: Row(
                   children: <Widget>[
@@ -392,7 +399,9 @@ class _MemberDenAppbar extends StatelessWidget {
                               context: context,
                               builder: (BuildContext context) => Container(
                                 color: Colors.transparent,
-                                child: MemberRelationshipsModal(),
+                                child: MemberRelationshipsModal(
+                                  onConnectTap: () {},
+                                ),
                               ),
                             );
                           },
