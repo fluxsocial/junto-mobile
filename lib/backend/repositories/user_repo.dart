@@ -73,4 +73,24 @@ class UserRepo {
   ) {
     return _userService.getPerspectiveUsers(perspectiveAddress);
   }
+
+  Future<void> connectUser(String userAddress) {
+    return _userService.connectUser(userAddress);
+  }
+
+  Future<List<UserProfile>> connectedUsers(String userAddress) {
+    return _userService.connectedUsers(userAddress);
+  }
+
+  Future<List<UserProfile>> pendingConnections(String userAddress) {
+    return _userService.pendingConnections(userAddress);
+  }
+
+  Future<void> removeUserConnection(String userAddress) {
+    return _userService.removeUserConnection(userAddress);
+  }
+
+  Future<void> respondToConnection(String userAddress, bool response) {
+    return _userService.respondToConnection(userAddress, response);
+  }
 }

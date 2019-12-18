@@ -230,4 +230,34 @@ class UserServiceCentralized implements UserService {
       };
     }
   }
+
+  @override
+  Future<void> connectUser(String userAddress) {
+    // TODO: implement connectUser
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<UserProfile>> connectedUsers(String userAddress) {
+    // TODO: implement connectedUsers
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<UserProfile>> pendingConnections(String userAddress) {
+    // TODO: implement pendingConnections
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> removeUserConnection(String userAddress) {
+    // TODO: implement removeUserConnection
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> respondToConnection(String userAddress, bool response) {
+    // TODO: implement respondToConnection
+    throw UnimplementedError();
+  }
 }
