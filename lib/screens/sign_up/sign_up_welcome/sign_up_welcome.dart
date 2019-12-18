@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
@@ -62,7 +63,7 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
           'assets/images/junto-mobile__mockprofpic--two.png'
         ]);
     try {
-      JuntoOverlay.showLoader(context);
+      JuntoLoader.showLoader(context);
       final UserData results =
           await Provider.of<AuthRepo>(context).registerUser(details);
       final Map<String, dynamic> resultsMap = results.toMap();
@@ -76,24 +77,23 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
         ..setString('user_id', results.user.address)
         ..setString('user_data', resultsMapToString);
 
-      JuntoOverlay.hide();
+      JuntoLoader.hide();
       Navigator.of(context).pushAndRemoveUntil(
         JuntoCollective.route(),
         (Route<dynamic> route) => false,
       );
     } on JuntoException catch (error) {
       print(details.profileImage);
-      JuntoOverlay.hide();
+      JuntoLoader.hide();
       JuntoDialog.showJuntoDialog(
         context,
         error.message,
         <Widget>[
           FlatButton(
-            onPressed: () => Navigator.pop(context),
-            // onPressed: () => Navigator.of(context).pushAndRemoveUntil(
-            //   Welcome.route(),
-            //   (Route<dynamic> route) => false,
-            // ),
+            onPressed: () => Navigator.of(context).pushAndRemoveUntil(
+              Welcome.route(),
+              (Route<dynamic> route) => false,
+            ),
             child: const Text('OK'),
           ),
         ],
