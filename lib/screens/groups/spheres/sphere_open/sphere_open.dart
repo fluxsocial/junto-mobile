@@ -86,12 +86,12 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
 
   Future<void> _getMembers() async {
     try {
-      JuntoOverlay.showLoader(context);
+      JuntoLoader.showLoader(context);
       final List<Users> _members =
           await Provider.of<GroupRepo>(context).getGroupMembers(
         widget.group.address,
       );
-      JuntoOverlay.hide();
+      JuntoLoader.hide();
       Navigator.push(
         context,
         CupertinoPageRoute<dynamic>(
@@ -104,7 +104,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
         ),
       );
     } on JuntoException catch (error) {
-      JuntoOverlay.hide();
+      JuntoLoader.hide();
       JuntoDialog.showJuntoDialog(
         context,
         error.message,

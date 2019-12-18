@@ -298,7 +298,7 @@ class _CreatePerspectiveBottomSheetState
   Future<void> _createPerspective() async {
     final String name = _textController.value.text;
     final String about = _aboutController.value.text;
-    JuntoOverlay.showLoader(context);
+    JuntoLoader.showLoader(context);
     try {
       await Provider.of<UserRepo>(context).createPerspective(
         Perspective(
@@ -307,12 +307,12 @@ class _CreatePerspectiveBottomSheetState
           about: about,
         ),
       );
-      JuntoOverlay.hide();
+      JuntoLoader.hide();
       Navigator.pop(context);
     } on JuntoException catch (error, stacktrace) {
       print(error);
       print(stacktrace);
-      JuntoOverlay.hide();
+      JuntoLoader.hide();
       JuntoDialog.showJuntoDialog(
         context,
         error.message,

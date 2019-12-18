@@ -96,7 +96,7 @@ class CreateActionsState extends State<CreateActions> {
       print(error);
       print(error.message);
       print('something is up');
-      JuntoOverlay.hide();
+      JuntoLoader.hide();
       JuntoDialog.showJuntoDialog(
         context,
         'Something went wrong ${error?.code}',

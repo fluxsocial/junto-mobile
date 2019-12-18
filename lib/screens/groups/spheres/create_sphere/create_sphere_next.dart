@@ -36,13 +36,13 @@ class _CreateSphereNextState extends State<CreateSphereNext> {
   String _selectedType = 'Public';
 
   Future<void> _createSphere() async {
-    JuntoOverlay.showLoader(context);
+    JuntoLoader.showLoader(context);
     final CentralizedSphere updatedSphere = widget.sphere.copyWith(
       privacy: _selectedType,
     );
     try {
       await Provider.of<GroupRepo>(context).createSphere(updatedSphere);
-      JuntoOverlay.hide();
+      JuntoLoader.hide();
       Navigator.pushAndRemoveUntil(
           context,
           CupertinoPageRoute<dynamic>(
@@ -50,7 +50,7 @@ class _CreateSphereNextState extends State<CreateSphereNext> {
           ),
           (_) => false);
     } on JuntoException catch (error) {
-      JuntoOverlay.hide();
+      JuntoLoader.hide();
       JuntoDialog.showJuntoDialog(
         context,
         error.message,

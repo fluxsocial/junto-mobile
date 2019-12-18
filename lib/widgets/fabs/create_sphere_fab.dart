@@ -126,13 +126,13 @@ class CreateSphereBottomSheetState extends State<CreateSphereBottomSheet> {
     );
 
     try {
-      JuntoOverlay.showLoader(context);
+      JuntoLoader.showLoader(context);
       await Provider.of<GroupRepo>(context).createSphere(sphere);
-      JuntoOverlay.hide();
+      JuntoLoader.hide();
       Navigator.pop(context);
       setState(() {});
     } catch (error) {
-      JuntoOverlay.hide();
+      JuntoLoader.hide();
       print(error);
     }
   }

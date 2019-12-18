@@ -38,10 +38,10 @@ class _SignInState extends State<SignIn> {
     final String password = _passwordController.value.text;
     final UserAuthLoginDetails loginDetails =
         UserAuthLoginDetails(email: email, password: password);
-    JuntoOverlay.showLoader(context);
+    JuntoLoader.showLoader(context);
     try {
       await Provider.of<AuthRepo>(context).loginUser(loginDetails);
-      JuntoOverlay.hide();
+      JuntoLoader.hide();
       Navigator.pushReplacement(
         context,
         MaterialPageRoute<dynamic>(
@@ -50,7 +50,7 @@ class _SignInState extends State<SignIn> {
       );
     } catch (error) {
       print(error);
-      JuntoOverlay.hide();
+      JuntoLoader.hide();
       JuntoDialog.showJuntoDialog(
           context,
           'Unable to login user. Please recheck your '
