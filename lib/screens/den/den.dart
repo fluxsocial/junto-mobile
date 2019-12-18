@@ -164,99 +164,37 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                       shrinkWrap: true,
                       padding: const EdgeInsets.only(left: 10),
                       children: <Widget>[
-                        const SizedBox(height: 5),
                         Container(
                           padding: const EdgeInsets.only(top: 5, bottom: 5),
                           child: Column(
                             children: <Widget>[
-                              Container(
-                                child: Row(
-                                  children: <Widget>[
-                                    Icon(CustomIcons.gender,
-                                        size: 17,
-                                        color: Theme.of(context).primaryColor),
-                                    const SizedBox(width: 5),
-                                    Text(
-                                      'gender',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                          color: Theme.of(context).primaryColor,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ],
+                              _displayAboutItem(
+                                _userProfile.user.gender,
+                                Icon(CustomIcons.gender,
+                                    size: 17,
+                                    color: Theme.of(context).primaryColor),
+                              ),
+                              _displayAboutItem(
+                                _userProfile.user.location,
+                                Image.asset(
+                                  'assets/images/junto-mobile__location.png',
+                                  height: 15,
+                                  color: Theme.of(context).primaryColor,
                                 ),
                               ),
-                              const SizedBox(height: 10),
-                              Container(
-                                child: Row(
-                                  children: <Widget>[
-                                    Image.asset(
-                                      'assets/images/junto-mobile__location.png',
-                                      height: 15,
-                                      color: Theme.of(context).primaryColor,
-                                    ),
-                                    const SizedBox(width: 5),
-                                    Text(
-                                      'location',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                          color: Theme.of(context).primaryColor,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              Container(
-                                child: Row(
-                                  children: <Widget>[
-                                    Image.asset(
-                                      'assets/images/junto-mobile__link.png',
-                                      height: 15,
-                                      color: Theme.of(context).primaryColor,
-                                    ),
-                                    const SizedBox(width: 5),
-                                    Text(
-                                      'website',
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 1,
-                                      style: TextStyle(
-                                          color: Theme.of(context).primaryColor,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ],
+                              _displayAboutItem(
+                                _userProfile.user.website,
+                                Image.asset(
+                                  'assets/images/junto-mobile__link.png',
+                                  height: 15,
+                                  color: Theme.of(context).primaryColor,
                                 ),
                               ),
                             ],
                           ),
                         ),
-                        const SizedBox(height: 15),
-                        CarouselSlider(
-                          viewportFraction: 1.0,
-                          height: MediaQuery.of(context).size.width - 20,
-                          enableInfiniteScroll: false,
-                          items: <Widget>[
-                            Container(
-                              padding: const EdgeInsets.only(right: 10),
-                              width: MediaQuery.of(context).size.width,
-                              child: Image.asset(
-                                  'assets/images/junto-mobile__mockprofpic--one.png',
-                                  fit: BoxFit.cover),
-                            ),
-                            Container(
-                              width: MediaQuery.of(context).size.width,
-                              padding: const EdgeInsets.only(right: 10),
-                              child: Image.asset(
-                                  'assets/images/junto-mobile__mockprofpic--two.png',
-                                  fit: BoxFit.cover),
-                            ),
-                          ],
-                        ),
+                        _displayProfilePictures(
+                            _userProfile.user.profilePicture),
                         const SizedBox(height: 15),
                         Container(
                           child: Text(_userProfile.user.bio,
@@ -460,4 +398,49 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
             ),
     );
   }
+
+  Widget _displayAboutItem(List<String> item, dynamic icon) {
+    if (item != null) {
+      return Container(
+        margin: const EdgeInsets.symmetric(vertical: 5),
+        child: Row(
+          children: <Widget>[
+            icon,
+            const SizedBox(width: 5),
+            Text(
+              item[0],
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600),
+            ),
+          ],
+        ),
+      );
+    } else {
+      return const SizedBox();
+    }
+  }
+
+  Widget _displayProfilePictures(List<String> profilePictures) {
+    if (profilePictures != null) {
+      return CarouselSlider(
+          viewportFraction: 1.0,
+          height: MediaQuery.of(context).size.width - 20,
+          enableInfiniteScroll: false,
+          items: <Widget>[
+            for (String picture in profilePictures)
+              Container(
+                padding: const EdgeInsets.only(right: 10),
+                width: MediaQuery.of(context).size.width,
+                child: Image.asset(picture, fit: BoxFit.cover),
+              ),
+          ]);
+    } else {
+      return const SizedBox();
+    }
+  }
 }
+
