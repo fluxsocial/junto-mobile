@@ -256,8 +256,8 @@ class UserServiceCentralized implements UserService {
   Future<void> respondToConnection(String userAddress, bool response) async {
     final http.Response _serverResponse = await client.postWithoutEncoding(
       '/users/$userAddress/connect/respond',
-      body: <String, String>{
-        'status': response.toString(),
+      body: <String, dynamic>{
+        'status': response,
       },
     );
     JuntoHttp.handleResponse(_serverResponse);
