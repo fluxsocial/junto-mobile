@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/utils/junto_dialog.dart';
+import 'package:junto_beta_mobile/utils/junto_exception.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
 
 class NotificationPage extends StatelessWidget {
@@ -18,6 +21,57 @@ class NotificationPage extends StatelessWidget {
   }
 
   final String userAddress;
+
+  void _onTileTap(BuildContext context, UserProfile _connection) {
+    JuntoDialog.showJuntoDialog(
+      context,
+      'Accept or Reject',
+      <Widget>[
+        FlatButton(
+          onPressed: () => _acceptConnection(context, _connection),
+          child: const Text('Accept'),
+        ),
+        FlatButton(
+          onPressed: () => _rejectConnection(context, _connection),
+          child: const Text('Reject'),
+        ),
+      ],
+    );
+  }
+
+  Future<void> _acceptConnection(
+    BuildContext context,
+    UserProfile _connection,
+  ) async {
+    try {
+      await Provider.of<UserRepo>(context).respondToConnection(
+        userAddress,
+        true,
+      );
+      Navigator.pop(context);
+    } on JuntoException catch (error) {
+      print('Error accepting connection ${error.message}');
+    }
+  }
+
+  Future<void> _rejectConnection(
+    BuildContext context,
+    UserProfile _connection,
+  ) async {
+    try {
+      JuntoLoader.showLoader(context);
+      await Provider.of<UserRepo>(context).respondToConnection(
+        userAddress,
+        false,
+      );
+      JuntoLoader.hide();
+      Navigator.pop(context);
+    } on JuntoException catch (error) {
+      JuntoLoader.hide();
+      Navigator.pop(context);
+      print('Error rejecting connection ${error.message}');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +96,7 @@ class NotificationPage extends StatelessWidget {
                 itemBuilder: (BuildContext context, int index) {
                   final UserProfile data = snapshot.data[index];
                   return ListTile(
+                    onTap: () => _onTileTap(context, data),
                     title: Text(data.name),
                     subtitle: Text('Address: ${data.address}'),
                   );
