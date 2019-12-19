@@ -44,7 +44,8 @@ class ImageCroppingDialog extends StatefulWidget {
 }
 
 class _ImageCroppingDialogState extends State<ImageCroppingDialog> {
-  final GlobalKey<ImageCropperState> _imageCropperKey = GlobalKey<ImageCropperState>();
+  final GlobalKey<ImageCropperState> _imageCropperKey =
+      GlobalKey<ImageCropperState>();
   bool _processing = false;
 
   Future<void> _processCrop(File sourceFile) async {
@@ -75,10 +76,13 @@ class _ImageCroppingDialogState extends State<ImageCroppingDialog> {
     canvas.drawColor(Colors.black, BlendMode.src);
     canvas.drawImageRect(
       image,
-      Rect.fromLTWH(0.0, 0.0, fittedSizes.source.width, fittedSizes.source.height),
       Rect.fromLTWH(
-        (outputSize.width - (fittedSizes.destination.width * scale)) / 2.0 + position.dx,
-        (outputSize.height - (fittedSizes.destination.height * scale)) / 2.0 + position.dy,
+          0.0, 0.0, fittedSizes.source.width, fittedSizes.source.height),
+      Rect.fromLTWH(
+        (outputSize.width - (fittedSizes.destination.width * scale)) / 2.0 +
+            position.dx,
+        (outputSize.height - (fittedSizes.destination.height * scale)) / 2.0 +
+            position.dy,
         fittedSizes.destination.width * scale,
         fittedSizes.destination.height * scale,
       ),
@@ -87,11 +91,15 @@ class _ImageCroppingDialogState extends State<ImageCroppingDialog> {
     canvas.restore();
 
     final ui.Picture picture = recorder.endRecording();
-    final ui.Image outputImage = await picture.toImage(clipRect.width.toInt(), clipRect.height.toInt());
-    final ByteData bytes = await outputImage.toByteData(format: ui.ImageByteFormat.png);
+    final ui.Image outputImage =
+        await picture.toImage(clipRect.width.toInt(), clipRect.height.toInt());
+    final ByteData bytes =
+        await outputImage.toByteData(format: ui.ImageByteFormat.png);
 
-    final String outputName = '${p.basenameWithoutExtension(sourceFile.path)}.png';
-    final String outputPath = p.join((await pp.getTemporaryDirectory()).path, outputName);
+    final String outputName =
+        '${p.basenameWithoutExtension(sourceFile.path)}.png';
+    final String outputPath =
+        p.join((await pp.getTemporaryDirectory()).path, outputName);
     final File outputFile = File(outputPath);
     await outputFile.writeAsBytes(bytes.buffer.asUint8List());
 
@@ -110,15 +118,22 @@ class _ImageCroppingDialogState extends State<ImageCroppingDialog> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text('Crop'),
-        actions: <Widget>[
-          IconButton(
-            onPressed: _processing ? null : _onTickPressed,
-            icon: Icon(Icons.check),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(45),
+        child: AppBar(
+          centerTitle: true,
+          title: Text(
+            'Crop',
+            style: TextStyle(
+                color: Theme.of(context).primaryColorDark, fontSize: 15),
           ),
-        ],
+          actions: <Widget>[
+            IconButton(
+              onPressed: _processing ? null : _onTickPressed,
+              icon: Icon(Icons.check),
+            ),
+          ],
+        ),
       ),
       body: Stack(
         children: <Widget>[
@@ -132,11 +147,14 @@ class _ImageCroppingDialogState extends State<ImageCroppingDialog> {
           ),
           AnimatedContainer(
             duration: kThemeAnimationDuration,
-            color: _processing ? Colors.black.withOpacity(0.8) : Colors.transparent,
+            color: _processing
+                ? Colors.black.withOpacity(0.8)
+                : Colors.transparent,
             child: _processing
                 ? const Center(
                     child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Color(0xB3FFFFFF)),
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(Color(0xB3FFFFFF)),
                     ),
                   )
                 : const SizedBox(),
@@ -214,7 +232,7 @@ class ImageCropperState extends State<ImageCropper> {
         Expanded(
           child: DecoratedBox(
             decoration: BoxDecoration(
-              color: Colors.black,
+              color: Theme.of(context).backgroundColor,
             ),
             child: GestureDetector(
               onScaleStart: _onScaleStart,
@@ -227,7 +245,8 @@ class ImageCropperState extends State<ImageCropper> {
                   children: <Widget>[
                     ValueListenableBuilder<Matrix4>(
                       valueListenable: _matrix,
-                      builder: (BuildContext context, Matrix4 value, Widget child) {
+                      builder:
+                          (BuildContext context, Matrix4 value, Widget child) {
                         return Transform(
                           transform: value,
                           alignment: Alignment.center,
@@ -239,8 +258,8 @@ class ImageCropperState extends State<ImageCropper> {
                     CustomPaint(
                       painter: _AspectRatioPainter(
                         aspectRatio: _realSelectedAspectRatio,
-                        strokeColor: Colors.white54,
-                        strokeWidth: 3.0,
+                        strokeColor: const Color(0xffeeeeee).withOpacity(.50),
+                        strokeWidth: 1.0,
                         overlayColor: Colors.black,
                       ),
                     ),
@@ -251,19 +270,21 @@ class ImageCropperState extends State<ImageCropper> {
           ),
         ),
         if (widget.aspectRatios.length > 1)
-          AspectRatio(
-            aspectRatio: 6.5,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: <Widget>[
-                  for (String aspectRatio in widget.aspectRatios)
-                    _AspectRatioButton(
-                      onPressed: () => _onAspectRatio(aspectRatio),
-                      selected: _selectedAspectRatio == aspectRatio,
-                      aspectRatio: aspectRatio,
-                    ),
-                ],
+          SafeArea(
+            child: AspectRatio(
+              aspectRatio: 6.5,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: <Widget>[
+                    for (String aspectRatio in widget.aspectRatios)
+                      _AspectRatioButton(
+                        onPressed: () => _onAspectRatio(aspectRatio),
+                        selected: _selectedAspectRatio == aspectRatio,
+                        aspectRatio: aspectRatio,
+                      ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -293,7 +314,8 @@ class _AspectRatioPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final Rect bounds = Rect.fromLTWH(0.0, 0.0, size.width, size.height);
 
-    canvas.saveLayer(bounds, Paint()..color = Color.fromRGBO(0, 0, 0, strokeColor.opacity));
+    canvas.saveLayer(
+        bounds, Paint()..color = Color.fromRGBO(0, 0, 0, strokeColor.opacity));
 
     final Paint strokePaint = Paint()
       ..style = PaintingStyle.stroke
@@ -306,16 +328,18 @@ class _AspectRatioPainter extends CustomPainter {
       Rect.fromLTWH(0.0, 0.0, size.width, size.height),
     );
 
-    final Rect strokeRect = box.inflate(-strokeWidth / 2.0);
+    final Rect strokeRect = box.inflate(-strokeWidth / 2);
 
     final double hSpace = strokeRect.height * (1.0 / 3.0);
     for (double y = strokeRect.top; y <= strokeRect.bottom; y += hSpace) {
-      canvas.drawLine(Offset(strokeRect.left, y), Offset(strokeRect.right, y), strokePaint);
+      canvas.drawLine(
+          Offset(strokeRect.left, y), Offset(strokeRect.right, y), strokePaint);
     }
 
     final double wSpace = strokeRect.width * (1.0 / 3.0);
     for (double x = strokeRect.left; x <= strokeRect.right; x += wSpace) {
-      canvas.drawLine(Offset(x, strokeRect.top), Offset(x, strokeRect.bottom), strokePaint);
+      canvas.drawLine(
+          Offset(x, strokeRect.top), Offset(x, strokeRect.bottom), strokePaint);
     }
 
     canvas.restore();
@@ -348,7 +372,7 @@ class _AspectRatioButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double realAspectRatio = _convertAspectRatio(aspectRatio);
-    final Color foreground = Theme.of(context).primaryIconTheme.color;
+    final Color foreground = Theme.of(context).primaryColor;
     return AspectRatio(
       aspectRatio: 1.0,
       child: Material(
@@ -366,7 +390,7 @@ class _AspectRatioButton extends StatelessWidget {
                         decoration: BoxDecoration(
                           border: Border.all(
                             color: foreground,
-                            width: 2.0,
+                            width: 1.0,
                           ),
                         ),
                       ),

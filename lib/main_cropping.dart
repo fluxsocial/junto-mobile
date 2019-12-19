@@ -11,7 +11,8 @@ class CroppingApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(brightness: Brightness.light, primaryColor: Colors.grey[50]),
+      theme: ThemeData(
+          brightness: Brightness.light, primaryColor: Colors.grey[50]),
       //theme: ThemeData(brightness: Brightness.dark, primaryColor: Colors.grey[900]),
       home: Home(),
     );
@@ -33,8 +34,17 @@ class _HomeState extends State<Home> {
       return;
     }
     final File cropped = await ImageCroppingDialog.show(context, image,
-        aspectRatios: <String>['1:1', '2:3', '3:2', '3:4', '4:3', '4:5', '5:4', '9:16', '16:9']);
-    //final File cropped = await ImageCroppingDialog.show(context, image);
+        aspectRatios: <String>[
+          '1:1',
+          '2:3',
+          '3:2',
+          '3:4',
+          '4:3',
+          '4:5',
+          '5:4',
+          '9:16',
+          '16:9'
+        ]);
     if (cropped == null) {
       setState(() => imageFile = null);
       return;

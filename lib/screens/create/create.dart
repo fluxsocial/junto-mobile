@@ -82,7 +82,6 @@ class JuntoCreateState extends State<JuntoCreate> {
     } else if (_photo) {
       return CreatePhoto(
         key: _photoFormKey,
-        toggleBottomNavVisibility: () {},
       );
     } else if (_events) {
       return CreateEvent(
