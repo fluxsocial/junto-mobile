@@ -1,6 +1,6 @@
 import 'dart:convert';
+
 import 'package:async/async.dart' show AsyncMemoizer;
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,9 +14,10 @@ import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_edit_den.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
+import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Displays the user's DEN or "profile screen"
 class JuntoDen extends StatefulWidget {
@@ -43,9 +44,10 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _denController.addListener(_onScrollingHasChanged);
-      _denController.position.isScrollingNotifier.addListener(
-        _onScrollingHasChanged,
-      );
+      if (_denController.hasClients)
+        _denController.position.isScrollingNotifier.addListener(
+          _onScrollingHasChanged,
+        );
     });
     getUserInformation();
   }
@@ -443,4 +445,3 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
     }
   }
 }
-
