@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/comment_open/comment_open.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/widgets/comment_action_items.dart';
@@ -11,7 +12,7 @@ class CommentPreview extends StatelessWidget {
       : super(key: key);
 
   /// comment
-  final dynamic comment;
+  final Comment comment;
 
   // parent expression of comment
   final dynamic parent;
@@ -107,7 +108,11 @@ class CommentPreview extends StatelessWidget {
             const SizedBox(height: 5),
             Padding(
               padding: const EdgeInsets.only(left: 10),
-              child: Text('today', style: Theme.of(context).textTheme.overline),
+              child: Text(
+                MaterialLocalizations.of(context)
+                    .formatFullDate(comment.createdAt),
+                style: Theme.of(context).textTheme.overline,
+              ),
             ),
           ],
         ),

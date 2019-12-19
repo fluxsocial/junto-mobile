@@ -348,3 +348,15 @@ class QueryExpressionResults {
   final List<CentralizedExpressionResponse> results;
   final String lastTimestamp;
 }
+
+/// Encapsulates the response sent back from the server after querying a
+/// comment.
+class QueryCommentResults {
+  QueryCommentResults({
+    @required this.results,
+    @required this.lastTimestamp,
+  });
+
+  final List<Comment> results;
+  final String lastTimestamp;
+}

@@ -73,14 +73,20 @@ class ExpressionServiceCentralized implements ExpressionService {
   }
 
   @override
-  Future<List<Comment>> getExpressionsComments(String expressionAddress) async {
-    final http.Response response =
-        await client.get('/expressions/$expressionAddress/comments');
-    final List<dynamic> _listData = json.decode(response.body);
-    final List<Comment> _results = _listData
-        .map((dynamic data) => Comment.fromMap(data))
-        .toList(growable: false);
-    return _results;
+  Future<QueryCommentResults> getExpressionsComments(
+      String expressionAddress) async {
+    final http.Response response = await client.get(
+        '/expressions/$expressionAddress/comments',
+        queryParams: <String, String>{
+          'pagination_position': 0.toString(),
+        });
+    final Map<String, dynamic> _listData = json.decode(response.body);
+    return QueryCommentResults(
+      lastTimestamp: _listData['last_timestamp'],
+      results: <Comment>[
+        for (dynamic data in _listData['results']) Comment.fromMap(data)
+      ],
+    );
   }
 
   @override

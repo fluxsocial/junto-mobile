@@ -25,9 +25,13 @@ class MockExpressionService implements ExpressionService {
   }
 
   @override
-  Future<List<Comment>> getExpressionsComments(String expressionAddress) async {
+  Future<QueryCommentResults> getExpressionsComments(
+      String expressionAddress) async {
     await Future<void>.delayed(const Duration(milliseconds: 2000));
-    return List<Comment>.generate(50, (int index) => kComment);
+    return QueryCommentResults(
+      results: List<Comment>.generate(50, (int index) => kComment),
+      lastTimestamp: DateTime(2019, 12, 19).toIso8601String(),
+    );
   }
 
   @override
