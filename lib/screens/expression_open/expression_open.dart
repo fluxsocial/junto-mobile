@@ -4,7 +4,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:giphy_client/giphy_client.dart';
 import 'package:junto_beta_mobile/api.dart';
-import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
@@ -17,6 +16,7 @@ import 'package:junto_beta_mobile/screens/expression_open/expressions/photo_open
 import 'package:junto_beta_mobile/screens/expression_open/expressions/shortform_open.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/widgets/previews/comment_preview.dart';
+import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
 
 class ExpressionOpen extends StatefulWidget {
@@ -56,12 +56,21 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   /// If an expression has no comments, we do not show the option "show replies"
   bool canShowComments = false;
 
+  Future<QueryCommentResults> futureComments;
+
   @override
   void initState() {
     super.initState();
     commentController = TextEditingController();
     _focusNode = FocusNode();
     canShowComments = widget.expression.comments != 0;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    futureComments = Provider.of<ExpressionRepo>(context)
+        .getExpressionsComments(widget.expression.address);
   }
 
   @override
@@ -234,6 +243,15 @@ class ExpressionOpenState extends State<ExpressionOpen> {
     }
   }
 
+  Future<void> _refreshComments() async {
+    setState(
+      () {
+        futureComments = Provider.of<ExpressionRepo>(context)
+            .getExpressionsComments(widget.expression.address);
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -246,74 +264,76 @@ class ExpressionOpenState extends State<ExpressionOpen> {
         children: <Widget>[
           Expanded(
             child: GestureDetector(
+              behavior: HitTestBehavior.translucent,
               onVerticalDragDown: _onDragDown,
-              child: ListView(
-                children: <Widget>[
-                  ExpressionOpenTop(expression: widget.expression),
-                  _buildExpression(),
-                  ExpressionOpenBottom(widget.expression, _focusTextField),
-                  if (canShowComments)
-                    GestureDetector(
-                      onTap: _showComments,
-                      child: Container(
-                        color: Colors.transparent,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 15),
-                        child: Row(
-                          children: <Widget>[
-                            Text(
-                              'Show replies',
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
-                                  fontSize: 12),
-                            ),
-                            const SizedBox(width: 5),
-                            if (commentsVisible == false)
-                              Icon(Icons.keyboard_arrow_down,
-                                  size: 14,
-                                  color: Theme.of(context).primaryColor),
-                            if (commentsVisible != false)
-                              Icon(Icons.keyboard_arrow_up,
-                                  size: 17,
-                                  color: Theme.of(context).primaryColor),
-                          ],
+              child: RefreshIndicator(
+                onRefresh: _refreshComments,
+                child: ListView(
+                  children: <Widget>[
+                    ExpressionOpenTop(expression: widget.expression),
+                    _buildExpression(),
+                    ExpressionOpenBottom(widget.expression, _focusTextField),
+                    if (canShowComments)
+                      GestureDetector(
+                        onTap: _showComments,
+                        child: Container(
+                          color: Colors.transparent,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 15),
+                          child: Row(
+                            children: <Widget>[
+                              Text(
+                                'Show replies',
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                    fontSize: 12),
+                              ),
+                              const SizedBox(width: 5),
+                              if (commentsVisible == false)
+                                Icon(Icons.keyboard_arrow_down,
+                                    size: 14,
+                                    color: Theme.of(context).primaryColor),
+                              if (commentsVisible != false)
+                                Icon(Icons.keyboard_arrow_up,
+                                    size: 17,
+                                    color: Theme.of(context).primaryColor),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  if (commentsVisible)
-                    FutureBuilder<List<Comment>>(
-                      future: Provider.of<ExpressionRepo>(context)
-                          .getExpressionsComments(
-                        widget.expression.address,
-                      ),
-                      builder: (
-                        BuildContext context,
-                        AsyncSnapshot<List<Comment>> snapshot,
-                      ) {
-                        if (snapshot.hasError) {
-                          return Container(
-                            child: const Text('Error occured'),
-                          );
-                        }
+                    if (commentsVisible)
+                      FutureBuilder<QueryCommentResults>(
+                        future: futureComments,
+                        builder: (
+                          BuildContext context,
+                          AsyncSnapshot<QueryCommentResults> snapshot,
+                        ) {
+                          if (snapshot.hasError) {
+                            return Container(
+                              child: const Text('Error occured'),
+                            );
+                          }
 
-                        if (snapshot.hasData)
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            physics: const ClampingScrollPhysics(),
-                            itemCount: snapshot.data.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return CommentPreview(
-                                  comment: snapshot.data[index],
-                                  parent: widget.expression);
-                            },
+                          if (snapshot.hasData)
+                            return ListView.builder(
+                              shrinkWrap: true,
+                              physics: const ClampingScrollPhysics(),
+                              itemCount: snapshot.data.results.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return CommentPreview(
+                                  comment: snapshot.data.results[index],
+                                  parent: widget.expression,
+                                );
+                              },
+                            );
+                          return Container(
+                            margin: const EdgeInsets.only(top: 75),
+                            child: JuntoProgressIndicator(),
                           );
-                        return Container(
-                          margin: const EdgeInsets.only(top: 75),
-                          child: JuntoProgressIndicator(),
-                        );
-                      },
-                    )
-                ],
+                        },
+                      )
+                  ],
+                ),
               ),
             ),
           ),

@@ -67,7 +67,7 @@ abstract class ExpressionService {
   );
 
   /// Returns a list of [Comment]s for the given [expressionAddress].
-  Future<List<Comment>> getExpressionsComments(
+  Future<QueryCommentResults> getExpressionsComments(
     String expressionAddress,
   );
 

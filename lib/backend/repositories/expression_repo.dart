@@ -75,7 +75,7 @@ class ExpressionRepo {
     return _expressionService.getExpressionsResonation(expressionAddress);
   }
 
-  Future<List<Comment>> getExpressionsComments(
+  Future<QueryCommentResults> getExpressionsComments(
     String expressionAddress,
   ) {
     return _expressionService.getExpressionsComments(expressionAddress);
