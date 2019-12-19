@@ -24,19 +24,19 @@ class NotificationPage extends StatelessWidget {
 
   void _onTileTap(BuildContext context, UserProfile _connection) {
     JuntoDialog.showJuntoDialog(
-      context,
-      'Accept or Reject',
-      <Widget>[
-        FlatButton(
-          onPressed: () => _acceptConnection(context, _connection),
-          child: const Text('Accept'),
-        ),
-        FlatButton(
-          onPressed: () => _rejectConnection(context, _connection),
-          child: const Text('Reject'),
-        ),
-      ],
-    );
+        context,
+        'Accept or Reject',
+        <Widget>[
+          FlatButton(
+            onPressed: () => _acceptConnection(context, _connection),
+            child: const Text('Accept'),
+          ),
+          FlatButton(
+            onPressed: () => _rejectConnection(context, _connection),
+            child: const Text('Reject'),
+          ),
+        ],
+        true);
   }
 
   Future<void> _acceptConnection(
