@@ -94,8 +94,6 @@ class CreateActionsState extends State<CreateActions> {
       );
     } catch (error) {
       print(error);
-      print(error.message);
-      print('something is up');
       JuntoLoader.hide();
       JuntoDialog.showJuntoDialog(
         context,
