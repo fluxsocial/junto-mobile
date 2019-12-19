@@ -135,16 +135,15 @@ class UserServiceCentralized implements UserService {
   Future<List<CentralizedExpressionResponse>> getUsersExpressions(
     String userAddress,
   ) async {
-    final http.Response response =
-        await client.get('/users/$userAddress/expressions');
-    final List<dynamic> _responseMap = JuntoHttp.handleResponse(response);
-    print(_responseMap);
-
-    return _responseMap
-        .map(
-          (dynamic data) => CentralizedExpressionResponse.fromMap(data),
-        )
-        .toList();
+    final http.Response response = await client.get(
+        '/users/$userAddress/expressions',
+        queryParams: <String, String>{'pagination_position': '0'});
+    final Map<String, dynamic> _responseMap =
+        JuntoHttp.handleResponse(response);
+    return <CentralizedExpressionResponse>[
+      for (dynamic data in _responseMap['results'])
+        CentralizedExpressionResponse.fromMap(data)
+    ];
   }
 
   @override

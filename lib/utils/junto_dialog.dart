@@ -6,10 +6,11 @@ import 'package:junto_beta_mobile/app/styles.dart';
 
 class JuntoDialog {
   static void showJuntoDialog(
-      BuildContext context, String body, List<Widget> actions) {
+      BuildContext context, String body, List<Widget> actions,
+      [bool barrierDismissible = false]) {
     showDialog(
       context: context,
-      barrierDismissible: false,
+      barrierDismissible: barrierDismissible,
       builder: (BuildContext context) {
         final Brightness brightness = MediaQuery.of(context).platformBrightness;
         return Theme(

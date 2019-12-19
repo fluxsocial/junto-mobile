@@ -348,7 +348,6 @@ class _MemberDenAppbar extends StatelessWidget {
   final UserProfile profile;
 
   Future<void> _connectWithUser(BuildContext context) async {
-    print('Call');
     final UserRepo _userRepo = Provider.of<UserRepo>(context);
     try {
       JuntoLoader.showLoader(context);
