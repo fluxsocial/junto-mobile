@@ -97,7 +97,7 @@ class CreateActionsState extends State<CreateActions> {
       JuntoLoader.hide();
       JuntoDialog.showJuntoDialog(
         context,
-        'Something went wrong ${error?.code}',
+        'Something went wrong',
         <Widget>[
           FlatButton(
             onPressed: () {

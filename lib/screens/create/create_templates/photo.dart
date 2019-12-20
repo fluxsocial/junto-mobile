@@ -75,7 +75,8 @@ class CreatePhotoState extends State<CreatePhoto> {
   /// by the user.
   CentralizedPhotoFormExpression createExpression() {
     return CentralizedPhotoFormExpression(
-        image: 'assets/images/junto-mobile__mock--image.png', caption: 'mossy');
+        image: 'assets/images/junto-mobile__mock--image.png',
+        caption: _captionController.value.text);
   }
 
   @override
@@ -171,8 +172,12 @@ class CreatePhotoState extends State<CreatePhoto> {
                             widget.setBottomNav(true);
                           },
                           child: Container(
-                              width: MediaQuery.of(context).size.width * .5,
-                              child: Icon(Icons.keyboard_arrow_left)),
+                            width: MediaQuery.of(context).size.width * .5,
+                            color: Colors.transparent,
+                            child: Icon(Icons.keyboard_arrow_left,
+                                color: Theme.of(context).primaryColor,
+                                size: 28),
+                          ),
                         ),
                         GestureDetector(
                           onTap: () {
@@ -180,7 +185,10 @@ class CreatePhotoState extends State<CreatePhoto> {
                           },
                           child: Container(
                             width: MediaQuery.of(context).size.width * .5,
-                            child: Icon(Icons.crop),
+                            color: Colors.transparent,
+                            child: Icon(Icons.crop,
+                                color: Theme.of(context).primaryColor,
+                                size: 20),
                           ),
                         )
                       ],
