@@ -36,6 +36,8 @@ class JuntoCreateState extends State<JuntoCreate> {
   bool _photo = false;
   bool _events = false;
 
+  bool _bottomNavVisible = true;
+
   Icon _currentIcon;
 
   ValueNotifier<bool> isEditing;
@@ -81,8 +83,7 @@ class JuntoCreateState extends State<JuntoCreate> {
       );
     } else if (_photo) {
       return CreatePhoto(
-        key: _photoFormKey,
-      );
+          key: _photoFormKey, setBottomNav: _setBottomNavVisibility);
     } else if (_events) {
       return CreateEvent(
         key: _eventKey,
@@ -181,6 +182,12 @@ class JuntoCreateState extends State<JuntoCreate> {
     }
   }
 
+  void _setBottomNavVisibility(bool visibility) {
+    setState(() {
+      _bottomNavVisible = visibility;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -220,13 +227,15 @@ class JuntoCreateState extends State<JuntoCreate> {
         ),
       ),
       endDrawer: const JuntoDrawer(screen: 'Create', icon: CustomIcons.create),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 25),
-        child: BottomNav(
-          screen: 'create',
-          onTap: _openExpressionCenter,
-        ),
-      ),
+      floatingActionButton: _bottomNavVisible
+          ? Padding(
+              padding: const EdgeInsets.only(bottom: 25),
+              child: BottomNav(
+                screen: 'create',
+                onTap: _openExpressionCenter,
+              ),
+            )
+          : const SizedBox(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: Column(
         children: <Widget>[

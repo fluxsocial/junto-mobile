@@ -66,8 +66,7 @@ class CreateLongformState extends State<CreateLongform> {
                   ),
                   child: TextField(
                       controller: _bodyController,
-                      // keyboardType: TextInputType.multiline,
-                      textInputAction: TextInputAction.done,
+                      textInputAction: TextInputAction.newline,
                       decoration: const InputDecoration(
                         border: InputBorder.none,
                       ),
