@@ -17,155 +17,41 @@ class CreateEvent extends StatefulWidget {
 
 class CreateEventState extends State<CreateEvent> with DateParser {
   TextEditingController titleController;
-  TextEditingController dateController;
+  TextEditingController startDateController;
+  TextEditingController endDateController;
+
   TextEditingController locationController;
   TextEditingController detailsController;
-
-  DateTime _startDate = DateTime.now();
-  bool startPickerOpen = false;
-  String startMinute;
-  String startHour;
-  String startDay;
-  String startMonth;
-  String startYear;
-  String startPeriod = '';
-
-  bool endPickerOpen = false;
-  String endMinute = '';
-  String endHour = '';
-  String endDay = '';
-  String endMonth = '';
-  String endYear = '';
-  String endPeriod = '';
 
   @override
   void initState() {
     super.initState();
     print(DateTime.now());
     titleController = TextEditingController();
-    dateController = TextEditingController();
+    startDateController = TextEditingController();
+    endDateController = TextEditingController();
     locationController = TextEditingController();
     detailsController = TextEditingController();
-
-    startDay = DateTime.now().day.toString();
-    startMonth = transformMonth(DateTime.now().month).toString();
-    startYear = DateTime.now().year.toString();
-    startHour = transformHour(DateTime.now().hour, 'start').toString();
-    startMinute = transformMinute(DateTime.now().minute);
   }
-
-  /// Creates a [CentralizedLongFormExpression] from the given data entered
-  /// by the user.
-  // CentralizedEventFormExpression createExpression() {
-  //   return CentralizedEventFormExpression(
-  //     startTime: DateTime(
-  //       int.parse(startYear),
-  //       transformMonthToInt(startMonth),
-  //       int.parse(startDay),
-  //       int.parse(startHour),
-  //       int.parse(startMinute),
-  //     ).toIso8601String(),
-  //     endTime: DateTime(
-  //       int.parse(endYear),
-  //       transformMonthToInt(endMonth),
-  //       int.parse(endDay),
-  //       int.parse(endHour),
-  //       int.parse(endMinute),
-  //     ).toIso8601String(),
-  //     description: detailsController.value.text,
-  //     location: locationController.value.text,
-  //     photo: '',
-  //     title: titleController.value.text,
-  //   );
-  // }
 
   CentralizedEventFormExpression createExpression() {
     return CentralizedEventFormExpression(
-      startTime: 'test timestamp',
-      endTime: 'test timestamp',
-      description: 'event description',
-      location: 'location',
-      photo: 'photo',
-      title: 'event title',
-    );
+        description: 'event description',
+        photo: 'photo',
+        title: 'event title',
+        location: 'NYC',
+        startTime: DateTime.now().toIso8601String(),
+        endTime: DateTime.now().toIso8601String());
   }
 
   @override
   void dispose() {
     titleController.dispose();
-    dateController.dispose();
+    startDateController.dispose();
+    endDateController.dispose();
     locationController.dispose();
     detailsController.dispose();
     super.dispose();
-  }
-
-  int transformHour(int hour, String period) {
-    if (hour < 12 && hour != 0) {
-      if (period == 'start') {
-        setState(() {
-          startPeriod = 'AM';
-        });
-      } else if (period == 'end') {
-        setState(() {
-          endPeriod = 'AM';
-        });
-      }
-      return hour;
-    } else if (hour > 12) {
-      if (period == 'start') {
-        setState(() {
-          startPeriod = 'PM';
-        });
-      } else if (period == 'end') {
-        setState(() {
-          endPeriod = 'PM';
-        });
-      }
-      return hour - 12;
-    } else if (hour == 0) {
-      if (period == 'start') {
-        setState(() {
-          startPeriod = 'aM';
-        });
-      } else if (period == 'end') {
-        setState(() {
-          endPeriod = 'AM';
-        });
-      }
-      return 12;
-    } else if (hour == 12) {
-      if (period == 'start') {
-        setState(() {
-          startPeriod = 'PM';
-        });
-      } else if (period == 'end') {
-        setState(() {
-          endPeriod = 'PM';
-        });
-      }
-      return hour;
-    }
-    return 0;
-  }
-
-  void _updateDate(DateTime date, String period) {
-    setState(() {
-      if (period == 'start') {
-        startDay = date.day.toString();
-        startMonth = transformMonth(date.month).toString();
-        startYear = date.year.toString();
-        startHour = transformHour(date.hour, 'start').toString();
-        startMinute = transformMinute(date.minute);
-      } else if (period == 'end') {
-        endDay = date.day.toString();
-        endMonth = transformMonth(date.month).toString();
-        endYear = date.year.toString();
-        endHour = transformHour(date.hour, 'end').toString();
-        endMinute = transformMinute(date.minute);
-      }
-    });
-
-    print(date);
   }
 
   @override
@@ -181,7 +67,6 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 children: <Widget>[
                   Container(
-                    // color: Colors.blue,
                     child: TextFormField(
                         validator: Validator.validateNonEmpty,
                         controller: titleController,
@@ -195,140 +80,60 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                         decoration: InputDecoration(
                             border: InputBorder.none,
                             hintText: 'Name of event',
-                            hintStyle: Theme.of(context).textTheme.display1),
+                            hintStyle: Theme.of(context).textTheme.title),
                         cursorColor: JuntoPalette.juntoGrey,
                         cursorWidth: 2,
                         maxLines: null,
                         maxLength: 140,
                         style: Theme.of(context).textTheme.display1),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      switch (startPickerOpen) {
-                        case false:
-                          setState(() {
-                            startPickerOpen = true;
-                          });
-                          break;
-                        case true:
-                          setState(() {
-                            startPickerOpen = false;
-                          });
-                          break;
-                      }
-                    },
-                    child: Container(
-                      color: Theme.of(context).colorScheme.background,
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text('Start Date',
-                              style: Theme.of(context).textTheme.subhead),
-                          Row(
-                            children: <Widget>[
-                              Text(
-                                  startMonth +
-                                      ' ' +
-                                      startDay +
-                                      ', ' +
-                                      startYear +
-                                      ', ' +
-                                      startHour +
-                                      ':' +
-                                      startMinute +
-                                      ' ' +
-                                      startPeriod,
-                                  style: Theme.of(context).textTheme.headline)
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  startPickerOpen
-                      ? Container(
-                          height: 200,
-                          child: CupertinoDatePicker(
-                            backgroundColor:
-                                Theme.of(context).colorScheme.background,
-                            initialDateTime: _startDate,
-                            mode: CupertinoDatePickerMode.dateAndTime,
-                            onDateTimeChanged: (DateTime date) {
-                              // print(date);
-                              _updateDate(date, 'start');
-                              _startDate = date;
-                            },
-                          ),
-                        )
-                      : const SizedBox(),
-                  GestureDetector(
-                    onTap: () {
-                      switch (endPickerOpen) {
-                        case false:
-                          setState(() {
-                            endPickerOpen = true;
-                          });
-                          break;
-                        case true:
-                          setState(() {
-                            endPickerOpen = false;
-                          });
-                          break;
-                      }
-                    },
-                    child: Container(
-                      color: Theme.of(context).colorScheme.background,
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text('End Date',
-                              style: Theme.of(context).textTheme.subhead),
-                          endDay == ''
-                              ? const SizedBox()
-                              : Row(
-                                  children: <Widget>[
-                                    Text(
-                                        endMonth +
-                                            ' ' +
-                                            endDay +
-                                            ', ' +
-                                            endYear +
-                                            ', ' +
-                                            endHour +
-                                            ':' +
-                                            endMinute +
-                                            ' ' +
-                                            endPeriod,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline)
-                                  ],
-                                )
-                        ],
-                      ),
-                    ),
-                  ),
-                  endPickerOpen
-                      ? Container(
-                          height: 200,
-                          child: CupertinoDatePicker(
-                            backgroundColor:
-                                Theme.of(context).colorScheme.background,
-                            initialDateTime: _startDate,
-                            mode: CupertinoDatePickerMode.dateAndTime,
-                            onDateTimeChanged: (DateTime date) {
-                              _updateDate(date, 'end');
-                            },
-                          ),
-                        )
-                      : const SizedBox(),
                   Container(
-                    // padding: const EdgeInsets.symmetric(vertical: 15),
                     child: TextField(
+                      controller: startDateController,
+                      buildCounter: (
+                        BuildContext context, {
+                        int currentLength,
+                        int maxLength,
+                        bool isFocused,
+                      }) =>
+                          null,
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Start time/date',
+                          hintStyle: Theme.of(context).textTheme.caption),
+                      cursorColor: Theme.of(context).primaryColorDark,
+                      cursorWidth: 2,
+                      maxLines: null,
+                      style: Theme.of(context).textTheme.caption,
+                      maxLength: 80,
+                      textInputAction: TextInputAction.done,
+                    ),
+                  ),
+                  Container(
+                    child: TextField(
+                      controller: endDateController,
+                      buildCounter: (
+                        BuildContext context, {
+                        int currentLength,
+                        int maxLength,
+                        bool isFocused,
+                      }) =>
+                          null,
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'End time/date',
+                          hintStyle: Theme.of(context).textTheme.caption),
+                      cursorColor: Theme.of(context).primaryColorDark,
+                      cursorWidth: 2,
+                      maxLines: null,
+                      style: Theme.of(context).textTheme.caption,
+                      maxLength: 80,
+                      textInputAction: TextInputAction.done,
+                    ),
+                  ),
+                  Container(
+                    child: TextField(
+                      controller: locationController,
                       buildCounter: (
                         BuildContext context, {
                         int currentLength,
@@ -339,18 +144,18 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                       decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Location',
-                          hintStyle: Theme.of(context).textTheme.subhead),
+                          hintStyle: Theme.of(context).textTheme.caption),
                       cursorColor: Theme.of(context).primaryColorDark,
                       cursorWidth: 2,
                       maxLines: null,
-                      style: Theme.of(context).textTheme.subhead,
+                      style: Theme.of(context).textTheme.caption,
                       maxLength: 80,
                       textInputAction: TextInputAction.done,
                     ),
                   ),
                   Container(
-                    // padding: const EdgeInsets.symmetric(vertical: 15),
                     child: TextField(
+                      controller: detailsController,
                       buildCounter: (
                         BuildContext context, {
                         int currentLength,
@@ -361,11 +166,11 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                       decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Details',
-                          hintStyle: Theme.of(context).textTheme.subhead),
-                      cursorColor: const Color(0xff333333),
+                          hintStyle: Theme.of(context).textTheme.caption),
+                      cursorColor: Theme.of(context).primaryColorDark,
                       cursorWidth: 2,
                       maxLines: null,
-                      style: Theme.of(context).textTheme.subhead,
+                      style: Theme.of(context).textTheme.caption,
                       maxLength: 80,
                       textInputAction: TextInputAction.done,
                     ),

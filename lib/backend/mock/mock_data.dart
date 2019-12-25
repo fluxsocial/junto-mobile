@@ -171,8 +171,8 @@ List<CentralizedExpressionResponse> kSampleExpressions =
     ),
     expressionData: CentralizedEventFormExpression(
         title: 'Junto Presents: Jazz and Draw',
-        location: 'The Assemblage',
-        startTime: 'Sun, Sep 15, 3:00PM',
+        // location: 'The Assemblage',
+        // startTime: 'Sun, Sep 15, 3:00PM',
         photo: 'assets/images/junto-mobile__event--one.png',
         description:
             "Join us for a splendiferous afternoon of paint-splattering fun! We'll be syncing our movements to your favorite blues while creating beautiful masterpieces together. All are invited!"),
@@ -267,8 +267,8 @@ List<CentralizedExpressionResponse> kSampleExpressions =
     ),
     expressionData: CentralizedEventFormExpression(
         title: 'Happiness is Your True Nature',
-        location: 'within',
-        startTime: 'ANYTIME',
+        // location: 'within',
+        // startTime: 'ANYTIME',
         photo: 'assets/images/junto-mobile__event--two.png',
         description:
             "Now, you may not be as muscular as this stud. But let me tell you - You. Are. Beautiful. Everything you need is within, so come book an appointmnet with Happy Leif and we're guarantee you some Happy Photos ;)"),

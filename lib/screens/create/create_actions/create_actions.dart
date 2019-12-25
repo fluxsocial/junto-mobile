@@ -70,6 +70,8 @@ class CreateActionsState extends State<CreateActions> {
   }
 
   Future<void> _createExpression() async {
+    print(_expression);
+    print(_expression.expressionData);
     try {
       await Provider.of<ExpressionRepo>(context).createExpression(
         _expression,
@@ -101,10 +103,11 @@ class CreateActionsState extends State<CreateActions> {
         <Widget>[
           FlatButton(
             onPressed: () {
-              Navigator.of(context).pushAndRemoveUntil(
-                JuntoCollective.route(),
-                (_) => false,
-              );
+              // Navigator.of(context).pushAndRemoveUntil(
+              //   JuntoCollective.route(),
+              //   (_) => false,
+              // );
+              Navigator.pop(context);
             },
             child: const Text('Ok'),
           )

@@ -12,7 +12,7 @@ class EventOpen extends StatelessWidget {
         expression.expressionData as CentralizedEventFormExpression;
     final String eventTitle = eventExpression.title;
     final String eventTime = DateTime.now().toIso8601String();
-    final String eventLocation = eventExpression.location;
+    // final String eventLocation = eventExpression.location;
     final String eventImage = eventExpression.photo;
     final String eventDescription = eventExpression.description;
 
@@ -168,8 +168,10 @@ class EventOpen extends StatelessWidget {
                           Icon(Icons.location_searching,
                               color: Theme.of(context).primaryColor, size: 20),
                           const SizedBox(width: 5),
-                          Text(eventLocation,
-                              style: Theme.of(context).textTheme.body2),
+                          Text('NYC',
+                              style: Theme.of(context).textTheme.body2),                          
+                          // Text(eventLocation,
+                          //     style: Theme.of(context).textTheme.body2),
                         ],
                       ),
                     ),
