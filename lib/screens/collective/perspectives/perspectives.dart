@@ -49,20 +49,11 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                 physics: const ClampingScrollPhysics(),
                 children:
                     snapshot.data.map((CentralizedPerspective perspective) {
-                  if (perspective.name !=
-                      widget.profile.user.name + "'s Connection Perspective") {
-                    if (perspective.name ==
-                        widget.profile.user.name + "'s Follow Perspective") {
-                      return _buildPerspective(
-                          name: 'Subscriptions',
-                          isCustomPerspective: false,
-                          perspective: perspective);
-                    } else {
-                      return _buildPerspective(
-                          name: perspective.name,
-                          isCustomPerspective: true,
-                          perspective: perspective);
-                    }
+                  if (perspective.name != 'Connections') {
+                    return _buildPerspective(
+                        name: perspective.name,
+                        isCustomPerspective: true,
+                        perspective: perspective);
                   } else {
                     return const SizedBox();
                   }

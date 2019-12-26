@@ -90,10 +90,11 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
         error.message,
         <Widget>[
           FlatButton(
-            onPressed: () => Navigator.of(context).pushAndRemoveUntil(
-              Welcome.route(),
-              (Route<dynamic> route) => false,
-            ),
+            onPressed: () {},
+            // onPressed: () => Navigator.of(context).pushAndRemoveUntil(
+            //   Welcome.route(),
+            //   (Route<dynamic> route) => false,
+            // ),
             child: const Text('OK'),
           ),
         ],

@@ -87,7 +87,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
     return _memoizer.runOnce(
       () => _userProvider.getUsersExpressions(_userAddress),
     );
-  } 
+  }
 
   @override
   Widget build(BuildContext context) {
