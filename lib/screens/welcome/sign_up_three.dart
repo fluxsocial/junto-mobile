@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/screens/sign_up/sign_up_four/sign_up_four.dart';
-import 'package:junto_beta_mobile/screens/sign_up/sign_up_logo/sign_up_logo.dart';
+import 'package:junto_beta_mobile/screens/welcome/sign_up_four.dart';
 
 class SignUpThree extends StatefulWidget {
   const SignUpThree({Key key, this.name, this.username, this.email})
@@ -92,49 +91,6 @@ class SignUpThreeState extends State<SignUpThree> {
                   ),
                 ],
               ),
-            ),
-          ),
-          SignUpLogo(),
-          Positioned(
-            bottom: MediaQuery.of(context).size.height * .05,
-            right: 20,
-            child: Row(
-              children: <Widget>[
-                Container(
-                  margin: const EdgeInsets.only(right: 17),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Icon(
-                      Icons.arrow_left,
-                      color: Colors.white,
-                      size: 27,
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    passwordController.text = '';
-                    if (widget.name != '' &&
-                        widget.username != '' &&
-                        password != '' &&
-                        password.length > 4) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute<dynamic>(
-                          builder: (BuildContext context) => SignUpFour(
-                              name: widget.name,
-                              username: widget.username,
-                              password: password,
-                              email: widget.email),
-                        ),
-                      );
-                    }
-                  },
-                  child: Icon(Icons.arrow_right, color: Colors.white, size: 22),
-                ),
-              ],
             ),
           ),
         ],

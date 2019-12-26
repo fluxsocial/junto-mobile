@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/screens/sign_in/sign_in.dart';
-import 'package:junto_beta_mobile/screens/sign_up/sign_up.dart';
-import 'package:junto_beta_mobile/screens/sign_up/sign_up_two/sign_up_two.dart';
+import 'package:junto_beta_mobile/screens/welcome/sign_up_name.dart';
+import 'package:junto_beta_mobile/screens/welcome/sign_up_username.dart';
 
 class Welcome extends StatefulWidget {
   @override
@@ -16,12 +16,12 @@ class WelcomeState extends State<Welcome> {
   int _currentIndex;
   String name;
 
-  GlobalKey<SignUpState> signUpKey;
+  GlobalKey<SignUpNameState> signUpNameKey;
 
   @override
   void initState() {
     super.initState();
-    signUpKey = GlobalKey<SignUpState>();
+    signUpNameKey = GlobalKey<SignUpNameState>();
     _currentIndex = 0;
     _welcomeController = PageController();
   }
@@ -52,8 +52,8 @@ class WelcomeState extends State<Welcome> {
             physics: const NeverScrollableScrollPhysics(),
             children: <Widget>[
               _welcomeMain(context),
-              SignUp(key: signUpKey),
-              SignUpTwo(),
+              SignUpName(key: signUpNameKey),
+              SignUpUsername(),
             ]),
         _currentIndex != 0
             ? Positioned(
@@ -68,7 +68,7 @@ class WelcomeState extends State<Welcome> {
                         onTap: () {
                           _welcomeController.previousPage(
                             curve: Curves.easeIn,
-                            duration: const Duration(milliseconds: 300),
+                            duration: const Duration(milliseconds: 400),
                           );
                           setState(() {
                             _currentIndex -= 1;
@@ -86,7 +86,7 @@ class WelcomeState extends State<Welcome> {
                       onTap: () {
                         if (_currentIndex == 1) {
                           setState(() {
-                            name = signUpKey.currentState.returnDetails();
+                            name = signUpNameKey.currentState.returnDetails();
                             _currentIndex += 1;
                           });
 
@@ -94,7 +94,7 @@ class WelcomeState extends State<Welcome> {
                         }
                         _welcomeController.nextPage(
                           curve: Curves.easeIn,
-                          duration: const Duration(milliseconds: 300),
+                          duration: const Duration(milliseconds: 400),
                         );
                       },
                       child: Icon(Icons.keyboard_arrow_down,
@@ -154,9 +154,9 @@ class WelcomeState extends State<Welcome> {
                   onPressed: () {
                     _welcomeController.nextPage(
                       curve: Curves.easeIn,
-                      duration: const Duration(milliseconds: 300),
+                      duration: const Duration(milliseconds: 400),
                     );
-                    Future.delayed(const Duration(milliseconds: 300), () {
+                    Future.delayed(const Duration(milliseconds: 400), () {
                       setState(() {
                         _currentIndex = 1;
                       });

@@ -1,37 +1,28 @@
 import 'package:flutter/material.dart';
 
-class SignUp extends StatefulWidget {
-  const SignUp({Key key}) : super(key: key);
+class SignUpUsername extends StatefulWidget {
+  const SignUpUsername({Key key, this.name, this.email}) : super(key: key);
+
+  final String name;
+  final String email;
 
   @override
-  State<StatefulWidget> createState() {
-    return SignUpState();
-  }
+  State<StatefulWidget> createState() => SignUpUsernameState();
 }
 
-class SignUpState extends State<SignUp> {
-  TextEditingController nameController;
+class SignUpUsernameState extends State<SignUpUsername> {
+  TextEditingController usernameController;
+  String username = '';
 
   @override
   void initState() {
     super.initState();
-    nameController = TextEditingController();
-  }
-
-  String returnDetails() {
-    return nameController.value.text;
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    nameController.dispose();
+    usernameController = TextEditingController();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.transparent,
       width: MediaQuery.of(context).size.width,
       child: Container(
         margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * .16),
@@ -41,14 +32,14 @@ class SignUpState extends State<SignUp> {
           children: <Widget>[
             Container(
               margin: EdgeInsets.only(
-                bottom: MediaQuery.of(context).size.height * .24,
+                bottom: MediaQuery.of(context).size.height * .17,
               ),
               child: const Text(
-                'Hey, what\'s your name?',
+                'Let\'s get a unique username for you!',
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 24,
-                    fontWeight: FontWeight.w600),
+                    fontWeight: FontWeight.w700),
               ),
             ),
             Container(
@@ -56,24 +47,24 @@ class SignUpState extends State<SignUp> {
                 children: <Widget>[
                   Container(
                     child: TextField(
-                      controller: nameController,
+                      controller: usernameController,
                       cursorColor: Colors.white70,
                       decoration: InputDecoration(
                         enabledBorder: InputBorder.none,
                         focusedBorder: InputBorder.none,
                         labelStyle: TextStyle(color: Colors.green),
-                        hintText: 'My name is...',
+                        hintText: 'I\'ll go by...',
                         hintStyle: const TextStyle(
                           color: Colors.white70,
                           fontSize: 24,
-                          fontWeight: FontWeight.w400,
+                          fontWeight: FontWeight.w500,
                         ),
                         fillColor: Colors.white,
                       ),
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 24,
-                        fontWeight: FontWeight.w400,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),
@@ -82,14 +73,14 @@ class SignUpState extends State<SignUp> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       const Text(
-                        'FULL NAME',
+                        'USERNAME',
                         style: TextStyle(
                             color: Colors.white70,
                             fontSize: 14,
                             fontWeight: FontWeight.w400),
                       ),
                       Text(
-                        nameController.value.text.length.toString() + '/36',
+                        usernameController.value.text.length.toString() + '/22',
                         style: const TextStyle(
                             color: Colors.white70,
                             fontSize: 14,

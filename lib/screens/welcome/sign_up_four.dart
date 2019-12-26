@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/screens/sign_up/sign_up_logo/sign_up_logo.dart';
-import 'package:junto_beta_mobile/screens/sign_up/sign_up_welcome/sign_up_welcome.dart';
+import 'package:junto_beta_mobile/screens/welcome/sign_up_welcome.dart';
 
 class SignUpFour extends StatefulWidget {
   const SignUpFour({
@@ -99,55 +98,6 @@ class SignUpFourState extends State<SignUpFour> {
                   ),
                 ],
               ),
-            ),
-          ),
-          SignUpLogo(),
-          Positioned(
-            bottom: MediaQuery.of(context).size.height * .05,
-            right: 20,
-            child: Row(
-              children: <Widget>[
-                Container(
-                  margin: const EdgeInsets.only(right: 17),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Icon(
-                      Icons.arrow_left,
-                      color: Colors.white,
-                      size: 27,
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () async {
-                    bioController.text = '';
-                    if (widget.name != '' &&
-                        widget.username != '' &&
-                        widget.password != '') {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute<dynamic>(
-                          builder: (BuildContext context) => SignUpWelcome(
-                            name: widget.name,
-                            username: widget.username,
-                            password: widget.password,
-                            bio: bio,
-                            profilePicture: profilePicture,
-                            email: widget.email,
-                          ),
-                        ),
-                      );
-                    }
-                  },
-                  child: Icon(
-                    Icons.arrow_right,
-                    color: Colors.white,
-                    size: 22,
-                  ),
-                ),
-              ],
             ),
           ),
         ],
