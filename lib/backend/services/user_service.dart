@@ -203,13 +203,9 @@ class UserServiceCentralized implements UserService {
   Future<List<UserProfile>> getPerspectiveUsers(
     String perspectiveAddress,
   ) async {
-    print('calling function');
     final http.Response _serverResponse =
         await client.get('/perspectives/$perspectiveAddress/users');
-    print(_serverResponse);
-    print(_serverResponse.body);
     final List<dynamic> _results = JuntoHttp.handleResponse(_serverResponse);
-    print('getting subscriptions');
     return <UserProfile>[
       for (dynamic data in _results) UserProfile.fromMap(data)
     ];

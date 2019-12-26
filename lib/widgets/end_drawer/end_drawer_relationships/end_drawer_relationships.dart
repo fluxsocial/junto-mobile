@@ -118,6 +118,15 @@ class JuntoRelationships extends StatelessWidget {
       builder:
           (BuildContext context, AsyncSnapshot<List<UserProfile>> snapshot) {
         if (snapshot.hasData) {
+          if (snapshot.data.isEmpty) {
+            return Center(
+              child: Transform.translate(
+                offset: const Offset(0.0, -50.0),
+                child: Text('No connections!',
+                    style: Theme.of(context).textTheme.headline),
+              ),
+            );
+          }
           return ListView.builder(
             itemCount: snapshot.data.length,
             itemBuilder: (BuildContext context, int index) {
@@ -157,6 +166,15 @@ class JuntoRelationships extends StatelessWidget {
       builder:
           (BuildContext context, AsyncSnapshot<List<UserProfile>> snapshot) {
         if (snapshot.hasData) {
+          if (snapshot.data.isEmpty) {
+            return Center(
+              child: Transform.translate(
+                offset: const Offset(0.0, -50.0),
+                child: Text('No subscriptions!',
+                    style: Theme.of(context).textTheme.headline),
+              ),
+            );
+          }
           return ListView.builder(
             itemCount: snapshot.data.length,
             itemBuilder: (BuildContext context, int index) {
@@ -192,6 +210,15 @@ class JuntoRelationships extends StatelessWidget {
       builder:
           (BuildContext context, AsyncSnapshot<List<UserProfile>> snapshot) {
         if (snapshot.hasData) {
+          if (snapshot.data.isEmpty) {
+            return Center(
+              child: Transform.translate(
+                offset: const Offset(0.0, -50.0),
+                child: Text('No pending connection requests!',
+                    style: Theme.of(context).textTheme.headline),
+              ),
+            );
+          }
           return ListView.builder(
             itemCount: snapshot.data.length,
             itemBuilder: (BuildContext context, int index) {
