@@ -3,8 +3,14 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/relationship_request.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/backend/repositories.dart';
+import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 
 class JuntoRelationships extends StatelessWidget {
+  JuntoRelationships(this.userAddress);
+  final String userAddress;
+
   final List<String> _tabs = <String>[
     'Connections',
     'Subscriptions',
@@ -12,41 +18,6 @@ class JuntoRelationships extends StatelessWidget {
     'Pending'
   ];
 
-  List<UserProfile> mockProfiles = [
-    UserProfile(
-      address: '123e4567-e89b-23s3-a256-426655440000',
-      bio: 'Hi there, this is a mock user profile',
-      name: 'Testy',
-      profilePicture: ['assets/images/junto-mobile__mockprofpic--one.png'],
-      username: 'mcTesty',
-      verified: false,
-      website: <String>['https://www.twitter.com/Nash0x7E2'],
-      location: <String>['Somewhere on Earth'],
-      gender: <String>['Male'],
-    ),
-    UserProfile(
-      address: '123e4567-e89b-23s3-a256-426655440000',
-      bio: 'Hi there, this is a mock user profile',
-      name: 'Testy',
-      profilePicture: ['assets/images/junto-mobile__mockprofpic--one.png'],
-      username: 'mcTesty',
-      verified: false,
-      website: <String>['https://www.twitter.com/Nash0x7E2'],
-      location: <String>['Somewhere on Earth'],
-      gender: <String>['Male'],
-    ),
-    UserProfile(
-      address: '123e4567-e89b-23s3-a256-426655440000',
-      bio: 'Hi there, this is a mock user profile',
-      name: 'Testy',
-      profilePicture: ['assets/images/junto-mobile__mockprofpic--one.png'],
-      username: 'mcTesty',
-      verified: false,
-      website: <String>['https://www.twitter.com/Nash0x7E2'],
-      location: <String>['Somewhere on Earth'],
-      gender: <String>['Male'],
-    ),
-  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -132,13 +103,7 @@ class JuntoRelationships extends StatelessWidget {
               Container(color: Colors.green, height: 200),
               Container(color: Colors.blue, height: 200),
               Container(color: Colors.orange, height: 200),
-              ListView(
-                children: <Widget>[
-                  RelationshipRequest(mockProfiles[0]),
-                  RelationshipRequest(mockProfiles[1]),
-                  RelationshipRequest(mockProfiles[2]),
-                ],
-              ),
+              _displayPending(context, userAddress)
             ],
           ),
         ),
@@ -152,7 +117,40 @@ class JuntoRelationships extends StatelessWidget {
 
   _displaySubscribers() {}
 
-  _displayPending() {}
+  Widget _displayPending(BuildContext context, String userAddress) {
+    return FutureBuilder<List<UserProfile>>(
+      future: Provider.of<UserRepo>(context).pendingConnections(userAddress),
+      builder:
+          (BuildContext context, AsyncSnapshot<List<UserProfile>> snapshot) {
+        if (snapshot.hasData) {
+          return ListView.builder(
+            itemCount: snapshot.data.length,
+            itemBuilder: (BuildContext context, int index) {
+              final UserProfile data = snapshot.data[index];
+              return RelationshipRequest(data);
+            },
+          );
+        } else if (snapshot.hasError) {
+          Container(
+            child: Center(
+              child: Text('${snapshot.error}'),
+            ),
+          );
+        }
+        return ListView(children: <Widget>[
+          Container(
+            height: MediaQuery.of(context).size.height - 120,
+            child: Center(
+              child: Transform.translate(
+                offset: const Offset(0.0, -50.0),
+                child: JuntoProgressIndicator(),
+              ),
+            ),
+          ),
+        ]);
+      },
+    );
+  }
 }
 
 /// Custom [SliverPersistentHeaderDelegate] used on Den.

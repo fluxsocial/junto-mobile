@@ -10,6 +10,7 @@ import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_edit_den.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_themes.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/end_drawer_relationships.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class JuntoDrawer extends StatefulWidget {
   const JuntoDrawer({this.screen, this.icon});
@@ -145,13 +146,18 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                     ),
                     JuntoDrawerItem(
                       title: 'Relationships',
-                      onTap: () {
+                      onTap: () async {
+                        final SharedPreferences _prefs =
+                            await SharedPreferences.getInstance();
+
                         // open relationships
                         Navigator.push(
                           context,
                           CupertinoPageRoute<dynamic>(
                             builder: (BuildContext context) =>
-                                JuntoRelationships(),
+                                JuntoRelationships(
+                              _prefs.getString('user_id'),
+                            ),
                           ),
                         );
                       },
