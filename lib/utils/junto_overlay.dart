@@ -21,7 +21,7 @@ class JuntoLoader extends StatelessWidget {
           Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
-            color: Colors.white70,
+            color: Colors.white30,
             child: Center(
               child: JuntoLoader(
                 height: height,

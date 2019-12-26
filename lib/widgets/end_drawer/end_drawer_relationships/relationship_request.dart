@@ -7,6 +7,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
 
 class RelationshipRequest extends StatelessWidget {
@@ -19,13 +20,20 @@ class RelationshipRequest extends StatelessWidget {
     UserProfile _connection,
   ) async {
     try {
+      JuntoLoader.showLoader(context);
       await Provider.of<UserRepo>(context).respondToConnection(
         user.address,
         true,
       );
       Navigator.pop(context);
     } on JuntoException catch (error) {
-      print('Error accepting connection ${error.message}');
+      JuntoDialog.showJuntoDialog(context, '${error.message}', [
+        FlatButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Ok'),
+        ),
+      ]);
+      print('Error rejecting connection ${error.message}');
     }
   }
 
@@ -40,10 +48,15 @@ class RelationshipRequest extends StatelessWidget {
         false,
       );
       JuntoLoader.hide();
-      Navigator.pop(context);
     } on JuntoException catch (error) {
       JuntoLoader.hide();
-      Navigator.pop(context);
+
+      JuntoDialog.showJuntoDialog(context, '${error.message}', [
+        FlatButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Ok'),
+        ),
+      ]);
       print('Error rejecting connection ${error.message}');
     }
   }
@@ -54,19 +67,19 @@ class RelationshipRequest extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          CupertinoPageRoute(
+          CupertinoPageRoute<dynamic>(
             builder: (BuildContext context) => JuntoMember(profile: user),
           ),
         );
       },
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         color: Theme.of(context).colorScheme.background,
         child: Row(
           children: <Widget>[
             Row(
               children: <Widget>[
-                user.profilePicture != ''
+                user.profilePicture.isNotEmpty
                     ? ClipOval(
                         child: Image.asset(
                           user.profilePicture[0],
