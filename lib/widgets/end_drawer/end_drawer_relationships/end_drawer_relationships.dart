@@ -6,10 +6,14 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:junto_beta_mobile/utils/junto_exception.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 
 class JuntoRelationships extends StatelessWidget {
-  JuntoRelationships(this.userAddress);
+  JuntoRelationships(this.userAddress, this.userFollowPerspectiveAddress);
   final String userAddress;
+  final String userFollowPerspectiveAddress;
 
   final List<String> _tabs = <String>[
     'Connections',
@@ -17,6 +21,27 @@ class JuntoRelationships extends StatelessWidget {
     'Subscribers',
     'Pending'
   ];
+
+  Future<void> _getSubscriptions(
+    BuildContext context,
+    String userAddress,
+  ) async {
+    try {
+      JuntoLoader.showLoader(context);
+      await Provider.of<UserRepo>(context).getPerspectiveUsers(
+        userAddress,
+      );
+      Navigator.pop(context);
+    } on JuntoException catch (error) {
+      JuntoDialog.showJuntoDialog(context, '${error.message}', [
+        FlatButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Ok'),
+        ),
+      ]);
+      print('Error rejecting connection ${error.message}');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +126,7 @@ class JuntoRelationships extends StatelessWidget {
           body: TabBarView(
             children: <Widget>[
               Container(color: Colors.green, height: 200),
-              Container(color: Colors.blue, height: 200),
+              _displaySubscriptions(context, userAddress),
               Container(color: Colors.orange, height: 200),
               _displayPending(context, userAddress)
             ],
@@ -113,7 +138,47 @@ class JuntoRelationships extends StatelessWidget {
 
   _displayConnections() {}
 
-  _displaySubscriptions() {}
+  Widget _displaySubscriptions(BuildContext context, String userAddress) {
+    return FutureBuilder<List<UserProfile>>(
+      future: Provider.of<UserRepo>(context)
+          .getPerspectiveUsers(userFollowPerspectiveAddress),
+      builder:
+          (BuildContext context, AsyncSnapshot<List<UserProfile>> snapshot) {
+        if (snapshot.hasData) {
+          // return ListView.builder(
+          //   itemCount: snapshot.data.length,
+          //   itemBuilder: (BuildContext context, int index) {
+          //     final UserProfile data = snapshot.data[index];
+          //     return RelationshipRequest(data);
+          //   },
+          // );
+          print('has connections');
+
+          print(snapshot.data);
+          return Center(
+            child: Text('yo'),
+          );
+        } else if (snapshot.hasError) {
+          Container(
+            child: Center(
+              child: Text('${snapshot.error}'),
+            ),
+          );
+        }
+        return ListView(children: <Widget>[
+          Container(
+            height: MediaQuery.of(context).size.height - 120,
+            child: Center(
+              child: Transform.translate(
+                offset: const Offset(0.0, -50.0),
+                child: JuntoProgressIndicator(),
+              ),
+            ),
+          ),
+        ]);
+      },
+    );
+  }
 
   _displaySubscribers() {}
 

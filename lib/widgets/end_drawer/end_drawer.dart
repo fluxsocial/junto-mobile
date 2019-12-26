@@ -149,7 +149,6 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                       onTap: () async {
                         final SharedPreferences _prefs =
                             await SharedPreferences.getInstance();
-
                         // open relationships
                         Navigator.push(
                           context,
@@ -157,6 +156,7 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                             builder: (BuildContext context) =>
                                 JuntoRelationships(
                               _prefs.getString('user_id'),
+                              _prefs.getString('user_follow_perspective_id')
                             ),
                           ),
                         );

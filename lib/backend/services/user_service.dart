@@ -164,10 +164,13 @@ class UserServiceCentralized implements UserService {
   @override
   Future<List<CentralizedPerspective>> userPerspectives(
       String userAddress) async {
+    print('getting perspectives');
+
     final http.Response _serverResponse =
         await client.get('/users/$userAddress/perspectives');
     final List<Map<String, dynamic>> items =
         JuntoHttp.handleResponse(_serverResponse);
+    print(items);
     return items.map(
       (Map<String, dynamic> data) => CentralizedPerspective.fromMap(data),
     );
@@ -202,14 +205,16 @@ class UserServiceCentralized implements UserService {
   Future<List<UserProfile>> getPerspectiveUsers(
     String perspectiveAddress,
   ) async {
+    print('getting perspective users');
     final http.Response _serverResponse =
         await client.get('/perspectives/$perspectiveAddress/users');
-    final List<dynamic> items = json.decode(_serverResponse.body);
-    return items
-        .map(
-          (dynamic data) => UserProfile.fromMap(data),
-        )
-        .toList();
+    print(_serverResponse);
+    print(_serverResponse.body);
+    final List<dynamic> _results = JuntoHttp.handleResponse(_serverResponse);
+    print('getting pending connections');
+    return <UserProfile>[
+      for (dynamic data in _results) UserProfile.fromMap(data)
+    ];
   }
 
   @override
@@ -245,7 +250,7 @@ class UserServiceCentralized implements UserService {
       '/notifications',
     );
     final List<dynamic> _results = JuntoHttp.handleResponse(_serverResponse);
-    print(_results);
+    print('getting pending connections');
     return <UserProfile>[
       for (dynamic data in _results) UserProfile.fromMap(data)
     ];
