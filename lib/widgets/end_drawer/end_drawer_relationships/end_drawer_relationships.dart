@@ -9,6 +9,7 @@ import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
+import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
 
 class JuntoRelationships extends StatelessWidget {
   JuntoRelationships(this.userAddress, this.userFollowPerspectiveAddress);
@@ -145,18 +146,12 @@ class JuntoRelationships extends StatelessWidget {
       builder:
           (BuildContext context, AsyncSnapshot<List<UserProfile>> snapshot) {
         if (snapshot.hasData) {
-          // return ListView.builder(
-          //   itemCount: snapshot.data.length,
-          //   itemBuilder: (BuildContext context, int index) {
-          //     final UserProfile data = snapshot.data[index];
-          //     return RelationshipRequest(data);
-          //   },
-          // );
-          print('has connections');
-
-          print(snapshot.data);
-          return Center(
-            child: Text('yo'),
+          return ListView.builder(
+            itemCount: snapshot.data.length,
+            itemBuilder: (BuildContext context, int index) {
+              final UserProfile data = snapshot.data[index];
+              return MemberPreview(profile: data);
+            },
           );
         } else if (snapshot.hasError) {
           Container(
