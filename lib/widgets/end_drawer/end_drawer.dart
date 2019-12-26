@@ -8,6 +8,7 @@ import 'package:junto_beta_mobile/screens/groups/packs/pack_open/pack_open.dart'
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_edit_den.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_themes.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/end_drawer_relationships.dart';
 import 'package:provider/provider.dart';
 
 class JuntoDrawer extends StatefulWidget {
@@ -146,6 +147,13 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                       title: 'Relationships',
                       onTap: () {
                         // open relationships
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute<dynamic>(
+                            builder: (BuildContext context) =>
+                                JuntoRelationships(),
+                          ),
+                        );
                       },
                     ),
 

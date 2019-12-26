@@ -75,7 +75,7 @@ class UserRepo {
     return _userService.getPerspectiveUsers(perspectiveAddress);
   }
 
-  Future<void> connectUser(String userAddress) {
+  Future<void> connectUser(String userAddress) { 
     return _userService.connectUser(userAddress);
   }
 

@@ -33,4 +33,7 @@ class CustomIcons {
   static const IconData create = IconData(0xe91c, fontFamily: 'j_home');
   static const IconData collective = IconData(0xe91d, fontFamily: 'j_home');
   static const IconData groups = IconData(0xe91e, fontFamily: 'j_home');
+
+  static const IconData check = IconData(0xe900, fontFamily: 'j_home_two');
+  static const IconData cancel = IconData(0xe901, fontFamily: 'j_home_two');
 }

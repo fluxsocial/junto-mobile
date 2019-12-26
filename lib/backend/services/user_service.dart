@@ -245,6 +245,7 @@ class UserServiceCentralized implements UserService {
       '/notifications',
     );
     final List<dynamic> _results = JuntoHttp.handleResponse(_serverResponse);
+    print(_results);
     return <UserProfile>[
       for (dynamic data in _results) UserProfile.fromMap(data)
     ];

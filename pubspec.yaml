@@ -68,6 +68,10 @@ flutter:
       fonts:
       - asset: assets/fonts/j_home.ttf
 
+    - family:  j_home_two
+      fonts:
+      - asset: assets/fonts/j_home_two.ttf      
+
     - family:  MyFlutterApp
       fonts:
       - asset: assets/fonts/MyFlutterApp.ttf
