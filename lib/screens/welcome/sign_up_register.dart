@@ -68,34 +68,21 @@ class SignUpRegisterState extends State<SignUpRegister> {
                             decoration: InputDecoration(
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
-                              hintText: 'Valid email',
+                              hintText: 'Email',
                               hintStyle: const TextStyle(
                                 color: Colors.white70,
-                                fontSize: 17,
+                                fontSize: 24,
                                 fontWeight: FontWeight.w500,
                               ),
                               fillColor: Colors.white,
                             ),
                             style: const TextStyle(
                               color: Colors.white,
-                              fontSize: 17,
+                              fontSize: 24,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            const Text(
-                              'EMAIL',
-                              style: TextStyle(
-                                  color: Colors.white70,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w400),
-                            ),
-                          ],
-                        )
                       ],
                     ),
                   ),
@@ -110,34 +97,21 @@ class SignUpRegisterState extends State<SignUpRegister> {
                             decoration: InputDecoration(
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
-                              hintText: 'Must contain 8 characters',
+                              hintText: 'Password',
                               hintStyle: const TextStyle(
                                 color: Colors.white70,
-                                fontSize: 17,
+                                fontSize: 24,
                                 fontWeight: FontWeight.w500,
                               ),
                               fillColor: Colors.white,
                             ),
                             style: const TextStyle(
                               color: Colors.white,
-                              fontSize: 17,
+                              fontSize: 24,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            const Text(
-                              'PASSWORD',
-                              style: TextStyle(
-                                  color: Colors.white70,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w400),
-                            ),
-                          ],
-                        )
                       ],
                     ),
                   ),
@@ -152,34 +126,21 @@ class SignUpRegisterState extends State<SignUpRegister> {
                             decoration: InputDecoration(
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
-                              hintText: 'Type your password again',
+                              hintText: 'Confirm password',
                               hintStyle: const TextStyle(
                                 color: Colors.white70,
-                                fontSize: 17,
+                                fontSize: 24,
                                 fontWeight: FontWeight.w500,
                               ),
                               fillColor: Colors.white,
                             ),
                             style: const TextStyle(
                               color: Colors.white,
-                              fontSize: 17,
+                              fontSize: 24,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            const Text(
-                              'CONFIRM PASSWORD',
-                              style: TextStyle(
-                                  color: Colors.white70,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w400),
-                            ),
-                          ],
-                        )
                       ],
                     ),
                   ),
@@ -193,131 +154,3 @@ class SignUpRegisterState extends State<SignUpRegister> {
     );
   }
 }
-
-// Container(
-//   child: Column(
-//     children: <Widget>[
-//       Row(
-//         children: <Widget>[
-//           Container(
-//             width: 55,
-//             decoration: const BoxDecoration(
-//               border: Border(
-//                 bottom: BorderSide(
-//                     color: Colors.white70, width: 1.5),
-//               ),
-//             ),
-//             child: TextField(
-//               cursorColor: Colors.white70,
-//               decoration: InputDecoration(
-//                 enabledBorder: InputBorder.none,
-//                 focusedBorder: InputBorder.none,
-//                 hintText: 'Month',
-//                 hintStyle: TextStyle(
-//                   color: Colors.white70,
-//                   fontSize: 17,
-//                   fontWeight: FontWeight.w500,
-//                 ),
-//                 fillColor: Colors.white,
-//               ),
-//               style: const TextStyle(
-//                 color: Colors.white,
-//                 fontSize: 17,
-//                 fontWeight: FontWeight.w500,
-//               ),
-//             ),
-//           ),
-//           Container(
-//             margin: EdgeInsets.symmetric(horizontal: 10),
-//             child: Text(
-//               '/',
-//               style: TextStyle(
-//                   fontSize: 17,
-//                   fontWeight: FontWeight.w500,
-//                   color: Colors.white70),
-//             ),
-//           ),
-//           Container(
-//             width: 55,
-//             decoration: const BoxDecoration(
-//               border: Border(
-//                 bottom: BorderSide(
-//                     color: Colors.white70, width: 1.5),
-//               ),
-//             ),
-//             child: TextField(
-//               cursorColor: Colors.white70,
-//               decoration: InputDecoration(
-//                 enabledBorder: InputBorder.none,
-//                 focusedBorder: InputBorder.none,
-//                 hintText: 'Day',
-//                 hintStyle: TextStyle(
-//                   color: Colors.white70,
-//                   fontSize: 17,
-//                   fontWeight: FontWeight.w500,
-//                 ),
-//                 fillColor: Colors.white,
-//               ),
-//               style: const TextStyle(
-//                 color: Colors.white,
-//                 fontSize: 17,
-//                 fontWeight: FontWeight.w500,
-//               ),
-//             ),
-//           ),
-//           Container(
-//             margin: EdgeInsets.symmetric(horizontal: 10),
-//             child: Text(
-//               '/',
-//               style: TextStyle(
-//                   fontSize: 17,
-//                   fontWeight: FontWeight.w500,
-//                   color: Colors.white70),
-//             ),
-//           ),
-//           Container(
-//             width: 55,
-//             decoration: const BoxDecoration(
-//               border: Border(
-//                 bottom: BorderSide(
-//                     color: Colors.white70, width: 1.5),
-//               ),
-//             ),
-//             child: TextField(
-//               cursorColor: Colors.white70,
-//               decoration: InputDecoration(
-//                 enabledBorder: InputBorder.none,
-//                 focusedBorder: InputBorder.none,
-//                 hintText: 'Year',
-//                 hintStyle: TextStyle(
-//                   color: Colors.white70,
-//                   fontSize: 17,
-//                   fontWeight: FontWeight.w500,
-//                 ),
-//                 fillColor: Colors.white,
-//               ),
-//               style: const TextStyle(
-//                 color: Colors.white,
-//                 fontSize: 17,
-//                 fontWeight: FontWeight.w500,
-//               ),
-//             ),
-//           ),
-//         ],
-//       ),
-//       const SizedBox(height: 10),
-//       Row(
-//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//         children: <Widget>[
-//           const Text(
-//             'BIRTHDAY (IN NUMBERS)',
-//             style: TextStyle(
-//                 color: Colors.white70,
-//                 fontSize: 10,
-//                 fontWeight: FontWeight.w400),
-//           ),
-//         ],
-//       )
-//     ],
-//   ),
-// ),

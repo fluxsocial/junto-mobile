@@ -71,14 +71,14 @@ class SignUpAboutState extends State<SignUpAbout> {
                               hintText: 'Short or long bio',
                               hintStyle: const TextStyle(
                                 color: Colors.white70,
-                                fontSize: 17,
+                                fontSize: 24,
                                 fontWeight: FontWeight.w500,
                               ),
                               fillColor: Colors.white,
                             ),
                             style: const TextStyle(
                               color: Colors.white,
-                              fontSize: 17,
+                              fontSize: 24,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -118,34 +118,21 @@ class SignUpAboutState extends State<SignUpAbout> {
                             decoration: InputDecoration(
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
-                              hintText: 'Where are you based?',
+                              hintText: 'Location',
                               hintStyle: const TextStyle(
                                 color: Colors.white70,
-                                fontSize: 17,
+                                fontSize: 24,
                                 fontWeight: FontWeight.w500,
                               ),
                               fillColor: Colors.white,
                             ),
                             style: const TextStyle(
                               color: Colors.white,
-                              fontSize: 17,
+                              fontSize: 24,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            const Text(
-                              'LOCATION',
-                              style: TextStyle(
-                                  color: Colors.white70,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w400),
-                            ),
-                          ],
-                        )
                       ],
                     ),
                   ),
@@ -160,34 +147,21 @@ class SignUpAboutState extends State<SignUpAbout> {
                             decoration: InputDecoration(
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
-                              hintText: 'All genders welcome',
+                              hintText: 'Gender',
                               hintStyle: const TextStyle(
                                 color: Colors.white70,
-                                fontSize: 17,
+                                fontSize: 24,
                                 fontWeight: FontWeight.w500,
                               ),
                               fillColor: Colors.white,
                             ),
                             style: const TextStyle(
                               color: Colors.white,
-                              fontSize: 17,
+                              fontSize: 24,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            const Text(
-                              'GENDER',
-                              style: TextStyle(
-                                  color: Colors.white70,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w400),
-                            ),
-                          ],
-                        )
                       ],
                     ),
                   ),
@@ -202,34 +176,21 @@ class SignUpAboutState extends State<SignUpAbout> {
                             decoration: InputDecoration(
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
-                              hintText: 'Add link',
+                              hintText: 'Website',
                               hintStyle: const TextStyle(
                                 color: Colors.white70,
-                                fontSize: 17,
+                                fontSize: 24,
                                 fontWeight: FontWeight.w500,
                               ),
                               fillColor: Colors.white,
                             ),
                             style: const TextStyle(
                               color: Colors.white,
-                              fontSize: 17,
+                              fontSize: 24,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            const Text(
-                              'WEBSITE',
-                              style: TextStyle(
-                                  color: Colors.white70,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w400),
-                            ),
-                          ],
-                        )
                       ],
                     ),
                   ),

@@ -112,8 +112,8 @@ class JuntoThemes {
         primary: Color(0xffF0BA45),
         primaryVariant: Color(0xFFF0BA45),
         // Junto purple
-        secondary: Color(0xFF635FAA),
-        secondaryVariant: Color(0xFF635FAA),
+        secondary: Color(0xFF7461a1),
+        secondaryVariant: Color(0xFF7461a1),
         surface: Color(0xfff9f9f9),
         background: Colors.white,
         error: Color(0xff333333),
