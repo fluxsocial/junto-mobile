@@ -18,8 +18,8 @@ class SignUpPhotosState extends State<SignUpPhotos> {
   File profilePictureTwo;
   File profilePictureThree;
 
-  Map<String, dynamic> returnDetails() {
-    return <String, dynamic>{};
+  List<File> returnDetails() {
+    return <File>[profilePictureOne, profilePictureTwo, profilePictureThree];
   }
 
   Widget _buildPhotoSelector({int profilePictureNumber, File profilePicture}) {
@@ -81,7 +81,6 @@ class SignUpPhotosState extends State<SignUpPhotos> {
         await ImageCroppingDialog.show(context, image, aspectRatios: <String>[
       '1:1',
     ]);
-    print(cropped);
     if (cropped == null) {
       if (profilePictureNumber == 1) {
         setState(() => profilePictureOne = null);

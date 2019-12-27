@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/screens/sign_in/sign_in.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_name.dart';
@@ -23,10 +24,12 @@ class WelcomeState extends State<Welcome> {
   String location;
   String gender;
   String website;
+  List<File> profilePictures;
 
   GlobalKey<SignUpNameState> signUpNameKey;
   GlobalKey<SignUpUsernameState> signUpUsernameKey;
   GlobalKey<SignUpAboutState> signUpAboutKey;
+  GlobalKey<SignUpPhotosState> signUpPhotosKey;
 
   @override
   void initState() {
@@ -34,7 +37,7 @@ class WelcomeState extends State<Welcome> {
     signUpNameKey = GlobalKey<SignUpNameState>();
     signUpUsernameKey = GlobalKey<SignUpUsernameState>();
     signUpAboutKey = GlobalKey<SignUpAboutState>();
-
+    signUpPhotosKey = GlobalKey<SignUpPhotosState>();
     _currentIndex = 0;
     _welcomeController = PageController();
   }
@@ -62,10 +65,10 @@ class WelcomeState extends State<Welcome> {
         gender = signUpAboutKey.currentState.returnDetails()['gender'];
         website = signUpAboutKey.currentState.returnDetails()['website'];
       });
-      print(bio);
-      print(location);
-      print(gender);
-      print(website);
+    } else if (_currentIndex == 5) {
+      setState(() {
+        profilePictures = signUpPhotosKey.currentState.returnDetails();
+      });
     }
 
     // transition to next page of sign up flow
@@ -107,7 +110,8 @@ class WelcomeState extends State<Welcome> {
               SignUpUsername(key: signUpUsernameKey),
               SignUpThemes(),
               SignUpAbout(key: signUpAboutKey),
-              SignUpPhotos()
+              SignUpPhotos(key: signUpPhotosKey),
+              SignUpThemes(),
             ]),
         _currentIndex != 0
             ? Positioned(
