@@ -46,7 +46,7 @@ class SignUpRegisterState extends State<SignUpRegister> {
           children: <Widget>[
             Container(
               child: const Text(
-                'Almost done! Create an account',
+                'Almost done!',
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 24,

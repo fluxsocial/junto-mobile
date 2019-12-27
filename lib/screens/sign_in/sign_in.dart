@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
@@ -8,6 +9,9 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SignIn extends StatefulWidget {
+  const SignIn(this.signInController);
+
+  final PageController signInController;
   @override
   _SignInState createState() => _SignInState();
 }
@@ -66,110 +70,117 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            child: Image.asset(
-                'assets/images/junto-mobile__background--lotus.png',
-                fit: BoxFit.cover),
+          const SizedBox(height: 70),
+          GestureDetector(
+            onTap: () {
+              widget.signInController.previousPage(
+                curve: Curves.easeIn,
+                duration: const Duration(milliseconds: 300),
+              );
+            },
+            child: Container(
+              width: 38,
+              height: 38,
+              alignment: Alignment.centerLeft,
+              child: Icon(CustomIcons.back, color: Colors.white70, size: 20),
+            ),
           ),
+          SizedBox(height: MediaQuery.of(context).size.height * .24),
           Container(
-            width: MediaQuery.of(context).size.width,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              // crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Container(
-                  margin: const EdgeInsets.only(bottom: 20),
-                  padding: const EdgeInsets.symmetric(horizontal: 45),
                   child: TextField(
                     controller: _emailController,
+                    cursorColor: Colors.white70,
                     decoration: InputDecoration(
-                      enabledBorder: const UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.white,
-                        ),
-                      ),
-                      focusedBorder: const UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.white,
-                        ),
-                      ),
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
                       labelStyle: TextStyle(color: Colors.green),
-                      hintText: 'EMAIL',
-                      hintStyle: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
+                      hintText: 'Email',
+                      hintStyle: const TextStyle(
+                        color: Colors.white70,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w500,
                       ),
                       fillColor: Colors.white,
                     ),
                     style: const TextStyle(
                       color: Colors.white,
-                      fontSize: 17,
+                      fontSize: 24,
                       fontWeight: FontWeight.w500,
                     ),
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(bottom: 40),
-                  padding: const EdgeInsets.symmetric(horizontal: 45),
-                  child: TextField(
-                    controller: _passwordController,
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      enabledBorder: const UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.white,
-                        ),
-                      ),
-                      focusedBorder: const UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.white,
-                        ),
-                      ),
-                      labelStyle: TextStyle(
-                        color: Colors.green,
-                      ),
-                      hintText: 'PASSWORD',
-                      hintStyle: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400),
-                      fillColor: Colors.white,
-                    ),
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 17,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-                Container(
-                  child: FlatButton(
-                    onPressed: () => _handleSignIn(context),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 100, vertical: 20),
-                    child: const Text('SIGN IN',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 14)),
                   ),
                 ),
               ],
             ),
           ),
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: AppBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
+          const SizedBox(height: 25),
+          Container(
+            child: Column(
+              children: <Widget>[
+                Container(
+                  child: TextField(
+                    controller: _passwordController,
+                    cursorColor: Colors.white70,
+                    decoration: InputDecoration(
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      labelStyle: TextStyle(color: Colors.green),
+                      hintText: 'Password',
+                      hintStyle: const TextStyle(
+                        color: Colors.white70,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      fillColor: Colors.white,
+                    ),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 50),
+          GestureDetector(
+            onTap: () {
+              _handleSignIn(context);
+            },
+            child: Container(
+              alignment: Alignment.center,
+              padding: const EdgeInsets.symmetric(
+                vertical: 20,
+              ),
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.secondaryVariant,
+                  borderRadius: BorderRadius.circular(1000),
+                  boxShadow: [
+                    BoxShadow(
+                        color:
+                            Theme.of(context).primaryColorDark.withOpacity(.12),
+                        offset: const Offset(0.0, 6.0),
+                        blurRadius: 9),
+                  ]),
+              child: const Text(
+                'SIGN IN',
+                style: TextStyle(
+                    letterSpacing: 1.2,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 14),
+              ),
             ),
           )
         ],

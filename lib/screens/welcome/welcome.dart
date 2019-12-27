@@ -17,6 +17,7 @@ class Welcome extends StatefulWidget {
 
 class WelcomeState extends State<Welcome> {
   PageController _welcomeController;
+  PageController _signInController;
 
   int _currentIndex;
   String name;
@@ -41,6 +42,7 @@ class WelcomeState extends State<Welcome> {
     signUpPhotosKey = GlobalKey<SignUpPhotosState>();
     _currentIndex = 0;
     _welcomeController = PageController();
+    _signInController = PageController();
   }
 
   void _nextSignUpPage() {
@@ -106,7 +108,14 @@ class WelcomeState extends State<Welcome> {
             scrollDirection: Axis.vertical,
             physics: const NeverScrollableScrollPhysics(),
             children: <Widget>[
-              _welcomeMain(context),
+              PageView(
+                controller: _signInController,
+                physics: const NeverScrollableScrollPhysics(),
+                children: <Widget>[
+                  _welcomeMain(context),
+                  SignIn(_signInController)
+                ],
+              ),
               SignUpName(key: signUpNameKey),
               SignUpUsername(key: signUpUsernameKey),
               SignUpThemes(),
@@ -134,20 +143,30 @@ class WelcomeState extends State<Welcome> {
                           });
                           print(_currentIndex);
                         },
-                        child: Icon(
-                          Icons.keyboard_arrow_up,
-                          color: Colors.white30,
-                          size: 24,
+                        child: Container(
+                          height: 36,
+                          width: 36,
+                          color: Colors.transparent,
+                          child: Icon(
+                            Icons.keyboard_arrow_up,
+                            color: Colors.white30,
+                            size: 36,
+                          ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 15),
+                    const SizedBox(height: 20),
                     GestureDetector(
                       onTap: () {
                         _nextSignUpPage();
                       },
-                      child: Icon(Icons.keyboard_arrow_down,
-                          color: Colors.white, size: 24),
+                      child: Container(
+                        height: 36,
+                        width: 36,
+                        color: Colors.transparent,
+                        child: Icon(Icons.keyboard_arrow_down,
+                            color: Colors.white, size: 36),
+                      ),
                     ),
                   ],
                 ),
@@ -198,8 +217,8 @@ class WelcomeState extends State<Welcome> {
             children: <Widget>[
               Container(
                 margin: const EdgeInsets.only(bottom: 30),
-                child: FlatButton(
-                  onPressed: () {
+                child: GestureDetector(
+                  onTap: () {
                     _welcomeController.nextPage(
                       curve: Curves.easeIn,
                       duration: const Duration(milliseconds: 400),
@@ -210,17 +229,31 @@ class WelcomeState extends State<Welcome> {
                       });
                     });
                   },
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 50,
-                    vertical: 20,
-                  ),
-                  color: Colors.transparent,
-                  child: const Text(
-                    'WELCOME TO THE PACK',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 14,
+                  child: Container(
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 20,
+                    ),
+                    margin: const EdgeInsets.symmetric(horizontal: 40),
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.secondaryVariant,
+                        borderRadius: BorderRadius.circular(1000),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Theme.of(context)
+                                  .primaryColorDark
+                                  .withOpacity(.12),
+                              offset: const Offset(0.0, 6.0),
+                              blurRadius: 9),
+                        ]),
+                    child: const Text(
+                      'WELCOME TO THE PACK',
+                      style: TextStyle(
+                          letterSpacing: 1.2,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 14),
                     ),
                   ),
                 ),
@@ -229,19 +262,18 @@ class WelcomeState extends State<Welcome> {
                 margin: const EdgeInsets.only(bottom: 120),
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute<dynamic>(
-                        builder: (BuildContext context) => SignIn(),
-                      ),
+                    _signInController.nextPage(
+                      curve: Curves.easeIn,
+                      duration: const Duration(milliseconds: 300),
                     );
                   },
                   child: const Text(
                     'SIGN IN',
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                    ),
+                        letterSpacing: 1.2,
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700),
                   ),
                 ),
               ),
