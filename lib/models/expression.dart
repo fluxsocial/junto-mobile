@@ -138,8 +138,8 @@ class CentralizedEventFormExpression {
     this.location,
     this.startTime,
     this.endTime,
-    // this.facilitators,
-    // this.members
+    this.facilitators,
+    this.members
   });
 
   factory CentralizedEventFormExpression.fromMap(Map<String, dynamic> json) {
@@ -150,9 +150,10 @@ class CentralizedEventFormExpression {
       location: json['location'],
       startTime: json['start_time'],
       endTime: json['end_time'],
-    );
-    // facilitators: json['facilitators'],
-    // members: json['members']);
+    facilitators: json['facilitators'],
+    members: json['members']);      
+    
+
   }
 
   final String title;
@@ -161,8 +162,8 @@ class CentralizedEventFormExpression {
   final String location;
   final String startTime;
   final String endTime;
-  // final List<String> facilitators;
-  // final List<String> members;
+  final List<String> facilitators;
+  final List<String> members;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
         'title': title,
@@ -171,8 +172,8 @@ class CentralizedEventFormExpression {
         'location': location,
         'start_time': startTime,
         'end_time': endTime,
-        // 'facilitators': facilitators,
-        // 'members': members
+        'facilitators': facilitators,
+        'members': members
       };
 }
 

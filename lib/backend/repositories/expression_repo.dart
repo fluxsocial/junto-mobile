@@ -43,6 +43,10 @@ class ExpressionRepo {
     return _expressionService.createExpression(_expression);
   }
 
+  Future createPhoto(String fileType) {
+    return _expressionService.createPhoto(fileType);
+  }
+
   Future<CentralizedExpressionResponse> getExpression(
     String expressionAddress,
   ) {

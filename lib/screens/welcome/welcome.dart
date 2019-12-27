@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/screens/sign_in/sign_in.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_name.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_username.dart';
+import 'package:junto_beta_mobile/screens/welcome/sign_up_themes.dart';
 
 class Welcome extends StatefulWidget {
   @override
@@ -15,15 +16,45 @@ class WelcomeState extends State<Welcome> {
 
   int _currentIndex;
   String name;
+  String username;
 
   GlobalKey<SignUpNameState> signUpNameKey;
+  GlobalKey<SignUpUsernameState> signUpUsernameKey;
 
   @override
   void initState() {
     super.initState();
     signUpNameKey = GlobalKey<SignUpNameState>();
+    signUpUsernameKey = GlobalKey<SignUpUsernameState>();
     _currentIndex = 0;
     _welcomeController = PageController();
+  }
+
+  void _nextSignUpPage() {
+    if (_currentIndex == 1) {
+      setState(() {
+        name = signUpNameKey.currentState.returnDetails();
+      });
+      if (name == '') {
+        return;
+      }
+    } else if (_currentIndex == 2) {
+      setState(() {
+        username = signUpUsernameKey.currentState.returnDetails();
+      });
+      print(username);
+      if (username == '') {
+        return;
+      }
+    }
+
+    // transition to next page of sign up flow
+    _welcomeController.nextPage(
+      curve: Curves.easeIn,
+      duration: const Duration(milliseconds: 400),
+    );
+    // increase current index by 1
+    _currentIndex += 1;
   }
 
   @override
@@ -40,8 +71,8 @@ class WelcomeState extends State<Welcome> {
               end: Alignment.topRight,
               stops: const <double>[0.2, 0.9],
               colors: <Color>[
-                Theme.of(context).colorScheme.secondary,
-                Theme.of(context).colorScheme.primary
+                Theme.of(context).colorScheme.secondaryVariant,
+                Theme.of(context).colorScheme.primaryVariant
               ],
             ),
           ),
@@ -53,7 +84,8 @@ class WelcomeState extends State<Welcome> {
             children: <Widget>[
               _welcomeMain(context),
               SignUpName(key: signUpNameKey),
-              SignUpUsername(),
+              SignUpUsername(key: signUpUsernameKey),
+              SignUpThemes()
             ]),
         _currentIndex != 0
             ? Positioned(
@@ -73,6 +105,7 @@ class WelcomeState extends State<Welcome> {
                           setState(() {
                             _currentIndex -= 1;
                           });
+                          print(_currentIndex);
                         },
                         child: Icon(
                           Icons.keyboard_arrow_up,
@@ -84,18 +117,7 @@ class WelcomeState extends State<Welcome> {
                     const SizedBox(height: 15),
                     GestureDetector(
                       onTap: () {
-                        if (_currentIndex == 1) {
-                          setState(() {
-                            name = signUpNameKey.currentState.returnDetails();
-                            _currentIndex += 1;
-                          });
-
-                          print(name);
-                        }
-                        _welcomeController.nextPage(
-                          curve: Curves.easeIn,
-                          duration: const Duration(milliseconds: 400),
-                        );
+                        _nextSignUpPage();
                       },
                       child: Icon(Icons.keyboard_arrow_down,
                           color: Colors.white, size: 24),
@@ -133,8 +155,7 @@ class WelcomeState extends State<Welcome> {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * .24, bottom: 45),
+              margin: const EdgeInsets.only(bottom: 45),
               child: const Text(
                 'JUNTO',
                 style: TextStyle(

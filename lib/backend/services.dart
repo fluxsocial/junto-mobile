@@ -41,6 +41,8 @@ abstract class ExpressionService {
     CentralizedExpression expression,
   );
 
+  Future createPhoto(String fileType);
+  
   /// Returns a [CentralizedExpressionResponse] for the given address.
   Future<CentralizedExpressionResponse> getExpression(
     String expressionAddress,

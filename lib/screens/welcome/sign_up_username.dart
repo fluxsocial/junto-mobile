@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SignUpUsername extends StatefulWidget {
-  const SignUpUsername({Key key, this.name, this.email}) : super(key: key);
-
-  final String name;
-  final String email;
+  const SignUpUsername({Key key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => SignUpUsernameState();
@@ -12,13 +9,17 @@ class SignUpUsername extends StatefulWidget {
 
 class SignUpUsernameState extends State<SignUpUsername> {
   TextEditingController usernameController;
-  String username = '';
 
   @override
   void initState() {
     super.initState();
     usernameController = TextEditingController();
   }
+
+  String returnDetails() {
+    return usernameController.value.text;
+  }
+
 
   @override
   Widget build(BuildContext context) {

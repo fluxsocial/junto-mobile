@@ -37,11 +37,13 @@ class CreateEventState extends State<CreateEvent> with DateParser {
   CentralizedEventFormExpression createExpression() {
     return CentralizedEventFormExpression(
         description: 'event description',
-        photo: 'photo',
+        photo: '',
         title: 'event title',
         location: 'NYC',
-        startTime: DateTime.now().toIso8601String(),
-        endTime: DateTime.now().toIso8601String());
+        startTime: DateTime.now().toUtc().toIso8601String(),
+        endTime: DateTime.now().toUtc().toIso8601String(),
+        facilitators: [],
+        members: []);
   }
 
   @override

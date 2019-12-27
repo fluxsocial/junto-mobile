@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
+import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/backend/repositories.dart';
+import 'package:junto_beta_mobile/backend/services/expression_provider.dart';
 
 /// Create using photo form
 class CreatePhoto extends StatefulWidget {
@@ -93,6 +96,10 @@ class CreatePhotoState extends State<CreatePhoto> {
     _captionController.dispose();
   }
 
+  _createPhoto() {
+    Provider.of<ExpressionRepo>(context).createPhoto('.png');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -129,6 +136,9 @@ class CreatePhotoState extends State<CreatePhoto> {
                         style: TextStyle(
                             color: Theme.of(context).primaryColor,
                             fontSize: 17),
+                      ),
+                      RaisedButton(
+                        onPressed: _createPhoto,
                       )
                     ],
                   ),

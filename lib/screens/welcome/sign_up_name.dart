@@ -19,13 +19,8 @@ class SignUpNameState extends State<SignUpName> {
   }
 
   String returnDetails() {
+    print(nameController.value.text);
     return nameController.value.text;
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    nameController.dispose();
   }
 
   @override

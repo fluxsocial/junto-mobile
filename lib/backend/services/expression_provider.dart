@@ -25,13 +25,37 @@ class ExpressionServiceCentralized implements ExpressionService {
     print(_postBody);
     final http.Response _serverResponse =
         await client.postWithoutEncoding('/expressions', body: _postBody);
-        print('hellos');
+    print('hellos');
     final Map<String, dynamic> parseData =
         JuntoHttp.handleResponse(_serverResponse);
     final CentralizedExpressionResponse response =
         CentralizedExpressionResponse.fromMap(parseData);
     return response;
   }
+
+  Future createPhoto(String fileType) async {
+    final http.Response _serverResponse =
+        await client.postWithoutEncoding('/auth/s3', body: fileType);
+    print(_serverResponse.body);
+    final Map<String, dynamic> parseData =
+        JuntoHttp.handleResponse(_serverResponse);
+
+    final Map<String, String> newHeaders = {
+      'x-amz-acl': parseData['headers']['x-amz-acl'],
+      'x-amz-meta-user_id': parseData['headers']['x-amz-meta-user_id']
+    };
+
+    final http.Response _serverResponseTwo =
+        await http.put(parseData['signed_url'], headers: newHeaders);
+    print(_serverResponseTwo);
+    print(_serverResponseTwo.body);
+    print(_serverResponseTwo.statusCode);
+    // final http.Response _serverResponseTwo = await client.post(_serverResponse.body.signed_url, headers: )
+  }
+
+  // Future createPhotoTwo() async {
+  //   final http.Response _serverResponse = await client.post()
+  // }
 
   @override
   Future<CentralizedExpressionResponse> postCommentExpression(

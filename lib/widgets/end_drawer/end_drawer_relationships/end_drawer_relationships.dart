@@ -131,7 +131,6 @@ class JuntoRelationships extends StatelessWidget {
             itemCount: snapshot.data.length,
             itemBuilder: (BuildContext context, int index) {
               final UserProfile data = snapshot.data[index];
-              print(data);
               return const SizedBox();
               // return MemberPreview(profile: data);
             },

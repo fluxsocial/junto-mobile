@@ -16,6 +16,10 @@ class MockExpressionService implements ExpressionService {
     return kExpressionResponse;
   }
 
+  Future createPhoto(String fileType) async {
+    return;
+  }
+
   @override
   Future<CentralizedExpressionResponse> getExpression(
     String expressionAddress,
