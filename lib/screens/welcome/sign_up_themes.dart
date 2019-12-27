@@ -38,7 +38,7 @@ class SignUpThemes extends StatelessWidget {
             Text(theme,
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 17,
+                  fontSize: 14,
                   fontWeight: FontWeight.w500,
                 )),
           ],

@@ -4,6 +4,7 @@ import 'package:junto_beta_mobile/screens/welcome/sign_up_name.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_username.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_themes.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_about.dart';
+import 'package:junto_beta_mobile/screens/welcome/sign_up_photos.dart';
 
 class Welcome extends StatefulWidget {
   @override
@@ -106,6 +107,7 @@ class WelcomeState extends State<Welcome> {
               SignUpUsername(key: signUpUsernameKey),
               SignUpThemes(),
               SignUpAbout(key: signUpAboutKey),
+              SignUpPhotos()
             ]),
         _currentIndex != 0
             ? Positioned(

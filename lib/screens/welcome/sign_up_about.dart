@@ -144,14 +144,6 @@ class SignUpAboutState extends State<SignUpAbout> {
                                   fontSize: 10,
                                   fontWeight: FontWeight.w400),
                             ),
-                            Text(
-                              locationController.value.text.length.toString() +
-                                  '/36',
-                              style: const TextStyle(
-                                  color: Colors.white70,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w400),
-                            ),
                           ],
                         )
                       ],
@@ -194,14 +186,6 @@ class SignUpAboutState extends State<SignUpAbout> {
                                   fontSize: 10,
                                   fontWeight: FontWeight.w400),
                             ),
-                            Text(
-                              genderController.value.text.length.toString() +
-                                  '/36',
-                              style: const TextStyle(
-                                  color: Colors.white70,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w400),
-                            ),
                           ],
                         )
                       ],
@@ -240,14 +224,6 @@ class SignUpAboutState extends State<SignUpAbout> {
                             const Text(
                               'WEBSITE',
                               style: TextStyle(
-                                  color: Colors.white70,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w400),
-                            ),
-                            Text(
-                              websiteController.value.text.length.toString() +
-                                  '/36',
-                              style: const TextStyle(
                                   color: Colors.white70,
                                   fontSize: 10,
                                   fontWeight: FontWeight.w400),
