@@ -3,6 +3,7 @@ import 'package:junto_beta_mobile/screens/sign_in/sign_in.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_name.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_username.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_themes.dart';
+import 'package:junto_beta_mobile/screens/welcome/sign_up_about.dart';
 
 class Welcome extends StatefulWidget {
   @override
@@ -17,15 +18,22 @@ class WelcomeState extends State<Welcome> {
   int _currentIndex;
   String name;
   String username;
+  String bio;
+  String location;
+  String gender;
+  String website;
 
   GlobalKey<SignUpNameState> signUpNameKey;
   GlobalKey<SignUpUsernameState> signUpUsernameKey;
+  GlobalKey<SignUpAboutState> signUpAboutKey;
 
   @override
   void initState() {
     super.initState();
     signUpNameKey = GlobalKey<SignUpNameState>();
     signUpUsernameKey = GlobalKey<SignUpUsernameState>();
+    signUpAboutKey = GlobalKey<SignUpAboutState>();
+
     _currentIndex = 0;
     _welcomeController = PageController();
   }
@@ -46,6 +54,17 @@ class WelcomeState extends State<Welcome> {
       if (username == '') {
         return;
       }
+    } else if (_currentIndex == 4) {
+      setState(() {
+        bio = signUpAboutKey.currentState.returnDetails()['bio'];
+        location = signUpAboutKey.currentState.returnDetails()['location'];
+        gender = signUpAboutKey.currentState.returnDetails()['gender'];
+        website = signUpAboutKey.currentState.returnDetails()['website'];
+      });
+      print(bio);
+      print(location);
+      print(gender);
+      print(website);
     }
 
     // transition to next page of sign up flow
@@ -85,7 +104,8 @@ class WelcomeState extends State<Welcome> {
               _welcomeMain(context),
               SignUpName(key: signUpNameKey),
               SignUpUsername(key: signUpUsernameKey),
-              SignUpThemes()
+              SignUpThemes(),
+              SignUpAbout(key: signUpAboutKey),
             ]),
         _currentIndex != 0
             ? Positioned(
