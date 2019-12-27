@@ -32,7 +32,6 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
   UserData _userProfile;
 
   ScrollController _denController;
-  final GlobalKey<ScaffoldState> _juntoDenKey = GlobalKey<ScaffoldState>();
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
   final AsyncMemoizer<List<CentralizedExpressionResponse>> _memoizer =
       AsyncMemoizer<List<CentralizedExpressionResponse>>();
@@ -81,6 +80,8 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
       _userAddress = prefs.getString('user_id');
       _userProfile = UserData.fromMap(decodedUserData);
     });
+
+    print(_userProfile.user.gender);
   }
 
   Future<List<CentralizedExpressionResponse>> getUsersExpressions() async {
@@ -92,7 +93,6 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _juntoDenKey,
       appBar: _userProfile != null
           ? DenAppbar(heading: _userProfile.user.username)
           : const PreferredSize(
@@ -195,9 +195,10 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                             ],
                           ),
                         ),
-                        _displayProfilePictures(
-                            _userProfile.user.profilePicture),
-                        const SizedBox(height: 15),
+                        _userProfile.user.profilePicture.isNotEmpty
+                            ? _displayProfilePictures(
+                                _userProfile.user.profilePicture)
+                            : const SizedBox(),
                         Container(
                           child: Text(_userProfile.user.bio,
                               style: Theme.of(context).textTheme.caption),
@@ -402,7 +403,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
   }
 
   Widget _displayAboutItem(List<String> item, dynamic icon) {
-    if (item != null) {
+    if (item.isNotEmpty) {
       return Container(
         margin: const EdgeInsets.symmetric(vertical: 5),
         child: Row(
@@ -428,18 +429,21 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
 
   Widget _displayProfilePictures(List<String> profilePictures) {
     if (profilePictures != null) {
-      return CarouselSlider(
-          viewportFraction: 1.0,
-          height: MediaQuery.of(context).size.width - 20,
-          enableInfiniteScroll: false,
-          items: <Widget>[
-            for (String picture in profilePictures)
-              Container(
-                padding: const EdgeInsets.only(right: 10),
-                width: MediaQuery.of(context).size.width,
-                child: Image.asset(picture, fit: BoxFit.cover),
-              ),
-          ]);
+      return Container(
+        margin: const EdgeInsets.only(bottom: 15),
+        child: CarouselSlider(
+            viewportFraction: 1.0,
+            height: MediaQuery.of(context).size.width - 20,
+            enableInfiniteScroll: false,
+            items: <Widget>[
+              for (String picture in profilePictures)
+                Container(
+                  padding: const EdgeInsets.only(right: 10),
+                  width: MediaQuery.of(context).size.width,
+                  child: Image.asset(picture, fit: BoxFit.cover),
+                ),
+            ]),
+      );
     } else {
       return const SizedBox();
     }

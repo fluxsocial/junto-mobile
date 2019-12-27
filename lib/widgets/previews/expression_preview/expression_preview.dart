@@ -129,9 +129,11 @@ class ExpressionPreview extends StatelessWidget {
     } else if (expression.type == 'PhotoForm') {
       return PhotoPreview(expression: expression);
     } else if (expression.type == 'EventForm') {
-      return EventPreview(expression: expression);
+      SizedBox();
+      // return EventPreview(expression: expression);
     } else {
       return Container();
     }
+    return const SizedBox();
   }
 }
