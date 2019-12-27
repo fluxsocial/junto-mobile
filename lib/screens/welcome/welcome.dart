@@ -95,7 +95,7 @@ class WelcomeState extends State<Welcome> {
             gradient: LinearGradient(
               begin: Alignment.bottomLeft,
               end: Alignment.topRight,
-              stops: const <double>[0.2, 0.9],
+              stops: const <double>[0.3, 0.9],
               colors: <Color>[
                 Theme.of(context).colorScheme.secondaryVariant,
                 Theme.of(context).colorScheme.primaryVariant

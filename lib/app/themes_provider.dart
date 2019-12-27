@@ -11,6 +11,8 @@ class JuntoThemesProvider with ChangeNotifier {
   void setTheme(String theme) {
     if (theme == 'light-indigo') {
       currentTheme = JuntoThemes().juntoLightIndigo;
+    } else if (theme == 'light-royal') {
+      currentTheme = JuntoThemes().juntoLightRoyal;
     } else if (theme == 'night-indigo') {
       currentTheme = JuntoThemes().juntoNight;
     }

@@ -90,6 +90,33 @@ class JuntoThemes extends StatelessWidget {
                 GestureDetector(
                   onTap: () {
                     Provider.of<JuntoThemesProvider>(context)
+                        .setTheme('light-royal');
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 15),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                            color: Theme.of(context).dividerColor, width: .75),
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text('Light Royal',
+                            style: Theme.of(context).textTheme.headline),
+                        const SizedBox(height: 5),
+                        Text(
+                            'This default theme of Junto carries a light tone complemented by our custom blue and gradient.',
+                            style: Theme.of(context).textTheme.body2)
+                      ],
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Provider.of<JuntoThemesProvider>(context)
                         .setTheme('night-indigo');
                   },
                   child: Container(

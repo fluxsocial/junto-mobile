@@ -76,8 +76,8 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
             end: Alignment.topRight,
             stops: const <double>[0.2, 0.9],
             colors: <Color>[
-              Theme.of(context).colorScheme.secondary,
-              Theme.of(context).colorScheme.primary
+              Theme.of(context).colorScheme.secondaryVariant,
+              Theme.of(context).colorScheme.primaryVariant
             ],
           ),
         ),
@@ -99,10 +99,14 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
-                      color: Color(0xff4263A3),
+                      // color: Color(0xff4263A3),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primaryVariant
+                          .withOpacity(.7),
                       width: .75,
                     ),
                   ),

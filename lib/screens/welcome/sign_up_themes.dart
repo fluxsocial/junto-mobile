@@ -6,6 +6,8 @@ class SignUpThemes extends StatelessWidget {
   void _setTheme(String theme, BuildContext context) {
     if (theme == 'LIGHT INDIGO') {
       Provider.of<JuntoThemesProvider>(context).setTheme('light-indigo');
+    } else if (theme == 'LIGHT ROYAL') {
+      Provider.of<JuntoThemesProvider>(context).setTheme('light-royal');
     } else if (theme == 'JUNTO NIGHT') {
       Provider.of<JuntoThemesProvider>(context).setTheme('night-indigo');
     }
@@ -59,7 +61,7 @@ class SignUpThemes extends StatelessWidget {
         // junto purple
         const Color(0xFF635FAA),
         // junto gold
-        const Color(0xFFFFCF68)
+        const Color(0xFFF7BF47)
       ];
     } else if (theme == 'JUNTO NIGHT') {
       return <Color>[
