@@ -109,7 +109,7 @@ class JuntoThemes {
         // Junto blue
         // primary: Color(0xFF223E72),
         primary: Color(0xff22517D),
-        primaryVariant: Color(0xff333333),
+        primaryVariant: Color(0xff222222),
         secondary: Color(0xFF635FAA),
         secondaryVariant: Color(0xff333333),
         surface: Color(0xff393939),
