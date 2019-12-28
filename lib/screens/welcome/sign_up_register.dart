@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:provider/provider.dart';
+
 class SignUpRegister extends StatefulWidget {
   const SignUpRegister({Key key}) : super(key: key);
 
@@ -145,6 +149,11 @@ class SignUpRegisterState extends State<SignUpRegister> {
                     ),
                   ),
                   const SizedBox(height: 50),
+                  RaisedButton(onPressed: () async {
+                    final UserData results =
+                        await Provider.of<AuthRepo>(context)
+                            .verifyEmail('eric@junto.foundation');
+                  })
                 ],
               ),
             ),

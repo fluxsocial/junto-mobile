@@ -41,6 +41,18 @@ class AuthenticationServiceCentralized implements AuthenticationService {
   }
 
   @override
+  Future verifyEmail(String email) async {
+    final Map<String, String> _body = {"email": email};
+    final http.Response response =
+        await client.postWithoutEncoding('/auth/register', body: _body);
+    print(response.body);
+
+    final parseData = JuntoHttp.handleResponse(response);
+    print(parseData);
+    print(parseData.body);
+  }
+
+  @override
   Future<UserData> registerUser(UserAuthRegistrationDetails details) async {
     final Map<String, dynamic> _body = <String, dynamic>{
       'email': details.email,

@@ -79,8 +79,6 @@ class WelcomeState extends State<Welcome> {
       curve: Curves.easeIn,
       duration: const Duration(milliseconds: 400),
     );
-    // increase current index by 1
-    _currentIndex += 1;
   }
 
   @override
@@ -104,6 +102,12 @@ class WelcomeState extends State<Welcome> {
           ),
         ),
         PageView(
+            onPageChanged: (int int) {
+              setState(() {
+                _currentIndex = int;
+              });
+              print(_currentIndex);
+            },
             controller: _welcomeController,
             scrollDirection: Axis.vertical,
             physics: const NeverScrollableScrollPhysics(),
@@ -138,10 +142,6 @@ class WelcomeState extends State<Welcome> {
                             curve: Curves.easeIn,
                             duration: const Duration(milliseconds: 400),
                           );
-                          setState(() {
-                            _currentIndex -= 1;
-                          });
-                          print(_currentIndex);
                         },
                         child: Container(
                           height: 36,

@@ -7,6 +7,8 @@ abstract class SearchProvider {
 
 /// Abstract class which defines the functionality of the Authentication Provider
 abstract class AuthenticationService {
+  // verifies the email of a user
+  Future verifyEmail(String email);
   /// Registers a user on the server and creates their profile.
   Future<UserData> registerUser(UserAuthRegistrationDetails details);
 
