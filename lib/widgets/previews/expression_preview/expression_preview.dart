@@ -40,8 +40,9 @@ class ExpressionPreview extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.background,
-                border:
-                    Border.all(color: Theme.of(context).dividerColor, width: 1),
+                border: Border.all(
+                    color: Theme.of(context).dividerColor.withOpacity(.3),
+                    width: 1.5),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Column(

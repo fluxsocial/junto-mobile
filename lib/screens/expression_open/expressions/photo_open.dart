@@ -22,8 +22,11 @@ class PhotoOpen extends StatelessWidget {
               : Container(
                   height: MediaQuery.of(context).size.width,
                   width: MediaQuery.of(context).size.width,
-                  child: Image.asset(photoImage, fit: BoxFit.fitWidth),
-                ),
+                  child: Image.asset(
+                      'assets/images/junto-mobile__mock--image.png',
+                      fit: BoxFit.cover)
+                  // child: Image.asset(photoImage, fit: BoxFit.fitWidth),
+                  ),
           const SizedBox(height: 10),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10),

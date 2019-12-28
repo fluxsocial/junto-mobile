@@ -74,7 +74,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
           gradient: LinearGradient(
             begin: Alignment.bottomLeft,
             end: Alignment.topRight,
-            stops: const <double>[0.2, 0.9],
+            stops: const <double>[0.3, 0.9],
             colors: const <Color>[Color(0xff333333), Color(0xff393939)],
           ),
         ),

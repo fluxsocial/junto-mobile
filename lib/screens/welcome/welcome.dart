@@ -238,7 +238,7 @@ class WelcomeState extends State<Welcome> {
                     decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.secondaryVariant,
                         borderRadius: BorderRadius.circular(1000),
-                        boxShadow: [
+                        boxShadow: <BoxShadow>[
                           BoxShadow(
                               color: Theme.of(context)
                                   .primaryColorDark

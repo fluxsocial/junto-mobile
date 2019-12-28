@@ -90,7 +90,8 @@ class BottomNav extends StatelessWidget {
         boxShadow: <BoxShadow>[
           BoxShadow(
             color: Theme.of(context).dividerColor,
-            blurRadius: 3,
+            offset: const Offset(0.0, 1.0),
+            blurRadius: 6,
             spreadRadius: 1,
           )
         ],
