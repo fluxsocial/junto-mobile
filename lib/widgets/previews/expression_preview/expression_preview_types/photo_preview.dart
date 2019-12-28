@@ -13,12 +13,14 @@ class PhotoPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(5),
+      borderRadius: BorderRadius.circular(10),
       child: Container(
-        height: MediaQuery.of(context).size.height * .3,
-        width: MediaQuery.of(context).size.width,
-        child: Image.asset(expression.expressionData.image, fit: BoxFit.cover),
-      ),
+          height: MediaQuery.of(context).size.height * .36,
+          width: MediaQuery.of(context).size.width,
+          child: Image.asset('assets/images/junto-mobile__mock--image.png',
+              fit: BoxFit.cover)
+          // child: expression.expressionData.image == '' ? SizedBox() : Image.asset(expression.expressionData.image, fit: BoxFit.cover),
+          ),
     );
   }
 }

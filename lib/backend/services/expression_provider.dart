@@ -36,7 +36,6 @@ class ExpressionServiceCentralized implements ExpressionService {
   Future createPhoto(String fileType) async {
     final http.Response _serverResponse =
         await client.postWithoutEncoding('/auth/s3', body: fileType);
-    print(_serverResponse.body);
     final Map<String, dynamic> parseData =
         JuntoHttp.handleResponse(_serverResponse);
 
@@ -47,15 +46,17 @@ class ExpressionServiceCentralized implements ExpressionService {
 
     final http.Response _serverResponseTwo =
         await http.put(parseData['signed_url'], headers: newHeaders);
-    print(_serverResponseTwo);
+        print('yo');
     print(_serverResponseTwo.body);
-    print(_serverResponseTwo.statusCode);
-    // final http.Response _serverResponseTwo = await client.post(_serverResponse.body.signed_url, headers: )
-  }
 
-  // Future createPhotoTwo() async {
-  //   final http.Response _serverResponse = await client.post()
-  // }
+    if (_serverResponseTwo.statusCode == 200) {
+      return parseData['key'];
+    } else {
+      print('something went wrong');
+
+      return null;
+    }
+  }
 
   @override
   Future<CentralizedExpressionResponse> postCommentExpression(

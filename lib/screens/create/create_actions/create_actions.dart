@@ -57,10 +57,10 @@ class CreateActionsState extends State<CreateActions> {
     super.initState();
     _channelController = TextEditingController();
     _address = widget.address;
-    _expression = CentralizedExpression(
-        type: widget.expressionType,
-        expressionData: widget.expression.toMap(),
-        context: widget.expressionContext);
+    // _expression = CentralizedExpression(
+    //     type: widget.expressionType,
+    //     expressionData: widget.expression.toMap(),
+    //     context: widget.expressionContext);
   }
 
   @override
@@ -70,9 +70,31 @@ class CreateActionsState extends State<CreateActions> {
   }
 
   Future<void> _createExpression() async {
-    print(_expression);
-    print(_expression.expressionData);
     try {
+      if (widget.expressionType == 'PhotoForm') {
+        final String _photoKey =
+            await Provider.of<ExpressionRepo>(context).createPhoto('.png');
+        print(_photoKey);
+        // if (_photoKey != null) {
+        //   _expression = CentralizedExpression(
+        //       type: widget.expressionType,
+        //       expressionData: {'image': _photoKey, 'caption': 'hungry'},
+        //       context: widget.expressionContext);
+        // }
+
+        _expression = CentralizedExpression(
+            type: widget.expressionType,
+            expressionData:
+                CentralizedPhotoFormExpression(image: _photoKey, caption: 'yo')
+                    .toMap(),
+            context: widget.expressionContext);
+      } else {
+        _expression = CentralizedExpression(
+            type: widget.expressionType,
+            expressionData: widget.expression.toMap(),
+            context: widget.expressionContext);
+      }
+
       await Provider.of<ExpressionRepo>(context).createExpression(
         _expression,
         _expression.context,
@@ -95,7 +117,7 @@ class CreateActionsState extends State<CreateActions> {
         ],
       );
     } catch (error) {
-      print(error);
+      print(error.message);
       JuntoLoader.hide();
       JuntoDialog.showJuntoDialog(
         context,

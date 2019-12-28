@@ -42,7 +42,7 @@ class ExpressionPreview extends StatelessWidget {
                 color: Theme.of(context).colorScheme.background,
                 border:
                     Border.all(color: Theme.of(context).dividerColor, width: 1),
-                borderRadius: BorderRadius.circular(5),
+                borderRadius: BorderRadius.circular(10),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

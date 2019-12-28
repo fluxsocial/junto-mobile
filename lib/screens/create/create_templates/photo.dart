@@ -76,10 +76,8 @@ class CreatePhotoState extends State<CreatePhoto> {
 
   /// Creates a [CentralizedPhotoFormExpression] from the given data entered
   /// by the user.
-  CentralizedPhotoFormExpression createExpression() {
-    return CentralizedPhotoFormExpression(
-        image: 'assets/images/junto-mobile__mock--image.png',
-        caption: _captionController.value.text);
+  Map<String, dynamic> createExpression() {
+    return {'image': imageFile, 'caption': _captionController.value.text};
   }
 
   @override

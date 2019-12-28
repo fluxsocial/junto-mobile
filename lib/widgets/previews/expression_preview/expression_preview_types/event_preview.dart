@@ -16,7 +16,7 @@ class EventPreview extends StatelessWidget {
         children: <Widget>[
           expression.expressionData.photo != ''
               ? ClipRRect(
-                  borderRadius: BorderRadius.circular(5),
+                  borderRadius: BorderRadius.circular(10),
                   child: Container(
                     height: MediaQuery.of(context).size.height * .3,
                     child: Image.asset(

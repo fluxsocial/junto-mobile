@@ -149,7 +149,6 @@ class JuntoCreateState extends State<JuntoCreate> {
   }
 
   void _onNextClick() {
-    print(widget.expressionContext);
     Navigator.push( 
       context,
       MaterialPageRoute<dynamic>(
