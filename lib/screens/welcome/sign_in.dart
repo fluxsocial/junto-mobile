@@ -106,14 +106,14 @@ class _SignInState extends State<SignIn> {
                       hintText: 'Email',
                       hintStyle: const TextStyle(
                         color: Colors.white70,
-                        fontSize: 24,
+                        fontSize: 20,
                         fontWeight: FontWeight.w500,
                       ),
                       fillColor: Colors.white,
                     ),
                     style: const TextStyle(
                       color: Colors.white,
-                      fontSize: 24,
+                      fontSize: 20,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -136,14 +136,14 @@ class _SignInState extends State<SignIn> {
                       hintText: 'Password',
                       hintStyle: const TextStyle(
                         color: Colors.white70,
-                        fontSize: 24,
+                        fontSize: 20,
                         fontWeight: FontWeight.w500,
                       ),
                       fillColor: Colors.white,
                     ),
                     style: const TextStyle(
                       color: Colors.white,
-                      fontSize: 24,
+                      fontSize: 20,
                       fontWeight: FontWeight.w500,
                     ),
                   ),

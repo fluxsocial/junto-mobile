@@ -38,11 +38,11 @@ class SignUpThemes extends StatelessWidget {
             ),
             const SizedBox(height: 15),
             Text(theme,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                )),
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 1.2)),
           ],
         ),
       ),

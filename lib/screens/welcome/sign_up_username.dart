@@ -57,14 +57,14 @@ class SignUpUsernameState extends State<SignUpUsername> {
                         hintText: 'I\'ll go by...',
                         hintStyle: const TextStyle(
                           color: Colors.white70,
-                          fontSize: 24,
+                          fontSize: 20,
                           fontWeight: FontWeight.w500,
                         ),
                         fillColor: Colors.white,
                       ),
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 24,
+                        fontSize: 20,
                         fontWeight: FontWeight.w500,
                       ),
                     ),

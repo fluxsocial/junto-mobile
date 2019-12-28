@@ -60,14 +60,14 @@ class SignUpNameState extends State<SignUpName> {
                         hintText: 'My name is...',
                         hintStyle: const TextStyle(
                           color: Colors.white70,
-                          fontSize: 24,
+                          fontSize: 20,
                           fontWeight: FontWeight.w500,
                         ),
                         fillColor: Colors.white,
                       ),
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 24,
+                        fontSize: 20,
                         fontWeight: FontWeight.w500,
                       ),
                     ),

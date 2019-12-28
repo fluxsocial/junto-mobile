@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/screens/sign_in/sign_in.dart';
+import 'package:junto_beta_mobile/screens/welcome/sign_in.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_name.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_username.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_themes.dart';
