@@ -94,8 +94,8 @@ class CreatePhotoState extends State<CreatePhoto> {
     _captionController.dispose();
   }
 
-  _createPhoto() {
-    Provider.of<ExpressionRepo>(context).createPhoto('.png');
+  _createPhoto(imageFile) {
+    Provider.of<ExpressionRepo>(context).createPhoto('.png', imageFile);
   }
 
   @override
@@ -136,7 +136,7 @@ class CreatePhotoState extends State<CreatePhoto> {
                             fontSize: 17),
                       ),
                       RaisedButton(
-                        onPressed: _createPhoto,
+                        onPressed: _createPhoto(imageFile),
                       )
                     ],
                   ),

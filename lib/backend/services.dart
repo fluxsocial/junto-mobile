@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:junto_beta_mobile/models/models.dart';
 
 abstract class SearchProvider {
@@ -43,7 +44,7 @@ abstract class ExpressionService {
     CentralizedExpression expression,
   );
 
-  Future createPhoto(String fileType);
+  Future createPhoto(String fileType, File file);
   
   /// Returns a [CentralizedExpressionResponse] for the given address.
   Future<CentralizedExpressionResponse> getExpression(

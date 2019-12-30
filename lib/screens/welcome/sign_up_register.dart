@@ -14,27 +14,36 @@ class SignUpRegister extends StatefulWidget {
 }
 
 class SignUpRegisterState extends State<SignUpRegister> {
-  TextEditingController bioController;
-  TextEditingController locationController;
-  TextEditingController genderController;
-  TextEditingController websiteController;
+  TextEditingController emailController;
+  TextEditingController passwordController;
+  TextEditingController confirmPasswordController;
 
   @override
   void initState() {
     super.initState();
-    bioController = TextEditingController();
-    locationController = TextEditingController();
-    genderController = TextEditingController();
-    websiteController = TextEditingController();
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+    confirmPasswordController = TextEditingController();
   }
 
   Map<String, dynamic> returnDetails() {
     return <String, dynamic>{
-      'bio': bioController.value.text,
-      'location': locationController.value.text,
-      'gender': genderController.value.text,
-      'website': websiteController.value.text
+      'email': emailController.value.text,
+      'password': passwordController.value.text,
+      'confirmPassword': confirmPasswordController.value.text,
     };
+  }
+
+  _validateRegistration() async {
+    // validate whether email text field contains an email
+
+    // validate whether passwords are the same
+    if (passwordController.value.text == confirmPasswordController.value.text) {
+      // verify whether email is accessible and send verification code
+      final UserData results = await Provider.of<AuthRepo>(context)
+          .verifyEmail(emailController.value.text);
+      print(results);
+    }
   }
 
   @override
@@ -65,7 +74,7 @@ class SignUpRegisterState extends State<SignUpRegister> {
                       children: <Widget>[
                         Container(
                           child: TextField(
-                            controller: bioController,
+                            controller: emailController,
                             textInputAction: TextInputAction.newline,
                             maxLines: null,
                             cursorColor: Colors.white70,
@@ -96,7 +105,7 @@ class SignUpRegisterState extends State<SignUpRegister> {
                       children: <Widget>[
                         Container(
                           child: TextField(
-                            controller: locationController,
+                            controller: passwordController,
                             cursorColor: Colors.white70,
                             decoration: InputDecoration(
                               enabledBorder: InputBorder.none,
@@ -125,7 +134,7 @@ class SignUpRegisterState extends State<SignUpRegister> {
                       children: <Widget>[
                         Container(
                           child: TextField(
-                            controller: genderController,
+                            controller: confirmPasswordController,
                             cursorColor: Colors.white70,
                             decoration: InputDecoration(
                               enabledBorder: InputBorder.none,
@@ -149,14 +158,12 @@ class SignUpRegisterState extends State<SignUpRegister> {
                     ),
                   ),
                   const SizedBox(height: 50),
-                  RaisedButton(onPressed: () async {
-                    final UserData results =
-                        await Provider.of<AuthRepo>(context)
-                            .verifyEmail('eric@junto.foundation');
-                  })
+                  RaisedButton(
+                    onPressed: _validateRegistration,
+                  ),
                 ],
               ),
-            ),
+            )
           ],
         ),
       ),

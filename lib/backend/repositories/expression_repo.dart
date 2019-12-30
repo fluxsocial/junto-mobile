@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
@@ -43,8 +44,8 @@ class ExpressionRepo {
     return _expressionService.createExpression(_expression);
   }
 
-  Future createPhoto(String fileType) {
-    return _expressionService.createPhoto(fileType);
+  Future createPhoto(String fileType, File file) {
+    return _expressionService.createPhoto(fileType, file);
   }
 
   Future<CentralizedExpressionResponse> getExpression(

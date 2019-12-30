@@ -15,10 +15,13 @@ class PhotoPreview extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: Container(
-          height: MediaQuery.of(context).size.height * .36,
+          height: MediaQuery.of(context).size.height * .4,
           width: MediaQuery.of(context).size.width,
-          child: Image.asset('assets/images/junto-mobile__mock--image.png',
-              fit: BoxFit.cover)
+          child: Hero(
+            tag: 'photo_preview-' + expression.address,
+            child: Image.asset('assets/images/junto-mobile__mock--image.png',
+                fit: BoxFit.cover),
+          )
           // child: expression.expressionData.image == '' ? SizedBox() : Image.asset(expression.expressionData.image, fit: BoxFit.cover),
           ),
     );

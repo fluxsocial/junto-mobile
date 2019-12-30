@@ -184,7 +184,8 @@ class UserAuthRegistrationDetails implements UserAuthDetails {
       @required this.location,
       @required this.profileImage,
       @required this.gender,
-      @required this.website});
+      @required this.website,
+      @required this.verificationCode});
 
   @override
   final String email;
@@ -197,6 +198,7 @@ class UserAuthRegistrationDetails implements UserAuthDetails {
   final List<String> profileImage;
   final List<String> gender;
   final List<String> website;
+  final int verificationCode;
 
   @override
   bool get isComplete => email != null && password != null && name != null;

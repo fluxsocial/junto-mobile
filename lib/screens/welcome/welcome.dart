@@ -7,6 +7,7 @@ import 'package:junto_beta_mobile/screens/welcome/sign_up_themes.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_about.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_photos.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_register.dart';
+import 'package:junto_beta_mobile/screens/welcome/sign_up_verify.dart';
 
 class Welcome extends StatefulWidget {
   @override
@@ -27,11 +28,17 @@ class WelcomeState extends State<Welcome> {
   String gender;
   String website;
   List<File> profilePictures;
+  String email;
+  String password;
+  String confirmPassword;
+  int verificationCode;
 
   GlobalKey<SignUpNameState> signUpNameKey;
   GlobalKey<SignUpUsernameState> signUpUsernameKey;
   GlobalKey<SignUpAboutState> signUpAboutKey;
   GlobalKey<SignUpPhotosState> signUpPhotosKey;
+  GlobalKey<SignUpRegisterState> signUpRegisterKey;
+  GlobalKey<SignUpVerifyState> signUpVerifyKey;
 
   @override
   void initState() {
@@ -40,6 +47,9 @@ class WelcomeState extends State<Welcome> {
     signUpUsernameKey = GlobalKey<SignUpUsernameState>();
     signUpAboutKey = GlobalKey<SignUpAboutState>();
     signUpPhotosKey = GlobalKey<SignUpPhotosState>();
+    signUpRegisterKey = GlobalKey<SignUpRegisterState>();
+    signUpVerifyKey = GlobalKey<SignUpVerifyState>();
+
     _currentIndex = 0;
     _welcomeController = PageController();
     _signInController = PageController();
@@ -71,6 +81,13 @@ class WelcomeState extends State<Welcome> {
     } else if (_currentIndex == 5) {
       setState(() {
         profilePictures = signUpPhotosKey.currentState.returnDetails();
+      });
+    } else if (_currentIndex == 6) {
+      setState(() {
+        email = signUpRegisterKey.currentState.returnDetails()['email'];
+        password = signUpRegisterKey.currentState.returnDetails()['password'];
+        confirmPassword = signUpRegisterKey.currentState.returnDetails()['confirmPassword'];
+
       });
     }
 
@@ -125,7 +142,8 @@ class WelcomeState extends State<Welcome> {
               SignUpThemes(),
               SignUpAbout(key: signUpAboutKey),
               SignUpPhotos(key: signUpPhotosKey),
-              SignUpRegister(),
+              SignUpRegister(key: signUpRegisterKey),
+              SignUpVerify(key: signUpVerifyKey)
             ]),
         _currentIndex != 0
             ? Positioned(

@@ -13,6 +13,9 @@ class PhotoOpen extends StatelessWidget {
     final String photoImage = _expression.image;
     final String photoCaption = _expression.caption;
 
+    print(_expression.image);
+    print(_expression.image.runtimeType);
+
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -22,9 +25,13 @@ class PhotoOpen extends StatelessWidget {
               : Container(
                   height: MediaQuery.of(context).size.width,
                   width: MediaQuery.of(context).size.width,
-                  child: Image.asset(
-                      'assets/images/junto-mobile__mock--image.png',
-                      fit: BoxFit.cover)
+                  child: Hero(
+                      tag: 'photo_preview-' + photoExpression.address,
+                      child: Image.network(_expression.image,
+                          height: 200, width: 200)
+                      // Image.asset('assets/images/junto-mobile__mock--image.png',
+                      //     fit: BoxFit.cover),
+                      )
                   // child: Image.asset(photoImage, fit: BoxFit.fitWidth),
                   ),
           const SizedBox(height: 10),

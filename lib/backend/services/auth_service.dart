@@ -64,7 +64,8 @@ class AuthenticationServiceCentralized implements AuthenticationService {
       'website': details.website,
       'gender': details.gender,
       'location': details.location,
-      'profile_picture': details.profileImage
+      'profile_picture': details.profileImage,
+      'verification_code': details.verificationCode
     };
 
     final http.Response response = await client.postWithoutEncoding(

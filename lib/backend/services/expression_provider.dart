@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:junto_beta_mobile/backend/services.dart';
@@ -33,7 +34,7 @@ class ExpressionServiceCentralized implements ExpressionService {
     return response;
   }
 
-  Future createPhoto(String fileType) async {
+  Future createPhoto(String fileType, File file) async {
     final http.Response _serverResponse =
         await client.postWithoutEncoding('/auth/s3', body: fileType);
     final Map<String, dynamic> parseData =
@@ -44,9 +45,11 @@ class ExpressionServiceCentralized implements ExpressionService {
       'x-amz-meta-user_id': parseData['headers']['x-amz-meta-user_id']
     };
 
-    final http.Response _serverResponseTwo =
-        await http.put(parseData['signed_url'], headers: newHeaders);
-        print('yo');
+    final http.Response _serverResponseTwo = await http.put(
+        parseData['signed_url'],
+        headers: newHeaders,
+        body: 'assets/images/junto-mobile__mock--image.png');
+    print('yo');
     print(_serverResponseTwo.body);
 
     if (_serverResponseTwo.statusCode == 200) {

@@ -72,8 +72,8 @@ class CreateActionsState extends State<CreateActions> {
   Future<void> _createExpression() async {
     try {
       if (widget.expressionType == 'PhotoForm') {
-        final String _photoKey =
-            await Provider.of<ExpressionRepo>(context).createPhoto('.png');
+        final String _photoKey = await Provider.of<ExpressionRepo>(context)
+            .createPhoto('.png', widget.expression['image']);
         print(_photoKey);
         // if (_photoKey != null) {
         //   _expression = CentralizedExpression(
