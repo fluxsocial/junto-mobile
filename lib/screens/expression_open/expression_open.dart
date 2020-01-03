@@ -352,7 +352,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
         ],
       ),
     );
-  }
+  } 
 }
 
 class _BottomCommentBar extends StatefulWidget {

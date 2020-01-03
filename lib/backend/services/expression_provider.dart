@@ -46,11 +46,10 @@ class ExpressionServiceCentralized implements ExpressionService {
     };
 
     final http.Response _serverResponseTwo = await http.put(
-        parseData['signed_url'],
-        headers: newHeaders,
-        body: 'assets/images/junto-mobile__mock--image.png');
-    print('yo');
-    print(_serverResponseTwo.body);
+      parseData['signed_url'],
+      headers: newHeaders,
+      body: file.readAsBytesSync(),
+    );
 
     if (_serverResponseTwo.statusCode == 200) {
       return parseData['key'];
