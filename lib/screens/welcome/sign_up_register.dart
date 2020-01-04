@@ -34,7 +34,7 @@ class SignUpRegisterState extends State<SignUpRegister> {
     };
   }
 
-  _validateRegistration() async {
+  validateRegistration() async {
     // validate whether email text field contains an email
 
     // validate whether passwords are the same
@@ -156,10 +156,6 @@ class SignUpRegisterState extends State<SignUpRegister> {
                         ),
                       ],
                     ),
-                  ),
-                  const SizedBox(height: 50),
-                  RaisedButton(
-                    onPressed: _validateRegistration,
                   ),
                 ],
               ),

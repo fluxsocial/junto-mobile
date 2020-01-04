@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_in.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_name.dart';
@@ -8,7 +9,13 @@ import 'package:junto_beta_mobile/screens/welcome/sign_up_about.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_photos.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_register.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_verify.dart';
-
+import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/screens/collective/collective.dart';
+import 'package:junto_beta_mobile/utils/junto_dialog.dart';
+import 'package:junto_beta_mobile/utils/junto_exception.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Welcome extends StatefulWidget {
   @override
@@ -84,6 +91,7 @@ class WelcomeState extends State<Welcome> {
         profilePictures = signUpPhotosKey.currentState.returnDetails();
       });
     } else if (_currentIndex == 6) {
+      final validation = signUpRegisterKey.currentState.validateRegistration();
       setState(() {
         email = signUpRegisterKey.currentState.returnDetails()['email'];
         password = signUpRegisterKey.currentState.returnDetails()['password'];
@@ -97,6 +105,50 @@ class WelcomeState extends State<Welcome> {
       curve: Curves.easeIn,
       duration: const Duration(milliseconds: 400),
     );
+  }
+
+  Future<void> _handleSignUp() async {
+    setState(() {
+      verificationCode = signUpVerifyKey.currentState.returnDetails();
+    });
+    final UserAuthRegistrationDetails details = UserAuthRegistrationDetails(
+      email: email,
+      name: name,
+      password: password,
+      bio: bio,
+      location: [location],
+      username: username,
+      profileImage: ['assets/images/junto-mobile__placeholder--member.png'],
+      website: [website],
+      gender: [gender],
+      verificationCode: verificationCode,
+    );
+    try {
+      final UserData results =
+          await Provider.of<AuthRepo>(context).registerUser(details);
+      final Map resultsMap = results.toMap();
+      final String resultsMapToString = json.encode(resultsMap);
+
+      await SharedPreferences.getInstance()
+        ..setBool(
+          'isLoggedIn',
+          true,
+        )
+        ..setString('user_id', results.user.address)
+        ..setString('user_data', resultsMapToString);
+
+      Navigator.of(context).pushAndRemoveUntil(
+        JuntoCollective.route(),
+        (Route<dynamic> route) => false,
+      );
+    } on JuntoException catch (error) {
+      JuntoDialog.showJuntoDialog(context, error.message, [
+        FlatButton(
+          child: Text('OK'),
+        ),
+      ]);
+      print('Error: $error');
+    }
   }
 
   @override
@@ -144,7 +196,7 @@ class WelcomeState extends State<Welcome> {
               SignUpAbout(key: signUpAboutKey),
               SignUpPhotos(key: signUpPhotosKey),
               SignUpRegister(key: signUpRegisterKey),
-              SignUpVerify(key: signUpVerifyKey)
+              SignUpVerify(key: signUpVerifyKey, handleSignUp: _handleSignUp)
             ]),
         _currentIndex != 0
             ? Positioned(
