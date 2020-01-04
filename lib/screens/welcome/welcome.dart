@@ -9,8 +9,13 @@ import 'package:junto_beta_mobile/screens/welcome/sign_up_photos.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_register.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_verify.dart';
 
-
 class Welcome extends StatefulWidget {
+  static Route<dynamic> route() {
+    return MaterialPageRoute<dynamic>(
+      builder: (BuildContext context) => Welcome(),
+    );
+  }
+
   @override
   State<StatefulWidget> createState() {
     return WelcomeState();
