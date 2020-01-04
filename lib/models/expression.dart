@@ -155,7 +155,7 @@ class CentralizedEventFormExpression {
     
 
   }
-
+ 
   final String title;
   final String description;
   final String photo;

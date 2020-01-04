@@ -74,19 +74,32 @@ class CreateActionsState extends State<CreateActions> {
       if (widget.expressionType == 'PhotoForm') {
         final String _photoKey = await Provider.of<ExpressionRepo>(context)
             .createPhoto('.png', widget.expression['image']);
-        print(_photoKey);
-        // if (_photoKey != null) {
-        //   _expression = CentralizedExpression(
-        //       type: widget.expressionType,
-        //       expressionData: {'image': _photoKey, 'caption': 'hungry'},
-        //       context: widget.expressionContext);
-        // }
-
         _expression = CentralizedExpression(
             type: widget.expressionType,
             expressionData:
                 CentralizedPhotoFormExpression(image: _photoKey, caption: 'yo')
                     .toMap(),
+            context: widget.expressionContext);
+      } else if (widget.expressionType == 'EventForm') {
+        var eventPhoto = '';
+        if (widget.expression['photo'] != '') {
+          final String _eventPhotoKey =
+              await Provider.of<ExpressionRepo>(context)
+                  .createPhoto('.png', widget.expression['photo']);
+          eventPhoto = _eventPhotoKey;
+          print(eventPhoto);
+        }
+        _expression = CentralizedExpression(
+            type: widget.expressionType,
+            expressionData: CentralizedEventFormExpression(
+                photo: eventPhoto,
+                description: widget.expression['description'],
+                title: widget.expression['title'],
+                location: widget.expression['location'],
+                startTime: widget.expression['startTime'],
+                endTime: widget.expression['endTime'],
+                facilitators: [],
+                members: []).toMap(),
             context: widget.expressionContext);
       } else {
         _expression = CentralizedExpression(
@@ -117,6 +130,7 @@ class CreateActionsState extends State<CreateActions> {
         ],
       );
     } catch (error) {
+      print(error);
       print(error.message);
       JuntoLoader.hide();
       JuntoDialog.showJuntoDialog(

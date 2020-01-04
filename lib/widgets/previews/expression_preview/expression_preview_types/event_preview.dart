@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 /// Shows a preview for the given event.
 /// Widget takes [eventTitle], [eventLocation] and [eventPhoto]
@@ -19,10 +20,24 @@ class EventPreview extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                   child: Container(
                     height: MediaQuery.of(context).size.height * .3,
-                    child: Image.asset(
-                      expression.expressionData.photo,
-                      fit: BoxFit.cover,
-                    ),
+                    child: CachedNetworkImage(
+                        imageUrl: expression.expressionData.photo,
+                        placeholder: (BuildContext context, String _) {
+                          return Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.bottomLeft,
+                                end: Alignment.topRight,
+                                stops: const <double>[0.2, 0.9],
+                                colors: <Color>[
+                                  Theme.of(context).colorScheme.secondary,
+                                  Theme.of(context).colorScheme.primary
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                        fit: BoxFit.cover),
                   ),
                 )
               : const SizedBox(),

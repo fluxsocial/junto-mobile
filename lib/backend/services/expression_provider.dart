@@ -52,7 +52,7 @@ class ExpressionServiceCentralized implements ExpressionService {
     final fileAsBytes = file.readAsBytesSync();
 
     final http.Response _serverResponseTwo = await http.put(
-      parseData['signed_url'],
+      parseData['signed_url'], 
       headers: newHeaders,
       body: fileAsBytes,
     );

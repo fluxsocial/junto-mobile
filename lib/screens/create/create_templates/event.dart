@@ -40,16 +40,26 @@ class CreateEventState extends State<CreateEvent> with DateParser {
     detailsController = TextEditingController();
   }
 
-  CentralizedEventFormExpression createExpression() {
-    return CentralizedEventFormExpression(
-        description: 'event description',
-        photo: '',
-        title: 'event title',
-        location: 'NYC',
-        startTime: DateTime.now().toUtc().toIso8601String(),
-        endTime: DateTime.now().toUtc().toIso8601String(),
-        facilitators: [],
-        members: []);
+  createExpression() {
+    return <String, dynamic>{
+      'description': 'Regenerate',
+      'photo': imageFile,
+      'title': 'event title',
+      'location': 'NYC',
+      'startTime': DateTime.now().toUtc().toIso8601String(),
+      'endTime': DateTime.now().toUtc().toIso8601String(),
+      'facilitators': [],
+      'members': []
+    };
+    // return CentralizedEventFormExpression(
+    //     description: 'event description',
+    //     photo: imageFile,
+    //     title: 'event title',
+    //     location: 'NYC',
+    //     startTime: DateTime.now().toUtc().toIso8601String(),
+    //     endTime: DateTime.now().toUtc().toIso8601String(),
+    //     facilitators: [],
+    //     members: []);
   }
 
   Future<void> _onPickPressed() async {
@@ -196,13 +206,15 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                             _onPickPressed();
                           },
                           child: Container(
-                            margin: const EdgeInsets.only(bottom: 15),
-                            alignment: Alignment.center,
-                            width: MediaQuery.of(context).size.width,
-                            height: (MediaQuery.of(context).size.width / 3) * 2,
-                            color: Theme.of(context).dividerColor,
-                            child: Icon(CustomIcons.camera, size: 38, color: Theme.of(context).primaryColorLight)
-                          ),
+                              margin: const EdgeInsets.only(bottom: 15),
+                              alignment: Alignment.center,
+                              width: MediaQuery.of(context).size.width,
+                              height:
+                                  (MediaQuery.of(context).size.width / 3) * 2,
+                              color: Theme.of(context).dividerColor,
+                              child: Icon(CustomIcons.camera,
+                                  size: 38,
+                                  color: Theme.of(context).primaryColorLight)),
                         )
                       : Column(children: <Widget>[
                           Container(

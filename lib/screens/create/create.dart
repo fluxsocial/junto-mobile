@@ -154,7 +154,7 @@ class JuntoCreateState extends State<JuntoCreate> {
       MaterialPageRoute<dynamic>(
         builder: (BuildContext context) {
           return CreateActions(
-            expressionType: _expressionType,
+            expressionType: _expressionType, 
             address: widget.address,
             channels: widget.channels,
             expressionContext: widget.expressionContext,
