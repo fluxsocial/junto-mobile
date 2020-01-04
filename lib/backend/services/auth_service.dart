@@ -29,7 +29,7 @@ class AuthenticationServiceCentralized implements AuthenticationService {
     } else {
       final Map<String, dynamic> errorResponse =
           JuntoHttp.handleResponse(response);
-      throw JuntoException('Unable to login: ${errorResponse['error']}');
+      throw JuntoException('Unable to login: ${errorResponse['error']}', response.statusCode);
     }
   }
 

@@ -9,6 +9,8 @@ import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/perspectives.dart';
+import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
+import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/widgets/appbar/collective_appbar.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
@@ -116,7 +118,13 @@ class JuntoCollectiveState extends State<JuntoCollective>
         'pagination_position': paginationPos.toString(),
       };
     }
-    return await _expressionProvider.getCollectiveExpressions(_params);
+    try {
+      return await _expressionProvider.getCollectiveExpressions(_params);
+    } on JuntoException catch (error) {
+      await Provider.of<AuthRepo>(context).logoutUser();
+      await Navigator.pushReplacement(context, Welcome.route());
+      return null;
+    }
   }
 
   @override

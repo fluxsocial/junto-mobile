@@ -24,11 +24,20 @@ class JuntoPerspectives extends StatefulWidget {
 }
 
 class JuntoPerspectivesState extends State<JuntoPerspectives> {
+  Future<List<CentralizedPerspective>> _fetchUserPerspectives(String address) {
+    try {
+      return Provider.of<UserRepo>(context)
+          .getUserPerspective(widget.profile.user.address);
+    } on JuntoException catch (error) {
+      debugPrint('error fethcing perspectives ${error.errorCode}');
+      return null;
+    }
+  }
+
   Widget _buildUserPerspectives(BuildContext context) {
     if (widget.profile.user.address != null)
       return FutureBuilder<List<CentralizedPerspective>>(
-        future: Provider.of<UserRepo>(context)
-            .getUserPerspective(widget.profile.user.address),
+        future: _fetchUserPerspectives(widget.profile.user.address),
         builder: (
           BuildContext context,
           AsyncSnapshot<List<CentralizedPerspective>> snapshot,

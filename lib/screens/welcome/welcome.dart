@@ -18,6 +18,12 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Welcome extends StatefulWidget {
+  static Route<dynamic> route() {
+    return MaterialPageRoute<dynamic>(
+      builder: (BuildContext context) => Welcome(),
+    );
+  }
+
   @override
   State<StatefulWidget> createState() {
     return WelcomeState();
