@@ -19,26 +19,30 @@ class PhotoPreview extends StatelessWidget {
         height: MediaQuery.of(context).size.height * .4,
         width: MediaQuery.of(context).size.width,
         child: Hero(
-          tag: 'photo_preview-' + expression.address,
-          child: CachedNetworkImage(
-              imageUrl: expression.expressionData.image,
-              placeholder: (BuildContext context, String _) {
-                return Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.bottomLeft,
-                      end: Alignment.topRight,
-                      stops: const <double>[0.2, 0.9],
-                      colors: <Color>[
-                        Theme.of(context).colorScheme.secondary,
-                        Theme.of(context).colorScheme.primary
-                      ],
-                    ),
-                  ),
-                );
-              },
-              fit: BoxFit.cover),
-        ),
+            tag: 'photo_preview-' + expression.address,
+            child: Image.asset(
+              'assets/images/junto-mobile__stillmind.png',
+              fit: BoxFit.cover,
+            )
+            // child: CachedNetworkImage(
+            //     imageUrl: expression.expressionData.image,
+            //     placeholder: (BuildContext context, String _) {
+            //       return Container(
+            //         decoration: BoxDecoration(
+            //           gradient: LinearGradient(
+            //             begin: Alignment.bottomLeft,
+            //             end: Alignment.topRight,
+            //             stops: const <double>[0.2, 0.9],
+            //             colors: <Color>[
+            //               Theme.of(context).colorScheme.secondary,
+            //               Theme.of(context).colorScheme.primary
+            //             ],
+            //           ),
+            //         ),
+            //       );
+            //     },
+            //     fit: BoxFit.cover),
+            ),
       ),
     );
   }

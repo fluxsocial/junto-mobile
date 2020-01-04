@@ -39,22 +39,29 @@ class ExpressionServiceCentralized implements ExpressionService {
         await client.postWithoutEncoding('/auth/s3', body: fileType);
     final Map<String, dynamic> parseData =
         JuntoHttp.handleResponse(_serverResponse);
+    print(parseData);
 
     final Map<String, String> newHeaders = {
       'x-amz-acl': parseData['headers']['x-amz-acl'],
       'x-amz-meta-user_id': parseData['headers']['x-amz-meta-user_id']
     };
 
+    print(parseData['headers']['x-amz-acl']);
+    print(parseData['headers']['x-amz-meta-user_id']);
+
+    final fileAsBytes = file.readAsBytesSync();
+
     final http.Response _serverResponseTwo = await http.put(
       parseData['signed_url'],
       headers: newHeaders,
-      body: file.readAsBytesSync(),
+      body: fileAsBytes,
     );
 
     if (_serverResponseTwo.statusCode == 200) {
       return parseData['key'];
     } else {
       print('something went wrong');
+      print(_serverResponseTwo.body);
 
       return null;
     }

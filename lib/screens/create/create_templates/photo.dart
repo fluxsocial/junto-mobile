@@ -94,10 +94,6 @@ class CreatePhotoState extends State<CreatePhoto> {
     _captionController.dispose();
   }
 
-  _createPhoto(imageFile) {
-    Provider.of<ExpressionRepo>(context).createPhoto('.png', imageFile);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -134,9 +130,6 @@ class CreatePhotoState extends State<CreatePhoto> {
                         style: TextStyle(
                             color: Theme.of(context).primaryColor,
                             fontSize: 17),
-                      ),
-                      RaisedButton(
-                        onPressed: _createPhoto(imageFile),
                       )
                     ],
                   ),
