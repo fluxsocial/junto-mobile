@@ -115,22 +115,29 @@ class JuntoHttp {
       if (response.body.isNotEmpty) {
         final dynamic responseBody = convert.json.decode(response.body);
         if (responseBody.runtimeType == Map && responseBody['error'] != null) {
-          throw JuntoException("Something went wrong ${responseBody['error']}");
+          throw JuntoException("${responseBody['error']}", response.statusCode);
         } else {
           return convert.json.decode(response.body);
         }
       }
-      return null;
+      throw JuntoException('${response?.body}', response.statusCode);
     }
-    if (response.statusCode == 400) {
-      final Map<String, dynamic> results = convert.json.decode(response?.body);
-      throw JuntoException('${results['error']}');
+    if (response.statusCode >= 400 && response.statusCode <= 499) {
+      if (response.body.isNotEmpty) {
+        final dynamic responseBody = convert.json.decode(response.body);
+        if (responseBody.runtimeType == Map && responseBody['error'] != null) {
+          throw JuntoException("${responseBody['error']}", response.statusCode);
+        } else {
+          return convert.json.decode(response.body);
+        }
+      }
+      throw JuntoException('${response?.body}', response.statusCode);
     }
     if (response.statusCode >= 500) {
-      throw const JuntoException("Ooh no, our server isn't feeling so good");
+      throw JuntoException(
+          "Ooh no, our server isn't feeling so good", response.statusCode);
     }
     throw JuntoException(
-      "${convert.json.decode(response.body)['error']}",
-    );
+        "${convert.json.decode(response.body)['error']}", response.statusCode);
   }
 }
