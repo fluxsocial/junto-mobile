@@ -131,21 +131,3 @@ class SignUpVerifyState extends State<SignUpVerify> {
     );
   }
 }
-
-// RaisedButton(onPressed: () async {
-//   final response =
-//       await Provider.of<AuthRepo>(context).registerUser(
-//     UserAuthRegistrationDetails(
-//         bio: 'ay',
-//         name: 'Junto',
-//         email: 'hi@junto.foundation',
-//         username: 'junto.foundation',
-//         website: [],
-//         location: [],
-//         gender: [],
-//         profileImage: [],
-//         password: 'hellos',
-//         verificationCode: 610869),
-//   );
-//   print(response);
-// })

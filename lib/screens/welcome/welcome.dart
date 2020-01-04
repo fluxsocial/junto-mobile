@@ -91,13 +91,19 @@ class WelcomeState extends State<Welcome> {
         profilePictures = signUpPhotosKey.currentState.returnDetails();
       });
     } else if (_currentIndex == 6) {
-      final validation = signUpRegisterKey.currentState.validateRegistration();
       setState(() {
         email = signUpRegisterKey.currentState.returnDetails()['email'];
         password = signUpRegisterKey.currentState.returnDetails()['password'];
         confirmPassword =
             signUpRegisterKey.currentState.returnDetails()['confirmPassword'];
       });
+      if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
+        return;
+      } else {
+        final validation =
+            signUpRegisterKey.currentState.validateRegistration();
+        print(validation);
+      }
     }
 
     // transition to next page of sign up flow
