@@ -9,6 +9,7 @@ import 'package:junto_beta_mobile/screens/welcome/sign_up_photos.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_register.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_verify.dart';
 
+
 class Welcome extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -86,8 +87,8 @@ class WelcomeState extends State<Welcome> {
       setState(() {
         email = signUpRegisterKey.currentState.returnDetails()['email'];
         password = signUpRegisterKey.currentState.returnDetails()['password'];
-        confirmPassword = signUpRegisterKey.currentState.returnDetails()['confirmPassword'];
-
+        confirmPassword =
+            signUpRegisterKey.currentState.returnDetails()['confirmPassword'];
       });
     }
 
