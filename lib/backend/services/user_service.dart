@@ -89,9 +89,11 @@ class UserServiceCentralized implements UserService {
       if (_listData.isNotEmpty) {
         return UserProfile.fromMap(_listData.first);
       }
-      throw const JuntoException('Unable to retrive user profile');
+      throw JuntoException(
+          'Unable to retrive user profile', _serverResponse.statusCode);
     }
-    throw const JuntoException('Forbidden, please log out and log back in');
+    throw JuntoException('Forbidden, please log out and log back in',
+        _serverResponse.statusCode);
   }
 
   @override
@@ -99,7 +101,7 @@ class UserServiceCentralized implements UserService {
       String userAddress) async {
     final http.Response response =
         await client.get('/users/$userAddress/perspectives');
-    final List<dynamic> _listData = json.decode(response.body);
+    final List<dynamic> _listData = JuntoHttp.handleResponse(response);
     final List<CentralizedPerspective> _results = _listData
         .map((dynamic data) => CentralizedPerspective.fromMap(data))
         .toList(growable: false);
@@ -157,7 +159,7 @@ class UserServiceCentralized implements UserService {
         return profile;
       }
     }
-    throw const JuntoException('Unable to read local user');
+    throw const JuntoException('Unable to read local user', -1);
   }
 
   @override

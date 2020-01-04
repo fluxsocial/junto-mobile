@@ -43,6 +43,6 @@ class SearchProviderCentralized implements SearchProvider {
       }
       return <UserProfile>[];
     }
-    throw const JuntoException('Forbidden, please log out and log back in');
+    throw  JuntoException(_serverResponse?.body, _serverResponse.statusCode);
   }
 }
