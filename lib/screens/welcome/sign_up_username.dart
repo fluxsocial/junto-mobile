@@ -9,6 +9,7 @@ class SignUpUsername extends StatefulWidget {
   /// Called when the user enters a value in the textfield.
   /// Value will always be the latest value of `TextController.text.value`.
   final ValueChanged<String> onUsernameChange;
+
   @override
   State<StatefulWidget> createState() => SignUpUsernameState();
 }
@@ -92,13 +93,22 @@ class SignUpUsernameState extends State<SignUpUsername> {
                             fontSize: 14,
                             fontWeight: FontWeight.w400),
                       ),
-                      Text(
-                        usernameController.value.text.length.toString() + '/22',
-                        style: const TextStyle(
-                            color: Colors.white70,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400),
-                      ),
+                      ValueListenableBuilder<TextEditingValue>(
+                          valueListenable: usernameController,
+                          builder: (
+                            BuildContext context,
+                            TextEditingValue value,
+                            _,
+                          ) {
+                            return Text(
+                              usernameController.value.text.length.toString() +
+                                  '${value.text.length}/22',
+                              style: const TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400),
+                            );
+                          }),
                     ],
                   )
                 ],

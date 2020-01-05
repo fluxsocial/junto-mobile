@@ -103,7 +103,7 @@ class SignUpNameState extends State<SignUpName> {
                           _,
                         ) {
                           return Text(
-                            '${value.text}/36',
+                            '${value.text.length}/36',
                             style: const TextStyle(
                               color: Colors.white70,
                               fontSize: 14,

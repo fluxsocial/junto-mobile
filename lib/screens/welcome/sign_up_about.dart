@@ -102,14 +102,23 @@ class SignUpAboutState extends State<SignUpAbout> {
                                   fontSize: 10,
                                   fontWeight: FontWeight.w400),
                             ),
-                            Text(
-                              bioController.value.text.length.toString() +
-                                  '/1000',
-                              style: const TextStyle(
-                                  color: Colors.white70,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w400),
-                            ),
+                            ValueListenableBuilder<TextEditingValue>(
+                                valueListenable: bioController,
+                                builder: (
+                                  BuildContext context,
+                                  TextEditingValue value,
+                                  _,
+                                ) {
+                                  return Text(
+                                    bioController.value.text.length.toString() +
+                                        '${value.text.length}/1000',
+                                    style: const TextStyle(
+                                      color: Colors.white70,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  );
+                                }),
                           ],
                         )
                       ],
