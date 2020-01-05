@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/utils/junto_exception.dart';
-import 'package:provider/provider.dart';
 
 class SignUpRegister extends StatefulWidget {
   const SignUpRegister({Key key}) : super(key: key);
@@ -41,24 +38,6 @@ class SignUpRegisterState extends State<SignUpRegister> {
     };
   }
 
-//TODO(Nash): This should be moved to a service
-  Future<String> validateRegistration() async {
-    // validate whether email text field contains an email
-
-    // validate whether passwords are the same
-    if (passwordController.value.text == confirmPasswordController.value.text) {
-      try {
-        // verify whether email is accessible and send verification code
-        return await Provider.of<AuthRepo>(context)
-            .verifyEmail(emailController.value.text);
-      } catch (error) {
-        debugPrint('Error verifying email $error');
-        return null;
-      }
-    }
-    throw const JuntoException('Please check your password', -2);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -91,11 +70,11 @@ class SignUpRegisterState extends State<SignUpRegister> {
                             textInputAction: TextInputAction.newline,
                             maxLines: null,
                             cursorColor: Colors.white70,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
                               hintText: 'Email',
-                              hintStyle: const TextStyle(
+                              hintStyle: TextStyle(
                                 color: Colors.white70,
                                 fontSize: 20,
                                 fontWeight: FontWeight.w500,
@@ -120,11 +99,11 @@ class SignUpRegisterState extends State<SignUpRegister> {
                           child: TextField(
                             controller: passwordController,
                             cursorColor: Colors.white70,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
                               hintText: 'Password',
-                              hintStyle: const TextStyle(
+                              hintStyle: TextStyle(
                                 color: Colors.white70,
                                 fontSize: 20,
                                 fontWeight: FontWeight.w500,
@@ -149,11 +128,11 @@ class SignUpRegisterState extends State<SignUpRegister> {
                           child: TextField(
                             controller: confirmPasswordController,
                             cursorColor: Colors.white70,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
                               hintText: 'Confirm password',
-                              hintStyle: const TextStyle(
+                              hintStyle: TextStyle(
                                 color: Colors.white70,
                                 fontSize: 20,
                                 fontWeight: FontWeight.w500,

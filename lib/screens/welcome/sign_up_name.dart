@@ -9,6 +9,7 @@ class SignUpName extends StatefulWidget {
   /// Called when the user enters a value in the textfield.
   /// Value will always be the latest value of `TextController.text.value`.
   final ValueChanged<String> onNamePressed;
+
   @override
   State<StatefulWidget> createState() {
     return SignUpNameState();
@@ -94,13 +95,22 @@ class SignUpNameState extends State<SignUpName> {
                             fontSize: 14,
                             fontWeight: FontWeight.w400),
                       ),
-                      //FIXME:This does not rebuild with the correct value.
-                      Text(
-                        nameController.value.text.length.toString() + '/36',
-                        style: const TextStyle(
-                            color: Colors.white70,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400),
+                      ValueListenableBuilder<TextEditingValue>(
+                        valueListenable: nameController,
+                        builder: (
+                          BuildContext context,
+                          TextEditingValue value,
+                          _,
+                        ) {
+                          return Text(
+                            '${value.text}/36',
+                            style: const TextStyle(
+                              color: Colors.white70,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          );
+                        },
                       ),
                     ],
                   )

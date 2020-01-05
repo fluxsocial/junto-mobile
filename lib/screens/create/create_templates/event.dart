@@ -32,7 +32,6 @@ class CreateEventState extends State<CreateEvent> with DateParser {
   @override
   void initState() {
     super.initState();
-    print(DateTime.now());
     titleController = TextEditingController();
     startDateController = TextEditingController();
     endDateController = TextEditingController();
@@ -40,7 +39,16 @@ class CreateEventState extends State<CreateEvent> with DateParser {
     detailsController = TextEditingController();
   }
 
-//FIXME: This should be serialized into a type
+  @override
+  void dispose() {
+    titleController.dispose();
+    startDateController.dispose();
+    endDateController.dispose();
+    locationController.dispose();
+    detailsController.dispose();
+    super.dispose();
+  }
+
   Map<String, dynamic> createExpression() {
     return <String, dynamic>{
       'description': 'Regenerate',
@@ -52,15 +60,16 @@ class CreateEventState extends State<CreateEvent> with DateParser {
       'facilitators': <String>[],
       'members': <String>[]
     };
-    // return CentralizedEventFormExpression(
-    //     description: 'event description',
-    //     photo: imageFile,
-    //     title: 'event title',
-    //     location: 'NYC',
-    //     startTime: DateTime.now().toUtc().toIso8601String(),
-    //     endTime: DateTime.now().toUtc().toIso8601String(),
-    //     facilitators: [],
-    //     members: []);
+//    return CentralizedEventFormExpression(
+//      description: detailsController.value.text,
+//      photo: imageFile,
+//      title: titleController.value.text,
+//      location: locationController.text,
+//      startTime: DateTime.now().toUtc().toIso8601String(),
+//      endTime: DateTime.now().toUtc().toIso8601String(),
+//      facilitators: <String>[],
+//      members: <String>[],
+//    );
   }
 
   Future<void> _onPickPressed() async {
@@ -155,16 +164,6 @@ class CreateEventState extends State<CreateEvent> with DateParser {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    titleController.dispose();
-    startDateController.dispose();
-    endDateController.dispose();
-    locationController.dispose();
-    detailsController.dispose();
-    super.dispose();
   }
 
   @override

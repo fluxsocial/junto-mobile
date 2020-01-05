@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_in.dart';
@@ -66,6 +67,15 @@ class WelcomeState extends State<Welcome> {
     _signInController = PageController();
   }
 
+  Future<String> validateRegistration() async {
+    try {
+      return await Provider.of<AuthRepo>(context).verifyEmail(email);
+    } catch (error) {
+      debugPrint('Error verifying email $error');
+    }
+    throw const JuntoException('Please check your password', -2);
+  }
+
   void _nextSignUpPage() {
     if (_currentIndex == 4) {
       final AboutPageModel _aboutPageModel =
@@ -81,9 +91,7 @@ class WelcomeState extends State<Welcome> {
       password = signUpRegisterKey.currentState.returnDetails()['password'];
       confirmPassword =
           signUpRegisterKey.currentState.returnDetails()['confirmPassword'];
-      signUpRegisterKey.currentState
-          .validateRegistration()
-          .then((String value) => print(value));
+      validateRegistration().then((String value) => print(value));
     }
 
     // transition to next page of sign up flow

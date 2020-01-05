@@ -1,25 +1,9 @@
 import 'package:flutter/material.dart';
-
-//TODO(Nash): Move to models folder.
-class AboutPageModel {
-  AboutPageModel({
-    @required this.bio,
-    @required this.location,
-    @required this.gender,
-    @required this.website,
-  })  : assert(bio.isNotEmpty),
-        assert(location.isNotEmpty),
-        assert(gender.isNotEmpty),
-        assert(website.isNotEmpty);
-
-  final String bio;
-  final String location;
-  final String gender;
-  final String website;
-}
+import 'package:junto_beta_mobile/models/models.dart';
 
 class SignUpAbout extends StatefulWidget {
   const SignUpAbout({Key key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return SignUpAboutState();
@@ -50,13 +34,12 @@ class SignUpAboutState extends State<SignUpAbout> {
     super.dispose();
   }
 
-  AboutPageModel returnDetails() {
-    return AboutPageModel(
+  AboutPageModel returnDetails() => AboutPageModel(
         bio: bioController.value.text,
         location: locationController.value.text,
         gender: genderController.value.text,
-        website: websiteController.value.text);
-  }
+        website: websiteController.value.text,
+      );
 
   @override
   Widget build(BuildContext context) {
