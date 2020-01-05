@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 
 class SignUpName extends StatefulWidget {
-  const SignUpName({Key key}) : super(key: key);
+  const SignUpName({
+    Key key,
+    @required this.onNamePressed,
+  }) : super(key: key);
 
+  /// Called when the user enters a value in the textfield.
+  /// Value will always be the latest value of `TextController.text.value`.
+  final ValueChanged<String> onNamePressed;
   @override
   State<StatefulWidget> createState() {
     return SignUpNameState();
@@ -16,12 +22,17 @@ class SignUpNameState extends State<SignUpName> {
   void initState() {
     super.initState();
     nameController = TextEditingController();
+    nameController.addListener(returnDetails);
   }
 
-  String returnDetails() {
-    print(nameController.value.text);
-    return nameController.value.text;
+  @override
+  void dispose() {
+    nameController.removeListener(returnDetails);
+    nameController.dispose();
+    super.dispose();
   }
+
+  void returnDetails() => widget.onNamePressed(nameController.value.text);
 
   @override
   Widget build(BuildContext context) {
@@ -83,6 +94,7 @@ class SignUpNameState extends State<SignUpName> {
                             fontSize: 14,
                             fontWeight: FontWeight.w400),
                       ),
+                      //FIXME:This does not rebuild with the correct value.
                       Text(
                         nameController.value.text.length.toString() + '/36',
                         style: const TextStyle(

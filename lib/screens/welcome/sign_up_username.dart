@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 
 class SignUpUsername extends StatefulWidget {
-  const SignUpUsername({Key key}) : super(key: key);
+  const SignUpUsername({
+    Key key,
+    @required this.onUsernameChange,
+  }) : super(key: key);
 
+  /// Called when the user enters a value in the textfield.
+  /// Value will always be the latest value of `TextController.text.value`.
+  final ValueChanged<String> onUsernameChange;
   @override
   State<StatefulWidget> createState() => SignUpUsernameState();
 }
@@ -14,12 +20,18 @@ class SignUpUsernameState extends State<SignUpUsername> {
   void initState() {
     super.initState();
     usernameController = TextEditingController();
+    usernameController.addListener(returnDetails);
   }
 
-  String returnDetails() {
-    return usernameController.value.text;
+  @override
+  void dispose() {
+    usernameController.removeListener(returnDetails);
+    usernameController.dispose();
+    super.dispose();
   }
 
+  void returnDetails() =>
+      widget.onUsernameChange(usernameController.value.text);
 
   @override
   Widget build(BuildContext context) {
