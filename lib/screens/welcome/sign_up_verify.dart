@@ -21,7 +21,7 @@ class SignUpVerifyState extends State<SignUpVerify> {
     verificationController = TextEditingController();
   }
 
-  returnDetails() {
+  int returnDetails() {
     return int.parse(verificationController.value.text);
   }
 
@@ -82,8 +82,8 @@ class SignUpVerifyState extends State<SignUpVerify> {
             const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                const Text(
+              children: const <Widget>[
+                Text(
                   'CHECK EMAIL',
                   style: TextStyle(
                       color: Colors.white70,

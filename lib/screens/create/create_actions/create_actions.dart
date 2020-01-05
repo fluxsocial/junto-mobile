@@ -81,7 +81,7 @@ class CreateActionsState extends State<CreateActions> {
                     .toMap(),
             context: widget.expressionContext);
       } else if (widget.expressionType == 'EventForm') {
-        var eventPhoto = '';
+        String eventPhoto = '';
         if (widget.expression['photo'] != '') {
           final String _eventPhotoKey =
               await Provider.of<ExpressionRepo>(context)
@@ -98,8 +98,8 @@ class CreateActionsState extends State<CreateActions> {
                 location: widget.expression['location'],
                 startTime: widget.expression['startTime'],
                 endTime: widget.expression['endTime'],
-                facilitators: [],
-                members: []).toMap(),
+                facilitators: <String>[],
+                members: <String>[]).toMap(),
             context: widget.expressionContext);
       } else {
         _expression = CentralizedExpression(

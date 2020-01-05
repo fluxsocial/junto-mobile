@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
 import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:provider/provider.dart';
 
 class SignUpRegister extends StatefulWidget {
@@ -34,16 +33,21 @@ class SignUpRegisterState extends State<SignUpRegister> {
     };
   }
 
-  validateRegistration() async {
+  Future<String> validateRegistration() async {
     // validate whether email text field contains an email
 
     // validate whether passwords are the same
     if (passwordController.value.text == confirmPasswordController.value.text) {
-      // verify whether email is accessible and send verification code
-      final UserData results = await Provider.of<AuthRepo>(context)
-          .verifyEmail(emailController.value.text);
-      print(results);
+      try {
+        // verify whether email is accessible and send verification code
+        return await Provider.of<AuthRepo>(context)
+            .verifyEmail(emailController.value.text);
+      } catch (error) {
+        debugPrint('Error verifying email $error');
+        return null;
+      }
     }
+    throw const JuntoException('Please check your password', -2);
   }
 
   @override

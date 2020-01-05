@@ -1,4 +1,3 @@
-
 import 'dart:io';
 import 'dart:typed_data' show ByteData, Uint8List;
 import 'dart:ui' as ui;
@@ -24,7 +23,7 @@ class ImageCroppingDialog extends StatefulWidget {
   }) async {
     assert(aspectRatios != null && aspectRatios.isNotEmpty);
     return Navigator.of(context, rootNavigator: true).push<File>(
-      MaterialPageRoute(
+      MaterialPageRoute<File>(
         settings: settings,
         fullscreenDialog: true,
         builder: (BuildContext context) {

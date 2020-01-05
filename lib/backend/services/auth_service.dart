@@ -29,7 +29,8 @@ class AuthenticationServiceCentralized implements AuthenticationService {
     } else {
       final Map<String, dynamic> errorResponse =
           JuntoHttp.handleResponse(response);
-      throw JuntoException('Unable to login: ${errorResponse['error']}', response.statusCode);
+      throw JuntoException(
+          'Unable to login: ${errorResponse['error']}', response.statusCode);
     }
   }
 
@@ -41,15 +42,12 @@ class AuthenticationServiceCentralized implements AuthenticationService {
   }
 
   @override
-  Future verifyEmail(String email) async {
-    final Map<String, String> _body = {"email": email};
+  Future<String> verifyEmail(String email) async {
+    final Map<String, String> _body = <String, String>{'email': email};
     final http.Response response =
         await client.postWithoutEncoding('/auth/register', body: _body);
-    print(response.body);
-
-    final parseData = JuntoHttp.handleResponse(response);
-    print(parseData);
-    print(parseData.body);
+    final Map<String, dynamic> parseData = JuntoHttp.handleResponse(response);
+    return parseData['message'];
   }
 
   @override

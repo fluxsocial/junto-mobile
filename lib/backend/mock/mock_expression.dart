@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/mock/mock_data.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
@@ -17,8 +18,9 @@ class MockExpressionService implements ExpressionService {
     return kExpressionResponse;
   }
 
-  Future createPhoto(String fileType, File file) async {
-    return;
+  @override
+  Future<String> createPhoto(String fileType, File file) async {
+    return 'xczxc-qwerqwe-324234';
   }
 
   @override

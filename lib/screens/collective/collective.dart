@@ -120,7 +120,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
     }
     try {
       return await _expressionProvider.getCollectiveExpressions(_params);
-    } on JuntoException catch (error) {
+    } on JuntoException catch (_) {
       await Provider.of<AuthRepo>(context).logoutUser();
       await Navigator.pushReplacement(context, Welcome.route());
       return null;

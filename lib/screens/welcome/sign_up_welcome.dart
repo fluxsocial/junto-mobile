@@ -49,6 +49,7 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
   /// to [JuntoTemplate]
   Future<void> _handleSignUp() async {
     final UserAuthRegistrationDetails details = UserAuthRegistrationDetails(
+        verificationCode: null,
         email: widget.email,
         name: widget.name,
         password: widget.password,

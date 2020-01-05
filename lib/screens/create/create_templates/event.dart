@@ -1,13 +1,13 @@
 import 'dart:io';
-import 'package:image_picker/image_picker.dart';
-import 'package:junto_beta_mobile/widgets/image_cropper.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
-import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/form-validation.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 
 /// Allows the user to create an event
 class CreateEvent extends StatefulWidget {
@@ -40,7 +40,8 @@ class CreateEventState extends State<CreateEvent> with DateParser {
     detailsController = TextEditingController();
   }
 
-  createExpression() {
+//FIXME: This should be serialized into a type
+  Map<String, dynamic> createExpression() {
     return <String, dynamic>{
       'description': 'Regenerate',
       'photo': imageFile,
@@ -48,8 +49,8 @@ class CreateEventState extends State<CreateEvent> with DateParser {
       'location': 'NYC',
       'startTime': DateTime.now().toUtc().toIso8601String(),
       'endTime': DateTime.now().toUtc().toIso8601String(),
-      'facilitators': [],
-      'members': []
+      'facilitators': <String>[],
+      'members': <String>[]
     };
     // return CentralizedEventFormExpression(
     //     description: 'event description',
@@ -79,7 +80,7 @@ class CreateEventState extends State<CreateEvent> with DateParser {
     setState(() => imageFile = cropped);
   }
 
-  _openChangePhotoModal() {
+  void _openChangePhotoModal() {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) => Container(

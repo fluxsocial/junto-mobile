@@ -166,7 +166,7 @@ class _SignInState extends State<SignIn> {
               decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.secondaryVariant,
                   borderRadius: BorderRadius.circular(1000),
-                  boxShadow: [
+                  boxShadow: <BoxShadow>[
                     BoxShadow(
                         color:
                             Theme.of(context).primaryColorDark.withOpacity(.12),
