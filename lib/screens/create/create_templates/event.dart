@@ -179,7 +179,7 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 children: <Widget>[
                   Container(
-                    width: MediaQuery.of(context).size.width * .8,
+                    width: MediaQuery.of(context).size.width,
                     child: TextFormField(
                         validator: Validator.validateNonEmpty,
                         controller: titleController,

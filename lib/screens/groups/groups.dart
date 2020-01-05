@@ -1,16 +1,18 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+
 import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/packs/packs.dart';
 import 'package:junto_beta_mobile/screens/groups/spheres/spheres.dart';
+import 'package:junto_beta_mobile/screens/groups/spheres/create_sphere.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/appbar/groups_appbar.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
-import 'package:junto_beta_mobile/widgets/fabs/create_sphere_fab.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -99,14 +101,10 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
               child: BottomNav(
                   screen: 'groups',
                   onTap: () {
-                    // open create sphere modal
-                    showModalBottomSheet(
-                      isScrollControlled: true,
-                      context: context,
-                      builder: (BuildContext context) => Container(
-                        color: Colors.transparent,
-                        child: CreateSphereBottomSheet(),
-                      ),
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                          builder: (BuildContext context) => CreateSphere()),
                     );
                   })),
         ),
