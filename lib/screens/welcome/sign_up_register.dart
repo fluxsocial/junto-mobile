@@ -25,6 +25,14 @@ class SignUpRegisterState extends State<SignUpRegister> {
     confirmPasswordController = TextEditingController();
   }
 
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    super.dispose();
+  }
+
   Map<String, dynamic> returnDetails() {
     return <String, dynamic>{
       'email': emailController.value.text,
@@ -33,6 +41,7 @@ class SignUpRegisterState extends State<SignUpRegister> {
     };
   }
 
+//TODO(Nash): This should be moved to a service
   Future<String> validateRegistration() async {
     // validate whether email text field contains an email
 

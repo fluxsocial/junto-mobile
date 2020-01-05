@@ -1,8 +1,25 @@
 import 'package:flutter/material.dart';
 
+//TODO(Nash): Move to models folder.
+class AboutPageModel {
+  AboutPageModel({
+    @required this.bio,
+    @required this.location,
+    @required this.gender,
+    @required this.website,
+  })  : assert(bio.isNotEmpty),
+        assert(location.isNotEmpty),
+        assert(gender.isNotEmpty),
+        assert(website.isNotEmpty);
+
+  final String bio;
+  final String location;
+  final String gender;
+  final String website;
+}
+
 class SignUpAbout extends StatefulWidget {
   const SignUpAbout({Key key}) : super(key: key);
-
   @override
   State<StatefulWidget> createState() {
     return SignUpAboutState();
@@ -24,13 +41,21 @@ class SignUpAboutState extends State<SignUpAbout> {
     websiteController = TextEditingController();
   }
 
-  Map<String, dynamic> returnDetails() {
-    return <String, dynamic>{
-      'bio': bioController.value.text,
-      'location': locationController.value.text,
-      'gender': genderController.value.text,
-      'website': websiteController.value.text
-    };
+  @override
+  void dispose() {
+    bioController.dispose();
+    locationController.dispose();
+    genderController.dispose();
+    websiteController.dispose();
+    super.dispose();
+  }
+
+  AboutPageModel returnDetails() {
+    return AboutPageModel(
+        bio: bioController.value.text,
+        location: locationController.value.text,
+        gender: genderController.value.text,
+        website: websiteController.value.text);
   }
 
   @override
