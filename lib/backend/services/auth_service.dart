@@ -47,11 +47,21 @@ class AuthenticationServiceCentralized implements AuthenticationService {
     final http.Response response =
         await client.postWithoutEncoding('/auth/register', body: _body);
     final Map<String, dynamic> parseData = JuntoHttp.handleResponse(response);
-    return parseData['message'];
+    if (parseData['message'] != null) {
+      return parseData['message'];
+    } else {
+      return parseData['error'];
+    }
   }
 
   @override
   Future<UserData> registerUser(UserAuthRegistrationDetails details) async {
+    assert(details.bio.isNotEmpty);
+    assert(details.name.isNotEmpty);
+    assert(details.location.isNotEmpty);
+    assert(details.website.isNotEmpty);
+    assert(details.username.isNotEmpty);
+    assert(details.password.isNotEmpty);
     final Map<String, dynamic> _body = <String, dynamic>{
       'email': details.email,
       'password': details.password,
