@@ -131,31 +131,28 @@ class CentralizedPhotoFormExpression {
 }
 
 class CentralizedEventFormExpression {
-  CentralizedEventFormExpression({
-    this.title,
-    this.description,
-    this.photo,
-    this.location,
-    this.startTime,
-    this.endTime,
-    this.facilitators,
-    this.members
-  });
+  CentralizedEventFormExpression(
+      {this.title,
+      this.description,
+      this.photo,
+      this.location,
+      this.startTime,
+      this.endTime,
+      this.facilitators,
+      this.members});
 
   factory CentralizedEventFormExpression.fromMap(Map<String, dynamic> json) {
     return CentralizedEventFormExpression(
-      title: json['title'],
-      description: json['description'],
-      photo: json['photo'],
-      location: json['location'],
-      startTime: json['start_time'],
-      endTime: json['end_time'],
-    facilitators: json['facilitators'],
-    members: json['members']);      
-    
-
+        title: json['title'],
+        description: json['description'],
+        photo: json['photo'],
+        location: json['location'],
+        startTime: json['start_time'],
+        endTime: json['end_time'],
+        facilitators: json['facilitators'],
+        members: json['members']);
   }
- 
+
   final String title;
   final String description;
   final String photo;

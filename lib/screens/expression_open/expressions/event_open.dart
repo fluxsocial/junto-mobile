@@ -1,8 +1,6 @@
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-
 
 class EventOpen extends StatelessWidget {
   const EventOpen(this.expression);
@@ -24,25 +22,25 @@ class EventOpen extends StatelessWidget {
         children: <Widget>[
           eventImage != ''
               ? Container(
-                  height: (MediaQuery.of(context).size.width / 3 ) * 2,
+                  height: (MediaQuery.of(context).size.width / 3) * 2,
                   child: CachedNetworkImage(
-                        imageUrl: expression.expressionData.photo,
-                        placeholder: (BuildContext context, String _) {
-                          return Container(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.bottomLeft,
-                                end: Alignment.topRight,
-                                stops: const <double>[0.2, 0.9],
-                                colors: <Color>[
-                                  Theme.of(context).colorScheme.secondary,
-                                  Theme.of(context).colorScheme.primary
-                                ],
-                              ),
+                      imageUrl: expression.expressionData.photo,
+                      placeholder: (BuildContext context, String _) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.bottomLeft,
+                              end: Alignment.topRight,
+                              stops: const <double>[0.2, 0.9],
+                              colors: <Color>[
+                                Theme.of(context).colorScheme.secondary,
+                                Theme.of(context).colorScheme.primary
+                              ],
                             ),
-                          );
-                        },
-                        fit: BoxFit.cover),
+                          ),
+                        );
+                      },
+                      fit: BoxFit.cover),
                 )
               : const SizedBox(),
           Container(

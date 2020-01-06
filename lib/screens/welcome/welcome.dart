@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_in.dart';
@@ -48,8 +49,6 @@ class WelcomeState extends State<Welcome> {
   String confirmPassword;
   int verificationCode;
 
-  GlobalKey<SignUpNameState> signUpNameKey;
-  GlobalKey<SignUpUsernameState> signUpUsernameKey;
   GlobalKey<SignUpAboutState> signUpAboutKey;
   GlobalKey<SignUpPhotosState> signUpPhotosKey;
   GlobalKey<SignUpRegisterState> signUpRegisterKey;
@@ -58,8 +57,6 @@ class WelcomeState extends State<Welcome> {
   @override
   void initState() {
     super.initState();
-    signUpNameKey = GlobalKey<SignUpNameState>();
-    signUpUsernameKey = GlobalKey<SignUpUsernameState>();
     signUpAboutKey = GlobalKey<SignUpAboutState>();
     signUpPhotosKey = GlobalKey<SignUpPhotosState>();
     signUpRegisterKey = GlobalKey<SignUpRegisterState>();
@@ -70,47 +67,31 @@ class WelcomeState extends State<Welcome> {
     _signInController = PageController();
   }
 
+  Future<String> validateRegistration() async {
+    try {
+      return await Provider.of<AuthRepo>(context).verifyEmail(email);
+    } catch (error) {
+      debugPrint('Error verifying email $error');
+    }
+    throw const JuntoException('Please check your password', -2);
+  }
+
   void _nextSignUpPage() {
-    if (_currentIndex == 1) {
-      setState(() {
-        name = signUpNameKey.currentState.returnDetails();
-      });
-      if (name == '') {
-        return;
-      }
-    } else if (_currentIndex == 2) {
-      setState(() {
-        username = signUpUsernameKey.currentState.returnDetails();
-      });
-      print(username);
-      if (username == '') {
-        return;
-      }
-    } else if (_currentIndex == 4) {
-      setState(() {
-        bio = signUpAboutKey.currentState.returnDetails()['bio'];
-        location = signUpAboutKey.currentState.returnDetails()['location'];
-        gender = signUpAboutKey.currentState.returnDetails()['gender'];
-        website = signUpAboutKey.currentState.returnDetails()['website'];
-      });
+    if (_currentIndex == 4) {
+      final AboutPageModel _aboutPageModel =
+          signUpAboutKey.currentState.returnDetails();
+      bio = _aboutPageModel.bio;
+      location = _aboutPageModel.location;
+      gender = _aboutPageModel.gender;
+      website = _aboutPageModel.website;
     } else if (_currentIndex == 5) {
-      setState(() {
-        profilePictures = signUpPhotosKey.currentState.returnDetails();
-      });
+      profilePictures = signUpPhotosKey.currentState.returnDetails();
     } else if (_currentIndex == 6) {
-      setState(() {
-        email = signUpRegisterKey.currentState.returnDetails()['email'];
-        password = signUpRegisterKey.currentState.returnDetails()['password'];
-        confirmPassword =
-            signUpRegisterKey.currentState.returnDetails()['confirmPassword'];
-      });
-      if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
-        return;
-      } else {
-        signUpRegisterKey.currentState
-            .validateRegistration()
-            .then((String value) => print(value));
-      }
+      email = signUpRegisterKey.currentState.returnDetails()['email'];
+      password = signUpRegisterKey.currentState.returnDetails()['password'];
+      confirmPassword =
+          signUpRegisterKey.currentState.returnDetails()['confirmPassword'];
+      validateRegistration().then((String value) => print(value));
     }
 
     // transition to next page of sign up flow
@@ -206,8 +187,12 @@ class WelcomeState extends State<Welcome> {
                   SignIn(_signInController)
                 ],
               ),
-              SignUpName(key: signUpNameKey),
-              SignUpUsername(key: signUpUsernameKey),
+              SignUpName(
+                onNamePressed: (String value) => name = value,
+              ),
+              SignUpUsername(
+                onUsernameChange: (String value) => username = value,
+              ),
               SignUpThemes(),
               SignUpAbout(key: signUpAboutKey),
               SignUpPhotos(key: signUpPhotosKey),

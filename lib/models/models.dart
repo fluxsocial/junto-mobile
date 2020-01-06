@@ -4,6 +4,7 @@ export 'emoji_model.dart';
 export 'expression.dart';
 export 'group_model.dart';
 export 'pack.dart';
+export 'page_model.dart';
 export 'perspective.dart';
 export 'resonation_model.dart';
 export 'sphere.dart';

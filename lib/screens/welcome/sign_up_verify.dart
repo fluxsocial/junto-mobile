@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 class SignUpVerify extends StatefulWidget {
   const SignUpVerify({Key key, this.handleSignUp}) : super(key: key);
 
-  final Function handleSignUp;
+  final VoidCallback handleSignUp;
 
   @override
   State<StatefulWidget> createState() {
@@ -19,6 +19,12 @@ class SignUpVerifyState extends State<SignUpVerify> {
   void initState() {
     super.initState();
     verificationController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    verificationController.dispose();
+    super.dispose();
   }
 
   int returnDetails() {
@@ -94,9 +100,7 @@ class SignUpVerifyState extends State<SignUpVerify> {
             ),
             const SizedBox(height: 100),
             GestureDetector(
-              onTap: () {
-                widget.handleSignUp();
-              },
+              onTap: widget.handleSignUp,
               child: Container(
                 alignment: Alignment.center,
                 padding: const EdgeInsets.symmetric(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 
 class SignUpAbout extends StatefulWidget {
   const SignUpAbout({Key key}) : super(key: key);
@@ -24,14 +25,21 @@ class SignUpAboutState extends State<SignUpAbout> {
     websiteController = TextEditingController();
   }
 
-  Map<String, dynamic> returnDetails() {
-    return <String, dynamic>{
-      'bio': bioController.value.text,
-      'location': locationController.value.text,
-      'gender': genderController.value.text,
-      'website': websiteController.value.text
-    };
+  @override
+  void dispose() {
+    bioController.dispose();
+    locationController.dispose();
+    genderController.dispose();
+    websiteController.dispose();
+    super.dispose();
   }
+
+  AboutPageModel returnDetails() => AboutPageModel(
+        bio: bioController.value.text,
+        location: locationController.value.text,
+        gender: genderController.value.text,
+        website: websiteController.value.text,
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -94,14 +102,23 @@ class SignUpAboutState extends State<SignUpAbout> {
                                   fontSize: 10,
                                   fontWeight: FontWeight.w400),
                             ),
-                            Text(
-                              bioController.value.text.length.toString() +
-                                  '/1000',
-                              style: const TextStyle(
-                                  color: Colors.white70,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w400),
-                            ),
+                            ValueListenableBuilder<TextEditingValue>(
+                                valueListenable: bioController,
+                                builder: (
+                                  BuildContext context,
+                                  TextEditingValue value,
+                                  _,
+                                ) {
+                                  return Text(
+                                    bioController.value.text.length.toString() +
+                                        '${value.text.length}/1000',
+                                    style: const TextStyle(
+                                      color: Colors.white70,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  );
+                                }),
                           ],
                         )
                       ],
