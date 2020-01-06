@@ -18,6 +18,7 @@ class CreateSphere extends StatefulWidget {
 
 class CreateSphereState extends State<CreateSphere> {
   File imageFile;
+  String imageKey = '';
   int _currentIndex = 0;
   PageController createSphereController;
   TextEditingController sphereNameController;
@@ -44,6 +45,13 @@ class CreateSphereState extends State<CreateSphere> {
 
   Future<void> _createSphere() async {
     // check if photo
+    if (imageFile != null) {
+      final String _photoKey = await Provider.of<ExpressionRepo>(context)
+          .createPhoto('.png', imageFile);
+      setState(() {
+        imageKey = _photoKey;
+      });
+    }
 
     // then
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -56,7 +64,7 @@ class CreateSphereState extends State<CreateSphere> {
       name: sphereName,
       description: sphereDescription,
       facilitators: <String>[userAddress],
-      photo: '',
+      photo: imageKey,
       members: <String>[],
       principles: '',
       sphereHandle: sphereHandle,
@@ -131,6 +139,7 @@ class CreateSphereState extends State<CreateSphere> {
                     ? GestureDetector(
                         onTap: () {
                           // create sphere
+                          _createSphere();
                         },
                         child: Container(
                           color: Colors.transparent,
@@ -312,7 +321,7 @@ class CreateSphereState extends State<CreateSphere> {
           cursorWidth: 2,
           maxLines: null,
           style: Theme.of(context).textTheme.caption,
-          maxLength: 500,
+          maxLength: 1000,
           textInputAction: TextInputAction.done,
         ),
       ),
