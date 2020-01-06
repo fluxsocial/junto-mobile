@@ -395,7 +395,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
 
 // Switch between perspectives; used in perspectives side drawer.
   void _changePerspective(dynamic perspective) {
-    if (perspective == 'JUNTO') {
+    if (perspective.name == 'JUNTO') {
       setState(() {
         _expressionCompleter = getCollectiveExpressions(
             paginationPos: null, contextType: 'Collective', dos: null);
