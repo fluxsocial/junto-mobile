@@ -102,6 +102,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
   Future<QueryExpressionResults> getCollectiveExpressions({
     int dos,
     String contextType,
+    String contextString,
     List<String> channels,
     int paginationPos = 0,
   }) async {
@@ -115,6 +116,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
     } else {
       _params = <String, String>{
         'context_type': contextType,
+        'context': contextString,
         'pagination_position': paginationPos.toString(),
       };
     }
@@ -395,7 +397,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
 
 // Switch between perspectives; used in perspectives side drawer.
   void _changePerspective(dynamic perspective) {
-    if (perspective == 'JUNTO') {
+    if (perspective.name == 'JUNTO') {
       setState(() {
         _expressionCompleter = getCollectiveExpressions(
             paginationPos: null, contextType: 'Collective', dos: null);
@@ -404,7 +406,8 @@ class JuntoCollectiveState extends State<JuntoCollective>
       });
     } else {
       _expressionCompleter = getCollectiveExpressions(
-        paginationPos: perspective.address,
+        paginationPos: 0,
+        contextString: perspective.address,
         contextType: 'FollowPerspective',
         dos: null,
       );
