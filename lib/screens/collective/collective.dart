@@ -122,7 +122,31 @@ class JuntoCollectiveState extends State<JuntoCollective>
       return await _expressionProvider.getCollectiveExpressions(_params);
     } on JuntoException catch (_) {
       await Provider.of<AuthRepo>(context).logoutUser();
-      await Navigator.pushReplacement(context, Welcome.route());
+      await Navigator.of(context).pushReplacement(
+        PageRouteBuilder<dynamic>(
+          pageBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) {
+            return Welcome();
+          },
+          transitionsBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+            Widget child,
+          ) {
+            return FadeTransition(
+              opacity: animation,
+              child: child,
+            );
+          },
+          transitionDuration: const Duration(
+            milliseconds: 1000,
+          ),
+        ),
+      );
       return null;
     }
   }

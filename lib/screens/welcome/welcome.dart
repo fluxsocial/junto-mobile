@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/screens/collective/collective.dart';
+import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_in.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_about.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_name.dart';
@@ -49,6 +49,10 @@ class WelcomeState extends State<Welcome> {
   String confirmPassword;
   int verificationCode;
 
+  String imageOne = '';
+  String imageTwo = '';
+  String imageThree = '';
+
   GlobalKey<SignUpAboutState> signUpAboutKey;
   GlobalKey<SignUpPhotosState> signUpPhotosKey;
   GlobalKey<SignUpRegisterState> signUpRegisterKey;
@@ -86,6 +90,7 @@ class WelcomeState extends State<Welcome> {
       website = _aboutPageModel.website;
     } else if (_currentIndex == 5) {
       profilePictures = signUpPhotosKey.currentState.returnDetails();
+      print(profilePictures);
     } else if (_currentIndex == 6) {
       email = signUpRegisterKey.currentState.returnDetails()['email'];
       password = signUpRegisterKey.currentState.returnDetails()['password'];
@@ -107,6 +112,30 @@ class WelcomeState extends State<Welcome> {
     setState(() {
       verificationCode = signUpVerifyKey.currentState.returnDetails();
     });
+
+    // check if user uploaded photo
+    if (profilePictures[0] != null) {
+      final String _photoKeyOne = await Provider.of<ExpressionRepo>(context)
+          .createPhoto('.png', profilePictures[0]);
+      setState(() {
+        imageOne = _photoKeyOne;
+      });
+      if (profilePictures[1] != null) {
+        final String _photoKeyTwo = await Provider.of<ExpressionRepo>(context)
+            .createPhoto('.png', profilePictures[1]);
+        setState(() {
+          imageTwo = _photoKeyTwo;
+        });
+      }
+      if (profilePictures[2] != null) {
+        final String _photoKeyThree = await Provider.of<ExpressionRepo>(context)
+            .createPhoto('.png', profilePictures[1]);
+        setState(() {
+          imageThree = _photoKeyThree;
+        });
+      }
+    }
+
     final UserAuthRegistrationDetails details = UserAuthRegistrationDetails(
       email: email,
       name: name,
@@ -114,9 +143,7 @@ class WelcomeState extends State<Welcome> {
       bio: bio,
       location: <String>[location],
       username: username,
-      profileImage: <String>[
-        'assets/images/junto-mobile__placeholder--member.png'
-      ],
+      profileImage: <String>[imageOne, imageTwo, imageThree],
       website: <String>[website],
       gender: <String>[gender],
       verificationCode: verificationCode,
@@ -136,7 +163,7 @@ class WelcomeState extends State<Welcome> {
         ..setString('user_data', resultsMapToString);
 
       Navigator.of(context).pushAndRemoveUntil(
-        JuntoCollective.route(),
+        JuntoLotus.route(),
         (Route<dynamic> route) => false,
       );
     } on JuntoException catch (error) {

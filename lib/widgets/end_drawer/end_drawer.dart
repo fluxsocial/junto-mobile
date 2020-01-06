@@ -155,9 +155,9 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                           CupertinoPageRoute<dynamic>(
                             builder: (BuildContext context) =>
                                 JuntoRelationships(
-                              _prefs.getString('user_id'),
-                              _prefs.getString('user_follow_perspective_id')
-                            ),
+                                    _prefs.getString('user_id'),
+                                    _prefs.getString(
+                                        'user_follow_perspective_id')),
                           ),
                         );
                       },
@@ -194,10 +194,28 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                       onTap: () async {
                         await Provider.of<AuthRepo>(context).logoutUser();
                         Navigator.of(context).pushReplacement(
-                          CupertinoPageRoute<dynamic>(
-                            builder: (BuildContext context) {
+                          PageRouteBuilder<dynamic>(
+                            pageBuilder: (
+                              BuildContext context,
+                              Animation<double> animation,
+                              Animation<double> secondaryAnimation,
+                            ) {
                               return Welcome();
                             },
+                            transitionsBuilder: (
+                              BuildContext context,
+                              Animation<double> animation,
+                              Animation<double> secondaryAnimation,
+                              Widget child,
+                            ) {
+                              return FadeTransition(
+                                opacity: animation,
+                                child: child,
+                              );
+                            },
+                            transitionDuration: const Duration(
+                              milliseconds: 1000,
+                            ),
                           ),
                         );
                       },

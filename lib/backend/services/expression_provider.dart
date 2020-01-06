@@ -41,10 +41,13 @@ class ExpressionServiceCentralized implements ExpressionService {
     // denote file type and get url, headers, and key of s3 bucket
     final http.Response _serverResponse =
         await client.postWithoutEncoding('/auth/s3', body: fileType);
+    
+    print(_serverResponse.body);
 
     // parse response
     final Map<String, dynamic> parseData =
         JuntoHttp.handleResponse(_serverResponse);
+
 
     // seralize into new headers
     final Map<String, String> newHeaders = <String, String>{

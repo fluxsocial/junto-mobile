@@ -36,9 +36,15 @@ class SignUpAboutState extends State<SignUpAbout> {
 
   AboutPageModel returnDetails() => AboutPageModel(
         bio: bioController.value.text == '' ? ' ' : bioController.value.text,
-        location: locationController.value.text == '' ? ' ' : locationController.value.text,
-        gender: genderController.value.text == '' ? ' ' : genderController.value.text,
-        website: websiteController.value.text == '' ? ' ' : websiteController.value.text,
+        location: locationController.value.text == ''
+            ? ' '
+            : locationController.value.text,
+        gender: genderController.value.text == ''
+            ? ' '
+            : genderController.value.text,
+        website: websiteController.value.text == ''
+            ? ' '
+            : websiteController.value.text,
       );
 
   @override
@@ -54,7 +60,7 @@ class SignUpAboutState extends State<SignUpAbout> {
           children: <Widget>[
             Container(
               child: const Text(
-                'Feel free to share more about yourself! (optional)',
+                'Feel free to share more about yourself (optional)',
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 24,

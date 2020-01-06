@@ -45,76 +45,6 @@ class CreateShortformState extends State<CreateShortform> {
 
   @override
   Widget build(BuildContext context) {
-    //ignore:unused_element
-    void _setBackground(String background) {
-      if (background == 'zero') {
-        setState(() {
-          gradientOne = Colors.white;
-          gradientTwo = Colors.white;
-          _currentBackground = 'zero';
-        });
-      } else if (background == 'one') {
-        setState(
-          () {
-            gradientOne = JuntoPalette.juntoSecondary;
-            gradientTwo = JuntoPalette.juntoPrimary;
-            _currentBackground = 'one';
-          },
-        );
-      } else if (background == 'two') {
-        setState(
-          () {
-            gradientOne = JuntoPalette.juntoSecondary;
-            gradientTwo = JuntoPalette.juntoSecondaryLight;
-            _currentBackground = 'two';
-          },
-        );
-      } else if (background == 'three') {
-        setState(() {
-          gradientOne = JuntoPalette.juntoPrimary;
-          gradientTwo = JuntoPalette.juntoPrimaryLight;
-          _currentBackground = 'three';
-        });
-      } else if (background == 'four') {
-        setState(
-          () {
-            gradientOne = JuntoPalette.juntoGreen;
-            gradientTwo = JuntoPalette.juntoPrimary;
-            _currentBackground = 'four';
-          },
-        );
-      } else if (background == 'five') {
-        setState(
-          () {
-            gradientOne = JuntoPalette.juntoGreen;
-            gradientTwo = JuntoPalette.juntoSecondary;
-            _currentBackground = 'five';
-          },
-        );
-      }
-    }
-
-    //ignore:unused_element
-    Widget _buildBackgroundPicker(Color colorOne, Color colorTwo) {
-      return Container(
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Theme.of(context).dividerColor,
-            width: 1,
-          ),
-          gradient: LinearGradient(
-            begin: Alignment.bottomLeft,
-            end: Alignment.topRight,
-            stops: const <double>[0.1, 0.9],
-            colors: <Color>[colorOne, colorTwo],
-          ),
-        ),
-        margin: const EdgeInsets.only(right: 10),
-        height: 36,
-        width: 36,
-      );
-    }
-
     return Expanded(
       child: Column(
         children: <Widget>[
@@ -122,51 +52,6 @@ class CreateShortformState extends State<CreateShortform> {
             child: ListView(
               padding: const EdgeInsets.all(0),
               children: <Widget>[
-                // Container(
-                //   padding: const EdgeInsets.symmetric(horizontal: 10),
-                //   margin: const EdgeInsets.only(top: 10, bottom: 15),
-                //   child: Row(
-                //     children: <Widget>[
-                //       GestureDetector(
-                //         onTap: () {
-                //           _setBackground('one');
-                //         },
-                //         child: _buildBackgroundPicker(JuntoPalette.juntoPrimary,
-                //             JuntoPalette.juntoSecondary),
-                //       ),
-                //       GestureDetector(
-                //         onTap: () {
-                //           _setBackground('two');
-                //         },
-                //         child: _buildBackgroundPicker(
-                //             JuntoPalette.juntoSecondaryLight,
-                //             JuntoPalette.juntoSecondary),
-                //       ),
-                //       GestureDetector(
-                //         onTap: () {
-                //           _setBackground('three');
-                //         },
-                //         child: _buildBackgroundPicker(
-                //             JuntoPalette.juntoPrimaryLight,
-                //             JuntoPalette.juntoPrimary),
-                //       ),
-                //       GestureDetector(
-                //         onTap: () {
-                //           _setBackground('four');
-                //         },
-                //         child: _buildBackgroundPicker(
-                //             JuntoPalette.juntoGreen, JuntoPalette.juntoPrimary),
-                //       ),
-                //       GestureDetector(
-                //         onTap: () {
-                //           _setBackground('five');
-                //         },
-                //         child: _buildBackgroundPicker(JuntoPalette.juntoGreen,
-                //             JuntoPalette.juntoSecondary),
-                //       ),
-                //     ],
-                //   ),
-                // ),
                 Container(
                   padding: EdgeInsets.only(
                       left: 10.0,

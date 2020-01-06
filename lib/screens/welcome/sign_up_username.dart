@@ -49,7 +49,7 @@ class SignUpUsernameState extends State<SignUpUsername> {
                 bottom: MediaQuery.of(context).size.height * .17,
               ),
               child: const Text(
-                'Let\'s get a unique username for you!',
+                'Choose a unique username!',
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 24,

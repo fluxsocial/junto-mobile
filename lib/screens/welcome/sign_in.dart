@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
@@ -46,10 +47,32 @@ class _SignInState extends State<SignIn> {
     try {
       await Provider.of<AuthRepo>(context).loginUser(loginDetails);
       JuntoLoader.hide();
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute<dynamic>(
-          builder: (BuildContext context) => JuntoCollective(),
+      Navigator.of(context).pushReplacement(
+        PageRouteBuilder<dynamic>(
+          pageBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) {
+            return const JuntoLotus(
+              address: null,
+              expressionContext: ExpressionContext.Collective,
+            );
+          },
+          transitionsBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+            Widget child,
+          ) {
+            return FadeTransition(
+              opacity: animation,
+              child: child,
+            );
+          },
+          transitionDuration: const Duration(
+            milliseconds: 1000,
+          ),
         ),
       );
     } catch (error) {
