@@ -36,24 +36,18 @@ class JuntoLotus extends StatelessWidget {
         Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          child:
-              Image.asset('assets/images/junto-mobile__background--lotus.png'),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.bottomLeft,
+              end: Alignment.topRight,
+              stops: const <double>[0.2, 0.9],
+              colors: <Color>[
+                Theme.of(context).colorScheme.secondaryVariant,
+                Theme.of(context).colorScheme.primaryVariant
+              ],
+            ),
+          ),
         ),
-        // Container(
-        //   height: MediaQuery.of(context).size.height,
-        //   width: MediaQuery.of(context).size.width,
-        //   decoration: BoxDecoration(
-        //     gradient: LinearGradient(
-        //       begin: Alignment.bottomLeft,
-        //       end: Alignment.topRight,
-        //       stops: const <double>[0.2, 0.9],
-        //       colors: <Color>[
-        //         Theme.of(context).colorScheme.secondaryVariant,
-        //         Theme.of(context).colorScheme.primaryVariant
-        //       ],
-        //     ),
-        //   ),
-        // ),
         Container(
           height: MediaQuery.of(context).size.height,
           child: Column(

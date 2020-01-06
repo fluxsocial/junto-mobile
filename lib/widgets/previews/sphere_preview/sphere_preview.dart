@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/spheres/sphere_open/sphere_open.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 // This class renders a preview of a sphere
 class SpherePreview extends StatelessWidget {

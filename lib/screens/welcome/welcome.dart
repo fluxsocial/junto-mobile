@@ -14,6 +14,7 @@ import 'package:junto_beta_mobile/screens/welcome/sign_up_register.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_themes.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_username.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_verify.dart';
+import 'package:junto_beta_mobile/screens/welcome/sign_up_welcome.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:provider/provider.dart';
@@ -97,8 +98,6 @@ class WelcomeState extends State<Welcome> {
       confirmPassword =
           signUpRegisterKey.currentState.returnDetails()['confirmPassword'];
       validateRegistration().then((String value) => print(value));
-    } else if (_currentIndex == 1) {
-      print(name);
     }
 
     // transition to next page of sign up flow
@@ -109,32 +108,60 @@ class WelcomeState extends State<Welcome> {
   }
 
   Future<void> _handleSignUp() async {
+      // Navigator.of(context).pushReplacement(
+      //   PageRouteBuilder<dynamic>(
+      //     pageBuilder: (
+      //       BuildContext context,
+      //       Animation<double> animation,
+      //       Animation<double> secondaryAnimation,
+      //     ) {
+      //       return const SignUpAgreements();
+      //     },
+      //     transitionsBuilder: (
+      //       BuildContext context,
+      //       Animation<double> animation,
+      //       Animation<double> secondaryAnimation,
+      //       Widget child,
+      //     ) {
+      //       return SlideTransition(
+      //         position: Tween<Offset>(
+      //           begin: const Offset(-1, 0),
+      //           end: Offset.zero,
+      //         ).animate(animation),
+      //         child: child,
+      //       );
+      //     },
+      //     transitionDuration: const Duration(
+      //       milliseconds: 400,
+      //     ),
+      //   ),
+      // );    
     setState(() {
       verificationCode = signUpVerifyKey.currentState.returnDetails();
     });
 
     // check if user uploaded photo
-    if (profilePictures[0] != null) {
-      final String _photoKeyOne = await Provider.of<ExpressionRepo>(context)
-          .createPhoto('.png', profilePictures[0]);
-      setState(() {
-        imageOne = _photoKeyOne;
-      });
-      if (profilePictures[1] != null) {
-        final String _photoKeyTwo = await Provider.of<ExpressionRepo>(context)
-            .createPhoto('.png', profilePictures[1]);
-        setState(() {
-          imageTwo = _photoKeyTwo;
-        });
-      }
-      if (profilePictures[2] != null) {
-        final String _photoKeyThree = await Provider.of<ExpressionRepo>(context)
-            .createPhoto('.png', profilePictures[1]);
-        setState(() {
-          imageThree = _photoKeyThree;
-        });
-      }
-    }
+    // if (profilePictures[0] != null) {
+    //   final String _photoKeyOne = await Provider.of<ExpressionRepo>(context)
+    //       .createPhoto('.png', profilePictures[0]);
+    //   setState(() {
+    //     imageOne = _photoKeyOne;
+    //   });
+    //   if (profilePictures[1] != null) {
+    //     final String _photoKeyTwo = await Provider.of<ExpressionRepo>(context)
+    //         .createPhoto('.png', profilePictures[1]);
+    //     setState(() {
+    //       imageTwo = _photoKeyTwo;
+    //     });
+    //   }
+    //   if (profilePictures[2] != null) {
+    //     final String _photoKeyThree = await Provider.of<ExpressionRepo>(context)
+    //         .createPhoto('.png', profilePictures[1]);
+    //     setState(() {
+    //       imageThree = _photoKeyThree;
+    //     });
+    //   }
+    // }
 
     final UserAuthRegistrationDetails details = UserAuthRegistrationDetails(
       email: email,
@@ -143,11 +170,14 @@ class WelcomeState extends State<Welcome> {
       bio: bio,
       location: <String>[location],
       username: username,
-      profileImage: <String>[imageOne, imageTwo, imageThree],
+      profileImage: <String>[
+        'assets/images/junto-mobile__placeholder--member.png'
+      ],
       website: <String>[website],
       gender: <String>[gender],
       verificationCode: verificationCode,
     );
+
     try {
       final UserData results =
           await Provider.of<AuthRepo>(context).registerUser(details);
@@ -162,10 +192,38 @@ class WelcomeState extends State<Welcome> {
         ..setString('user_id', results.user.address)
         ..setString('user_data', resultsMapToString);
 
-      Navigator.of(context).pushAndRemoveUntil(
-        JuntoLotus.route(),
-        (Route<dynamic> route) => false,
+      Navigator.of(context).pushReplacement(
+        PageRouteBuilder<dynamic>(
+          pageBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) {
+            return const SignUpAgreements();
+          },
+          transitionsBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+            Widget child,
+          ) {
+            return SlideTransition(
+              position: Tween<Offset>(
+                begin: const Offset(-1, 0),
+                end: Offset.zero,
+              ).animate(animation),
+              child: child,
+            );
+          },
+          transitionDuration: const Duration(
+            milliseconds: 1000,
+          ),
+        ),
       );
+      // Navigator.of(context).pushAndRemoveUntil(
+      //   JuntoLotus.route(),
+      //   (Route<dynamic> route) => false,
+      // );
     } on JuntoException catch (error) {
       JuntoDialog.showJuntoDialog(context, error.message, <Widget>[
         FlatButton(
@@ -257,18 +315,20 @@ class WelcomeState extends State<Welcome> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    GestureDetector(
-                      onTap: () {
-                        _nextSignUpPage();
-                      },
-                      child: Container(
-                        height: 36,
-                        width: 36,
-                        color: Colors.transparent,
-                        child: Icon(Icons.keyboard_arrow_down,
-                            color: Colors.white, size: 36),
-                      ),
-                    ),
+                    _currentIndex == 7
+                        ? const SizedBox()
+                        : GestureDetector(
+                            onTap: () {
+                              _nextSignUpPage();
+                            },
+                            child: Container(
+                              height: 36,
+                              width: 36,
+                              color: Colors.transparent,
+                              child: Icon(Icons.keyboard_arrow_down,
+                                  color: Colors.white, size: 36),
+                            ),
+                          ),
                   ],
                 ),
               )

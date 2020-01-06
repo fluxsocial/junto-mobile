@@ -189,7 +189,6 @@ class UserAuthRegistrationDetails implements UserAuthDetails {
 
   @override
   final String email;
-  @override
   final String password;
   final String name;
   final String username;

@@ -101,7 +101,6 @@ class SignUpUsernameState extends State<SignUpUsername> {
                             _,
                           ) {
                             return Text(
-                              usernameController.value.text.length.toString() +
                                   '${value.text.length}/22',
                               style: const TextStyle(
                                   color: Colors.white70,

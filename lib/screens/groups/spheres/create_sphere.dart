@@ -20,6 +20,10 @@ class CreateSphereState extends State<CreateSphere> {
   File imageFile;
   String imageKey = '';
   int _currentIndex = 0;
+  String sphereName;
+  String sphereHandle;
+  String sphereDescription;
+
   PageController createSphereController;
   TextEditingController sphereNameController;
   TextEditingController sphereHandleController;
@@ -48,6 +52,7 @@ class CreateSphereState extends State<CreateSphere> {
     if (imageFile != null) {
       final String _photoKey = await Provider.of<ExpressionRepo>(context)
           .createPhoto('.png', imageFile);
+      print(_photoKey);
       setState(() {
         imageKey = _photoKey;
       });
@@ -57,9 +62,6 @@ class CreateSphereState extends State<CreateSphere> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String userAddress = prefs.get('user_id');
 
-    final String sphereName = sphereNameController.value.text;
-    final String sphereHandle = sphereHandleController.value.text;
-    final String sphereDescription = sphereDescriptionController.value.text;
     final CentralizedSphere sphere = CentralizedSphere(
       name: sphereName,
       description: sphereDescription,
@@ -70,8 +72,10 @@ class CreateSphereState extends State<CreateSphere> {
       sphereHandle: sphereHandle,
       privacy: _currentPrivacy,
     );
+    print(sphere.photo);
 
     try {
+      print('create sphere');
       await Provider.of<GroupRepo>(context).createSphere(sphere);
     } catch (error) {
       print(error);
@@ -152,6 +156,14 @@ class CreateSphereState extends State<CreateSphere> {
                       )
                     : GestureDetector(
                         onTap: () {
+                          if (_currentIndex == 0) {
+                            setState(() {
+                              sphereName = sphereNameController.value.text;
+                              sphereHandle = sphereHandleController.value.text;
+                              sphereDescription =
+                                  sphereDescriptionController.value.text;
+                            });
+                          }
                           createSphereController.nextPage(
                             curve: Curves.easeIn,
                             duration: const Duration(milliseconds: 300),
