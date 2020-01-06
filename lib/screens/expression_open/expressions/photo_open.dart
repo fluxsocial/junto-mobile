@@ -9,7 +9,6 @@ class PhotoOpen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(photoExpression.expressionData.image);
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
