@@ -24,18 +24,7 @@ class PhotoOpen extends StatelessWidget {
                         imageUrl: photoExpression.expressionData.image,
                         placeholder: (BuildContext context, String _) {
                           return Container(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.bottomLeft,
-                                end: Alignment.topRight,
-                                stops: const <double>[0.2, 0.9],
-                                colors: <Color>[
-                                  Theme.of(context).colorScheme.secondary,
-                                  Theme.of(context).colorScheme.primary
-                                ],
-                              ),
-                            ),
-                          );
+                              color: Theme.of(context).dividerColor);
                         },
                         fit: BoxFit.cover),
                   ),
