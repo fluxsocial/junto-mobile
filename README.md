@@ -18,3 +18,10 @@ keyAlias=key-alias
 storeFile=file-location
 ```
 3) Congratulations! You should now be able to build the project in debug. Feel free to inspect our code and contribute to the project. PRs are welcome!
+
+## Junto Error Codes 
+| Error Code  | Message  | Cause  |  
+|---|---|---|
+|  -1  | Unable to read local user   | The application is unable to read the value of the cached user stored on device.  |   
+| -2   | Please check your password  | The passwords entered by the user does not match.   |  
+  

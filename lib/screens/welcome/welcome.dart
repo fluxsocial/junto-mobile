@@ -1,23 +1,30 @@
-import 'dart:io';
 import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/screens/welcome/sign_in.dart';
-import 'package:junto_beta_mobile/screens/welcome/sign_up_name.dart';
-import 'package:junto_beta_mobile/screens/welcome/sign_up_username.dart';
-import 'package:junto_beta_mobile/screens/welcome/sign_up_themes.dart';
-import 'package:junto_beta_mobile/screens/welcome/sign_up_about.dart';
-import 'package:junto_beta_mobile/screens/welcome/sign_up_photos.dart';
-import 'package:junto_beta_mobile/screens/welcome/sign_up_register.dart';
-import 'package:junto_beta_mobile/screens/welcome/sign_up_verify.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
+import 'package:junto_beta_mobile/screens/welcome/sign_in.dart';
+import 'package:junto_beta_mobile/screens/welcome/sign_up_about.dart';
+import 'package:junto_beta_mobile/screens/welcome/sign_up_name.dart';
+import 'package:junto_beta_mobile/screens/welcome/sign_up_photos.dart';
+import 'package:junto_beta_mobile/screens/welcome/sign_up_register.dart';
+import 'package:junto_beta_mobile/screens/welcome/sign_up_themes.dart';
+import 'package:junto_beta_mobile/screens/welcome/sign_up_username.dart';
+import 'package:junto_beta_mobile/screens/welcome/sign_up_verify.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Welcome extends StatefulWidget {
+  static Route<dynamic> route() {
+    return MaterialPageRoute<dynamic>(
+      builder: (BuildContext context) => Welcome(),
+    );
+  }
+
   @override
   State<StatefulWidget> createState() {
     return WelcomeState();
@@ -100,9 +107,9 @@ class WelcomeState extends State<Welcome> {
       if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
         return;
       } else {
-        final validation =
-            signUpRegisterKey.currentState.validateRegistration();
-        print(validation);
+        signUpRegisterKey.currentState
+            .validateRegistration()
+            .then((String value) => print(value));
       }
     }
 
@@ -122,17 +129,19 @@ class WelcomeState extends State<Welcome> {
       name: name,
       password: password,
       bio: bio,
-      location: [location],
+      location: <String>[location],
       username: username,
-      profileImage: ['assets/images/junto-mobile__placeholder--member.png'],
-      website: [website],
-      gender: [gender],
+      profileImage: <String>[
+        'assets/images/junto-mobile__placeholder--member.png'
+      ],
+      website: <String>[website],
+      gender: <String>[gender],
       verificationCode: verificationCode,
     );
     try {
       final UserData results =
           await Provider.of<AuthRepo>(context).registerUser(details);
-      final Map resultsMap = results.toMap();
+      final Map<String, dynamic> resultsMap = results.toMap();
       final String resultsMapToString = json.encode(resultsMap);
 
       await SharedPreferences.getInstance()
@@ -148,9 +157,10 @@ class WelcomeState extends State<Welcome> {
         (Route<dynamic> route) => false,
       );
     } on JuntoException catch (error) {
-      JuntoDialog.showJuntoDialog(context, error.message, [
+      JuntoDialog.showJuntoDialog(context, error.message, <Widget>[
         FlatButton(
-          child: Text('OK'),
+          onPressed: () => Navigator.pop(context),
+          child: const Text('OK'),
         ),
       ]);
       print('Error: $error');
@@ -299,7 +309,7 @@ class WelcomeState extends State<Welcome> {
                       curve: Curves.easeIn,
                       duration: const Duration(milliseconds: 400),
                     );
-                    Future.delayed(const Duration(milliseconds: 400), () {
+                    Future<void>.delayed(const Duration(milliseconds: 400), () {
                       setState(() {
                         _currentIndex = 1;
                       });

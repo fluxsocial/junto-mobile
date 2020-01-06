@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data' show Uint8List;
 
 import 'package:http/http.dart' as http;
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_http.dart';
 import 'package:meta/meta.dart';
 
@@ -34,14 +36,15 @@ class ExpressionServiceCentralized implements ExpressionService {
     return response;
   }
 
-  Future createPhoto(String fileType, File file) async {
+  @override
+  Future<String> createPhoto(String fileType, File file) async {
     final http.Response _serverResponse =
         await client.postWithoutEncoding('/auth/s3', body: fileType);
     final Map<String, dynamic> parseData =
         JuntoHttp.handleResponse(_serverResponse);
     print(parseData);
 
-    final Map<String, String> newHeaders = {
+    final Map<String, String> newHeaders = <String, String>{
       'x-amz-acl': parseData['headers']['x-amz-acl'],
       'x-amz-meta-user_id': parseData['headers']['x-amz-meta-user_id']
     };
@@ -49,10 +52,10 @@ class ExpressionServiceCentralized implements ExpressionService {
     print(parseData['headers']['x-amz-acl']);
     print(parseData['headers']['x-amz-meta-user_id']);
 
-    final fileAsBytes = file.readAsBytesSync();
+    final Uint8List fileAsBytes = file.readAsBytesSync();
 
     final http.Response _serverResponseTwo = await http.put(
-      parseData['signed_url'], 
+      parseData['signed_url'],
       headers: newHeaders,
       body: fileAsBytes,
     );
@@ -60,10 +63,12 @@ class ExpressionServiceCentralized implements ExpressionService {
     if (_serverResponseTwo.statusCode == 200) {
       return parseData['key'];
     } else {
-      print('something went wrong');
+      print('Create Photo');
       print(_serverResponseTwo.body);
-
-      return null;
+      throw JuntoException(
+        _serverResponse.reasonPhrase,
+        _serverResponse.statusCode,
+      );
     }
   }
 

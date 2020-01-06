@@ -65,7 +65,7 @@ class _HomeState extends State<Home> {
                 onPressed: _onPickPressed,
                 child: const Text('Pick'),
               ),
-              if (imageFile != null) ...[
+              if (imageFile != null) ...<Widget>[
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),

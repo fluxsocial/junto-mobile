@@ -65,11 +65,11 @@ class SignUpAboutState extends State<SignUpAbout> {
                             textInputAction: TextInputAction.newline,
                             maxLines: null,
                             cursorColor: Colors.white70,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
                               hintText: 'Short or long bio',
-                              hintStyle: const TextStyle(
+                              hintStyle: TextStyle(
                                 color: Colors.white70,
                                 fontSize: 20,
                                 fontWeight: FontWeight.w500,
@@ -115,11 +115,11 @@ class SignUpAboutState extends State<SignUpAbout> {
                           child: TextField(
                             controller: locationController,
                             cursorColor: Colors.white70,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
                               hintText: 'Location',
-                              hintStyle: const TextStyle(
+                              hintStyle: TextStyle(
                                 color: Colors.white70,
                                 fontSize: 20,
                                 fontWeight: FontWeight.w500,
@@ -144,11 +144,11 @@ class SignUpAboutState extends State<SignUpAbout> {
                           child: TextField(
                             controller: genderController,
                             cursorColor: Colors.white70,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
                               hintText: 'Gender',
-                              hintStyle: const TextStyle(
+                              hintStyle: TextStyle(
                                 color: Colors.white70,
                                 fontSize: 20,
                                 fontWeight: FontWeight.w500,
@@ -173,11 +173,11 @@ class SignUpAboutState extends State<SignUpAbout> {
                           child: TextField(
                             controller: websiteController,
                             cursorColor: Colors.white70,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
                               hintText: 'Website',
-                              hintStyle: const TextStyle(
+                              hintStyle: TextStyle(
                                 color: Colors.white70,
                                 fontSize: 20,
                                 fontWeight: FontWeight.w500,

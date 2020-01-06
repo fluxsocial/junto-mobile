@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/relationship_request.dart';
-import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
-import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/relationship_request.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
+import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:provider/provider.dart';
 
 class JuntoRelationships extends StatelessWidget {
   JuntoRelationships(this.userAddress, this.userFollowPerspectiveAddress);
+
   final String userAddress;
   final String userFollowPerspectiveAddress;
 
@@ -127,6 +128,7 @@ class JuntoRelationships extends StatelessWidget {
               ),
             );
           }
+          //TODO(Nash+Yang): Revisit member display.
           return ListView.builder(
             itemCount: snapshot.data.length,
             itemBuilder: (BuildContext context, int index) {

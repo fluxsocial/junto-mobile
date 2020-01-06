@@ -1,18 +1,15 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/models/models.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
-import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/backend/repositories.dart';
-import 'package:junto_beta_mobile/backend/services/expression_provider.dart';
 
 /// Create using photo form
 class CreatePhoto extends StatefulWidget {
-  CreatePhoto({Key key, Function this.setBottomNav}) : super(key: key);
+  const CreatePhoto({Key key, this.setBottomNav}) : super(key: key);
 
-  final setBottomNav;
+  final Function setBottomNav;
 
   @override
   State<StatefulWidget> createState() {
@@ -77,7 +74,10 @@ class CreatePhotoState extends State<CreatePhoto> {
   /// Creates a [CentralizedPhotoFormExpression] from the given data entered
   /// by the user.
   Map<String, dynamic> createExpression() {
-    return {'image': imageFile, 'caption': _captionController.value.text};
+    return <String, dynamic>{
+      'image': imageFile,
+      'caption': _captionController.value.text
+    };
   }
 
   @override

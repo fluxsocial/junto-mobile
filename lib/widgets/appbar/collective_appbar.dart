@@ -5,7 +5,6 @@ import 'package:junto_beta_mobile/screens/collective/perspectives'
     '/create_perspective/create_perspective.dart' show SelectedUsers;
 import 'package:junto_beta_mobile/widgets/appbar/appbar_search.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 // Junto app bar used in collective screen.
 class CollectiveAppBar extends SliverPersistentHeaderDelegate {

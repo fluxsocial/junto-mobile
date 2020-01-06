@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:junto_beta_mobile/models/models.dart';
 
 abstract class SearchProvider {
@@ -9,7 +10,8 @@ abstract class SearchProvider {
 /// Abstract class which defines the functionality of the Authentication Provider
 abstract class AuthenticationService {
   // verifies the email of a user
-  Future verifyEmail(String email);
+  Future<String> verifyEmail(String email);
+
   /// Registers a user on the server and creates their profile.
   Future<UserData> registerUser(UserAuthRegistrationDetails details);
 
@@ -44,8 +46,8 @@ abstract class ExpressionService {
     CentralizedExpression expression,
   );
 
-  Future createPhoto(String fileType, File file);
-  
+  Future<String> createPhoto(String fileType, File file);
+
   /// Returns a [CentralizedExpressionResponse] for the given address.
   Future<CentralizedExpressionResponse> getExpression(
     String expressionAddress,

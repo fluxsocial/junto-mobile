@@ -4,7 +4,6 @@ import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:provider/provider.dart';
 
 class AuthRepo {
   AuthRepo(this._authService);
@@ -22,9 +21,10 @@ class AuthRepo {
     return _isLoggedIn;
   }
 
-  Future verifyEmail(String email) async {
+  Future<String> verifyEmail(String email) async {
     return _authService.verifyEmail(email);
   }
+
   /// Registers a user on the server and creates their profile.
   Future<UserData> registerUser(UserAuthRegistrationDetails details) async {
     final UserData _data = await _authService.registerUser(details);

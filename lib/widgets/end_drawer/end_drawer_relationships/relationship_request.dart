@@ -1,14 +1,13 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-
+import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
+import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/screens/member/member.dart';
+import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
-import 'package:junto_beta_mobile/utils/junto_dialog.dart';
-import 'package:junto_beta_mobile/screens/member/member.dart';
+import 'package:provider/provider.dart';
 
 class RelationshipRequest extends StatelessWidget {
   const RelationshipRequest(this.user);
@@ -27,7 +26,7 @@ class RelationshipRequest extends StatelessWidget {
       );
       Navigator.pop(context);
     } on JuntoException catch (error) {
-      JuntoDialog.showJuntoDialog(context, '${error.message}', [
+      JuntoDialog.showJuntoDialog(context, '${error.message}', <Widget>[
         FlatButton(
           onPressed: () => Navigator.pop(context),
           child: const Text('Ok'),
@@ -51,7 +50,7 @@ class RelationshipRequest extends StatelessWidget {
     } on JuntoException catch (error) {
       JuntoLoader.hide();
 
-      JuntoDialog.showJuntoDialog(context, '${error.message}', [
+      JuntoDialog.showJuntoDialog(context, '${error.message}', <Widget>[
         FlatButton(
           onPressed: () => Navigator.pop(context),
           child: const Text('Ok'),

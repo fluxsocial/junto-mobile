@@ -14,9 +14,11 @@ class MockAuth implements AuthenticationService {
     await Future<void>.delayed(const Duration(milliseconds: 500));
   }
 
-  Future verifyEmail(String email) async {
-    return ;
+  @override
+  Future<String> verifyEmail(String email) async {
+    return 'You registration is nearly complete. Please check your email for a verification code sent by juntofoundation@gmail.com';
   }
+
   @override
   Future<UserData> registerUser(UserAuthRegistrationDetails details) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
