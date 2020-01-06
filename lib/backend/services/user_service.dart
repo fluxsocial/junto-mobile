@@ -50,8 +50,11 @@ class UserServiceCentralized implements UserService {
       '/perspectives/$perspectiveAddress/users',
       body: users,
     );
+
     final Map<String, dynamic> _body =
         JuntoHttp.handleResponse(_serverResponse);
+    print(_body);
+
     return UserProfile.fromMap(_body);
   }
 

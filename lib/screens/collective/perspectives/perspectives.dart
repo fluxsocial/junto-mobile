@@ -126,7 +126,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {
+                      onTap: () async {
                         showModalBottomSheet(
                           isScrollControlled: true,
                           context: context,

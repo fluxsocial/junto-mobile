@@ -39,6 +39,7 @@ class _JuntoMemberState extends State<JuntoMember> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.profile.address);
     return Scaffold(
       key: scaffoldKey,
       appBar: PreferredSize(
