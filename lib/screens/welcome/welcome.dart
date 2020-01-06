@@ -92,6 +92,8 @@ class WelcomeState extends State<Welcome> {
       confirmPassword =
           signUpRegisterKey.currentState.returnDetails()['confirmPassword'];
       validateRegistration().then((String value) => print(value));
+    } else if (_currentIndex == 1) {
+      print(name);
     }
 
     // transition to next page of sign up flow

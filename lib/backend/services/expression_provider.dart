@@ -38,32 +38,34 @@ class ExpressionServiceCentralized implements ExpressionService {
 
   @override
   Future<String> createPhoto(String fileType, File file) async {
+    // denote file type and get url, headers, and key of s3 bucket
     final http.Response _serverResponse =
         await client.postWithoutEncoding('/auth/s3', body: fileType);
+
+    // parse response
     final Map<String, dynamic> parseData =
         JuntoHttp.handleResponse(_serverResponse);
-    print(parseData);
 
+    // seralize into new headers
     final Map<String, String> newHeaders = <String, String>{
       'x-amz-acl': parseData['headers']['x-amz-acl'],
       'x-amz-meta-user_id': parseData['headers']['x-amz-meta-user_id']
     };
 
-    print(parseData['headers']['x-amz-acl']);
-    print(parseData['headers']['x-amz-meta-user_id']);
-
+    // turn file into bytes
     final Uint8List fileAsBytes = file.readAsBytesSync();
 
+    // send put request to s3 bucket with url, new headers, and file as bytes
     final http.Response _serverResponseTwo = await http.put(
       parseData['signed_url'],
       headers: newHeaders,
       body: fileAsBytes,
     );
 
+    // if successful, return the key for next steps
     if (_serverResponseTwo.statusCode == 200) {
       return parseData['key'];
     } else {
-      print('Create Photo');
       print(_serverResponseTwo.body);
       throw JuntoException(
         _serverResponse.reasonPhrase,

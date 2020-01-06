@@ -35,10 +35,10 @@ class SignUpAboutState extends State<SignUpAbout> {
   }
 
   AboutPageModel returnDetails() => AboutPageModel(
-        bio: bioController.value.text,
-        location: locationController.value.text,
-        gender: genderController.value.text,
-        website: websiteController.value.text,
+        bio: bioController.value.text == '' ? ' ' : bioController.value.text,
+        location: locationController.value.text == '' ? ' ' : locationController.value.text,
+        gender: genderController.value.text == '' ? ' ' : genderController.value.text,
+        website: websiteController.value.text == '' ? ' ' : websiteController.value.text,
       );
 
   @override

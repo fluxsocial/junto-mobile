@@ -218,6 +218,7 @@ class SignUpWelcomeState extends State<SignUpWelcome> {
                       color: Colors.white,
                       fontWeight: FontWeight.w700,
                       fontSize: 14,
+                      
                     ),
                   ),
                 ),
