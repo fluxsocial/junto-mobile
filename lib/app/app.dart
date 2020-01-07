@@ -7,6 +7,7 @@ import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:provider/provider.dart';
+import 'package:provider/single_child_widget.dart';
 
 class JuntoApp extends StatefulWidget {
   const JuntoApp({
@@ -30,9 +31,9 @@ class JuntoAppState extends State<JuntoApp> {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: <SingleChildCloneableWidget>[
+      providers: <SingleChildWidget>[
         ChangeNotifierProvider<JuntoThemesProvider>(
-          builder: (_) => JuntoThemesProvider(JuntoThemes().juntoLightIndigo),
+          create: (_) => JuntoThemesProvider(JuntoThemes().juntoLightIndigo),
         ),
         Provider<SearchProvider>.value(value: backend.searchProvider),
         Provider<AuthRepo>.value(value: backend.authRepo),
