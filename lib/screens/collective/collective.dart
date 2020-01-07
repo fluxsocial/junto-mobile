@@ -79,7 +79,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
   }
 
   void refreshData() {
-    _expressionProvider = Provider.of<ExpressionRepo>(context);
+    _expressionProvider = Provider.of<ExpressionRepo>(context,listen: false);
     _expressionCompleter =
         getCollectiveExpressions(contextType: 'Collective', paginationPos: 0);
   }

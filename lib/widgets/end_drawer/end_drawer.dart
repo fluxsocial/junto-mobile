@@ -7,8 +7,8 @@ import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/groups/packs/pack_open/pack_open.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_edit_den.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_themes.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/end_drawer_relationships.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_themes.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -192,7 +192,8 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                     JuntoDrawerItem(
                       title: 'Logout',
                       onTap: () async {
-                        await Provider.of<AuthRepo>(context).logoutUser();
+                        await Provider.of<AuthRepo>(context, listen: false)
+                            .logoutUser();
                         Navigator.of(context).pushReplacement(
                           PageRouteBuilder<dynamic>(
                             pageBuilder: (

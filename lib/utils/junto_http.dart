@@ -117,7 +117,7 @@ class JuntoHttp {
         if (responseBody.runtimeType == Map && responseBody['error'] != null) {
           throw JuntoException("${responseBody['error']}", response.statusCode);
         } else {
-          return convert.json.decode(response.body);
+          return convert.json.decode(convert.utf8.decode(response.bodyBytes));
         }
       }
       throw JuntoException('${response?.body}', response.statusCode);
@@ -135,7 +135,7 @@ class JuntoHttp {
     }
     if (response.statusCode >= 500) {
       throw JuntoException(
-          "Ooh no, our server isn't feeling so good", response.statusCode);
+          response.reasonPhrase, response.statusCode);
     }
     throw JuntoException(
         "${convert.json.decode(response.body)['error']}", response.statusCode);

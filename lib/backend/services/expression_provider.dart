@@ -126,9 +126,9 @@ class ExpressionServiceCentralized implements ExpressionService {
     final http.Response response = await client.get(
         '/expressions/$expressionAddress/comments',
         queryParams: <String, String>{
-          'pagination_position': 0.toString(),
+          'pagination_position': '0',
         });
-    final Map<String, dynamic> _listData = json.decode(response.body);
+    final Map<String, dynamic> _listData = JuntoHttp.handleResponse(response);
     return QueryCommentResults(
       lastTimestamp: _listData['last_timestamp'],
       results: <Comment>[

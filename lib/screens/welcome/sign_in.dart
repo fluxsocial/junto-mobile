@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
+import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +13,7 @@ class SignIn extends StatefulWidget {
   const SignIn(this.signInController);
 
   final PageController signInController;
+
   @override
   _SignInState createState() => _SignInState();
 }
@@ -45,7 +46,8 @@ class _SignInState extends State<SignIn> {
         UserAuthLoginDetails(email: email, password: password);
     JuntoLoader.showLoader(context);
     try {
-      await Provider.of<AuthRepo>(context).loginUser(loginDetails);
+      await Provider.of<AuthRepo>(context, listen: false)
+          .loginUser(loginDetails);
       JuntoLoader.hide();
       Navigator.of(context).pushReplacement(
         PageRouteBuilder<dynamic>(

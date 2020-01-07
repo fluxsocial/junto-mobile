@@ -51,7 +51,7 @@ class CreateSphereState extends State<CreateSphere> {
   Future<void> _createSphere() async {
     // check if photo
     if (imageFile != null) {
-      final String _photoKey = await Provider.of<ExpressionRepo>(context)
+      final String _photoKey = await Provider.of<ExpressionRepo>(context, listen: false)
           .createPhoto('.png', imageFile);
       print(_photoKey);
       setState(() {

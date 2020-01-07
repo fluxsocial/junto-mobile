@@ -209,7 +209,8 @@ class ExpressionOpenState extends State<ExpressionOpen> {
 
   Future<void> _createComment() async {
     try {
-      await Provider.of<ExpressionRepo>(context).postCommentExpression(
+      await Provider.of<ExpressionRepo>(context, listen: false)
+          .postCommentExpression(
         widget.expression.address,
         'LongForm',
         CentralizedLongFormExpression(
@@ -352,7 +353,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
         ],
       ),
     );
-  } 
+  }
 }
 
 class _BottomCommentBar extends StatefulWidget {

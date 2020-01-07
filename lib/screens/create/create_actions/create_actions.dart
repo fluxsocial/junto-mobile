@@ -72,7 +72,7 @@ class CreateActionsState extends State<CreateActions> {
   Future<void> _createExpression() async {
     try {
       if (widget.expressionType == 'PhotoForm') {
-        final String _photoKey = await Provider.of<ExpressionRepo>(context) 
+        final String _photoKey = await Provider.of<ExpressionRepo>(context, listen: false) 
             .createPhoto('.png', widget.expression['image']);
         _expression = CentralizedExpression(
             type: widget.expressionType,
@@ -84,7 +84,7 @@ class CreateActionsState extends State<CreateActions> {
         String eventPhoto = '';
         if (widget.expression['photo'] != '') {
           final String _eventPhotoKey =
-              await Provider.of<ExpressionRepo>(context)
+              await Provider.of<ExpressionRepo>(context, listen: false)
                   .createPhoto('.png', widget.expression['photo']);
           eventPhoto = _eventPhotoKey;
           print(eventPhoto);
@@ -108,7 +108,7 @@ class CreateActionsState extends State<CreateActions> {
             context: widget.expressionContext);
       }
 
-      await Provider.of<ExpressionRepo>(context).createExpression(
+      await Provider.of<ExpressionRepo>(context, listen: false).createExpression(
         _expression,
         _expression.context,
         _address,
