@@ -148,7 +148,7 @@ class CreatePhotoState extends State<CreatePhoto> {
                           ),
                           child: TextField(
                               controller: _captionController,
-                              textInputAction: TextInputAction.newline,
+                              textInputAction: TextInputAction.done,
                               decoration: const InputDecoration(
                                 hintText: 'write a caption..',
                                 border: InputBorder.none,
