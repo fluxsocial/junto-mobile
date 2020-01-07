@@ -55,8 +55,11 @@ class BottomNav extends StatelessWidget {
           child: Container(
             width: 60,
             height: 50,
-            child: Icon(CustomIcons.create,
-                size: 17, color: Theme.of(context).primaryColor),
+            child: Transform.translate(
+              offset: const Offset(5.0, 0.0),
+              child: Icon(CustomIcons.den,
+                  size: 20, color: Theme.of(context).primaryColor),
+            ),
           ),
         ),
       );

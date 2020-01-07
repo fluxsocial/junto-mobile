@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 import 'package:junto_beta_mobile/models/models.dart';
@@ -75,8 +76,10 @@ class CreateSphereState extends State<CreateSphere> {
     print(sphere.photo);
 
     try {
-      print('create sphere');
+      JuntoLoader.showLoader(context);
       await Provider.of<GroupRepo>(context).createSphere(sphere);
+      JuntoLoader.hide();
+      Navigator.pop(context);
     } catch (error) {
       print(error);
     }

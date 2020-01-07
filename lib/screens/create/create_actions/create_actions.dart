@@ -77,7 +77,7 @@ class CreateActionsState extends State<CreateActions> {
         _expression = CentralizedExpression(
             type: widget.expressionType,
             expressionData:
-                CentralizedPhotoFormExpression(image: _photoKey, caption: 'yo')
+                CentralizedPhotoFormExpression(image: _photoKey, caption: widget.expression['caption'])
                     .toMap(),
             context: widget.expressionContext);
       } else if (widget.expressionType == 'EventForm') {

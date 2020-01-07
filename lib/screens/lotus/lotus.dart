@@ -222,13 +222,10 @@ class JuntoLotus extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
-                                Transform.translate(
-                                  offset: const Offset(-15, 0),
-                                  child: const Icon(
-                                    CustomIcons.collective,
-                                    size: 15,
-                                    color: Colors.white,
-                                  ),
+                                const Icon(
+                                  CustomIcons.groups,
+                                  size: 17,
+                                  color: Colors.white,
                                 ),
                                 const SizedBox(height: 10),
                                 const Text(
@@ -287,8 +284,8 @@ class JuntoLotus extends StatelessWidget {
                               Container(
                                 width: 27,
                                 child: const Icon(
-                                  CustomIcons.create,
-                                  size: 20,
+                                  CustomIcons.den,
+                                  size: 24,
                                   color: Colors.white,
                                 ),
                               ),
