@@ -70,7 +70,7 @@ class _CreatePerspectiveState extends State<CreatePerspective>
   Future<void> createPerspective() async {
     final String name = controller.value.text;
     final String about = controller.value.text;
-    JuntoOverlay.showLoader(context);
+    JuntoLoader.showLoader(context);
     try {
       await Provider.of<UserRepo>(context).createPerspective(
         Perspective(
@@ -79,10 +79,10 @@ class _CreatePerspectiveState extends State<CreatePerspective>
           about: about,
         ),
       );
-      JuntoOverlay.hide();
+      JuntoLoader.hide();
       Navigator.pop(context);
     } on JuntoException catch (error) {
-      JuntoOverlay.hide();
+      JuntoLoader.hide();
       JuntoDialog.showJuntoDialog(
         context,
         error.message,

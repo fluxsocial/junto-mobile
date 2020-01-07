@@ -56,7 +56,7 @@ class EditPerspectiveMembers extends StatelessWidget {
         ),
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Column(
           children: <Widget>[
             Expanded(
@@ -72,7 +72,7 @@ class EditPerspectiveMembers extends StatelessWidget {
     );
   }
 
-  _buildPerspectiveMember(context) {
+  Widget _buildPerspectiveMember(BuildContext context) {
     return Container(
       color: Theme.of(context).colorScheme.background,
       child: Row(

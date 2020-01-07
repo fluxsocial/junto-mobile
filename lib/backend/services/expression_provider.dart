@@ -1,9 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data' show Uint8List;
 
 import 'package:http/http.dart' as http;
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_http.dart';
 import 'package:meta/meta.dart';
 
@@ -25,11 +28,56 @@ class ExpressionServiceCentralized implements ExpressionService {
     print(_postBody);
     final http.Response _serverResponse =
         await client.postWithoutEncoding('/expressions', body: _postBody);
+    print('hellos');
     final Map<String, dynamic> parseData =
         JuntoHttp.handleResponse(_serverResponse);
     final CentralizedExpressionResponse response =
         CentralizedExpressionResponse.fromMap(parseData);
     return response;
+  }
+
+  @override
+  Future<String> createPhoto(String fileType, File file) async {
+    // denote file type and get url, headers, and key of s3 bucket
+    final http.Response _serverResponse =
+        await client.postWithoutEncoding('/auth/s3', body: fileType);
+    print(DateTime.now());
+
+    print(_serverResponse.body);
+
+    // parse response
+    final Map<String, dynamic> parseData =
+        JuntoHttp.handleResponse(_serverResponse);
+
+    // seralize into new headers
+    final Map<String, String> newHeaders = <String, String>{
+      'x-amz-acl': parseData['headers']['x-amz-acl'],
+      'x-amz-meta-user_id': parseData['headers']['x-amz-meta-user_id']
+    };
+
+    // turn file into bytes
+    final Uint8List fileAsBytes = file.readAsBytesSync();
+
+    print(DateTime.now());
+
+    // send put request to s3 bucket with url, new headers, and file as bytes
+    final http.Response _serverResponseTwo = await http.put(
+      parseData['signed_url'],
+      headers: newHeaders,
+      body: fileAsBytes,
+    );
+
+    print(_serverResponseTwo.statusCode);
+    // if successful, return the key for next steps
+    if (_serverResponseTwo.statusCode == 200) {
+      return parseData['key'];
+    } else {
+      print(_serverResponseTwo.body);
+      throw JuntoException(
+        _serverResponse.reasonPhrase,
+        _serverResponse.statusCode,
+      );
+    }
   }
 
   @override
@@ -73,14 +121,20 @@ class ExpressionServiceCentralized implements ExpressionService {
   }
 
   @override
-  Future<List<Comment>> getExpressionsComments(String expressionAddress) async {
-    final http.Response response =
-        await client.get('/expressions/$expressionAddress/comments');
-    final List<dynamic> _listData = json.decode(response.body);
-    final List<Comment> _results = _listData
-        .map((dynamic data) => Comment.fromMap(data))
-        .toList(growable: false);
-    return _results;
+  Future<QueryCommentResults> getExpressionsComments(
+      String expressionAddress) async {
+    final http.Response response = await client.get(
+        '/expressions/$expressionAddress/comments',
+        queryParams: <String, String>{
+          'pagination_position': 0.toString(),
+        });
+    final Map<String, dynamic> _listData = json.decode(response.body);
+    return QueryCommentResults(
+      lastTimestamp: _listData['last_timestamp'],
+      results: <Comment>[
+        for (dynamic data in _listData['results']) Comment.fromMap(data)
+      ],
+    );
   }
 
   @override
@@ -104,26 +158,26 @@ class ExpressionServiceCentralized implements ExpressionService {
   }
 
   @override
-  Future<List<CentralizedExpressionResponse>> getCollectiveExpressions(
-      params) async {
-    // final ExpressionQueryParams query = ExpressionQueryParams(channels: [], dos: params['dos'], context: params['contextId'], contextType: params['contextType']);
-    final Map<String, String> query = <String, String>{
-      'context_type': params['contextType'],
-      'context': params['contextId'],
-      'channel[0]': '1',
-      'dos': params['dos']
-    };
+  Future<QueryExpressionResults> getCollectiveExpressions(
+      Map<String, String> params) async {
     final http.Response response = await client.get(
       '/expressions',
-      queryParams: query,
+      queryParams: params,
     );
-    print('got collective expressions !');
-    final List<dynamic> results = JuntoHttp.handleResponse(response);
-    return results
-        .map(
-          (dynamic data) =>
-              CentralizedExpressionResponse.withCommentsAndResonations(data),
-        )
-        .toList(growable: false);
+    final dynamic results = JuntoHttp.handleResponse(response);
+    if (results is Map<dynamic, dynamic>) {
+      return QueryExpressionResults(
+        results: <CentralizedExpressionResponse>[
+          for (dynamic data in results['results'])
+            CentralizedExpressionResponse.withCommentsAndResonations(data)
+        ],
+        lastTimestamp: results['last_timestamp'],
+      );
+    } else {
+      return QueryExpressionResults(
+        results: <CentralizedExpressionResponse>[],
+        lastTimestamp: null,
+      );
+    }
   }
 }

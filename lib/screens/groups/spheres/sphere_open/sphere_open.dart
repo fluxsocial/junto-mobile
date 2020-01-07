@@ -6,7 +6,6 @@ import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/spheres/sphere_open/sphere_open_appbar.dart';
-import 'package:junto_beta_mobile/screens/groups/spheres/sphere_open/sphere_open_facilitators.dart';
 import 'package:junto_beta_mobile/screens/groups/spheres/sphere_open/sphere_open_members.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
@@ -87,12 +86,12 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
 
   Future<void> _getMembers() async {
     try {
-      JuntoOverlay.showLoader(context);
+      JuntoLoader.showLoader(context);
       final List<Users> _members =
           await Provider.of<GroupRepo>(context).getGroupMembers(
         widget.group.address,
       );
-      JuntoOverlay.hide();
+      JuntoLoader.hide();
       Navigator.push(
         context,
         CupertinoPageRoute<dynamic>(
@@ -105,7 +104,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
         ),
       );
     } on JuntoException catch (error) {
-      JuntoOverlay.hide();
+      JuntoLoader.hide();
       JuntoDialog.showJuntoDialog(
         context,
         error.message,
@@ -120,19 +119,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   }
 
   final List<String> _tabs = <String>['About', 'Discussion', 'Events'];
-
-  List<Principle> principles = <Principle>[
-    const Principle(
-      title: 'Be a nice person because nice people get chocolate',
-      body: 'Engage with empathy and respect for one another. We are more than '
-          'viewpoints that may oppose each other at times :)',
-    ),
-    const Principle(
-        title: 'All walks of life',
-        body: 'This is a communal space for all walks of life'),
-  ];
-
-  bool _principlesFullView = true;
 
   @override
   Widget build(BuildContext context) {
@@ -217,28 +203,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                               child: Text(widget.group.groupData.name,
                                   style: Theme.of(context).textTheme.display1),
                             ),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 7.5),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Theme.of(context).primaryColor,
-                                    width: 1.5),
-                                borderRadius: BorderRadius.circular(25),
-                              ),
-                              child: Row(
-                                children: <Widget>[
-                                  const SizedBox(width: 14),
-                                  Icon(CustomIcons.spheres,
-                                      size: 14,
-                                      color: Theme.of(context).primaryColor),
-                                  const SizedBox(width: 2),
-                                  Icon(Icons.keyboard_arrow_down,
-                                      size: 12,
-                                      color: Theme.of(context).primaryColor)
-                                ],
-                              ),
-                            )
                           ],
                         ),
                       ),
@@ -310,22 +274,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
             ],
           ),
         ),
-        if (principles.isNotEmpty)
-          Container(
-            padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text('Principles', style: Theme.of(context).textTheme.title),
-                _PrincipleListing(
-                  data: principles,
-                  showFirst: _principlesFullView,
-                ),
-                _principlesSeeMore()
-              ],
-            ),
-          ),
-        if (!principles.isNotEmpty) const SizedBox(),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child: Column(
@@ -334,55 +282,12 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
               Text('Bio / Purpose', style: Theme.of(context).textTheme.title),
               const SizedBox(height: 10),
               Text(widget.group.groupData.description,
-                  style: Theme.of(context).textTheme.body2)
+                  style: Theme.of(context).textTheme.caption)
             ],
           ),
         ),
       ],
     );
-  }
-
-  Widget _principlesSeeMore() {
-    if (principles.length > 1) {
-      return GestureDetector(
-        onTap: () {
-          setState(() {
-            if (_principlesFullView == false) {
-              _principlesFullView = true;
-            } else {
-              _principlesFullView = false;
-            }
-          });
-        },
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          alignment: Alignment.centerLeft,
-          decoration: BoxDecoration(
-            border: Border(
-              bottom:
-                  BorderSide(color: Theme.of(context).dividerColor, width: .75),
-            ),
-          ),
-          child: Row(
-            children: <Widget>[
-              _principlesFullView
-                  ? const Text('see more')
-                  : const Text('collapse'),
-              const SizedBox(width: 5),
-              Icon(
-                _principlesFullView
-                    ? Icons.keyboard_arrow_down
-                    : Icons.keyboard_arrow_up,
-                size: 17,
-                color: Theme.of(context).primaryColor,
-              )
-            ],
-          ),
-        ),
-      );
-    } else {
-      return const SizedBox();
-    }
   }
 
   Widget _buildExpressionView() {
@@ -569,100 +474,25 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   }
 }
 
-class _PrincipleListing extends StatefulWidget {
-  const _PrincipleListing({
-    Key key,
-    @required this.showFirst,
-    @required this.data,
-  }) : super(key: key);
-
-  final bool showFirst;
-  final List<Principle> data;
-
-  @override
-  __PrincipleListingState createState() => __PrincipleListingState();
-}
-
-class __PrincipleListingState extends State<_PrincipleListing> {
-  @override
-  Widget build(BuildContext context) {
-    if (widget.showFirst) {
-      return _PrincipleItem(item: widget.data.first, index: 0);
-    } else {
-      return ListView.builder(
-        shrinkWrap: true,
-        physics: const ClampingScrollPhysics(),
-        itemCount: widget.data.length,
-        itemBuilder: (BuildContext context, int index) {
-          return _PrincipleItem(
-            index: index,
-            item: widget.data[index],
-          );
-        },
-      );
-    }
-  }
-}
-
-class _PrincipleItem extends StatelessWidget {
-  const _PrincipleItem({
-    Key key,
-    @required this.item,
-    @required this.index,
-  }) : super(key: key);
-  final Principle item;
-  final int index;
-
-  String get title => item.title;
-
-  String get body => item.body;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: Theme.of(context).dividerColor, width: .75),
-        ),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            (index + 1).toString(),
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              color: Theme.of(context).primaryColorLight,
-            ),
-          ),
-          const SizedBox(width: 15),
-          Container(
-            height: 17,
-            decoration: BoxDecoration(
-              border: Border(
-                right:
-                    BorderSide(color: Theme.of(context).dividerColor, width: 2),
-              ),
-            ),
-          ),
-          const SizedBox(width: 15),
-          Flexible(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  title,
-                  style: Theme.of(context).textTheme.subtitle,
-                  textAlign: TextAlign.left,
-                ),
-                const SizedBox(height: 10),
-                Text(body)
-              ],
-            ),
-          )
-        ],
-      ),
-    );
-  }
-}
+// Container(
+//   padding: const EdgeInsets.symmetric(
+//       horizontal: 10, vertical: 7.5),
+//   decoration: BoxDecoration(
+//     border: Border.all(
+//         color: Theme.of(context).primaryColor,
+//         width: 1.5),
+//     borderRadius: BorderRadius.circular(25),
+//   ),
+//   child: Row(
+//     children: <Widget>[
+//       const SizedBox(width: 14),
+//       Icon(CustomIcons.spheres,
+//           size: 14,
+//           color: Theme.of(context).primaryColor),
+//       const SizedBox(width: 2),
+//       Icon(Icons.keyboard_arrow_down,
+//           size: 12,
+//           color: Theme.of(context).primaryColor)
+//     ],
+//   ),
+// )

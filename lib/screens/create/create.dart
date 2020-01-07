@@ -36,6 +36,8 @@ class JuntoCreateState extends State<JuntoCreate> {
   bool _photo = false;
   bool _events = false;
 
+  bool _bottomNavVisible = true;
+
   Icon _currentIcon;
 
   ValueNotifier<bool> isEditing;
@@ -81,9 +83,7 @@ class JuntoCreateState extends State<JuntoCreate> {
       );
     } else if (_photo) {
       return CreatePhoto(
-        key: _photoFormKey,
-        toggleBottomNavVisibility: () {},
-      );
+          key: _photoFormKey, setBottomNav: _setBottomNavVisibility);
     } else if (_events) {
       return CreateEvent(
         key: _eventKey,
@@ -149,13 +149,12 @@ class JuntoCreateState extends State<JuntoCreate> {
   }
 
   void _onNextClick() {
-    print(widget.expressionContext);
-    Navigator.push(
+    Navigator.push( 
       context,
       MaterialPageRoute<dynamic>(
         builder: (BuildContext context) {
           return CreateActions(
-            expressionType: _expressionType,
+            expressionType: _expressionType, 
             address: widget.address,
             channels: widget.channels,
             expressionContext: widget.expressionContext,
@@ -180,6 +179,12 @@ class JuntoCreateState extends State<JuntoCreate> {
     if (_expressionType == 'EventForm') {
       return _eventKey.currentState.createExpression();
     }
+  }
+
+  void _setBottomNavVisibility(bool visibility) {
+    setState(() {
+      _bottomNavVisible = visibility;
+    });
   }
 
   @override
@@ -221,13 +226,15 @@ class JuntoCreateState extends State<JuntoCreate> {
         ),
       ),
       endDrawer: const JuntoDrawer(screen: 'Create', icon: CustomIcons.create),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 25),
-        child: BottomNav(
-          screen: 'create',
-          onTap: _openExpressionCenter,
-        ),
-      ),
+      floatingActionButton: _bottomNavVisible
+          ? Padding(
+              padding: const EdgeInsets.only(bottom: 25),
+              child: BottomNav(
+                screen: 'create',
+                onTap: _openExpressionCenter,
+              ),
+            )
+          : const SizedBox(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: Column(
         children: <Widget>[

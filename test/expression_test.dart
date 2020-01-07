@@ -7,13 +7,11 @@ import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 //server and functions becomes stable, these should be mocked.
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = null;
-  final ExpressionService _collectiveProvider =
-      MockExpressionService();
+  final ExpressionService _collectiveProvider = MockExpressionService();
 
   setUpAll(() {
     SharedPreferences.setMockInitialValues(<String, String>{
@@ -75,7 +73,7 @@ void main() {
 
     /// Ensure the value sent back is not null
     test('Get Expression Comments', () async {
-      final List<Comment> _response = await _collectiveProvider
+      final QueryCommentResults _response = await _collectiveProvider
           .getExpressionsComments('9f878873-3ad8-45e2-8f1b-5c3673f73e27');
       expect(_response, isNotNull);
     });

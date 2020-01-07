@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:junto_beta_mobile/models/models.dart';
 
 abstract class SearchProvider {
@@ -7,6 +9,9 @@ abstract class SearchProvider {
 
 /// Abstract class which defines the functionality of the Authentication Provider
 abstract class AuthenticationService {
+  // verifies the email of a user
+  Future<String> verifyEmail(String email);
+
   /// Registers a user on the server and creates their profile.
   Future<UserData> registerUser(UserAuthRegistrationDetails details);
 
@@ -41,6 +46,8 @@ abstract class ExpressionService {
     CentralizedExpression expression,
   );
 
+  Future<String> createPhoto(String fileType, File file);
+
   /// Returns a [CentralizedExpressionResponse] for the given address.
   Future<CentralizedExpressionResponse> getExpression(
     String expressionAddress,
@@ -67,15 +74,17 @@ abstract class ExpressionService {
   );
 
   /// Returns a list of [Comment]s for the given [expressionAddress].
-  Future<List<Comment>> getExpressionsComments(
+  Future<QueryCommentResults> getExpressionsComments(
     String expressionAddress,
   );
 
   Future<List<CentralizedExpressionResponse>> queryExpression(
       ExpressionQueryParams params);
 
-  /// Returns a list of expressions posted to the collective.
-  Future<List<CentralizedExpressionResponse>> getCollectiveExpressions(params);
+  /// Returns a [QueryExpressionResults] containing a list of results which
+  /// satisfies the query.
+  Future<QueryExpressionResults> getCollectiveExpressions(
+      Map<String, String> params);
 
   /// Returns mock expression data.
   List<CentralizedExpressionResponse> get collectiveExpressions;
@@ -161,4 +170,19 @@ abstract class UserService {
   Future<List<UserProfile>> getPerspectiveUsers(
     String perspectiveAddress,
   );
+
+  /// Connects to the user with the given address.
+  Future<void> connectUser(String userAddress);
+
+  /// Removes the user's connection with the given address
+  Future<void> removeUserConnection(String userAddress);
+
+  /// Gets a list of pending user connections
+  Future<List<UserProfile>> pendingConnections(String userAddress);
+
+  /// Responds to the connection with either `true` or `false`
+  Future<void> respondToConnection(String userAddress, bool response);
+
+  /// Gets a list of pending user connections
+  Future<List<UserProfile>> connectedUsers(String userAddress);
 }

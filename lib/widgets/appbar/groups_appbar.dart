@@ -6,7 +6,8 @@ import 'package:junto_beta_mobile/widgets/appbar/appbar_search.dart';
 import 'package:provider/provider.dart';
 
 class JuntoGroupsAppbar extends StatelessWidget {
-  var _users;
+  const JuntoGroupsAppbar({Key key, this.users}) : super(key: key);
+  final ValueNotifier<SelectedUsers> users;
 
   @override
   Widget build(BuildContext context) {
@@ -66,8 +67,8 @@ class JuntoGroupsAppbar extends StatelessWidget {
                       builder: (BuildContext context) {
                         return ListenableProvider<
                             ValueNotifier<SelectedUsers>>.value(
-                          value: _users,
-                          child: JuntoAppbarSearch(),
+                          value: users,
+                          child: const JuntoAppbarSearch(),
                         );
                       },
                     );
@@ -77,7 +78,7 @@ class JuntoGroupsAppbar extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 10),
                     alignment: Alignment.centerRight,
                     color: Colors.transparent,
-                    child: Icon(
+                    child: const Icon(
                       Icons.search,
                     ),
                   ),

@@ -25,7 +25,7 @@ class SearchMemberPreview extends StatelessWidget {
                   if (member.profilePicture != null)
                     ClipOval(
                       child: Image.asset(
-                        member.profilePicture,
+                        member.profilePicture[0],
                         height: 45.0,
                         width: 45.0,
                         fit: BoxFit.cover,

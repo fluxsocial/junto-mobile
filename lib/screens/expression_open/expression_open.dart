@@ -4,7 +4,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:giphy_client/giphy_client.dart';
 import 'package:junto_beta_mobile/api.dart';
-import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
@@ -17,6 +16,7 @@ import 'package:junto_beta_mobile/screens/expression_open/expressions/photo_open
 import 'package:junto_beta_mobile/screens/expression_open/expressions/shortform_open.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/widgets/previews/comment_preview.dart';
+import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
 
 class ExpressionOpen extends StatefulWidget {
@@ -56,12 +56,22 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   /// If an expression has no comments, we do not show the option "show replies"
   bool canShowComments = false;
 
+  Future<QueryCommentResults> futureComments;
+
   @override
   void initState() {
     super.initState();
     commentController = TextEditingController();
     _focusNode = FocusNode();
     canShowComments = widget.expression.comments != 0;
+    print(widget.expression.expressionData);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    futureComments = Provider.of<ExpressionRepo>(context)
+        .getExpressionsComments(widget.expression.address);
   }
 
   @override
@@ -234,6 +244,15 @@ class ExpressionOpenState extends State<ExpressionOpen> {
     }
   }
 
+  Future<void> _refreshComments() async {
+    setState(
+      () {
+        futureComments = Provider.of<ExpressionRepo>(context)
+            .getExpressionsComments(widget.expression.address);
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -246,75 +265,76 @@ class ExpressionOpenState extends State<ExpressionOpen> {
         children: <Widget>[
           Expanded(
             child: GestureDetector(
+              behavior: HitTestBehavior.translucent,
               onVerticalDragDown: _onDragDown,
-              child: ListView(
-                children: <Widget>[
-                  ExpressionOpenTop(expression: widget.expression),
-                  _buildExpression(),
-                  ExpressionOpenBottom(widget.expression, _focusTextField),
-                  if (canShowComments)
-                    GestureDetector(
-                      onTap: _showComments,
-                      child: Container(
-                        color: Colors.transparent,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 15),
-                        child: Row(
-                          children: <Widget>[
-                            Text(
-                              'Show replies',
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
-                                  fontSize: 12),
-                            ),
-                            const SizedBox(width: 5),
-                            if (commentsVisible == false)
-                              Icon(Icons.keyboard_arrow_down,
-                                  size: 14,
-                                  color: Theme.of(context).primaryColor),
-                            if (commentsVisible != false)
-                              Icon(Icons.keyboard_arrow_up,
-                                  size: 17,
-                                  color: Theme.of(context).primaryColor),
-                          ],
+              child: RefreshIndicator(
+                onRefresh: _refreshComments,
+                child: ListView(
+                  children: <Widget>[
+                    ExpressionOpenTop(expression: widget.expression),
+                    _buildExpression(),
+                    ExpressionOpenBottom(widget.expression, _focusTextField),
+                    if (canShowComments)
+                      GestureDetector(
+                        onTap: _showComments,
+                        child: Container(
+                          color: Colors.transparent,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 15),
+                          child: Row(
+                            children: <Widget>[
+                              Text(
+                                'Show replies',
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                    fontSize: 12),
+                              ),
+                              const SizedBox(width: 5),
+                              if (commentsVisible == false)
+                                Icon(Icons.keyboard_arrow_down,
+                                    size: 14,
+                                    color: Theme.of(context).primaryColor),
+                              if (commentsVisible != false)
+                                Icon(Icons.keyboard_arrow_up,
+                                    size: 17,
+                                    color: Theme.of(context).primaryColor),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  if (commentsVisible)
-                    FutureBuilder<List<Comment>>(
-                      future: Provider.of<ExpressionRepo>(context)
-                          .getExpressionsComments(
-                        widget.expression.address,
-                      ),
-                      builder: (
-                        BuildContext context,
-                        AsyncSnapshot<List<Comment>> snapshot,
-                      ) {
-                        if (snapshot.hasError) {
-                          return Container(
-                            child: const Text('Error occured'),
-                          );
-                        }
+                    if (commentsVisible)
+                      FutureBuilder<QueryCommentResults>(
+                        future: futureComments,
+                        builder: (
+                          BuildContext context,
+                          AsyncSnapshot<QueryCommentResults> snapshot,
+                        ) {
+                          if (snapshot.hasError) {
+                            return Container(
+                              child: const Text('Error occured'),
+                            );
+                          }
 
-                        if (snapshot.hasData)
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            physics: const ClampingScrollPhysics(),
-                            itemCount: snapshot.data.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return CommentPreview(
-                                comment: snapshot.data[index],
-                                parent: widget.expression
-                              );
-                            },
+                          if (snapshot.hasData)
+                            return ListView.builder(
+                              shrinkWrap: true,
+                              physics: const ClampingScrollPhysics(),
+                              itemCount: snapshot.data.results.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return CommentPreview(
+                                  comment: snapshot.data.results[index],
+                                  parent: widget.expression,
+                                );
+                              },
+                            );
+                          return Container(
+                            margin: const EdgeInsets.only(top: 75),
+                            child: JuntoProgressIndicator(),
                           );
-                        return Container(
-                          margin: const EdgeInsets.only(top: 75),
-                          child: JuntoProgressIndicator(),
-                        );
-                      },
-                    )
-                ],
+                        },
+                      )
+                  ],
+                ),
               ),
             ),
           ),
@@ -332,7 +352,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
         ],
       ),
     );
-  }
+  } 
 }
 
 class _BottomCommentBar extends StatefulWidget {
@@ -389,146 +409,148 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
     return SafeArea(
       top: false,
       child: Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: JuntoStyles.horizontalPadding,
-            vertical: 5,
-          ),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.background,
-            border: Border(
-              top: BorderSide(
-                width: .75,
-                color: Theme.of(context).dividerColor,
-              ),
+        padding: const EdgeInsets.symmetric(
+          horizontal: JuntoStyles.horizontalPadding,
+          vertical: 5,
+        ),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.background,
+          border: Border(
+            top: BorderSide(
+              width: .75,
+              color: Theme.of(context).dividerColor,
             ),
           ),
-          child: Column(
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.only(left: 15),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surface,
-                        borderRadius: BorderRadius.circular(25),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          ValueListenableBuilder<MessageType>(
-                              valueListenable: _type,
-                              builder:
-                                  (BuildContext context, MessageType type, _) {
-                                return type == MessageType.gif &&
-                                        selectedUrl != null
-                                    ? Container(
-                                        margin: const EdgeInsets.only(top: 10),
-                                        child: Stack(children: [
-                                          Container(
-                                            height: 150.0,
-                                            width: 150.0,
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              child: CachedNetworkImage(
-                                                placeholder:
-                                                    (BuildContext context,
-                                                        String _) {
-                                                  return Container(
-                                                    height: 120,
-                                                    width: 120,
-                                                    decoration: BoxDecoration(
-                                                      gradient: LinearGradient(
-                                                        begin: Alignment
-                                                            .bottomLeft,
-                                                        end: Alignment.topRight,
-                                                        stops: const <double>[
-                                                          0.2,
-                                                          0.9
-                                                        ],
-                                                        colors: <Color>[
-                                                          Theme.of(context)
-                                                              .colorScheme
-                                                              .secondary,
-                                                          Theme.of(context)
-                                                              .colorScheme
-                                                              .primary
-                                                        ],
-                                                      ),
+        ),
+        child: Column(
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.only(left: 15),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surface,
+                      borderRadius: BorderRadius.circular(25),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        ValueListenableBuilder<MessageType>(
+                          valueListenable: _type,
+                          builder: (BuildContext context, MessageType type, _) {
+                            return type == MessageType.gif &&
+                                    selectedUrl != null
+                                ? Container(
+                                    margin: const EdgeInsets.only(top: 10),
+                                    child: Stack(
+                                      children: <Widget>[
+                                        Container(
+                                          height: 150.0,
+                                          width: 150.0,
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            child: CachedNetworkImage(
+                                              placeholder:
+                                                  (BuildContext context,
+                                                      String _) {
+                                                return Container(
+                                                  height: 120,
+                                                  width: 120,
+                                                  decoration: BoxDecoration(
+                                                    gradient: LinearGradient(
+                                                      begin:
+                                                          Alignment.bottomLeft,
+                                                      end: Alignment.topRight,
+                                                      stops: const <double>[
+                                                        0.2,
+                                                        0.9
+                                                      ],
+                                                      colors: <Color>[
+                                                        Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary,
+                                                        Theme.of(context)
+                                                            .colorScheme
+                                                            .primary
+                                                      ],
                                                     ),
-                                                  );
-                                                },
-                                                imageUrl: selectedUrl,
-                                                fit: BoxFit.cover,
+                                                  ),
+                                                );
+                                              },
+                                              imageUrl: selectedUrl,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                        Positioned(
+                                          top: 5,
+                                          right: 5,
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                selectedUrl = null;
+                                              });
+                                            },
+                                            child: Container(
+                                              height: 30,
+                                              width: 30,
+                                              decoration: BoxDecoration(
+                                                color: const Color(0xff222222)
+                                                    .withOpacity(.8),
+                                                borderRadius:
+                                                    BorderRadius.circular(100),
+                                              ),
+                                              alignment: Alignment.center,
+                                              child: const Text(
+                                                'x',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
                                               ),
                                             ),
                                           ),
-                                          Positioned(
-                                            top: 5,
-                                            right: 5,
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                setState(() {
-                                                  selectedUrl = null;
-                                                });
-                                              },
-                                              child: Container(
-                                                height: 30,
-                                                width: 30,
-                                                decoration: BoxDecoration(
-                                                  color: const Color(0xff222222)
-                                                      .withOpacity(.8),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          100),
-                                                ),
-                                                alignment: Alignment.center,
-                                                child: Text(
-                                                  'x',
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 13,
-                                                    fontWeight: FontWeight.w700,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          )
-                                        ]),
-                                      )
-                                    : const SizedBox();
-                              }),
-                          Container(
-                            constraints: const BoxConstraints(maxHeight: 180),
-                            child: TextField(
-                              focusNode: widget.focusNode,
-                              controller: widget.commentController,
-                              onChanged: widget.onTextChange,
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'write a reply...',
-                                hintStyle: TextStyle(
-                                    fontSize: 13,
-                                    color: Theme.of(context).primaryColor),
-                              ),
-                              maxLines: null,
-                              cursorColor: Theme.of(context).primaryColor,
-                              cursorWidth: 2,
-                              style: Theme.of(context).textTheme.caption,
-                              textInputAction: TextInputAction.newline,
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                : const SizedBox();
+                          },
+                        ),
+                        Container(
+                          constraints: const BoxConstraints(maxHeight: 180),
+                          child: TextField(
+                            focusNode: widget.focusNode,
+                            controller: widget.commentController,
+                            onChanged: widget.onTextChange,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'write a reply...',
+                              hintStyle: TextStyle(
+                                  fontSize: 13,
+                                  color: Theme.of(context).primaryColor),
                             ),
+                            maxLines: null,
+                            cursorColor: Theme.of(context).primaryColor,
+                            cursorWidth: 2,
+                            style: Theme.of(context).textTheme.caption,
+                            textInputAction: TextInputAction.newline,
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
-              _buildBottomStrip()
-            ],
-          )),
+                ),
+              ],
+            ),
+            _buildBottomStrip()
+          ],
+        ),
+      ),
     );
   }
 
@@ -659,10 +681,8 @@ class _GiphyPanelState extends State<_GiphyPanel> {
                   ),
                 ),
                 child: TextField(
-                  decoration: InputDecoration(
-                      hintText: 'Search for GIFs',
-                      hintStyle: TextStyle(),
-                      border: InputBorder.none),
+                  decoration: const InputDecoration(
+                      hintText: 'Search for GIFs', border: InputBorder.none),
                   onChanged: onTextChange,
                 ),
               ),

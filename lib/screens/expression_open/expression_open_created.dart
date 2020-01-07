@@ -9,7 +9,6 @@ import 'package:junto_beta_mobile/screens/expression_open/expressions/event_open
 import 'package:junto_beta_mobile/screens/expression_open/expressions/longform_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/photo_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/shortform_open.dart';
-import 'package:junto_beta_mobile/widgets/previews/comment_preview.dart';
 
 class ExpressionOpenCreated extends StatefulWidget {
   const ExpressionOpenCreated(this.expression);
@@ -197,8 +196,8 @@ class ExpressionOpenCreatedState extends State<ExpressionOpenCreated> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(45.0),
+      appBar: const PreferredSize(
+        preferredSize: Size.fromHeight(45.0),
         child: ExpressionOpenAppbar(),
       ),
       backgroundColor: Colors.white,
@@ -278,12 +277,12 @@ class ExpressionOpenCreatedState extends State<ExpressionOpenCreated> {
                         ListView(
                           shrinkWrap: true,
                           physics: const ClampingScrollPhysics(),
-                          children: <Widget>[],
+                          children: const <Widget>[],
                         ),
                         ListView(
                           shrinkWrap: true,
                           physics: const ClampingScrollPhysics(),
-                          children: <Widget>[],
+                          children: const <Widget>[],
                         ),
                       ],
                     ),

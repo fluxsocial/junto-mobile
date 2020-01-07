@@ -23,7 +23,7 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
   final String currentDegree;
   final Function switchDegree;
 
-  var _users;
+  ValueNotifier<SelectedUsers> _users;
 
   @override
   Widget build(

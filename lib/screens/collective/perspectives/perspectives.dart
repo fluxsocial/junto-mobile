@@ -24,11 +24,20 @@ class JuntoPerspectives extends StatefulWidget {
 }
 
 class JuntoPerspectivesState extends State<JuntoPerspectives> {
+  Future<List<CentralizedPerspective>> _fetchUserPerspectives(String address) {
+    try {
+      return Provider.of<UserRepo>(context)
+          .getUserPerspective(widget.profile.user.address);
+    } on JuntoException catch (error) {
+      debugPrint('error fethcing perspectives ${error.errorCode}');
+      return null;
+    }
+  }
+
   Widget _buildUserPerspectives(BuildContext context) {
     if (widget.profile.user.address != null)
       return FutureBuilder<List<CentralizedPerspective>>(
-        future: Provider.of<UserRepo>(context)
-            .getUserPerspective(widget.profile.user.address),
+        future: _fetchUserPerspectives(widget.profile.user.address),
         builder: (
           BuildContext context,
           AsyncSnapshot<List<CentralizedPerspective>> snapshot,
@@ -36,9 +45,9 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
           if (snapshot.hasError) {
             print(snapshot.error);
             return Container(
-              child: Text(
+              child: const Text(
                 'hmm, something is up...',
-                style: const TextStyle(fontSize: 14, color: Colors.white),
+                style: TextStyle(fontSize: 14, color: Colors.white),
               ),
             );
           }
@@ -49,20 +58,11 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                 physics: const ClampingScrollPhysics(),
                 children:
                     snapshot.data.map((CentralizedPerspective perspective) {
-                  if (perspective.name !=
-                      widget.profile.user.name + "'s Connection Perspective") {
-                    if (perspective.name ==
-                        widget.profile.user.name + "'s Follow Perspective") {
-                      return _buildPerspective(
-                          name: 'Subscriptions',
-                          isCustomPerspective: false,
-                          perspective: perspective);
-                    } else {
-                      return _buildPerspective(
-                          name: perspective.name,
-                          isCustomPerspective: true,
-                          perspective: perspective);
-                    }
+                  if (perspective.name != 'Connections') {
+                    return _buildPerspective(
+                        name: perspective.name,
+                        isCustomPerspective: true,
+                        perspective: perspective);
                   } else {
                     return const SizedBox();
                   }
@@ -83,11 +83,8 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
           gradient: LinearGradient(
             begin: Alignment.bottomLeft,
             end: Alignment.topRight,
-            stops: const <double>[0.2, 0.9],
-            colors: <Color>[
-              Theme.of(context).colorScheme.secondary,
-              Theme.of(context).colorScheme.primary
-            ],
+            stops: const <double>[0.3, 0.9],
+            colors: const <Color>[Color(0xff333333), Color(0xff393939)],
           ),
         ),
         child: SafeArea(
@@ -111,7 +108,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                 decoration: const BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
-                      color: Color(0xff4263A3),
+                      color: Color(0xff555555),
                       width: .75,
                     ),
                   ),
@@ -129,7 +126,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {
+                      onTap: () async {
                         showModalBottomSheet(
                           isScrollControlled: true,
                           context: context,
@@ -298,7 +295,7 @@ class _CreatePerspectiveBottomSheetState
   Future<void> _createPerspective() async {
     final String name = _textController.value.text;
     final String about = _aboutController.value.text;
-    JuntoOverlay.showLoader(context);
+    JuntoLoader.showLoader(context);
     try {
       await Provider.of<UserRepo>(context).createPerspective(
         Perspective(
@@ -307,12 +304,12 @@ class _CreatePerspectiveBottomSheetState
           about: about,
         ),
       );
-      JuntoOverlay.hide();
+      JuntoLoader.hide();
       Navigator.pop(context);
     } on JuntoException catch (error, stacktrace) {
       print(error);
       print(stacktrace);
-      JuntoOverlay.hide();
+      JuntoLoader.hide();
       JuntoDialog.showJuntoDialog(
         context,
         error.message,

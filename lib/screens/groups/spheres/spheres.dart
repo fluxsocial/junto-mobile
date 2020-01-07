@@ -18,7 +18,7 @@ class JuntoSpheres extends StatefulWidget {
   }) : super(key: key);
 
   final UserData userProfile;
-  final userSpheres;
+  final List<Group> userSpheres;
 
   @override
   State<StatefulWidget> createState() => JuntoSpheresState();
@@ -67,7 +67,7 @@ class _CreateSphereBottomSheetState extends State<_CreateSphereBottomSheet> {
   TextEditingController _nameController;
   TextEditingController _handleController;
   TextEditingController _descriptionController;
-
+ 
   TextEditingController _principleTitle;
   TextEditingController _principleBody;
   TextEditingController _principleTitleTwo;

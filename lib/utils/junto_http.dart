@@ -25,7 +25,7 @@ class JuntoHttp {
     final String authKey = await _getAuthKey();
     return <String, String>{
       'Content-Type': 'application/json',
-      'cookie': 'auth=$authKey',
+      'Authorization': authKey,
     };
   }
 
@@ -49,7 +49,8 @@ class JuntoHttp {
 
   Future<http.Response> get(String resource,
       {Map<String, String> headers, Map<String, String> queryParams}) async {
-    final Uri _uri = Uri.http(END_POINT_without_prefix, resource, queryParams);
+    final Uri _uri = Uri.http(
+        END_POINT_without_prefix, '/$kServerVersion$resource', queryParams);
     return httpClient.get(
       _uri,
       headers: await _withPersistentHeaders(headers),
@@ -64,7 +65,7 @@ class JuntoHttp {
     final Map<String, String> header = await _withPersistentHeaders(null);
     final http.StreamedResponse _streamedResponse = await httpClient.send(
       http.Request('DELETE', Uri.parse('$_endPoint$resource'))
-        ..headers['cookie'] = header['cookie']
+        ..headers['Authorization'] = header['cookie']
         ..headers['Content-Type'] = header['Content-Type']
         ..body = convert.json.encode(body),
     );
@@ -103,27 +104,40 @@ class JuntoHttp {
     };
   }
 
-  /// Parses the [http.Response] sent back to the client. Function takes the response and verifies the
-  /// status code.
+  /// Function takes [http.Response] as the only param.
+  /// The status code of the [response] is examined. Status codes matching `200`
+  /// [HttpStatus.ok] are deserialized and checked to ensure the body is not empty.
+  /// Empty bodies return a `null` value.
+  /// Status codes matching values other than `200` are decoded and examined for
+  /// the `error` key.
   static dynamic handleResponse(http.Response response) {
     if (response.statusCode == 200) {
-      final dynamic responseBody = convert.json.decode(response.body);
-      if (responseBody != null || responseBody == '') {
-        return responseBody;
+      if (response.body.isNotEmpty) {
+        final dynamic responseBody = convert.json.decode(response.body);
+        if (responseBody.runtimeType == Map && responseBody['error'] != null) {
+          throw JuntoException("${responseBody['error']}", response.statusCode);
+        } else {
+          return convert.json.decode(response.body);
+        }
       }
-      if (responseBody['error']) {
-        throw JuntoException("Something went wrong ${responseBody['error']}");
-      }
-      throw const JuntoException('Error occured parsing response');
+      throw JuntoException('${response?.body}', response.statusCode);
     }
-    if (response.statusCode == 400) {
-      final Map<String, dynamic> results = convert.json.decode(response?.body);
-      throw JuntoException('Forbidden ${results['error']}');
+    if (response.statusCode >= 400 && response.statusCode <= 499) {
+      if (response.body.isNotEmpty) {
+        final dynamic responseBody = convert.json.decode(response.body);
+        if (responseBody.runtimeType == Map && responseBody['error'] != null) {
+          throw JuntoException("${responseBody['error']}", response.statusCode);
+        } else {
+          return convert.json.decode(response.body);
+        }
+      }
+      throw JuntoException('${response?.body}', response.statusCode);
     }
     if (response.statusCode >= 500) {
-      throw const JuntoException("Ooh no, our server isn't feeling so good");
+      throw JuntoException(
+          "Ooh no, our server isn't feeling so good", response.statusCode);
     }
     throw JuntoException(
-        "Oops something went wrong ${convert.json.decode(response.body)['error']}");
+        "${convert.json.decode(response.body)['error']}", response.statusCode);
   }
 }

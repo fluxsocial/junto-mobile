@@ -3,8 +3,8 @@ import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 
 /// A generic [Overlay] which displays a [CircularProgressIndicator] to the user
 /// to indicate some background action is ongoing.
-class JuntoOverlay extends StatelessWidget {
-  const JuntoOverlay({
+class JuntoLoader extends StatelessWidget {
+  const JuntoLoader({
     Key key,
     this.width = 250.0,
     this.height = 250.0,
@@ -21,9 +21,9 @@ class JuntoOverlay extends StatelessWidget {
           Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
-            color: Colors.white70,
+            color: Colors.white30,
             child: Center(
-              child: JuntoOverlay(
+              child: JuntoLoader(
                 height: height,
                 width: width,
               ),

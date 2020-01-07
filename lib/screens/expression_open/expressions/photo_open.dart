@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class PhotoOpen extends StatelessWidget {
   const PhotoOpen(this.photoExpression);
@@ -8,28 +9,31 @@ class PhotoOpen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CentralizedPhotoFormExpression _expression =
-        photoExpression.expressionData as CentralizedPhotoFormExpression;
-    final String photoImage = _expression.image;
-    final String photoCaption = _expression.caption;
-
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          photoImage == 'test-image'
+          photoExpression.expressionData.image == 'test-image'
               ? const SizedBox()
               : Container(
                   height: MediaQuery.of(context).size.width,
                   width: MediaQuery.of(context).size.width,
-                  child: Image.asset(photoImage,
-                      fit: BoxFit.fitWidth),
+                  child: Hero(
+                    tag: 'photo_preview-' + photoExpression.address,
+                    child: CachedNetworkImage(
+                        imageUrl: photoExpression.expressionData.image,
+                        placeholder: (BuildContext context, String _) {
+                          return Container(
+                              color: Theme.of(context).dividerColor);
+                        },
+                        fit: BoxFit.cover),
+                  ),
                 ),
           const SizedBox(height: 10),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Text(
-              photoCaption,
+              photoExpression.expressionData.caption,
               style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
             ),
           )

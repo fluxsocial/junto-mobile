@@ -17,7 +17,9 @@ class ShortformPreview extends StatefulWidget {
 }
 
 class ShortformPreviewState extends State<ShortformPreview> {
+  //ignore:unused_field
   Color _gradientOne;
+  //ignore:unused_field
   Color _gradientTwo;
   String shortformBody = '';
 
@@ -74,7 +76,7 @@ class ShortformPreviewState extends State<ShortformPreview> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(10),
         gradient: LinearGradient(
           begin: Alignment.bottomLeft,
           end: Alignment.topRight,
@@ -85,8 +87,8 @@ class ShortformPreviewState extends State<ShortformPreview> {
           ],
         ),
       ),
-      constraints: const BoxConstraints(
-        minHeight: 240,
+      constraints: BoxConstraints(
+        minHeight: MediaQuery.of(context).size.height * .33,
       ),
       alignment: Alignment.center,
       width: MediaQuery.of(context).size.width,

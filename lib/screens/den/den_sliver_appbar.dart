@@ -31,10 +31,10 @@ class JuntoDenSliverAppbar extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.bottomLeft,
                   end: Alignment.topRight,
-                  stops: const <double>[0.1, 0.6],
+                  stops: const <double>[0.2, 0.9],
                   colors: <Color>[
                     Theme.of(context).colorScheme.secondaryVariant,
-                    Theme.of(context).colorScheme.primaryVariant,
+                    Theme.of(context).accentColor,
                   ],
                 ),
               ),
@@ -49,7 +49,7 @@ class JuntoDenSliverAppbar extends StatelessWidget {
                       Flexible(
                         child: Text(
                           name,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.w600,
                             color: Colors.white,

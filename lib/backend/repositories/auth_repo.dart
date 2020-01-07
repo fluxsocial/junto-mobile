@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:localstorage/localstorage.dart';
@@ -20,6 +21,10 @@ class AuthRepo {
     return _isLoggedIn;
   }
 
+  Future<String> verifyEmail(String email) async {
+    return _authService.verifyEmail(email);
+  }
+
   /// Registers a user on the server and creates their profile.
   Future<UserData> registerUser(UserAuthRegistrationDetails details) async {
     final UserData _data = await _authService.registerUser(details);
@@ -39,9 +44,14 @@ class AuthRepo {
   Future<UserData> loginUser(UserAuthLoginDetails details) async {
     try {
       final UserData _user = await _authService.loginUser(details);
-      final Map _userToMap = _user.toMap();
+
+      final SharedPreferences _prefs = await SharedPreferences.getInstance();
+
+      _prefs.setString('user_id', _user.user.address);
+      _prefs.setString(
+          'user_follow_perspective_id', _user.userPerspective.address);
+      final Map<String, dynamic> _userToMap = _user.toMap();
       final String _userMapToString = json.encode(_userToMap);
-      print(_userMapToString);
       final LocalStorage _storage = LocalStorage('user-details');
       final bool ready = await _storage.ready;
       if (ready) {

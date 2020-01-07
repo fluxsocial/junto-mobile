@@ -50,8 +50,11 @@ class UserServiceCentralized implements UserService {
       '/perspectives/$perspectiveAddress/users',
       body: users,
     );
+
     final Map<String, dynamic> _body =
         JuntoHttp.handleResponse(_serverResponse);
+    print(_body);
+
     return UserProfile.fromMap(_body);
   }
 
@@ -89,9 +92,11 @@ class UserServiceCentralized implements UserService {
       if (_listData.isNotEmpty) {
         return UserProfile.fromMap(_listData.first);
       }
-      throw const JuntoException('Unable to retrive user profile');
+      throw JuntoException(
+          'Unable to retrive user profile', _serverResponse.statusCode);
     }
-    throw const JuntoException('Forbidden, please log out and log back in');
+    throw JuntoException('Forbidden, please log out and log back in',
+        _serverResponse.statusCode);
   }
 
   @override
@@ -99,7 +104,7 @@ class UserServiceCentralized implements UserService {
       String userAddress) async {
     final http.Response response =
         await client.get('/users/$userAddress/perspectives');
-    final List<dynamic> _listData = json.decode(response.body);
+    final List<dynamic> _listData = JuntoHttp.handleResponse(response);
     final List<CentralizedPerspective> _results = _listData
         .map((dynamic data) => CentralizedPerspective.fromMap(data))
         .toList(growable: false);
@@ -110,7 +115,6 @@ class UserServiceCentralized implements UserService {
   Future<UserGroupsResponse> getUserGroups(String userAddress) async {
     final http.Response response =
         await client.get('/users/$userAddress/groups');
-        print('got groups!');
     final Map<String, dynamic> _responseMap =
         JuntoHttp.handleResponse(response);
     return UserGroupsResponse.fromMap(_responseMap);
@@ -135,16 +139,15 @@ class UserServiceCentralized implements UserService {
   Future<List<CentralizedExpressionResponse>> getUsersExpressions(
     String userAddress,
   ) async {
-    final http.Response response =
-        await client.get('/users/$userAddress/expressions');
-    final List<dynamic> _responseMap = JuntoHttp.handleResponse(response);
-    print(_responseMap);
-
-    return _responseMap
-        .map(
-          (dynamic data) => CentralizedExpressionResponse.fromMap(data),
-        )
-        .toList();
+    final http.Response response = await client.get(
+        '/users/$userAddress/expressions',
+        queryParams: <String, String>{'pagination_position': '0'});
+    final Map<String, dynamic> _responseMap =
+        JuntoHttp.handleResponse(response);
+    return <CentralizedExpressionResponse>[
+      for (dynamic data in _responseMap['results'])
+        CentralizedExpressionResponse.fromMap(data)
+    ];
   }
 
   @override
@@ -159,7 +162,7 @@ class UserServiceCentralized implements UserService {
         return profile;
       }
     }
-    throw const JuntoException('Unable to read local user');
+    throw const JuntoException('Unable to read local user', -1);
   }
 
   @override
@@ -169,6 +172,7 @@ class UserServiceCentralized implements UserService {
         await client.get('/users/$userAddress/perspectives');
     final List<Map<String, dynamic>> items =
         JuntoHttp.handleResponse(_serverResponse);
+    print(items);
     return items.map(
       (Map<String, dynamic> data) => CentralizedPerspective.fromMap(data),
     );
@@ -205,12 +209,61 @@ class UserServiceCentralized implements UserService {
   ) async {
     final http.Response _serverResponse =
         await client.get('/perspectives/$perspectiveAddress/users');
-    final List<dynamic> items = json.decode(_serverResponse.body);
-    return items
-        .map(
-          (dynamic data) => UserProfile.fromMap(data),
-        )
-        .toList();
+    final List<dynamic> _results = JuntoHttp.handleResponse(_serverResponse);
+    return <UserProfile>[
+      for (dynamic data in _results) UserProfile.fromMap(data)
+    ];
+  }
+
+  @override
+  Future<void> connectUser(String userAddress) async {
+    final http.Response _serverResponse = await client.postWithoutEncoding(
+      '/users/$userAddress/connect',
+    );
+    JuntoHttp.handleResponse(_serverResponse);
+  }
+
+  @override
+  Future<void> removeUserConnection(String userAddress) async {
+    final http.Response _serverResponse = await client.delete(
+      '/users/$userAddress/connect',
+    );
+    JuntoHttp.handleResponse(_serverResponse);
+  }
+
+  @override
+  Future<List<UserProfile>> connectedUsers(String userAddress) async {
+    final http.Response _serverResponse = await client.get(
+      '/users/$userAddress/connections',
+    );
+    final List<dynamic> _results = JuntoHttp.handleResponse(_serverResponse);
+    print(_results);
+    return <UserProfile>[
+      for (dynamic data in _results) UserProfile.fromMap(data)
+    ];
+  }
+
+  @override
+  Future<List<UserProfile>> pendingConnections(String userAddress) async {
+    final http.Response _serverResponse = await client.get(
+      '/notifications',
+    );
+    final List<dynamic> _results = JuntoHttp.handleResponse(_serverResponse);
+    return <UserProfile>[
+      for (dynamic data in _results) UserProfile.fromMap(data)
+    ];
+  }
+
+//TODO(Nash): This should send back a success result of either true or false.
+  @override
+  Future<void> respondToConnection(String userAddress, bool response) async {
+    final http.Response _serverResponse = await client.postWithoutEncoding(
+      '/users/$userAddress/connect/respond',
+      body: <String, dynamic>{
+        'status': response,
+      },
+    );
+    JuntoHttp.handleResponse(_serverResponse);
   }
 
   /// Private function which returns the correct query param for the given

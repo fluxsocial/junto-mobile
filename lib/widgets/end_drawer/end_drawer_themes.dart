@@ -60,10 +60,40 @@ class JuntoThemes extends StatelessWidget {
           Expanded(
             child: ListView(
               children: <Widget>[
+                InkWell(
+                  child: GestureDetector(
+                    onTap: () {
+                      Provider.of<JuntoThemesProvider>(context)
+                          .setTheme('light-indigo');
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 15),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                              color: Theme.of(context).dividerColor,
+                              width: .75),
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text('Light Indigo',
+                              style: Theme.of(context).textTheme.headline),
+                          const SizedBox(height: 5),
+                          Text(
+                              'This default theme of Junto carries a light tone complemented by our custom blue and gradient.',
+                              style: Theme.of(context).textTheme.body2)
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
                 GestureDetector(
                   onTap: () {
                     Provider.of<JuntoThemesProvider>(context)
-                        .setTheme('light-indigo');
+                        .setTheme('light-royal');
                   },
                   child: Container(
                     padding: const EdgeInsets.symmetric(
@@ -77,7 +107,7 @@ class JuntoThemes extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text('Light Indigo',
+                        Text('Light Royal',
                             style: Theme.of(context).textTheme.headline),
                         const SizedBox(height: 5),
                         Text(

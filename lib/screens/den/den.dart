@@ -1,6 +1,6 @@
 import 'dart:convert';
+
 import 'package:async/async.dart' show AsyncMemoizer;
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,9 +14,10 @@ import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_edit_den.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
+import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Displays the user's DEN or "profile screen"
 class JuntoDen extends StatefulWidget {
@@ -31,7 +32,6 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
   UserData _userProfile;
 
   ScrollController _denController;
-  final GlobalKey<ScaffoldState> _juntoDenKey = GlobalKey<ScaffoldState>();
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
   final AsyncMemoizer<List<CentralizedExpressionResponse>> _memoizer =
       AsyncMemoizer<List<CentralizedExpressionResponse>>();
@@ -43,9 +43,10 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _denController.addListener(_onScrollingHasChanged);
-      _denController.position.isScrollingNotifier.addListener(
-        _onScrollingHasChanged,
-      );
+      if (_denController.hasClients)
+        _denController.position.isScrollingNotifier.addListener(
+          _onScrollingHasChanged,
+        );
     });
     getUserInformation();
   }
@@ -66,7 +67,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
     _denController.removeListener(_onScrollingHasChanged);
   }
 
-  _onScrollingHasChanged() {
+  void _onScrollingHasChanged() {
     super.hideFabOnScroll(_denController, _isVisible);
   }
 
@@ -79,6 +80,8 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
       _userAddress = prefs.getString('user_id');
       _userProfile = UserData.fromMap(decodedUserData);
     });
+
+    print(_userProfile.user.gender);
   }
 
   Future<List<CentralizedExpressionResponse>> getUsersExpressions() async {
@@ -90,7 +93,6 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _juntoDenKey,
       appBar: _userProfile != null
           ? DenAppbar(heading: _userProfile.user.username)
           : const PreferredSize(
@@ -164,100 +166,39 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                       shrinkWrap: true,
                       padding: const EdgeInsets.only(left: 10),
                       children: <Widget>[
-                        const SizedBox(height: 5),
                         Container(
                           padding: const EdgeInsets.only(top: 5, bottom: 5),
                           child: Column(
                             children: <Widget>[
-                              Container(
-                                child: Row(
-                                  children: <Widget>[
-                                    Icon(CustomIcons.gender,
-                                        size: 17,
-                                        color: Theme.of(context).primaryColor),
-                                    const SizedBox(width: 5),
-                                    Text(
-                                      'gender',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                          color: Theme.of(context).primaryColor,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ],
+                              _displayAboutItem(
+                                _userProfile.user.gender,
+                                Icon(CustomIcons.gender,
+                                    size: 17,
+                                    color: Theme.of(context).primaryColor),
+                              ),
+                              _displayAboutItem(
+                                _userProfile.user.location,
+                                Image.asset(
+                                  'assets/images/junto-mobile__location.png',
+                                  height: 15,
+                                  color: Theme.of(context).primaryColor,
                                 ),
                               ),
-                              const SizedBox(height: 10),
-                              Container(
-                                child: Row(
-                                  children: <Widget>[
-                                    Image.asset(
-                                      'assets/images/junto-mobile__location.png',
-                                      height: 15,
-                                      color: Theme.of(context).primaryColor,
-                                    ),
-                                    const SizedBox(width: 5),
-                                    Text(
-                                      'location',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                          color: Theme.of(context).primaryColor,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              Container(
-                                child: Row(
-                                  children: <Widget>[
-                                    Image.asset(
-                                      'assets/images/junto-mobile__link.png',
-                                      height: 15,
-                                      color: Theme.of(context).primaryColor,
-                                    ),
-                                    const SizedBox(width: 5),
-                                    Text(
-                                      'website',
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 1,
-                                      style: TextStyle(
-                                          color: Theme.of(context).primaryColor,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ],
+                              _displayAboutItem(
+                                _userProfile.user.website,
+                                Image.asset(
+                                  'assets/images/junto-mobile__link.png',
+                                  height: 15,
+                                  color: Theme.of(context).primaryColor,
                                 ),
                               ),
                             ],
                           ),
                         ),
-                        const SizedBox(height: 15),
-                        CarouselSlider(
-                          viewportFraction: 1.0,
-                          height: MediaQuery.of(context).size.width - 20,
-                          enableInfiniteScroll: false,
-                          items: <Widget>[
-                            Container(
-                              padding: const EdgeInsets.only(right: 10),
-                              width: MediaQuery.of(context).size.width,
-                              child: Image.asset(
-                                  'assets/images/junto-mobile__mockprofpic--one.png',
-                                  fit: BoxFit.cover),
-                            ),
-                            Container(
-                              width: MediaQuery.of(context).size.width,
-                              padding: const EdgeInsets.only(right: 10),
-                              child: Image.asset(
-                                  'assets/images/junto-mobile__mockprofpic--two.png',
-                                  fit: BoxFit.cover),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 15),
+                        _userProfile.user.profilePicture.isNotEmpty
+                            ? _displayProfilePictures(
+                                _userProfile.user.profilePicture)
+                            : const SizedBox(),
                         Container(
                           child: Text(_userProfile.user.bio,
                               style: Theme.of(context).textTheme.caption),
@@ -266,9 +207,11 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                     ),
 
                     // public expressions of user
-                    FutureBuilder<dynamic>(
+                    FutureBuilder<List<CentralizedExpressionResponse>>(
                       future: getUsersExpressions(),
-                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      builder: (BuildContext context,
+                          AsyncSnapshot<List<CentralizedExpressionResponse>>
+                              snapshot) {
                         if (snapshot.hasError) {
                           return Center(
                             child: Transform.translate(
@@ -358,9 +301,11 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                     ),
 
                     // private expressions of user
-                    FutureBuilder<dynamic>(
+                    FutureBuilder<List<CentralizedExpressionResponse>>(
                       future: getUsersExpressions(),
-                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      builder: (BuildContext context,
+                          AsyncSnapshot<List<CentralizedExpressionResponse>>
+                              snapshot) {
                         if (snapshot.hasError) {
                           return const Center(
                             child: Text('something is up'),
@@ -455,5 +400,52 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
               ),
             ),
     );
+  }
+
+  Widget _displayAboutItem(List<String> item, dynamic icon) {
+    if (item.isNotEmpty) {
+      return Container(
+        margin: const EdgeInsets.symmetric(vertical: 5),
+        child: Row(
+          children: <Widget>[
+            icon,
+            const SizedBox(width: 5),
+            Text(
+              item[0],
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600),
+            ),
+          ],
+        ),
+      );
+    } else {
+      return const SizedBox();
+    }
+  }
+
+  Widget _displayProfilePictures(List<String> profilePictures) {
+    if (profilePictures != null) {
+      return Container(
+        margin: const EdgeInsets.only(bottom: 15),
+        child: CarouselSlider(
+            viewportFraction: 1.0,
+            height: MediaQuery.of(context).size.width - 20,
+            enableInfiniteScroll: false,
+            items: <Widget>[
+              for (String picture in profilePictures)
+                Container(
+                  padding: const EdgeInsets.only(right: 10),
+                  width: MediaQuery.of(context).size.width,
+                  child: Image.asset(picture, fit: BoxFit.cover),
+                ),
+            ]),
+      );
+    } else {
+      return const SizedBox();
+    }
   }
 }

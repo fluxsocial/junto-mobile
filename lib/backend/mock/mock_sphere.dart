@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:junto_beta_mobile/backend/mock/mock_data.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
@@ -12,36 +13,50 @@ class MockSphere with ChangeNotifier implements GroupService {
   }
 
   @override
-  Future<CentralizedSphereResponse> createSphere(CentralizedSphere sphere) {
-    throw UnimplementedError();
+  Future<CentralizedSphereResponse> createSphere(
+      CentralizedSphere sphere) async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    return CentralizedSphereResponse(
+      creator: kUserProfile.address,
+      groupData: null,
+      privacy: null,
+      users: <Users>[],
+      createdAt: null,
+      address: null,
+      groupType: null,
+    );
   }
 
   @override
-  Future<Group> getGroup(String groupAddress) {
-    throw UnimplementedError();
+  Future<Group> getGroup(String groupAddress) async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    return kGroups.first;
   }
 
   @override
   Future<void> addGroupMember(
     String groupAddress,
     List<Map<String, dynamic>> users,
-  ) {
-    throw UnimplementedError();
+  ) async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
   }
 
   @override
-  Future<void> removeGroupMember(String groupAddress, String userAddress) {
-    throw UnimplementedError();
+  Future<void> removeGroupMember(
+      String groupAddress, String userAddress) async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
   }
 
   @override
-  Future<List<Users>> getGroupMembers(String groupAddress) {
-    throw UnimplementedError();
+  Future<List<Users>> getGroupMembers(String groupAddress) async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    return kGroupUsers;
   }
 
   @override
   Future<List<CentralizedExpressionResponse>> getGroupExpressions(
-      String groupAddress, ExpressionQueryParams params) {
-    throw UnimplementedError();
+      String groupAddress, ExpressionQueryParams params) async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    return kSampleExpressions;
   }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/screens/member/member.dart';
 
 class MemberPreview extends StatelessWidget {
   const MemberPreview({Key key, this.profile}) : super(key: key);
@@ -8,22 +10,33 @@ class MemberPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Theme.of(context).colorScheme.background,
-      child: Row(
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              profile.profilePicture != ''
-                  ? ClipOval(
-                      child: Image.asset(
-                        profile.profilePicture,
-                        height: 45.0,
-                        width: 45.0,
-                        fit: BoxFit.cover,
-                      ),
-                    )
-                  : Container(
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          CupertinoPageRoute<dynamic>(
+            builder: (BuildContext context) => JuntoMember(profile: profile),
+          ),
+        );
+      },
+      child: Container(
+        color: Theme.of(context).colorScheme.background,
+        child: Row(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                if (profile.profilePicture != null ||
+                    profile.profilePicture.isNotEmpty)
+                  ClipOval(
+                    child: Image.asset(
+                      profile.profilePicture[0],
+                      height: 45.0,
+                      width: 45.0,
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                else
+                  Container(
                       alignment: Alignment.center,
                       height: 45.0,
                       width: 45.0,
@@ -42,38 +55,39 @@ class MemberPreview extends StatelessWidget {
                       child: Image.asset(
                           'assets/images/junto-mobile__logo--white.png',
                           height: 15)),
-              Container(
-                width: MediaQuery.of(context).size.width - 75,
-                padding: const EdgeInsets.symmetric(
-                  vertical: 20,
-                ),
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      width: .5,
-                      color: Theme.of(context).dividerColor,
+                Container(
+                  width: MediaQuery.of(context).size.width - 75,
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 15,
+                  ),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        width: .5,
+                        color: Theme.of(context).dividerColor,
+                      ),
                     ),
                   ),
-                ),
-                margin: const EdgeInsets.only(left: 10.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      profile.username,
-                      textAlign: TextAlign.start,
-                      style: Theme.of(context).textTheme.subhead,
-                    ),
-                    Text(profile.name,
+                  margin: const EdgeInsets.only(left: 10.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        profile.username,
                         textAlign: TextAlign.start,
-                        style: Theme.of(context).textTheme.body1)
-                  ],
-                ),
-              )
-            ],
-          ),
-        ],
+                        style: Theme.of(context).textTheme.subhead,
+                      ),
+                      Text(profile.name,
+                          textAlign: TextAlign.start,
+                          style: Theme.of(context).textTheme.body1)
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

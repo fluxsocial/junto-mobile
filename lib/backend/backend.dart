@@ -1,4 +1,8 @@
 import 'package:http/io_client.dart';
+import 'package:junto_beta_mobile/backend/mock/mock_auth.dart';
+import 'package:junto_beta_mobile/backend/mock/mock_expression.dart';
+import 'package:junto_beta_mobile/backend/mock/mock_sphere.dart';
+import 'package:junto_beta_mobile/backend/mock/mock_user.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
@@ -25,9 +29,9 @@ class Backend {
 
   static Future<Backend> init() async {
     final JuntoHttp client = JuntoHttp(httpClient: IOClient());
-    final AuthenticationServiceCentralized authService =
+    final AuthenticationService authService =
         AuthenticationServiceCentralized(client);
-    final UserServiceCentralized userService = UserServiceCentralized(client);
+    final UserService userService = UserServiceCentralized(client);
     final ExpressionService expressionService =
         ExpressionServiceCentralized(client);
     final GroupService groupService = GroupServiceCentralized(client);
@@ -36,6 +40,21 @@ class Backend {
       authRepo: AuthRepo(authService),
       userRepo: UserRepo(userService),
       collectiveProvider: CollectiveProviderCentralized(client),
+      groupsProvider: GroupRepo(groupService),
+      expressionRepo: ExpressionRepo(expressionService),
+    );
+  }
+
+  static Future<Backend> mocked() async {
+    final AuthenticationService authService = MockAuth();
+    final UserService userService = MockUserService();
+    final ExpressionService expressionService = MockExpressionService();
+    final GroupService groupService = MockSphere();
+    return Backend._(
+      searchProvider: null,
+      authRepo: AuthRepo(authService),
+      userRepo: UserRepo(userService),
+      collectiveProvider: null,
       groupsProvider: GroupRepo(groupService),
       expressionRepo: ExpressionRepo(expressionService),
     );

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 
@@ -21,8 +22,25 @@ class EventOpen extends StatelessWidget {
         children: <Widget>[
           eventImage != ''
               ? Container(
-                  height: MediaQuery.of(context).size.height * .3,
-                  child: Image.asset(eventImage, fit: BoxFit.cover),
+                  width: MediaQuery.of(context).size.width,
+                  child: CachedNetworkImage(
+                      imageUrl: expression.expressionData.photo,
+                      placeholder: (BuildContext context, String _) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.bottomLeft,
+                              end: Alignment.topRight,
+                              stops: const <double>[0.2, 0.9],
+                              colors: <Color>[
+                                Theme.of(context).colorScheme.secondary,
+                                Theme.of(context).colorScheme.primary
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                      fit: BoxFit.cover),
                 )
               : const SizedBox(),
           Container(
@@ -42,110 +60,12 @@ class EventOpen extends StatelessWidget {
                         child: Text(eventTitle,
                             style: Theme.of(context).textTheme.display1),
                       ),
-                      Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 5),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                                color: Theme.of(context).primaryColor,
-                                width: 1.5),
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                          child: const Text('RSVP'))
                     ],
                   ),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Container(
-                      padding: const EdgeInsets.only(
-                          bottom: 10, left: 10, right: 10),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: Theme.of(context).dividerColor,
-                            width: .75,
-                          ),
-                        ),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              ClipOval(
-                                child: Image.asset(
-                                  'assets/images/junto-mobile__eric.png',
-                                  height: 28.0,
-                                  width: 28.0,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              const SizedBox(width: 5),
-                              ClipOval(
-                                child: Image.asset(
-                                  'assets/images/junto-mobile__riley.png',
-                                  height: 28.0,
-                                  width: 28.0,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              const SizedBox(width: 5),
-                              ClipOval(
-                                child: Image.asset(
-                                  'assets/images/junto-mobile__yaz.png',
-                                  height: 28.0,
-                                  width: 28.0,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              const SizedBox(width: 5),
-                              ClipOval(
-                                child: Image.asset(
-                                  'assets/images/junto-mobile__josh.png',
-                                  height: 28.0,
-                                  width: 28.0,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              const SizedBox(width: 5),
-                              ClipOval(
-                                child: Image.asset(
-                                  'assets/images/junto-mobile__dora.png',
-                                  height: 28.0,
-                                  width: 28.0,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              const SizedBox(width: 5),
-                              ClipOval(
-                                child: Image.asset(
-                                  'assets/images/junto-mobile__drea.png',
-                                  height: 28.0,
-                                  width: 28.0,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              const SizedBox(width: 5),
-                              ClipOval(
-                                child: Image.asset(
-                                  'assets/images/junto-mobile__tomis.png',
-                                  height: 28.0,
-                                  width: 28.0,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              const SizedBox(width: 5),
-                            ],
-                          ),
-                          const SizedBox(height: 5),
-                          Text('49 members',
-                              style: Theme.of(context).textTheme.subtitle),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 5),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 10),
@@ -155,11 +75,10 @@ class EventOpen extends StatelessWidget {
                               color: Theme.of(context).primaryColor, size: 20),
                           const SizedBox(width: 5),
                           Text(eventTime,
-                              style: Theme.of(context).textTheme.body2),
+                              style: Theme.of(context).textTheme.caption),
                         ],
                       ),
                     ),
-                    const SizedBox(height: 10),
                     Padding(
                       padding: const EdgeInsets.only(
                           bottom: 10, left: 10, right: 10),
@@ -169,7 +88,7 @@ class EventOpen extends StatelessWidget {
                               color: Theme.of(context).primaryColor, size: 20),
                           const SizedBox(width: 5),
                           Text(eventLocation,
-                              style: Theme.of(context).textTheme.body2),
+                              style: Theme.of(context).textTheme.caption),
                         ],
                       ),
                     ),

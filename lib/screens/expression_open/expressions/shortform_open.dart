@@ -16,7 +16,9 @@ class ShortformOpen extends StatefulWidget {
 class ShortformOpenState extends State<ShortformOpen> {
   String _shortformBackground;
   String _shortformBody;
+  //ignore:unused_field
   Color _gradientOne;
+  //ignore:unused_field
   Color _gradientTwo;
 
   void _buildBackground() {
@@ -82,7 +84,7 @@ class ShortformOpenState extends State<ShortformOpen> {
         ),
       ),
       constraints: BoxConstraints(
-        minHeight: MediaQuery.of(context).size.height * .3,
+        minHeight: MediaQuery.of(context).size.height * .4,
       ),
       width: MediaQuery.of(context).size.width,
       alignment: Alignment.center,
@@ -97,7 +99,7 @@ class ShortformOpenState extends State<ShortformOpen> {
             _shortformBody,
             textAlign: TextAlign.center,
             style: const TextStyle(
-              fontSize: 17.0,
+              fontSize: 20.0,
               fontWeight: FontWeight.w700,
               color: Colors.white,
             ),

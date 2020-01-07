@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
@@ -43,6 +45,10 @@ class ExpressionRepo {
     return _expressionService.createExpression(_expression);
   }
 
+  Future<String> createPhoto(String fileType, File file) {
+    return _expressionService.createPhoto(fileType, file);
+  }
+
   Future<CentralizedExpressionResponse> getExpression(
     String expressionAddress,
   ) {
@@ -75,13 +81,14 @@ class ExpressionRepo {
     return _expressionService.getExpressionsResonation(expressionAddress);
   }
 
-  Future<List<Comment>> getExpressionsComments(
+  Future<QueryCommentResults> getExpressionsComments(
     String expressionAddress,
   ) {
     return _expressionService.getExpressionsComments(expressionAddress);
   }
 
-  Future<List<CentralizedExpressionResponse>> getCollectiveExpressions(params) {
+  Future<QueryExpressionResults> getCollectiveExpressions(
+      Map<String, String> params) {
     return _expressionService.getCollectiveExpressions(params);
   }
 

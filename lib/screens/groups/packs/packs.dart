@@ -10,7 +10,7 @@ class JuntoPacks extends StatefulWidget {
 
   final ValueNotifier<bool> visibility;
   final UserData userProfile;
-  final userPacks;
+  final List<Group> userPacks;
 
   @override
   State<StatefulWidget> createState() => JuntoPacksState();

@@ -12,7 +12,10 @@ import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression
 
 /// Renders a concise overview of one given [ExpressionResult].
 class ExpressionPreview extends StatelessWidget {
-  ExpressionPreview({Key key, @required this.expression}) : super(key: key);
+  const ExpressionPreview({
+    Key key,
+    @required this.expression,
+  }) : super(key: key);
 
   final CentralizedExpressionResponse expression;
 
@@ -22,12 +25,57 @@ class ExpressionPreview extends StatelessWidget {
       onTap: () {
         // pending - create conditional statement that renders ExpressionOpenCreated if
         // the expression was created by the user. Otherwise display ExpressionOpen
-        Navigator.push(
-          context,
-          CupertinoPageRoute<dynamic>(
-            builder: (BuildContext context) => ExpressionOpen(expression),
-          ),
-        );
+
+        if (expression.type == 'PhotoForm') {
+          Navigator.of(context).push(
+            PageRouteBuilder<ExpressionOpen>(
+              pageBuilder: (
+                BuildContext context,
+                Animation<double> animation,
+                Animation<double> secondaryAnimation,
+              ) {
+                return ExpressionOpen(expression);
+              },
+              transitionsBuilder: (
+                BuildContext context,
+                Animation<double> animation,
+                Animation<double> secondaryAnimation,
+                Widget child,
+              ) {
+                return FadeTransition(
+                  opacity: animation,
+                  child: child,
+                );
+              },
+            ),
+          );
+        } else {
+          Navigator.of(context).push(
+            PageRouteBuilder<ExpressionOpen>(
+              pageBuilder: (
+                BuildContext context,
+                Animation<double> animation,
+                Animation<double> secondaryAnimation,
+              ) {
+                return ExpressionOpen(expression);
+              },
+              transitionsBuilder: (
+                BuildContext context,
+                Animation<double> animation,
+                Animation<double> secondaryAnimation,
+                Widget child,
+              ) {
+                return SlideTransition(
+                  position: Tween<Offset>(
+                    begin: const Offset(1, 0),
+                    end: Offset.zero,
+                  ).animate(animation),
+                  child: child,
+                );
+              },
+            ),
+          );
+        }
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 25),
@@ -37,9 +85,10 @@ class ExpressionPreview extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.background,
-                border:
-                    Border.all(color: Theme.of(context).dividerColor, width: 1),
-                borderRadius: BorderRadius.circular(5),
+                border: Border.all(
+                    color: Theme.of(context).dividerColor.withOpacity(.3),
+                    width: 1.5),
+                borderRadius: BorderRadius.circular(10),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,7 +96,7 @@ class ExpressionPreview extends StatelessWidget {
                   // expression preview body
                   _returnExpression(),
                 ],
-              ), 
+              ),
             ),
             const SizedBox(height: 5),
 

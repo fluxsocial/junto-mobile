@@ -4,7 +4,6 @@ import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
-import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview_select.dart';
 import 'package:provider/provider.dart';
 
 class CreateSphereFAB extends StatelessWidget {
@@ -87,21 +86,6 @@ class CreateSphereBottomSheetState extends State<CreateSphereBottomSheet> {
     <String, String>{'title': '', 'body': ''}
   ];
 
-  List<UserProfile> profiles = <UserProfile>[
-    UserProfile(
-        name: 'Eric Yang',
-        username: 'sunyata',
-        profilePicture: 'assets/images/junto-mobile__eric.png'),
-    UserProfile(
-        name: 'Riley Wagner',
-        username: 'wags',
-        profilePicture: 'assets/images/junto-mobile__riley.png'),
-    UserProfile(
-        name: 'Dora Czovek',
-        username: 'wingedmessenger',
-        profilePicture: 'assets/images/junto-mobile__dora.png')
-  ];
-
   @override
   void initState() {
     super.initState();
@@ -142,12 +126,13 @@ class CreateSphereBottomSheetState extends State<CreateSphereBottomSheet> {
     );
 
     try {
-      JuntoOverlay.showLoader(context);
+      JuntoLoader.showLoader(context);
       await Provider.of<GroupRepo>(context).createSphere(sphere);
-      JuntoOverlay.hide();
+      JuntoLoader.hide();
       Navigator.pop(context);
+      setState(() {});
     } catch (error) {
-      JuntoOverlay.hide();
+      JuntoLoader.hide();
       print(error);
     }
   }
@@ -192,9 +177,7 @@ class CreateSphereBottomSheetState extends State<CreateSphereBottomSheet> {
                     ),
               _currentPage == 4
                   ? GestureDetector(
-                      onTap: () {
-                        _createSphere();
-                      },
+                      onTap: _createSphere,
                       child: const Text('create'),
                     )
                   : GestureDetector(
@@ -637,6 +620,8 @@ class CreateSphereBottomSheetState extends State<CreateSphereBottomSheet> {
           ],
         ),
         const SizedBox(height: 10),
+        //FIXME(Nash): This should display the user's common connection as
+        // member previews
         Expanded(
           child: PageView(
             controller: _searchMembersController,
@@ -647,11 +632,7 @@ class CreateSphereBottomSheetState extends State<CreateSphereBottomSheet> {
             },
             children: <Widget>[
               ListView(
-                children: <Widget>[
-                  MemberPreviewSelect(profile: profiles[0]),
-                  MemberPreviewSelect(profile: profiles[1]),
-                  MemberPreviewSelect(profile: profiles[2]),
-                ],
+                children: const <Widget>[],
               ),
             ],
           ),

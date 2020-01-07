@@ -131,24 +131,26 @@ class CentralizedPhotoFormExpression {
 }
 
 class CentralizedEventFormExpression {
-  CentralizedEventFormExpression({
-    this.title,
-    this.description,
-    this.photo,
-    this.location,
-    this.startTime,
-    this.endTime,
-  });
+  CentralizedEventFormExpression(
+      {this.title,
+      this.description,
+      this.photo,
+      this.location,
+      this.startTime,
+      this.endTime,
+      this.facilitators,
+      this.members});
 
   factory CentralizedEventFormExpression.fromMap(Map<String, dynamic> json) {
     return CentralizedEventFormExpression(
-      title: json['title'],
-      description: json['description'],
-      photo: json['photo'],
-      location: json['location'],
-      startTime: json['start_time'],
-      endTime: json['end_time'],
-    );
+        title: json['title'],
+        description: json['description'],
+        photo: json['photo'],
+        location: json['location'],
+        startTime: json['start_time'],
+        endTime: json['end_time'],
+        facilitators: json['facilitators'],
+        members: json['members']);
   }
 
   final String title;
@@ -157,6 +159,8 @@ class CentralizedEventFormExpression {
   final String location;
   final String startTime;
   final String endTime;
+  final List<String> facilitators;
+  final List<String> members;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
         'title': title,
@@ -165,6 +169,8 @@ class CentralizedEventFormExpression {
         'location': location,
         'start_time': startTime,
         'end_time': endTime,
+        'facilitators': facilitators,
+        'members': members
       };
 }
 
@@ -325,16 +331,38 @@ class ExpressionQueryParams {
     @required this.context,
     @required this.channels,
     @required this.contextType,
+    @required this.paginationPos,
   });
 
   final int dos;
   final int context;
   final List<String> channels;
   final ExpressionContextType contextType;
+  final int paginationPos;
 }
 
-enum ExpressionContextType {
-  dos,
-  perspective,
-  random,
+enum ExpressionContextType { dos, perspective, random, collective }
+
+/// Encapsulates the response sent back from the server after querying an
+/// expression.
+class QueryExpressionResults {
+  QueryExpressionResults({
+    @required this.results,
+    @required this.lastTimestamp,
+  });
+
+  final List<CentralizedExpressionResponse> results;
+  final String lastTimestamp;
+}
+
+/// Encapsulates the response sent back from the server after querying a
+/// comment.
+class QueryCommentResults {
+  QueryCommentResults({
+    @required this.results,
+    @required this.lastTimestamp,
+  });
+
+  final List<Comment> results;
+  final String lastTimestamp;
 }

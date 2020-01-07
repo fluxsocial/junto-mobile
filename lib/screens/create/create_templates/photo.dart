@@ -1,23 +1,15 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show PlatformException;
-import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/utils/junto_dialog.dart';
+import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 
 /// Create using photo form
 class CreatePhoto extends StatefulWidget {
-  const CreatePhoto({
-    Key key,
-    @required this.toggleBottomNavVisibility,
-  }) : super(key: key);
+  const CreatePhoto({Key key, this.setBottomNav}) : super(key: key);
 
-  final Function toggleBottomNavVisibility;
+  final Function setBottomNav;
 
   @override
   State<StatefulWidget> createState() {
@@ -27,396 +19,185 @@ class CreatePhoto extends StatefulWidget {
 
 // State for CreatePhoto class
 class CreatePhotoState extends State<CreatePhoto> {
-  File _imageFile;
-  File _croppedFile;
-  bool _onFirstScreen = true;
-  bool _photoEdit = false;
-  bool _libraryActive = true;
-  bool _cameraActive = false;
+  File imageFile;
+  TextEditingController _captionController;
 
-  //TODO(Nash): Connect to backend and impl once image upload becomes
-  // available.
+  Future<void> _onPickPressed() async {
+    final File image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    if (image == null) {
+      setState(() => imageFile = null);
+      return;
+    }
+    final File cropped = await ImageCroppingDialog.show(context, image,
+        aspectRatios: <String>[
+          '1:1',
+          '2:3',
+          '3:2',
+          '3:4',
+          '4:3',
+          '4:5',
+          '5:4',
+          '9:16',
+          '16:9'
+        ]);
+    if (cropped == null) {
+      setState(() => imageFile = null);
+      return;
+    }
+    setState(() => imageFile = cropped);
+    widget.setBottomNav(false);
+  }
+
+  Future<void> _cropPhoto() async {
+    final File image = imageFile;
+    final File cropped = await ImageCroppingDialog.show(context, image,
+        aspectRatios: <String>[
+          '1:1',
+          '2:3',
+          '3:2',
+          '3:4',
+          '4:3',
+          '4:5',
+          '5:4',
+          '9:16',
+          '16:9'
+        ]);
+    if (cropped == null) {
+      setState(() => imageFile = null);
+      return;
+    }
+    setState(() => imageFile = cropped);
+    widget.setBottomNav(false);
+    print('set bottom nav');
+  }
+
   /// Creates a [CentralizedPhotoFormExpression] from the given data entered
   /// by the user.
-  CentralizedPhotoFormExpression createExpression() {
-    return CentralizedPhotoFormExpression(
-        image: 'assets/images/junto-mobile__mock--image.png', caption: 'mossy');
+  Map<String, dynamic> createExpression() {
+    return <String, dynamic>{
+      'image': imageFile,
+      'caption': _captionController.value.text
+    };
   }
 
-  // Function to retrieve image from source (i.e. library or camera)
-  void _getImage(BuildContext context, ImageSource source) {
-    ImagePicker.pickImage(source: source, maxWidth: 512).then((File image) {
-      setState(() {
-        _imageFile = image;
-      });
-      _cropImage(image);
-      if (_onFirstScreen) {
-        widget.toggleBottomNavVisibility();
-        _onFirstScreen = false;
-        _photoEdit = true;
-      }
-    }).catchError((dynamic error) {
-      if (error is PlatformException && error.code == 'photo_access_denied')
-        JuntoDialog.showJuntoDialog(
-          context,
-          'You need to allow photo '
-          'permission',
-          <Widget>[
-            FlatButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Ok'),
-            ),
-          ],
-        );
-      debugPrint('Error occured selecting photo');
-    });
+  @override
+  void initState() {
+    super.initState();
+
+    _captionController = TextEditingController();
   }
 
-  // Function to crop an image
-  Future<void> _cropImage(File imageFile) async {
-    if (imageFile != null) {
-      final File croppedFile = await ImageCropper.cropImage(
-        sourcePath: imageFile?.path,
-        maxWidth: 512,
-        maxHeight: 512,
-      );
-      setState(() {
-        _croppedFile = croppedFile;
-      });
-    }
-    return;
-  }
+  @override
+  void dispose() {
+    super.dispose();
 
-  // Upload Image component - rendered in _photoTypeTemplate()
-  Widget _buildUploadImage() {
-    return Expanded(
-      // color: Colors.blue,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          GestureDetector(
-            onTap: () {
-              _getImage(
-                context,
-                ImageSource.gallery,
-              );
-            },
-            child: const Icon(
-              CustomIcons.add,
-              size: 100,
-              color: Color(
-                0xff555555,
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          const Text('UPLOAD AN IMAGE'),
-        ],
-      ),
-    );
-  }
-
-  // Use camera component - rendered in _photoTypeTemplate()
-  Widget _buildUseCamera() {
-    return Expanded(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          GestureDetector(
-            onTap: () {
-              _getImage(context, ImageSource.camera);
-            },
-            child: const Text('USE CAMERA'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Component shown to prompt user to retrieve image
-  Widget _photoTypeTemplate() {
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          _libraryActive ? _buildUploadImage() : _buildUseCamera(),
-          Container(
-            // padding: EdgeInsets.only(top: 5),
-            height: 50,
-            decoration: const BoxDecoration(
-              border: Border(
-                top: BorderSide(color: Color(0xffeeeeee), width: 1),
-              ),
-            ),
-            child: Row(
-              children: <Widget>[
-                Container(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  width: MediaQuery.of(context).size.width * .5,
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(
-                        () {
-                          _libraryActive = true;
-                          _cameraActive = false;
-                        },
-                      );
-                    },
-                    child: Text(
-                      'LIBRARY',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        color: _libraryActive
-                            ? const Color(0xff333333)
-                            : const Color(0xff999999),
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  width: MediaQuery.of(context).size.width * .5,
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _libraryActive = false;
-                        _cameraActive = true;
-                      });
-                      _getImage(context, ImageSource.camera);
-                    },
-                    child: Text(
-                      'CAMERA',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        color: _cameraActive
-                            ? const Color(0xff333333)
-                            : const Color(0xff999999),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Component once image is retrieved
-  Widget _buildImageEdit() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Column(
-          children: <Widget>[
-            Container(
-              width: MediaQuery.of(context).size.width,
-              child: Image.file(
-                _croppedFile,
-                fit: BoxFit.fitWidth,
-              ),
-            ),
-          ],
-        ),
-        Container(
-            padding: const EdgeInsets.only(top: 5),
-            decoration: const BoxDecoration(
-              border: Border(
-                top: BorderSide(color: Color(0xffeeeeee), width: 1),
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                GestureDetector(
-                  onTap: () {
-                    setState(
-                      () {
-                        _imageFile = null;
-                        _croppedFile = null;
-                      },
-                    );
-                    widget.toggleBottomNavVisibility();
-                    setState(
-                      () {
-                        _onFirstScreen = true;
-                      },
-                    );
-                  },
-                  child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: const Text('BACK')),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    _getImage(context, ImageSource.gallery);
-                  },
-                  child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: const Text('LIBRARY')),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    _cropImage(_imageFile);
-                  },
-                  child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: const Text('CROP')),
-                ),
-                // GestureDetector(
-                //   onTap: () {
-                //     setState(
-                //       () {
-                //         _photoEdit = false;
-                //       },
-                //     );
-                //   },
-                //   child: Container(
-                //     padding: const EdgeInsets.symmetric(vertical: 10),
-                //     child: Icon(Icons.arrow_forward_ios, size: 17),
-                //   ),
-                // ),
-              ],
-            ))
-      ],
-    );
-  }
-
-  // Component once image is retrieved
-  Widget _buildImageCaption() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                // color: Colors.blue,
-                padding: const EdgeInsets.only(right: 10),
-                width: MediaQuery.of(context).size.width - 70,
-                child: TextField(
-                  buildCounter: (
-                    BuildContext context, {
-                    int currentLength,
-                    int maxLength,
-                    bool isFocused,
-                  }) =>
-                      null,
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Write a caption (optional)',
-                  ),
-                  cursorColor: JuntoPalette.juntoGrey,
-                  cursorWidth: 2,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    color: Color(
-                      0xff333333,
-                    ),
-                  ),
-                  maxLines: null,
-                  maxLength: 2200,
-                  textInputAction: TextInputAction.done,
-                ),
-              ),
-              Container(
-                height: 50,
-                width: 50,
-                child: Image.file(_croppedFile),
-              )
-            ],
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.only(top: 5),
-          decoration: const BoxDecoration(
-            border: Border(
-              top: BorderSide(
-                color: Color(0xffeeeeee),
-                width: 1,
-              ),
-            ),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _photoEdit = true;
-                  });
-                },
-                child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Icon(
-                    Icons.arrow_back_ios,
-                    size: 17,
-                  ),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {},
-                child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: const Text(
-                    '# CHANNELS',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  setState(
-                    () {
-                      _photoEdit = false;
-                    },
-                  );
-                },
-                child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: const Text(
-                    'CREATE',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        )
-      ],
-    );
+    _captionController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Expanded(
-        child: Center(
-      child: Text('share a photo'),
-    )
-        // _currentScreen(),
-        );
-  }
-
-  // Render current screen conditionally
-  // ignore: unused_element
-  Widget _currentScreen() {
-    if (_croppedFile == null) {
-      return _photoTypeTemplate();
-    } else if (_croppedFile != null && _photoEdit) {
-      return _buildImageEdit();
-    } else if (_croppedFile != null && _photoEdit != true) {
-      return _buildImageCaption();
-    } else {
-      return Container();
-    }
+    return Expanded(
+      child: Center(
+        child: imageFile == null
+            ? Transform.translate(
+                offset: const Offset(0.0, -50.0),
+                child: GestureDetector(
+                  onTap: _onPickPressed,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        height: 100,
+                        width: 100,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          border: Border.all(
+                              color: Theme.of(context).primaryColor,
+                              width: 1.5),
+                          borderRadius: BorderRadius.circular(10000),
+                        ),
+                        child: Text(
+                          '+',
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontSize: 28),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Text(
+                        'Press here to share a photo',
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 17),
+                      )
+                    ],
+                  ),
+                ),
+              )
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Expanded(
+                    child: ListView(
+                      children: <Widget>[
+                        Image.file(imageFile),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                          ),
+                          child: TextField(
+                              controller: _captionController,
+                              textInputAction: TextInputAction.newline,
+                              decoration: const InputDecoration(
+                                hintText: 'write a caption..',
+                                border: InputBorder.none,
+                              ),
+                              cursorColor: Theme.of(context).primaryColor,
+                              cursorWidth: 1,
+                              maxLines: null,
+                              style: Theme.of(context).textTheme.caption),
+                        )
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 25),
+                    child: Row(
+                      children: <Widget>[
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              imageFile = null;
+                            });
+                            widget.setBottomNav(true);
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * .5,
+                            color: Colors.transparent,
+                            child: Icon(Icons.keyboard_arrow_left,
+                                color: Theme.of(context).primaryColor,
+                                size: 28),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            _cropPhoto();
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * .5,
+                            color: Colors.transparent,
+                            child: Icon(Icons.crop,
+                                color: Theme.of(context).primaryColor,
+                                size: 20),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+      ),
+    );
   }
 }

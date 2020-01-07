@@ -12,11 +12,6 @@ class ExpressionOpenTop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String username = expression.creator.username ?? '';
-    final String name = expression.creator.name ?? '';
-    final String bio = expression.creator.bio ?? '';
-    final String address = expression.creator.address ?? '';
-
     return Container(
       padding: const EdgeInsets.only(top: 15, bottom: 15, left: 10),
       child: Row(
@@ -29,15 +24,7 @@ class ExpressionOpenTop extends StatelessWidget {
                 context,
                 CupertinoPageRoute<dynamic>(
                   builder: (BuildContext context) => JuntoMember(
-                    profile: UserProfile(
-                      address: address,
-                      name: name,
-                      bio: bio,
-                      profilePicture:
-                          'assets/images/junto-mobile__placeholder--member.png',
-                      username: username,
-                      verified: false,
-                    ),
+                    profile: expression.creator,
                   ),
                 ),
               );
@@ -61,9 +48,10 @@ class ExpressionOpenTop extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(username.toLowerCase() ?? '',
+                      Text(expression.creator.username.toLowerCase() ?? '',
                           style: Theme.of(context).textTheme.subhead),
-                      Text('$name', style: Theme.of(context).textTheme.body1),
+                      Text('${expression.creator.name}',
+                          style: Theme.of(context).textTheme.body1),
                     ],
                   ),
                 ),

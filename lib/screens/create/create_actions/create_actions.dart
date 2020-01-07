@@ -57,11 +57,10 @@ class CreateActionsState extends State<CreateActions> {
     super.initState();
     _channelController = TextEditingController();
     _address = widget.address;
-    _expression = CentralizedExpression(
-      type: widget.expressionType,
-      expressionData: widget.expression.toMap(),
-      context: widget.expressionContext
-    );
+    // _expression = CentralizedExpression(
+    //     type: widget.expressionType,
+    //     expressionData: widget.expression.toMap(),
+    //     context: widget.expressionContext);
   }
 
   @override
@@ -71,10 +70,44 @@ class CreateActionsState extends State<CreateActions> {
   }
 
   Future<void> _createExpression() async {
-    print(widget.address);
-    print(widget.expression);
-    print(widget.expressionContext);
     try {
+      if (widget.expressionType == 'PhotoForm') {
+        final String _photoKey = await Provider.of<ExpressionRepo>(context) 
+            .createPhoto('.png', widget.expression['image']);
+        _expression = CentralizedExpression(
+            type: widget.expressionType,
+            expressionData:
+                CentralizedPhotoFormExpression(image: _photoKey, caption: widget.expression['caption'])
+                    .toMap(),
+            context: widget.expressionContext);
+      } else if (widget.expressionType == 'EventForm') {
+        String eventPhoto = '';
+        if (widget.expression['photo'] != '') {
+          final String _eventPhotoKey =
+              await Provider.of<ExpressionRepo>(context)
+                  .createPhoto('.png', widget.expression['photo']);
+          eventPhoto = _eventPhotoKey;
+          print(eventPhoto);
+        }
+        _expression = CentralizedExpression(
+            type: widget.expressionType,
+            expressionData: CentralizedEventFormExpression(
+                photo: eventPhoto,
+                description: widget.expression['description'],
+                title: widget.expression['title'],
+                location: widget.expression['location'],
+                startTime: widget.expression['startTime'],
+                endTime: widget.expression['endTime'],
+                facilitators: <String>[],
+                members: <String>[]).toMap(),
+            context: widget.expressionContext);
+      } else {
+        _expression = CentralizedExpression(
+            type: widget.expressionType,
+            expressionData: widget.expression.toMap(),
+            context: widget.expressionContext);
+      }
+
       await Provider.of<ExpressionRepo>(context).createExpression(
         _expression,
         _expression.context,
@@ -99,23 +132,23 @@ class CreateActionsState extends State<CreateActions> {
     } catch (error) {
       print(error);
       print(error.message);
-      print('something is up');
-      // JuntoOverlay.hide();
-      // JuntoDialog.showJuntoDialog(
-      //   context,
-      //   'Something went wrong ${error?.code}',
-      //   <Widget>[
-      //     FlatButton(
-      //       onPressed: () {
-      //         Navigator.of(context).pushAndRemoveUntil(
-      //           JuntoCollective.route(),
-      //           (_) => false,
-      //         );
-      //       },
-      //       child: const Text('Ok'),
-      //     )
-      //   ],
-      // );
+      JuntoLoader.hide();
+      JuntoDialog.showJuntoDialog(
+        context,
+        'Something went wrong',
+        <Widget>[
+          FlatButton(
+            onPressed: () {
+              // Navigator.of(context).pushAndRemoveUntil(
+              //   JuntoCollective.route(),
+              //   (_) => false,
+              // );
+              Navigator.pop(context);
+            },
+            child: const Text('Ok'),
+          )
+        ],
+      );
     }
   }
 

@@ -39,7 +39,7 @@ class UserPreview extends StatelessWidget {
         child: Row(
           children: <Widget>[
             ClipOval(
-              child: _handleNullImage(userProfile.profilePicture),
+              child: _handleNullImage(userProfile.profilePicture[0]),
             ),
             Expanded(
               child: Container(

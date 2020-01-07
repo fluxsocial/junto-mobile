@@ -7,11 +7,11 @@ description: A new Flutter project.
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # Read more about versioning at semver.org.
-version: 1.0.0+3
+version: 1.0.1+7
 
 environment:
   sdk: ">=2.6.0-dev <3.0.0"
-  flutter: ">=1.12.14 <2.0.0"
+  flutter: ">=1.12.13 <2.0.0"
 
 dependencies:
   flutter:
@@ -35,6 +35,8 @@ dependencies:
 
 dev_dependencies:
   flutter_test:
+    sdk: flutter
+  flutter_driver:
     sdk: flutter
   test: any
 
@@ -65,6 +67,10 @@ flutter:
     - family:  j_home
       fonts:
       - asset: assets/fonts/j_home.ttf
+
+    - family:  j_home_two
+      fonts:
+      - asset: assets/fonts/j_home_two.ttf      
 
     - family:  MyFlutterApp
       fonts:

@@ -8,13 +8,15 @@ import 'package:junto_beta_mobile/screens/groups/packs/pack_open/pack_open.dart'
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_edit_den.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_themes.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/end_drawer_relationships.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class JuntoDrawer extends StatefulWidget {
   const JuntoDrawer({this.screen, this.icon});
 
   final String screen;
-  final icon;
+  final IconData icon;
 
   @override
   _JuntoDrawerState createState() => _JuntoDrawerState();
@@ -58,6 +60,7 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
     );
   }
 
+//ignore:unused_element
   void _onEditPress() {
     Navigator.push(
       context,
@@ -67,7 +70,8 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
     );
   }
 
-  _displayIcon(screen) {
+//ignore:unused_element
+  Widget _displayIcon(String screen) {
     if (screen == 'Collective') {
       return Container(
           margin: const EdgeInsets.only(right: 18),
@@ -89,6 +93,7 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
           child: Icon(widget.icon,
               size: 17, color: Theme.of(context).primaryColor));
     }
+    return Container();
   }
 
   @override
@@ -141,8 +146,20 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                     ),
                     JuntoDrawerItem(
                       title: 'Relationships',
-                      onTap: () {
+                      onTap: () async {
+                        final SharedPreferences _prefs =
+                            await SharedPreferences.getInstance();
                         // open relationships
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute<dynamic>(
+                            builder: (BuildContext context) =>
+                                JuntoRelationships(
+                                    _prefs.getString('user_id'),
+                                    _prefs.getString(
+                                        'user_follow_perspective_id')),
+                          ),
+                        );
                       },
                     ),
 
@@ -177,10 +194,28 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                       onTap: () async {
                         await Provider.of<AuthRepo>(context).logoutUser();
                         Navigator.of(context).pushReplacement(
-                          CupertinoPageRoute<dynamic>(
-                            builder: (BuildContext context) {
+                          PageRouteBuilder<dynamic>(
+                            pageBuilder: (
+                              BuildContext context,
+                              Animation<double> animation,
+                              Animation<double> secondaryAnimation,
+                            ) {
                               return Welcome();
                             },
+                            transitionsBuilder: (
+                              BuildContext context,
+                              Animation<double> animation,
+                              Animation<double> secondaryAnimation,
+                              Widget child,
+                            ) {
+                              return FadeTransition(
+                                opacity: animation,
+                                child: child,
+                              );
+                            },
+                            transitionDuration: const Duration(
+                              milliseconds: 1000,
+                            ),
                           ),
                         );
                       },
