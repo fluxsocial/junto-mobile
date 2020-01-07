@@ -3,6 +3,10 @@ import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 
 class SignUpThemes extends StatelessWidget {
+  SignUpThemes({this.toggleRainbow});
+
+  Function toggleRainbow;
+
   void _setTheme(String theme, BuildContext context) {
     if (theme == 'LIGHT INDIGO') {
       Provider.of<JuntoThemesProvider>(context).setTheme('light-indigo');
@@ -16,6 +20,8 @@ class SignUpThemes extends StatelessWidget {
   Widget _displayThemeSelector(String theme, BuildContext context) {
     return GestureDetector(
       onTap: () {
+        toggleRainbow(false);
+
         _setTheme(theme, context);
       },
       child: Container(
@@ -105,6 +111,44 @@ class SignUpThemes extends StatelessWidget {
                   children: <Widget>[
                     _displayThemeSelector('LIGHT INDIGO', context),
                     _displayThemeSelector('LIGHT ROYAL', context),
+                    GestureDetector(
+                      onTap: () {
+                        toggleRainbow(true);
+                        Provider.of<JuntoThemesProvider>(context)
+                            .setTheme('light-indigo');
+                      },
+                      child: Container(
+                        color: Colors.transparent,
+                        margin: const EdgeInsets.only(right: 20, left: 20),
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              decoration: BoxDecoration(
+                                border:
+                                    Border.all(color: Colors.white, width: 3),
+                                borderRadius: BorderRadius.circular(1000),
+                              ),
+                              child: ClipOval(
+                                child: Image.asset(
+                                    'assets/images/junto-mobile__background--lotus.png',
+                                    height: 65,
+                                    width: 65,
+                                    fit: BoxFit.cover),
+                              ),
+                            ),
+                            const SizedBox(height: 15),
+                            const Text(
+                              'JUNTO RAINBOW',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w700,
+                                  letterSpacing: 1.2),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                     _displayThemeSelector('JUNTO NIGHT', context),
                   ],
                 ),

@@ -34,6 +34,8 @@ class Welcome extends StatefulWidget {
 }
 
 class WelcomeState extends State<Welcome> {
+  bool _isRainbow = false;
+
   PageController _welcomeController;
   PageController _signInController;
 
@@ -59,9 +61,16 @@ class WelcomeState extends State<Welcome> {
   GlobalKey<SignUpRegisterState> signUpRegisterKey;
   GlobalKey<SignUpVerifyState> signUpVerifyKey;
 
+  void _toggleRainbow(bool visibility) {
+    setState(() {
+      _isRainbow = visibility;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+
     signUpAboutKey = GlobalKey<SignUpAboutState>();
     signUpPhotosKey = GlobalKey<SignUpPhotosState>();
     signUpRegisterKey = GlobalKey<SignUpRegisterState>();
@@ -108,34 +117,6 @@ class WelcomeState extends State<Welcome> {
   }
 
   Future<void> _handleSignUp() async {
-      // Navigator.of(context).pushReplacement(
-      //   PageRouteBuilder<dynamic>(
-      //     pageBuilder: (
-      //       BuildContext context,
-      //       Animation<double> animation,
-      //       Animation<double> secondaryAnimation,
-      //     ) {
-      //       return const SignUpAgreements();
-      //     },
-      //     transitionsBuilder: (
-      //       BuildContext context,
-      //       Animation<double> animation,
-      //       Animation<double> secondaryAnimation,
-      //       Widget child,
-      //     ) {
-      //       return SlideTransition(
-      //         position: Tween<Offset>(
-      //           begin: const Offset(-1, 0),
-      //           end: Offset.zero,
-      //         ).animate(animation),
-      //         child: child,
-      //       );
-      //     },
-      //     transitionDuration: const Duration(
-      //       milliseconds: 400,
-      //     ),
-      //   ),
-      // );    
     setState(() {
       verificationCode = signUpVerifyKey.currentState.returnDetails();
     });
@@ -216,14 +197,10 @@ class WelcomeState extends State<Welcome> {
             );
           },
           transitionDuration: const Duration(
-            milliseconds: 1000,
+            milliseconds: 400,
           ),
         ),
       );
-      // Navigator.of(context).pushAndRemoveUntil(
-      //   JuntoLotus.route(),
-      //   (Route<dynamic> route) => false,
-      // );
     } on JuntoException catch (error) {
       JuntoDialog.showJuntoDialog(context, error.message, <Widget>[
         FlatButton(
@@ -255,6 +232,16 @@ class WelcomeState extends State<Welcome> {
             ),
           ),
         ),
+        AnimatedOpacity(
+          opacity: _isRainbow ? 1.0 : 0.0,
+          duration: const Duration(milliseconds: 300),
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: Image.asset(
+                'assets/images/junto-mobile__background--lotus.png'),
+          ),
+        ),
         PageView(
             onPageChanged: (int int) {
               setState(() {
@@ -280,7 +267,7 @@ class WelcomeState extends State<Welcome> {
               SignUpUsername(
                 onUsernameChange: (String value) => username = value,
               ),
-              SignUpThemes(),
+              SignUpThemes(toggleRainbow: _toggleRainbow),
               SignUpAbout(key: signUpAboutKey),
               SignUpPhotos(key: signUpPhotosKey),
               SignUpRegister(key: signUpRegisterKey),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 
 /// Agreements screen shown to the user following registration
 class SignUpAgreements extends StatefulWidget {
@@ -33,30 +35,20 @@ class SignUpAgreementsState extends State<SignUpAgreements> {
                         height: 69,
                         color: Theme.of(context).primaryColor),
                   ),
-                  // Container(
-                  //   width: MediaQuery.of(context).size.width * .5,
-                  //   margin: const EdgeInsets.only(bottom: 25),
-                  //   decoration: BoxDecoration(
-                  //     border: Border(
-                  //       bottom: BorderSide(
-                  //         color: Theme.of(context).dividerColor,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  // Container(
-                  //   padding: EdgeInsets.symmetric(
-                  //       horizontal: MediaQuery.of(context).size.width * .05),
-                  //   margin: const EdgeInsets.only(bottom: 25),
-                  //   child: Text(
-                  //     'Junto Community Agreements',
-                  //     style: TextStyle(
-                  //         color: Theme.of(context).primaryColorDark,
-                  //         fontWeight: FontWeight.w700,
-                  //         fontSize: 22),
-                  //     textAlign: TextAlign.center,
-                  //   ),
-                  // ),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: MediaQuery.of(context).size.width * .05),
+                    margin: const EdgeInsets.only(bottom: 25),
+                    child: Text(
+                      'JUNTO',
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColorDark,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 28,
+                          letterSpacing: 1.8),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                   Container(
                     width: MediaQuery.of(context).size.width * .5,
                     margin: const EdgeInsets.only(bottom: 40),
@@ -77,52 +69,28 @@ class SignUpAgreementsState extends State<SignUpAgreements> {
                   ),
                   Container(
                     padding: EdgeInsets.symmetric(
-                        horizontal: MediaQuery.of(context).size.width * .05),
+                        horizontal: MediaQuery.of(context).size.width * .1),
                     child: Column(
                       children: <Widget>[
                         Container(
-                          padding: const EdgeInsets.only(left: 15),
-                          // decoration: BoxDecoration(
-                          //   border: Border(
-                          //     left: BorderSide(
-                          //         color: Theme.of(context).dividerColor,
-                          //         width: 2),
-                          //   ),
-                          // ),
                           child: Text(
                             '1. Be aware of the impact your words and actions have. Embrace kindness and compassion when interacting with others.',
-                            style: Theme.of(context).textTheme.caption,
+                            style: Theme.of(context).textTheme.headline,
                             textAlign: TextAlign.left,
                           ),
                         ),
                         const SizedBox(height: 25),
                         Container(
-                          padding: const EdgeInsets.only(left: 15),
-                          // decoration: BoxDecoration(
-                          //   border: Border(
-                          //     left: BorderSide(
-                          //         color: Theme.of(context).dividerColor,
-                          //         width: 2),
-                          //   ),
-                          // ),
                           child: Text(
                             '2. Accept everyone else\'s experience as valid, even if it doesn\'t look like yours',
-                            style: Theme.of(context).textTheme.caption,
+                            style: Theme.of(context).textTheme.headline,
                           ),
                         ),
                         const SizedBox(height: 25),
                         Container(
-                          padding: const EdgeInsets.only(left: 15),
-                          // decoration: BoxDecoration(
-                          //   border: Border(
-                          //     left: BorderSide(
-                          //         color: Theme.of(context).dividerColor,
-                          //         width: 2),
-                          //   ),
-                          // ),
                           child: Text(
                             '3. Expresson yourself freely. Be real and hold space for authenticity.',
-                            style: Theme.of(context).textTheme.caption,
+                            style: Theme.of(context).textTheme.headline,
                           ),
                         ),
                       ],
@@ -148,7 +116,36 @@ class SignUpAgreementsState extends State<SignUpAgreements> {
                   ),
                 ),
                 child: RaisedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pushReplacement(
+                      PageRouteBuilder<dynamic>(
+                        pageBuilder: (
+                          BuildContext context,
+                          Animation<double> animation,
+                          Animation<double> secondaryAnimation,
+                        ) {
+                          return const JuntoLotus(
+                            address: null,
+                            expressionContext: ExpressionContext.Collective,
+                          );
+                        },
+                        transitionsBuilder: (
+                          BuildContext context,
+                          Animation<double> animation,
+                          Animation<double> secondaryAnimation,
+                          Widget child,
+                        ) {
+                          return FadeTransition(
+                            opacity: animation,
+                            child: child,
+                          );
+                        },
+                        transitionDuration: const Duration(
+                          milliseconds: 1000,
+                        ),
+                      ),
+                    );
+                  },
                   padding: const EdgeInsets.symmetric(
                     horizontal: 20,
                     vertical: 20,
@@ -156,7 +153,7 @@ class SignUpAgreementsState extends State<SignUpAgreements> {
                   color: Colors.transparent,
                   elevation: 0,
                   child: const Text(
-                    'I\'M IN',
+                    'COUNT ME IN',
                     style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w700,

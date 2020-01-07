@@ -99,6 +99,7 @@ class SignUpRegisterState extends State<SignUpRegister> {
                           child: TextField(
                             controller: passwordController,
                             cursorColor: Colors.white70,
+                            obscureText: true,
                             decoration: const InputDecoration(
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
@@ -128,6 +129,7 @@ class SignUpRegisterState extends State<SignUpRegister> {
                           child: TextField(
                             controller: confirmPasswordController,
                             cursorColor: Colors.white70,
+                            obscureText: true,
                             decoration: const InputDecoration(
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
