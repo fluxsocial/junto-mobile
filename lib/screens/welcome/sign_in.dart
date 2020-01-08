@@ -116,96 +116,103 @@ class _SignInState extends State<SignIn> {
               child: Icon(CustomIcons.back, color: Colors.white70, size: 20),
             ),
           ),
-          SizedBox(height: MediaQuery.of(context).size.height * .24),
-          Container(
-            child: Column(
+          Expanded(
+            child: ListView(
               children: <Widget>[
+                SizedBox(height: MediaQuery.of(context).size.height * .2),
                 Container(
-                  child: TextField(
-                    controller: _emailController,
-                    cursorColor: Colors.white70,
-                    decoration: InputDecoration(
-                      enabledBorder: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      labelStyle: TextStyle(color: Colors.green),
-                      hintText: 'Email',
-                      hintStyle: const TextStyle(
-                        color: Colors.white70,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500,
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        child: TextField(
+                          controller: _emailController,
+                          cursorColor: Colors.white70,
+                          decoration: InputDecoration(
+                            enabledBorder: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            labelStyle: TextStyle(color: Colors.green),
+                            hintText: 'Email',
+                            hintStyle: const TextStyle(
+                              color: Colors.white70,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            fillColor: Colors.white,
+                          ),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
                       ),
-                      fillColor: Colors.white,
-                    ),
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 25),
-          Container(
-            child: Column(
-              children: <Widget>[
+                const SizedBox(height: 25),
                 Container(
-                  child: TextField(
-                    controller: _passwordController,
-                    cursorColor: Colors.white70,
-                    decoration: InputDecoration(
-                      enabledBorder: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      labelStyle: TextStyle(color: Colors.green),
-                      hintText: 'Password',
-                      hintStyle: const TextStyle(
-                        color: Colors.white70,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500,
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        child: TextField(
+                          controller: _passwordController,
+                          cursorColor: Colors.white70,
+                          decoration: InputDecoration(
+                            enabledBorder: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            labelStyle: TextStyle(color: Colors.green),
+                            hintText: 'Password',
+                            hintStyle: const TextStyle(
+                              color: Colors.white70,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            fillColor: Colors.white,
+                          ),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
                       ),
-                      fillColor: Colors.white,
-                    ),
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    ],
                   ),
                 ),
+                const SizedBox(height: 50),
+                GestureDetector(
+                  onTap: () {
+                    _handleSignIn(context);
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 20,
+                    ),
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.secondaryVariant,
+                        borderRadius: BorderRadius.circular(1000),
+                        boxShadow: <BoxShadow>[
+                          BoxShadow(
+                              color: Theme.of(context)
+                                  .primaryColorDark
+                                  .withOpacity(.12),
+                              offset: const Offset(0.0, 6.0),
+                              blurRadius: 9),
+                        ]),
+                    child: const Text(
+                      'SIGN IN',
+                      style: TextStyle(
+                          letterSpacing: 1.2,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 14),
+                    ),
+                  ),
+                )
               ],
-            ),
-          ),
-          const SizedBox(height: 50),
-          GestureDetector(
-            onTap: () {
-              _handleSignIn(context);
-            },
-            child: Container(
-              alignment: Alignment.center,
-              padding: const EdgeInsets.symmetric(
-                vertical: 20,
-              ),
-              margin: const EdgeInsets.symmetric(horizontal: 20),
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.secondaryVariant,
-                  borderRadius: BorderRadius.circular(1000),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                        color:
-                            Theme.of(context).primaryColorDark.withOpacity(.12),
-                        offset: const Offset(0.0, 6.0),
-                        blurRadius: 9),
-                  ]),
-              child: const Text(
-                'SIGN IN',
-                style: TextStyle(
-                    letterSpacing: 1.2,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 14),
-              ),
             ),
           )
         ],

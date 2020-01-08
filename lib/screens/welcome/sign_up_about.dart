@@ -217,6 +217,7 @@ class SignUpAboutState extends State<SignUpAbout> {
                       ],
                     ),
                   ),
+                  const SizedBox(height: 50),
                 ],
               ),
             ),

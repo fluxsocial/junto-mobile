@@ -151,6 +151,7 @@ class SignUpRegisterState extends State<SignUpRegister> {
                       ],
                     ),
                   ),
+                  const SizedBox(height: 50),
                 ],
               ),
             )
