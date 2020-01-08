@@ -51,25 +51,15 @@ class CreateEventState extends State<CreateEvent> with DateParser {
 
   Map<String, dynamic> createExpression() {
     return <String, dynamic>{
-      'description': 'Regenerate',
+      'description': detailsController.value.text,
       'photo': imageFile,
-      'title': 'event title',
-      'location': 'NYC',
+      'title': titleController.value.text,
+      'location': locationController.text,
       'startTime': DateTime.now().toUtc().toIso8601String(),
       'endTime': DateTime.now().toUtc().toIso8601String(),
       'facilitators': <String>[],
       'members': <String>[]
     };
-//    return CentralizedEventFormExpression(
-//      description: detailsController.value.text,
-//      photo: imageFile,
-//      title: titleController.value.text,
-//      location: locationController.text,
-//      startTime: DateTime.now().toUtc().toIso8601String(),
-//      endTime: DateTime.now().toUtc().toIso8601String(),
-//      facilitators: <String>[],
-//      members: <String>[],
-//    );
   }
 
   Future<void> _onPickPressed() async {
@@ -253,7 +243,7 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                                 )),
                           )
                         ]),
-                  // const SizedBox(height: 20),
+                  const SizedBox(height: 10),
                   Container(
                     child: TextField(
                       controller: startDateController,
@@ -276,6 +266,7 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                       textInputAction: TextInputAction.done,
                     ),
                   ),
+                  const SizedBox(height: 10),
                   Container(
                     child: TextField(
                       controller: endDateController,
@@ -298,6 +289,7 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                       textInputAction: TextInputAction.done,
                     ),
                   ),
+                  const SizedBox(height: 10),
                   Container(
                     child: TextField(
                       controller: locationController,
@@ -320,6 +312,7 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                       textInputAction: TextInputAction.done,
                     ),
                   ),
+                  const SizedBox(height: 10),
                   Container(
                     child: TextField(
                       controller: detailsController,
@@ -342,6 +335,7 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                       textInputAction: TextInputAction.done,
                     ),
                   ),
+                  const SizedBox(height: 10),
                 ],
               ),
             ),

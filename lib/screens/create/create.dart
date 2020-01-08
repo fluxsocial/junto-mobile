@@ -149,12 +149,12 @@ class JuntoCreateState extends State<JuntoCreate> {
   }
 
   void _onNextClick() {
-    Navigator.push( 
+    Navigator.push(
       context,
       MaterialPageRoute<dynamic>(
         builder: (BuildContext context) {
           return CreateActions(
-            expressionType: _expressionType, 
+            expressionType: _expressionType,
             address: widget.address,
             channels: widget.channels,
             expressionContext: widget.expressionContext,
@@ -190,7 +190,7 @@ class JuntoCreateState extends State<JuntoCreate> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomPadding: true,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(45),
         child: AppBar(
@@ -226,15 +226,16 @@ class JuntoCreateState extends State<JuntoCreate> {
         ),
       ),
       endDrawer: const JuntoDrawer(screen: 'Create', icon: CustomIcons.create),
-      floatingActionButton: _bottomNavVisible
-          ? Padding(
-              padding: const EdgeInsets.only(bottom: 25),
-              child: BottomNav(
-                screen: 'create',
-                onTap: _openExpressionCenter,
-              ),
-            )
-          : const SizedBox(),
+      floatingActionButton:
+          _bottomNavVisible && MediaQuery.of(context).viewInsets.bottom == 0
+              ? Padding(
+                  padding: const EdgeInsets.only(bottom: 25),
+                  child: BottomNav(
+                    screen: 'create',
+                    onTap: _openExpressionCenter,
+                  ),
+                )
+              : const SizedBox(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: Column(
         children: <Widget>[
