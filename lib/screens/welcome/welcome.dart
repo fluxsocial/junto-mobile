@@ -32,7 +32,7 @@ class Welcome extends StatefulWidget {
   }
 }
 
-class WelcomeState extends State<Welcome> with AutomaticKeepAliveClientMixin<Welcome> {
+class WelcomeState extends State<Welcome> {
   bool _isRainbow = false;
 
   PageController _welcomeController;
@@ -226,7 +226,6 @@ class WelcomeState extends State<Welcome> with AutomaticKeepAliveClientMixin<Wel
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return WillPopScope(
       onWillPop: _willPop,
       child: Scaffold(
@@ -258,36 +257,54 @@ class WelcomeState extends State<Welcome> with AutomaticKeepAliveClientMixin<Wel
             ),
           ),
           PageView(
-              onPageChanged: (int int) {
-                setState(() {
-                  _currentIndex = int;
-                });
-                print(_currentIndex);
-              },
-              controller: _welcomeController,
-              scrollDirection: Axis.vertical,
-              physics: const NeverScrollableScrollPhysics(),
-              children: <Widget>[
-                PageView(
+            onPageChanged: (int int) {
+              setState(() {
+                _currentIndex = int;
+              });
+              print(_currentIndex);
+            },
+            controller: _welcomeController,
+            scrollDirection: Axis.vertical,
+            physics: const NeverScrollableScrollPhysics(),
+            children: <Widget>[
+              PageKeepAlive(
+                child: PageView(
                   controller: _signInController,
                   physics: const NeverScrollableScrollPhysics(),
                   children: <Widget>[
-                    _welcomeMain(context),
-                    SignIn(_signInController)
+                    PageKeepAlive(child: _welcomeMain(context)),
+                    PageKeepAlive(child: SignIn(_signInController))
                   ],
                 ),
-                SignUpName(
+              ),
+              PageKeepAlive(
+                child: SignUpName(
                   onNamePressed: (String value) => name = value,
                 ),
-                SignUpUsername(
+              ),
+              PageKeepAlive(
+                child: SignUpUsername(
                   onUsernameChange: (String value) => username = value,
                 ),
-                SignUpThemes(toggleRainbow: _toggleRainbow),
-                SignUpAbout(key: signUpAboutKey),
-                SignUpPhotos(key: signUpPhotosKey),
-                SignUpRegister(key: signUpRegisterKey),
-                SignUpVerify(key: signUpVerifyKey, handleSignUp: _handleSignUp)
-              ]),
+              ),
+              PageKeepAlive(
+                child: SignUpThemes(toggleRainbow: _toggleRainbow),
+              ),
+              PageKeepAlive(
+                child: SignUpAbout(key: signUpAboutKey),
+              ),
+              PageKeepAlive(
+                child: SignUpPhotos(key: signUpPhotosKey),
+              ),
+              PageKeepAlive(
+                child: SignUpRegister(key: signUpRegisterKey),
+              ),
+              PageKeepAlive(
+                child: SignUpVerify(
+                    key: signUpVerifyKey, handleSignUp: _handleSignUp),
+              )
+            ],
+          ),
           _currentIndex != 0 && MediaQuery.of(context).viewInsets.bottom == 0
               ? Positioned(
                   bottom: MediaQuery.of(context).size.height * .05,
@@ -446,7 +463,27 @@ class WelcomeState extends State<Welcome> with AutomaticKeepAliveClientMixin<Wel
       ),
     );
   }
+}
+
+class PageKeepAlive extends StatefulWidget {
+  const PageKeepAlive({
+    Key key,
+    @required this.child,
+  }) : super(key: key);
+
+  final Widget child;
 
   @override
+  _PageKeepAliveState createState() => _PageKeepAliveState();
+}
+
+class _PageKeepAliveState extends State<PageKeepAlive>
+    with AutomaticKeepAliveClientMixin {
+  @override
   bool get wantKeepAlive => true;
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return widget.child;
+  }
 }
