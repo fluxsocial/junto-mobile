@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_in.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_about.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_name.dart';
@@ -92,8 +91,7 @@ class WelcomeState extends State<Welcome> {
 
   void _nextSignUpPage() {
     if (_currentIndex == 4) {
-      final AboutPageModel _aboutPageModel =
-          signUpAboutKey.currentState.returnDetails();
+      final AboutPageModel _aboutPageModel = signUpAboutKey.currentState.returnDetails();
       bio = _aboutPageModel.bio;
       location = _aboutPageModel.location;
       gender = _aboutPageModel.gender;
@@ -104,8 +102,7 @@ class WelcomeState extends State<Welcome> {
     } else if (_currentIndex == 6) {
       email = signUpRegisterKey.currentState.returnDetails()['email'];
       password = signUpRegisterKey.currentState.returnDetails()['password'];
-      confirmPassword =
-          signUpRegisterKey.currentState.returnDetails()['confirmPassword'];
+      confirmPassword = signUpRegisterKey.currentState.returnDetails()['confirmPassword'];
       validateRegistration().then((String value) => print(value));
     }
 
@@ -151,17 +148,14 @@ class WelcomeState extends State<Welcome> {
       bio: bio,
       location: <String>[location],
       username: username,
-      profileImage: <String>[
-        'assets/images/junto-mobile__placeholder--member.png'
-      ],
+      profileImage: <String>['assets/images/junto-mobile__placeholder--member.png'],
       website: <String>[website],
       gender: <String>[gender],
       verificationCode: verificationCode,
     );
 
     try {
-      final UserData results =
-          await Provider.of<AuthRepo>(context).registerUser(details);
+      final UserData results = await Provider.of<AuthRepo>(context).registerUser(details);
       final Map<String, dynamic> resultsMap = results.toMap();
       final String resultsMapToString = json.encode(resultsMap);
 
@@ -238,8 +232,7 @@ class WelcomeState extends State<Welcome> {
           child: Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
-            child: Image.asset(
-                'assets/images/junto-mobile__background--lotus.png'),
+            child: Image.asset('assets/images/junto-mobile__background--lotus.png'),
           ),
         ),
         PageView(
@@ -256,10 +249,7 @@ class WelcomeState extends State<Welcome> {
               PageView(
                 controller: _signInController,
                 physics: const NeverScrollableScrollPhysics(),
-                children: <Widget>[
-                  _welcomeMain(context),
-                  SignIn(_signInController)
-                ],
+                children: <Widget>[_welcomeMain(context), SignIn(_signInController)],
               ),
               SignUpName(
                 onNamePressed: (String value) => name = value,
@@ -312,8 +302,7 @@ class WelcomeState extends State<Welcome> {
                               height: 36,
                               width: 36,
                               color: Colors.transparent,
-                              child: Icon(Icons.keyboard_arrow_down,
-                                  color: Colors.white, size: 36),
+                              child: Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 36),
                             ),
                           ),
                   ],
@@ -324,9 +313,7 @@ class WelcomeState extends State<Welcome> {
             ? Positioned(
                 top: MediaQuery.of(context).size.height * .08,
                 left: 20,
-                child: Image.asset(
-                    'assets/images/junto-mobile__logo--white.png',
-                    height: 45),
+                child: Image.asset('assets/images/junto-mobile__logo--white.png', height: 45),
               )
             : const SizedBox(),
       ]),
@@ -388,19 +375,14 @@ class WelcomeState extends State<Welcome> {
                         borderRadius: BorderRadius.circular(1000),
                         boxShadow: <BoxShadow>[
                           BoxShadow(
-                              color: Theme.of(context)
-                                  .primaryColorDark
-                                  .withOpacity(.12),
+                              color: Theme.of(context).primaryColorDark.withOpacity(.12),
                               offset: const Offset(0.0, 6.0),
                               blurRadius: 9),
                         ]),
                     child: const Text(
                       'WELCOME TO THE PACK',
-                      style: TextStyle(
-                          letterSpacing: 1.2,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 14),
+                      style:
+                          TextStyle(letterSpacing: 1.2, color: Colors.white, fontWeight: FontWeight.w700, fontSize: 14),
                     ),
                   ),
                 ),
@@ -416,11 +398,8 @@ class WelcomeState extends State<Welcome> {
                   },
                   child: const Text(
                     'SIGN IN',
-                    style: TextStyle(
-                        letterSpacing: 1.2,
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700),
+                    style:
+                        TextStyle(letterSpacing: 1.2, color: Colors.white, fontSize: 14, fontWeight: FontWeight.w700),
                   ),
                 ),
               ),

@@ -1,13 +1,14 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
-import 'package:junto_beta_mobile/utils/junto_overlay.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:junto_beta_mobile/widgets/image_cropper.dart';
-import 'package:junto_beta_mobile/models/models.dart';
-import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:junto_beta_mobile/widgets/image_cropper.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CreateSphere extends StatefulWidget {
@@ -37,8 +38,7 @@ class CreateSphereState extends State<CreateSphere> {
       setState(() => imageFile = null);
       return;
     }
-    final File cropped =
-        await ImageCroppingDialog.show(context, image, aspectRatios: <String>[
+    final File cropped = await ImageCroppingDialog.show(context, image, aspectRatios: <String>[
       '3:2',
     ]);
     if (cropped == null) {
@@ -51,8 +51,7 @@ class CreateSphereState extends State<CreateSphere> {
   Future<void> _createSphere() async {
     // check if photo
     if (imageFile != null) {
-      final String _photoKey = await Provider.of<ExpressionRepo>(context, listen: false)
-          .createPhoto('.png', imageFile);
+      final String _photoKey = await Provider.of<ExpressionRepo>(context, listen: false).createPhoto('.png', imageFile);
       print(_photoKey);
       setState(() {
         imageKey = _photoKey;
@@ -118,9 +117,7 @@ class CreateSphereState extends State<CreateSphere> {
                           color: Colors.transparent,
                           width: 48,
                           alignment: Alignment.centerLeft,
-                          child: Icon(CustomIcons.cancel,
-                              size: 24,
-                              color: Theme.of(context).primaryColorDark),
+                          child: Icon(CustomIcons.cancel, size: 24, color: Theme.of(context).primaryColorDark),
                         ),
                       )
                     : GestureDetector(
@@ -135,13 +132,10 @@ class CreateSphereState extends State<CreateSphere> {
                           color: Colors.transparent,
                           width: 60,
                           alignment: Alignment.centerLeft,
-                          child: Icon(CustomIcons.back,
-                              size: 17,
-                              color: Theme.of(context).primaryColorDark),
+                          child: Icon(CustomIcons.back, size: 17, color: Theme.of(context).primaryColorDark),
                         ),
                       ),
-                Text('Create Sphere',
-                    style: Theme.of(context).textTheme.subhead),
+                Text('Create Sphere', style: Theme.of(context).textTheme.subhead),
                 _currentIndex == 2
                     ? GestureDetector(
                         onTap: () {
@@ -153,8 +147,7 @@ class CreateSphereState extends State<CreateSphere> {
                           padding: const EdgeInsets.only(right: 10),
                           width: 60,
                           alignment: Alignment.centerRight,
-                          child: Text('create',
-                              style: Theme.of(context).textTheme.caption),
+                          child: Text('create', style: Theme.of(context).textTheme.caption),
                         ),
                       )
                     : GestureDetector(
@@ -163,8 +156,7 @@ class CreateSphereState extends State<CreateSphere> {
                             setState(() {
                               sphereName = sphereNameController.value.text;
                               sphereHandle = sphereHandleController.value.text;
-                              sphereDescription =
-                                  sphereDescriptionController.value.text;
+                              sphereDescription = sphereDescriptionController.value.text;
                             });
                           }
                           createSphereController.nextPage(
@@ -177,8 +169,7 @@ class CreateSphereState extends State<CreateSphere> {
                           padding: const EdgeInsets.only(right: 10),
                           width: 48,
                           alignment: Alignment.centerRight,
-                          child: Text('next',
-                              style: Theme.of(context).textTheme.caption),
+                          child: Text('next', style: Theme.of(context).textTheme.caption),
                         ),
                       )
               ],
@@ -208,11 +199,7 @@ class CreateSphereState extends State<CreateSphere> {
                     _currentIndex = index;
                   });
                 },
-                children: <Widget>[
-                  _createSphereOne(),
-                  _createSphereTwo(),
-                  _createSphereThree()
-                ],
+                children: <Widget>[_createSphereOne(), _createSphereTwo(), _createSphereThree()],
               ),
             )
           ],
@@ -234,8 +221,7 @@ class CreateSphereState extends State<CreateSphere> {
                   width: MediaQuery.of(context).size.width,
                   height: (MediaQuery.of(context).size.width / 3) * 2,
                   color: Theme.of(context).dividerColor,
-                  child: Icon(CustomIcons.camera,
-                      size: 38, color: Theme.of(context).primaryColorLight)),
+                  child: Icon(CustomIcons.camera, size: 38, color: Theme.of(context).primaryColorLight)),
             )
           : Column(children: <Widget>[
               Container(
@@ -249,22 +235,18 @@ class CreateSphereState extends State<CreateSphere> {
                   _openChangePhotoModal();
                 },
                 child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                  padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
                   decoration: BoxDecoration(
                     color: Colors.transparent,
                     border: Border(
-                      bottom: BorderSide(
-                          color: Theme.of(context).dividerColor, width: .75),
+                      bottom: BorderSide(color: Theme.of(context).dividerColor, width: .75),
                     ),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text('Change photo',
-                          style: Theme.of(context).textTheme.caption),
-                      Icon(Icons.keyboard_arrow_right,
-                          color: Theme.of(context).primaryColorLight)
+                      Text('Change photo', style: Theme.of(context).textTheme.caption),
+                      Icon(Icons.keyboard_arrow_right, color: Theme.of(context).primaryColorLight)
                     ],
                   ),
                 ),
@@ -283,9 +265,7 @@ class CreateSphereState extends State<CreateSphere> {
             }) =>
                 null,
             decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Name of sphere',
-                hintStyle: Theme.of(context).textTheme.title),
+                border: InputBorder.none, hintText: 'Name of sphere', hintStyle: Theme.of(context).textTheme.title),
             cursorColor: JuntoPalette.juntoGrey,
             cursorWidth: 2,
             maxLines: null,
@@ -327,11 +307,14 @@ class CreateSphereState extends State<CreateSphere> {
           // }) =>
           //     null,
           decoration: InputDecoration(
-              border: InputBorder.none,
-              hintText: 'About your sphere',
-              hintStyle: Theme.of(context).textTheme.caption,
-              counterStyle:
-                  TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
+            border: InputBorder.none,
+            hintText: 'About your sphere',
+            hintStyle: Theme.of(context).textTheme.caption,
+            counterStyle: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
           cursorColor: Theme.of(context).primaryColorDark,
           cursorWidth: 2,
           maxLines: null,
@@ -384,17 +367,13 @@ class CreateSphereState extends State<CreateSphere> {
                           border: InputBorder.none,
                           hintText: 'Add members to your sphere',
                           hintStyle: TextStyle(
-                              color: Theme.of(context).primaryColorLight,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500),
+                              color: Theme.of(context).primaryColorLight, fontSize: 15, fontWeight: FontWeight.w500),
                         ),
                         cursorColor: Theme.of(context).primaryColorDark,
                         cursorWidth: 1,
                         maxLines: null,
                         style: TextStyle(
-                            color: Theme.of(context).primaryColorDark,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500),
+                            color: Theme.of(context).primaryColorDark, fontSize: 15, fontWeight: FontWeight.w500),
                         maxLength: 80,
                         textInputAction: TextInputAction.done,
                       ),
@@ -413,8 +392,7 @@ class CreateSphereState extends State<CreateSphere> {
   Widget _createSphereThree() {
     return ListView(
       children: <Widget>[
-        _spherePrivacy('Public',
-            'Anyone can join this sphere, read its expressions and share to it'),
+        _spherePrivacy('Public', 'Anyone can join this sphere, read its expressions and share to it'),
         _spherePrivacy(
             'Shared',
             'Only members can read expressions '
@@ -452,13 +430,12 @@ class CreateSphereState extends State<CreateSphere> {
                   children: <Widget>[
                     Text(
                       privacyLayer,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    Text(privacyDescription,
-                        style: Theme.of(context).textTheme.body2)
+                    Text(privacyDescription, style: Theme.of(context).textTheme.body2)
                   ],
                 ),
               ),
@@ -469,10 +446,7 @@ class CreateSphereState extends State<CreateSphere> {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                       colors: _currentPrivacy == privacyLayer
-                          ? <Color>[
-                              Theme.of(context).colorScheme.secondary,
-                              Theme.of(context).colorScheme.primary
-                            ]
+                          ? <Color>[Theme.of(context).colorScheme.secondary, Theme.of(context).colorScheme.primary]
                           : <Color>[Colors.white, Colors.white],
                       begin: Alignment.bottomLeft,
                       end: Alignment.topRight),

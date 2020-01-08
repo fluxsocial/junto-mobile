@@ -45,10 +45,7 @@ class SignUpVerifyState extends State<SignUpVerify> {
             Container(
               child: const Text(
                 'Final step :)',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w700),
+                style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w700),
               ),
             ),
             SizedBox(height: MediaQuery.of(context).size.height * .17),
@@ -57,32 +54,22 @@ class SignUpVerifyState extends State<SignUpVerify> {
               child: TextField(
                 controller: verificationController,
                 maxLength: 6,
-                buildCounter: (BuildContext context,
-                        {int currentLength, int maxLength, bool isFocused}) =>
-                    null,
+                buildCounter: (BuildContext context, {int currentLength, int maxLength, bool isFocused}) => null,
                 keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  WhitelistingTextInputFormatter.digitsOnly
-                ],
+                inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
                 textInputAction: TextInputAction.done,
                 maxLines: null,
                 cursorColor: Colors.white70,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   enabledBorder: InputBorder.none,
                   focusedBorder: InputBorder.none,
                   hintText: 'Six digit verification code',
-                  hintStyle: const TextStyle(
-                      color: Colors.white70,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: 1),
+                  hintStyle:
+                      TextStyle(color: Colors.white70, fontSize: 20, fontWeight: FontWeight.w500, letterSpacing: 1),
                   fillColor: Colors.white,
                 ),
-                style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500,
-                    letterSpacing: 6),
+                style:
+                    const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w500, letterSpacing: 6),
               ),
             ),
             const SizedBox(height: 10),
@@ -91,10 +78,7 @@ class SignUpVerifyState extends State<SignUpVerify> {
               children: const <Widget>[
                 Text(
                   'CHECK EMAIL',
-                  style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400),
+                  style: TextStyle(color: Colors.white70, fontSize: 14, fontWeight: FontWeight.w400),
                 ),
               ],
             ),
@@ -113,19 +97,13 @@ class SignUpVerifyState extends State<SignUpVerify> {
                     borderRadius: BorderRadius.circular(1000),
                     boxShadow: <BoxShadow>[
                       BoxShadow(
-                          color: Theme.of(context)
-                              .primaryColorDark
-                              .withOpacity(.12),
+                          color: Theme.of(context).primaryColorDark.withOpacity(.12),
                           offset: const Offset(0.0, 6.0),
                           blurRadius: 9),
                     ]),
                 child: const Text(
                   'LET\'S GO!',
-                  style: TextStyle(
-                      letterSpacing: 1.2,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 14),
+                  style: TextStyle(letterSpacing: 1.2, color: Colors.white, fontWeight: FontWeight.w700, fontSize: 14),
                 ),
               ),
             ),

@@ -1,22 +1,22 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 
 import 'package:async/async.dart' show AsyncMemoizer;
-import 'package:provider/provider.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/packs/packs.dart';
-import 'package:junto_beta_mobile/screens/groups/spheres/spheres.dart';
 import 'package:junto_beta_mobile/screens/groups/spheres/create_sphere.dart';
+import 'package:junto_beta_mobile/screens/groups/spheres/spheres.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/appbar/groups_appbar.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
-import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // This screen displays groups a member belongs two. Currently, there are two types of
 // groups: spheres (communities) and packs (agent-centric communities)
@@ -31,10 +31,10 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
   int _currentIndex = 0;
   PageController _groupsPageController;
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
-  final AsyncMemoizer<UserGroupsResponse> _memoizer =
-      AsyncMemoizer<UserGroupsResponse>();
+  final AsyncMemoizer<UserGroupsResponse> _memoizer = AsyncMemoizer<UserGroupsResponse>();
 
   UserRepo _userProvider;
+
   //ignore:unused_field
   String _userAddress;
   UserData _userProfile;
@@ -57,8 +57,7 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
 
   Future<void> getUserInformation() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final Map<String, dynamic> decodedUserData =
-        jsonDecode(prefs.getString('user_data'));
+    final Map<String, dynamic> decodedUserData = jsonDecode(prefs.getString('user_data'));
 
     setState(() {
       _userAddress = prefs.getString('user_id');
@@ -103,22 +102,21 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
                   onTap: () {
                     Navigator.push(
                       context,
-                      CupertinoPageRoute(
-                          builder: (BuildContext context) => CreateSphere()),
+                      CupertinoPageRoute<void>(
+                        builder: (BuildContext context) => CreateSphere(),
+                      ),
                     );
                   })),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        endDrawer:
-            const JuntoDrawer(screen: 'Groups', icon: CustomIcons.groups),
+        endDrawer: const JuntoDrawer(screen: 'Groups', icon: CustomIcons.groups),
         body: Column(
           children: <Widget>[
             Container(
               padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
               decoration: BoxDecoration(
                 border: Border(
-                  bottom: BorderSide(
-                      color: Theme.of(context).dividerColor, width: .5),
+                  bottom: BorderSide(color: Theme.of(context).dividerColor, width: .5),
                 ),
               ),
               child: Row(
@@ -192,32 +190,27 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
             if (_userProfile != null)
               FutureBuilder<UserGroupsResponse>(
                 future: getUserGroups(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<UserGroupsResponse> snapshot) {
+                builder: (BuildContext context, AsyncSnapshot<UserGroupsResponse> snapshot) {
                   if (snapshot.hasError) {
                     print(snapshot.error);
                     return Expanded(
                       child: Center(
                         child: Transform.translate(
                           offset: const Offset(0.0, -50),
-                          child: const Text(
-                              'Hmm, something is up with our server'),
+                          child: const Text('Hmm, something is up with our server'),
                         ),
                       ),
                     );
                   }
                   if (snapshot.hasData) {
                     final List<Group> ownedGroups = snapshot.data.owned;
-                    final List<Group> associatedGroups =
-                        snapshot.data.associated;
-                    final List<Group> userPacks =
-                        distinct<Group>(ownedGroups, associatedGroups)
-                            .where((Group group) => group.groupType == 'Pack')
-                            .toList();
-                    final List<Group> userSpheres =
-                        distinct<Group>(ownedGroups, associatedGroups)
-                            .where((Group group) => group.groupType == 'Sphere')
-                            .toList();
+                    final List<Group> associatedGroups = snapshot.data.associated;
+                    final List<Group> userPacks = distinct<Group>(ownedGroups, associatedGroups)
+                        .where((Group group) => group.groupType == 'Pack')
+                        .toList();
+                    final List<Group> userSpheres = distinct<Group>(ownedGroups, associatedGroups)
+                        .where((Group group) => group.groupType == 'Sphere')
+                        .toList();
                     return Expanded(
                       child: PageView(
                         controller: _groupsPageController,
@@ -227,13 +220,8 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
                           });
                         },
                         children: <Widget>[
-                          JuntoSpheres(
-                              userProfile: _userProfile,
-                              userSpheres: userSpheres),
-                          JuntoPacks(
-                              visibility: _isVisible,
-                              userProfile: _userProfile,
-                              userPacks: userPacks)
+                          JuntoSpheres(userProfile: _userProfile, userSpheres: userSpheres),
+                          JuntoPacks(visibility: _isVisible, userProfile: _userProfile, userPacks: userPacks)
                         ],
                       ),
                     );

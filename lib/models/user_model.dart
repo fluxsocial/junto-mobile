@@ -24,15 +24,11 @@ class UserProfile {
       address: map['address'] as String,
       name: map['name'] as String,
       bio: map['bio'] as String,
-      location:
-          map['location'] != null ? List<String>.from(map['location']) : null,
-      profilePicture: map['profile_picture'] != null
-          ? List<String>.from(map['profile_picture'])
-          : null,
+      location: map['location'] != null ? List<String>.from(map['location']) : null,
+      profilePicture: map['profile_picture'] != null ? List<String>.from(map['profile_picture']) : null,
       verified: map['verified'] as bool,
       username: map['username'] as String,
-      website:
-          map['website'] != null ? List<String>.from(map['website']) : null,
+      website: map['website'] != null ? List<String>.from(map['website']) : null,
       gender: map['gender'] != null ? List<String>.from(map['gender']) : null,
     );
   }
@@ -189,6 +185,7 @@ class UserAuthRegistrationDetails implements UserAuthDetails {
 
   @override
   final String email;
+  @override
   final String password;
   final String name;
   final String username;
@@ -227,12 +224,8 @@ class UserData {
 
   factory UserData.fromMap(Map<String, dynamic> map) {
     return UserData(
-      privateDen: map['private_den'] != null
-          ? CentralizedDen.fromMap(map['private_den'])
-          : null,
-      publicDen: map['public_den'] != null
-          ? CentralizedDen.fromMap(map['public_den'])
-          : null,
+      privateDen: map['private_den'] != null ? CentralizedDen.fromMap(map['private_den']) : null,
+      publicDen: map['public_den'] != null ? CentralizedDen.fromMap(map['public_den']) : null,
       pack: CentralizedPack.fromMap(map['pack']),
       user: UserProfile.fromMap(map['user']),
       userPerspective: CentralizedPerspective.fromMap(

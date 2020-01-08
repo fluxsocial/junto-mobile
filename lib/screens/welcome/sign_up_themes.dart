@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
+import 'package:provider/provider.dart';
 
 class SignUpThemes extends StatelessWidget {
-  SignUpThemes({this.toggleRainbow});
+  const SignUpThemes({
+    Key key,
+    @required this.toggleRainbow,
+  }) : super(key: key);
 
-  Function toggleRainbow;
+  final Function toggleRainbow;
 
   void _setTheme(String theme, BuildContext context) {
     if (theme == 'LIGHT INDIGO') {
@@ -45,10 +48,7 @@ class SignUpThemes extends StatelessWidget {
             const SizedBox(height: 15),
             Text(theme,
                 style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 1.2)),
+                    color: Colors.white, fontSize: 14, fontWeight: FontWeight.w700, letterSpacing: 1.2)),
           ],
         ),
       ),
@@ -90,70 +90,60 @@ class SignUpThemes extends StatelessWidget {
           top: MediaQuery.of(context).size.height * .16,
         ),
         child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                margin: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).size.height * .24,
-                ),
-                child: const Text(
-                  'Which theme feels best?',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w700),
-                ),
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              margin: EdgeInsets.only(
+                bottom: MediaQuery.of(context).size.height * .24,
               ),
-              Expanded(
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: <Widget>[
-                    _displayThemeSelector('LIGHT INDIGO', context),
-                    _displayThemeSelector('LIGHT ROYAL', context),
-                    GestureDetector(
-                      onTap: () {
-                        toggleRainbow(true);
-                        Provider.of<JuntoThemesProvider>(context)
-                            .setTheme('light-indigo');
-                      },
-                      child: Container(
-                        color: Colors.transparent,
-                        margin: const EdgeInsets.only(right: 20, left: 20),
-                        child: Column(
-                          children: <Widget>[
-                            Container(
-                              decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: Colors.white, width: 3),
-                                borderRadius: BorderRadius.circular(1000),
-                              ),
-                              child: ClipOval(
-                                child: Image.asset(
-                                    'assets/images/junto-mobile__background--lotus.png',
-                                    height: 65,
-                                    width: 65,
-                                    fit: BoxFit.cover),
-                              ),
+              child: const Text(
+                'Which theme feels best?',
+                style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w700),
+              ),
+            ),
+            Expanded(
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: <Widget>[
+                  _displayThemeSelector('LIGHT INDIGO', context),
+                  _displayThemeSelector('LIGHT ROYAL', context),
+                  GestureDetector(
+                    onTap: () {
+                      toggleRainbow(true);
+                      Provider.of<JuntoThemesProvider>(context).setTheme('light-indigo');
+                    },
+                    child: Container(
+                      color: Colors.transparent,
+                      margin: const EdgeInsets.only(right: 20, left: 20),
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.white, width: 3),
+                              borderRadius: BorderRadius.circular(1000),
                             ),
-                            const SizedBox(height: 15),
-                            const Text(
-                              'JUNTO RAINBOW',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700,
-                                  letterSpacing: 1.2),
+                            child: ClipOval(
+                              child: Image.asset('assets/images/junto-mobile__background--lotus.png',
+                                  height: 65, width: 65, fit: BoxFit.cover),
                             ),
-                          ],
-                        ),
+                          ),
+                          const SizedBox(height: 15),
+                          const Text(
+                            'JUNTO RAINBOW',
+                            style: TextStyle(
+                                color: Colors.white, fontSize: 14, fontWeight: FontWeight.w700, letterSpacing: 1.2),
+                          ),
+                        ],
                       ),
                     ),
-                    _displayThemeSelector('JUNTO NIGHT', context),
-                  ],
-                ),
-              )
-            ]),
+                  ),
+                  _displayThemeSelector('JUNTO NIGHT', context),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
