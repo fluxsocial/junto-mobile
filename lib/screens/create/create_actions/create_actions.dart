@@ -76,13 +76,14 @@ class CreateActionsState extends State<CreateActions> {
             .createPhoto('.png', widget.expression['image']);
         _expression = CentralizedExpression(
             type: widget.expressionType,
-            expressionData:
+            expressionData: 
                 CentralizedPhotoFormExpression(image: _photoKey, caption: widget.expression['caption'])
                     .toMap(),
             context: widget.expressionContext);
       } else if (widget.expressionType == 'EventForm') {
+        print(widget.expression['photo']);
         String eventPhoto = '';
-        if (widget.expression['photo'] != '') {
+        if (widget.expression['photo'] != null) {
           final String _eventPhotoKey =
               await Provider.of<ExpressionRepo>(context, listen: false)
                   .createPhoto('.png', widget.expression['photo']);
@@ -92,7 +93,7 @@ class CreateActionsState extends State<CreateActions> {
         _expression = CentralizedExpression(
             type: widget.expressionType,
             expressionData: CentralizedEventFormExpression(
-                photo: eventPhoto,
+                photo: '',
                 description: widget.expression['description'],
                 title: widget.expression['title'],
                 location: widget.expression['location'],

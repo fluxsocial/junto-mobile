@@ -215,7 +215,7 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                               );
                             },
                             transitionDuration: const Duration(
-                              milliseconds: 1000,
+                              milliseconds: 400,
                             ),
                           ),
                         );
