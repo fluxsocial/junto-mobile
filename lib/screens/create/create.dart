@@ -334,7 +334,7 @@ class JuntoCreateState extends State<JuntoCreate> {
       expressionIcon = Icon(CustomIcons.longform,
           color: Theme.of(context).dividerColor, size: 24);
       switchExpression = () {
-        switchTemplate('Dynamic');
+        switchTemplate('LongForm');
       };
     } else if (expressionType == 'shortform') {
       expressionName = 'SHORTFORM';
@@ -362,6 +362,7 @@ class JuntoCreateState extends State<JuntoCreate> {
       onTap: switchExpression,
       child: Container(
         width: MediaQuery.of(context).size.width * .5,
+        color: Colors.transparent,
         alignment: Alignment.center,
         child: Column(
           children: <Widget>[

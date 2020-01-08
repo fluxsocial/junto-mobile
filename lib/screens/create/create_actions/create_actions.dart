@@ -72,13 +72,14 @@ class CreateActionsState extends State<CreateActions> {
   Future<void> _createExpression() async {
     try {
       if (widget.expressionType == 'PhotoForm') {
-        final String _photoKey = await Provider.of<ExpressionRepo>(context, listen: false) 
-            .createPhoto('.png', widget.expression['image']);
+        final String _photoKey =
+            await Provider.of<ExpressionRepo>(context, listen: false)
+                .createPhoto('.png', widget.expression['image']);
         _expression = CentralizedExpression(
             type: widget.expressionType,
-            expressionData: 
-                CentralizedPhotoFormExpression(image: _photoKey, caption: widget.expression['caption'])
-                    .toMap(),
+            expressionData: CentralizedPhotoFormExpression(
+                    image: _photoKey, caption: widget.expression['caption'])
+                .toMap(),
             context: widget.expressionContext);
       } else if (widget.expressionType == 'EventForm') {
         print(widget.expression['photo']);
@@ -109,7 +110,8 @@ class CreateActionsState extends State<CreateActions> {
             context: widget.expressionContext);
       }
 
-      await Provider.of<ExpressionRepo>(context, listen: false).createExpression(
+      await Provider.of<ExpressionRepo>(context, listen: false)
+          .createExpression(
         _expression,
         _expression.context,
         _address,
@@ -230,39 +232,6 @@ class CreateActionsState extends State<CreateActions> {
                       color: Theme.of(context).primaryColorDark, size: 17)
                 ],
               ),
-            ),
-          ),
-          Container(
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: Theme.of(context).dividerColor,
-                  width: .75,
-                ),
-              ),
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            child: TextField(
-              buildCounter: (
-                BuildContext context, {
-                int currentLength,
-                int maxLength,
-                bool isFocused,
-              }) =>
-                  null,
-              decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintStyle: Theme.of(context).textTheme.caption,
-                  hintText:
-                      'set an intention (i.e. why are you sharing this? what are you looking for from others?)',
-                  hintMaxLines: 2),
-              cursorColor: Theme.of(context).primaryColorDark,
-              cursorWidth: 2,
-              maxLines: null,
-              style: Theme.of(context).textTheme.caption,
-              maxLength: 240,
-              textInputAction: TextInputAction.done,
             ),
           ),
         ],
