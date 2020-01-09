@@ -113,6 +113,9 @@ abstract class GroupService {
 
   Future<List<CentralizedExpressionResponse>> getGroupExpressions(
       String groupAddress, ExpressionQueryParams params);
+
+  /// Allows for updating a group. The parameter [group] must not be null.
+  Future<Group> updateGroup(Group group);
 }
 
 enum QueryType { address, email, username }

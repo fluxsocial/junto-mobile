@@ -59,4 +59,10 @@ class MockSphere with ChangeNotifier implements GroupService {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     return kSampleExpressions;
   }
+
+  @override
+  Future<Group> updateGroup(Group group) async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    return kGroups.first;
+  }
 }
