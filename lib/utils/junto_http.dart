@@ -71,7 +71,7 @@ class JuntoHttp {
     );
     return http.Response.fromStream(_streamedResponse);
   }
-
+@Deprecated('User postWithoutEncoding instead. Will soon be removed.')
   Future<http.Response> post(
     String resource, {
     Map<String, String> headers,

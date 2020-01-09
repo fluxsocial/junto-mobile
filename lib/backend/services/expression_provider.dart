@@ -102,7 +102,7 @@ class ExpressionServiceCentralized implements ExpressionService {
   Future<Resonation> postResonation(
     String expressionAddress,
   ) async {
-    final http.Response _serverResponse = await client.post(
+    final http.Response _serverResponse = await client.postWithoutEncoding(
       '/expressions/$expressionAddress/resonations',
     );
     return Resonation.fromMap(JuntoHttp.handleResponse(_serverResponse));

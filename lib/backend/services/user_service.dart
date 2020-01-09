@@ -187,7 +187,7 @@ class UserServiceCentralized implements UserService {
       'user_address': userAddress
     };
     final http.Response _serverResponse = await client
-        .post('/perspectives/$perspectiveAddress/users', body: _postBody);
+        .postWithoutEncoding('/perspectives/$perspectiveAddress/users', body: _postBody);
     final Map<String, dynamic> _decodedResponse =
         JuntoHttp.handleResponse(_serverResponse);
     return UserProfile.fromMap(_decodedResponse);
