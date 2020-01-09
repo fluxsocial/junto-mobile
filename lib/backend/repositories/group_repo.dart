@@ -38,4 +38,6 @@ class GroupRepo {
       String groupAddress, ExpressionQueryParams params) {
     return _groupService.getGroupExpressions(groupAddress, params);
   }
+
+  Future<Group> updateGroup(Group group) => _groupService.updateGroup(group);
 }
