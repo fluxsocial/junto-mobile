@@ -88,6 +88,8 @@ abstract class ExpressionService {
 
   /// Returns mock expression data.
   List<CentralizedExpressionResponse> get collectiveExpressions;
+
+  Future<void> deleteExpression(String expressionAddress);
 }
 
 abstract class GroupService {

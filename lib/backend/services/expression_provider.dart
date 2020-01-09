@@ -158,6 +158,14 @@ class ExpressionServiceCentralized implements ExpressionService {
   }
 
   @override
+  Future<void> deleteExpression(String expressionAddress) async {
+    final http.Response _serverResponse = await client.delete(
+      '/expressions/$expressionAddress',
+    );
+    JuntoHttp.handleResponse(_serverResponse);
+  }
+
+  @override
   Future<QueryExpressionResults> getCollectiveExpressions(
       Map<String, String> params) async {
     final http.Response response = await client.get(

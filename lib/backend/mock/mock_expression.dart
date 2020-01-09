@@ -85,4 +85,9 @@ class MockExpressionService implements ExpressionService {
       ).toIso8601String(),
     );
   }
+
+  @override
+  Future<void> deleteExpression(String expressionAddress) async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+  }
 }
