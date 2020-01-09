@@ -188,4 +188,7 @@ abstract class UserService {
 
   /// Gets a list of pending user connections
   Future<List<UserProfile>> connectedUsers(String userAddress);
+
+  /// Updates the given [user] and returns updated [UserData]
+  Future<UserData> updateUser(UserProfile user);
 }

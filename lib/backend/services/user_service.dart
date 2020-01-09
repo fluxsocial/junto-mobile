@@ -266,6 +266,17 @@ class UserServiceCentralized implements UserService {
     JuntoHttp.handleResponse(_serverResponse);
   }
 
+  @override
+  Future<UserData> updateUser(UserProfile user) async {
+    final http.Response _serverResponse = await client.postWithoutEncoding(
+      '/users/${user.address}',
+      body: user.toMap(),
+    );
+    final Map<String, dynamic> _data =
+        JuntoHttp.handleResponse(_serverResponse);
+    return UserData.fromMap(_data);
+  }
+
   /// Private function which returns the correct query param for the given
   /// [QueryType]
   Map<String, dynamic> _buildQueryParam(String param, QueryType queryType) {
