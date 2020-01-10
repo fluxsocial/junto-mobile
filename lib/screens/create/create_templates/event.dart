@@ -188,6 +188,7 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                         cursorWidth: 2,
                         maxLines: null,
                         maxLength: 140,
+                        textInputAction: TextInputAction.done,
                         style: Theme.of(context).textTheme.title),
                   ),
                   imageFile == null
@@ -196,15 +197,15 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                             _onPickPressed();
                           },
                           child: Container(
-                              margin: const EdgeInsets.only(bottom: 15),
-                              alignment: Alignment.center,
-                              width: MediaQuery.of(context).size.width,
-                              height:
-                                  (MediaQuery.of(context).size.width / 3) * 2,
-                              color: Theme.of(context).dividerColor,
-                              child: Icon(CustomIcons.camera,
-                                  size: 38,
-                                  color: Theme.of(context).primaryColorLight)),
+                            margin: const EdgeInsets.only(bottom: 15),
+                            alignment: Alignment.center,
+                            width: MediaQuery.of(context).size.width,
+                            height: (MediaQuery.of(context).size.width / 3) * 2,
+                            color: Theme.of(context).dividerColor,
+                            child: Icon(CustomIcons.camera,
+                                size: 38,
+                                color: Theme.of(context).primaryColorLight),
+                          ),
                         )
                       : Column(children: <Widget>[
                           Container(

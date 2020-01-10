@@ -79,7 +79,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
   }
 
   void refreshData() {
-    _expressionProvider = Provider.of<ExpressionRepo>(context,listen: false);
+    _expressionProvider = Provider.of<ExpressionRepo>(context, listen: false);
     _expressionCompleter =
         getCollectiveExpressions(contextType: 'Collective', paginationPos: 0);
   }
@@ -244,7 +244,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
         screen: 'Collective',
         icon: CustomIcons.collective,
       ),
-
       // dynamically render body
       body: RefreshIndicator(
         onRefresh: () async => refreshData,
