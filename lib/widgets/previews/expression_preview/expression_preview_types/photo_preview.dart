@@ -20,14 +20,17 @@ class PhotoPreview extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         child: Hero(
           tag: 'photo_preview-' + expression.address,
-          child: CachedNetworkImage(
+          child: RepaintBoundary(
+            child: CachedNetworkImage(
+              fadeInDuration: const Duration(milliseconds: 200),
+              fadeOutDuration: const Duration(milliseconds: 200),
               imageUrl: expression.expressionData.image,
               placeholder: (BuildContext context, String _) {
-                return Container(
-                  color: Theme.of(context).dividerColor
-                );
+                return Container(color: Theme.of(context).dividerColor);
               },
-              fit: BoxFit.cover),
+              fit: BoxFit.cover,
+            ),
+          ),
         ),
       ),
     );

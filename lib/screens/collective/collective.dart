@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-
+import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -40,6 +40,8 @@ class JuntoCollectiveState extends State<JuntoCollective>
   final GlobalKey<ScaffoldState> _juntoCollectiveKey =
       GlobalKey<ScaffoldState>();
 
+  AsyncMemoizer<QueryExpressionResults> _asyncMemoizer;
+
   // Completer which controls expressions querying.
   Future<QueryExpressionResults> _expressionCompleter;
 
@@ -61,6 +63,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
   @override
   void initState() {
     super.initState();
+    _asyncMemoizer = AsyncMemoizer<QueryExpressionResults>();
     _collectiveController = ScrollController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _collectiveController.addListener(_onScrollingHasChanged);
@@ -121,7 +124,8 @@ class JuntoCollectiveState extends State<JuntoCollective>
       };
     }
     try {
-      return await _expressionProvider.getCollectiveExpressions(_params);
+      return await _asyncMemoizer
+          .runOnce(() => _expressionProvider.getCollectiveExpressions(_params));
     } on JuntoException catch (_) {
       await Provider.of<AuthRepo>(context).logoutUser();
       await Navigator.of(context).pushReplacement(
@@ -158,6 +162,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
     super.dispose();
     _collectiveController.removeListener(_onScrollingHasChanged);
     _collectiveController.dispose();
+    _asyncMemoizer = null;
   }
 
   void _openPerspectivesDrawer() {
