@@ -325,7 +325,7 @@ class JuntoCreateState extends State<JuntoCreate> {
     );
   }
 
-  _selectExpression(String expressionType) {
+  Widget _selectExpression(String expressionType) {
     String expressionName;
     Widget expressionIcon;
     Function switchExpression;

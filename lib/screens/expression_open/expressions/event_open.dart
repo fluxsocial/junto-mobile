@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 
@@ -16,6 +15,7 @@ class EventOpen extends StatelessWidget {
     final String eventTitle = eventExpression.title;
     final String eventTime = DateTime.now().toIso8601String();
     final String eventLocation = eventExpression.location;
+    //ignore:unused_local_variable
     final String eventImage = eventExpression.photo;
     final String eventDescription = eventExpression.description;
 

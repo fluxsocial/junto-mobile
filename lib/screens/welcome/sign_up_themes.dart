@@ -48,7 +48,10 @@ class SignUpThemes extends StatelessWidget {
             const SizedBox(height: 15),
             Text(theme,
                 style: const TextStyle(
-                    color: Colors.white, fontSize: 14, fontWeight: FontWeight.w700, letterSpacing: 1.2)),
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 1.2)),
           ],
         ),
       ),
@@ -99,7 +102,10 @@ class SignUpThemes extends StatelessWidget {
               ),
               child: const Text(
                 'Which theme feels best?',
-                style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w700),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w700),
               ),
             ),
             Expanded(
@@ -111,7 +117,8 @@ class SignUpThemes extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       toggleRainbow(true);
-                      Provider.of<JuntoThemesProvider>(context).setTheme('light-indigo');
+                      Provider.of<JuntoThemesProvider>(context)
+                          .setTheme('light-indigo');
                     },
                     child: Container(
                       color: Colors.transparent,
@@ -124,15 +131,21 @@ class SignUpThemes extends StatelessWidget {
                               borderRadius: BorderRadius.circular(1000),
                             ),
                             child: ClipOval(
-                              child: Image.asset('assets/images/junto-mobile__background--lotus.png',
-                                  height: 65, width: 65, fit: BoxFit.cover),
+                              child: Image.asset(
+                                  'assets/images/junto-mobile__background--lotus.png',
+                                  height: 65,
+                                  width: 65,
+                                  fit: BoxFit.cover),
                             ),
                           ),
                           const SizedBox(height: 15),
                           const Text(
                             'JUNTO RAINBOW',
                             style: TextStyle(
-                                color: Colors.white, fontSize: 14, fontWeight: FontWeight.w700, letterSpacing: 1.2),
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: 1.2),
                           ),
                         ],
                       ),

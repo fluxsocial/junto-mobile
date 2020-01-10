@@ -34,8 +34,8 @@ class CollectiveProviderCentralized implements CollectiveService {
   @override
   Future<void> postCollectiveExpression(
       String collectionAddress, String expressionAddress) async {
-    final http.Response _response =
-        await client.postWithoutEncoding('/collection/$collectionAddress/$expressionAddress');
+    final http.Response _response = await client.postWithoutEncoding(
+        '/collection/$collectionAddress/$expressionAddress');
     JuntoHttp.handleResponse(_response);
   }
 }

@@ -111,7 +111,10 @@ class JuntoLotus extends StatelessWidget {
                               const Text(
                                 'CREATE',
                                 style: TextStyle(
-                                    color: Colors.white, fontSize: 14, fontWeight: FontWeight.w700, letterSpacing: 1.4),
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: 1.4),
                               )
                             ],
                           ),
@@ -291,7 +294,10 @@ class JuntoLotus extends StatelessWidget {
                               const Text(
                                 'DEN',
                                 style: TextStyle(
-                                    color: Colors.white, fontSize: 14, fontWeight: FontWeight.w700, letterSpacing: 1.4),
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: 1.4),
                               )
                             ],
                           ),

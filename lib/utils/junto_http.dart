@@ -71,7 +71,8 @@ class JuntoHttp {
     );
     return http.Response.fromStream(_streamedResponse);
   }
-@Deprecated('User postWithoutEncoding instead. Will soon be removed.')
+
+  @Deprecated('User postWithoutEncoding instead. Will soon be removed.')
   Future<http.Response> post(
     String resource, {
     Map<String, String> headers,
@@ -134,8 +135,7 @@ class JuntoHttp {
       throw JuntoException('${response?.body}', response.statusCode);
     }
     if (response.statusCode >= 500) {
-      throw JuntoException(
-          response.reasonPhrase, response.statusCode);
+      throw JuntoException(response.reasonPhrase, response.statusCode);
     }
     throw JuntoException(
         "${convert.json.decode(response.body)['error']}", response.statusCode);

@@ -94,7 +94,7 @@ class ExpressionRepo {
 
   List<CentralizedExpressionResponse> get collectiveExpressions =>
       _expressionService.collectiveExpressions;
-      
+
   Future<void> deleteExpression(String address) =>
       _expressionService.deleteExpression(address);
 }

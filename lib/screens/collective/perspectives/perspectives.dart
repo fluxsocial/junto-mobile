@@ -4,7 +4,8 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
-import 'package:junto_beta_mobile/utils/junto_exception.dart' show JuntoException;
+import 'package:junto_beta_mobile/utils/junto_exception.dart'
+    show JuntoException;
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
 
@@ -25,7 +26,8 @@ class JuntoPerspectives extends StatefulWidget {
 class JuntoPerspectivesState extends State<JuntoPerspectives> {
   Future<List<CentralizedPerspective>> _fetchUserPerspectives(String address) {
     try {
-      return Provider.of<UserRepo>(context).getUserPerspective(widget.profile.user.address);
+      return Provider.of<UserRepo>(context)
+          .getUserPerspective(widget.profile.user.address);
     } on JuntoException catch (error) {
       debugPrint('error fethcing perspectives ${error.errorCode}');
       return null;
@@ -54,10 +56,13 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                 padding: const EdgeInsets.all(0),
                 shrinkWrap: true,
                 physics: const ClampingScrollPhysics(),
-                children: snapshot.data.map((CentralizedPerspective perspective) {
+                children:
+                    snapshot.data.map((CentralizedPerspective perspective) {
                   if (perspective.name != 'Connections') {
                     return _buildPerspective(
-                        name: perspective.name, isCustomPerspective: true, perspective: perspective);
+                        name: perspective.name,
+                        isCustomPerspective: true,
+                        perspective: perspective);
                   } else {
                     return const SizedBox();
                   }
@@ -92,7 +97,8 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Image.asset('assets/images/junto-mobile__logo--white.png', height: 22.0, width: 22.0),
+                    Image.asset('assets/images/junto-mobile__logo--white.png',
+                        height: 22.0, width: 22.0),
                     const SizedBox(width: 15),
                   ],
                 ),
@@ -144,7 +150,10 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
               Expanded(
                 child: ListView(
                   children: <Widget>[
-                    _buildPerspective(name: 'JUNTO', isCustomPerspective: false, perspective: 'JUNTO'),
+                    _buildPerspective(
+                        name: 'JUNTO',
+                        isCustomPerspective: false,
+                        perspective: 'JUNTO'),
                     _buildUserPerspectives(context),
                   ],
                 ),
@@ -156,7 +165,8 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
     );
   }
 
-  Widget _buildPerspective({dynamic perspective, String name, bool isCustomPerspective}) {
+  Widget _buildPerspective(
+      {dynamic perspective, String name, bool isCustomPerspective}) {
     return GestureDetector(
       onTap: () => widget.changePerspective(perspective),
       child: Container(
@@ -232,7 +242,8 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
               ),
               const SizedBox(height: 20),
               Container(
-                child: Text(_perspectiveText(perspective), style: Theme.of(context).textTheme.caption),
+                child: Text(_perspectiveText(perspective),
+                    style: Theme.of(context).textTheme.caption),
               )
             ],
           ),
@@ -249,8 +260,10 @@ class _CreatePerspectiveBottomSheet extends StatefulWidget {
   }
 }
 
-class _CreatePerspectiveBottomSheetState extends State<_CreatePerspectiveBottomSheet> {
-  final PageController _searchMembersController = PageController(initialPage: 0);
+class _CreatePerspectiveBottomSheetState
+    extends State<_CreatePerspectiveBottomSheet> {
+  final PageController _searchMembersController =
+      PageController(initialPage: 0);
 
   UserRepo userRepo;
   TextEditingController _textController;

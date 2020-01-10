@@ -132,6 +132,7 @@ class JuntoRelationships extends StatelessWidget {
           return ListView.builder(
             itemCount: snapshot.data.length,
             itemBuilder: (BuildContext context, int index) {
+              //ignore:unused_local_variable
               final UserProfile data = snapshot.data[index];
               return const SizedBox();
               // return MemberPreview(profile: data);

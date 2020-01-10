@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 /// Shows a preview for the given event.
 /// Widget takes [eventTitle], [eventLocation] and [eventPhoto]
 class EventPreview extends StatelessWidget {
   const EventPreview({Key key, @required this.expression}) : super(key: key);
- 
+
   /// Name of the event
   final CentralizedExpressionResponse expression;
 

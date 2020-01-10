@@ -43,6 +43,6 @@ class SearchProviderCentralized implements SearchProvider {
       }
       return <UserProfile>[];
     }
-    throw  JuntoException(_serverResponse?.body, _serverResponse.statusCode);
+    throw JuntoException(_serverResponse?.body, _serverResponse.statusCode);
   }
 }
