@@ -17,14 +17,11 @@ class ExpressionPreview extends StatelessWidget {
       {Key key,
       @required this.expression,
       @required this.userAddress,
-      @required this.userSubscriptions,
-      @required this.userConnections})
+})
       : super(key: key);
 
   final CentralizedExpressionResponse expression;
   final String userAddress;
-  final List<UserProfile> userSubscriptions;
-  final List<UserProfile> userConnections;
 
   @override
   Widget build(BuildContext context) {
@@ -153,8 +150,7 @@ class ExpressionPreview extends StatelessWidget {
                               child: ExpressionActionItems(
                                 expression: expression,
                                 userAddress: userAddress,
-                                userSubscriptions: userSubscriptions,
-                                userConnections: userConnections,
+                  
                               ),
                             ),
                           );

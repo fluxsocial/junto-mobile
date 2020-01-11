@@ -99,10 +99,12 @@ class JuntoCollectiveState extends State<JuntoCollective>
       _userAddress = prefs.getString('user_id');
       _userProfile = UserData.fromMap(decodedUserData);
     });
-    final subscriptions = await Provider.of<UserRepo>(context, listen: false)
+    final List<UserProfile> subscriptions = await Provider.of<UserRepo>(context,
+            listen: false)
         .getPerspectiveUsers(decodedUserData['user_perspective']['address']);
-    final connections = await Provider.of<UserRepo>(context, listen: false)
-        .connectedUsers(_userAddress);
+    final List<UserProfile> connections =
+        await Provider.of<UserRepo>(context, listen: false)
+            .connectedUsers(_userAddress);
     setState(() {
       _userSubscriptions = subscriptions;
       _userConnections = connections;
@@ -240,6 +242,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
           padding: const EdgeInsets.only(bottom: 25),
           child: BottomNav(
               screen: 'collective',
+              userProfile: _userProfile,
               onTap: () {
                 if (_dx == 0) {
                   setState(() {
@@ -312,11 +315,10 @@ class JuntoCollectiveState extends State<JuntoCollective>
                                         const SizedBox()
                                       else if (index.isEven)
                                         ExpressionPreview(
-                                            expression:
-                                                snapshot.data.results[index],
-                                            userAddress: _userAddress, 
-                                            userSubscriptions: _userSubscriptions,
-                                            userConnections: _userConnections,)
+                                          expression:
+                                              snapshot.data.results[index],
+                                          userAddress: _userAddress,
+                                        )
                                   ],
                                 ),
                               ),
@@ -338,12 +340,10 @@ class JuntoCollectiveState extends State<JuntoCollective>
                                         const SizedBox()
                                       else if (index.isOdd)
                                         ExpressionPreview(
-                                            expression:
-                                                snapshot.data.results[index],
-                                            userAddress: _userAddress,
-                                            userSubscriptions:
-                                                _userSubscriptions,
-                                            userConnections: _userConnections)
+                                          expression:
+                                              snapshot.data.results[index],
+                                          userAddress: _userAddress,
+                                        )
                                   ],
                                 ),
                               ),

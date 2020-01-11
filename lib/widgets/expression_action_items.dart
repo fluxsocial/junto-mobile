@@ -8,13 +8,10 @@ class ExpressionActionItems extends StatelessWidget {
   const ExpressionActionItems(
       {this.expression,
       this.userAddress,
-      this.userSubscriptions,
-      this.userConnections});
+  });
 
   final CentralizedExpressionResponse expression;
   final String userAddress;
-  final List<UserProfile> userSubscriptions;
-  final List<UserProfile> userConnections;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +49,7 @@ class ExpressionActionItems extends StatelessWidget {
                 const SizedBox(height: 10),
                 userAddress == expression.creator.address
                     ? _myActionItems(context)
-                    : _memberActionItems(context, userSubscriptions)
+                    : _memberActionItems(context)
               ],
             ),
           ],
@@ -86,7 +83,7 @@ class ExpressionActionItems extends StatelessWidget {
 
   // show these action items if the expression belongs to another user
   Widget _memberActionItems(
-      BuildContext context, List<UserProfile> subscriptions) {
+      BuildContext context) {
     return Column(
       children: <Widget>[
         ListTile(

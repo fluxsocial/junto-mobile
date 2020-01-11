@@ -16,12 +16,10 @@ import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
 
 class SphereOpen extends StatefulWidget {
-  const SphereOpen({
-    Key key,
-    this.group,
-  }) : super(key: key);
+  const SphereOpen({Key key, this.group, this.userAddress}) : super(key: key);
 
   final Group group;
+  final String userAddress;
 
   @override
   State<StatefulWidget> createState() {
@@ -315,6 +313,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
               itemBuilder: (BuildContext context, int index) {
                 return ExpressionPreview(
                   expression: snapshot.data[index],
+                  userAddress: widget.userAddress,
                 );
               },
             ),

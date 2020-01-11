@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
 
 class BottomNav extends StatelessWidget {
-  const BottomNav({this.screen, this.onTap});
+  const BottomNav({this.screen, this.onTap, this.userProfile});
 
   final String screen;
   final VoidCallback onTap;
+  final UserData userProfile;
 
   Widget _uniqueActionItem(BuildContext context, String currentScreen) {
     if (currentScreen == 'collective') {
