@@ -38,7 +38,7 @@ class ExpressionPreview extends StatelessWidget {
                 Animation<double> animation,
                 Animation<double> secondaryAnimation,
               ) {
-                return ExpressionOpen(expression);
+                return ExpressionOpen(expression, userAddress);
               },
               transitionsBuilder: (
                 BuildContext context,
@@ -61,7 +61,7 @@ class ExpressionPreview extends StatelessWidget {
                 Animation<double> animation,
                 Animation<double> secondaryAnimation,
               ) {
-                return ExpressionOpen(expression);
+                return ExpressionOpen(expression, userAddress);
               },
               transitionsBuilder: (
                 BuildContext context,

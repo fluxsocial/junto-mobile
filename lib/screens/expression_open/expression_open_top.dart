@@ -6,9 +6,11 @@ import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/widgets/expression_action_items.dart';
 
 class ExpressionOpenTop extends StatelessWidget {
-  const ExpressionOpenTop({Key key, this.expression}) : super(key: key);
+  const ExpressionOpenTop({Key key, this.expression, this.userAddress})
+      : super(key: key);
 
   final CentralizedExpressionResponse expression;
+  final String userAddress;
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +64,8 @@ class ExpressionOpenTop extends StatelessWidget {
             onTap: () {
               showModalBottomSheet(
                 context: context,
-                builder: (BuildContext context) => ExpressionActionItems(),
+                builder: (BuildContext context) => ExpressionActionItems(
+                    expression: expression, userAddress: userAddress),
               );
             },
             child: Container(
