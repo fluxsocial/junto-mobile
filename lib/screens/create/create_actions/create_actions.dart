@@ -94,7 +94,7 @@ class CreateActionsState extends State<CreateActions> {
         _expression = CentralizedExpression(
             type: widget.expressionType,
             expressionData: CentralizedEventFormExpression(
-                photo: '',
+                photo: eventPhoto,
                 description: widget.expression['description'],
                 title: widget.expression['title'],
                 location: widget.expression['location'],
