@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -415,7 +416,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
   }
 
 // Switch between perspectives; used in perspectives side drawer.
-  void _changePerspective(dynamic perspective) {
+  void _changePerspective(PerspectiveResponse perspective) {
     if (perspective.name == 'JUNTO') {
       setState(() {
         _expressionCompleter = getCollectiveExpressions(
