@@ -62,7 +62,7 @@ class JuntoHttp {
     Map<String, String> headers,
     dynamic body,
   }) async {
-    final Map<String, String> header = await _withPersistentHeaders(null);
+    final Map<String, String> header = await _withPersistentHeaders(headers);
     final http.StreamedResponse _streamedResponse = await httpClient.send(
       http.Request('DELETE', Uri.parse('$_endPoint$resource'))
         ..headers['Authorization'] = header['cookie']
