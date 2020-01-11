@@ -78,7 +78,7 @@ class JuntoHttp {
     Map<String, String> headers,
     dynamic body,
   }) async {
-    final String _body = _encodeBody(body);
+    final String _body = _encodeBody(body);  
     return httpClient.post(
       _encodeUrl(resource),
       headers: await _withPersistentHeaders(headers),

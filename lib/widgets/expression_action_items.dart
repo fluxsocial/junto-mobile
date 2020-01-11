@@ -3,11 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
+import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/backend/repositories.dart';
 
 class ExpressionActionItems extends StatelessWidget {
-  const ExpressionActionItems(
-      {this.expression,
-      this.userAddress,
+  const ExpressionActionItems({
+    this.expression,
+    this.userAddress,
   });
 
   final CentralizedExpressionResponse expression;
@@ -67,6 +69,8 @@ class ExpressionActionItems extends StatelessWidget {
         ListTile(
           onTap: () {
             // delete expression
+            Provider.of<ExpressionRepo>(context, listen: false)
+                .deleteExpression(expression.address);
           },
           contentPadding:
               const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
@@ -82,8 +86,7 @@ class ExpressionActionItems extends StatelessWidget {
   }
 
   // show these action items if the expression belongs to another user
-  Widget _memberActionItems(
-      BuildContext context) {
+  Widget _memberActionItems(BuildContext context) {
     return Column(
       children: <Widget>[
         ListTile(

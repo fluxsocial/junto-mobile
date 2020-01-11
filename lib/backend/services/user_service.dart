@@ -115,6 +115,7 @@ class UserServiceCentralized implements UserService {
   Future<UserGroupsResponse> getUserGroups(String userAddress) async {
     final http.Response response =
         await client.get('/users/$userAddress/groups');
+        print(response.body);
     final Map<String, dynamic> _responseMap =
         JuntoHttp.handleResponse(response);
     return UserGroupsResponse.fromMap(_responseMap);
@@ -268,10 +269,13 @@ class UserServiceCentralized implements UserService {
 
   @override
   Future<UserData> updateUser(UserProfile user) async {
+    print('calling update user');
     final http.Response _serverResponse = await client.postWithoutEncoding(
       '/users/${user.address}',
       body: user.toMap(),
     );
+    print(_serverResponse.statusCode);
+    print(_serverResponse.body);
     final Map<String, dynamic> _data =
         JuntoHttp.handleResponse(_serverResponse);
     return UserData.fromMap(_data);

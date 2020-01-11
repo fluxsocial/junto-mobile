@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/backend/repositories.dart';
+import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
 
 class JuntoEditDen extends StatelessWidget {
+  const JuntoEditDen({this.userProfile});
+
+  final UserData userProfile;
+
   final String name = 'Name';
   final String bio = 'bio';
   final String location = 'location';
@@ -38,8 +46,26 @@ class JuntoEditDen extends StatelessWidget {
                     ),
                   ),
                 ),
-                Text('Edit Profile',
-                    style: Theme.of(context).textTheme.subhead),
+                GestureDetector(
+                  onTap: () {
+                    UserProfile newProfile = UserProfile(
+                        address: userProfile.user.address,
+                        name: 'Urk',
+                        gender: userProfile.user.gender,
+                        location: ['Spirit'],
+                        username: userProfile.user.username,
+                        verified: userProfile.user.verified,
+                        bio: 'Here.',
+                        profilePicture: userProfile.user.profilePicture,
+                        website: ['thej']);
+                    Provider.of<UserRepo>(context, listen: false)
+                        .updateUser(newProfile);
+                  },
+                  child: Container(
+                    child: Text('Edit Profile',
+                        style: Theme.of(context).textTheme.subhead),
+                  ),
+                ),
                 Container(
                   padding: const EdgeInsets.only(right: 10),
                   alignment: Alignment.centerRight,

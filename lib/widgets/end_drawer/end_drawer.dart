@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
@@ -23,7 +25,8 @@ class JuntoDrawer extends StatefulWidget {
 }
 
 class _JuntoDrawerState extends State<JuntoDrawer> {
-  UserProfile profile;
+  UserData profile;
+  String userAddress;
 
   @override
   void didChangeDependencies() {
@@ -33,21 +36,20 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
 
   Future<void> _retrieveUserInfo() async {
     final UserRepo _userProvider = Provider.of<UserRepo>(context);
-    try {
-      final UserData _profile = await _userProvider.readLocalUser();
-      if (mounted) {
-        setState(() {
-          profile = _profile.user;
-        });
-      }
-    } catch (error) {
-      debugPrint('Error occured in _retrieveUserInfo: $error');
-    }
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final Map<String, dynamic> decodedUserData = jsonDecode(
+      prefs.getString('user_data'),
+    );
+
+    setState(() {
+      profile = UserData.fromMap(decodedUserData);
+      userAddress = prefs.getString('user_id');
+    });
   }
 
   Future<void> _onPackPress() async {
     final UserGroupsResponse _userPack =
-        await Provider.of<UserRepo>(context).getUserGroups(profile.address);
+        await Provider.of<UserRepo>(context).getUserGroups(userAddress);
     Navigator.push(
       context,
       CupertinoPageRoute<dynamic>(
@@ -183,7 +185,8 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                         Navigator.push(
                           context,
                           CupertinoPageRoute<dynamic>(
-                            builder: (BuildContext context) => JuntoEditDen(),
+                            builder: (BuildContext context) =>
+                                JuntoEditDen(userProfile: profile),
                           ),
                         );
                       },

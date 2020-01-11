@@ -259,7 +259,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      endDrawer: const JuntoDrawer(
+      endDrawer: const JuntoDrawer( 
         screen: 'Collective',
         icon: CustomIcons.collective,
       ),
