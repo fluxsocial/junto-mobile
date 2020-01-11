@@ -75,7 +75,7 @@ class JuntoHttp {
     final Map<String, String> header = await _withPersistentHeaders(headers);
     final http.StreamedResponse _streamedResponse = await httpClient.send(
       http.Request('DELETE', Uri.parse('$_endPoint$resource'))
-        ..headers['Authorization'] = header['cookie']
+        ..headers['Authorization'] = header['Authorization']
         ..headers['Content-Type'] = header['Content-Type']
         ..body = convert.json.encode(body),
     );
@@ -130,8 +130,9 @@ class JuntoHttp {
         } else {
           return convert.json.decode(convert.utf8.decode(response.bodyBytes));
         }
+      } else {
+        return null;
       }
-      throw JuntoException('${response?.body}', response.statusCode);
     }
     if (response.statusCode >= 400 && response.statusCode <= 499) {
       if (response.body.isNotEmpty) {
