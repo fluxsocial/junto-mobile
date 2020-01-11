@@ -49,8 +49,10 @@ class JuntoCollectiveState extends State<JuntoCollective>
 
   ExpressionRepo _expressionProvider;
 
-  String _userAddress; // ignore: unused_field
+  String _userAddress;
   UserData _userProfile;
+  List<UserProfile> _userSubscriptions;
+  List<UserProfile> _userConnections;
 
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
   ScrollController _collectiveController;
@@ -96,6 +98,14 @@ class JuntoCollectiveState extends State<JuntoCollective>
     setState(() {
       _userAddress = prefs.getString('user_id');
       _userProfile = UserData.fromMap(decodedUserData);
+    });
+    final subscriptions = await Provider.of<UserRepo>(context, listen: false)
+        .getPerspectiveUsers(decodedUserData['user_perspective']['address']);
+    final connections = await Provider.of<UserRepo>(context, listen: false)
+        .connectedUsers(_userAddress);
+    setState(() {
+      _userSubscriptions = subscriptions;
+      _userConnections = connections;
     });
   }
 
@@ -302,9 +312,11 @@ class JuntoCollectiveState extends State<JuntoCollective>
                                         const SizedBox()
                                       else if (index.isEven)
                                         ExpressionPreview(
-                                          expression:
-                                              snapshot.data.results[index],
-                                        )
+                                            expression:
+                                                snapshot.data.results[index],
+                                            userAddress: _userAddress, 
+                                            userSubscriptions: _userSubscriptions,
+                                            userConnections: _userConnections,)
                                   ],
                                 ),
                               ),
@@ -326,9 +338,12 @@ class JuntoCollectiveState extends State<JuntoCollective>
                                         const SizedBox()
                                       else if (index.isOdd)
                                         ExpressionPreview(
-                                          expression:
-                                              snapshot.data.results[index],
-                                        )
+                                            expression:
+                                                snapshot.data.results[index],
+                                            userAddress: _userAddress,
+                                            userSubscriptions:
+                                                _userSubscriptions,
+                                            userConnections: _userConnections)
                                   ],
                                 ),
                               ),

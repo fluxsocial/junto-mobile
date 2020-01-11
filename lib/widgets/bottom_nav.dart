@@ -152,15 +152,19 @@ class BottomNav extends StatelessWidget {
                 Scaffold.of(context).openEndDrawer();
               },
               child: Container(
-                alignment: Alignment.center,
-                width: 60,
-                height: 50,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                ),
-                child: Icon(CustomIcons.morevertical,
-                    size: 17, color: Theme.of(context).primaryColor),
-              ),
+                  alignment: Alignment.center,
+                  width: 60,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  child: ClipOval(
+                    child: Image.asset('assets/images/junto-mobile__eric.png',
+                        height: 24, width: 24, fit: BoxFit.cover),
+                  )
+                  // child: Icon(CustomIcons.morevertical,
+                  //     size: 17, color: Theme.of(context).primaryColor),
+                  ),
             ),
           ),
         ],

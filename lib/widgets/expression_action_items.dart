@@ -1,6 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/screens/member/member.dart';
 
 class ExpressionActionItems extends StatelessWidget {
+  const ExpressionActionItems(
+      {this.expression,
+      this.userAddress,
+      this.userSubscriptions,
+      this.userConnections});
+
+  final CentralizedExpressionResponse expression;
+  final String userAddress;
+  final List<UserProfile> userSubscriptions;
+  final List<UserProfile> userConnections;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -35,44 +50,94 @@ class ExpressionActionItems extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 10),
-                ListTile(
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
-                  title: Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.visibility_off,
-                        size: 17,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      const SizedBox(width: 15),
-                      Text('Hide Expression',
-                          style: Theme.of(context).textTheme.headline),
-                    ],
-                  ),
-                ),
-                ListTile(
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
-                  onTap: () {},
-                  title: Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.block,
-                        size: 17,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      const SizedBox(width: 15),
-                      Text('Block Member',
-                          style: Theme.of(context).textTheme.headline),
-                    ],
-                  ),
-                ),
+                userAddress == expression.creator.address
+                    ? _myActionItems(context)
+                    : _memberActionItems(context, userSubscriptions)
               ],
             ),
           ],
         ),
       ),
+    );
+  }
+
+  // show these action items if the expression was created by user
+  Widget _myActionItems(
+    BuildContext context,
+  ) {
+    return Column(
+      children: <Widget>[
+        ListTile(
+          onTap: () {
+            // delete expression
+          },
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
+          title: Row(
+            children: <Widget>[
+              Text('Delete Expression',
+                  style: Theme.of(context).textTheme.headline),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  // show these action items if the expression belongs to another user
+  Widget _memberActionItems(
+      BuildContext context, List<UserProfile> subscriptions) {
+    return Column(
+      children: <Widget>[
+        ListTile(
+          onTap: () {
+            Navigator.pop(context);
+            // view den
+            Navigator.push(
+              context,
+              CupertinoPageRoute<Widget>(
+                builder: (BuildContext context) => JuntoMember(
+                  profile: expression.creator,
+                ),
+              ),
+            );
+          },
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
+          title: Row(
+            children: <Widget>[
+              Text('View @' + expression.creator.username + "'s den",
+                  style: Theme.of(context).textTheme.headline),
+            ],
+          ),
+        ),
+        ListTile(
+          onTap: () {
+            // subscribe to user
+          },
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
+          title: Row(
+            children: <Widget>[
+              Text('Subscribe @' + expression.creator.username,
+                  style: Theme.of(context).textTheme.headline),
+            ],
+          ),
+        ),
+        ListTile(
+          onTap: () {
+            // connect with user
+          },
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
+          title: Row(
+            children: <Widget>[
+              Text('Connect @' + expression.creator.username,
+                  style: Theme.of(context).textTheme.headline),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

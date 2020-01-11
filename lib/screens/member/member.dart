@@ -39,7 +39,9 @@ class _JuntoMemberState extends State<JuntoMember> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.profile.address);
+    print(widget.profile.gender);
+    print(widget.profile.location);
+    print(widget.profile.website);
     return Scaffold(
       key: scaffoldKey,
       appBar: PreferredSize(
@@ -89,27 +91,32 @@ class _JuntoMemberState extends State<JuntoMember> {
                     padding: const EdgeInsets.only(top: 5, bottom: 5),
                     child: Column(
                       children: <Widget>[
-                        _ProfileDetails(
-                          iconData: CustomIcons.gender,
-                          item: widget.profile.gender,
-                          placeholderText: 'Gender',
-                        ),
-                        const SizedBox(height: 10),
-                        _ProfileDetails(
-                          imageUri: 'assets/images/junto-mobile__location.png',
-                          item: widget.profile.location,
-                          placeholderText: 'Location',
-                        ),
-                        const SizedBox(height: 10),
-                        _ProfileDetails(
-                          imageUri: 'assets/images/junto-mobile__link.png',
-                          item: widget.profile.website,
-                          placeholderText: 'Website',
-                        ),
+                        widget.profile.gender[0] != ' '
+                            ? _ProfileDetails(
+                                iconData: CustomIcons.gender,
+                                item: widget.profile.gender,
+                                placeholderText: 'Gender',
+                              )
+                            : const SizedBox(),
+                        widget.profile.location[0] != ' '
+                            ? _ProfileDetails(
+                                imageUri:
+                                    'assets/images/junto-mobile__location.png',
+                                item: widget.profile.location,
+                                placeholderText: 'Location',
+                              )
+                            : const SizedBox(),
+                        widget.profile.website[0] != ' '
+                            ? _ProfileDetails(
+                                imageUri:
+                                    'assets/images/junto-mobile__link.png',
+                                item: widget.profile.website,
+                                placeholderText: 'Website',
+                              )
+                            : const SizedBox(),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 15),
                   CarouselSlider(
                     viewportFraction: 1.0,
                     height: MediaQuery.of(context).size.width - 20,
@@ -118,7 +125,7 @@ class _JuntoMemberState extends State<JuntoMember> {
                       Container(
                         padding: const EdgeInsets.only(right: 10),
                         width: MediaQuery.of(context).size.width,
-                        child: Image.asset(
+                        child: Image.asset( 
                             'assets/images/junto-mobile__mockprofpic--one.png',
                             fit: BoxFit.cover),
                       ),
@@ -169,6 +176,7 @@ class _ProfileDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: const EdgeInsets.only(bottom: 10),
       child: Row(
         children: <Widget>[
           if (imageUri != null)
@@ -349,7 +357,7 @@ class _MemberDenAppbar extends StatelessWidget {
   final UserProfile profile;
 
   Future<void> _connectWithUser(BuildContext context) async {
-    final UserRepo _userRepo = Provider.of<UserRepo>(context);
+    final UserRepo _userRepo = Provider.of<UserRepo>(context, listen: false);
     try {
       JuntoLoader.showLoader(context);
       await _userRepo.connectUser(profile.address);

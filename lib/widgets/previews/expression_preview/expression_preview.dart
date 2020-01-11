@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open.dart';
 import 'package:junto_beta_mobile/widgets/expression_action_items.dart';
@@ -12,12 +13,18 @@ import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression
 
 /// Renders a concise overview of one given [ExpressionResult].
 class ExpressionPreview extends StatelessWidget {
-  const ExpressionPreview({
-    Key key,
-    @required this.expression,
-  }) : super(key: key);
+  const ExpressionPreview(
+      {Key key,
+      @required this.expression,
+      @required this.userAddress,
+      @required this.userSubscriptions,
+      @required this.userConnections})
+      : super(key: key);
 
   final CentralizedExpressionResponse expression;
+  final String userAddress;
+  final List<UserProfile> userSubscriptions;
+  final List<UserProfile> userConnections;
 
   @override
   Widget build(BuildContext context) {
@@ -143,7 +150,12 @@ class ExpressionPreview extends StatelessWidget {
                             context: context,
                             builder: (BuildContext context) => Container(
                               color: Colors.transparent,
-                              child: ExpressionActionItems(),
+                              child: ExpressionActionItems(
+                                expression: expression,
+                                userAddress: userAddress,
+                                userSubscriptions: userSubscriptions,
+                                userConnections: userConnections,
+                              ),
                             ),
                           );
                         },

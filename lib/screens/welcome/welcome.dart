@@ -82,7 +82,8 @@ class WelcomeState extends State<Welcome> {
 
   Future<String> validateRegistration() async {
     try {
-      return await Provider.of<AuthRepo>(context).verifyEmail(email);
+      return await Provider.of<AuthRepo>(context, listen: false)
+          .verifyEmail(email);
     } catch (error) {
       debugPrint('Error verifying email $error');
     }
@@ -160,7 +161,8 @@ class WelcomeState extends State<Welcome> {
 
     try {
       final UserData results =
-          await Provider.of<AuthRepo>(context).registerUser(details);
+          await Provider.of<AuthRepo>(context, listen: false)
+              .registerUser(details);
       final Map<String, dynamic> resultsMap = results.toMap();
       final String resultsMapToString = json.encode(resultsMap);
 

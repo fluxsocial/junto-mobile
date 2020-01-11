@@ -20,7 +20,7 @@ class AuthRepo {
     _isLoggedIn = prefs.getBool('isLoggedIn');
     return _isLoggedIn;
   }
-
+ 
   Future<String> verifyEmail(String email) async {
     return _authService.verifyEmail(email);
   }

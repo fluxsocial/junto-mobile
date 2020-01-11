@@ -20,7 +20,7 @@ class RelationshipRequest extends StatelessWidget {
   ) async {
     try {
       JuntoLoader.showLoader(context);
-      await Provider.of<UserRepo>(context).respondToConnection(
+      await Provider.of<UserRepo>(context, listen: false).respondToConnection(
         user.address,
         true,
       );
@@ -32,7 +32,7 @@ class RelationshipRequest extends StatelessWidget {
           child: const Text('Ok'),
         ),
       ]);
-      print('Error rejecting connection ${error.message}');
+      print('Error accepting connection ${error.message}');
     }
   }
 
