@@ -6,7 +6,7 @@ import 'package:junto_beta_mobile/widgets/previews/sphere_preview/sphere_preview
 
 /// This class renders the list of spheres a member belongs to. It includes a widget to
 /// create a screen as well as a ListView of all the sphere previews
-class JuntoSpheres extends StatefulWidget {
+class JuntoSpheres extends StatelessWidget with ListDistinct {
   const JuntoSpheres({
     Key key,
     @required this.userProfile,
@@ -16,12 +16,6 @@ class JuntoSpheres extends StatefulWidget {
   final UserData userProfile;
   final List<Group> userSpheres;
 
-  @override
-  State<StatefulWidget> createState() => JuntoSpheresState();
-}
-
-class JuntoSpheresState extends State<JuntoSpheres> with ListDistinct {
-  @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -29,9 +23,10 @@ class JuntoSpheresState extends State<JuntoSpheres> with ListDistinct {
         shrinkWrap: true,
         physics: const ClampingScrollPhysics(),
         children: <Widget>[
-          for (Group group in widget.userSpheres)
+          for (Group group in userSpheres)
             SpherePreview(
               group: group,
+              userProfile: userProfile,
             )
         ],
       ),

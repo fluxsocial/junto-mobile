@@ -1,9 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/screens/member/member.dart';
 
 // This component is used in CommentPreview
 // as the 'more' icon is pressed to view the action items
 class CommentActionItems extends StatelessWidget {
+  const CommentActionItems({
+    this.comment,
+    this.userAddress,
+  });
+
+  final dynamic comment;
+  final String userAddress;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -39,67 +48,93 @@ class CommentActionItems extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 10),
-                ListTile(
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
-                  onTap: () {},
-                  title: Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.block,
-                        size: 17,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      const SizedBox(width: 15),
-                      Text(
-                        'Report Comment',
-                        style: Theme.of(context).textTheme.headline,
-                      ),
-                    ],
-                  ),
-                ),
-                ListTile(
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
-                  title: Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.visibility_off,
-                        size: 17,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      const SizedBox(width: 15),
-                      Text(
-                        'Hide Comment',
-                        style: Theme.of(context).textTheme.headline,
-                      ),
-                    ],
-                  ),
-                ),
-                ListTile(
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
-                  onTap: () {},
-                  title: Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.block,
-                        size: 17,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      const SizedBox(width: 15),
-                      Text(
-                        'Block @member',
-                        style: Theme.of(context).textTheme.headline,
-                      ),
-                    ],
-                  ),
-                ),
+                userAddress == comment.creator.address
+                    ? _myActionItems(context)
+                    : _memberActionItems(context)
               ],
             ),
           ],
         ),
       ),
+    );
+  }
+
+  // show these action items if the comment was created by user
+  Widget _myActionItems(
+    BuildContext context,
+  ) {
+    return Column(
+      children: <Widget>[
+        ListTile(
+          onTap: () {
+            // delete comment
+          },
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
+          title: Row(
+            children: <Widget>[
+              Text('Delete Comment',
+                  style: Theme.of(context).textTheme.headline),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  // show these action items if the comment belongs to another user
+  Widget _memberActionItems(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        ListTile(
+          onTap: () {
+            Navigator.pop(context);
+            // view den
+            Navigator.push(
+              context,
+              CupertinoPageRoute<Widget>(
+                builder: (BuildContext context) => JuntoMember(
+                  profile: comment.creator,
+                ),
+              ),
+            );
+          },
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
+          title: Row(
+            children: <Widget>[
+              Text('View @' + comment.creator.username + "'s den",
+                  style: Theme.of(context).textTheme.headline),
+            ],
+          ),
+        ),
+        ListTile(
+          onTap: () {
+            // subscribe to user
+          },
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
+          title: Row(
+            children: <Widget>[
+              Text('Subscribe @' + comment.creator.username,
+                  style: Theme.of(context).textTheme.headline),
+            ],
+          ),
+        ),
+        ListTile(
+          onTap: () {
+            // connect with user
+          },
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
+          title: Row(
+            children: <Widget>[
+              Text('Connect @' + comment.creator.username,
+                  style: Theme.of(context).textTheme.headline),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

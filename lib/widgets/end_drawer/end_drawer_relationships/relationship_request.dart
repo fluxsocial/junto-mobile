@@ -32,7 +32,7 @@ class RelationshipRequest extends StatelessWidget {
           child: const Text('Ok'),
         ),
       ]);
-      print('Error rejecting connection ${error.message}');
+      print('Error accepting connection ${error.message}');
     }
   }
 

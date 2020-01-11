@@ -248,9 +248,9 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                                                 snapshot.data[index].privacy ==
                                                     'Public')
                                               ExpressionPreview(
-                                                expression:
-                                                    snapshot.data[index],
-                                              )
+                                                  expression:
+                                                      snapshot.data[index],
+                                                  userAddress: _userAddress)
                                             else
                                               const SizedBox()
 
@@ -279,6 +279,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                                               ExpressionPreview(
                                                 expression:
                                                     snapshot.data[index],
+                                                userAddress: _userAddress,
                                               )
                                             else
                                               const SizedBox()
@@ -340,6 +341,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                                               ExpressionPreview(
                                                 expression:
                                                     snapshot.data[index],
+                                                userAddress: _userAddress,
                                               )
                                             else
                                               const SizedBox()
@@ -369,6 +371,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                                               ExpressionPreview(
                                                 expression:
                                                     snapshot.data[index],
+                                                userAddress: _userAddress,
                                               )
                                             else
                                               const SizedBox()

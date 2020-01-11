@@ -8,7 +8,11 @@ import 'package:junto_beta_mobile/widgets/comment_action_items.dart';
 
 /// Shows a preview of the comments. Takes a un-named [String] as a param.
 class CommentPreview extends StatelessWidget {
-  const CommentPreview({Key key, @required this.comment, @required this.parent})
+  const CommentPreview(
+      {Key key,
+      @required this.comment,
+      @required this.parent,
+      @required this.userAddress})
       : super(key: key);
 
   /// comment
@@ -17,6 +21,9 @@ class CommentPreview extends StatelessWidget {
   // parent expression of comment
   final dynamic parent;
 
+  // address of user
+  final String userAddress;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -24,7 +31,8 @@ class CommentPreview extends StatelessWidget {
         Navigator.push(
           context,
           CupertinoPageRoute<dynamic>(
-            builder: (BuildContext context) => CommentOpen(comment, parent),
+            builder: (BuildContext context) =>
+                CommentOpen(comment, parent, userAddress),
           ),
         );
       },
@@ -77,7 +85,10 @@ class CommentPreview extends StatelessWidget {
                         context: context,
                         builder: (BuildContext context) => Container(
                           color: Colors.transparent,
-                          child: CommentActionItems(),
+                          child: CommentActionItems(
+                            comment: comment,
+                            userAddress: userAddress,
+                          ),
                         ),
                       );
                     },
