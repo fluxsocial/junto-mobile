@@ -86,8 +86,8 @@ class JuntoCollectiveState extends State<JuntoCollective>
 
   void refreshData() {
     _expressionProvider = Provider.of<ExpressionRepo>(context, listen: false);
-    _expressionCompleter =
-        getCollectiveExpressions(contextType: 'Collective', paginationPos: 0);
+    _expressionCompleter = _asyncMemoizer.runOnce(() =>
+        getCollectiveExpressions(contextType: 'Collective', paginationPos: 0));
   }
 
   void _onScrollingHasChanged() {
@@ -137,8 +137,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
       };
     }
     try {
-      return await _asyncMemoizer
-          .runOnce(() => _expressionProvider.getCollectiveExpressions(_params));
+      return await _expressionProvider.getCollectiveExpressions(_params);
     } on JuntoException catch (_) {
       await Provider.of<AuthRepo>(context).logoutUser();
       await Navigator.of(context).pushReplacement(
@@ -419,18 +418,20 @@ class JuntoCollectiveState extends State<JuntoCollective>
   void _changePerspective(PerspectiveResponse perspective) {
     if (perspective.name == 'JUNTO') {
       setState(() {
-        _expressionCompleter = getCollectiveExpressions(
-            paginationPos: null, contextType: 'Collective', dos: null);
+        _expressionCompleter = _asyncMemoizer.runOnce(() =>
+            getCollectiveExpressions(
+                paginationPos: null, contextType: 'Collective', dos: null));
         _showDegrees = true;
         _appbarTitle = 'JUNTO';
       });
     } else {
-      _expressionCompleter = getCollectiveExpressions(
-        paginationPos: 0,
-        contextString: perspective.address,
-        contextType: 'FollowPerspective',
-        dos: null,
-      );
+      _expressionCompleter =
+          _asyncMemoizer.runOnce(() => getCollectiveExpressions(
+                paginationPos: 0,
+                contextString: perspective.address,
+                contextType: 'FollowPerspective',
+                dos: null,
+              ));
       setState(() {
         _showDegrees = false;
         if (perspective.name ==

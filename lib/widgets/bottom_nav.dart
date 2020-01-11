@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 
 class BottomNav extends StatelessWidget {
   const BottomNav({this.screen, this.onTap, this.userProfile});
@@ -154,19 +154,17 @@ class BottomNav extends StatelessWidget {
                 Scaffold.of(context).openEndDrawer();
               },
               child: Container(
-                  alignment: Alignment.center,
-                  width: 60,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                  child: ClipOval(
-                    child: Image.asset('assets/images/junto-mobile__eric.png',
-                        height: 24, width: 24, fit: BoxFit.cover),
-                  )
-                  // child: Icon(CustomIcons.morevertical,
-                  //     size: 17, color: Theme.of(context).primaryColor),
-                  ),
+                alignment: Alignment.center,
+                width: 60,
+                height: 50,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                child: ClipOval(
+                  child: Image.asset('assets/images/junto-mobile__junto.png',
+                      height: 24, width: 24, fit: BoxFit.cover),
+                ),
+              ),
             ),
           ),
         ],
