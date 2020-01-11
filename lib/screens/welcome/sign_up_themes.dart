@@ -12,11 +12,14 @@ class SignUpThemes extends StatelessWidget {
 
   void _setTheme(String theme, BuildContext context) {
     if (theme == 'LIGHT INDIGO') {
-      Provider.of<JuntoThemesProvider>(context).setTheme('light-indigo');
+      Provider.of<JuntoThemesProvider>(context, listen: false)
+          .setTheme('light-indigo');
     } else if (theme == 'LIGHT ROYAL') {
-      Provider.of<JuntoThemesProvider>(context).setTheme('light-royal');
+      Provider.of<JuntoThemesProvider>(context, listen: false)
+          .setTheme('light-royal');
     } else if (theme == 'JUNTO NIGHT') {
-      Provider.of<JuntoThemesProvider>(context).setTheme('night-indigo');
+      Provider.of<JuntoThemesProvider>(context, listen: false)
+          .setTheme('night-indigo');
     }
   }
 
@@ -117,7 +120,7 @@ class SignUpThemes extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       toggleRainbow(true);
-                      Provider.of<JuntoThemesProvider>(context)
+                      Provider.of<JuntoThemesProvider>(context, listen: false)
                           .setTheme('light-indigo');
                     },
                     child: Container(

@@ -20,7 +20,7 @@ class RelationshipRequest extends StatelessWidget {
   ) async {
     try {
       JuntoLoader.showLoader(context);
-      await Provider.of<UserRepo>(context).respondToConnection(
+      await Provider.of<UserRepo>(context, listen: false).respondToConnection(
         user.address,
         true,
       );
