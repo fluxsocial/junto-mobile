@@ -24,6 +24,7 @@ class RelationshipRequest extends StatelessWidget {
         user.address,
         true,
       );
+      JuntoLoader.hide();
       Navigator.pop(context);
     } on JuntoException catch (error) {
       JuntoDialog.showJuntoDialog(context, '${error.message}', <Widget>[

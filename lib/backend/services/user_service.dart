@@ -238,10 +238,28 @@ class UserServiceCentralized implements UserService {
     final http.Response _serverResponse = await client.get(
       '/users/$userAddress/connections',
     );
-    final List<dynamic> _results = JuntoHttp.handleResponse(_serverResponse);
-    return <UserProfile>[
-      for (dynamic data in _results) UserProfile.fromMap(data)
-    ];
+    final List<dynamic> _results =
+        await JuntoHttp.handleResponse(_serverResponse);
+
+    final List<UserProfile> _resultsList = [];
+
+    _results.forEach((dynamic result) {
+      _resultsList.add(
+        UserProfile(
+          address: result['user']['address'],
+          bio: result['user']['bio'],
+          username: result['user']['username'],
+          name: result['user']['name'],
+          profilePicture: [],
+          gender: List<String>.from(result['user']['gender']),
+          location: List<String>.from(result['user']['location']),
+          verified: true,
+          website: List<String>.from(result['user']['website']),
+        ),
+      );
+    });
+
+    return _resultsList;
   }
 
   @override
@@ -285,7 +303,6 @@ class UserServiceCentralized implements UserService {
     // _prefs.remove('user_data');
     // _prefs.setString('user_data', _userMapToString);
     // return UserData.fromMap(_data);
-    
   }
 
   /// Private function which returns the correct query param for the given

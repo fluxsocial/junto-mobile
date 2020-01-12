@@ -37,7 +37,7 @@ class UserProfile {
     );
   }
 
-  /// Location
+  /// User address
   final String address;
 
   ///  Name of the author

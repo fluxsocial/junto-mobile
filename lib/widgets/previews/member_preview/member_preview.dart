@@ -29,7 +29,8 @@ class MemberPreview extends StatelessWidget {
                     profile.profilePicture.isNotEmpty)
                   ClipOval(
                     child: Image.asset(
-                      profile.profilePicture[0],
+                      'assets/images/junto-mobile__placeholder--member.png',
+                      // profile.profilePicture[0],
                       height: 45.0,
                       width: 45.0,
                       fit: BoxFit.cover,
