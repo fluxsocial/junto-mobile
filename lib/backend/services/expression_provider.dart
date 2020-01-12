@@ -163,7 +163,7 @@ class ExpressionServiceCentralized implements ExpressionService {
     final http.Response _serverResponse = await client.delete(
       '/expressions/$expressionAddress',
     );
-    print(_serverResponse.statusCode);
+    print(_serverResponse.statusCode); 
     JuntoHttp.handleResponse(_serverResponse);
   }
 
