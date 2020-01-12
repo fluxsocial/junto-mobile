@@ -13,6 +13,7 @@ import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/fabs/expression_center_fab.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:provider/provider.dart';
 
 class SphereOpen extends StatefulWidget {
@@ -58,7 +59,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
         _keyFlexibleSpace.currentContext.findRenderObject();
     final Size sizeFlexibleSpace = renderBoxFlexibleSpace.size;
     final double heightFlexibleSpace = sizeFlexibleSpace.height;
-    print(heightFlexibleSpace);
 
     setState(() {
       _flexibleHeightSpace = heightFlexibleSpace;
@@ -120,6 +120,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.group.groupData.photo);
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(45),
@@ -150,8 +151,10 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
             // These are the contents of the tab views, below the tabs.
             children: <Widget>[
               _buildAboutView(),
-              _buildExpressionView(),
-              _buildEventsView()
+              SizedBox(),
+              SizedBox()
+              // _buildExpressionView(),
+              // _buildEventsView()
             ],
           ),
           controller: _hideFABController,
@@ -169,24 +172,38 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                   collapseMode: CollapseMode.pin,
                   background: Column(
                     children: <Widget>[
-                      Container(
-                        height: MediaQuery.of(context).size.height * .3,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.bottomLeft,
-                            end: Alignment.topRight,
-                            stops: const <double>[0.2, 0.9],
-                            colors: <Color>[
-                              Theme.of(context).colorScheme.secondary,
-                              Theme.of(context).colorScheme.primary
-                            ],
-                          ),
-                        ),
-                        alignment: Alignment.center,
-                        child: Icon(CustomIcons.spheres,
-                            size: 60,
-                            color: Theme.of(context).colorScheme.onPrimary),
-                      ),
+                      widget.group.groupData.photo == ''
+                          ? Container(
+                              height: MediaQuery.of(context).size.height * .3,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.bottomLeft,
+                                  end: Alignment.topRight,
+                                  stops: const <double>[0.2, 0.9],
+                                  colors: <Color>[
+                                    Theme.of(context).colorScheme.secondary,
+                                    Theme.of(context).colorScheme.primary
+                                  ],
+                                ),
+                              ),
+                              alignment: Alignment.center,
+                              child: Icon(CustomIcons.spheres,
+                                  size: 60,
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary),
+                            )
+                          : CachedNetworkImage(
+                              imageUrl: widget.group.groupData.photo,
+                              width: MediaQuery.of(context).size.width,
+                              height: MediaQuery.of(context).size.height * .3,
+                              placeholder: (BuildContext context, String _) {
+                                return Container(
+                                    color: Theme.of(context).dividerColor,
+                                    width: MediaQuery.of(context).size.width,
+                                    height: MediaQuery.of(context).size.height *
+                                        .3);
+                              },
+                              fit: BoxFit.cover),
                       Container(
                         key: _keyFlexibleSpace,
                         padding: const EdgeInsets.symmetric(
@@ -290,7 +307,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
 
   Widget _buildExpressionView() {
     return FutureBuilder<List<CentralizedExpressionResponse>>(
-      future: Provider.of<GroupRepo>(context)
+      future: Provider.of<GroupRepo>(context, listen: false)
           .getGroupExpressions(widget.group.address, null),
       builder: (
         BuildContext context,
