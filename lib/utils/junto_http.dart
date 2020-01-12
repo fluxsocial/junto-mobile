@@ -58,12 +58,13 @@ class JuntoHttp {
   }
 
   Future<http.Response> patch(String resource,
-      {Map<String, String> headers, Map<String, String> queryParams}) async {
+      {Map<String, String> headers, Map<String, String> queryParams, dynamic body}) async {
     final Uri _uri = Uri.http(
         END_POINT_without_prefix, '/$kServerVersion$resource', queryParams);
     return httpClient.patch(
       _uri,
       headers: await _withPersistentHeaders(headers),
+      body: body
     );
   }
 

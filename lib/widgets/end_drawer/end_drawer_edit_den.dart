@@ -47,19 +47,19 @@ class JuntoEditDen extends StatelessWidget {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {
-                    UserProfile newProfile = UserProfile(
-                        address: userProfile.user.address,
-                        name: 'Urk',
-                        gender: userProfile.user.gender,
-                        location: ['Spirit'],
-                        username: userProfile.user.username,
-                        verified: userProfile.user.verified,
-                        bio: 'Here.',
-                        profilePicture: userProfile.user.profilePicture,
-                        website: ['thej']);
-                    Provider.of<UserRepo>(context, listen: false)
-                        .updateUser(newProfile);
+                  onTap: () async {
+                    Map<String, dynamic> newProfile = {
+                      'name': 'Urky Yangy',
+                      'bio': 'yeo',
+                      'profilePicture': userProfile.user.profilePicture,
+                      'gender': ['he/him'],
+                      'location': ['now'],
+                      'website': ['junto.foundation']
+                    };
+                    final response =
+                        await Provider.of<UserRepo>(context, listen: false)
+                            .updateUser(newProfile, userProfile.user.address);
+                    print(response);
                   },
                   child: Container(
                     child: Text('Edit Profile',

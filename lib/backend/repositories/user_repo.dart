@@ -95,6 +95,6 @@ class UserRepo {
     return _userService.respondToConnection(userAddress, response);
   }
 
-  Future<UserData> updateUser(UserProfile user) =>
-      _userService.updateUser(user);
+  Future<UserData> updateUser(Map<String, dynamic> user, String userAddress) =>
+      _userService.updateUser(user, userAddress);
 }

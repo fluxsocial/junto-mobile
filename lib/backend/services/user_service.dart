@@ -115,7 +115,7 @@ class UserServiceCentralized implements UserService {
   Future<UserGroupsResponse> getUserGroups(String userAddress) async {
     final http.Response response =
         await client.get('/users/$userAddress/groups');
-        print(response.body);
+    print(response.body);
     final Map<String, dynamic> _responseMap =
         JuntoHttp.handleResponse(response);
     return UserGroupsResponse.fromMap(_responseMap);
@@ -268,17 +268,24 @@ class UserServiceCentralized implements UserService {
   }
 
   @override
-  Future<UserData> updateUser(UserProfile user) async {
+  Future<UserData> updateUser(
+      Map<String, dynamic> user, String userAddress) async {
     print('calling update user');
-    final http.Response _serverResponse = await client.postWithoutEncoding(
-      '/users/${user.address}',
-      body: user.toMap(),
-    );
+    final encodedUser = json.encode(user);
+    print(encodedUser);
+    final http.Response _serverResponse =
+        await client.patch('/users/' + userAddress, body: encodedUser);
     print(_serverResponse.statusCode);
     print(_serverResponse.body);
-    final Map<String, dynamic> _data =
-        JuntoHttp.handleResponse(_serverResponse);
-    return UserData.fromMap(_data);
+    // final Map<String, dynamic> _data =
+    //     JuntoHttp.handleResponse(_serverResponse);
+    // final SharedPreferences _prefs = await SharedPreferences.getInstance();
+    // final String _userMapToString = json.encode(_data);
+
+    // _prefs.remove('user_data');
+    // _prefs.setString('user_data', _userMapToString);
+    // return UserData.fromMap(_data);
+    
   }
 
   /// Private function which returns the correct query param for the given
