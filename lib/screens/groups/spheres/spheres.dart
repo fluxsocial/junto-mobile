@@ -15,7 +15,7 @@ class JuntoSpheres extends StatelessWidget with ListDistinct {
 
   final UserData userProfile;
   final List<Group> userSpheres;
-
+  @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),

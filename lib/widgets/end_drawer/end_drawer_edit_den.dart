@@ -11,10 +11,10 @@ class JuntoEditDen extends StatelessWidget {
 
   final UserData userProfile;
 
-  final String name = 'Name';
-  final String bio = 'bio';
-  final String location = 'location';
-  final String website = 'website';
+  static const String name = 'Name';
+  static const String bio = 'bio';
+  static const String location = 'location';
+  static const String website = 'website';
 
   @override
   Widget build(BuildContext context) {
@@ -47,19 +47,19 @@ class JuntoEditDen extends StatelessWidget {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () async {
-                    Map<String, dynamic> newProfile = {
-                      'name': 'Urky Yangy',
-                      'bio': 'yeo',
-                      'profilePicture': userProfile.user.profilePicture,
-                      'gender': ['he/him'],
-                      'location': ['now'],
-                      'website': ['junto.foundation']
-                    };
-                    final response =
-                        await Provider.of<UserRepo>(context, listen: false)
-                            .updateUser(newProfile, userProfile.user.address);
-                    print(response);
+                  onTap: () {
+                    final UserProfile newProfile = UserProfile(
+                        address: userProfile.user.address,
+                        name: 'Urk',
+                        gender: userProfile.user.gender,
+                        location: <String>['Spirit'],
+                        username: userProfile.user.username,
+                        verified: userProfile.user.verified,
+                        bio: 'Here.',
+                        profilePicture: userProfile.user.profilePicture,
+                        website: <String>['thej']);
+                    Provider.of<UserRepo>(context, listen: false)
+                        .updateUser(newProfile);
                   },
                   child: Container(
                     child: Text('Edit Profile',

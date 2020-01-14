@@ -13,6 +13,7 @@ class EventOpen extends StatelessWidget {
         expression.expressionData as CentralizedEventFormExpression;
     final String eventTitle = eventExpression.title;
     final String eventStartTime = eventExpression.startTime;
+    //ignore:unused_local_variable
     final String eventEndTime = eventExpression.endTime;
     final String eventLocation = eventExpression.location;
     final String eventImage = eventExpression.photo;
@@ -21,29 +22,29 @@ class EventOpen extends StatelessWidget {
     return Container(
       child: Column(
         children: <Widget>[
-          eventImage != ''
-              ? Container(
-                  width: MediaQuery.of(context).size.width,
-                  child: CachedNetworkImage(
-                      imageUrl: expression.expressionData.photo,
-                      placeholder: (BuildContext context, String _) {
-                        return Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.bottomLeft,
-                              end: Alignment.topRight,
-                              stops: const <double>[0.2, 0.9],
-                              colors: <Color>[
-                                Theme.of(context).colorScheme.secondary,
-                                Theme.of(context).colorScheme.primary
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                      fit: BoxFit.cover),
-                )
-              : const SizedBox(),
+          if (eventImage != '')
+            Container(
+              width: MediaQuery.of(context).size.width,
+              child: CachedNetworkImage(
+                  imageUrl: expression.expressionData.photo,
+                  placeholder: (BuildContext context, String _) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.bottomLeft,
+                          end: Alignment.topRight,
+                          stops: const <double>[0.2, 0.9],
+                          colors: <Color>[
+                            Theme.of(context).colorScheme.secondary,
+                            Theme.of(context).colorScheme.primary
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                  fit: BoxFit.cover),
+            ),
+          if (eventImage == '') const SizedBox(),
           Container(
             color: Theme.of(context).colorScheme.background,
             child: Column(

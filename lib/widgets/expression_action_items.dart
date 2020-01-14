@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:provider/provider.dart';
+<<<<<<< HEAD
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+=======
+>>>>>>> project clean up
 
 class ExpressionActionItems extends StatelessWidget {
   const ExpressionActionItems({

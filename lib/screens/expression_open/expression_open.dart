@@ -108,6 +108,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   }
 
   // Open modal bottom sheet and refocus TextField after dismissed
+  //ignore:unused_element
   Future<void> _showPrivacyModalSheet() async {
     await showModalBottomSheet(
       context: context,

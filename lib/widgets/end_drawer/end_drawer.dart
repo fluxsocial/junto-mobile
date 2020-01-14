@@ -35,7 +35,6 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
   }
 
   Future<void> _retrieveUserInfo() async {
-    final UserRepo _userProvider = Provider.of<UserRepo>(context);
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final Map<String, dynamic> decodedUserData = jsonDecode(
       prefs.getString('user_data'),
@@ -67,7 +66,7 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
     Navigator.push(
       context,
       CupertinoPageRoute<dynamic>(
-        builder: (BuildContext context) => JuntoEditDen(),
+        builder: (BuildContext context) => const JuntoEditDen(),
       ),
     );
   }

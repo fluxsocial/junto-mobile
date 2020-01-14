@@ -54,7 +54,9 @@ class JuntoCollectiveState extends State<JuntoCollective>
 
   String _userAddress;
   UserData _userProfile;
+  //ignore:unused_field
   List<UserProfile> _userSubscriptions;
+//ignore:unused_field
   List<UserProfile> _userConnections;
 
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
@@ -258,7 +260,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      endDrawer: const JuntoDrawer( 
+      endDrawer: const JuntoDrawer(
         screen: 'Collective',
         icon: CustomIcons.collective,
       ),
