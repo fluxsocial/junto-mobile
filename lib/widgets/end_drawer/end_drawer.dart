@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
@@ -39,11 +40,12 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
     final Map<String, dynamic> decodedUserData = jsonDecode(
       prefs.getString('user_data'),
     );
-
-    setState(() {
-      profile = UserData.fromMap(decodedUserData);
-      userAddress = prefs.getString('user_id');
-    });
+    if (mounted) {
+      setState(() {
+        profile = UserData.fromMap(decodedUserData);
+        userAddress = prefs.getString('user_id');
+      });
+    }
   }
 
   Future<void> _onPackPress() async {

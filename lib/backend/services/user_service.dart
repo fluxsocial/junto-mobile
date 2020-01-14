@@ -274,7 +274,6 @@ class UserServiceCentralized implements UserService {
     ];
   }
 
-//TODO(Nash): This should send back a success result of either true or false.
   @override
   Future<void> respondToConnection(String userAddress, bool response) async {
     final http.Response _serverResponse = await client.postWithoutEncoding(
@@ -303,6 +302,21 @@ class UserServiceCentralized implements UserService {
     _prefs.remove('user_data');
     _prefs.setString('user_data', _userMapToString);
     return UserData.fromMap(_data);
+  }
+
+  @override
+  Future<List<UserProfile>> getFollowers(String userAddress) async {
+    final http.Response _serverResponse = await client.get(
+      '/users/$userAddress/followers',
+      queryParams: <String, String>{
+        'pagination_position': '0',
+      },
+    );
+    final Map<String, dynamic> _data =
+        JuntoHttp.handleResponse(_serverResponse);
+    return <UserProfile>[
+      for (dynamic data in _data['results']) UserProfile.fromMap(data)
+    ];
   }
 
   /// Private function which returns the correct query param for the given

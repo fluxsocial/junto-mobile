@@ -134,6 +134,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                   return <Widget>[
                     JuntoDenSliverAppbar(
                       name: _userProfile.user.name,
+                      userAddress: _userProfile.user.address,
                     ),
                     SliverPersistentHeader(
                       delegate: JuntoAppBarDelegate(

@@ -193,4 +193,7 @@ abstract class UserService {
 
   /// Updates the given [user] and returns updated [UserData]
   Future<UserData> updateUser(Map<String, dynamic> user, String userAddress);
+
+  // Returns a list of followers for the given user address.
+  Future<List<UserProfile>> getFollowers(String userAddress);
 }
