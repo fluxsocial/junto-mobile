@@ -346,7 +346,7 @@ class WelcomeState extends State<Welcome> {
                                 height: 36,
                                 width: 36,
                                 color: Colors.transparent,
-                                child: Icon(Icons.keyboard_arrow_down,
+                                child: const Icon(Icons.keyboard_arrow_down,
                                     color: Colors.white, size: 36),
                               ),
                             ),
@@ -483,6 +483,7 @@ class _PageKeepAliveState extends State<PageKeepAlive>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
+
   @override
   Widget build(BuildContext context) {
     super.build(context);

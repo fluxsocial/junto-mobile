@@ -279,7 +279,12 @@ List<Group> kGroups = <Group>[
   Group(
     address: 'assets/images/junto-mobile__eric.png',
     createdAt: DateTime.now(),
-    creator: 'Eric Yang',
+    creator: 'mock-group-creator',
+    incomingCreator: const SlimUserResponse(
+      name: 'Eric Yang',
+      address: 'mock-slim-user-adr',
+      username: 'eric',
+    ),
     privacy: 'public',
     groupType: 'sphere',
     members: 0,
@@ -289,7 +294,12 @@ List<Group> kGroups = <Group>[
   Group(
     address: 'assets/images/junto-mobile__riley.png',
     createdAt: DateTime.now(),
-    creator: 'Riley Wagner',
+    creator: 'mock-group-creator',
+    incomingCreator: const SlimUserResponse(
+      name: 'Riley Wagner',
+      address: 'mock-slim-user-adr',
+      username: 'Riley',
+    ),
     privacy: 'public',
     groupType: 'sphere',
     members: 1,
@@ -299,7 +309,12 @@ List<Group> kGroups = <Group>[
   Group(
     address: 'assets/images/junto-mobile__josh.png',
     createdAt: DateTime.now(),
-    creator: 'Josh Parkin',
+    creator: 'mock-group-creator',
+    incomingCreator: const SlimUserResponse(
+      name: 'Josh Parkin',
+      address: 'mock-slim-user-adr',
+      username: 'Josh',
+    ),
     privacy: 'public',
     groupType: 'sphere',
     members: 1,
@@ -309,7 +324,12 @@ List<Group> kGroups = <Group>[
   Group(
     address: 'assets/images/junto-mobile__yaz.png',
     createdAt: DateTime.now(),
-    creator: 'Yaz Owainati',
+    creator: 'mock-group-creator',
+    incomingCreator: const SlimUserResponse(
+      name: 'Yaz Owainati',
+      address: 'mock-slim-user-adr',
+      username: 'Yaz',
+    ),
     privacy: 'public',
     groupType: 'sphere',
     members: 0,
@@ -319,7 +339,12 @@ List<Group> kGroups = <Group>[
   Group(
     address: 'assets/images/junto-mobile__tomis.png',
     createdAt: DateTime.now(),
-    creator: 'Tomis Parker',
+    creator: 'mock-group-creator',
+    incomingCreator: const SlimUserResponse(
+      name: 'Tomis Parker',
+      address: 'mock-slim-user-adr',
+      username: 'Tomis',
+    ),
     privacy: 'public',
     groupType: 'sphere',
     members: 1,
@@ -329,7 +354,12 @@ List<Group> kGroups = <Group>[
   Group(
     address: 'assets/images/junto-mobile__nash.png',
     createdAt: DateTime.now(),
-    creator: 'Nash Ramdial',
+    creator: 'mock-group-creator',
+    incomingCreator: const SlimUserResponse(
+      name: 'Nash Ramdial',
+      address: 'mock-slim-user-adr',
+      username: 'Nash',
+    ),
     privacy: 'public',
     groupType: 'sphere',
     members: 1,
@@ -339,7 +369,12 @@ List<Group> kGroups = <Group>[
   Group(
     address: 'assets/images/junto-mobile__drea.png',
     createdAt: DateTime.now(),
-    creator: 'Drea Bennett',
+    creator: 'mock-group-creator',
+    incomingCreator: const SlimUserResponse(
+      name: 'Drea Bennett',
+      address: 'mock-slim-user-adr',
+      username: 'Drea',
+    ),
     privacy: 'public',
     groupType: 'sphere',
     members: 1,
@@ -349,7 +384,12 @@ List<Group> kGroups = <Group>[
   Group(
     address: 'assets/images/junto-mobile__dora.png',
     createdAt: DateTime.now(),
-    creator: 'Dora Czovek',
+    creator: 'mock-group-creator',
+    incomingCreator: const SlimUserResponse(
+      name: 'Dora Czovek',
+      address: 'mock-slim-user-adr',
+      username: 'Dora',
+    ),
     privacy: 'public',
     groupType: 'sphere',
     members: 1,
@@ -359,7 +399,12 @@ List<Group> kGroups = <Group>[
   Group(
     address: 'assets/images/junto-mobile__kevin.png',
     createdAt: DateTime.now(),
-    creator: 'Kevin Yang',
+    creator: 'mock-group-creator',
+    incomingCreator: const SlimUserResponse(
+      name: 'Kevin Yang',
+      address: 'mock-slim-user-adr',
+      username: 'Kevin',
+    ),
     privacy: 'public',
     groupType: 'sphere',
     members: 1,
@@ -369,7 +414,12 @@ List<Group> kGroups = <Group>[
   Group(
     address: 'assets/images/junto-mobile__ekene.png',
     createdAt: DateTime.now(),
-    creator: 'Ekene Nkem-Mmekam',
+    creator: 'mock-group-creator',
+    incomingCreator: const SlimUserResponse(
+      name: 'Ekene Nkem-Mmekam',
+      address: 'mock-slim-user-adr',
+      username: 'Ekene',
+    ),
     privacy: 'public',
     groupType: 'sphere',
     members: 1,
@@ -379,7 +429,12 @@ List<Group> kGroups = <Group>[
   Group(
     address: 'assets/images/junto-mobile__david.png',
     createdAt: DateTime.now(),
-    creator: 'David Wu',
+    creator: 'mock-group-creator',
+    incomingCreator: const SlimUserResponse(
+      name: 'David Wu',
+      address: 'mock-slim-user-adr',
+      username: 'David',
+    ),
     privacy: 'public',
     groupType: 'sphere',
     members: 1,
@@ -389,7 +444,12 @@ List<Group> kGroups = <Group>[
   Group(
     address: '',
     createdAt: DateTime.now(),
-    creator: 'Ali Makhdoom',
+    creator: 'mock-group-creator',
+    incomingCreator: const SlimUserResponse(
+      name: 'Ali Makhdoom',
+      address: 'mock-slim-user-adr',
+      username: 'Ali',
+    ),
     privacy: 'public',
     groupType: 'sphere',
     members: 1,
@@ -399,7 +459,12 @@ List<Group> kGroups = <Group>[
   Group(
     address: '',
     createdAt: DateTime.now(),
-    creator: 'Vidit Gupta',
+    creator: 'mock-group-creator',
+    incomingCreator: const SlimUserResponse(
+      name: 'Vidit Gupta',
+      address: 'mock-slim-user-adr',
+      username: 'Ali',
+    ),
     privacy: 'public',
     groupType: 'sphere',
     members: 1,
@@ -409,7 +474,12 @@ List<Group> kGroups = <Group>[
   Group(
     address: '',
     createdAt: DateTime.now(),
-    creator: 'Diana Ruan',
+    creator: 'mock-group-creator',
+    incomingCreator: const SlimUserResponse(
+      name: 'Diana Ruan',
+      address: 'mock-slim-user-adr',
+      username: 'Diana',
+    ),
     privacy: 'public',
     groupType: 'sphere',
     members: 1,

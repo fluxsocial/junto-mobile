@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 
 /// Object representing a group and a sphere. [groupType] determines the
@@ -14,11 +15,13 @@ class Group {
     @required this.groupData,
     @required this.facilitators,
     @required this.members,
+    this.incomingCreator,
   });
 
   factory Group.fromMap(Map<String, dynamic> json) => Group(
         address: json['address'],
         creator: json['creator'],
+        incomingCreator: SlimUserResponse.fromMap(json['creator']),
         createdAt: RFC3339.parseRfc3339(json['created_at']),
         privacy: json['privacy'],
         groupType: json['group_type'],
@@ -32,8 +35,10 @@ class Group {
   /// Address of the group on the server
   final String address;
 
-  /// uuid of the group's creator
   final String creator;
+
+  /// [SlimUserResponse] of the group's creator.
+  final SlimUserResponse incomingCreator;
 
   /// iso string of the time the group was created.
   final DateTime createdAt;
@@ -52,6 +57,7 @@ class Group {
 
   Map<String, dynamic> toMap() => <String, dynamic>{
         'address': address,
+        //FIXME(Nash+Yang): Call `toMap` once the new group types has been added to the server
         'creator': creator,
         'created_at': createdAt.toIso8601String(),
         'privacy': privacy,
