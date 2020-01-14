@@ -241,8 +241,9 @@ class UserServiceCentralized implements UserService {
     final List<dynamic> _results =
         await JuntoHttp.handleResponse(_serverResponse);
 
-    final List<UserProfile> _resultsList = [];
+    final List<UserProfile> _resultsList = <UserProfile>[];
 
+    // ignore: avoid_function_literals_in_foreach_calls
     _results.forEach((dynamic result) {
       _resultsList.add(
         UserProfile(
@@ -250,7 +251,7 @@ class UserServiceCentralized implements UserService {
           bio: result['user']['bio'],
           username: result['user']['username'],
           name: result['user']['name'],
-          profilePicture: [],
+          profilePicture: <String>[],
           gender: List<String>.from(result['user']['gender']),
           location: List<String>.from(result['user']['location']),
           verified: true,
@@ -289,20 +290,19 @@ class UserServiceCentralized implements UserService {
   Future<UserData> updateUser(
       Map<String, dynamic> user, String userAddress) async {
     print('calling update user');
-    final encodedUser = json.encode(user);
-    print(encodedUser);
+    final String encodedUser = json.encode(user);
     final http.Response _serverResponse =
         await client.patch('/users/' + userAddress, body: encodedUser);
     print(_serverResponse.statusCode);
     print(_serverResponse.body);
-    // final Map<String, dynamic> _data =
-    //     JuntoHttp.handleResponse(_serverResponse);
-    // final SharedPreferences _prefs = await SharedPreferences.getInstance();
-    // final String _userMapToString = json.encode(_data);
+    final Map<String, dynamic> _data =
+        JuntoHttp.handleResponse(_serverResponse);
+    final SharedPreferences _prefs = await SharedPreferences.getInstance();
+    final String _userMapToString = json.encode(_data);
 
-    // _prefs.remove('user_data');
-    // _prefs.setString('user_data', _userMapToString);
-    // return UserData.fromMap(_data);
+    _prefs.remove('user_data');
+    _prefs.setString('user_data', _userMapToString);
+    return UserData.fromMap(_data);
   }
 
   /// Private function which returns the correct query param for the given

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
-import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:provider/provider.dart';
 
 class JuntoEditDen extends StatelessWidget {
   const JuntoEditDen({this.userProfile});
@@ -59,7 +59,7 @@ class JuntoEditDen extends StatelessWidget {
                         profilePicture: userProfile.user.profilePicture,
                         website: <String>['thej']);
                     Provider.of<UserRepo>(context, listen: false)
-                        .updateUser(newProfile);
+                        .updateUser(newProfile.toMap(), newProfile.address);
                   },
                   child: Container(
                     child: Text('Edit Profile',

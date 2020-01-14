@@ -54,8 +54,10 @@ class JuntoCollectiveState extends State<JuntoCollective>
 
   String _userAddress;
   UserData _userProfile;
+
   //ignore:unused_field
   List<UserProfile> _userSubscriptions;
+
 //ignore:unused_field
   List<UserProfile> _userConnections;
 
@@ -141,7 +143,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
     try {
       return await _expressionProvider.getCollectiveExpressions(_params);
     } on JuntoException catch (_) {
-      await Provider.of<AuthRepo>(context).logoutUser();
+      await Provider.of<AuthRepo>(context, listen: false).logoutUser();
       await Navigator.of(context).pushReplacement(
         PageRouteBuilder<dynamic>(
           pageBuilder: (

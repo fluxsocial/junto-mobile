@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
@@ -13,7 +14,6 @@ import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/fabs/expression_center_fab.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:provider/provider.dart';
 
 class SphereOpen extends StatefulWidget {
@@ -151,8 +151,8 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
             // These are the contents of the tab views, below the tabs.
             children: <Widget>[
               _buildAboutView(),
-              SizedBox(),
-              SizedBox()
+              const SizedBox(),
+              const SizedBox()
               // _buildExpressionView(),
               // _buildEventsView()
             ],
@@ -305,6 +305,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     );
   }
 
+//ignore:unused_element
   Widget _buildExpressionView() {
     return FutureBuilder<List<CentralizedExpressionResponse>>(
       future: Provider.of<GroupRepo>(context, listen: false)
@@ -347,6 +348,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     );
   }
 
+  //ignore:unused_element
   Widget _buildEventsView() {
     return ListView(
       physics: const ClampingScrollPhysics(),
