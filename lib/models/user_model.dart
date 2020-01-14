@@ -3,8 +3,66 @@ import 'package:junto_beta_mobile/models/pack.dart';
 import 'package:junto_beta_mobile/models/perspective.dart';
 import 'package:meta/meta.dart';
 
+/// Generates a stripped down version of [UserProfile].
+/// Mostly used for overviews and user tiles.
+class SlimUserResponse {
+  const SlimUserResponse({
+    @required this.name,
+    @required this.username,
+    @required this.address,
+  });
+
+  factory SlimUserResponse.fromMap(Map<String, dynamic> map) {
+    return SlimUserResponse(
+      name: map['name'] as String,
+      username: map['username'] as String,
+      address: map['address'] as String,
+    );
+  }
+
+  final String name;
+  final String username;
+  final String address;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SlimUserResponse &&
+          runtimeType == other.runtimeType &&
+          name == other.name &&
+          username == other.username &&
+          address == other.address);
+
+  @override
+  int get hashCode => name.hashCode ^ username.hashCode ^ address.hashCode;
+
+  @override
+  String toString() => 'SlimUserResponse{'
+      'name: $name username: $username,   address: $address }';
+
+  SlimUserResponse copyWith({
+    String name,
+    String username,
+    String address,
+  }) {
+    return SlimUserResponse(
+      name: name ?? this.name,
+      username: username ?? this.username,
+      address: address ?? this.address,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, String>{
+      'name': name,
+      'username': username,
+      'address': address,
+    };
+  }
+}
+
 /// Class used to store the profile information of a user.
-/// Contains the [address], [parent], [firstName], [lastName], [bio],
+/// Contains the [address], [name], [bio],
 /// [profilePicture], [verified].
 class UserProfile {
   const UserProfile({
