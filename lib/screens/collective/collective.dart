@@ -41,10 +41,10 @@ class JuntoCollectiveState extends State<JuntoCollective>
   final GlobalKey<ScaffoldState> _juntoCollectiveKey =
       GlobalKey<ScaffoldState>();
 
-  AsyncMemoizer<QueryExpressionResults> _asyncMemoizer;
+  AsyncMemoizer<QueryResults<CentralizedExpressionResponse>> _asyncMemoizer;
 
   // Completer which controls expressions querying.
-  Future<QueryExpressionResults> _expressionCompleter;
+  Future<QueryResults<CentralizedExpressionResponse>> _expressionCompleter;
 
   // for custom swipe to open perspectives drawer animation
   double _dx = 0.0;
@@ -70,7 +70,8 @@ class JuntoCollectiveState extends State<JuntoCollective>
   @override
   void initState() {
     super.initState();
-    _asyncMemoizer = AsyncMemoizer<QueryExpressionResults>();
+    _asyncMemoizer =
+        AsyncMemoizer<QueryResults<CentralizedExpressionResponse>>();
     _collectiveController = ScrollController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _collectiveController.addListener(_onScrollingHasChanged);
@@ -119,7 +120,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
     });
   }
 
-  Future<QueryExpressionResults> getCollectiveExpressions({
+  Future<QueryResults<CentralizedExpressionResponse>> getCollectiveExpressions({
     int dos,
     String contextType,
     String contextString,
@@ -269,11 +270,11 @@ class JuntoCollectiveState extends State<JuntoCollective>
       // dynamically render body
       body: RefreshIndicator(
         onRefresh: () async => refreshData,
-        child: FutureBuilder<QueryExpressionResults>(
+        child: FutureBuilder<QueryResults<CentralizedExpressionResponse>>(
           future: _expressionCompleter,
           builder: (
             BuildContext context,
-            AsyncSnapshot<QueryExpressionResults> snapshot,
+            AsyncSnapshot<QueryResults<CentralizedExpressionResponse>> snapshot,
           ) {
             if (snapshot.hasError) {
               print('Error: ${snapshot.error}');

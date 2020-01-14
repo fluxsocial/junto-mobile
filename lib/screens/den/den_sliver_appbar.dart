@@ -1,20 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/backend/repositories.dart';
-import 'package:junto_beta_mobile/models/models.dart';
-import 'package:provider/provider.dart';
 
 class JuntoDenSliverAppbar extends StatelessWidget {
   const JuntoDenSliverAppbar({
     Key key,
     @required this.name,
-    @required this.userAddress,
   }) : super(key: key);
 
   final String name;
-
-  //FIXME(Nash): Remove
-  final String userAddress;
 
   @override
   Widget build(BuildContext context) {
@@ -45,33 +38,27 @@ class JuntoDenSliverAppbar extends StatelessWidget {
                   ],
                 ),
               ),
-              child: GestureDetector(
-                onTap: () {
-                  //FIXME(Nash): Remove this
-                  Navigator.push(context, FollowersList.route(userAddress));
-                },
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    const SizedBox(),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: <Widget>[
-                        Flexible(
-                          child: Text(
-                            name,
-                            style: const TextStyle(
-                              fontSize: 28,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
-                            ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  const SizedBox(),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      Flexible(
+                        child: Text(
+                          name,
+                          style: const TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
                           ),
                         ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ],
@@ -114,43 +101,5 @@ class JuntoAppBarDelegate extends SliverPersistentHeaderDelegate {
   @override
   bool shouldRebuild(JuntoAppBarDelegate oldDelegate) {
     return false;
-  }
-}
-
-class FollowersList extends StatefulWidget {
-  const FollowersList({Key key, this.userAddress}) : super(key: key);
-
-  static Route<dynamic> route(String userAddress) {
-    return MaterialPageRoute<dynamic>(builder: (BuildContext context) {
-      return FollowersList(
-        userAddress: userAddress,
-      );
-    });
-  }
-
-  final String userAddress;
-
-  @override
-  _FollowersListState createState() => _FollowersListState();
-}
-
-class _FollowersListState extends State<FollowersList> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        color: Colors.blue,
-        child: FutureBuilder<List<UserProfile>>(
-          future: Provider.of<UserRepo>(context, listen: false)
-              .getFollowers(widget.userAddress),
-          builder: (
-            BuildContext context,
-            AsyncSnapshot<List<UserProfile>> snapshot,
-          ) {
-            return Container();
-          },
-        ),
-      ),
-    );
   }
 }
