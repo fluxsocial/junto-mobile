@@ -20,7 +20,7 @@ class AuthRepo {
     _isLoggedIn = prefs.getBool('isLoggedIn');
     return _isLoggedIn;
   }
- 
+
   Future<String> verifyEmail(String email) async {
     return _authService.verifyEmail(email);
   }
@@ -52,15 +52,13 @@ class AuthRepo {
           'user_follow_perspective_id', _user.userPerspective.address);
       final Map<String, dynamic> _userToMap = _user.toMap();
       final String _userMapToString = json.encode(_userToMap);
-      final LocalStorage _storage = LocalStorage('user-details');
-      final bool ready = await _storage.ready;
-      if (ready) {
-        _storage.setItem('data', _user.toMap());
-      }
+
       _isLoggedIn = true;
+
       await SharedPreferences.getInstance()
         ..setBool('isLoggedIn', true)
         ..setString('user_data', _userMapToString);
+
       return _user;
     } catch (error) {
       rethrow;

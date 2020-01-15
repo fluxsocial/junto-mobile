@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
@@ -6,15 +8,68 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:provider/provider.dart';
 
-class JuntoEditDen extends StatelessWidget {
-  const JuntoEditDen({this.userProfile});
+class JuntoEditDen extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return JuntoEditDenState();
+  }
+}
 
-  final UserData userProfile;
+class JuntoEditDenState extends State<JuntoEditDen> {
+  String _userAddress;
+  UserData _userData;
 
-  static const String name = 'Name';
-  static const String bio = 'bio';
-  static const String location = 'location';
-  static const String website = 'website';
+  String _name;
+  String _bio;
+  List<String> _location;
+  List<String> _website;
+
+  TextEditingController _nameController;
+  TextEditingController _bioController;
+  TextEditingController _locationController;
+  TextEditingController _genderController;
+  TextEditingController _websiteController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    getUserInformation();
+  }
+
+  Future<void> getUserInformation() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final Map<String, dynamic> decodedUserData =
+        jsonDecode(prefs.getString('user_data'));
+
+    setState(() {
+      _userAddress = prefs.getString('user_id');
+      _userData = UserData.fromMap(decodedUserData);
+    });
+    setEditInfo();
+  }
+
+  void setEditInfo() {
+    print('setting info');
+    setState(() {
+      _name = _userData.user.name;
+      _bio = _userData.user.bio;
+      _location = _userData.user.location;
+      _website = _userData.user.website;
+    });
+
+    _nameController = TextEditingController(text: _userData.user.name);
+    _bioController = TextEditingController(text: _userData.user.bio);
+    _locationController = TextEditingController(
+        text: _userData.user.location[0] == null
+            ? ''
+            : _userData.user.location[0]);
+    _genderController = TextEditingController(
+        text: _userData.user.gender[0] == null ? '' : _userData.user.gender[0]);
+    _websiteController = TextEditingController(
+        text:
+            _userData.user.website[0] == null ? '' : _userData.user.website[0]);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,19 +102,16 @@ class JuntoEditDen extends StatelessWidget {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {
-                    final UserProfile newProfile = UserProfile(
-                        address: userProfile.user.address,
-                        name: 'Urk',
-                        gender: userProfile.user.gender,
-                        location: <String>['Spirit'],
-                        username: userProfile.user.username,
-                        verified: userProfile.user.verified,
-                        bio: 'Here.',
-                        profilePicture: userProfile.user.profilePicture,
-                        website: <String>['thej']);
-                    Provider.of<UserRepo>(context, listen: false)
-                        .updateUser(newProfile.toMap(), newProfile.address);
+                  onTap: () async {
+                    final Map<String, dynamic> newProfile = {
+                      'name': 'Urk',
+                      'location': <String>['Spirit'],
+                      'bio': 'Now',
+                      'website': <String>['thej']
+                    };
+
+                    await Provider.of<UserRepo>(context, listen: false)
+                        .updateUser(newProfile, _userAddress);
                   },
                   child: Container(
                     child: Text('Edit Profile',
@@ -116,77 +168,177 @@ class JuntoEditDen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 10),
-                      Text('Edit profile picture',
+                      Text('Edit profile pictures',
                           style: Theme.of(context).textTheme.body2)
                     ],
                   ),
                 ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                          color: Theme.of(context).dividerColor, width: .75),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 10),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                              color: Theme.of(context).dividerColor,
+                              width: .75),
+                        ),
+                      ),
+                      child: TextField(
+                        controller: _nameController,
+                        decoration: const InputDecoration(
+                            border: InputBorder.none, hintText: 'Full Name'),
+                        maxLines: null,
+                        style: Theme.of(context).textTheme.body2,
+                      ),
                     ),
-                  ),
-                  child: TextFormField(
-                    initialValue: name,
-                    decoration: const InputDecoration(
-                        border: InputBorder.none, hintText: 'name'),
-                    maxLines: null,
-                    style: Theme.of(context).textTheme.body2,
-                  ),
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                          color: Theme.of(context).dividerColor, width: .75),
+                    const SizedBox(height: 10),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Text(
+                        'NAME',
+                        style: TextStyle(
+                            fontSize: 10, fontWeight: FontWeight.w500),
+                      ),
                     ),
-                  ),
-                  child: TextFormField(
-                      initialValue: bio,
-                      decoration: const InputDecoration(
-                          border: InputBorder.none, hintText: 'bio'),
-                      maxLines: null,
-                      style: Theme.of(context).textTheme.body2),
+                  ],
                 ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                          color: Theme.of(context).dividerColor, width: .75),
+                const SizedBox(height: 25),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 10),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                              color: Theme.of(context).dividerColor,
+                              width: .75),
+                        ),
+                      ),
+                      child: TextField(
+                        controller: _bioController,
+                        decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Short/Long Bio'),
+                        maxLines: null,
+                        style: Theme.of(context).textTheme.body2,
+                      ),
                     ),
-                  ),
-                  child: TextFormField(
-                      initialValue: location,
-                      decoration: const InputDecoration(
-                          border: InputBorder.none, hintText: 'location'),
-                      maxLines: null,
-                      style: Theme.of(context).textTheme.body2),
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                          color: Theme.of(context).dividerColor, width: .75),
+                    const SizedBox(height: 10),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Text(
+                        'BIO',
+                        style: TextStyle(
+                            fontSize: 10, fontWeight: FontWeight.w500),
+                      ),
                     ),
-                  ),
-                  child: TextFormField(
-                    initialValue: website,
-                    decoration: const InputDecoration(
-                        border: InputBorder.none, hintText: 'website'),
-                    maxLines: null,
-                    style: Theme.of(context).textTheme.body2,
-                  ),
+                  ],
                 ),
+                const SizedBox(height: 25),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 10),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                              color: Theme.of(context).dividerColor,
+                              width: .75),
+                        ),
+                      ),
+                      child: TextField(
+                        controller: _locationController,
+                        decoration: const InputDecoration(
+                            border: InputBorder.none, hintText: 'Location'),
+                        maxLines: null,
+                        style: Theme.of(context).textTheme.body2,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Text(
+                        'LOCATION',
+                        style: TextStyle(
+                            fontSize: 10, fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 25),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 10),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                              color: Theme.of(context).dividerColor,
+                              width: .75),
+                        ),
+                      ),
+                      child: TextField(
+                        controller: _genderController,
+                        decoration: const InputDecoration(
+                            border: InputBorder.none, hintText: 'Gender'),
+                        maxLines: null,
+                        style: Theme.of(context).textTheme.body2,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Text(
+                        'GENDER',
+                        style: TextStyle(
+                            fontSize: 10, fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 25),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 10),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                              color: Theme.of(context).dividerColor,
+                              width: .75),
+                        ),
+                      ),
+                      child: TextField(
+                        controller: _websiteController,
+                        decoration: const InputDecoration(
+                            border: InputBorder.none, hintText: 'Website'),
+                        maxLines: null,
+                        style: Theme.of(context).textTheme.body2,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Text(
+                        'WEBSITE',
+                        style: TextStyle(
+                            fontSize: 10, fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 25),
               ],
             ),
           )

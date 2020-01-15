@@ -27,32 +27,13 @@ class JuntoDrawer extends StatefulWidget {
 }
 
 class _JuntoDrawerState extends State<JuntoDrawer> {
-  UserData profile;
-  String userAddress;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _retrieveUserInfo();
-  }
-
-  Future<void> _retrieveUserInfo() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final Map<String, dynamic> decodedUserData = jsonDecode(
-      prefs.getString('user_data'),
-    );
-    if (mounted) {
-      setState(() {
-        profile = UserData.fromMap(decodedUserData);
-        userAddress = prefs.getString('user_id');
-      });
-    }
-  }
+  String _userAddress;
+  String _userFollowPerspectiveId;
 
   Future<void> _onPackPress() async {
     final UserGroupsResponse _userPack =
         await Provider.of<UserRepo>(context, listen: false)
-            .getUserGroups(userAddress);
+            .getUserGroups(_userAddress);
     Navigator.push(
       context,
       CupertinoPageRoute<dynamic>(
@@ -63,6 +44,22 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
         },
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    getUserInformation();
+  }
+
+  Future<void> getUserInformation() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      _userAddress = prefs.getString('user_id');
+      _userFollowPerspectiveId = prefs.getString('user_follow_perspective_id');
+    });
   }
 
   @override
@@ -128,23 +125,31 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                           }),
                       // relationships
                       JuntoDrawerItem(
+                        title: 'Edit Den',
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute<Widget>(
+                              builder: (BuildContext context) => JuntoEditDen(),
+                            ),
+                          );
+                        },
+                      ),
+                      // relationships
+                      JuntoDrawerItem(
                         title: 'My Pack',
                         onTap: _onPackPress,
                       ),
                       JuntoDrawerItem(
                         title: 'Relationships',
                         onTap: () async {
-                          final SharedPreferences _prefs =
-                              await SharedPreferences.getInstance();
                           // open relationships
                           Navigator.push(
                             context,
                             CupertinoPageRoute<dynamic>(
                               builder: (BuildContext context) =>
                                   JuntoRelationships(
-                                      _prefs.getString('user_id'),
-                                      _prefs.getString(
-                                          'user_follow_perspective_id')),
+                                      _userAddress, _userFollowPerspectiveId),
                             ),
                           );
                         },

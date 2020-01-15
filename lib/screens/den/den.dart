@@ -73,6 +73,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
 
   Future<void> getUserInformation() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    // print(prefs.getString('user_data'));
     final Map<String, dynamic> decodedUserData =
         jsonDecode(prefs.getString('user_data'));
 
@@ -80,8 +81,6 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
       _userAddress = prefs.getString('user_id');
       _userProfile = UserData.fromMap(decodedUserData);
     });
-
-    print(_userProfile.user.gender);
   }
 
   Future<List<CentralizedExpressionResponse>> getUsersExpressions() async {
@@ -115,7 +114,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                 Navigator.push(
                   context,
                   CupertinoPageRoute<Widget>(
-                    builder: (BuildContext context) => const JuntoEditDen(),
+                    builder: (BuildContext context) => JuntoEditDen(),
                   ),
                 );
               }),
@@ -195,7 +194,8 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                             ],
                           ),
                         ),
-                        _userProfile.user.profilePicture.isNotEmpty
+
+                        _userProfile.user.profilePicture != null
                             ? _displayProfilePictures(
                                 _userProfile.user.profilePicture)
                             : const SizedBox(),

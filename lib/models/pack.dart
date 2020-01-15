@@ -110,7 +110,7 @@ class PackResponse {
       }
     };
   }
-}
+} 
 
 class CentralizedPack with RFC3339 {
   CentralizedPack({

@@ -152,9 +152,7 @@ class WelcomeState extends State<Welcome> {
       bio: bio,
       location: <String>[location],
       username: username,
-      profileImage: <String>[
-        'assets/images/junto-mobile__placeholder--member.png'
-      ],
+      profileImage: <String>[],
       website: <String>[website],
       gender: <String>[gender],
       verificationCode: verificationCode,
