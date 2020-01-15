@@ -6,15 +6,57 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:provider/provider.dart';
 
-class JuntoEditDen extends StatelessWidget {
-  const JuntoEditDen({this.userProfile});
+class JuntoEditDen extends StatefulWidget {
+  const JuntoEditDen({
+    Key key,
+    @required this.userProfile,
+  }) : super(key: key);
 
   final UserData userProfile;
 
-  static const String name = 'Name';
-  static const String bio = 'bio';
-  static const String location = 'location';
-  static const String website = 'website';
+  @override
+  _JuntoEditDenState createState() => _JuntoEditDenState();
+}
+
+class _JuntoEditDenState extends State<JuntoEditDen> {
+  final GlobalKey<FormFieldState<dynamic>> _formKey =
+      GlobalKey<FormFieldState<dynamic>>();
+
+  String name;
+
+  String bio;
+
+  String location;
+
+  String website;
+
+  @override
+  void initState() {
+    super.initState();
+    name = widget.userProfile.user.name;
+    bio = widget.userProfile.user.bio;
+    location = widget.userProfile.user.location.first;
+    website = widget.userProfile.user.website.first;
+  }
+
+  Future<void> _updateUserProfile() async {
+    final UserProfile newProfile = UserProfile(
+      address: widget.userProfile.user.address,
+      name: name,
+      gender: widget.userProfile.user.gender,
+      location: <String>[location],
+      username: widget.userProfile.user.username,
+      verified: widget.userProfile.user.verified,
+      bio: bio,
+      profilePicture: widget.userProfile.user.profilePicture,
+      website: <String>[website],
+    );
+    try {
+      Provider.of<UserRepo>(context).updateUser(newProfile);
+    } catch (error) {
+      print(error);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,33 +88,21 @@ class JuntoEditDen extends StatelessWidget {
                     ),
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    final UserProfile newProfile = UserProfile(
-                        address: userProfile.user.address,
-                        name: 'Urk',
-                        gender: userProfile.user.gender,
-                        location: <String>['Spirit'],
-                        username: userProfile.user.username,
-                        verified: userProfile.user.verified,
-                        bio: 'Here.',
-                        profilePicture: userProfile.user.profilePicture,
-                        website: <String>['thej']);
-                    Provider.of<UserRepo>(context, listen: false)
-                        .updateUser(newProfile.toMap(), newProfile.address);
-                  },
-                  child: Container(
-                    child: Text('Edit Profile',
-                        style: Theme.of(context).textTheme.subhead),
-                  ),
-                ),
                 Container(
-                  padding: const EdgeInsets.only(right: 10),
-                  alignment: Alignment.centerRight,
-                  color: Colors.transparent,
-                  width: 42,
-                  height: 42,
-                  child: Text('Save', style: Theme.of(context).textTheme.body2),
+                  child: Text('Edit Profile',
+                      style: Theme.of(context).textTheme.subhead),
+                ),
+                GestureDetector(
+                  onTap: _updateUserProfile,
+                  child: Container(
+                    padding: const EdgeInsets.only(right: 10),
+                    alignment: Alignment.centerRight,
+                    color: Colors.transparent,
+                    width: 42,
+                    height: 42,
+                    child:
+                        Text('Save', style: Theme.of(context).textTheme.body2),
+                  ),
                 )
               ],
             ),
@@ -91,106 +121,109 @@ class JuntoEditDen extends StatelessWidget {
           ),
         ),
       ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: ListView(
-              children: <Widget>[
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                          color: Theme.of(context).dividerColor, width: .75),
-                    ),
-                  ),
-                  child: Row(
-                    children: <Widget>[
-                      ClipOval(
-                        child: Image.asset(
-                          'assets/images/junto-mobile__mockprofpic--one.png',
-                          height: 45.0,
-                          width: 45.0,
-                          fit: BoxFit.cover,
-                        ),
+      body: Form(
+        key: _formKey,
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: ListView(
+                children: <Widget>[
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 15, horizontal: 10),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                            color: Theme.of(context).dividerColor, width: .75),
                       ),
-                      const SizedBox(width: 10),
-                      Text('Edit profile picture',
-                          style: Theme.of(context).textTheme.body2)
-                    ],
-                  ),
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                          color: Theme.of(context).dividerColor, width: .75),
+                    ),
+                    child: Row(
+                      children: <Widget>[
+                        ClipOval(
+                          child: Image.asset(
+                            'assets/images/junto-mobile__mockprofpic--one.png',
+                            height: 45.0,
+                            width: 45.0,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Text('Edit profile picture',
+                            style: Theme.of(context).textTheme.body2)
+                      ],
                     ),
                   ),
-                  child: TextFormField(
-                    initialValue: name,
-                    decoration: const InputDecoration(
-                        border: InputBorder.none, hintText: 'name'),
-                    maxLines: null,
-                    style: Theme.of(context).textTheme.body2,
-                  ),
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                          color: Theme.of(context).dividerColor, width: .75),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 10),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                            color: Theme.of(context).dividerColor, width: .75),
+                      ),
                     ),
-                  ),
-                  child: TextFormField(
-                      initialValue: bio,
+                    child: TextFormField(
+                      initialValue: name,
                       decoration: const InputDecoration(
-                          border: InputBorder.none, hintText: 'bio'),
+                          border: InputBorder.none, hintText: 'name'),
                       maxLines: null,
-                      style: Theme.of(context).textTheme.body2),
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                          color: Theme.of(context).dividerColor, width: .75),
+                      style: Theme.of(context).textTheme.body2,
                     ),
                   ),
-                  child: TextFormField(
-                      initialValue: location,
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 10),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                            color: Theme.of(context).dividerColor, width: .75),
+                      ),
+                    ),
+                    child: TextFormField(
+                        initialValue: bio,
+                        decoration: const InputDecoration(
+                            border: InputBorder.none, hintText: 'bio'),
+                        maxLines: null,
+                        style: Theme.of(context).textTheme.body2),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 10),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                            color: Theme.of(context).dividerColor, width: .75),
+                      ),
+                    ),
+                    child: TextFormField(
+                        initialValue: location,
+                        decoration: const InputDecoration(
+                            border: InputBorder.none, hintText: 'location'),
+                        maxLines: null,
+                        style: Theme.of(context).textTheme.body2),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 10),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                            color: Theme.of(context).dividerColor, width: .75),
+                      ),
+                    ),
+                    child: TextFormField(
+                      initialValue: website,
                       decoration: const InputDecoration(
-                          border: InputBorder.none, hintText: 'location'),
+                          border: InputBorder.none, hintText: 'website'),
                       maxLines: null,
-                      style: Theme.of(context).textTheme.body2),
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                          color: Theme.of(context).dividerColor, width: .75),
+                      style: Theme.of(context).textTheme.body2,
                     ),
                   ),
-                  child: TextFormField(
-                    initialValue: website,
-                    decoration: const InputDecoration(
-                        border: InputBorder.none, hintText: 'website'),
-                    maxLines: null,
-                    style: Theme.of(context).textTheme.body2,
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-          )
-        ],
+          ],
+        ),
       ),
     );
   }

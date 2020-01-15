@@ -14,7 +14,7 @@ class BottomNav extends StatelessWidget {
 
   Widget _uniqueActionItem(BuildContext context, String currentScreen) {
     if (currentScreen == 'collective') {
-      return Expanded( 
+      return Expanded(
         child: GestureDetector(
           onTap: onTap,
           child: Container(
@@ -51,9 +51,7 @@ class BottomNav extends StatelessWidget {
     } else if (currentScreen == 'den') {
       return Expanded(
         child: GestureDetector(
-          onTap: () {
-            onTap();
-          },
+          onTap: onTap,
           child: Container(
             width: 60,
             height: 50,
