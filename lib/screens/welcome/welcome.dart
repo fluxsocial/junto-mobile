@@ -86,6 +86,7 @@ class WelcomeState extends State<Welcome> {
           .verifyEmail(email);
     } catch (error) {
       debugPrint('Error verifying email $error');
+      print(error.message);
     }
     throw const JuntoException('Please check your password', -2);
   }
