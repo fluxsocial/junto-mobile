@@ -246,31 +246,7 @@ class JuntoLotus extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(
-                        PageRouteBuilder<dynamic>(
-                          pageBuilder: (
-                            BuildContext context,
-                            Animation<double> animation,
-                            Animation<double> secondaryAnimation,
-                          ) {
-                            return JuntoDen();
-                          },
-                          transitionsBuilder: (
-                            BuildContext context,
-                            Animation<double> animation,
-                            Animation<double> secondaryAnimation,
-                            Widget child,
-                          ) {
-                            return FadeTransition(
-                              opacity: animation,
-                              child: child,
-                            );
-                          },
-                          transitionDuration: const Duration(
-                            milliseconds: 300,
-                          ),
-                        ),
-                      );
+                      Navigator.pop(context);
                     },
                     child: Container(
                       color: Colors.transparent,
@@ -278,28 +254,10 @@ class JuntoLotus extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Container(
-                                width: 27,
-                                child: const Icon(
-                                  CustomIcons.den,
-                                  size: 24,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              const Text(
-                                'DEN',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w700,
-                                    letterSpacing: 1.4),
-                              )
-                            ],
+                          Icon(
+                            CustomIcons.lotus,
+                            size: 33,
+                            color: Colors.white,
                           ),
                         ],
                       ),
