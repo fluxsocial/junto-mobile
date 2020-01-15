@@ -90,6 +90,12 @@ abstract class ExpressionService {
   List<CentralizedExpressionResponse> get collectiveExpressions;
 
   Future<void> deleteExpression(String expressionAddress);
+
+  /// Returns true/false if the [userAddress] is following the [targetAddress]
+  Future<bool> isFollowingUser(String userAddress, String targetAddress);
+
+  /// Returns true/false if the [userAddress] is connected to the [targetAddress]
+  Future<bool> isConnectedUser(String userAddress, String targetAddress);
 }
 
 abstract class GroupService {

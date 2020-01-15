@@ -162,8 +162,25 @@ class ExpressionServiceCentralized implements ExpressionService {
     final http.Response _serverResponse = await client.delete(
       '/expressions/$expressionAddress',
     );
-    print(_serverResponse.statusCode);
     JuntoHttp.handleResponse(_serverResponse);
+  }
+
+  @override
+  Future<bool> isConnectedUser(String userAddress, String targetAddress) async {
+    final http.Response _serverResponse = await client.get(
+      '/users/$userAddress/connected/$targetAddress',
+    );
+    final bool result = JuntoHttp.handleResponse(_serverResponse) as bool;
+    return result;
+  }
+
+  @override
+  Future<bool> isFollowingUser(String userAddress, String targetAddress) async {
+    final http.Response _serverResponse = await client.get(
+      '/users/$userAddress/following/$targetAddress',
+    );
+    final bool result = JuntoHttp.handleResponse(_serverResponse) as bool;
+    return result;
   }
 
   @override
