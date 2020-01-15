@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
-import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class JuntoHttp {
@@ -43,10 +42,6 @@ class JuntoHttp {
     };
   }
 
-  String _encodeBody(Map<String, dynamic> body) {
-    return body == null ? null : serializeHoloJson(body);
-  }
-
   Future<http.Response> get(String resource,
       {Map<String, String> headers, Map<String, String> queryParams}) async {
     final Uri _uri = Uri.http(
@@ -58,14 +53,13 @@ class JuntoHttp {
   }
 
   Future<http.Response> patch(String resource,
-      {Map<String, String> headers, Map<String, String> queryParams, dynamic body}) async {
+      {Map<String, String> headers,
+      Map<String, String> queryParams,
+      dynamic body}) async {
     final Uri _uri = Uri.http(
         END_POINT_without_prefix, '/$kServerVersion$resource', queryParams);
-    return httpClient.patch(
-      _uri,
-      headers: await _withPersistentHeaders(headers),
-      body: body
-    );
+    return httpClient.patch(_uri,
+        headers: await _withPersistentHeaders(headers), body: body);
   }
 
   Future<http.Response> delete(
@@ -83,20 +77,6 @@ class JuntoHttp {
     return http.Response.fromStream(_streamedResponse);
   }
 
-  @Deprecated('User postWithoutEncoding instead. Will soon be removed.')
-  Future<http.Response> post(
-    String resource, {
-    Map<String, String> headers,
-    dynamic body,
-  }) async {
-    final String _body = _encodeBody(body);  
-    return httpClient.post(
-      _encodeUrl(resource),
-      headers: await _withPersistentHeaders(headers),
-      body: _body,
-    );
-  }
-
   Future<http.Response> postWithoutEncoding(
     String resource, {
     Map<String, String> headers,
@@ -105,15 +85,6 @@ class JuntoHttp {
     final dynamic jsonBody = convert.json.encode(body);
     return httpClient.post(_encodeUrl(resource),
         headers: await _withPersistentHeaders(headers), body: jsonBody);
-  }
-
-  static Map<String, dynamic> holobody(
-      String functionName, String zome, Map<String, dynamic> args) {
-    return <String, dynamic>{
-      'zome': zome,
-      'function': functionName,
-      'args': args
-    };
   }
 
   /// Function takes [http.Response] as the only param.

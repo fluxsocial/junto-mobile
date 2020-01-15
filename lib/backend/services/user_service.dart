@@ -286,22 +286,15 @@ class UserServiceCentralized implements UserService {
   }
 
   @override
-  Future<UserData> updateUser(
-      Map<String, dynamic> user, String userAddress) async {
-    print('calling update user');
-    final String encodedUser = json.encode(user);
+  Future<UserProfile> updateUser(UserProfile profile) async {
+    final String encodedUser = json.encode(profile.toMap());
     final http.Response _serverResponse =
-        await client.patch('/users/' + userAddress, body: encodedUser);
-    print(_serverResponse.statusCode);
-    print(_serverResponse.body);
+        await client.patch('/users/${profile.address}', body: encodedUser);
     final Map<String, dynamic> _data =
         JuntoHttp.handleResponse(_serverResponse);
     final SharedPreferences _prefs = await SharedPreferences.getInstance();
     final String _userMapToString = json.encode(_data);
-
-    _prefs.remove('user_data');
-    _prefs.setString('user_data', _userMapToString);
-    return UserData.fromMap(_data);
+    return UserProfile.fromMap(_data);
   }
 
   @override
