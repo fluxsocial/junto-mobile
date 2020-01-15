@@ -73,7 +73,7 @@ void main() {
 
     /// Ensure the value sent back is not null
     test('Get Expression Comments', () async {
-      final QueryCommentResults _response = await _collectiveProvider
+      final QueryResults<Comment> _response = await _collectiveProvider
           .getExpressionsComments('9f878873-3ad8-45e2-8f1b-5c3673f73e27');
       expect(_response, isNotNull);
     });

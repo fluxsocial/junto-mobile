@@ -9,7 +9,6 @@ import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_http.dart';
 import 'package:meta/meta.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 /// Concrete implementation of [ExpressionService]
 @immutable
@@ -122,7 +121,7 @@ class ExpressionServiceCentralized implements ExpressionService {
   }
 
   @override
-  Future<QueryCommentResults> getExpressionsComments(
+  Future<QueryResults<Comment>> getExpressionsComments(
       String expressionAddress) async {
     final http.Response response = await client.get(
         '/expressions/$expressionAddress/comments',
@@ -130,7 +129,7 @@ class ExpressionServiceCentralized implements ExpressionService {
           'pagination_position': '0',
         });
     final Map<String, dynamic> _listData = JuntoHttp.handleResponse(response);
-    return QueryCommentResults(
+    return QueryResults<Comment>(
       lastTimestamp: _listData['last_timestamp'],
       results: <Comment>[
         for (dynamic data in _listData['results']) Comment.fromMap(data)
@@ -163,12 +162,12 @@ class ExpressionServiceCentralized implements ExpressionService {
     final http.Response _serverResponse = await client.delete(
       '/expressions/$expressionAddress',
     );
-    print(_serverResponse.statusCode); 
+    print(_serverResponse.statusCode);
     JuntoHttp.handleResponse(_serverResponse);
   }
 
   @override
-  Future<QueryExpressionResults> getCollectiveExpressions(
+  Future<QueryResults<CentralizedExpressionResponse>> getCollectiveExpressions(
       Map<String, String> params) async {
     final http.Response response = await client.get(
       '/expressions',
@@ -176,7 +175,7 @@ class ExpressionServiceCentralized implements ExpressionService {
     );
     final dynamic results = JuntoHttp.handleResponse(response);
     if (results is Map<dynamic, dynamic>) {
-      return QueryExpressionResults(
+      return QueryResults<CentralizedExpressionResponse>(
         results: <CentralizedExpressionResponse>[
           for (dynamic data in results['results'])
             CentralizedExpressionResponse.withCommentsAndResonations(data)
@@ -184,7 +183,7 @@ class ExpressionServiceCentralized implements ExpressionService {
         lastTimestamp: results['last_timestamp'],
       );
     } else {
-      return QueryExpressionResults(
+      return QueryResults<CentralizedExpressionResponse>(
         results: <CentralizedExpressionResponse>[],
         lastTimestamp: null,
       );

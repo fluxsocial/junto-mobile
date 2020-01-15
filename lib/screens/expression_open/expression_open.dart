@@ -57,7 +57,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   /// If an expression has no comments, we do not show the option "show replies"
   bool canShowComments = false;
 
-  Future<QueryCommentResults> futureComments;
+  Future<QueryResults<Comment>> futureComments;
 
   @override
   void initState() {
@@ -108,6 +108,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   }
 
   // Open modal bottom sheet and refocus TextField after dismissed
+  //ignore:unused_element
   Future<void> _showPrivacyModalSheet() async {
     await showModalBottomSheet(
       context: context,
@@ -306,11 +307,11 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                         ),
                       ),
                     if (commentsVisible)
-                      FutureBuilder<QueryCommentResults>(
+                      FutureBuilder<QueryResults<Comment>>(
                         future: futureComments,
                         builder: (
                           BuildContext context,
-                          AsyncSnapshot<QueryCommentResults> snapshot,
+                          AsyncSnapshot<QueryResults<Comment>> snapshot,
                         ) {
                           if (snapshot.hasError) {
                             return Container(

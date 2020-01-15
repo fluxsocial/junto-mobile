@@ -41,10 +41,10 @@ class JuntoCollectiveState extends State<JuntoCollective>
   final GlobalKey<ScaffoldState> _juntoCollectiveKey =
       GlobalKey<ScaffoldState>();
 
-  AsyncMemoizer<QueryExpressionResults> _asyncMemoizer;
+  AsyncMemoizer<QueryResults<CentralizedExpressionResponse>> _asyncMemoizer;
 
   // Completer which controls expressions querying.
-  Future<QueryExpressionResults> _expressionCompleter;
+  Future<QueryResults<CentralizedExpressionResponse>> _expressionCompleter;
 
   // for custom swipe to open perspectives drawer animation
   double _dx = 0.0;
@@ -54,7 +54,11 @@ class JuntoCollectiveState extends State<JuntoCollective>
 
   String _userAddress;
   UserData _userProfile;
+
+  //ignore:unused_field
   List<UserProfile> _userSubscriptions;
+
+//ignore:unused_field
   List<UserProfile> _userConnections;
 
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
@@ -66,7 +70,8 @@ class JuntoCollectiveState extends State<JuntoCollective>
   @override
   void initState() {
     super.initState();
-    _asyncMemoizer = AsyncMemoizer<QueryExpressionResults>();
+    _asyncMemoizer =
+        AsyncMemoizer<QueryResults<CentralizedExpressionResponse>>();
     _collectiveController = ScrollController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _collectiveController.addListener(_onScrollingHasChanged);
@@ -115,7 +120,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
     });
   }
 
-  Future<QueryExpressionResults> getCollectiveExpressions({
+  Future<QueryResults<CentralizedExpressionResponse>> getCollectiveExpressions({
     int dos,
     String contextType,
     String contextString,
@@ -139,7 +144,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
     try {
       return await _expressionProvider.getCollectiveExpressions(_params);
     } on JuntoException catch (_) {
-      await Provider.of<AuthRepo>(context).logoutUser();
+      await Provider.of<AuthRepo>(context, listen: false).logoutUser();
       await Navigator.of(context).pushReplacement(
         PageRouteBuilder<dynamic>(
           pageBuilder: (
@@ -258,18 +263,18 @@ class JuntoCollectiveState extends State<JuntoCollective>
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      endDrawer: const JuntoDrawer( 
+      endDrawer: const JuntoDrawer(
         screen: 'Collective',
         icon: CustomIcons.collective,
       ),
       // dynamically render body
       body: RefreshIndicator(
         onRefresh: () async => refreshData,
-        child: FutureBuilder<QueryExpressionResults>(
+        child: FutureBuilder<QueryResults<CentralizedExpressionResponse>>(
           future: _expressionCompleter,
           builder: (
             BuildContext context,
-            AsyncSnapshot<QueryExpressionResults> snapshot,
+            AsyncSnapshot<QueryResults<CentralizedExpressionResponse>> snapshot,
           ) {
             if (snapshot.hasError) {
               print('Error: ${snapshot.error}');

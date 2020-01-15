@@ -115,7 +115,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                 Navigator.push(
                   context,
                   CupertinoPageRoute<Widget>(
-                    builder: (BuildContext context) => JuntoEditDen(),
+                    builder: (BuildContext context) => const JuntoEditDen(),
                   ),
                 );
               }),

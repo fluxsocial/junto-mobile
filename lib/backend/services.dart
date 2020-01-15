@@ -74,7 +74,7 @@ abstract class ExpressionService {
   );
 
   /// Returns a list of [Comment]s for the given [expressionAddress].
-  Future<QueryCommentResults> getExpressionsComments(
+  Future<QueryResults<Comment>> getExpressionsComments(
     String expressionAddress,
   );
 
@@ -83,7 +83,7 @@ abstract class ExpressionService {
 
   /// Returns a [QueryExpressionResults] containing a list of results which
   /// satisfies the query.
-  Future<QueryExpressionResults> getCollectiveExpressions(
+  Future<QueryResults<CentralizedExpressionResponse>> getCollectiveExpressions(
       Map<String, String> params);
 
   /// Returns mock expression data.
@@ -193,4 +193,7 @@ abstract class UserService {
 
   /// Updates the given [user] and returns updated [UserData]
   Future<UserData> updateUser(Map<String, dynamic> user, String userAddress);
+
+  // Returns a list of followers for the given user address.
+  Future<List<UserProfile>> getFollowers(String userAddress);
 }

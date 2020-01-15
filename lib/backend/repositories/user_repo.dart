@@ -97,4 +97,7 @@ class UserRepo {
 
   Future<UserData> updateUser(Map<String, dynamic> user, String userAddress) =>
       _userService.updateUser(user, userAddress);
+
+  Future<List<UserProfile>> getFollowers(String userAddress) =>
+      _userService.getFollowers(userAddress);
 }
