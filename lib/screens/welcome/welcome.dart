@@ -143,7 +143,7 @@ class WelcomeState extends State<Welcome> {
       final Map<String, dynamic> resultsMap = results.toMap();
       final String resultsMapToString = json.encode(resultsMap);
 
-      // save user
+      // save user to shared prefs
       await SharedPreferences.getInstance()
         ..setBool(
           'isLoggedIn',
@@ -152,9 +152,10 @@ class WelcomeState extends State<Welcome> {
         ..setString('user_id', results.user.address)
         ..setString('user_data', resultsMapToString);
 
+      // check if user uploaded profile pictures
+      // retrieve key and add to _photoKeys if true
       final List<String> _photoKeys = <String>[];
 
-      // check if user uploaded photo
       if (profilePictures[0] != null) {
         final String _photoKeyOne =
             await Provider.of<ExpressionRepo>(context, listen: false)
@@ -175,22 +176,23 @@ class WelcomeState extends State<Welcome> {
         }
       }
 
+      // instantiate data structure to update user with profile pictures
       final Map<String, dynamic> _profilePictureKeys = <String, dynamic>{
         'profile_picture': <Map<String, dynamic>>[
           <String, dynamic>{'index': 0, 'key': _photoKeys[0]},
-          if (_photoKeys[1] != null)
+          if (_photoKeys.contains(_photoKeys[1]))
             <String, dynamic>{'index': 1, 'key': _photoKeys[1]},
-          // if (_photoKeys[2] != null)
-          //   <String, dynamic>{'index': 2, 'key': _photoKeys[2]},
+          if (_photoKeys.contains(_photoKeys[1]))
+            <String, dynamic>{'index': 2, 'key': _photoKeys[2]},
         ]
       };
 
-      print(_profilePictureKeys);
-
+      // update user with profile photos
       await Provider.of<UserRepo>(context, listen: false).updateUser(
           profilePictures[0] == null ? _photoKeys : _profilePictureKeys,
           results.user.address);
 
+      // navigate to community agreements
       Navigator.of(context).pushReplacement(
         PageRouteBuilder<dynamic>(
           pageBuilder: (
