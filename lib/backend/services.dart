@@ -124,6 +124,7 @@ abstract class GroupService {
 
   /// Allows for updating a group. The parameter [group] must not be null.
   Future<Group> updateGroup(Group group);
+  
 }
 
 enum QueryType { address, email, username }
