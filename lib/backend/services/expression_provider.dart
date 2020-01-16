@@ -41,9 +41,6 @@ class ExpressionServiceCentralized implements ExpressionService {
     // denote file type and get url, headers, and key of s3 bucket
     final http.Response _serverResponse =
         await client.postWithoutEncoding('/auth/s3', body: fileType);
-    print(DateTime.now());
-
-    print(_serverResponse.body);
 
     // parse response
     final Map<String, dynamic> parseData =
@@ -58,8 +55,6 @@ class ExpressionServiceCentralized implements ExpressionService {
     // turn file into bytes
     final Uint8List fileAsBytes = file.readAsBytesSync();
 
-    print(DateTime.now());
-
     // send put request to s3 bucket with url, new headers, and file as bytes
     final http.Response _serverResponseTwo = await http.put(
       parseData['signed_url'],
@@ -72,7 +67,6 @@ class ExpressionServiceCentralized implements ExpressionService {
     if (_serverResponseTwo.statusCode == 200) {
       return parseData['key'];
     } else {
-      print(_serverResponseTwo.body);
       throw JuntoException(
         _serverResponse.reasonPhrase,
         _serverResponse.statusCode,

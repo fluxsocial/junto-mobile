@@ -122,29 +122,6 @@ class WelcomeState extends State<Welcome> {
       verificationCode = signUpVerifyKey.currentState.returnDetails();
     });
 
-    // check if user uploaded photo
-    // if (profilePictures[0] != null) {
-    //   final String _photoKeyOne = await Provider.of<ExpressionRepo>(context)
-    //       .createPhoto('.png', profilePictures[0]);
-    //   setState(() {
-    //     imageOne = _photoKeyOne;
-    //   });
-    //   if (profilePictures[1] != null) {
-    //     final String _photoKeyTwo = await Provider.of<ExpressionRepo>(context)
-    //         .createPhoto('.png', profilePictures[1]);
-    //     setState(() {
-    //       imageTwo = _photoKeyTwo;
-    //     });
-    //   }
-    //   if (profilePictures[2] != null) {
-    //     final String _photoKeyThree = await Provider.of<ExpressionRepo>(context)
-    //         .createPhoto('.png', profilePictures[1]);
-    //     setState(() {
-    //       imageThree = _photoKeyThree;
-    //     });
-    //   }
-    // }
-
     final UserAuthRegistrationDetails details = UserAuthRegistrationDetails(
       email: email,
       name: name,
@@ -159,12 +136,14 @@ class WelcomeState extends State<Welcome> {
     );
 
     try {
+      // create user account
       final UserData results =
           await Provider.of<AuthRepo>(context, listen: false)
               .registerUser(details);
       final Map<String, dynamic> resultsMap = results.toMap();
       final String resultsMapToString = json.encode(resultsMap);
 
+      // save user
       await SharedPreferences.getInstance()
         ..setBool(
           'isLoggedIn',
@@ -172,6 +151,45 @@ class WelcomeState extends State<Welcome> {
         )
         ..setString('user_id', results.user.address)
         ..setString('user_data', resultsMapToString);
+
+      final List<String> _photoKeys = <String>[];
+
+      // check if user uploaded photo
+      if (profilePictures[0] != null) {
+        final String _photoKeyOne =
+            await Provider.of<ExpressionRepo>(context, listen: false)
+                .createPhoto('.png', profilePictures[0]);
+
+        _photoKeys.add(_photoKeyOne);
+        if (profilePictures[1] != null) {
+          final String _photoKeyTwo =
+              await Provider.of<ExpressionRepo>(context, listen: false)
+                  .createPhoto('.png', profilePictures[1]);
+          _photoKeys.add(_photoKeyTwo);
+        }
+        if (profilePictures[2] != null) {
+          final String _photoKeyThree =
+              await Provider.of<ExpressionRepo>(context, listen: false)
+                  .createPhoto('.png', profilePictures[1]);
+          _photoKeys.add(_photoKeyThree);
+        }
+      }
+
+      final Map<String, dynamic> _profilePictureKeys = <String, dynamic>{
+        'profile_picture': <Map<String, dynamic>>[
+          <String, dynamic>{'index': 0, 'key': _photoKeys[0]},
+          if (_photoKeys[1] != null)
+            <String, dynamic>{'index': 1, 'key': _photoKeys[1]},
+          // if (_photoKeys[2] != null)
+          //   <String, dynamic>{'index': 2, 'key': _photoKeys[2]},
+        ]
+      };
+
+      print(_profilePictureKeys);
+
+      await Provider.of<UserRepo>(context, listen: false).updateUser(
+          profilePictures[0] == null ? _photoKeys : _profilePictureKeys,
+          results.user.address);
 
       Navigator.of(context).pushReplacement(
         PageRouteBuilder<dynamic>(
