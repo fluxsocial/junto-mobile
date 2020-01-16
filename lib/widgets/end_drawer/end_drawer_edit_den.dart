@@ -108,14 +108,21 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                 GestureDetector(
                   onTap: () async {
                     final Map<String, dynamic> newProfile = {
-                      'name': 'Urk',
-                      'location': <String>['Spirit'],
-                      'bio': 'Now',
-                      'website': <String>['thej']
+                      'name': _nameController.value.text,
+                      'location': _locationController.value.text == ''
+                          ? <String>[]
+                          : <String>[_locationController.value.text],
+                      'bio': _bioController.value.text,
+                      'website': _websiteController.value.text == ''
+                          ? <String>[]
+                          : <String>[_websiteController.value.text],
+                      'gender': _genderController.value.text == ''
+                          ? <String>[]
+                          : <String>[_genderController.value.text],
                     };
 
-                    // await Provider.of<UserRepo>(context, listen: false)
-                    //     .updateUser(newProfile);
+                    await Provider.of<UserRepo>(context, listen: false)
+                        .updateUser(newProfile, _userAddress);
                   },
                   child: Container(
                     padding: const EdgeInsets.only(right: 10),

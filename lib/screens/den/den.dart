@@ -194,7 +194,6 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                             ],
                           ),
                         ),
-
                         _userProfile.user.profilePicture != null
                             ? _displayProfilePictures(
                                 _userProfile.user.profilePicture)

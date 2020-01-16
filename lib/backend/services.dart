@@ -198,7 +198,7 @@ abstract class UserService {
   Future<List<UserProfile>> connectedUsers(String userAddress);
 
   /// Updates the given [user] and returns updated [UserData]
-  Future<UserProfile> updateUser(UserProfile profile);
+  Future<Map<String,dynamic>> updateUser(Map<String, dynamic> profile, String userAddress);
 
   // Returns a list of followers for the given user address.
   Future<List<UserProfile>> getFollowers(String userAddress);

@@ -119,9 +119,10 @@ class MockUserService implements UserService {
   }
 
   @override
-  Future<UserProfile> updateUser(UserProfile profile) async {
+  Future<Map<String, dynamic>> updateUser(
+      Map<String, dynamic> profile, String userAddress) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
-    return kUserData.user;
+    return <String, dynamic>{};
   }
 
   @override
