@@ -1,6 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/utils/junto_http.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
@@ -42,5 +43,17 @@ class SearchServiceCentralized with RFC3339 implements SearchService {
       results: _users,
       lastTimestamp: _results['last_timestamp'],
     );
+  }
+
+  @override
+  Future<QueryResults<String>> searchChannel(String query, {int paginationPosition = 0, DateTime lastTimeStamp}) {
+    // TODO: implement searchChannel
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<QueryResults<Group>> searchSphere(String query, {int paginationPosition = 0, DateTime lastTimeStamp}) {
+    // TODO: implement searchSphere
+    throw UnimplementedError();
   }
 }

@@ -17,4 +17,16 @@ class SearchRepo extends SearchService {
       lastTimeStamp: lastTimeStamp,
     );
   }
+
+  @override
+  Future<QueryResults<String>> searchChannel(String query, {int paginationPosition = 0, DateTime lastTimeStamp}) {
+    // TODO: implement searchChannel
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<QueryResults<Group>> searchSphere(String query, {int paginationPosition = 0, DateTime lastTimeStamp}) {
+    // TODO: implement searchSphere
+    throw UnimplementedError();
+  }
 }
