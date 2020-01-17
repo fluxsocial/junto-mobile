@@ -218,7 +218,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
             opacity: actionsVisible ? 1.0 : 0.0,
             child: Visibility(
               visible: actionsVisible,
-              child: JuntoCollectiveActions(),
+              child: JuntoCollectiveActions(userProfile: _userProfile),
             ),
           ),
         ],

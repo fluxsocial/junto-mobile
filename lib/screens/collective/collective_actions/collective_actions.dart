@@ -9,6 +9,9 @@ import 'package:junto_beta_mobile/screens/collective/collective_actions/perspect
 import 'package:junto_beta_mobile/screens/collective/collective_actions/channels.dart';
 
 class JuntoCollectiveActions extends StatefulWidget {
+  const JuntoCollectiveActions({this.userProfile});
+
+  final UserData userProfile;
   @override
   State<StatefulWidget> createState() {
     return JuntoCollectiveActionsState();
@@ -16,28 +19,7 @@ class JuntoCollectiveActions extends StatefulWidget {
 }
 
 class JuntoCollectiveActionsState extends State<JuntoCollectiveActions> {
-  String _userAddress;
-  UserData _userProfile;
-
   bool channelsVisible = false;
-
-  @override
-  void initState() {
-    super.initState();
-
-    getUserInformation();
-  }
-
-  Future<void> getUserInformation() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final Map<String, dynamic> decodedUserData =
-        jsonDecode(prefs.getString('user_data'));
-
-    setState(() {
-      _userAddress = prefs.getString('user_id');
-      _userProfile = UserData.fromMap(decodedUserData);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +33,9 @@ class JuntoCollectiveActionsState extends State<JuntoCollectiveActions> {
             color: Theme.of(context).backgroundColor,
             height: MediaQuery.of(context).size.height - 90,
             child: Stack(children: <Widget>[
-              channelsVisible ? JuntoChannels() : JuntoPerspectives(),
+              channelsVisible
+                  ? JuntoChannels()
+                  : JuntoPerspectives(userProfile: widget.userProfile),
               Positioned(
                 bottom: 0,
                 left: 0,
