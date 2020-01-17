@@ -35,7 +35,7 @@ class JuntoAppState extends State<JuntoApp> {
         ChangeNotifierProvider<JuntoThemesProvider>(
           create: (_) => JuntoThemesProvider(JuntoThemes().juntoLightIndigo),
         ),
-        Provider<SearchProvider>.value(value: backend.searchProvider),
+        Provider<SearchService>.value(value: backend.searchRepo),
         Provider<AuthRepo>.value(value: backend.authRepo),
         Provider<UserRepo>.value(value: backend.userRepo),
         Provider<CollectiveService>.value(value: backend.collectiveProvider),

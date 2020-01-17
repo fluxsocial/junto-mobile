@@ -2,9 +2,13 @@ import 'dart:io';
 
 import 'package:junto_beta_mobile/models/models.dart';
 
-abstract class SearchProvider {
-  /// Queries our API with the given [query].
-  Future<List<UserProfile>> searchMember(String query);
+abstract class SearchService {
+  Future<QueryResults<UserProfile>> searchMembers(
+    String query, {
+    bool username = false,
+    int paginationPosition = 0,
+    DateTime lastTimeStamp,
+  });
 }
 
 /// Abstract class which defines the functionality of the Authentication Provider
@@ -124,7 +128,6 @@ abstract class GroupService {
 
   /// Allows for updating a group. The parameter [group] must not be null.
   Future<Group> updateGroup(Group group);
-  
 }
 
 enum QueryType { address, email, username }
@@ -199,7 +202,8 @@ abstract class UserService {
   Future<List<UserProfile>> connectedUsers(String userAddress);
 
   /// Updates the given [user] and returns updated [UserData]
-  Future<Map<String,dynamic>> updateUser(Map<String, dynamic> profile, String userAddress);
+  Future<Map<String, dynamic>> updateUser(
+      Map<String, dynamic> profile, String userAddress);
 
   // Returns a list of followers for the given user address.
   Future<List<UserProfile>> getFollowers(String userAddress);

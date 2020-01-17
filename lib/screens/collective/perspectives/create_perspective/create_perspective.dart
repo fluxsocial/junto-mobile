@@ -51,13 +51,14 @@ class _CreatePerspectiveState extends State<CreatePerspective>
       debounceTimer.cancel();
     }
     debounceTimer = Timer(const Duration(milliseconds: 500), () async {
-      if (mounted) {
-        final List<UserProfile> result =
-            await Provider.of<SearchProvider>(context).searchMember(value);
-        if (result != null && result.isNotEmpty) {
-          queriedUsers.value = result;
-        }
-      }
+      //FIXME(Nash+Yang): Rework search
+      // if (mounted) {
+      //   final List<UserProfile> result =
+      //       await Provider.of<SearchService>(context).searchMembers(value);
+      //   if (result != null && result.isNotEmpty) {
+      //     queriedUsers.value = result;
+      //   }
+      // }
     });
   }
 

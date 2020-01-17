@@ -94,13 +94,13 @@ class _SphereOpenMembersState extends State<SphereOpenMembers>
       debounceTimer.cancel();
     }
     debounceTimer = Timer(const Duration(milliseconds: 500), () async {
-      if (mounted) {
-        final List<UserProfile> result =
-            await Provider.of<SearchProvider>(context).searchMember(value);
-        if (result != null && result.isNotEmpty) {
-          queriedUsers.value = result;
-        }
-      }
+      // if (mounted) {
+      //   final List<UserProfile> result =
+      //       await Provider.of<SearchService>(context).searchMember(value);
+      //   if (result != null && result.isNotEmpty) {
+      //     queriedUsers.value = result;
+      //   }
+      // }
     });
   }
 
