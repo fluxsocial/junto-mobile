@@ -125,8 +125,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(45),
         child: SphereOpenAppbar(
-          widget.group.groupData.sphereHandle,
-          widget.group.groupData.photo,
+          group: widget.group,
         ),
       ),
       floatingActionButton: ValueListenableBuilder<bool>(

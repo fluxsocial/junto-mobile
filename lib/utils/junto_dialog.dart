@@ -41,3 +41,13 @@ class JuntoDialog {
     );
   }
 }
+
+class DialogBack extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FlatButton(
+      onPressed: () => Navigator.pop(context),
+      child: const Text('Ok'),
+    );
+  }
+}
