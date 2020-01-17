@@ -106,8 +106,11 @@ class GroupServiceCentralized implements GroupService {
 
   @override
   Future<Group> updateGroup(Group group) async {
-    final http.Response _serverResponse =
-        await client.patch('/groups/${group.address}');
+    final http.Response _serverResponse = await client.patch(
+      '/groups/${group.address}',
+      body: group.groupData.toJson(),
+    );
+    print(_serverResponse.body);
     final Map<String, dynamic> _data =
         JuntoHttp.handleResponse(_serverResponse);
     return Group.fromMap(_data);
