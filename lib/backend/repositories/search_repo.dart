@@ -19,14 +19,27 @@ class SearchRepo extends SearchService {
   }
 
   @override
-  Future<QueryResults<String>> searchChannel(String query, {int paginationPosition = 0, DateTime lastTimeStamp}) {
-    // TODO: implement searchChannel
-    throw UnimplementedError();
+  Future<QueryResults<String>> searchChannel(String query,
+      {int paginationPosition = 0, DateTime lastTimeStamp}) {
+    return _searchService.searchChannel(
+      query,
+      paginationPosition: paginationPosition,
+      lastTimeStamp: lastTimeStamp,
+    );
   }
 
   @override
-  Future<QueryResults<Group>> searchSphere(String query, {int paginationPosition = 0, DateTime lastTimeStamp}) {
-    // TODO: implement searchSphere
-    throw UnimplementedError();
+  Future<QueryResults<Group>> searchSphere(
+    String query, {
+    int paginationPosition = 0,
+    DateTime lastTimeStamp,
+    bool handle,
+  }) {
+    return _searchService.searchSphere(
+      query,
+      paginationPosition: paginationPosition,
+      lastTimeStamp: lastTimeStamp,
+      handle: handle,
+    );
   }
 }

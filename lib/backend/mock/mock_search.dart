@@ -20,14 +20,26 @@ class MockSearch implements SearchService {
   }
 
   @override
-  Future<QueryResults<String>> searchChannel(String query, {int paginationPosition = 0, DateTime lastTimeStamp}) {
-    // TODO: implement searchChannel
-    throw UnimplementedError();
+  Future<QueryResults<String>> searchChannel(String query,
+      {int paginationPosition = 0, DateTime lastTimeStamp}) async {
+    await Future<void>.delayed(const Duration(milliseconds: 300));
+    return QueryResults<String>(
+      lastTimestamp: DateTime.now().toIso8601String(),
+      results: List<void>.generate(100, (int index) => 'pending'),
+    );
   }
 
   @override
-  Future<QueryResults<Group>> searchSphere(String query, {int paginationPosition = 0, DateTime lastTimeStamp}) {
-    // TODO: implement searchSphere
-    throw UnimplementedError();
+  Future<QueryResults<Group>> searchSphere(
+    String query, {
+    int paginationPosition = 0,
+    DateTime lastTimeStamp,
+    bool handle,
+  }) async {
+    await Future<void>.delayed(const Duration(milliseconds: 300));
+    return QueryResults<Group>(
+      lastTimestamp: DateTime.now().toIso8601String(),
+      results: kGroups,
+    );
   }
 }

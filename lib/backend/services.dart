@@ -18,11 +18,12 @@ abstract class SearchService {
     DateTime lastTimeStamp,
   });
 
-    /// Retures a [QueryResults] contains a list of [Group] matching the [query]
+  /// Retures a [QueryResults] contains a list of [Group] matching the [query]
   Future<QueryResults<Group>> searchSphere(
     String query, {
     int paginationPosition = 0,
     DateTime lastTimeStamp,
+    bool handle,
   });
 }
 

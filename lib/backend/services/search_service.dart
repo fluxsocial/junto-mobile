@@ -46,14 +46,61 @@ class SearchServiceCentralized with RFC3339 implements SearchService {
   }
 
   @override
-  Future<QueryResults<String>> searchChannel(String query, {int paginationPosition = 0, DateTime lastTimeStamp}) {
-    // TODO: implement searchChannel
-    throw UnimplementedError();
+  Future<QueryResults<String>> searchChannel(
+    String query, {
+    int paginationPosition = 0,
+    DateTime lastTimeStamp,
+  }) async {
+    final Map<String, String> _queryParam = <String, String>{
+      'pagination_position': paginationPosition.toString(),
+      'name': query,
+    };
+
+    final http.Response _serverResponse = await client.get(
+      '/search/channels',
+      queryParams: _queryParam,
+    );
+    final Map<String, dynamic> _results = JuntoHttp.handleResponse(
+      _serverResponse,
+    );
+    final List<String> _users = <String>[
+      for (dynamic data in _results['results']) data
+    ];
+    return QueryResults<String>(
+      results: _users,
+      lastTimestamp: _results['last_timestamp'],
+    );
   }
 
   @override
-  Future<QueryResults<Group>> searchSphere(String query, {int paginationPosition = 0, DateTime lastTimeStamp}) {
-    // TODO: implement searchSphere
-    throw UnimplementedError();
+  Future<QueryResults<Group>> searchSphere(
+    String query, {
+    int paginationPosition = 0,
+    DateTime lastTimeStamp,
+    bool handle,
+  }) async {
+    final Map<String, String> _queryParam = <String, String>{
+      'pagination_position': paginationPosition.toString(),
+    };
+    if (handle) {
+      _queryParam.putIfAbsent('handle', () => query);
+    } else {
+      _queryParam.putIfAbsent('name', () => query);
+    }
+
+    final http.Response _serverResponse = await client.get(
+      '/search/spheres',
+      queryParams: _queryParam,
+    );
+    final Map<String, dynamic> _results = JuntoHttp.handleResponse(
+      _serverResponse,
+    );
+    final List<Group> _users = <Group>[
+      for (dynamic data in _results['results']) Group.fromMap(data)
+    ];
+    return QueryResults<Group>(
+      results: _users,
+      lastTimestamp: _results['last_timestamp'],
+    );
   }
 }
