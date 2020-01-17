@@ -82,7 +82,6 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
       _userAddress = prefs.getString('user_id');
       _userProfile = UserData.fromMap(decodedUserData);
     });
-    print(_userProfile.user.profilePicture);
   }
 
   Future<List<CentralizedExpressionResponse>> getUsersExpressions() async {

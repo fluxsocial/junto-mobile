@@ -46,26 +46,18 @@ class JuntoCollectiveState extends State<JuntoCollective>
   // Completer which controls expressions querying.
   Future<QueryResults<CentralizedExpressionResponse>> _expressionCompleter;
 
-  // for custom swipe to open perspectives drawer animation
-  double _dx = 0.0;
-  String _scrollDirection;
-
   ExpressionRepo _expressionProvider;
 
   String _userAddress;
   UserData _userProfile;
-
-  //ignore:unused_field
-  List<UserProfile> _userSubscriptions;
-
-//ignore:unused_field
-  List<UserProfile> _userConnections;
 
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
   ScrollController _collectiveController;
   String _appbarTitle = 'JUNTO';
   bool _showDegrees = true;
   String currentDegree = 'oo';
+
+  bool visible = false;
 
   @override
   void initState() {
@@ -107,16 +99,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
     setState(() {
       _userAddress = prefs.getString('user_id');
       _userProfile = UserData.fromMap(decodedUserData);
-    });
-    final List<UserProfile> subscriptions = await Provider.of<UserRepo>(context,
-            listen: false)
-        .getPerspectiveUsers(decodedUserData['user_perspective']['address']);
-    final List<UserProfile> connections =
-        await Provider.of<UserRepo>(context, listen: false)
-            .connectedUsers(_userAddress);
-    setState(() {
-      _userSubscriptions = subscriptions;
-      _userConnections = connections;
     });
   }
 
@@ -182,60 +164,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
     _asyncMemoizer = null;
   }
 
-  void _openPerspectivesDrawer() {
-    if (_dx == 0) {
-      setState(() {
-        _dx = MediaQuery.of(context).size.width * .9;
-      });
-    }
-  }
-
-  void _onDragUpdate(DragUpdateDetails details) {
-    if (_dx == 0.0 &&
-        details.globalPosition.dy != 0.0 &&
-        details.delta.direction > 0.5) {
-      return;
-    } else {
-      if (details.globalPosition.dx > 10 &&
-          details.globalPosition.dx < MediaQuery.of(context).size.width * .9) {
-        setState(() {
-          _dx = details.globalPosition.dx;
-          if (details.delta.direction > 0) {
-            setState(() {
-              _scrollDirection = 'left';
-            });
-          } else if (details.delta.direction < 0) {
-            setState(() {
-              _scrollDirection = 'right';
-            });
-          }
-        });
-      }
-    }
-  }
-
-  void _dragEnd(DragEndDetails details) {
-    if (_scrollDirection == 'right') {
-      if (_dx >= MediaQuery.of(context).size.width * .2) {
-        setState(() {
-          _dx = MediaQuery.of(context).size.width * .9;
-        });
-      } else if (_dx < MediaQuery.of(context).size.width * .2) {
-        _dx = 0.0;
-      }
-    } else if (_scrollDirection == 'left') {
-      if (_dx < MediaQuery.of(context).size.width * .7) {
-        setState(() {
-          _dx = 0.0;
-        });
-      } else if (_dx >= MediaQuery.of(context).size.width * .7) {
-        setState(() {
-          _dx = MediaQuery.of(context).size.width * .9;
-        });
-      }
-    }
-  }
-
   // Renders the collective screen within a scaffold.
   Widget _buildCollectivePage(BuildContext context) {
     return Scaffold(
@@ -254,11 +182,9 @@ class JuntoCollectiveState extends State<JuntoCollective>
               screen: 'collective',
               userProfile: _userProfile,
               onTap: () {
-                if (_dx == 0) {
-                  setState(() {
-                    _dx = MediaQuery.of(context).size.width * .9;
-                  });
-                }
+                setState(() {
+                  visible = true;
+                });
               }),
         ),
       ),
@@ -293,7 +219,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
                       currentDegree: currentDegree,
                       switchDegree: _switchDegree,
                       appbarTitle: _appbarTitle,
-                      openPerspectivesDrawer: _openPerspectivesDrawer,
+                      openPerspectivesDrawer: () {},
                     ),
                     pinned: false,
                     floating: true,
@@ -382,27 +308,134 @@ class JuntoCollectiveState extends State<JuntoCollective>
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        if (_userProfile != null)
-          JuntoPerspectives(
-            changePerspective: _changePerspective,
-            profile: _userProfile,
-          ),
-        GestureDetector(
-          onHorizontalDragUpdate: _onDragUpdate,
-          onHorizontalDragEnd: _dragEnd,
-          child: Transform.translate(
-            offset: Offset(_dx, 0.0),
-            child: Stack(
-              children: <Widget>[
-                _buildCollectivePage(context),
-                if (_dx > 0)
-                  Container(
-                    color: Theme.of(context).backgroundColor.withOpacity(.5),
-                  ),
-              ],
+        _buildCollectivePage(context),
+        AnimatedOpacity(
+          duration: const Duration(milliseconds: 300),
+          opacity: visible ? 1.0 : 0.0,
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
             ),
+            color: Colors.blue,
+            height: MediaQuery.of(context).size.height - 90,
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
+                    height: 100,
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    color: Colors.green,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text('Perspectives',
+                            style: Theme.of(context).textTheme.display1),
+                        Icon(Icons.add)
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: 50,
+                    color: Colors.orange,
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: const Color(0xff555555),
+                            ),
+                            child: Text(
+                              'All',
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white,
+                                  decoration: TextDecoration.none),
+                            ))
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: ListView(
+                      padding: const EdgeInsets.all(0),
+                      children: <Widget>[
+                        Container(height: 75, color: Colors.purple),
+                        Container(height: 75, color: Colors.yellow),
+                        Container(height: 75, color: Colors.teal),
+                        Container(height: 75, color: Colors.purple),
+                        Container(height: 75, color: Colors.green),
+                        Container(height: 75, color: Colors.purple),
+                        Container(height: 75, color: Colors.yellow),
+                        Container(height: 75, color: Colors.teal),
+                        Container(height: 75, color: Colors.purple),
+                        Container(height: 75, color: Colors.green),
+                      ],
+                    ),
+                  ),
+                  Container(
+                      height: 60,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Theme.of(context).backgroundColor,
+                          border: Border.all(
+                              color: Theme.of(context).dividerColor, width: .75)
+                          // boxShadow: <BoxShadow>[
+                          //   BoxShadow(
+                          //     color: Theme.of(context).backgroundColor,
+                          //     blurRadius: 5,
+                          //     spreadRadius: 1,
+                          //   )
+                          // ],
+                          ),
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: Container(
+                              color: Colors.transparent,
+                              child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Icon(CustomIcons.packs,
+                                        size: 20,
+                                        color: Theme.of(context).primaryColor),
+                                    const SizedBox(height: 7),
+                                    Text('PERSPECTIVES',
+                                        style: TextStyle(
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w500,
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            decoration: TextDecoration.none))
+                                  ]),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              color: Colors.transparent,
+                              child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Icon(CustomIcons.hash,
+                                        size: 20,
+                                        color: Theme.of(context).primaryColor),
+                                    const SizedBox(height: 7),
+                                    Text('CHANNELS',
+                                        style: TextStyle(
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w500,
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            decoration: TextDecoration.none))
+                                  ]),
+                            ),
+                          ),
+                        ],
+                      ))
+                ]),
           ),
-        ),
+        )
       ],
     );
   }
@@ -448,11 +481,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
       });
     }
 
-    setState(
-      () {
-        _dx = 0;
-      },
-    );
     _collectiveController
       ..animateTo(
         0.0,
