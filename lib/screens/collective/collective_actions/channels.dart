@@ -23,7 +23,7 @@ class JuntoChannelsState extends State<JuntoChannels> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
                   Icon(CustomIcons.packs, size: 17),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Text(
                     'JUNTO',
                     style: TextStyle(
