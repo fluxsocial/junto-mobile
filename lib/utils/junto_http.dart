@@ -58,8 +58,11 @@ class JuntoHttp {
       dynamic body}) async {
     final Uri _uri = Uri.http(
         END_POINT_without_prefix, '/$kServerVersion$resource', queryParams);
-    return httpClient.patch(_uri,
-        headers: await _withPersistentHeaders(headers), body: body);
+    return httpClient.patch(
+      _uri,
+      headers: await _withPersistentHeaders(headers),
+      body: convert.json.encode(body),
+    );
   }
 
   Future<http.Response> delete(

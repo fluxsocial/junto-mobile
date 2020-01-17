@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/spheres/sphere_open/sphere_open_action_items.dart';
 
 class SphereOpenAppbar extends StatelessWidget {
-  const SphereOpenAppbar(this.sphereHandle, this.sphereImage);
+  const SphereOpenAppbar({Key key, @required this.group}) : super(key: key);
 
   /// The handle of the given sphere
-  final String sphereHandle;
-  final String sphereImage;
+  final Group group;
 
   @override
   Widget build(BuildContext context) {
@@ -38,14 +38,15 @@ class SphereOpenAppbar extends StatelessWidget {
             ),
             Container(
               margin: const EdgeInsets.only(right: 5),
-              child: Text('s/' + sphereHandle,
+              child: Text('s/' + group.groupData.sphereHandle,
                   style: Theme.of(context).textTheme.subhead),
             ),
             GestureDetector(
               onTap: () {
                 showModalBottomSheet(
                   context: context,
-                  builder: (BuildContext context) => SphereOpenActionItems(),
+                  builder: (BuildContext context) =>
+                      SphereOpenActionItems(sphere: group),
                 );
               },
               child: Container(

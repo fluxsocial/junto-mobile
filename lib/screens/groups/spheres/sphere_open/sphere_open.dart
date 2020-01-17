@@ -125,8 +125,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(45),
         child: SphereOpenAppbar(
-          widget.group.groupData.sphereHandle,
-          widget.group.groupData.photo,
+          group: widget.group,
         ),
       ),
       floatingActionButton: ValueListenableBuilder<bool>(
@@ -281,9 +280,10 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
             children: <Widget>[
               GestureDetector(
                 onTap: () => _getMembers(),
-                child: MemberRow(
-                  membersLength:
-                      widget.group.members + widget.group.facilitators,
+                child: const MemberRow(
+                  membersLength: 1,
+                  // FIXME(Nash+Yang) The server should never return null, bring up with Josh
+                  // widget.group?.members + widget.group?.facilitators,
                 ),
               )
             ],

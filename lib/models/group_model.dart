@@ -6,21 +6,23 @@ import 'package:junto_beta_mobile/utils/utils.dart';
 /// return type of [groupData]. Should [groupType] == 'Pack', [GroupDataPack]
 /// will be returned. Else [GroupDataSphere] is returned.
 class Group {
-  Group({
+  const Group({
     @required this.address,
     @required this.creator,
     @required this.createdAt,
     @required this.privacy,
     @required this.groupType,
-    @required this.groupData,
     @required this.facilitators,
     @required this.members,
+    @required this.groupData,
     this.incomingCreator,
   });
 
   factory Group.fromMap(Map<String, dynamic> json) => Group(
         address: json['address'],
-        creator: json['creator'],
+        creator: json['creator'] is Map
+            ? SlimUserResponse.fromMap(json['creator']).address
+            : json['creator'],
 //        incomingCreator: SlimUserResponse.fromMap(json['creator']),
         createdAt: RFC3339.parseRfc3339(json['created_at']),
         privacy: json['privacy'],
@@ -70,11 +72,16 @@ class Group {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is Group &&
+      (other is Group &&
+          runtimeType == other.runtimeType &&
           address == other.address &&
+          creator == other.creator &&
           createdAt == other.createdAt &&
           privacy == other.privacy &&
-          groupType == other.groupType;
+          groupType == other.groupType &&
+          facilitators == other.facilitators &&
+          members == other.members &&
+          groupData == other.groupData);
 
   @override
   int get hashCode =>
@@ -83,7 +90,31 @@ class Group {
       createdAt.hashCode ^
       privacy.hashCode ^
       groupType.hashCode ^
+      facilitators.hashCode ^
+      members.hashCode ^
       groupData.hashCode;
+
+  Group copyWith({
+    String address,
+    String creator,
+    DateTime createdAt,
+    String privacy,
+    String groupType,
+    int facilitators,
+    int members,
+    dynamic groupData,
+  }) {
+    return Group(
+      address: address ?? this.address,
+      creator: creator ?? this.creator,
+      createdAt: createdAt ?? this.createdAt,
+      privacy: privacy ?? this.privacy,
+      groupType: groupType ?? this.groupType,
+      facilitators: facilitators ?? this.facilitators,
+      members: members ?? this.members,
+      groupData: groupData ?? this.groupData,
+    );
+  }
 }
 
 /// Returned when [Group.groupType] == `Pack`.
