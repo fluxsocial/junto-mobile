@@ -101,7 +101,6 @@ class WelcomeState extends State<Welcome> {
       website = _aboutPageModel.website;
     } else if (_currentIndex == 5) {
       profilePictures = signUpPhotosKey.currentState.returnDetails();
-      print(profilePictures);
     } else if (_currentIndex == 6) {
       email = signUpRegisterKey.currentState.returnDetails()['email'];
       password = signUpRegisterKey.currentState.returnDetails()['password'];
@@ -155,41 +154,32 @@ class WelcomeState extends State<Welcome> {
       // check if user uploaded profile pictures
       // retrieve key and add to _photoKeys if true
       final List<String> _photoKeys = <String>[];
-
-      if (profilePictures[0] != null) {
-        final String _photoKeyOne =
-            await Provider.of<ExpressionRepo>(context, listen: false)
-                .createPhoto('.png', profilePictures[0]);
-
-        _photoKeys.add(_photoKeyOne);
-        if (profilePictures[1] != null) {
-          final String _photoKeyTwo =
+      for (final File image in profilePictures) {
+        if (image != null) {
+          final String key =
               await Provider.of<ExpressionRepo>(context, listen: false)
-                  .createPhoto('.png', profilePictures[1]);
-          _photoKeys.add(_photoKeyTwo);
-        }
-        if (profilePictures[2] != null) {
-          final String _photoKeyThree =
-              await Provider.of<ExpressionRepo>(context, listen: false)
-                  .createPhoto('.png', profilePictures[1]);
-          _photoKeys.add(_photoKeyThree);
+                  .createPhoto(
+            '.png',
+            image,
+          );
+          _photoKeys.add(key);
         }
       }
-
-      // instantiate data structure to update user with profile pictures
-      final Map<String, dynamic> _profilePictureKeys = <String, dynamic>{
-        'profile_picture': <Map<String, dynamic>>[
-          <String, dynamic>{'index': 0, 'key': _photoKeys[0]},
-          if (_photoKeys.contains(_photoKeys[1]))
-            <String, dynamic>{'index': 1, 'key': _photoKeys[1]},
-          if (_photoKeys.contains(_photoKeys[1]))
-            <String, dynamic>{'index': 2, 'key': _photoKeys[2]},
-        ]
-      };
+      Map<String, dynamic> _profilePictureKeys;
+      try {
+        _profilePictureKeys = <String, dynamic>{
+          'profile_picture': <Map<String, dynamic>>[
+            for (int index = 0; index <= _photoKeys.length; index++)
+              <String, dynamic>{'index': index, 'key': _photoKeys[index]},
+          ],
+        };
+      } catch (error) {
+        print('Range error');
+      }
 
       // update user with profile photos
       await Provider.of<UserRepo>(context, listen: false).updateUser(
-          profilePictures[0] == null ? _photoKeys : _profilePictureKeys,
+          profilePictures.first == null ? _photoKeys : _profilePictureKeys,
           results.user.address);
 
       // navigate to community agreements

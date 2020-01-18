@@ -28,7 +28,7 @@ class ExpressionServiceCentralized implements ExpressionService {
     print(_postBody);
     final http.Response _serverResponse =
         await client.postWithoutEncoding('/expressions', body: _postBody);
-    print('hellos');
+    print(_serverResponse.body);
     final Map<String, dynamic> parseData =
         JuntoHttp.handleResponse(_serverResponse);
     final CentralizedExpressionResponse response =
