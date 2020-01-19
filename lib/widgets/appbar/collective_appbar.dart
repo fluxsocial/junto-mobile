@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives'
     '/create_perspective/create_perspective.dart' show SelectedUsers;
-import 'package:junto_beta_mobile/widgets/appbar/appbar_search.dart';
-import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/screens/global_search/new_search.dart';
 
 // Junto app bar used in collective screen.
 class CollectiveAppBar extends SliverPersistentHeaderDelegate {
@@ -74,18 +73,7 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                   children: <Widget>[
                     GestureDetector(
                       onTap: () {
-                        showModalBottomSheet(
-                          isScrollControlled: true,
-                          context: context,
-                          backgroundColor: Colors.transparent,
-                          builder: (BuildContext context) {
-                            return ListenableProvider<
-                                ValueNotifier<SelectedUsers>>.value(
-                              value: _users,
-                              child: const JuntoAppbarSearch(),
-                            );
-                          },
-                        );
+                        Navigator.push(context, NewSearchScreen.route((_) {}));
                       },
                       child: Container(
                         width: 42,
