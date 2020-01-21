@@ -1,11 +1,14 @@
+import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
-
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart'
     show JuntoException;
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/screens/collective/collective_actions/create_perspective.dart';
 
 class JuntoPerspectives extends StatefulWidget {
   const JuntoPerspectives({this.userProfile});
@@ -18,10 +21,30 @@ class JuntoPerspectives extends StatefulWidget {
 }
 
 class JuntoPerspectivesState extends State<JuntoPerspectives> {
+  String _userAddress;
+  UserData _userProfile;
+
+  @override
+  void initState() {
+    super.initState();
+
+    getUserInformation();
+  }
+
+  Future<void> getUserInformation() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final Map<String, dynamic> decodedUserData =
+        jsonDecode(prefs.getString('user_data'));
+
+    setState(() {
+      _userAddress = prefs.getString('user_id');
+      _userProfile = UserData.fromMap(decodedUserData);
+    });
+  }
+
   Future<List<CentralizedPerspective>> _fetchUserPerspectives(String address) {
     try {
-      return Provider.of<UserRepo>(context)
-          .getUserPerspective(widget.userProfile.user.address);
+      return Provider.of<UserRepo>(context).getUserPerspective(_userAddress);
     } on JuntoException catch (error) {
       debugPrint('error fethcing perspectives ${error.errorCode}');
       return null;
@@ -45,7 +68,12 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                 children: <Widget>[
                   Text('Perspectives',
                       style: Theme.of(context).textTheme.display1),
-                  Icon(Icons.add)
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(context, CupertinoPageRoute(builder: (context) => CreatePerspective()));
+                    },
+                    child: Icon(Icons.add),
+                  )
                 ],
               ),
             ),
@@ -77,8 +105,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
               children: <Widget>[
                 _buildPerspective('JUNTO'),
                 FutureBuilder<List<CentralizedPerspective>>(
-                  future:
-                      _fetchUserPerspectives(widget.userProfile.user.address),
+                  future: _fetchUserPerspectives(_userAddress),
                   builder: (
                     BuildContext context,
                     AsyncSnapshot<List<CentralizedPerspective>> snapshot,
