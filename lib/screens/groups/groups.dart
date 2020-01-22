@@ -10,6 +10,8 @@ import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/groups_actions.dart';
+import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_open/sphere_open.dart';
+import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/pack_open.dart';
 
 // This screen displays groups a member belongs two. Currently, there are two types of
 // groups: spheres (communities) and packs (agent-centric communities)
@@ -24,6 +26,8 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
   String _userAddress;
   UserData _userProfile;
+
+  Group _currentGroup;
 
   bool actionsVisible = true;
   @override
@@ -81,19 +85,48 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
       body: Stack(
         children: <Widget>[
           AnimatedOpacity(
-              duration: const Duration(milliseconds: 300),
-              opacity: actionsVisible ? 0.0 : 1.0,
-              child: Container(color: Colors.blue)),
+            duration: const Duration(milliseconds: 300),
+            opacity: actionsVisible ? 0.0 : 1.0,
+            child: _displayGroup(
+              Group(
+                  address: _userProfile.pack.address,
+                  groupType: 'Pack',
+                  creator: _userProfile.user.address,
+                  groupData: [],
+                  createdAt: null,
+                  members: 24,
+                  facilitators: 24,
+                  privacy: 'Private'),
+            ),
+          ),
           AnimatedOpacity(
             duration: const Duration(milliseconds: 300),
             opacity: actionsVisible ? 1.0 : 0.0,
             child: Visibility(
               visible: actionsVisible,
-              child: JuntoGroupsActions(),
+              child: JuntoGroupsActions(
+                changeGroup: _changeGroup,
+              ),
             ),
           ),
         ],
       ),
     );
+  }
+
+  Widget _displayGroup(Group group) {
+    if (group.groupType == 'Pack') {
+      return PackOpen(pack: group);
+    } else if (group.groupType == 'Sphere') {
+      return SphereOpen(group: group);
+    }
+    return Container();
+  }
+
+  void _changeGroup(Group group) {
+    setState(() {
+      _currentGroup = group;
+      actionsVisible = false;
+    });
   }
 }

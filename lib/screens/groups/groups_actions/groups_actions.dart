@@ -5,9 +5,10 @@ import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/packs.dart
 import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/spheres.dart';
 
 class JuntoGroupsActions extends StatefulWidget {
-  const JuntoGroupsActions({this.userProfile});
+  const JuntoGroupsActions({this.userProfile, this.changeGroup});
 
   final UserData userProfile;
+  final Function changeGroup;
   @override
   State<StatefulWidget> createState() {
     return JuntoGroupsActionsState();
@@ -31,7 +32,10 @@ class JuntoGroupsActionsState extends State<JuntoGroupsActions> {
             child: Stack(children: <Widget>[
               spheresVisible
                   ? Spheres()
-                  : Packs(userProfile: widget.userProfile),
+                  : Packs(
+                      userProfile: widget.userProfile,
+                      changeGroup: widget.changeGroup,
+                    ),
               Positioned(
                 bottom: 0,
                 left: 0,

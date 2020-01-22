@@ -13,9 +13,11 @@ import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 
 class Packs extends StatefulWidget {
-  const Packs({this.userProfile});
+  const Packs({this.userProfile, this.changeGroup});
 
   final UserData userProfile;
+  final Function changeGroup;
+
   @override
   State<StatefulWidget> createState() {
     return PacksState();
@@ -82,7 +84,7 @@ class PacksState extends State<Packs> with ListDistinct {
                 ],
               ),
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 10),
             // Container(
             //   height: 50,
             //   color: Theme.of(context).backgroundColor,
@@ -136,8 +138,13 @@ class PacksState extends State<Packs> with ListDistinct {
                       padding: const EdgeInsets.all(0),
                       children: <Widget>[
                         for (Group group in userPacks)
-                          PackPreview(
-                            group: group,
+                          GestureDetector(
+                            onTap: () {
+                              widget.changeGroup(group);
+                            },
+                            child: PackPreview(
+                              group: group,
+                            ),
                           )
                       ],
                     ));

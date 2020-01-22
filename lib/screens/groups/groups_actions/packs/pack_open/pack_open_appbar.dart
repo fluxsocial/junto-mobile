@@ -55,6 +55,18 @@ class PackOpenAppbar extends StatelessWidget {
             ),
             Row(
               children: <Widget>[
+               GestureDetector(
+                  onTap: () {
+                    
+                  },
+                  child: Container(
+                    width: 42,
+                    color: Colors.transparent,
+                    alignment: Alignment.centerRight,
+                    child: Icon(Icons.search,
+                        size: 22, color: Theme.of(context).primaryColor),
+                  ),
+                ),                
                 GestureDetector(
                   onTap: () {},
                   child: Container(
