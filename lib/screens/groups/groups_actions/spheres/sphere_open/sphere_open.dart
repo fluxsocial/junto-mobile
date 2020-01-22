@@ -17,7 +17,10 @@ import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
 
 class SphereOpen extends StatefulWidget {
-  const SphereOpen({Key key, this.group,}) : super(key: key);
+  const SphereOpen({
+    Key key,
+    this.group,
+  }) : super(key: key);
 
   final Group group;
   @override
@@ -114,7 +117,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     }
   }
 
-  final List<String> _tabs = <String>['About', 'Discussion', 'Events'];
+  final List<String> _tabs = <String>['About', 'Discussion'];
 
   @override
   Widget build(BuildContext context) {
@@ -126,21 +129,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
           group: widget.group,
         ),
       ),
-      floatingActionButton: ValueListenableBuilder<bool>(
-        valueListenable: _isVisible,
-        builder: (BuildContext context, bool visible, Widget child) {
-          return AnimatedOpacity(
-            duration: const Duration(milliseconds: 300),
-            opacity: visible ? 1.0 : 0.0,
-            child: child,
-          );
-        },
-        child: ExpressionCenterFAB(
-          expressionLayer: widget.group.groupData.name,
-          address: widget.group.address,
-          expressionContext: ExpressionContext.Group,
-        ),
-      ),
       body: DefaultTabController(
         length: _tabs.length,
         child: NestedScrollView(
@@ -149,9 +137,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
             children: <Widget>[
               _buildAboutView(),
               const SizedBox(),
-              const SizedBox()
               // _buildExpressionView(),
-              // _buildEventsView()
             ],
           ),
           controller: _hideFABController,
@@ -345,14 +331,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   //     },
   //   );
   // }
-
-  //ignore:unused_element
-  Widget _buildEventsView() {
-    return ListView(
-      physics: const ClampingScrollPhysics(),
-      children: const <Widget>[Text('Events')],
-    );
-  }
 }
 
 class MemberRow extends StatelessWidget {

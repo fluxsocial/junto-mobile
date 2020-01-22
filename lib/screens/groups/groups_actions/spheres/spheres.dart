@@ -94,7 +94,7 @@ class SpheresState extends State<Spheres> with ListDistinct {
                 ],
               ),
             ),
-            const SizedBox(height: 15),
+            const SizedBox(height: 10),
             // Container(
             //   height: 50,
             //   color: Theme.of(context).backgroundColor,

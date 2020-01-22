@@ -7,7 +7,6 @@ import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_o
 class SphereOpenAppbar extends StatelessWidget {
   const SphereOpenAppbar({Key key, @required this.group}) : super(key: key);
 
-  /// The handle of the given sphere
   final Group group;
 
   @override
@@ -19,47 +18,85 @@ class SphereOpenAppbar extends StatelessWidget {
       elevation: 0,
       titleSpacing: 0,
       title: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            GestureDetector(
-              onTap: () => Navigator.pop(context),
-              child: Container(
-                padding: const EdgeInsets.only(left: 10),
-                color: Colors.transparent,
-                width: 42,
-                alignment: Alignment.centerLeft,
-                child: Icon(
-                  CustomIcons.back,
-                  color: Theme.of(context).primaryColorDark,
-                  size: 17,
+            Row(
+              children: <Widget>[
+                Icon(CustomIcons.spheres, color: Theme.of(context).primaryColor, size: 20),
+                // Container(
+                //   alignment: Alignment.center,
+                //   height: 32.0,
+                //   width: 32.0,
+                //   decoration: BoxDecoration(
+                //     gradient: const LinearGradient(
+                //       begin: Alignment.bottomLeft,
+                //       end: Alignment.topRight,
+                //       stops: <double>[0.3, 0.9],
+                //       colors: <Color>[
+                //         JuntoPalette.juntoSecondary,
+                //         JuntoPalette.juntoPrimary,
+                //       ],
+                //     ),
+                //     borderRadius: BorderRadius.circular(100),
+                //   ),
+                //   child: const Icon(
+                //     CustomIcons.spheres,
+                //     color: Colors.white,
+                //     size: 14,
+                //   ),
+                // ),
+                const SizedBox(width: 10),
+                Container(
+                  margin: const EdgeInsets.only(right: 5),
+                  child: Text('s/' + group.groupData.sphereHandle,
+                      style: Theme.of(context).textTheme.subhead),
                 ),
-              ),
+              ],
             ),
-            Container(
-              margin: const EdgeInsets.only(right: 5),
-              child: Text('s/' + group.groupData.sphereHandle,
-                  style: Theme.of(context).textTheme.subhead),
-            ),
-            GestureDetector(
-              onTap: () {
-                showModalBottomSheet(
-                  context: context,
-                  builder: (BuildContext context) =>
-                      SphereOpenActionItems(sphere: group),
-                );
-              },
-              child: Container(
-                width: 42,
-                padding: const EdgeInsets.only(right: 10),
-                color: Colors.transparent,
-                alignment: Alignment.centerRight,
-                child: Icon(
-                  CustomIcons.more,
-                  size: 24,
-                  color: Theme.of(context).primaryColorDark,
+            Row(
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    width: 38,
+                    color: Colors.transparent,
+                    alignment: Alignment.centerRight,
+                    child: Icon(Icons.search,
+                        size: 22, color: Theme.of(context).primaryColor),
+                  ),
                 ),
-              ),
+                GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    width: 38,
+                    color: Colors.transparent,
+                    alignment: Alignment.centerRight,
+                    child: Icon(CustomIcons.moon,
+                        size: 22, color: Theme.of(context).primaryColor),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (BuildContext context) =>
+                          SphereOpenActionItems(sphere: group),
+                    );
+                  },
+                  child: Container(
+                    width: 38,
+                    color: Colors.transparent,
+                    alignment: Alignment.centerRight,
+                    child: Icon(
+                      CustomIcons.morevertical,
+                      size: 20,
+                      color: Theme.of(context).primaryColorDark,
+                    ),
+                  ),
+                ),
+              ],
             )
           ],
         ),
