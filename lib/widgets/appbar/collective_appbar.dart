@@ -63,7 +63,7 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                         const SizedBox(width: 7.5),
                         Text(
                           appbarTitle,
-                          style: Theme.of(context).appBarTheme.textTheme.body1,
+                          style: Theme.of(context).textTheme.caption,
                         ),
                       ],
                     ),

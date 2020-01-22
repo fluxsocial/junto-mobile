@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/screens/groups/groups_actions/packs.dart';
-import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres.dart';
+import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/packs.dart';
+import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/spheres.dart';
 
 class JuntoGroupsActions extends StatefulWidget {
   const JuntoGroupsActions({this.userProfile});
