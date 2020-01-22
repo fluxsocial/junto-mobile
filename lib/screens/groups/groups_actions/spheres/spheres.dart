@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
-
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/previews/sphere_preview/sphere_preview.dart';
+import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/create_sphere.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
@@ -80,34 +80,42 @@ class SpheresState extends State<Spheres> with ListDistinct {
                 children: <Widget>[
                   Text('Spheres', style: Theme.of(context).textTheme.display1),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute<void>(
+                          builder: (BuildContext context) => CreateSphere(),
+                        ),
+                      );
+                    },
                     child: Icon(Icons.add),
                   )
                 ],
               ),
             ),
-            Container(
-              height: 50,
-              color: Theme.of(context).backgroundColor,
-              child: Row(
-                children: <Widget>[
-                  Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: const Color(0xff555555),
-                      ),
-                      child: Text(
-                        'All',
-                        style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white,
-                            decoration: TextDecoration.none),
-                      ))
-                ],
-              ),
-            ),
+            const SizedBox(height: 15),
+            // Container(
+            //   height: 50,
+            //   color: Theme.of(context).backgroundColor,
+            //   child: Row(
+            //     children: <Widget>[
+            //       Container(
+            //           padding: const EdgeInsets.all(10),
+            //           decoration: BoxDecoration(
+            //             borderRadius: BorderRadius.circular(5),
+            //             color: const Color(0xff555555),
+            //           ),
+            //           child: Text(
+            //             'All',
+            //             style: TextStyle(
+            //                 fontSize: 12,
+            //                 fontWeight: FontWeight.w700,
+            //                 color: Colors.white,
+            //                 decoration: TextDecoration.none),
+            //           ))
+            //     ],
+            //   ),
+            // ),
             if (_userProfile != null)
               FutureBuilder<UserGroupsResponse>(
                 future: getUserGroups(),

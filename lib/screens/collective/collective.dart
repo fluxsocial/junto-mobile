@@ -209,7 +209,10 @@ class JuntoCollectiveState extends State<JuntoCollective>
           AnimatedOpacity(
             duration: const Duration(milliseconds: 300),
             opacity: actionsVisible ? 0.0 : 1.0,
-            child: _buildPerspectiveFeed(),
+            child: Visibility(
+              visible: actionsVisible ? false : true,
+              child: _buildPerspectiveFeed(),
+            ),
           ),
           AnimatedOpacity(
             duration: const Duration(milliseconds: 300),

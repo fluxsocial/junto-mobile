@@ -32,13 +32,13 @@ class _NewSearchScreenState extends State<NewSearchScreen> {
   void initState() {
     super.initState();
     _textEditingController = TextEditingController();
-    _searchFuture = _searchRepo.searchMembers(query);
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _searchRepo = Provider.of<SearchRepo>(context);
+    _searchFuture = _searchRepo.searchMembers(query);
   }
 
   @override

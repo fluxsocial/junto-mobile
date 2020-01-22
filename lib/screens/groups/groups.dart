@@ -4,9 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/groups/spheres/create_sphere.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
-import 'package:junto_beta_mobile/widgets/appbar/groups_appbar.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
@@ -62,27 +60,30 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
           );
         },
         child: Padding(
-            padding: const EdgeInsets.only(bottom: 25),
-            child: BottomNav(
-                screen: 'groups',
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    CupertinoPageRoute<void>(
-                      builder: (BuildContext context) => CreateSphere(),
-                    ),
-                  );
-                })),
+          padding: const EdgeInsets.only(bottom: 25),
+          child: BottomNav(
+              screen: 'groups',
+              onTap: () {
+                if (actionsVisible) {
+                  setState(() {
+                    actionsVisible = false;
+                  });
+                } else {
+                  setState(() {
+                    actionsVisible = true;
+                  });
+                }
+              }),
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       endDrawer: const JuntoDrawer(screen: 'Groups', icon: CustomIcons.groups),
       body: Stack(
         children: <Widget>[
           AnimatedOpacity(
-            duration: const Duration(milliseconds: 300),
-            opacity: actionsVisible ? 0.0 : 1.0,
-            child: Container(color: Colors.blue),
-          ),
+              duration: const Duration(milliseconds: 300),
+              opacity: actionsVisible ? 0.0 : 1.0,
+              child: Container(color: Colors.blue)),
           AnimatedOpacity(
             duration: const Duration(milliseconds: 300),
             opacity: actionsVisible ? 1.0 : 0.0,

@@ -120,9 +120,9 @@ class CreateSphereState extends State<CreateSphere> {
                           color: Colors.transparent,
                           width: 48,
                           alignment: Alignment.centerLeft,
-                          child: Icon(CustomIcons.cancel,
-                              size: 24,
-                              color: Theme.of(context).primaryColorDark),
+                          child: Icon(CustomIcons.back,
+                              size: 20,
+                              color: Theme.of(context).primaryColor),
                         ),
                       )
                     : GestureDetector(
@@ -143,7 +143,7 @@ class CreateSphereState extends State<CreateSphere> {
                         ),
                       ),
                 Text('Create Sphere',
-                    style: Theme.of(context).textTheme.subhead),
+                    style: Theme.of(context).textTheme.title),
                 _currentIndex == 2
                     ? GestureDetector(
                         onTap: () {
