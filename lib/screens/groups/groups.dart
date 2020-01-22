@@ -87,17 +87,7 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
           AnimatedOpacity(
             duration: const Duration(milliseconds: 300),
             opacity: actionsVisible ? 0.0 : 1.0,
-            child: _displayGroup(
-              Group(
-                  address: _userProfile.pack.address,
-                  groupType: 'Pack',
-                  creator: _userProfile.user.address,
-                  groupData: [],
-                  createdAt: null,
-                  members: 24,
-                  facilitators: 24,
-                  privacy: 'Private'),
-            ),
+            child: _displayGroup(_currentGroup),
           ),
           AnimatedOpacity(
             duration: const Duration(milliseconds: 300),
@@ -115,7 +105,9 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
   }
 
   Widget _displayGroup(Group group) {
-    if (group.groupType == 'Pack') {
+    if (group == null) {
+      return Container();
+    } else if (group.groupType == 'Pack') {
       return PackOpen(pack: group);
     } else if (group.groupType == 'Sphere') {
       return SphereOpen(group: group);
@@ -124,6 +116,7 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
   }
 
   void _changeGroup(Group group) {
+    print(group.groupType);
     setState(() {
       _currentGroup = group;
       actionsVisible = false;

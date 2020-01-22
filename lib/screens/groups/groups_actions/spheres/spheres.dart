@@ -13,9 +13,10 @@ import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 
 class Spheres extends StatefulWidget {
-  const Spheres({this.userProfile});
+  const Spheres({this.userProfile, this.changeGroup});
 
   final UserData userProfile;
+  final Function changeGroup;
   @override
   State<StatefulWidget> createState() {
     return SpheresState();
@@ -147,8 +148,13 @@ class SpheresState extends State<Spheres> with ListDistinct {
                       padding: const EdgeInsets.all(0),
                       children: <Widget>[
                         for (Group group in userSpheres)
-                          SpherePreview(
-                            group: group,
+                          GestureDetector(
+                            onTap: () {
+                              widget.changeGroup(group);
+                            },
+                            child: SpherePreview(
+                              group: group,
+                            ),
                           )
                       ],
                     ));

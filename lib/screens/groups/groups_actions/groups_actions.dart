@@ -31,7 +31,7 @@ class JuntoGroupsActionsState extends State<JuntoGroupsActions> {
             height: MediaQuery.of(context).size.height - 90,
             child: Stack(children: <Widget>[
               spheresVisible
-                  ? Spheres()
+                  ? Spheres(changeGroup: widget.changeGroup)
                   : Packs(
                       userProfile: widget.userProfile,
                       changeGroup: widget.changeGroup,
