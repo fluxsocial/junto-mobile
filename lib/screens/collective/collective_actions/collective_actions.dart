@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
@@ -58,11 +57,18 @@ class JuntoCollectiveActionsState extends State<JuntoCollectiveActions> {
                             child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  Icon(CustomIcons.packs,
-                                      size: 20,
-                                      color: channelsVisible
-                                          ? Theme.of(context).primaryColorLight
-                                          : Theme.of(context).primaryColorDark),
+                                  Image.asset(
+                                    'assets/images/junto-mobile__binoculars.png',
+                                    height: 20,
+                                    color: channelsVisible
+                                        ? Theme.of(context).primaryColorLight
+                                        : Theme.of(context).primaryColorDark,
+                                  ),
+                                  // Icon(CustomIcons.packs,
+                                  //     size: 20,
+                                  //     color: channelsVisible
+                                  //         ? Theme.of(context).primaryColorLight
+                                  //         : Theme.of(context).primaryColorDark),
                                   const SizedBox(height: 7),
                                   Text('PERSPECTIVES',
                                       style: TextStyle(

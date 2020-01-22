@@ -70,35 +70,39 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                       style: Theme.of(context).textTheme.display1),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => CreatePerspective()));
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => CreatePerspective()));
                     },
                     child: Icon(Icons.add),
                   )
                 ],
               ),
             ),
-            Container(
-              height: 50,
-              color: Theme.of(context).backgroundColor,
-              child: Row(
-                children: <Widget>[
-                  Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: const Color(0xff555555),
-                      ),
-                      child: Text(
-                        'All',
-                        style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white,
-                            decoration: TextDecoration.none),
-                      ))
-                ],
-              ),
-            ),
+            const SizedBox(height: 10),
+            // Container(
+            //   height: 50,
+            //   color: Theme.of(context).backgroundColor,
+            //   child: Row(
+            //     children: <Widget>[
+            //       Container(
+            //           padding: const EdgeInsets.all(10),
+            //           decoration: BoxDecoration(
+            //             borderRadius: BorderRadius.circular(5),
+            //             color: const Color(0xff555555),
+            //           ),
+            //           child: Text(
+            //             'All',
+            //             style: TextStyle(
+            //                 fontSize: 12,
+            //                 fontWeight: FontWeight.w700,
+            //                 color: Colors.white,
+            //                 decoration: TextDecoration.none),
+            //           ))
+            //     ],
+            //   ),
+            // ),
             Expanded(
                 child: ListView(
               padding: const EdgeInsets.all(0),
@@ -144,19 +148,30 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
 
   Widget _buildPerspective(String perspective) {
     return Container(
-      height: 75,
+      padding: const EdgeInsets.symmetric(vertical: 20),
       decoration: BoxDecoration(
         color: Colors.transparent,
         border: Border(
-          bottom: BorderSide(color: Theme.of(context).dividerColor, width: 1),
+          bottom: BorderSide(color: Theme.of(context).dividerColor, width: .75),
         ),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Text(
-            perspective,
-            style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+          Image.asset('assets/images/junto-mobile__binoculars.png',
+              height: 17, color: Theme.of(context).primaryColor),
+          const SizedBox(width: 15),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(perspective, style: Theme.of(context).textTheme.subhead),
+                Text(
+                  'Expressions from everyone in Junto. Filter by degrees of separation.',
+                  style: Theme.of(context).textTheme.body2,
+                ),
+              ],
+            ),
           ),
         ],
       ),

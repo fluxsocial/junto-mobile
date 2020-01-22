@@ -119,6 +119,8 @@ flutter:
     - assets/images/junto-mobile__mock--image.png
     - assets/images/junto-mobile__mockprofpic--one.png
     - assets/images/junto-mobile__mockprofpic--two.png    
+    - assets/images/junto-mobile__binoculars.png    
+
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
