@@ -26,7 +26,6 @@ class JuntoSpheres extends StatelessWidget with ListDistinct {
           for (Group group in userSpheres)
             SpherePreview(
               group: group,
-              userProfile: userProfile,
             )
         ],
       ),

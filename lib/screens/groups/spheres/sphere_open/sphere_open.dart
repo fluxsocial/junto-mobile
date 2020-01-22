@@ -17,11 +17,9 @@ import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
 
 class SphereOpen extends StatefulWidget {
-  const SphereOpen({Key key, this.group, this.userAddress}) : super(key: key);
+  const SphereOpen({Key key, this.group,}) : super(key: key);
 
   final Group group;
-  final String userAddress;
-
   @override
   State<StatefulWidget> createState() {
     return SphereOpenState();
@@ -306,47 +304,47 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   }
 
 //ignore:unused_element
-  Widget _buildExpressionView() {
-    return FutureBuilder<List<CentralizedExpressionResponse>>(
-      future: Provider.of<GroupRepo>(context, listen: false)
-          .getGroupExpressions(widget.group.address, null),
-      builder: (
-        BuildContext context,
-        AsyncSnapshot<List<CentralizedExpressionResponse>> snapshot,
-      ) {
-        if (snapshot.hasError)
-          return Container(
-            height: 400,
-            alignment: Alignment.center,
-            child: const Text(
-              'Oops, something is wrong!',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-            ),
-          );
-        if (snapshot.hasData && !snapshot.hasError) {
-          return RefreshIndicator(
-            onRefresh: () async => setState(() => print('refresh')),
-            child: ListView.builder(
-              itemCount: snapshot.data.length,
-              itemBuilder: (BuildContext context, int index) {
-                return ExpressionPreview(
-                  expression: snapshot.data[index],
-                  userAddress: widget.userAddress,
-                );
-              },
-            ),
-          );
-        }
-        return Container(
-          height: 100.0,
-          width: 100.0,
-          child: const Center(
-            child: CircularProgressIndicator(),
-          ),
-        );
-      },
-    );
-  }
+  // Widget _buildExpressionView() {
+  //   return FutureBuilder<List<CentralizedExpressionResponse>>(
+  //     future: Provider.of<GroupRepo>(context, listen: false)
+  //         .getGroupExpressions(widget.group.address, null),
+  //     builder: (
+  //       BuildContext context,
+  //       AsyncSnapshot<List<CentralizedExpressionResponse>> snapshot,
+  //     ) {
+  //       if (snapshot.hasError)
+  //         return Container(
+  //           height: 400,
+  //           alignment: Alignment.center,
+  //           child: const Text(
+  //             'Oops, something is wrong!',
+  //             style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+  //           ),
+  //         );
+  //       if (snapshot.hasData && !snapshot.hasError) {
+  //         return RefreshIndicator(
+  //           onRefresh: () async => setState(() => print('refresh')),
+  //           child: ListView.builder(
+  //             itemCount: snapshot.data.length,
+  //             itemBuilder: (BuildContext context, int index) {
+  //               return ExpressionPreview(
+  //                 expression: snapshot.data[index],
+  //                 userAddress: widget.userAddress,
+  //               );
+  //             },
+  //           ),
+  //         );
+  //       }
+  //       return Container(
+  //         height: 100.0,
+  //         width: 100.0,
+  //         child: const Center(
+  //           child: CircularProgressIndicator(),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
   //ignore:unused_element
   Widget _buildEventsView() {

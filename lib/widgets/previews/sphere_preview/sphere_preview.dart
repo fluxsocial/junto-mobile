@@ -6,10 +6,9 @@ import 'package:junto_beta_mobile/screens/groups/spheres/sphere_open/sphere_open
 
 // This class renders a preview of a sphere
 class SpherePreview extends StatelessWidget {
-  const SpherePreview({@required this.group, @required this.userProfile});
+  const SpherePreview({@required this.group});
 
   final Group group;
-  final UserData userProfile;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +19,6 @@ class SpherePreview extends StatelessWidget {
             builder: (BuildContext context) {
               return SphereOpen(
                 group: group,
-                userAddress: userProfile.user.address
               );
             },
           ),
@@ -55,7 +53,7 @@ class SpherePreview extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  width: MediaQuery.of(context).size.width - 75,
+                  width: MediaQuery.of(context).size.width - 95,
                   padding: const EdgeInsets.symmetric(
                     vertical: 20,
                   ),

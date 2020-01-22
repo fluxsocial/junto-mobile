@@ -76,7 +76,7 @@ class PackPreview extends StatelessWidget {
                     ),
                   ),
             Container(
-              width: MediaQuery.of(context).size.width - 75,
+              width: MediaQuery.of(context).size.width - 95,
               padding: const EdgeInsets.symmetric(vertical: 15),
               decoration: BoxDecoration(
                 border: Border(

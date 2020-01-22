@@ -53,7 +53,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
   ScrollController _collectiveController;
   String _appbarTitle = 'JUNTO';
-  bool _showDegrees = true;
+  bool _showDegrees = false;
   String currentDegree = 'oo';
 
   bool actionsVisible = true;
