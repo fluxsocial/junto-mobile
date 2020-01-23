@@ -16,10 +16,9 @@ class SignUpPhotos extends StatefulWidget {
 class SignUpPhotosState extends State<SignUpPhotos> {
   File profilePictureOne;
   File profilePictureTwo;
-  File profilePictureThree;
 
   List<File> returnDetails() {
-    return <File>[profilePictureOne, profilePictureTwo, profilePictureThree];
+    return <File>[profilePictureOne, profilePictureTwo];
   }
 
   Widget _buildPhotoSelector({int profilePictureNumber, File profilePicture}) {
@@ -28,8 +27,6 @@ class SignUpPhotosState extends State<SignUpPhotos> {
         if (profilePictureNumber == 1) {
           _onPickPressed(profilePictureNumber);
         } else if (profilePictureNumber == 2 && profilePictureOne != null) {
-          _onPickPressed(profilePictureNumber);
-        } else if (profilePictureNumber == 3 && profilePictureTwo != null) {
           _onPickPressed(profilePictureNumber);
         } else {
           return;
@@ -72,8 +69,6 @@ class SignUpPhotosState extends State<SignUpPhotos> {
         setState(() => profilePictureOne = null);
       } else if (profilePictureNumber == 2) {
         setState(() => profilePictureTwo = null);
-      } else if (profilePictureNumber == 3) {
-        setState(() => profilePictureThree = null);
       }
       return;
     }
@@ -86,8 +81,6 @@ class SignUpPhotosState extends State<SignUpPhotos> {
         setState(() => profilePictureOne = null);
       } else if (profilePictureNumber == 2) {
         setState(() => profilePictureTwo = null);
-      } else if (profilePictureNumber == 3) {
-        setState(() => profilePictureThree = null);
       }
       return;
     }
@@ -95,8 +88,6 @@ class SignUpPhotosState extends State<SignUpPhotos> {
       setState(() => profilePictureOne = cropped);
     } else if (profilePictureNumber == 2) {
       setState(() => profilePictureTwo = cropped);
-    } else if (profilePictureNumber == 3) {
-      setState(() => profilePictureThree = cropped);
     }
   }
 
@@ -131,9 +122,6 @@ class SignUpPhotosState extends State<SignUpPhotos> {
                     _buildPhotoSelector(
                         profilePictureNumber: 2,
                         profilePicture: profilePictureTwo),
-                    _buildPhotoSelector(
-                        profilePictureNumber: 3,
-                        profilePicture: profilePictureThree)
                   ],
                 ),
               )

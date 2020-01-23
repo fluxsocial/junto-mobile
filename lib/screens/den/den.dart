@@ -406,7 +406,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
   }
 
   Widget _displayAboutItem(List<String> item, dynamic icon) {
-    if (item.isNotEmpty) {
+    if (item[0] != ' ') {
       return Container(
         margin: const EdgeInsets.symmetric(vertical: 5),
         child: Row(
@@ -431,7 +431,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
   }
 
   Widget _displayProfilePictures(List<String> profilePictures) {
-    if (profilePictures != null) {
+    if (profilePictures.length < 1) {
       return Container(
         margin: const EdgeInsets.only(bottom: 15),
         child: CarouselSlider(
