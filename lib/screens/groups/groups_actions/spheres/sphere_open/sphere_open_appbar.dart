@@ -3,6 +3,7 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_open/sphere_open_action_items.dart';
+import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
 
 class SphereOpenAppbar extends StatelessWidget {
   const SphereOpenAppbar({Key key, @required this.group}) : super(key: key);
@@ -24,7 +25,8 @@ class SphereOpenAppbar extends StatelessWidget {
           children: <Widget>[
             Row(
               children: <Widget>[
-                Icon(CustomIcons.spheres, color: Theme.of(context).primaryColor, size: 20),
+                Icon(CustomIcons.spheres,
+                    color: Theme.of(context).primaryColor, size: 20),
                 // Container(
                 //   alignment: Alignment.center,
                 //   height: 32.0,
@@ -58,7 +60,12 @@ class SphereOpenAppbar extends StatelessWidget {
             Row(
               children: <Widget>[
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      GlobalSearch.route((_) {}),
+                    );
+                  },
                   child: Container(
                     width: 38,
                     color: Colors.transparent,

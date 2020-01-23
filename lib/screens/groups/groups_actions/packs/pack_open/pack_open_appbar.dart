@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
-import 'package:junto_beta_mobile/app/styles.dart';
+import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
 
 class PackOpenAppbar extends StatelessWidget {
   const PackOpenAppbar({Key key, @required this.pack}) : super(key: key);
@@ -36,7 +36,12 @@ class PackOpenAppbar extends StatelessWidget {
             Row(
               children: <Widget>[
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      GlobalSearch.route((_) {}),
+                    );
+                  },
                   child: Container(
                     width: 38,
                     color: Colors.transparent,
