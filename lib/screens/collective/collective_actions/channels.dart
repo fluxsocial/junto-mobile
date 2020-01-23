@@ -32,7 +32,7 @@ class JuntoChannelsState extends State<JuntoChannels> {
                   Text(
                     widget.currentPerspective,
                     style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 15,
                         fontWeight: FontWeight.w500,
                         color: Theme.of(context).primaryColor),
                   )
@@ -62,7 +62,7 @@ class JuntoChannelsState extends State<JuntoChannels> {
                           hintText: 'filter by channel',
                           border: InputBorder.none,
                           hintStyle: TextStyle(
-                              fontSize: 24,
+                              fontSize: 20,
                               fontWeight: FontWeight.w500,
                               color: Theme.of(context).primaryColorLight),
                         ),
