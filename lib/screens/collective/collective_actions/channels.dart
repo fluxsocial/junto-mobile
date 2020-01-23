@@ -105,7 +105,6 @@ class JuntoChannelsState extends State<JuntoChannels> {
                 padding: const EdgeInsets.all(0),
                 children: <Widget>[
                   const ChannelPreview(channel: 'regenerative agriculture'),
-                  const ChannelPreview(channel: 'food'),
                   const ChannelPreview(channel: 'biomimicry'),
                   const ChannelPreview(channel: 'austrian economics'),
                   const ChannelPreview(channel: 'conscious tech'),

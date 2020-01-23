@@ -243,7 +243,7 @@ class JuntoCreateState extends State<JuntoCreate> {
                           setState(() {
                             _expressionCenterVisible = true;
                           });
-                        }, 
+                        },
                       ),
                     )
                   : const SizedBox(),

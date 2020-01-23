@@ -89,7 +89,7 @@ class SpheresState extends State<Spheres> with ListDistinct {
                         ),
                       );
                     },
-                    child: Icon(Icons.add),
+                    child: Icon(Icons.add, size: 24, color: Theme.of(context).primaryColor),
                   )
                 ],
               ),
