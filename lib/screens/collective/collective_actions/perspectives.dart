@@ -187,10 +187,23 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                 children: <Widget>[
                   Text(perspective.name,
                       style: Theme.of(context).textTheme.subhead),
-                  Text(
-                    'Expressions from everyone in Junto. Filter by degrees of separation.',
-                    style: Theme.of(context).textTheme.body2,
-                  ),
+                  if (perspective.name == 'JUNTO')
+                    Text(
+                      'Expressions from everyone in Junto.',
+                      style: Theme.of(context).textTheme.body2,
+                    ),
+                  if (perspective.name == 'Subscriptions')
+                    Text(
+                      'Expressions from specific people you\'re subscribed to.',
+                      style: Theme.of(context).textTheme.body2,
+                    ),
+                  if (perspective.name != 'JUNTO' &&
+                      perspective.name != 'Subscriptions' &&
+                      perspective.about != null)
+                    Text(
+                      perspective.about,
+                      style: Theme.of(context).textTheme.body2,
+                    ),
                 ],
               ),
             ),
