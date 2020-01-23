@@ -139,6 +139,10 @@ class CreateActionsState extends State<CreateActions> {
     } catch (error) {
       print(error.message);
       JuntoLoader.hide();
+      // FIXME: (Nash/Eric) - creating an expression retrieves the following error.
+      // '_InternalLinkedHashMap<String, dynamic>' is not a subtype of type 'int'
+      // Temporarily displaying 'Expression Created' for this build as the expressions do get created.
+
       // JuntoDialog.showJuntoDialog(
       //   context,
       //   'Something went wrong',
