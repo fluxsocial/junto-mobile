@@ -99,16 +99,17 @@ class JuntoChannelsState extends State<JuntoChannels> {
             //     ],
             //   ),
             // ),
+
             Expanded(
               child: ListView(
                 padding: const EdgeInsets.all(0),
                 children: <Widget>[
-                  ChannelPreview(channel: 'regenerative agriculture'),
-                  ChannelPreview(channel: 'food'),
-                  ChannelPreview(channel: 'biomimicry'),
-                  ChannelPreview(channel: 'austrian economics'),
-                  ChannelPreview(channel: 'conscious tech'),
-                  ChannelPreview(channel: 'implementation next build'),
+                  const ChannelPreview(channel: 'regenerative agriculture'),
+                  const ChannelPreview(channel: 'food'),
+                  const ChannelPreview(channel: 'biomimicry'),
+                  const ChannelPreview(channel: 'austrian economics'),
+                  const ChannelPreview(channel: 'conscious tech'),
+                  const ChannelPreview(channel: 'implementation next build'),
                 ],
               ),
             ),

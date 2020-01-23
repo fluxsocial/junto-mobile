@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives'
     '/create_perspective/create_perspective.dart' show SelectedUsers;
-import 'package:junto_beta_mobile/screens/global_search/new_search.dart';
+import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
 
 // Junto app bar used in collective screen.
 class CollectiveAppBar extends SliverPersistentHeaderDelegate {
@@ -73,7 +73,10 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                   children: <Widget>[
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(context, NewSearchScreen.route((_) {}));
+                        Navigator.push(
+                          context,
+                          GlobalSearch.route((_) {}),
+                        );
                       },
                       child: Container(
                         width: 42,
