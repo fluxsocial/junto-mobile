@@ -48,6 +48,20 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _currentGroup = Group(
+        address: null,
+        groupType: 'Pack',
+        creator: _userAddress,
+        groupData: null,
+        members: null,
+        facilitators: null,
+        privacy: 'Private',
+        createdAt: null);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       // appBar: const PreferredSize(

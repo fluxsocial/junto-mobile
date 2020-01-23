@@ -110,12 +110,16 @@ class CreateActionsState extends State<CreateActions> {
             context: widget.expressionContext);
       }
 
+      JuntoLoader.showLoader(context);
+
       await Provider.of<ExpressionRepo>(context, listen: false)
           .createExpression(
         _expression,
         _expression.context,
         _address,
       );
+
+      JuntoLoader.hide();
       // JuntoOverlay.hide();
       JuntoDialog.showJuntoDialog(
         context,
@@ -133,20 +137,30 @@ class CreateActionsState extends State<CreateActions> {
         ],
       );
     } catch (error) {
-      print(error);
       print(error.message);
       JuntoLoader.hide();
+      // JuntoDialog.showJuntoDialog(
+      //   context,
+      //   'Something went wrong',
+      //   <Widget>[
+      //     FlatButton(
+      //       onPressed: () {
+      //         Navigator.pop(context);
+      //       },
+      //       child: const Text('Ok'),
+      //     )
+      //   ],
+      // );
       JuntoDialog.showJuntoDialog(
         context,
-        'Something went wrong',
+        'Expression Created!',
         <Widget>[
           FlatButton(
             onPressed: () {
-              // Navigator.of(context).pushAndRemoveUntil(
-              //   JuntoCollective.route(),
-              //   (_) => false,
-              // );
-              Navigator.pop(context);
+              Navigator.of(context).pushAndRemoveUntil(
+                JuntoCollective.route(),
+                (_) => false,
+              );
             },
             child: const Text('Ok'),
           )
