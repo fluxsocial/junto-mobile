@@ -17,20 +17,16 @@ dependencies:
   flutter:
     sdk: flutter
   image_picker: 0.6.1+8
-  shared_preferences: 0.5.4
-  cupertino_icons: 0.1.2
-  provider: 3.1.0+1
-  http: 0.12.0+2
-  image_cropper: 1.1.0
-  sentry: 2.3.1
-  localstorage: 2.0.0
+  shared_preferences: 0.5.6
+  cupertino_icons: 0.1.3
+  provider: 4.0.1
+  http: 0.12.0+4
+  sentry: 3.0.0+1
+  localstorage: 3.0.1+4
   giphy_client: 0.2.0
-  cached_network_image: 2.0.0-rc.1
-  carousel_slider: 1.3.1
-  flutter_spinkit: 4.1.0
-  pull_to_refresh: 1.5.7  
-  # webview_flutter: ^0.3.9+1
-  # swipedetector: ^1.2.0
+  cached_network_image: 2.0.0
+  carousel_slider: 1.4.0 
+  flutter_spinkit: 4.1.1+1
 
 
 dev_dependencies:
@@ -123,6 +119,8 @@ flutter:
     - assets/images/junto-mobile__mock--image.png
     - assets/images/junto-mobile__mockprofpic--one.png
     - assets/images/junto-mobile__mockprofpic--two.png    
+    - assets/images/junto-mobile__binoculars.png    
+
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

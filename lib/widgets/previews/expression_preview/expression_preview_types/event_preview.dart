@@ -56,9 +56,3 @@ class EventPreview extends StatelessWidget {
     );
   }
 }
-
-// Text(
-//   expression.expressionData.startTime,
-//   style: Theme.of(context).textTheme.body2,
-// ),
-// const SizedBox(height: 2.5),

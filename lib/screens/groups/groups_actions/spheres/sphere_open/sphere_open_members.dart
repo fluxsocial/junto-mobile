@@ -10,7 +10,6 @@ import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/sphere.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/create_perspective/create_perspective.dart';
-import 'package:junto_beta_mobile/screens/collective/perspectives/create_perspective/perspective_member_preview/perspective_member_preview.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
@@ -94,13 +93,13 @@ class _SphereOpenMembersState extends State<SphereOpenMembers>
       debounceTimer.cancel();
     }
     debounceTimer = Timer(const Duration(milliseconds: 500), () async {
-      if (mounted) {
-        final List<UserProfile> result =
-            await Provider.of<SearchProvider>(context).searchMember(value);
-        if (result != null && result.isNotEmpty) {
-          queriedUsers.value = result;
-        }
-      }
+      // if (mounted) {
+      //   final List<UserProfile> result =
+      //       await Provider.of<SearchService>(context).searchMember(value);
+      //   if (result != null && result.isNotEmpty) {
+      //     queriedUsers.value = result;
+      //   }
+      // }
     });
   }
 
@@ -215,16 +214,17 @@ class _SphereOpenMembersState extends State<SphereOpenMembers>
               itemCount: widget.users.length,
               itemBuilder: (BuildContext context, int index) {
                 final Users user = widget.users[index];
-                return PerspectiveMemberPreview(
-                  key: Key(user.user.address),
-                  onTap: () {
-                    Navigator.of(context).push(JuntoMember.route(user.user));
-                  },
-                  name: '${user.user.name}',
-                  username: user.user.username,
-                  showIndicator: false,
-                  onLongPress: () => _deleteMember(context, user),
-                );
+                return const SizedBox();
+                // return PerspectiveMemberPreview(
+                //   key: Key(user.user.address),
+                //   onTap: () {
+                //     Navigator.of(context).push(JuntoMember.route(user.user));
+                //   },
+                //   name: '${user.user.name}',
+                //   username: user.user.username,
+                //   showIndicator: false,
+                //   onLongPress: () => _deleteMember(context, user),
+                // );
               },
             ),
           ],

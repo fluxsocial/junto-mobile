@@ -20,9 +20,10 @@ import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
 
 class ExpressionOpen extends StatefulWidget {
-  const ExpressionOpen(this.expression);
+  const ExpressionOpen(this.expression, this.userAddress);
 
   final CentralizedExpressionResponse expression;
+  final String userAddress;
 
   @override
   State<StatefulWidget> createState() {
@@ -56,7 +57,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   /// If an expression has no comments, we do not show the option "show replies"
   bool canShowComments = false;
 
-  Future<QueryCommentResults> futureComments;
+  Future<QueryResults<Comment>> futureComments;
 
   @override
   void initState() {
@@ -64,13 +65,12 @@ class ExpressionOpenState extends State<ExpressionOpen> {
     commentController = TextEditingController();
     _focusNode = FocusNode();
     canShowComments = widget.expression.comments != 0;
-    print(widget.expression.expressionData);
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    futureComments = Provider.of<ExpressionRepo>(context)
+    futureComments = Provider.of<ExpressionRepo>(context, listen: false)
         .getExpressionsComments(widget.expression.address);
   }
 
@@ -108,6 +108,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   }
 
   // Open modal bottom sheet and refocus TextField after dismissed
+  //ignore:unused_element
   Future<void> _showPrivacyModalSheet() async {
     await showModalBottomSheet(
       context: context,
@@ -209,7 +210,8 @@ class ExpressionOpenState extends State<ExpressionOpen> {
 
   Future<void> _createComment() async {
     try {
-      await Provider.of<ExpressionRepo>(context).postCommentExpression(
+      await Provider.of<ExpressionRepo>(context, listen: false)
+          .postCommentExpression(
         widget.expression.address,
         'LongForm',
         CentralizedLongFormExpression(
@@ -247,7 +249,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   Future<void> _refreshComments() async {
     setState(
       () {
-        futureComments = Provider.of<ExpressionRepo>(context)
+        futureComments = Provider.of<ExpressionRepo>(context, listen: false)
             .getExpressionsComments(widget.expression.address);
       },
     );
@@ -271,7 +273,9 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                 onRefresh: _refreshComments,
                 child: ListView(
                   children: <Widget>[
-                    ExpressionOpenTop(expression: widget.expression),
+                    ExpressionOpenTop(
+                        expression: widget.expression,
+                        userAddress: widget.userAddress),
                     _buildExpression(),
                     ExpressionOpenBottom(widget.expression, _focusTextField),
                     if (canShowComments)
@@ -303,11 +307,11 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                         ),
                       ),
                     if (commentsVisible)
-                      FutureBuilder<QueryCommentResults>(
+                      FutureBuilder<QueryResults<Comment>>(
                         future: futureComments,
                         builder: (
                           BuildContext context,
-                          AsyncSnapshot<QueryCommentResults> snapshot,
+                          AsyncSnapshot<QueryResults<Comment>> snapshot,
                         ) {
                           if (snapshot.hasError) {
                             return Container(
@@ -324,6 +328,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                                 return CommentPreview(
                                   comment: snapshot.data.results[index],
                                   parent: widget.expression,
+                                  userAddress: widget.userAddress,
                                 );
                               },
                             );
@@ -344,15 +349,15 @@ class ExpressionOpenState extends State<ExpressionOpen> {
             commentPrivacy: _commentPrivacy,
             focusNode: _focusNode,
             onTextChange: _onTextChange,
-            showPrivacySheet: () async {
-              await _showPrivacyModalSheet();
-            },
+            // showPrivacySheet: () async {
+            //   await _showPrivacyModalSheet();
+            // },
             onGifSelected: (_) {},
           ),
         ],
       ),
     );
-  } 
+  }
 }
 
 class _BottomCommentBar extends StatefulWidget {
@@ -361,7 +366,7 @@ class _BottomCommentBar extends StatefulWidget {
     @required this.focusNode,
     @required this.onTextChange,
     @required this.commentController,
-    @required this.showPrivacySheet,
+    // @required this.showPrivacySheet,
     @required this.commentPrivacy,
     @required this.onGifSelected,
     @required this.postComment,
@@ -369,7 +374,7 @@ class _BottomCommentBar extends StatefulWidget {
   final FocusNode focusNode;
   final ValueChanged<String> onTextChange;
   final TextEditingController commentController;
-  final VoidCallback showPrivacySheet;
+  // final VoidCallback showPrivacySheet;
   final String commentPrivacy;
   final ValueChanged<String> onGifSelected;
   final VoidCallback postComment;
@@ -566,23 +571,23 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    GestureDetector(
-                      onTap: widget.showPrivacySheet,
-                      child: Container(
-                        color: Colors.transparent,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Text(widget.commentPrivacy,
-                                style: Theme.of(context).textTheme.body2),
-                            Icon(Icons.keyboard_arrow_down,
-                                size: 14,
-                                color: Theme.of(context).primaryColorDark)
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
+                    // GestureDetector(
+                    //   onTap: widget.showPrivacySheet,
+                    //   child: Container(
+                    //     color: Colors.transparent,
+                    //     child: Row(
+                    //       crossAxisAlignment: CrossAxisAlignment.center,
+                    //       children: <Widget>[
+                    //         Text(widget.commentPrivacy,
+                    //             style: Theme.of(context).textTheme.body2),
+                    //         Icon(Icons.keyboard_arrow_down,
+                    //             size: 14,
+                    //             color: Theme.of(context).primaryColorDark)
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
+                    // const SizedBox(width: 10),
                     GestureDetector(
                       onTap: () async {
                         await showModalBottomSheet(

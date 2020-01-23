@@ -101,7 +101,7 @@ class SignUpUsernameState extends State<SignUpUsername> {
                             _,
                           ) {
                             return Text(
-                                  '${value.text.length}/22',
+                              '${value.text.length}/22',
                               style: const TextStyle(
                                   color: Colors.white70,
                                   fontSize: 14,

@@ -81,17 +81,20 @@ class ExpressionRepo {
     return _expressionService.getExpressionsResonation(expressionAddress);
   }
 
-  Future<QueryCommentResults> getExpressionsComments(
+  Future<QueryResults<Comment>> getExpressionsComments(
     String expressionAddress,
   ) {
     return _expressionService.getExpressionsComments(expressionAddress);
   }
 
-  Future<QueryExpressionResults> getCollectiveExpressions(
+  Future<QueryResults<CentralizedExpressionResponse>> getCollectiveExpressions(
       Map<String, String> params) {
     return _expressionService.getCollectiveExpressions(params);
   }
 
   List<CentralizedExpressionResponse> get collectiveExpressions =>
       _expressionService.collectiveExpressions;
+
+  Future<void> deleteExpression(String address) =>
+      _expressionService.deleteExpression(address);
 }

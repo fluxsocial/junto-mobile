@@ -2,9 +2,29 @@ import 'dart:io';
 
 import 'package:junto_beta_mobile/models/models.dart';
 
-abstract class SearchProvider {
-  /// Queries our API with the given [query].
-  Future<List<UserProfile>> searchMember(String query);
+abstract class SearchService {
+  /// Retures a [QueryResults] contains a list of [UserProfile] matching the [query]
+  Future<QueryResults<UserProfile>> searchMembers(
+    String query, {
+    bool username = false,
+    int paginationPosition = 0,
+    DateTime lastTimeStamp,
+  });
+
+  /// Retures a [QueryResults] contains the names of channels matching the [query]
+  Future<QueryResults<String>> searchChannel(
+    String query, {
+    int paginationPosition = 0,
+    DateTime lastTimeStamp,
+  });
+
+  /// Retures a [QueryResults] contains a list of [Group] matching the [query]
+  Future<QueryResults<Group>> searchSphere(
+    String query, {
+    int paginationPosition = 0,
+    DateTime lastTimeStamp,
+    bool handle,
+  });
 }
 
 /// Abstract class which defines the functionality of the Authentication Provider
@@ -74,7 +94,7 @@ abstract class ExpressionService {
   );
 
   /// Returns a list of [Comment]s for the given [expressionAddress].
-  Future<QueryCommentResults> getExpressionsComments(
+  Future<QueryResults<Comment>> getExpressionsComments(
     String expressionAddress,
   );
 
@@ -83,11 +103,19 @@ abstract class ExpressionService {
 
   /// Returns a [QueryExpressionResults] containing a list of results which
   /// satisfies the query.
-  Future<QueryExpressionResults> getCollectiveExpressions(
+  Future<QueryResults<CentralizedExpressionResponse>> getCollectiveExpressions(
       Map<String, String> params);
 
   /// Returns mock expression data.
   List<CentralizedExpressionResponse> get collectiveExpressions;
+
+  Future<void> deleteExpression(String expressionAddress);
+
+  /// Returns true/false if the [userAddress] is following the [targetAddress]
+  Future<bool> isFollowingUser(String userAddress, String targetAddress);
+
+  /// Returns true/false if the [userAddress] is connected to the [targetAddress]
+  Future<bool> isConnectedUser(String userAddress, String targetAddress);
 }
 
 abstract class GroupService {
@@ -113,6 +141,9 @@ abstract class GroupService {
 
   Future<List<CentralizedExpressionResponse>> getGroupExpressions(
       String groupAddress, ExpressionQueryParams params);
+
+  /// Allows for updating a group. The parameter [group] must not be null.
+  Future<Group> updateGroup(Group group);
 }
 
 enum QueryType { address, email, username }
@@ -185,4 +216,11 @@ abstract class UserService {
 
   /// Gets a list of pending user connections
   Future<List<UserProfile>> connectedUsers(String userAddress);
+
+  /// Updates the given [user] and returns updated [UserData]
+  Future<Map<String, dynamic>> updateUser(
+      Map<String, dynamic> profile, String userAddress);
+
+  // Returns a list of followers for the given user address.
+  Future<List<UserProfile>> getFollowers(String userAddress);
 }

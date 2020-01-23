@@ -1,13 +1,14 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
-import 'package:junto_beta_mobile/utils/junto_overlay.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:junto_beta_mobile/widgets/image_cropper.dart';
-import 'package:junto_beta_mobile/models/models.dart';
-import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:junto_beta_mobile/widgets/image_cropper.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CreateSphere extends StatefulWidget {
@@ -51,8 +52,9 @@ class CreateSphereState extends State<CreateSphere> {
   Future<void> _createSphere() async {
     // check if photo
     if (imageFile != null) {
-      final String _photoKey = await Provider.of<ExpressionRepo>(context)
-          .createPhoto('.png', imageFile);
+      final String _photoKey =
+          await Provider.of<ExpressionRepo>(context, listen: false)
+              .createPhoto('.png', imageFile);
       print(_photoKey);
       setState(() {
         imageKey = _photoKey;
@@ -77,7 +79,7 @@ class CreateSphereState extends State<CreateSphere> {
 
     try {
       JuntoLoader.showLoader(context);
-      await Provider.of<GroupRepo>(context).createSphere(sphere);
+      await Provider.of<GroupRepo>(context, listen: false).createSphere(sphere);
       JuntoLoader.hide();
       Navigator.pop(context);
     } catch (error) {
@@ -118,9 +120,9 @@ class CreateSphereState extends State<CreateSphere> {
                           color: Colors.transparent,
                           width: 48,
                           alignment: Alignment.centerLeft,
-                          child: Icon(CustomIcons.cancel,
-                              size: 24,
-                              color: Theme.of(context).primaryColorDark),
+                          child: Icon(CustomIcons.back,
+                              size: 20,
+                              color: Theme.of(context).primaryColor),
                         ),
                       )
                     : GestureDetector(
@@ -141,7 +143,7 @@ class CreateSphereState extends State<CreateSphere> {
                         ),
                       ),
                 Text('Create Sphere',
-                    style: Theme.of(context).textTheme.subhead),
+                    style: Theme.of(context).textTheme.title),
                 _currentIndex == 2
                     ? GestureDetector(
                         onTap: () {
@@ -274,23 +276,25 @@ class CreateSphereState extends State<CreateSphere> {
         padding: const EdgeInsets.symmetric(horizontal: 10),
         width: MediaQuery.of(context).size.width,
         child: TextFormField(
-            controller: sphereNameController,
-            buildCounter: (
-              BuildContext context, {
-              int currentLength,
-              int maxLength,
-              bool isFocused,
-            }) =>
-                null,
-            decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Name of sphere',
-                hintStyle: Theme.of(context).textTheme.title),
-            cursorColor: JuntoPalette.juntoGrey,
-            cursorWidth: 2,
-            maxLines: null,
-            maxLength: 140,
-            style: Theme.of(context).textTheme.title),
+          controller: sphereNameController,
+          buildCounter: (
+            BuildContext context, {
+            int currentLength,
+            int maxLength,
+            bool isFocused,
+          }) =>
+              null,
+          decoration: InputDecoration(
+              border: InputBorder.none,
+              hintText: 'Name of sphere',
+              hintStyle: Theme.of(context).textTheme.title),
+          cursorColor: JuntoPalette.juntoGrey,
+          cursorWidth: 2,
+          maxLines: null,
+          maxLength: 140,
+          style: Theme.of(context).textTheme.title,
+          textInputAction: TextInputAction.done,
+        ),
       ),
       Container(
         padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -327,11 +331,14 @@ class CreateSphereState extends State<CreateSphere> {
           // }) =>
           //     null,
           decoration: InputDecoration(
-              border: InputBorder.none,
-              hintText: 'About your sphere',
-              hintStyle: Theme.of(context).textTheme.caption,
-              counterStyle:
-                  TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
+            border: InputBorder.none,
+            hintText: 'About your sphere',
+            hintStyle: Theme.of(context).textTheme.caption,
+            counterStyle: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
           cursorColor: Theme.of(context).primaryColorDark,
           cursorWidth: 2,
           maxLines: null,
@@ -415,14 +422,14 @@ class CreateSphereState extends State<CreateSphere> {
       children: <Widget>[
         _spherePrivacy('Public',
             'Anyone can join this sphere, read its expressions and share to it'),
-        _spherePrivacy(
-            'Shared',
-            'Only members can read expressions '
-                'and share to it. Facilitators can invite members or accept their request to join.'),
-        _spherePrivacy(
-            'Private',
-            'Members must be invited into this sphere. This sphere is only searchable by members.'
-                ' Only members can read expressions '),
+        // _spherePrivacy(
+        //     'Shared',
+        //     'Only members can read expressions '
+        //         'and share to it. Facilitators can invite members or accept their request to join.'),
+        // _spherePrivacy(
+        //     'Private',
+        //     'Members must be invited into this sphere. This sphere is only searchable by members.'
+        //         ' Only members can read expressions '),
       ],
     );
   }
@@ -452,7 +459,7 @@ class CreateSphereState extends State<CreateSphere> {
                   children: <Widget>[
                     Text(
                       privacyLayer,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w700,
                       ),

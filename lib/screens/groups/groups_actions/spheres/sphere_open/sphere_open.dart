@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/groups/spheres/sphere_open/sphere_open_appbar.dart';
-import 'package:junto_beta_mobile/screens/groups/spheres/sphere_open/sphere_open_members.dart';
+import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_open/sphere_open_appbar.dart';
+import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_open/sphere_open_members.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
@@ -22,7 +24,6 @@ class SphereOpen extends StatefulWidget {
   }) : super(key: key);
 
   final Group group;
-
   @override
   State<StatefulWidget> createState() {
     return SphereOpenState();
@@ -60,7 +61,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
         _keyFlexibleSpace.currentContext.findRenderObject();
     final Size sizeFlexibleSpace = renderBoxFlexibleSpace.size;
     final double heightFlexibleSpace = sizeFlexibleSpace.height;
-    print(heightFlexibleSpace);
 
     setState(() {
       _flexibleHeightSpace = heightFlexibleSpace;
@@ -118,31 +118,16 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     }
   }
 
-  final List<String> _tabs = <String>['About', 'Discussion', 'Events'];
+  final List<String> _tabs = <String>['About', 'Discussion'];
 
   @override
   Widget build(BuildContext context) {
+    print(widget.group.groupData.photo);
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(45),
         child: SphereOpenAppbar(
-          widget.group.groupData.sphereHandle,
-          widget.group.groupData.photo,
-        ),
-      ),
-      floatingActionButton: ValueListenableBuilder<bool>(
-        valueListenable: _isVisible,
-        builder: (BuildContext context, bool visible, Widget child) {
-          return AnimatedOpacity(
-            duration: const Duration(milliseconds: 300),
-            opacity: visible ? 1.0 : 0.0,
-            child: child,
-          );
-        },
-        child: ExpressionCenterFAB(
-          expressionLayer: widget.group.groupData.name,
-          address: widget.group.address,
-          expressionContext: ExpressionContext.Group,
+          group: widget.group,
         ),
       ),
       body: DefaultTabController(
@@ -152,8 +137,8 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
             // These are the contents of the tab views, below the tabs.
             children: <Widget>[
               _buildAboutView(),
-              _buildExpressionView(),
-              _buildEventsView()
+              const SizedBox(),
+              // _buildExpressionView(),
             ],
           ),
           controller: _hideFABController,
@@ -171,24 +156,38 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                   collapseMode: CollapseMode.pin,
                   background: Column(
                     children: <Widget>[
-                      Container(
-                        height: MediaQuery.of(context).size.height * .3,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.bottomLeft,
-                            end: Alignment.topRight,
-                            stops: const <double>[0.2, 0.9],
-                            colors: <Color>[
-                              Theme.of(context).colorScheme.secondary,
-                              Theme.of(context).colorScheme.primary
-                            ],
-                          ),
-                        ),
-                        alignment: Alignment.center,
-                        child: Icon(CustomIcons.spheres,
-                            size: 60,
-                            color: Theme.of(context).colorScheme.onPrimary),
-                      ),
+                      widget.group.groupData.photo == ''
+                          ? Container(
+                              height: MediaQuery.of(context).size.height * .3,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.bottomLeft,
+                                  end: Alignment.topRight,
+                                  stops: const <double>[0.2, 0.9],
+                                  colors: <Color>[
+                                    Theme.of(context).colorScheme.secondary,
+                                    Theme.of(context).colorScheme.primary
+                                  ],
+                                ),
+                              ),
+                              alignment: Alignment.center,
+                              child: Icon(CustomIcons.spheres,
+                                  size: 60,
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary),
+                            )
+                          : CachedNetworkImage(
+                              imageUrl: widget.group.groupData.photo,
+                              width: MediaQuery.of(context).size.width,
+                              height: MediaQuery.of(context).size.height * .3,
+                              placeholder: (BuildContext context, String _) {
+                                return Container(
+                                    color: Theme.of(context).dividerColor,
+                                    width: MediaQuery.of(context).size.width,
+                                    height: MediaQuery.of(context).size.height *
+                                        .3);
+                              },
+                              fit: BoxFit.cover),
                       Container(
                         key: _keyFlexibleSpace,
                         padding: const EdgeInsets.symmetric(
@@ -266,9 +265,10 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
             children: <Widget>[
               GestureDetector(
                 onTap: () => _getMembers(),
-                child: MemberRow(
-                  membersLength:
-                      widget.group.members + widget.group.facilitators,
+                child: const MemberRow(
+                  membersLength: 1,
+                  // FIXME(Nash+Yang) The server should never return null, bring up with Josh
+                  // widget.group?.members + widget.group?.facilitators,
                 ),
               )
             ],
@@ -290,53 +290,48 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     );
   }
 
-  Widget _buildExpressionView() {
-    return FutureBuilder<List<CentralizedExpressionResponse>>(
-      future: Provider.of<GroupRepo>(context)
-          .getGroupExpressions(widget.group.address, null),
-      builder: (
-        BuildContext context,
-        AsyncSnapshot<List<CentralizedExpressionResponse>> snapshot,
-      ) {
-        if (snapshot.hasError)
-          return Container(
-            height: 400,
-            alignment: Alignment.center,
-            child: const Text(
-              'Oops, something is wrong!',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-            ),
-          );
-        if (snapshot.hasData && !snapshot.hasError) {
-          return RefreshIndicator(
-            onRefresh: () async => setState(() => print('refresh')),
-            child: ListView.builder(
-              itemCount: snapshot.data.length,
-              itemBuilder: (BuildContext context, int index) {
-                return ExpressionPreview(
-                  expression: snapshot.data[index],
-                );
-              },
-            ),
-          );
-        }
-        return Container(
-          height: 100.0,
-          width: 100.0,
-          child: const Center(
-            child: CircularProgressIndicator(),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildEventsView() {
-    return ListView(
-      physics: const ClampingScrollPhysics(),
-      children: const <Widget>[Text('Events')],
-    );
-  }
+//ignore:unused_element
+  // Widget _buildExpressionView() {
+  //   return FutureBuilder<List<CentralizedExpressionResponse>>(
+  //     future: Provider.of<GroupRepo>(context, listen: false)
+  //         .getGroupExpressions(widget.group.address, null),
+  //     builder: (
+  //       BuildContext context,
+  //       AsyncSnapshot<List<CentralizedExpressionResponse>> snapshot,
+  //     ) {
+  //       if (snapshot.hasError)
+  //         return Container(
+  //           height: 400,
+  //           alignment: Alignment.center,
+  //           child: const Text(
+  //             'Oops, something is wrong!',
+  //             style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+  //           ),
+  //         );
+  //       if (snapshot.hasData && !snapshot.hasError) {
+  //         return RefreshIndicator(
+  //           onRefresh: () async => setState(() => print('refresh')),
+  //           child: ListView.builder(
+  //             itemCount: snapshot.data.length,
+  //             itemBuilder: (BuildContext context, int index) {
+  //               return ExpressionPreview(
+  //                 expression: snapshot.data[index],
+  //                 userAddress: widget.userAddress,
+  //               );
+  //             },
+  //           ),
+  //         );
+  //       }
+  //       return Container(
+  //         height: 100.0,
+  //         width: 100.0,
+  //         child: const Center(
+  //           child: CircularProgressIndicator(),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 }
 
 class MemberRow extends StatelessWidget {
@@ -350,92 +345,11 @@ class MemberRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Theme.of(context).colorScheme.background,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              ClipOval(
-                child: Image.asset(
-                  'assets/images/junto-mobile__eric.png',
-                  height: 28.0,
-                  width: 28.0,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(width: 5),
-              ClipOval(
-                child: Image.asset(
-                  'assets/images/junto-mobile__riley.png',
-                  height: 28.0,
-                  width: 28.0,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(width: 5),
-              ClipOval(
-                child: Image.asset(
-                  'assets/images/junto-mobile__yaz.png',
-                  height: 28.0,
-                  width: 28.0,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(width: 5),
-              ClipOval(
-                child: Image.asset(
-                  'assets/images/junto-mobile__josh.png',
-                  height: 28.0,
-                  width: 28.0,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(width: 5),
-              ClipOval(
-                child: Image.asset(
-                  'assets/images/junto-mobile__dora.png',
-                  height: 28.0,
-                  width: 28.0,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(width: 5),
-              ClipOval(
-                child: Image.asset(
-                  'assets/images/junto-mobile__tomis.png',
-                  height: 28.0,
-                  width: 28.0,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(width: 5),
-              ClipOval(
-                child: Image.asset(
-                  'assets/images/junto-mobile__drea.png',
-                  height: 28.0,
-                  width: 28.0,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(width: 5),
-              ClipOval(
-                child: Image.asset(
-                  'assets/images/junto-mobile__leif.png',
-                  height: 28.0,
-                  width: 28.0,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 5),
-          Container(
-            child: Text(
-              '$membersLength members',
-              style: Theme.of(context).textTheme.subtitle,
-            ),
-          ),
-        ],
+      child: Container(
+        child: Text(
+          'Members',
+          style: Theme.of(context).textTheme.subtitle,
+        ),
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
@@ -73,6 +74,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
 
   Future<void> getUserInformation() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    // print(prefs.getString('user_data'));
     final Map<String, dynamic> decodedUserData =
         jsonDecode(prefs.getString('user_data'));
 
@@ -80,8 +82,6 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
       _userAddress = prefs.getString('user_id');
       _userProfile = UserData.fromMap(decodedUserData);
     });
-
-    print(_userProfile.user.gender);
   }
 
   Future<List<CentralizedExpressionResponse>> getUsersExpressions() async {
@@ -195,7 +195,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                             ],
                           ),
                         ),
-                        _userProfile.user.profilePicture.isNotEmpty
+                        _userProfile.user.profilePicture != null
                             ? _displayProfilePictures(
                                 _userProfile.user.profilePicture)
                             : const SizedBox(),
@@ -248,9 +248,9 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                                                 snapshot.data[index].privacy ==
                                                     'Public')
                                               ExpressionPreview(
-                                                expression:
-                                                    snapshot.data[index],
-                                              )
+                                                  expression:
+                                                      snapshot.data[index],
+                                                  userAddress: _userAddress)
                                             else
                                               const SizedBox()
 
@@ -279,6 +279,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                                               ExpressionPreview(
                                                 expression:
                                                     snapshot.data[index],
+                                                userAddress: _userAddress,
                                               )
                                             else
                                               const SizedBox()
@@ -340,6 +341,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                                               ExpressionPreview(
                                                 expression:
                                                     snapshot.data[index],
+                                                userAddress: _userAddress,
                                               )
                                             else
                                               const SizedBox()
@@ -369,6 +371,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                                               ExpressionPreview(
                                                 expression:
                                                     snapshot.data[index],
+                                                userAddress: _userAddress,
                                               )
                                             else
                                               const SizedBox()
@@ -403,7 +406,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
   }
 
   Widget _displayAboutItem(List<String> item, dynamic icon) {
-    if (item.isNotEmpty) {
+    if (item[0] != ' ') {
       return Container(
         margin: const EdgeInsets.symmetric(vertical: 5),
         child: Row(
@@ -428,7 +431,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
   }
 
   Widget _displayProfilePictures(List<String> profilePictures) {
-    if (profilePictures != null) {
+    if (profilePictures.length < 1) {
       return Container(
         margin: const EdgeInsets.only(bottom: 15),
         child: CarouselSlider(
@@ -440,7 +443,29 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                 Container(
                   padding: const EdgeInsets.only(right: 10),
                   width: MediaQuery.of(context).size.width,
-                  child: Image.asset(picture, fit: BoxFit.cover),
+                  child: CachedNetworkImage(
+                    placeholder: (BuildContext context, String _) {
+                      return Container(
+                        height: 120,
+                        width: 120,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.bottomLeft,
+                            end: Alignment.topRight,
+                            stops: const <double>[0.2, 0.9],
+                            colors: <Color>[
+                              Theme.of(context).colorScheme.secondary,
+                              Theme.of(context).colorScheme.primary
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                    imageUrl: picture,
+                    fit: BoxFit.cover,
+                  ),
+
+                  // child: Image.asset(picture, fit: BoxFit.cover),
                 ),
             ]),
       );

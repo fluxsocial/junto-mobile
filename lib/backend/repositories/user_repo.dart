@@ -75,7 +75,7 @@ class UserRepo {
     return _userService.getPerspectiveUsers(perspectiveAddress);
   }
 
-  Future<void> connectUser(String userAddress) { 
+  Future<void> connectUser(String userAddress) {
     return _userService.connectUser(userAddress);
   }
 
@@ -94,4 +94,10 @@ class UserRepo {
   Future<void> respondToConnection(String userAddress, bool response) {
     return _userService.respondToConnection(userAddress, response);
   }
+
+  Future<Map<String, dynamic>> updateUser(Map<String, dynamic> user, String userAddress) =>
+      _userService.updateUser(user, userAddress);
+
+  Future<List<UserProfile>> getFollowers(String userAddress) =>
+      _userService.getFollowers(userAddress);
 }

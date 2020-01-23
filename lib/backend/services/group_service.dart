@@ -1,4 +1,5 @@
 import 'package:http/http.dart' as http;
+import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
@@ -84,7 +85,7 @@ class GroupServiceCentralized implements GroupService {
     final SharedPreferences _prefs = await SharedPreferences.getInstance();
     final String authKey = _prefs.getString('auth');
     final Uri _uri = Uri.http(
-      '18.191.236.123',
+      END_POINT,
       '/groups/$groupAddress/expressions',
       <String, String>{'direct_expressions': 'true'},
     );
@@ -101,5 +102,17 @@ class GroupServiceCentralized implements GroupService {
     return (items['direct_posts'] as List<dynamic>)
         .map((dynamic data) => CentralizedExpressionResponse.fromMap(data))
         .toList();
+  }
+
+  @override
+  Future<Group> updateGroup(Group group) async {
+    final http.Response _serverResponse = await client.patch(
+      '/groups/${group.address}',
+      body: group.groupData.toJson(),
+    );
+    print(_serverResponse.body);
+    final Map<String, dynamic> _data =
+        JuntoHttp.handleResponse(_serverResponse);
+    return Group.fromMap(_data);
   }
 }

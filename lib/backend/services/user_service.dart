@@ -115,6 +115,7 @@ class UserServiceCentralized implements UserService {
   Future<UserGroupsResponse> getUserGroups(String userAddress) async {
     final http.Response response =
         await client.get('/users/$userAddress/groups');
+    print(response.body);
     final Map<String, dynamic> _responseMap =
         JuntoHttp.handleResponse(response);
     return UserGroupsResponse.fromMap(_responseMap);
@@ -186,8 +187,9 @@ class UserServiceCentralized implements UserService {
     final Map<String, dynamic> _postBody = <String, dynamic>{
       'user_address': userAddress
     };
-    final http.Response _serverResponse = await client
-        .post('/perspectives/$perspectiveAddress/users', body: _postBody);
+    final http.Response _serverResponse = await client.postWithoutEncoding(
+        '/perspectives/$perspectiveAddress/users',
+        body: _postBody);
     final Map<String, dynamic> _decodedResponse =
         JuntoHttp.handleResponse(_serverResponse);
     return UserProfile.fromMap(_decodedResponse);
@@ -236,11 +238,29 @@ class UserServiceCentralized implements UserService {
     final http.Response _serverResponse = await client.get(
       '/users/$userAddress/connections',
     );
-    final List<dynamic> _results = JuntoHttp.handleResponse(_serverResponse);
-    print(_results);
-    return <UserProfile>[
-      for (dynamic data in _results) UserProfile.fromMap(data)
-    ];
+    final List<dynamic> _results =
+        await JuntoHttp.handleResponse(_serverResponse);
+
+    final List<UserProfile> _resultsList = <UserProfile>[];
+
+    // ignore: avoid_function_literals_in_foreach_calls
+    _results.forEach((dynamic result) {
+      _resultsList.add(
+        UserProfile(
+          address: result['user']['address'],
+          bio: result['user']['bio'],
+          username: result['user']['username'],
+          name: result['user']['name'],
+          profilePicture: <String>[],
+          gender: List<String>.from(result['user']['gender']),
+          location: List<String>.from(result['user']['location']),
+          verified: true,
+          website: List<String>.from(result['user']['website']),
+        ),
+      );
+    });
+
+    return _resultsList;
   }
 
   @override
@@ -254,7 +274,6 @@ class UserServiceCentralized implements UserService {
     ];
   }
 
-//TODO(Nash): This should send back a success result of either true or false.
   @override
   Future<void> respondToConnection(String userAddress, bool response) async {
     final http.Response _serverResponse = await client.postWithoutEncoding(
@@ -264,6 +283,47 @@ class UserServiceCentralized implements UserService {
       },
     );
     JuntoHttp.handleResponse(_serverResponse);
+  }
+
+  @override
+  Future<Map<String, dynamic>> updateUser(
+      Map<String, dynamic> body, String userAddress) async {
+    // make request to api with encoded json body
+    final String encodedBody = json.encode(body);
+    final http.Response _serverResponse =
+        await client.patch('/users/' + userAddress, body: encodedBody);
+
+    // handle response
+    final Map<String, dynamic> _data =
+        JuntoHttp.handleResponse(_serverResponse);
+
+    final SharedPreferences _prefs = await SharedPreferences.getInstance();
+    // get existing user data from shared prefs
+    final Map<String, dynamic> decodedUserData = jsonDecode(
+      _prefs.getString('user_data'),
+    );
+    // replace user with response and update shared prefs
+    decodedUserData['user'] = _data;
+    final String _userMapToString = json.encode(decodedUserData);
+    print(_userMapToString);
+    _prefs..setString('user_data', _userMapToString);
+
+    return _data;
+  }
+
+  @override
+  Future<List<UserProfile>> getFollowers(String userAddress) async {
+    final http.Response _serverResponse = await client.get(
+      '/users/$userAddress/followers',
+      queryParams: <String, String>{
+        'pagination_position': '0',
+      },
+    );
+    final Map<String, dynamic> _data =
+        JuntoHttp.handleResponse(_serverResponse);
+    return <UserProfile>[
+      for (dynamic data in _data['results']) UserProfile.fromMap(data)
+    ];
   }
 
   /// Private function which returns the correct query param for the given

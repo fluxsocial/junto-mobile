@@ -1,6 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class EventOpen extends StatelessWidget {
   const EventOpen(this.expression);
@@ -12,7 +12,9 @@ class EventOpen extends StatelessWidget {
     final CentralizedEventFormExpression eventExpression =
         expression.expressionData as CentralizedEventFormExpression;
     final String eventTitle = eventExpression.title;
-    final String eventTime = DateTime.now().toIso8601String();
+    final String eventStartTime = eventExpression.startTime;
+    //ignore:unused_local_variable
+    final String eventEndTime = eventExpression.endTime;
     final String eventLocation = eventExpression.location;
     final String eventImage = eventExpression.photo;
     final String eventDescription = eventExpression.description;
@@ -20,29 +22,29 @@ class EventOpen extends StatelessWidget {
     return Container(
       child: Column(
         children: <Widget>[
-          eventImage != ''
-              ? Container(
-                  width: MediaQuery.of(context).size.width,
-                  child: CachedNetworkImage(
-                      imageUrl: expression.expressionData.photo,
-                      placeholder: (BuildContext context, String _) {
-                        return Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.bottomLeft,
-                              end: Alignment.topRight,
-                              stops: const <double>[0.2, 0.9],
-                              colors: <Color>[
-                                Theme.of(context).colorScheme.secondary,
-                                Theme.of(context).colorScheme.primary
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                      fit: BoxFit.cover),
-                )
-              : const SizedBox(),
+          if (eventImage != '')
+            Container(
+              width: MediaQuery.of(context).size.width,
+              child: CachedNetworkImage(
+                  imageUrl: expression.expressionData.photo,
+                  placeholder: (BuildContext context, String _) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.bottomLeft,
+                          end: Alignment.topRight,
+                          stops: const <double>[0.2, 0.9],
+                          colors: <Color>[
+                            Theme.of(context).colorScheme.secondary,
+                            Theme.of(context).colorScheme.primary
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                  fit: BoxFit.cover),
+            ),
+          if (eventImage == '') const SizedBox(),
           Container(
             color: Theme.of(context).colorScheme.background,
             child: Column(
@@ -74,7 +76,7 @@ class EventOpen extends StatelessWidget {
                           Icon(Icons.timer,
                               color: Theme.of(context).primaryColor, size: 20),
                           const SizedBox(width: 5),
-                          Text(eventTime,
+                          Text(eventStartTime,
                               style: Theme.of(context).textTheme.caption),
                         ],
                       ),

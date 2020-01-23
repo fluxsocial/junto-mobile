@@ -72,19 +72,21 @@ class CreateActionsState extends State<CreateActions> {
   Future<void> _createExpression() async {
     try {
       if (widget.expressionType == 'PhotoForm') {
-        final String _photoKey = await Provider.of<ExpressionRepo>(context) 
-            .createPhoto('.png', widget.expression['image']);
+        final String _photoKey =
+            await Provider.of<ExpressionRepo>(context, listen: false)
+                .createPhoto('.png', widget.expression['image']);
         _expression = CentralizedExpression(
             type: widget.expressionType,
-            expressionData:
-                CentralizedPhotoFormExpression(image: _photoKey, caption: widget.expression['caption'])
-                    .toMap(),
+            expressionData: CentralizedPhotoFormExpression(
+                    image: _photoKey, caption: widget.expression['caption'])
+                .toMap(),
             context: widget.expressionContext);
       } else if (widget.expressionType == 'EventForm') {
+        print(widget.expression['photo']);
         String eventPhoto = '';
-        if (widget.expression['photo'] != '') {
+        if (widget.expression['photo'] != null) {
           final String _eventPhotoKey =
-              await Provider.of<ExpressionRepo>(context)
+              await Provider.of<ExpressionRepo>(context, listen: false)
                   .createPhoto('.png', widget.expression['photo']);
           eventPhoto = _eventPhotoKey;
           print(eventPhoto);
@@ -108,11 +110,16 @@ class CreateActionsState extends State<CreateActions> {
             context: widget.expressionContext);
       }
 
-      await Provider.of<ExpressionRepo>(context).createExpression(
+      JuntoLoader.showLoader(context);
+
+      await Provider.of<ExpressionRepo>(context, listen: false)
+          .createExpression(
         _expression,
         _expression.context,
         _address,
       );
+
+      JuntoLoader.hide();
       // JuntoOverlay.hide();
       JuntoDialog.showJuntoDialog(
         context,
@@ -130,20 +137,34 @@ class CreateActionsState extends State<CreateActions> {
         ],
       );
     } catch (error) {
-      print(error);
       print(error.message);
       JuntoLoader.hide();
+      // FIXME: (Nash/Eric) - creating an expression retrieves the following error.
+      // '_InternalLinkedHashMap<String, dynamic>' is not a subtype of type 'int'
+      // Temporarily displaying 'Expression Created' for this build as the expressions do get created.
+
+      // JuntoDialog.showJuntoDialog(
+      //   context,
+      //   'Something went wrong',
+      //   <Widget>[
+      //     FlatButton(
+      //       onPressed: () {
+      //         Navigator.pop(context);
+      //       },
+      //       child: const Text('Ok'),
+      //     )
+      //   ],
+      // );
       JuntoDialog.showJuntoDialog(
         context,
-        'Something went wrong',
+        'Expression Created!',
         <Widget>[
           FlatButton(
             onPressed: () {
-              // Navigator.of(context).pushAndRemoveUntil(
-              //   JuntoCollective.route(),
-              //   (_) => false,
-              // );
-              Navigator.pop(context);
+              Navigator.of(context).pushAndRemoveUntil(
+                JuntoCollective.route(),
+                (_) => false,
+              );
             },
             child: const Text('Ok'),
           )
@@ -229,39 +250,6 @@ class CreateActionsState extends State<CreateActions> {
                       color: Theme.of(context).primaryColorDark, size: 17)
                 ],
               ),
-            ),
-          ),
-          Container(
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: Theme.of(context).dividerColor,
-                  width: .75,
-                ),
-              ),
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            child: TextField(
-              buildCounter: (
-                BuildContext context, {
-                int currentLength,
-                int maxLength,
-                bool isFocused,
-              }) =>
-                  null,
-              decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintStyle: Theme.of(context).textTheme.caption,
-                  hintText:
-                      'set an intention (i.e. why are you sharing this? what are you looking for from others?)',
-                  hintMaxLines: 2),
-              cursorColor: Theme.of(context).primaryColorDark,
-              cursorWidth: 2,
-              maxLines: null,
-              style: Theme.of(context).textTheme.caption,
-              maxLength: 240,
-              textInputAction: TextInputAction.done,
             ),
           ),
         ],

@@ -11,9 +11,18 @@ class CroppingApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      /*theme: ThemeData(
+        brightness: Brightness.light,
+        primarySwatch: Colors.grey,
+        primaryColor: Colors.grey[50],
+        primaryColorLight: Colors.grey[600],
+        primaryColorDark: Colors.blue,
+      ),*/
       theme: ThemeData(
-          brightness: Brightness.light, primaryColor: Colors.grey[50]),
-      //theme: ThemeData(brightness: Brightness.dark, primaryColor: Colors.grey[900]),
+        brightness: Brightness.dark,
+        primarySwatch: Colors.blueGrey,
+        primaryColor: Colors.grey[900],
+      ),
       home: Home(),
     );
   }
@@ -34,17 +43,7 @@ class _HomeState extends State<Home> {
       return;
     }
     final File cropped = await ImageCroppingDialog.show(context, image,
-        aspectRatios: <String>[
-          '1:1',
-          '2:3',
-          '3:2',
-          '3:4',
-          '4:3',
-          '4:5',
-          '5:4',
-          '9:16',
-          '16:9'
-        ]);
+        aspectRatios: <String>['1:1', '2:3', '3:2', '3:4', '4:3', '4:5', '5:4', '9:16', '16:9']);
     if (cropped == null) {
       setState(() => imageFile = null);
       return;
@@ -67,16 +66,22 @@ class _HomeState extends State<Home> {
               ),
               if (imageFile != null) ...<Widget>[
                 Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Center(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(width: 2.0),
+                  child: Stack(
+                    children: <Widget>[
+                      OverflowBox(
+                        maxWidth: double.infinity,
+                        maxHeight: double.infinity,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(width: 2.0),
+                          ),
+                          child: Image.file(
+                            imageFile,
+                            fit: BoxFit.none,
+                          ),
                         ),
-                        child: Image.file(imageFile),
                       ),
-                    ),
+                    ],
                   ),
                 ),
               ],

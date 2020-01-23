@@ -2,85 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 
 class BottomNav extends StatelessWidget {
-  const BottomNav({this.screen, this.onTap});
+  const BottomNav({this.screen, this.onTap, this.userProfile});
 
   final String screen;
   final VoidCallback onTap;
-
-  Widget _uniqueActionItem(BuildContext context, String currentScreen) {
-    if (currentScreen == 'collective') {
-      return Expanded(
-        child: GestureDetector(
-          onTap: onTap,
-          child: Container(
-            alignment: Alignment.center,
-            width: 60,
-            height: 50,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(100),
-            ),
-            child: Transform.translate(
-              offset: const Offset(-5, 0),
-              child: Container(
-                child: Icon(CustomIcons.collective,
-                    size: 10, color: Theme.of(context).primaryColor),
-              ),
-            ),
-          ),
-        ),
-      );
-    } else if (currentScreen == 'groups') {
-      return Expanded(
-        child: GestureDetector(
-          onTap: () {
-            onTap();
-          },
-          child: Container(
-            width: 60,
-            height: 50,
-            child: Icon(CustomIcons.groups,
-                size: 17, color: Theme.of(context).primaryColor),
-          ),
-        ),
-      );
-    } else if (currentScreen == 'den') {
-      return Expanded(
-        child: GestureDetector(
-          onTap: () {
-            onTap();
-          },
-          child: Container(
-            width: 60,
-            height: 50,
-            child: Transform.translate(
-              offset: const Offset(5.0, 0.0),
-              child: Icon(CustomIcons.den,
-                  size: 20, color: Theme.of(context).primaryColor),
-            ),
-          ),
-        ),
-      );
-    } else if (currentScreen == 'create') {
-      return Expanded(
-        child: GestureDetector(
-          onTap: () {
-            onTap();
-          },
-          child: Container(
-            width: 60,
-            height: 50,
-            child: Icon(CustomIcons.create,
-                size: 17, color: Theme.of(context).primaryColor),
-          ),
-        ),
-      );
-    } else {
-      return const SizedBox(width: 60);
-    }
-  }
+  final UserData userProfile;
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +31,24 @@ class BottomNav extends StatelessWidget {
       ),
       child: Row(
         children: <Widget>[
-          _uniqueActionItem(context, screen),
+          Expanded(
+            child: GestureDetector(
+              onTap: () {
+                onTap();
+              },
+              child: Container(
+                width: 60,
+                height: 50,
+                color: Colors.transparent,
+                alignment: Alignment.center,
+                child: RotatedBox(
+                  quarterTurns: 1,
+                  child: Icon(CustomIcons.back,
+                      size: 17, color: Theme.of(context).primaryColor),
+                ),
+              ),
+            ),
+          ),
           Expanded(
             child: GestureDetector(
               onTap: () {
@@ -139,6 +86,7 @@ class BottomNav extends StatelessWidget {
                 width: 60,
                 height: 50,
                 decoration: BoxDecoration(
+                  color: Colors.transparent,
                   borderRadius: BorderRadius.circular(100),
                 ),
                 child: Icon(CustomIcons.lotus,

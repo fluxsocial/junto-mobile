@@ -32,10 +32,10 @@ class MockExpressionService implements ExpressionService {
   }
 
   @override
-  Future<QueryCommentResults> getExpressionsComments(
+  Future<QueryResults<Comment>> getExpressionsComments(
       String expressionAddress) async {
     await Future<void>.delayed(const Duration(milliseconds: 2000));
-    return QueryCommentResults(
+    return QueryResults<Comment>(
       results: List<Comment>.generate(50, (int index) => kComment),
       lastTimestamp: DateTime(2019, 12, 19).toIso8601String(),
     );
@@ -72,11 +72,11 @@ class MockExpressionService implements ExpressionService {
   }
 
   @override
-  Future<QueryExpressionResults> getCollectiveExpressions(
+  Future<QueryResults<CentralizedExpressionResponse>> getCollectiveExpressions(
     Map<String, String> params,
   ) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
-    return QueryExpressionResults(
+    return QueryResults<CentralizedExpressionResponse>(
       results: kSampleExpressions,
       lastTimestamp: DateTime(
         2019,
@@ -84,5 +84,22 @@ class MockExpressionService implements ExpressionService {
         11,
       ).toIso8601String(),
     );
+  }
+
+  @override
+  Future<void> deleteExpression(String expressionAddress) async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+  }
+
+  @override
+  Future<bool> isConnectedUser(String userAddress, String targetAddress) async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    return false;
+  }
+
+  @override
+  Future<bool> isFollowingUser(String userAddress, String targetAddress) async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    return true;
   }
 }

@@ -38,4 +38,11 @@ class GroupRepo {
       String groupAddress, ExpressionQueryParams params) {
     return _groupService.getGroupExpressions(groupAddress, params);
   }
+
+  Future<Group> updateGroup(Group group) {
+    assert(group.groupData.name != null);
+    assert(group.groupData.description != null);
+    assert(group.groupData.principles != null);
+    return _groupService.updateGroup(group);
+  }
 }

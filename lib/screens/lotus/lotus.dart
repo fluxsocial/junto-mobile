@@ -4,7 +4,6 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
-import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/groups/groups.dart';
 
 class JuntoLotus extends StatelessWidget {
@@ -221,20 +220,21 @@ class JuntoLotus extends StatelessWidget {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                const Icon(
+                              children: const <Widget>[
+                                Icon(
                                   CustomIcons.groups,
                                   size: 17,
                                   color: Colors.white,
                                 ),
-                                const SizedBox(height: 10),
-                                const Text(
+                                SizedBox(height: 10),
+                                Text(
                                   'CONNECT',
                                   style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700,
-                                      letterSpacing: 1.4),
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: 1.4,
+                                  ),
                                 )
                               ],
                             ),
@@ -245,31 +245,36 @@ class JuntoLotus extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(
-                        PageRouteBuilder<dynamic>(
-                          pageBuilder: (
-                            BuildContext context,
-                            Animation<double> animation,
-                            Animation<double> secondaryAnimation,
-                          ) {
-                            return JuntoDen();
-                          },
-                          transitionsBuilder: (
-                            BuildContext context,
-                            Animation<double> animation,
-                            Animation<double> secondaryAnimation,
-                            Widget child,
-                          ) {
-                            return FadeTransition(
-                              opacity: animation,
-                              child: child,
-                            );
-                          },
-                          transitionDuration: const Duration(
-                            milliseconds: 300,
+                      if (ModalRoute.of(context).isFirst) {
+                        Navigator.pushReplacement(
+                          context,
+                          PageRouteBuilder<dynamic>(
+                            pageBuilder: (
+                              BuildContext context,
+                              Animation<double> animation,
+                              Animation<double> secondaryAnimation,
+                            ) {
+                              return JuntoCollective();
+                            },
+                            transitionsBuilder: (
+                              BuildContext context,
+                              Animation<double> animation,
+                              Animation<double> secondaryAnimation,
+                              Widget child,
+                            ) {
+                              return FadeTransition(
+                                opacity: animation,
+                                child: child,
+                              );
+                            },
+                            transitionDuration: const Duration(
+                              milliseconds: 300,
+                            ),
                           ),
-                        ),
-                      );
+                        );
+                      } else {
+                        Navigator.pop(context);
+                      }
                     },
                     child: Container(
                       color: Colors.transparent,
@@ -277,28 +282,10 @@ class JuntoLotus extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Container(
-                                width: 27,
-                                child: const Icon(
-                                  CustomIcons.den,
-                                  size: 24,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              const Text(
-                                'DEN',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w700,
-                                    letterSpacing: 1.4),
-                              )
-                            ],
+                          Icon(
+                            CustomIcons.lotus,
+                            size: 33,
+                            color: Colors.white,
                           ),
                         ],
                       ),

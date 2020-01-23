@@ -1,14 +1,18 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/screens/groups/packs/pack_open/pack_open.dart';
+import 'package:junto_beta_mobile/screens/den/den.dart';
+import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/pack_open.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_edit_den.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_themes.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/end_drawer_relationships.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_themes.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_edit_den.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,31 +27,13 @@ class JuntoDrawer extends StatefulWidget {
 }
 
 class _JuntoDrawerState extends State<JuntoDrawer> {
-  UserProfile profile;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _retrieveUserInfo();
-  }
-
-  Future<void> _retrieveUserInfo() async {
-    final UserRepo _userProvider = Provider.of<UserRepo>(context);
-    try {
-      final UserData _profile = await _userProvider.readLocalUser();
-      if (mounted) {
-        setState(() {
-          profile = _profile.user;
-        });
-      }
-    } catch (error) {
-      debugPrint('Error occured in _retrieveUserInfo: $error');
-    }
-  }
+  String _userAddress;
+  String _userFollowPerspectiveId;
 
   Future<void> _onPackPress() async {
     final UserGroupsResponse _userPack =
-        await Provider.of<UserRepo>(context).getUserGroups(profile.address);
+        await Provider.of<UserRepo>(context, listen: false)
+            .getUserGroups(_userAddress);
     Navigator.push(
       context,
       CupertinoPageRoute<dynamic>(
@@ -60,40 +46,20 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
     );
   }
 
-//ignore:unused_element
-  void _onEditPress() {
-    Navigator.push(
-      context,
-      CupertinoPageRoute<dynamic>(
-        builder: (BuildContext context) => JuntoEditDen(),
-      ),
-    );
+  @override
+  void initState() {
+    super.initState();
+
+    getUserInformation();
   }
 
-//ignore:unused_element
-  Widget _displayIcon(String screen) {
-    if (screen == 'Collective') {
-      return Container(
-          margin: const EdgeInsets.only(right: 18),
-          child: Icon(widget.icon,
-              size: 12, color: Theme.of(context).primaryColor));
-    } else if (screen == 'Create') {
-      return Container(
-          margin: const EdgeInsets.only(right: 5),
-          child: Icon(widget.icon,
-              size: 17, color: Theme.of(context).primaryColor));
-    } else if (screen == 'Groups') {
-      return Container(
-          margin: const EdgeInsets.only(right: 10),
-          child: Icon(widget.icon,
-              size: 17, color: Theme.of(context).primaryColor));
-    } else if (screen == 'Den') {
-      return Container(
-          margin: const EdgeInsets.only(right: 5),
-          child: Icon(widget.icon,
-              size: 17, color: Theme.of(context).primaryColor));
-    }
-    return Container();
+  Future<void> getUserInformation() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      _userAddress = prefs.getString('user_id');
+      _userFollowPerspectiveId = prefs.getString('user_follow_perspective_id');
+    });
   }
 
   @override
@@ -104,125 +70,140 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
       child: Drawer(
         elevation: 0,
         child: Container(
-          color: Theme.of(context).colorScheme.background,
-          padding: EdgeInsets.only(top: statusBarHeight),
-          child: Column(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.background,
+            borderRadius: const BorderRadius.only(
+              bottomLeft: Radius.circular(25),
+              topLeft: Radius.circular(25),
+            ),
+          ),
+          padding: EdgeInsets.only(top: statusBarHeight, left: 20, right: 20),
+          child: ListView(
+            padding: const EdgeInsets.all(0),
             children: <Widget>[
-              Container(
-                height: 48,
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                        color: Theme.of(context).dividerColor, width: .75),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  ClipOval(
+                    child: Image.asset(
+                        'assets/images/junto-mobile__placeholder--member.png',
+                        height: 45,
+                        width: 45),
                   ),
-                ),
-                alignment: Alignment.centerLeft,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        _displayIcon(widget.screen),
-                        const SizedBox(width: 10),
-                        Text(widget.screen,
-                            style: Theme.of(context).textTheme.title),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: ListView(
-                  padding: const EdgeInsets.all(
-                    0,
-                  ),
-                  children: <Widget>[
-                    // relationships
-
-                    JuntoDrawerItem(
-                      title: 'My Pack',
-                      onTap: _onPackPress,
-                    ),
-                    JuntoDrawerItem(
-                      title: 'Relationships',
-                      onTap: () async {
-                        final SharedPreferences _prefs =
-                            await SharedPreferences.getInstance();
-                        // open relationships
-                        Navigator.push(
-                          context,
-                          CupertinoPageRoute<dynamic>(
-                            builder: (BuildContext context) =>
-                                JuntoRelationships(
-                                    _prefs.getString('user_id'),
-                                    _prefs.getString(
-                                        'user_follow_perspective_id')),
-                          ),
-                        );
-                      },
-                    ),
-
-                    JuntoDrawerItem(
-                      title: 'Themes',
-                      onTap: () {
-                        // nav
-                        Navigator.push(
-                          context,
-                          CupertinoPageRoute<dynamic>(
-                            builder: (BuildContext context) => JuntoThemes(),
-                          ),
-                        );
-                      },
-                    ),
-
-                    JuntoDrawerItem(
-                      title: 'Edit Den',
-                      onTap: () {
-                        // nav
-                        Navigator.push(
-                          context,
-                          CupertinoPageRoute<dynamic>(
-                            builder: (BuildContext context) => JuntoEditDen(),
-                          ),
-                        );
-                      },
-                    ),
-
-                    JuntoDrawerItem(
-                      title: 'Logout',
-                      onTap: () async {
-                        await Provider.of<AuthRepo>(context).logoutUser();
-                        Navigator.of(context).pushReplacement(
-                          PageRouteBuilder<dynamic>(
-                            pageBuilder: (
-                              BuildContext context,
-                              Animation<double> animation,
-                              Animation<double> secondaryAnimation,
-                            ) {
-                              return Welcome();
-                            },
-                            transitionsBuilder: (
-                              BuildContext context,
-                              Animation<double> animation,
-                              Animation<double> secondaryAnimation,
-                              Widget child,
-                            ) {
-                              return FadeTransition(
-                                opacity: animation,
-                                child: child,
-                              );
-                            },
-                            transitionDuration: const Duration(
-                              milliseconds: 1000,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      JuntoDrawerItem(
+                          title: 'My Den',
+                          onTap: () {
+                            Navigator.of(context).push(
+                              PageRouteBuilder<dynamic>(
+                                pageBuilder: (
+                                  BuildContext context,
+                                  Animation<double> animation,
+                                  Animation<double> secondaryAnimation,
+                                ) {
+                                  return JuntoDen();
+                                },
+                                transitionsBuilder: (
+                                  BuildContext context,
+                                  Animation<double> animation,
+                                  Animation<double> secondaryAnimation,
+                                  Widget child,
+                                ) {
+                                  return FadeTransition(
+                                    opacity: animation,
+                                    child: child,
+                                  );
+                                },
+                                transitionDuration: const Duration(
+                                  milliseconds: 300,
+                                ),
+                              ),
+                            );
+                          }),
+                      // relationships
+                      JuntoDrawerItem(
+                        title: 'Edit Den',
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute<Widget>(
+                              builder: (BuildContext context) => JuntoEditDen(),
                             ),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              )
+                          );
+                        },
+                      ),
+                      // relationships
+                      JuntoDrawerItem(
+                        title: 'My Pack',
+                        onTap: _onPackPress,
+                      ),
+                      JuntoDrawerItem(
+                        title: 'Relationships',
+                        onTap: () async {
+                          // open relationships
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute<dynamic>(
+                              builder: (BuildContext context) =>
+                                  JuntoRelationships(
+                                      _userAddress, _userFollowPerspectiveId),
+                            ),
+                          );
+                        },
+                      ),
+
+                      JuntoDrawerItem(
+                        title: 'Themes',
+                        onTap: () {
+                          // nav
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute<dynamic>(
+                              builder: (BuildContext context) => JuntoThemes(),
+                            ),
+                          );
+                        },
+                      ),
+
+                      JuntoDrawerItem(
+                        title: 'Logout',
+                        onTap: () async {
+                          await Provider.of<AuthRepo>(context, listen: false)
+                              .logoutUser();
+                          Navigator.of(context).pushReplacement(
+                            PageRouteBuilder<dynamic>(
+                              pageBuilder: (
+                                BuildContext context,
+                                Animation<double> animation,
+                                Animation<double> secondaryAnimation,
+                              ) {
+                                return Welcome();
+                              },
+                              transitionsBuilder: (
+                                BuildContext context,
+                                Animation<double> animation,
+                                Animation<double> secondaryAnimation,
+                                Widget child,
+                              ) {
+                                return FadeTransition(
+                                  opacity: animation,
+                                  child: child,
+                                );
+                              },
+                              transitionDuration: const Duration(
+                                milliseconds: 400,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ],
           ),
         ),
@@ -248,13 +229,17 @@ class JuntoDrawerItem extends StatelessWidget {
       onTap: onTap,
       child: Container(
         color: Colors.transparent,
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+        padding: const EdgeInsets.symmetric(vertical: 25),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Row(
               children: <Widget>[
-                Text(title, style: Theme.of(context).textTheme.caption),
+                Text(
+                  title,
+                  style: Theme.of(context).textTheme.caption,
+                  textAlign: TextAlign.right,
+                ),
               ],
             ),
           ],

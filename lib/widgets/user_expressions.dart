@@ -82,6 +82,7 @@ class _UserExpressionsState extends State<UserExpressions> {
                                 snapshot.data[index].privacy == widget.privacy)
                               ExpressionPreview(
                                 expression: snapshot.data[index],
+                                userAddress: widget.userProfile.address,
                               )
                             else
                               const SizedBox()
@@ -107,6 +108,7 @@ class _UserExpressionsState extends State<UserExpressions> {
                                 snapshot.data[index].privacy == widget.privacy)
                               ExpressionPreview(
                                 expression: snapshot.data[index],
+                                userAddress: widget.userProfile.address,
                               )
                             else
                               const SizedBox()

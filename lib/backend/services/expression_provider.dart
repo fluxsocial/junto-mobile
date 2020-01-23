@@ -28,7 +28,6 @@ class ExpressionServiceCentralized implements ExpressionService {
     print(_postBody);
     final http.Response _serverResponse =
         await client.postWithoutEncoding('/expressions', body: _postBody);
-    print('hellos');
     final Map<String, dynamic> parseData =
         JuntoHttp.handleResponse(_serverResponse);
     final CentralizedExpressionResponse response =
@@ -41,9 +40,6 @@ class ExpressionServiceCentralized implements ExpressionService {
     // denote file type and get url, headers, and key of s3 bucket
     final http.Response _serverResponse =
         await client.postWithoutEncoding('/auth/s3', body: fileType);
-    print(DateTime.now());
-
-    print(_serverResponse.body);
 
     // parse response
     final Map<String, dynamic> parseData =
@@ -58,8 +54,6 @@ class ExpressionServiceCentralized implements ExpressionService {
     // turn file into bytes
     final Uint8List fileAsBytes = file.readAsBytesSync();
 
-    print(DateTime.now());
-
     // send put request to s3 bucket with url, new headers, and file as bytes
     final http.Response _serverResponseTwo = await http.put(
       parseData['signed_url'],
@@ -72,7 +66,6 @@ class ExpressionServiceCentralized implements ExpressionService {
     if (_serverResponseTwo.statusCode == 200) {
       return parseData['key'];
     } else {
-      print(_serverResponseTwo.body);
       throw JuntoException(
         _serverResponse.reasonPhrase,
         _serverResponse.statusCode,
@@ -102,7 +95,7 @@ class ExpressionServiceCentralized implements ExpressionService {
   Future<Resonation> postResonation(
     String expressionAddress,
   ) async {
-    final http.Response _serverResponse = await client.post(
+    final http.Response _serverResponse = await client.postWithoutEncoding(
       '/expressions/$expressionAddress/resonations',
     );
     return Resonation.fromMap(JuntoHttp.handleResponse(_serverResponse));
@@ -121,15 +114,15 @@ class ExpressionServiceCentralized implements ExpressionService {
   }
 
   @override
-  Future<QueryCommentResults> getExpressionsComments(
+  Future<QueryResults<Comment>> getExpressionsComments(
       String expressionAddress) async {
     final http.Response response = await client.get(
         '/expressions/$expressionAddress/comments',
         queryParams: <String, String>{
-          'pagination_position': 0.toString(),
+          'pagination_position': '0',
         });
-    final Map<String, dynamic> _listData = json.decode(response.body);
-    return QueryCommentResults(
+    final Map<String, dynamic> _listData = JuntoHttp.handleResponse(response);
+    return QueryResults<Comment>(
       lastTimestamp: _listData['last_timestamp'],
       results: <Comment>[
         for (dynamic data in _listData['results']) Comment.fromMap(data)
@@ -158,7 +151,33 @@ class ExpressionServiceCentralized implements ExpressionService {
   }
 
   @override
-  Future<QueryExpressionResults> getCollectiveExpressions(
+  Future<void> deleteExpression(String expressionAddress) async {
+    final http.Response _serverResponse = await client.delete(
+      '/expressions/$expressionAddress',
+    );
+    JuntoHttp.handleResponse(_serverResponse);
+  }
+
+  @override
+  Future<bool> isConnectedUser(String userAddress, String targetAddress) async {
+    final http.Response _serverResponse = await client.get(
+      '/users/$userAddress/connected/$targetAddress',
+    );
+    final bool result = JuntoHttp.handleResponse(_serverResponse) as bool;
+    return result;
+  }
+
+  @override
+  Future<bool> isFollowingUser(String userAddress, String targetAddress) async {
+    final http.Response _serverResponse = await client.get(
+      '/users/$userAddress/following/$targetAddress',
+    );
+    final bool result = JuntoHttp.handleResponse(_serverResponse) as bool;
+    return result;
+  }
+
+  @override
+  Future<QueryResults<CentralizedExpressionResponse>> getCollectiveExpressions(
       Map<String, String> params) async {
     final http.Response response = await client.get(
       '/expressions',
@@ -166,7 +185,7 @@ class ExpressionServiceCentralized implements ExpressionService {
     );
     final dynamic results = JuntoHttp.handleResponse(response);
     if (results is Map<dynamic, dynamic>) {
-      return QueryExpressionResults(
+      return QueryResults<CentralizedExpressionResponse>(
         results: <CentralizedExpressionResponse>[
           for (dynamic data in results['results'])
             CentralizedExpressionResponse.withCommentsAndResonations(data)
@@ -174,7 +193,7 @@ class ExpressionServiceCentralized implements ExpressionService {
         lastTimestamp: results['last_timestamp'],
       );
     } else {
-      return QueryExpressionResults(
+      return QueryResults<CentralizedExpressionResponse>(
         results: <CentralizedExpressionResponse>[],
         lastTimestamp: null,
       );

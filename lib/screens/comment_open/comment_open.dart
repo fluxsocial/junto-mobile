@@ -6,10 +6,11 @@ import 'package:junto_beta_mobile/screens/comment_open/comment_open_appbar.dart'
 import 'package:junto_beta_mobile/widgets/comment_action_items.dart';
 
 class CommentOpen extends StatefulWidget {
-  const CommentOpen(this.comment, this.parent);
+  const CommentOpen(this.comment, this.parent, this.userAddress);
 
   final dynamic comment;
   final dynamic parent;
+  final String userAddress;
 
   @override
   State<StatefulWidget> createState() {
@@ -83,7 +84,10 @@ class CommentOpenState extends State<CommentOpen> {
                           showModalBottomSheet(
                             context: context,
                             builder: (BuildContext context) =>
-                                CommentActionItems(),
+                                CommentActionItems(
+                              comment: widget.comment,
+                              userAddress: widget.userAddress,
+                            ),
                           );
                         },
                         child: Container(

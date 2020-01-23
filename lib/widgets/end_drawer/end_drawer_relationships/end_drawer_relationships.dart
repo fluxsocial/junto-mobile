@@ -115,10 +115,12 @@ class JuntoRelationships extends StatelessWidget {
 
   Widget _displayConnections(BuildContext context, String userAddress) {
     return FutureBuilder<List<UserProfile>>(
-      future: Provider.of<UserRepo>(context).connectedUsers(userAddress),
+      future: Provider.of<UserRepo>(context, listen: false)
+          .connectedUsers(userAddress),
       builder:
           (BuildContext context, AsyncSnapshot<List<UserProfile>> snapshot) {
         if (snapshot.hasData) {
+          print(snapshot.data);
           if (snapshot.data.isEmpty) {
             return Center(
               child: Transform.translate(
@@ -128,14 +130,16 @@ class JuntoRelationships extends StatelessWidget {
               ),
             );
           }
-          //TODO(Nash+Yang): Revisit member display.
-          return ListView.builder(
-            itemCount: snapshot.data.length,
-            itemBuilder: (BuildContext context, int index) {
-              final UserProfile data = snapshot.data[index];
-              return const SizedBox();
-              // return MemberPreview(profile: data);
-            },
+          return Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: ListView.builder(
+              itemCount: snapshot.data.length,
+              itemBuilder: (BuildContext context, int index) {
+                print(snapshot.data[index]);
+                // return SizedBox();
+                return MemberPreview(profile: snapshot.data[index]);
+              },
+            ),
           );
         } else if (snapshot.hasError) {
           Container(
@@ -162,11 +166,12 @@ class JuntoRelationships extends StatelessWidget {
   Widget _displaySubscriptions(
       BuildContext context, String userFollowPerspectiveAddress) {
     return FutureBuilder<List<UserProfile>>(
-      future: Provider.of<UserRepo>(context)
+      future: Provider.of<UserRepo>(context, listen: false)
           .getPerspectiveUsers(userFollowPerspectiveAddress),
       builder:
           (BuildContext context, AsyncSnapshot<List<UserProfile>> snapshot) {
         if (snapshot.hasData) {
+          print(snapshot.data);
           if (snapshot.data.isEmpty) {
             return Center(
               child: Transform.translate(

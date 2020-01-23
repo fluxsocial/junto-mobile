@@ -63,7 +63,7 @@ class JuntoThemes extends StatelessWidget {
                 InkWell(
                   child: GestureDetector(
                     onTap: () {
-                      Provider.of<JuntoThemesProvider>(context)
+                      Provider.of<JuntoThemesProvider>(context, listen: false)
                           .setTheme('light-indigo');
                     },
                     child: Container(
@@ -92,7 +92,7 @@ class JuntoThemes extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Provider.of<JuntoThemesProvider>(context)
+                    Provider.of<JuntoThemesProvider>(context, listen: false)
                         .setTheme('light-royal');
                   },
                   child: Container(
@@ -119,7 +119,7 @@ class JuntoThemes extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Provider.of<JuntoThemesProvider>(context)
+                    Provider.of<JuntoThemesProvider>(context, listen: false)
                         .setTheme('night-indigo');
                   },
                   child: Container(

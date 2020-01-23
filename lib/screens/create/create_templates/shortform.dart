@@ -13,11 +13,11 @@ class CreateShortform extends StatefulWidget {
 }
 
 class CreateShortformState extends State<CreateShortform> {
-  Color gradientOne;
-  Color gradientTwo;
+  num gradientOne;
+  num gradientTwo;
 
   // ignore: unused_field
-  String _currentBackground = '';
+  final String _currentBackground = '';
   TextEditingController _bodyController;
 
   /// Creates a [CentralizedShortFormExpression] from the given data entered
@@ -32,8 +32,8 @@ class CreateShortformState extends State<CreateShortform> {
   @override
   void initState() {
     super.initState();
-    gradientOne = JuntoPalette.juntoPrimary;
-    gradientTwo = JuntoPalette.juntoSecondary;
+    gradientOne = 0xff2c2cde;
+    gradientTwo = 0xff7ec6e9;
     _bodyController = TextEditingController();
   }
 
@@ -43,11 +43,46 @@ class CreateShortformState extends State<CreateShortform> {
     super.dispose();
   }
 
+  Widget _gradientSelector(num hexOne, num hexTwo) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          gradientOne = hexOne;
+          gradientTwo = hexTwo;
+        });
+      },
+      child: Container(
+        height: 38,
+        width: 38,
+        margin: const EdgeInsets.only(right: 10),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.bottomLeft,
+            end: Alignment.topRight,
+            stops: const <double>[0.2, 0.9],
+            colors: <Color>[Color(hexOne), Color(hexTwo)],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Column(
         children: <Widget>[
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            child: Row(
+              children: <Widget>[
+                _gradientSelector(0xff2c2cde, 0xff7ec6e9),
+                _gradientSelector(0xff9e81d7, 0xffddcb7f),
+                _gradientSelector(0xff719cf4, 0xffffc7e4),
+                _gradientSelector(0xff639acf, 0xff7bdaa5),
+              ],
+            ),
+          ),
           Expanded(
             child: ListView(
               padding: const EdgeInsets.all(0),
@@ -63,10 +98,10 @@ class CreateShortformState extends State<CreateShortform> {
                       begin: Alignment.bottomLeft,
                       end: Alignment.topRight,
                       stops: const <double>[
-                        0.1,
+                        0.2,
                         0.9,
                       ],
-                      colors: <Color>[gradientOne, gradientTwo],
+                      colors: <Color>[Color(gradientOne), Color(gradientTwo)],
                     ),
                   ),
                   child: TextField(
@@ -79,7 +114,6 @@ class CreateShortformState extends State<CreateShortform> {
                     }) =>
                         null,
                     decoration: InputDecoration(
-                      hintText: 'will soon be custom gradient picker...',
                       hintMaxLines: 25,
                       hintStyle: TextStyle(
                         color: Colors.white.withOpacity(0.5),

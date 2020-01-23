@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_in.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_about.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_name.dart';
@@ -77,15 +76,17 @@ class WelcomeState extends State<Welcome> {
     signUpVerifyKey = GlobalKey<SignUpVerifyState>();
 
     _currentIndex = 0;
-    _welcomeController = PageController();
-    _signInController = PageController();
+    _welcomeController = PageController(keepPage: true);
+    _signInController = PageController(keepPage: true);
   }
 
   Future<String> validateRegistration() async {
     try {
-      return await Provider.of<AuthRepo>(context).verifyEmail(email);
+      return await Provider.of<AuthRepo>(context, listen: false)
+          .verifyEmail(email);
     } catch (error) {
       debugPrint('Error verifying email $error');
+      print(error.message);
     }
     throw const JuntoException('Please check your password', -2);
   }
@@ -100,7 +101,6 @@ class WelcomeState extends State<Welcome> {
       website = _aboutPageModel.website;
     } else if (_currentIndex == 5) {
       profilePictures = signUpPhotosKey.currentState.returnDetails();
-      print(profilePictures);
     } else if (_currentIndex == 6) {
       email = signUpRegisterKey.currentState.returnDetails()['email'];
       password = signUpRegisterKey.currentState.returnDetails()['password'];
@@ -121,29 +121,6 @@ class WelcomeState extends State<Welcome> {
       verificationCode = signUpVerifyKey.currentState.returnDetails();
     });
 
-    // check if user uploaded photo
-    // if (profilePictures[0] != null) {
-    //   final String _photoKeyOne = await Provider.of<ExpressionRepo>(context)
-    //       .createPhoto('.png', profilePictures[0]);
-    //   setState(() {
-    //     imageOne = _photoKeyOne;
-    //   });
-    //   if (profilePictures[1] != null) {
-    //     final String _photoKeyTwo = await Provider.of<ExpressionRepo>(context)
-    //         .createPhoto('.png', profilePictures[1]);
-    //     setState(() {
-    //       imageTwo = _photoKeyTwo;
-    //     });
-    //   }
-    //   if (profilePictures[2] != null) {
-    //     final String _photoKeyThree = await Provider.of<ExpressionRepo>(context)
-    //         .createPhoto('.png', profilePictures[1]);
-    //     setState(() {
-    //       imageThree = _photoKeyThree;
-    //     });
-    //   }
-    // }
-
     final UserAuthRegistrationDetails details = UserAuthRegistrationDetails(
       email: email,
       name: name,
@@ -151,20 +128,21 @@ class WelcomeState extends State<Welcome> {
       bio: bio,
       location: <String>[location],
       username: username,
-      profileImage: <String>[
-        'assets/images/junto-mobile__placeholder--member.png'
-      ],
+      profileImage: <String>[],
       website: <String>[website],
       gender: <String>[gender],
       verificationCode: verificationCode,
     );
 
     try {
+      // create user account
       final UserData results =
-          await Provider.of<AuthRepo>(context).registerUser(details);
+          await Provider.of<AuthRepo>(context, listen: false)
+              .registerUser(details);
       final Map<String, dynamic> resultsMap = results.toMap();
       final String resultsMapToString = json.encode(resultsMap);
 
+      // save user to shared prefs
       await SharedPreferences.getInstance()
         ..setBool(
           'isLoggedIn',
@@ -172,6 +150,39 @@ class WelcomeState extends State<Welcome> {
         )
         ..setString('user_id', results.user.address)
         ..setString('user_data', resultsMapToString);
+
+      // FIXME: Eric to revisit and implement
+
+      // check if user uploaded profile pictures
+      // retrieve key and add to _photoKeys if true
+      // final List<String> _photoKeys = <String>[];
+      // for (final File image in profilePictures) {
+      //   if (image != null) {
+      //     final String key =
+      //         await Provider.of<ExpressionRepo>(context, listen: false)
+      //             .createPhoto(
+      //       '.png',
+      //       image,
+      //     );
+      //     _photoKeys.add(key);
+      //   }
+      // }
+      // Map<String, dynamic> _profilePictureKeys;
+      // // instantiate data structure to update user with profile pictures
+      // _profilePictureKeys = <String, dynamic>{
+      //   'profile_picture': <Map<String, dynamic>>[
+      //     <String, dynamic>{'index': 0, 'key': _photoKeys[0]},
+      //     if (_photoKeys.length > 1)
+      //       <String, dynamic>{'index': 1, 'key': _photoKeys[1]},
+      //   ]
+      // };
+
+      // // update user with profile photos
+      // await Provider.of<UserRepo>(context, listen: false).updateUser(
+      //     profilePictures.first == null ? _photoKeys : _profilePictureKeys,
+      //     results.user.address);
+
+      // navigate to community agreements
 
       Navigator.of(context).pushReplacement(
         PageRouteBuilder<dynamic>(
@@ -212,37 +223,52 @@ class WelcomeState extends State<Welcome> {
     }
   }
 
+  Future<bool> _willPop() async {
+    if (_currentIndex >= 1) {
+      print(_currentIndex);
+      _welcomeController.animateToPage(
+        _currentIndex - 1,
+        duration: kThemeAnimationDuration,
+        curve: Curves.decelerate,
+      );
+      return false;
+    }
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Stack(children: <Widget>[
-        Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.bottomLeft,
-              end: Alignment.topRight,
-              stops: const <double>[0.3, 0.9],
-              colors: <Color>[
-                Theme.of(context).colorScheme.secondaryVariant,
-                Theme.of(context).colorScheme.primaryVariant
-              ],
-            ),
-          ),
-        ),
-        AnimatedOpacity(
-          opacity: _isRainbow ? 1.0 : 0.0,
-          duration: const Duration(milliseconds: 300),
-          child: Container(
+    return WillPopScope(
+      onWillPop: _willPop,
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        body: Stack(children: <Widget>[
+          Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
-            child: Image.asset(
-                'assets/images/junto-mobile__background--lotus.png'),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
+                stops: const <double>[0.3, 0.9],
+                colors: <Color>[
+                  Theme.of(context).colorScheme.secondaryVariant,
+                  Theme.of(context).colorScheme.primaryVariant
+                ],
+              ),
+            ),
           ),
-        ),
-        PageView(
+          AnimatedOpacity(
+            opacity: _isRainbow ? 1.0 : 0.0,
+            duration: const Duration(milliseconds: 300),
+            child: Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              child: Image.asset(
+                  'assets/images/junto-mobile__background--lotus.png'),
+            ),
+          ),
+          PageView(
             onPageChanged: (int int) {
               setState(() {
                 _currentIndex = int;
@@ -253,83 +279,102 @@ class WelcomeState extends State<Welcome> {
             scrollDirection: Axis.vertical,
             physics: const NeverScrollableScrollPhysics(),
             children: <Widget>[
-              PageView(
-                controller: _signInController,
-                physics: const NeverScrollableScrollPhysics(),
-                children: <Widget>[
-                  _welcomeMain(context),
-                  SignIn(_signInController)
-                ],
-              ),
-              SignUpName(
-                onNamePressed: (String value) => name = value,
-              ),
-              SignUpUsername(
-                onUsernameChange: (String value) => username = value,
-              ),
-              SignUpThemes(toggleRainbow: _toggleRainbow),
-              SignUpAbout(key: signUpAboutKey),
-              SignUpPhotos(key: signUpPhotosKey),
-              SignUpRegister(key: signUpRegisterKey),
-              SignUpVerify(key: signUpVerifyKey, handleSignUp: _handleSignUp)
-            ]),
-        _currentIndex != 0
-            ? Positioned(
-                bottom: MediaQuery.of(context).size.height * .05,
-                right: 20,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
+              PageKeepAlive(
+                child: PageView(
+                  controller: _signInController,
+                  physics: const NeverScrollableScrollPhysics(),
                   children: <Widget>[
-                    Container(
-                      child: GestureDetector(
-                        onTap: () {
-                          _welcomeController.previousPage(
-                            curve: Curves.easeIn,
-                            duration: const Duration(milliseconds: 400),
-                          );
-                        },
-                        child: Container(
-                          height: 36,
-                          width: 36,
-                          color: Colors.transparent,
-                          child: Icon(
-                            Icons.keyboard_arrow_up,
-                            color: Colors.white30,
-                            size: 36,
+                    PageKeepAlive(child: _welcomeMain(context)),
+                    PageKeepAlive(child: SignIn(_signInController))
+                  ],
+                ),
+              ),
+              PageKeepAlive(
+                child: SignUpName(
+                  onNamePressed: (String value) => name = value,
+                ),
+              ),
+              PageKeepAlive(
+                child: SignUpUsername(
+                  onUsernameChange: (String value) => username = value,
+                ),
+              ),
+              PageKeepAlive(
+                child: SignUpThemes(toggleRainbow: _toggleRainbow),
+              ),
+              PageKeepAlive(
+                child: SignUpAbout(key: signUpAboutKey),
+              ),
+              PageKeepAlive(
+                child: SignUpPhotos(key: signUpPhotosKey),
+              ),
+              PageKeepAlive(
+                child: SignUpRegister(key: signUpRegisterKey),
+              ),
+              PageKeepAlive(
+                child: SignUpVerify(
+                    key: signUpVerifyKey, handleSignUp: _handleSignUp),
+              )
+            ],
+          ),
+          _currentIndex != 0 && MediaQuery.of(context).viewInsets.bottom == 0
+              ? Positioned(
+                  bottom: MediaQuery.of(context).size.height * .05,
+                  right: 20,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        child: GestureDetector(
+                          onTap: () {
+                            _welcomeController.previousPage(
+                              curve: Curves.easeIn,
+                              duration: const Duration(milliseconds: 400),
+                            );
+                          },
+                          child: Container(
+                            height: 36,
+                            width: 36,
+                            color: Colors.transparent,
+                            child: Icon(
+                              Icons.keyboard_arrow_up,
+                              color: Colors.white30,
+                              size: 36,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    _currentIndex == 7
-                        ? const SizedBox()
-                        : GestureDetector(
-                            onTap: () {
-                              _nextSignUpPage();
-                            },
-                            child: Container(
-                              height: 36,
-                              width: 36,
-                              color: Colors.transparent,
-                              child: Icon(Icons.keyboard_arrow_down,
-                                  color: Colors.white, size: 36),
+                      const SizedBox(height: 20),
+                      _currentIndex == 7
+                          ? const SizedBox()
+                          : GestureDetector(
+                              onTap: () {
+                                _nextSignUpPage();
+                              },
+                              child: Container(
+                                height: 36,
+                                width: 36,
+                                color: Colors.transparent,
+                                child: const Icon(Icons.keyboard_arrow_down,
+                                    color: Colors.white, size: 36),
+                              ),
                             ),
-                          ),
-                  ],
-                ),
-              )
-            : const SizedBox(),
-        _currentIndex != 0
-            ? Positioned(
-                top: MediaQuery.of(context).size.height * .08,
-                left: 20,
-                child: Image.asset(
-                    'assets/images/junto-mobile__logo--white.png',
-                    height: 45),
-              )
-            : const SizedBox(),
-      ]),
+                    ],
+                  ),
+                )
+              : const SizedBox(),
+          _currentIndex != 0
+              ? Positioned(
+                  top: MediaQuery.of(context).size.height * .08,
+                  left: 20,
+                  child: Image.asset(
+                      'assets/images/junto-mobile__logo--white.png',
+                      height: 45),
+                )
+              : const SizedBox(),
+        ]),
+      ),
     );
   }
 
@@ -429,5 +474,29 @@ class WelcomeState extends State<Welcome> {
         ],
       ),
     );
+  }
+}
+
+class PageKeepAlive extends StatefulWidget {
+  const PageKeepAlive({
+    Key key,
+    @required this.child,
+  }) : super(key: key);
+
+  final Widget child;
+
+  @override
+  _PageKeepAliveState createState() => _PageKeepAliveState();
+}
+
+class _PageKeepAliveState extends State<PageKeepAlive>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return widget.child;
   }
 }

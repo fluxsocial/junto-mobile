@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:localstorage/localstorage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthRepo {
@@ -52,15 +51,13 @@ class AuthRepo {
           'user_follow_perspective_id', _user.userPerspective.address);
       final Map<String, dynamic> _userToMap = _user.toMap();
       final String _userMapToString = json.encode(_userToMap);
-      final LocalStorage _storage = LocalStorage('user-details');
-      final bool ready = await _storage.ready;
-      if (ready) {
-        _storage.setItem('data', _user.toMap());
-      }
+
       _isLoggedIn = true;
+
       await SharedPreferences.getInstance()
         ..setBool('isLoggedIn', true)
         ..setString('user_data', _userMapToString);
+
       return _user;
     } catch (error) {
       rethrow;
