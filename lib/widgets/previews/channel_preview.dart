@@ -37,7 +37,7 @@ class ChannelPreview extends StatelessWidget {
                 ),
               ),
               Container(
-                width: MediaQuery.of(context).size.width - 75,
+                width: MediaQuery.of(context).size.width - 95,
                 padding: const EdgeInsets.symmetric(
                   vertical: 20,
                 ),

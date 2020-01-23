@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/widgets/previews/channel_preview.dart';
 
 class JuntoChannels extends StatefulWidget {
   const JuntoChannels({this.currentPerspective});
@@ -102,16 +103,12 @@ class JuntoChannelsState extends State<JuntoChannels> {
               child: ListView(
                 padding: const EdgeInsets.all(0),
                 children: <Widget>[
-                  Container(height: 75, color: Colors.purple),
-                  Container(height: 75, color: Colors.yellow),
-                  Container(height: 75, color: Colors.teal),
-                  Container(height: 75, color: Colors.purple),
-                  Container(height: 75, color: Colors.green),
-                  Container(height: 75, color: Colors.purple),
-                  Container(height: 75, color: Colors.yellow),
-                  Container(height: 75, color: Colors.teal),
-                  Container(height: 75, color: Colors.purple),
-                  Container(height: 75, color: Colors.green),
+                  ChannelPreview(channel: 'regenerative agriculture'),
+                  ChannelPreview(channel: 'food'),
+                  ChannelPreview(channel: 'biomimicry'),
+                  ChannelPreview(channel: 'austrian economics'),
+                  ChannelPreview(channel: 'conscious tech'),
+                  ChannelPreview(channel: 'implementation next build'),
                 ],
               ),
             ),
