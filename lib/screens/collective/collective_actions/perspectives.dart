@@ -11,9 +11,10 @@ import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_actions/create_perspective.dart';
 
 class JuntoPerspectives extends StatefulWidget {
-  const JuntoPerspectives({this.userProfile});
+  const JuntoPerspectives({this.userProfile, this.changePerspective});
 
   final UserData userProfile;
+  final Function changePerspective;
   @override
   State<StatefulWidget> createState() {
     return JuntoPerspectivesState();
@@ -71,9 +72,12 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                   GestureDetector(
                     onTap: () {
                       Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => CreatePerspective()));
+                        context,
+                        CupertinoPageRoute<dynamic>(
+                          builder: (BuildContext context) =>
+                              CreatePerspective(),
+                        ),
+                      );
                     },
                     child: Icon(Icons.add),
                   )
@@ -107,7 +111,16 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                 child: ListView(
               padding: const EdgeInsets.all(0),
               children: <Widget>[
-                _buildPerspective('JUNTO'),
+                _buildPerspective(CentralizedPerspective(
+                  address: null,
+                  name: 'JUNTO',
+                  about: null,
+                  creator: null,
+                  createdAt: null,
+                  isDefault: null,
+                  userCount: null,
+                  users: null,
+                )),
                 FutureBuilder<List<CentralizedPerspective>>(
                   future: _fetchUserPerspectives(_userAddress),
                   builder: (
@@ -131,7 +144,9 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                           children: snapshot.data
                               .map((CentralizedPerspective perspective) {
                             if (perspective.name != 'Connections') {
-                              return _buildPerspective(perspective.name);
+                              return GestureDetector(
+                                child: _buildPerspective(perspective),
+                              );
                             } else {
                               return const SizedBox();
                             }
@@ -146,34 +161,41 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
     );
   }
 
-  Widget _buildPerspective(String perspective) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        border: Border(
-          bottom: BorderSide(color: Theme.of(context).dividerColor, width: .75),
-        ),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Image.asset('assets/images/junto-mobile__binoculars.png',
-              height: 17, color: Theme.of(context).primaryColor),
-          const SizedBox(width: 15),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(perspective, style: Theme.of(context).textTheme.subhead),
-                Text(
-                  'Expressions from everyone in Junto. Filter by degrees of separation.',
-                  style: Theme.of(context).textTheme.body2,
-                ),
-              ],
-            ),
+  Widget _buildPerspective(CentralizedPerspective perspective) {
+    return GestureDetector(
+      onTap: () {
+        widget.changePerspective(perspective);
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        decoration: BoxDecoration(
+          color: Colors.transparent,
+          border: Border(
+            bottom:
+                BorderSide(color: Theme.of(context).dividerColor, width: .75),
           ),
-        ],
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Image.asset('assets/images/junto-mobile__binoculars.png',
+                height: 17, color: Theme.of(context).primaryColor),
+            const SizedBox(width: 15),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(perspective.name,
+                      style: Theme.of(context).textTheme.subhead),
+                  Text(
+                    'Expressions from everyone in Junto. Filter by degrees of separation.',
+                    style: Theme.of(context).textTheme.body2,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

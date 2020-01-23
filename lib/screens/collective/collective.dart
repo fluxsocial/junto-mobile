@@ -82,8 +82,10 @@ class JuntoCollectiveState extends State<JuntoCollective>
 
   void refreshData() {
     _expressionProvider = Provider.of<ExpressionRepo>(context, listen: false);
-    _expressionCompleter = _asyncMemoizer.runOnce(() =>
-        getCollectiveExpressions(contextType: 'Collective', paginationPos: 0));
+    // _expressionCompleter = _asyncMemoizer.runOnce(() =>
+    //     getCollectiveExpressions(contextType: 'Collective', paginationPos: 0));
+    _expressionCompleter =
+        getCollectiveExpressions(contextType: 'Collective', paginationPos: 0);
   }
 
   void _onScrollingHasChanged() {
@@ -219,7 +221,9 @@ class JuntoCollectiveState extends State<JuntoCollective>
             opacity: actionsVisible ? 1.0 : 0.0,
             child: Visibility(
               visible: actionsVisible,
-              child: JuntoCollectiveActions(userProfile: _userProfile),
+              child: JuntoCollectiveActions(
+                  userProfile: _userProfile,
+                  changePerspective: _changePerspective),
             ),
           ),
         ],
@@ -348,24 +352,22 @@ class JuntoCollectiveState extends State<JuntoCollective>
   }
 
 // Switch between perspectives; used in perspectives side drawer.
-  void _changePerspective(PerspectiveResponse perspective) {
+  void _changePerspective(CentralizedPerspective perspective) {
     if (perspective.name == 'JUNTO') {
       setState(() {
-        _expressionCompleter = _asyncMemoizer.runOnce(() =>
-            getCollectiveExpressions(
-                paginationPos: null, contextType: 'Collective', dos: null));
+        _expressionCompleter = getCollectiveExpressions(
+            contextType: 'Collective', paginationPos: 0);
         _showDegrees = true;
         _appbarTitle = 'JUNTO';
       });
     } else {
-      _expressionCompleter =
-          _asyncMemoizer.runOnce(() => getCollectiveExpressions(
-                paginationPos: 0,
-                contextString: perspective.address,
-                contextType: 'FollowPerspective',
-                dos: null,
-              ));
       setState(() {
+        _expressionCompleter = getCollectiveExpressions(
+          paginationPos: 0,
+          contextString: perspective.address,
+          contextType: 'FollowPerspective',
+          dos: null,
+        );
         _showDegrees = false;
         if (perspective.name ==
             _userProfile.user.name + "'s Follow Perspective") {
@@ -375,12 +377,8 @@ class JuntoCollectiveState extends State<JuntoCollective>
         }
       });
     }
-
-    _collectiveController
-      ..animateTo(
-        0.0,
-        curve: Curves.easeOut,
-        duration: const Duration(milliseconds: 300),
-      );
+    setState(() {
+      actionsVisible = false;
+    });
   }
 }

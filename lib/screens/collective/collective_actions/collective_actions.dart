@@ -5,9 +5,11 @@ import 'package:junto_beta_mobile/screens/collective/collective_actions/perspect
 import 'package:junto_beta_mobile/screens/collective/collective_actions/channels.dart';
 
 class JuntoCollectiveActions extends StatefulWidget {
-  const JuntoCollectiveActions({this.userProfile});
+  const JuntoCollectiveActions({this.userProfile, this.changePerspective});
 
   final UserData userProfile;
+  final Function changePerspective;
+
   @override
   State<StatefulWidget> createState() {
     return JuntoCollectiveActionsState();
@@ -31,7 +33,7 @@ class JuntoCollectiveActionsState extends State<JuntoCollectiveActions> {
             child: Stack(children: <Widget>[
               channelsVisible
                   ? JuntoChannels()
-                  : JuntoPerspectives(userProfile: widget.userProfile),
+                  : JuntoPerspectives(userProfile: widget.userProfile, changePerspective: widget.changePerspective),
               Positioned(
                 bottom: 0,
                 left: 0,
