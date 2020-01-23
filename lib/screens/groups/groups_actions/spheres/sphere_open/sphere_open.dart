@@ -1,6 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
@@ -344,92 +345,11 @@ class MemberRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Theme.of(context).colorScheme.background,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              ClipOval(
-                child: Image.asset(
-                  'assets/images/junto-mobile__eric.png',
-                  height: 28.0,
-                  width: 28.0,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(width: 5),
-              ClipOval(
-                child: Image.asset(
-                  'assets/images/junto-mobile__riley.png',
-                  height: 28.0,
-                  width: 28.0,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(width: 5),
-              ClipOval(
-                child: Image.asset(
-                  'assets/images/junto-mobile__yaz.png',
-                  height: 28.0,
-                  width: 28.0,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(width: 5),
-              ClipOval(
-                child: Image.asset(
-                  'assets/images/junto-mobile__josh.png',
-                  height: 28.0,
-                  width: 28.0,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(width: 5),
-              ClipOval(
-                child: Image.asset(
-                  'assets/images/junto-mobile__dora.png',
-                  height: 28.0,
-                  width: 28.0,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(width: 5),
-              ClipOval(
-                child: Image.asset(
-                  'assets/images/junto-mobile__tomis.png',
-                  height: 28.0,
-                  width: 28.0,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(width: 5),
-              ClipOval(
-                child: Image.asset(
-                  'assets/images/junto-mobile__drea.png',
-                  height: 28.0,
-                  width: 28.0,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(width: 5),
-              ClipOval(
-                child: Image.asset(
-                  'assets/images/junto-mobile__leif.png',
-                  height: 28.0,
-                  width: 28.0,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 5),
-          Container(
-            child: Text(
-              '$membersLength members',
-              style: Theme.of(context).textTheme.subtitle,
-            ),
-          ),
-        ],
+      child: Container(
+        child: Text(
+          'Members',
+          style: Theme.of(context).textTheme.subtitle,
+        ),
       ),
     );
   }

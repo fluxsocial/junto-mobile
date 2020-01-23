@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_open/sphere_open.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 // This class renders a preview of a sphere
 class SpherePreview extends StatelessWidget {
@@ -18,28 +18,60 @@ class SpherePreview extends StatelessWidget {
         children: <Widget>[
           Row(
             children: <Widget>[
-              Container(
-                alignment: Alignment.center,
-                height: 45.0,
-                width: 45.0,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.bottomLeft,
-                    end: Alignment.topRight,
-                    stops: const <double>[0.3, 0.9],
-                    colors: <Color>[
-                      Theme.of(context).colorScheme.secondary,
-                      Theme.of(context).colorScheme.primary,
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(100),
-                ),
-                child: Icon(
-                  CustomIcons.spheres,
-                  color: Theme.of(context).colorScheme.onPrimary,
-                  size: 17,
-                ),
-              ),
+              group.groupData.photo == ''
+                  ? Container(
+                      alignment: Alignment.center,
+                      height: 45.0,
+                      width: 45.0,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.bottomLeft,
+                          end: Alignment.topRight,
+                          stops: const <double>[0.3, 0.9],
+                          colors: <Color>[
+                            Theme.of(context).colorScheme.secondary,
+                            Theme.of(context).colorScheme.primary,
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      child: Icon(
+                        CustomIcons.spheres,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                        size: 17,
+                      ),
+                    )
+                  : ClipOval(
+                      child: CachedNetworkImage(
+                          imageUrl: group.groupData.photo,
+                          height: 45,
+                          width: 45,
+                          fit: BoxFit.cover,
+                          placeholder: (BuildContext context, String _) {
+                            return Container(
+                              alignment: Alignment.center,
+                              height: 45.0,
+                              width: 45.0,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.bottomLeft,
+                                  end: Alignment.topRight,
+                                  stops: const <double>[0.3, 0.9],
+                                  colors: <Color>[
+                                    Theme.of(context).colorScheme.secondary,
+                                    Theme.of(context).colorScheme.primary,
+                                  ],
+                                ),
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                              child: Icon(
+                                CustomIcons.spheres,
+                                color: Theme.of(context).colorScheme.onPrimary,
+                                size: 17,
+                              ),
+                            );
+                          }),
+                    ),
               Container(
                 width: MediaQuery.of(context).size.width - 95,
                 padding: const EdgeInsets.symmetric(
