@@ -8,7 +8,6 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_actions/collective_actions.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/widgets/appbar/collective_appbar.dart';
@@ -53,7 +52,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
   ScrollController _collectiveController;
   String _appbarTitle = 'JUNTO';
-  bool _showDegrees = false;
+  bool _showDegrees = true;
   String currentDegree = 'oo';
 
   bool actionsVisible = true;
@@ -126,33 +125,8 @@ class JuntoCollectiveState extends State<JuntoCollective>
     }
     try {
       return await _expressionProvider.getCollectiveExpressions(_params);
-    } on JuntoException catch (_) {
-      await Provider.of<AuthRepo>(context, listen: false).logoutUser();
-      await Navigator.of(context).pushReplacement(
-        PageRouteBuilder<dynamic>(
-          pageBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-          ) {
-            return Welcome();
-          },
-          transitionsBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-            Widget child,
-          ) {
-            return FadeTransition(
-              opacity: animation,
-              child: child,
-            );
-          },
-          transitionDuration: const Duration(
-            milliseconds: 1000,
-          ),
-        ),
-      );
+    } on JuntoException catch (error) {
+      print(error);
       return null;
     }
   }
@@ -223,7 +197,8 @@ class JuntoCollectiveState extends State<JuntoCollective>
               visible: actionsVisible,
               child: JuntoCollectiveActions(
                   userProfile: _userProfile,
-                  changePerspective: _changePerspective),
+                  changePerspective: _changePerspective,
+                  currentPerspective: _appbarTitle),
             ),
           ),
         ],

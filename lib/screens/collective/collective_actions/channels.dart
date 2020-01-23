@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 
 class JuntoChannels extends StatefulWidget {
+  const JuntoChannels({this.currentPerspective});
+
+  final String currentPerspective;
   @override
   State<StatefulWidget> createState() {
     return JuntoChannelsState();
@@ -22,10 +25,11 @@ class JuntoChannelsState extends State<JuntoChannels> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
-                  Icon(CustomIcons.packs, size: 17),
+                  Image.asset('assets/images/junto-mobile__binoculars.png',
+                      height: 17, color: Theme.of(context).primaryColor),
                   const SizedBox(width: 10),
                   Text(
-                    'JUNTO',
+                    widget.currentPerspective,
                     style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,

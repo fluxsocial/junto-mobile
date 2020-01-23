@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
-import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/pack_open.dart';
 
 // This class renders a pack preview (usually shown in a list of packs)
 class PackPreview extends StatelessWidget {
@@ -81,7 +80,7 @@ class PackPreview extends StatelessWidget {
                 Text(group.groupData.name,
                     textAlign: TextAlign.start,
                     style: Theme.of(context).textTheme.subhead),
-                Text(group.creator,
+                Text('username',
                     textAlign: TextAlign.start,
                     style: Theme.of(context).textTheme.body1),
               ],
