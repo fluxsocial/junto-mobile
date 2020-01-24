@@ -79,7 +79,8 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                         ),
                       );
                     },
-                    child: Icon(Icons.add, size: 24, color: Theme.of(context).primaryColor),
+                    child: Icon(Icons.add,
+                        size: 24, color: Theme.of(context).primaryColor),
                   )
                 ],
               ),
@@ -178,8 +179,25 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Image.asset('assets/images/junto-mobile__binoculars.png',
-                height: 17, color: Theme.of(context).primaryColor),
+            Container(
+              alignment: Alignment.center,
+              height: 45.0,
+              width: 45.0,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomLeft,
+                  end: Alignment.topRight,
+                  stops: const <double>[0.2, 0.9],
+                  colors: <Color>[
+                    Theme.of(context).colorScheme.secondary,
+                    Theme.of(context).colorScheme.primary
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(100),
+              ),
+              child: Image.asset('assets/images/junto-mobile__binoculars.png',
+                  height: 15, color: Colors.white),
+            ),
             const SizedBox(width: 15),
             Expanded(
               child: Column(
