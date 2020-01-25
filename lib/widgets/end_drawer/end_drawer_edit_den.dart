@@ -120,9 +120,13 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                           ? <String>[]
                           : <String>[_genderController.value.text],
                     };
-
-                    await Provider.of<UserRepo>(context, listen: false)
-                        .updateUser(newProfile, _userAddress);
+                    try {
+                      await Provider.of<UserRepo>(context, listen: false)
+                          .updateUser(newProfile, _userAddress);
+                    } catch (error) {
+                      print(error);
+                      print(error.message);
+                    }
                   },
                   child: Container(
                     padding: const EdgeInsets.only(right: 10),

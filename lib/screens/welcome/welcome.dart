@@ -45,7 +45,7 @@ class WelcomeState extends State<Welcome> {
   String location;
   String gender;
   String website;
-  List<File> profilePictures;
+  List<dynamic> profilePictures;
   String email;
   String password;
   String confirmPassword;
@@ -101,6 +101,7 @@ class WelcomeState extends State<Welcome> {
       website = _aboutPageModel.website;
     } else if (_currentIndex == 5) {
       profilePictures = signUpPhotosKey.currentState.returnDetails();
+      print(profilePictures);
     } else if (_currentIndex == 6) {
       email = signUpRegisterKey.currentState.returnDetails()['email'];
       password = signUpRegisterKey.currentState.returnDetails()['password'];
@@ -191,7 +192,7 @@ class WelcomeState extends State<Welcome> {
             Animation<double> animation,
             Animation<double> secondaryAnimation,
           ) {
-            return const SignUpAgreements();
+            return SignUpAgreements(profilePictures: profilePictures);
           },
           transitionsBuilder: (
             BuildContext context,

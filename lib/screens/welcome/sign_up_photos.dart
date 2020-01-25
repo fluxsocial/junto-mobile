@@ -104,7 +104,7 @@ class SignUpPhotosState extends State<SignUpPhotos> {
             children: <Widget>[
               Container(
                 child: const Text(
-                  'Add up to three profile pictures',
+                  'Add up to two profile pictures',
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 24,

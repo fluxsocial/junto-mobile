@@ -147,7 +147,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
   // Renders the collective screen within a scaffold.
   Widget _buildCollectivePage(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: false, 
       key: _juntoCollectiveKey,
       floatingActionButton: ValueListenableBuilder<bool>(
         valueListenable: _isVisible,
