@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:carousel_slider/carousel_slider.dart';
@@ -31,6 +32,9 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
   UserRepo _userProvider;
   String _userAddress;
   UserData _userProfile;
+  List<File> _userProfilePictures = [];
+  File _userProfilePictureOne;
+  File _userProfilePictureTwo;
 
   ScrollController _denController;
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
@@ -81,8 +85,28 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
     setState(() {
       _userAddress = prefs.getString('user_id');
       _userProfile = UserData.fromMap(decodedUserData);
+      print(prefs.getString('user_profile_picture_two'));
+      if (prefs.getString('user_profile_picture_one') != null) {
+        _userProfilePictureOne = File(
+          prefs.getString('user_profile_picture_one'),
+        );
+        _userProfilePictures.add(_userProfilePictureOne);
+      }
+
+      if (prefs.getString('user_profile_picture_two') == null) {
+        print('hello');
+        return;
+      } else {
+        _userProfilePictureTwo = File(
+          prefs.getString('user_profile_picture_two'),
+        );
+        _userProfilePictures.add(_userProfilePictureTwo);
+      }
+      print(_userProfilePictures);
     });
-    print(_userProfile);
+
+    print(_userProfile.user.profilePicture[0]);
+    // print(_userProfile.user.profilePicture[0].runtimeType);
   }
 
   Future<List<CentralizedExpressionResponse>> getUsersExpressions() async {
@@ -196,9 +220,10 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                             ],
                           ),
                         ),
+                        // Image.file(_userProfilePictureOne),
+
                         _userProfile.user.profilePicture != null
-                            ? _displayProfilePictures(
-                                _userProfile.user.profilePicture)
+                            ? _displayProfilePictures(_userProfilePictures)
                             : const SizedBox(),
                         Container(
                           child: Text(_userProfile.user.bio,
@@ -431,8 +456,8 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
     }
   }
 
-  Widget _displayProfilePictures(List<String> profilePictures) {
-    if (profilePictures.length < 1) {
+  Widget _displayProfilePictures(List<File> profilePictures) {
+    if (profilePictures.isNotEmpty) {
       return Container(
         margin: const EdgeInsets.only(bottom: 15),
         child: CarouselSlider(
@@ -440,38 +465,18 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
             height: MediaQuery.of(context).size.width - 20,
             enableInfiniteScroll: false,
             items: <Widget>[
-              for (String picture in profilePictures)
+              for (File picture in profilePictures)
                 Container(
-                  padding: const EdgeInsets.only(right: 10),
-                  width: MediaQuery.of(context).size.width,
-                  child: CachedNetworkImage(
-                    placeholder: (BuildContext context, String _) {
-                      return Container(
-                        height: 120,
-                        width: 120,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.bottomLeft,
-                            end: Alignment.topRight,
-                            stops: const <double>[0.2, 0.9],
-                            colors: <Color>[
-                              Theme.of(context).colorScheme.secondary,
-                              Theme.of(context).colorScheme.primary
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                    imageUrl: picture,
-                    fit: BoxFit.cover,
-                  ),
+                    padding: const EdgeInsets.only(right: 10),
+                    width: MediaQuery.of(context).size.width,
+                    child: Image.file(picture)
 
-                  // child: Image.asset(picture, fit: BoxFit.cover),
-                ),
+                    // child: Image.asset(picture, fit: BoxFit.cover),
+                    ),
             ]),
       );
     } else {
-      return const SizedBox();
+      return Container();
     }
   }
 }

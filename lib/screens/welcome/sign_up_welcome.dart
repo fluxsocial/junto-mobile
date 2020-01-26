@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -44,8 +45,6 @@ class SignUpAgreementsState extends State<SignUpAgreements> {
   _updateUserPhotos(List<dynamic> profilePictures) async {
     // check if user uploaded profile pictures
     // retrieve key and add to _photoKeys if true
-
-    print(profilePictures);
     final List<String> _photoKeys = <String>[];
     for (final dynamic image in profilePictures) {
       if (image != null) {
@@ -69,6 +68,7 @@ class SignUpAgreementsState extends State<SignUpAgreements> {
       ]
     };
     // update user with profile photos
+    final String profilePictureOnePath = profilePictures[0].path;
 
     try {
       JuntoLoader.showLoader(context);
@@ -77,9 +77,13 @@ class SignUpAgreementsState extends State<SignUpAgreements> {
           profilePictures.first == null ? _photoKeys : _profilePictureKeys,
           _userAddress);
       JuntoLoader.hide();
+      // save user profile photo to shared preferences
+      if (profilePictures.first != null) {
+        await SharedPreferences.getInstance()
+          ..setString('user_profile_picture_one', profilePictureOnePath);
+      }
     } catch (error) {
       print(error);
-      print(error.message);
       JuntoLoader.hide();
     }
   }

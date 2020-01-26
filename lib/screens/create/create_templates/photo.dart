@@ -68,7 +68,6 @@ class CreatePhotoState extends State<CreatePhoto> {
     }
     setState(() => imageFile = cropped);
     widget.setBottomNav(false);
-    print('set bottom nav');
   }
 
   /// Creates a [CentralizedPhotoFormExpression] from the given data entered
