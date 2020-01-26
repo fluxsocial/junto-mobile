@@ -32,9 +32,6 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
   UserRepo _userProvider;
   String _userAddress;
   UserData _userProfile;
-  List<File> _userProfilePictures = [];
-  File _userProfilePictureOne;
-  File _userProfilePictureTwo;
 
   ScrollController _denController;
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
@@ -78,35 +75,13 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
 
   Future<void> getUserInformation() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    // print(prefs.getString('user_data'));
     final Map<String, dynamic> decodedUserData =
         jsonDecode(prefs.getString('user_data'));
 
     setState(() {
       _userAddress = prefs.getString('user_id');
       _userProfile = UserData.fromMap(decodedUserData);
-      print(prefs.getString('user_profile_picture_two'));
-      if (prefs.getString('user_profile_picture_one') != null) {
-        _userProfilePictureOne = File(
-          prefs.getString('user_profile_picture_one'),
-        );
-        _userProfilePictures.add(_userProfilePictureOne);
-      }
-
-      if (prefs.getString('user_profile_picture_two') == null) {
-        print('hello');
-        return;
-      } else {
-        _userProfilePictureTwo = File(
-          prefs.getString('user_profile_picture_two'),
-        );
-        _userProfilePictures.add(_userProfilePictureTwo);
-      }
-      print(_userProfilePictures);
     });
-
-    print(_userProfile.user.profilePicture[0]);
-    // print(_userProfile.user.profilePicture[0].runtimeType);
   }
 
   Future<List<CentralizedExpressionResponse>> getUsersExpressions() async {
@@ -220,11 +195,10 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                             ],
                           ),
                         ),
-                        // Image.file(_userProfilePictureOne),
 
-                        _userProfile.user.profilePicture != null
-                            ? _displayProfilePictures(_userProfilePictures)
-                            : const SizedBox(),
+                        // _userProfile.user.profilePicture != null
+                        //     ? _displayProfilePictures(_userProfilePictures)
+                        //     : const SizedBox(),
                         Container(
                           child: Text(_userProfile.user.bio,
                               style: Theme.of(context).textTheme.caption),
@@ -457,26 +431,22 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
   }
 
   Widget _displayProfilePictures(List<File> profilePictures) {
-    if (profilePictures.isNotEmpty) {
-      return Container(
-        margin: const EdgeInsets.only(bottom: 15),
-        child: CarouselSlider(
-            viewportFraction: 1.0,
-            height: MediaQuery.of(context).size.width - 20,
-            enableInfiniteScroll: false,
-            items: <Widget>[
-              for (File picture in profilePictures)
-                Container(
-                    padding: const EdgeInsets.only(right: 10),
-                    width: MediaQuery.of(context).size.width,
-                    child: Image.file(picture)
+    return Container(
+      margin: const EdgeInsets.only(bottom: 15),
+      child: CarouselSlider(
+          viewportFraction: 1.0,
+          height: MediaQuery.of(context).size.width - 20,
+          enableInfiniteScroll: false,
+          items: <Widget>[
+            for (File picture in profilePictures)
+              Container(
+                  padding: const EdgeInsets.only(right: 10),
+                  width: MediaQuery.of(context).size.width,
+                  child: Image.file(picture)
 
-                    // child: Image.asset(picture, fit: BoxFit.cover),
-                    ),
-            ]),
-      );
-    } else {
-      return Container();
-    }
+                  // child: Image.asset(picture, fit: BoxFit.cover),
+                  ),
+          ]),
+    );
   }
 }

@@ -13,8 +13,8 @@ class JuntoThemes {
     accentColor: const Color(0xFF22517D),
     colorScheme: const ColorScheme(
       // Junto blue
-      primary: Color(0xFF48A6CE),
-      primaryVariant: Color(0xFF48A6CE),
+      primary: Color(0xFF7461a1),
+      primaryVariant: Color(0xFF7461a1),
 
       // Junto purple
       secondary: Color(0xff285FA7),
