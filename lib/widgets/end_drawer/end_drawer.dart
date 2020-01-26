@@ -33,7 +33,7 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
   Future<void> _onPackPress() async {
     final UserGroupsResponse _userPack =
         await Provider.of<UserRepo>(context, listen: false)
-            .getUserGroups(_userAddress);
+            .getUserGroups(_userAddress); 
     Navigator.push(
       context,
       CupertinoPageRoute<dynamic>(

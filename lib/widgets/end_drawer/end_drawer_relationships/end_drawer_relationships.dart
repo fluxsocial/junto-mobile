@@ -120,7 +120,6 @@ class JuntoRelationships extends StatelessWidget {
       builder:
           (BuildContext context, AsyncSnapshot<List<UserProfile>> snapshot) {
         if (snapshot.hasData) {
-          print(snapshot.data);
           if (snapshot.data.isEmpty) {
             return Center(
               child: Transform.translate(
@@ -135,8 +134,6 @@ class JuntoRelationships extends StatelessWidget {
             child: ListView.builder(
               itemCount: snapshot.data.length,
               itemBuilder: (BuildContext context, int index) {
-                print(snapshot.data[index]);
-                // return SizedBox();
                 return MemberPreview(profile: snapshot.data[index]);
               },
             ),
