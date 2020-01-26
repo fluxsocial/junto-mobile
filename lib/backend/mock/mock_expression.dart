@@ -90,16 +90,4 @@ class MockExpressionService implements ExpressionService {
   Future<void> deleteExpression(String expressionAddress) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
   }
-
-  @override
-  Future<bool> isConnectedUser(String userAddress, String targetAddress) async {
-    await Future<void>.delayed(const Duration(milliseconds: 500));
-    return false;
-  }
-
-  @override
-  Future<bool> isFollowingUser(String userAddress, String targetAddress) async {
-    await Future<void>.delayed(const Duration(milliseconds: 500));
-    return true;
-  }
 }

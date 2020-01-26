@@ -95,7 +95,16 @@ class UserRepo {
     return _userService.respondToConnection(userAddress, response);
   }
 
-  Future<Map<String, dynamic>> updateUser(Map<String, dynamic> user, String userAddress) =>
+  Future<bool> isConnected(String userAddress, String targetAddress) {
+    return _userService.isConnectedUser(userAddress, targetAddress);
+  }
+
+  Future<bool> isFollowing(String userAddress, String targetAddress) {
+    return _userService.isFollowingUser(userAddress, targetAddress);
+  }
+
+  Future<Map<String, dynamic>> updateUser(
+          Map<String, dynamic> user, String userAddress) =>
       _userService.updateUser(user, userAddress);
 
   Future<List<UserProfile>> getFollowers(String userAddress) =>

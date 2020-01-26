@@ -79,35 +79,26 @@ class RelationshipRequest extends StatelessWidget {
           children: <Widget>[
             Row(
               children: <Widget>[
-                user.profilePicture.isNotEmpty
-                    ? ClipOval(
-                        child: Image.asset(
-                          user.profilePicture[0],
-                          height: 45.0,
-                          width: 45.0,
-                          fit: BoxFit.cover,
-                        ),
-                      )
-                    : Container(
-                        alignment: Alignment.center,
-                        height: 45.0,
-                        width: 45.0,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.bottomLeft,
-                            end: Alignment.topRight,
-                            stops: const <double>[0.3, 0.9],
-                            colors: <Color>[
-                              Theme.of(context).colorScheme.secondary,
-                              Theme.of(context).colorScheme.primary
-                            ],
-                          ),
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        child: Image.asset(
-                            'assets/images/junto-mobile__logo--white.png',
-                            height: 15),
-                      ),
+                Container(
+                  alignment: Alignment.center,
+                  height: 45.0,
+                  width: 45.0,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomLeft,
+                      end: Alignment.topRight,
+                      stops: const <double>[0.3, 0.9],
+                      colors: <Color>[
+                        Theme.of(context).colorScheme.secondary,
+                        Theme.of(context).colorScheme.primary
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  child: Image.asset(
+                      'assets/images/junto-mobile__logo--white.png',
+                      height: 15),
+                ),
                 Container(
                   width: MediaQuery.of(context).size.width - 75,
                   padding: const EdgeInsets.symmetric(

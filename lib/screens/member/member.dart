@@ -1,10 +1,16 @@
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/member/member_appbar.dart';
+import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
@@ -36,12 +42,52 @@ class JuntoMember extends StatefulWidget {
 class _JuntoMemberState extends State<JuntoMember> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final List<String> _tabs = <String>['About', 'Expressions'];
+  String _userAddress;
+  UserRepo userProvider;
+  bool isConnected;
+  bool isFollowing;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    getUserInformation();
+  }
+
+  Future<void> getUserInformation() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      _userAddress = prefs.getString('user_id');
+      userProvider = Provider.of<UserRepo>(context, listen: false);
+    });
+
+    // // see if user is connected to member
+    await userProvider
+        .isConnected(_userAddress, widget.profile.address)
+        .then((bool result) {
+          print(result);
+      setState(() {
+        isConnected = result;
+      });
+    });
+
+    // see if user is following member
+    await userProvider
+        .isFollowing(_userAddress, widget.profile.address)
+        .then((bool result) {
+      setState(() {
+        isFollowing = result;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    print(widget.profile.gender);
-    print(widget.profile.location);
-    print(widget.profile.website);
     return Scaffold(
       key: scaffoldKey,
       appBar: PreferredSize(
@@ -54,7 +100,10 @@ class _JuntoMemberState extends State<JuntoMember> {
           physics: const ClampingScrollPhysics(),
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
-              _MemberDenAppbar(profile: widget.profile),
+              _MemberDenAppbar(
+                profile: widget.profile,
+                isConnected: isConnected,
+              ),
               SliverPersistentHeader(
                 delegate: JuntoAppBarDelegate(
                   TabBar(
@@ -125,7 +174,7 @@ class _JuntoMemberState extends State<JuntoMember> {
                       Container(
                         padding: const EdgeInsets.only(right: 10),
                         width: MediaQuery.of(context).size.width,
-                        child: Image.asset( 
+                        child: Image.asset(
                             'assets/images/junto-mobile__mockprofpic--one.png',
                             fit: BoxFit.cover),
                       ),
@@ -349,12 +398,16 @@ class MemberRelationshipsModal extends StatelessWidget {
 }
 
 class _MemberDenAppbar extends StatelessWidget {
-  const _MemberDenAppbar({
-    Key key,
-    @required this.profile,
-  }) : super(key: key);
+  const _MemberDenAppbar(
+      {Key key,
+      @required this.profile,
+      @required this.isConnected,
+      this.isFollowing})
+      : super(key: key);
 
   final UserProfile profile;
+  final bool isConnected;
+  final bool isFollowing;
 
   Future<void> _connectWithUser(BuildContext context) async {
     final UserRepo _userRepo = Provider.of<UserRepo>(context, listen: false);
@@ -377,6 +430,20 @@ class _MemberDenAppbar extends StatelessWidget {
           child: const Text('Ok'),
         )
       ]);
+    }
+  }
+
+  Widget _displayRelationshipIndicator(BuildContext context) {
+    if (isFollowing == true && isConnected == false) {
+      return Icon(CustomIcons.groups, size: 17, color: Colors.white);
+    } else if (isFollowing == true && isConnected == true) {
+      return Icon(CustomIcons.pawprints, size: 17, color: Colors.white);
+    } else if (isFollowing == false && isConnected == false) {
+      return Image.asset('assets/images/junto-mobile__infinity.png',
+          height: 14, color: Theme.of(context).colorScheme.onPrimary);
+    } else {
+      return Image.asset('assets/images/junto-mobile__infinity.png',
+          height: 14, color: Theme.of(context).colorScheme.onPrimary);
     }
   }
 
@@ -432,44 +499,39 @@ class _MemberDenAppbar extends StatelessWidget {
                         ),
                       ),
                       GestureDetector(
-                          onTap: () {
-                            showModalBottomSheet(
-                              context: context,
-                              builder: (BuildContext context) => Container(
-                                color: Colors.transparent,
-                                child: MemberRelationshipsModal(
-                                  onConnectTap: () => _connectWithUser(context),
-                                ),
+                        onTap: () {
+                          showModalBottomSheet(
+                            context: context,
+                            builder: (BuildContext context) => Container(
+                              color: Colors.transparent,
+                              child: MemberRelationshipsModal(
+                                onConnectTap: () => _connectWithUser(context),
                               ),
-                            );
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 7.5),
-                            decoration: BoxDecoration(
-                              border: Border.all(
+                            ),
+                          );
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                                color: Theme.of(context).colorScheme.onPrimary,
+                                width: 1.5),
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                          child: Row(
+                            children: <Widget>[
+                              const SizedBox(width: 14),
+                              _displayRelationshipIndicator(context),
+                              const SizedBox(width: 2),
+                              Icon(Icons.keyboard_arrow_down,
+                                  size: 12,
                                   color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                  width: 1.5),
-                              borderRadius: BorderRadius.circular(25),
-                            ),
-                            child: Row(
-                              children: <Widget>[
-                                const SizedBox(width: 14),
-                                Image.asset(
-                                    'assets/images/junto-mobile__infinity.png',
-                                    height: 14,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onPrimary),
-                                const SizedBox(width: 2),
-                                Icon(Icons.keyboard_arrow_down,
-                                    size: 12,
-                                    color:
-                                        Theme.of(context).colorScheme.onPrimary)
-                              ],
-                            ),
-                          )),
+                                      Theme.of(context).colorScheme.onPrimary)
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ],

@@ -110,12 +110,6 @@ abstract class ExpressionService {
   List<CentralizedExpressionResponse> get collectiveExpressions;
 
   Future<void> deleteExpression(String expressionAddress);
-
-  /// Returns true/false if the [userAddress] is following the [targetAddress]
-  Future<bool> isFollowingUser(String userAddress, String targetAddress);
-
-  /// Returns true/false if the [userAddress] is connected to the [targetAddress]
-  Future<bool> isConnectedUser(String userAddress, String targetAddress);
 }
 
 abstract class GroupService {
@@ -216,6 +210,12 @@ abstract class UserService {
 
   /// Gets a list of pending user connections
   Future<List<UserProfile>> connectedUsers(String userAddress);
+
+  /// Returns true/false if the [userAddress] is following the [targetAddress]
+  Future<bool> isFollowingUser(String userAddress, String targetAddress);
+
+  /// Returns true/false if the [userAddress] is connected to the [targetAddress]
+  Future<bool> isConnectedUser(String userAddress, String targetAddress);
 
   /// Updates the given [user] and returns updated [UserData]
   Future<Map<String, dynamic>> updateUser(

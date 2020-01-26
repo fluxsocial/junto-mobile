@@ -326,6 +326,26 @@ class UserServiceCentralized implements UserService {
     ];
   }
 
+  @override
+  Future<bool> isConnectedUser(String userAddress, String targetAddress) async {
+    final http.Response _serverResponse = await client.get(
+      '/users/$userAddress/connected/$targetAddress',
+    );
+    final bool result = JuntoHttp.handleResponse(_serverResponse) as bool;
+    return result;
+  }
+
+  @override
+  Future<bool> isFollowingUser(String userAddress, String targetAddress) async {
+    final http.Response _serverResponse = await client.get(
+      '/users/$userAddress/following/$targetAddress',
+    );
+    final bool result = JuntoHttp.handleResponse(_serverResponse) as bool;
+    print(result);
+    print('following');
+    return result;
+  }
+
   /// Private function which returns the correct query param for the given
   /// [QueryType]
   Map<String, dynamic> _buildQueryParam(String param, QueryType queryType) {
