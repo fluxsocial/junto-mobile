@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:carousel_slider/carousel_slider.dart';
@@ -74,7 +75,6 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
 
   Future<void> getUserInformation() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    // print(prefs.getString('user_data'));
     final Map<String, dynamic> decodedUserData =
         jsonDecode(prefs.getString('user_data'));
 
@@ -195,10 +195,10 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                             ],
                           ),
                         ),
-                        _userProfile.user.profilePicture != null
-                            ? _displayProfilePictures(
-                                _userProfile.user.profilePicture)
-                            : const SizedBox(),
+
+                        // _userProfile.user.profilePicture != null
+                        //     ? _displayProfilePictures(_userProfilePictures)
+                        //     : const SizedBox(),
                         Container(
                           child: Text(_userProfile.user.bio,
                               style: Theme.of(context).textTheme.caption),
@@ -430,47 +430,23 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
     }
   }
 
-  Widget _displayProfilePictures(List<String> profilePictures) {
-    if (profilePictures.length < 1) {
-      return Container(
-        margin: const EdgeInsets.only(bottom: 15),
-        child: CarouselSlider(
-            viewportFraction: 1.0,
-            height: MediaQuery.of(context).size.width - 20,
-            enableInfiniteScroll: false,
-            items: <Widget>[
-              for (String picture in profilePictures)
-                Container(
+  Widget _displayProfilePictures(List<File> profilePictures) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 15),
+      child: CarouselSlider(
+          viewportFraction: 1.0,
+          height: MediaQuery.of(context).size.width - 20,
+          enableInfiniteScroll: false,
+          items: <Widget>[
+            for (File picture in profilePictures)
+              Container(
                   padding: const EdgeInsets.only(right: 10),
                   width: MediaQuery.of(context).size.width,
-                  child: CachedNetworkImage(
-                    placeholder: (BuildContext context, String _) {
-                      return Container(
-                        height: 120,
-                        width: 120,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.bottomLeft,
-                            end: Alignment.topRight,
-                            stops: const <double>[0.2, 0.9],
-                            colors: <Color>[
-                              Theme.of(context).colorScheme.secondary,
-                              Theme.of(context).colorScheme.primary
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                    imageUrl: picture,
-                    fit: BoxFit.cover,
-                  ),
+                  child: Image.file(picture)
 
                   // child: Image.asset(picture, fit: BoxFit.cover),
-                ),
-            ]),
-      );
-    } else {
-      return const SizedBox();
-    }
+                  ),
+          ]),
+    );
   }
 }

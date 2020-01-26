@@ -56,7 +56,7 @@ class AuthRepo {
 
       await SharedPreferences.getInstance()
         ..setBool('isLoggedIn', true)
-        ..setString('user_data', _userMapToString);
+        ..setString('user_data', _userMapToString);      
 
       return _user;
     } catch (error) {

@@ -67,7 +67,7 @@ class SignUpRegisterState extends State<SignUpRegister> {
                         Container(
                           child: TextField(
                             controller: emailController,
-                            textInputAction: TextInputAction.newline,
+                            textInputAction: TextInputAction.done,
                             maxLines: null,
                             cursorColor: Colors.white70,
                             decoration: const InputDecoration(
@@ -99,6 +99,7 @@ class SignUpRegisterState extends State<SignUpRegister> {
                           child: TextField(
                             controller: passwordController,
                             cursorColor: Colors.white70,
+                            textInputAction: TextInputAction.done,
                             obscureText: true,
                             decoration: const InputDecoration(
                               enabledBorder: InputBorder.none,
@@ -130,6 +131,7 @@ class SignUpRegisterState extends State<SignUpRegister> {
                             controller: confirmPasswordController,
                             cursorColor: Colors.white70,
                             obscureText: true,
+                            textInputAction: TextInputAction.done,
                             decoration: const InputDecoration(
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,

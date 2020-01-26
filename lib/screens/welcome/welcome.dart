@@ -45,7 +45,7 @@ class WelcomeState extends State<Welcome> {
   String location;
   String gender;
   String website;
-  List<File> profilePictures;
+  List<dynamic> profilePictures;
   String email;
   String password;
   String confirmPassword;
@@ -101,6 +101,7 @@ class WelcomeState extends State<Welcome> {
       website = _aboutPageModel.website;
     } else if (_currentIndex == 5) {
       profilePictures = signUpPhotosKey.currentState.returnDetails();
+      print(profilePictures);
     } else if (_currentIndex == 6) {
       email = signUpRegisterKey.currentState.returnDetails()['email'];
       password = signUpRegisterKey.currentState.returnDetails()['password'];
@@ -151,37 +152,6 @@ class WelcomeState extends State<Welcome> {
         ..setString('user_id', results.user.address)
         ..setString('user_data', resultsMapToString);
 
-      // FIXME: Eric to revisit and implement
-
-      // check if user uploaded profile pictures
-      // retrieve key and add to _photoKeys if true
-      // final List<String> _photoKeys = <String>[];
-      // for (final File image in profilePictures) {
-      //   if (image != null) {
-      //     final String key =
-      //         await Provider.of<ExpressionRepo>(context, listen: false)
-      //             .createPhoto(
-      //       '.png',
-      //       image,
-      //     );
-      //     _photoKeys.add(key);
-      //   }
-      // }
-      // Map<String, dynamic> _profilePictureKeys;
-      // // instantiate data structure to update user with profile pictures
-      // _profilePictureKeys = <String, dynamic>{
-      //   'profile_picture': <Map<String, dynamic>>[
-      //     <String, dynamic>{'index': 0, 'key': _photoKeys[0]},
-      //     if (_photoKeys.length > 1)
-      //       <String, dynamic>{'index': 1, 'key': _photoKeys[1]},
-      //   ]
-      // };
-
-      // // update user with profile photos
-      // await Provider.of<UserRepo>(context, listen: false).updateUser(
-      //     profilePictures.first == null ? _photoKeys : _profilePictureKeys,
-      //     results.user.address);
-
       // navigate to community agreements
 
       Navigator.of(context).pushReplacement(
@@ -191,7 +161,7 @@ class WelcomeState extends State<Welcome> {
             Animation<double> animation,
             Animation<double> secondaryAnimation,
           ) {
-            return const SignUpAgreements();
+            return SignUpAgreements(profilePictures: profilePictures);
           },
           transitionsBuilder: (
             BuildContext context,
@@ -217,6 +187,10 @@ class WelcomeState extends State<Welcome> {
         FlatButton(
           onPressed: () => Navigator.pop(context),
           child: const Text('OK'),
+        ),
+        FlatButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text(error.message),
         ),
       ]);
       print('Error: $error');

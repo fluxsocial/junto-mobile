@@ -60,10 +60,10 @@ class SignUpVerifyState extends State<SignUpVerify> {
                 buildCounter: (BuildContext context,
                         {int currentLength, int maxLength, bool isFocused}) =>
                     null,
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  WhitelistingTextInputFormatter.digitsOnly
-                ],
+                // keyboardType: TextInputType.number,
+                // inputFormatters: <TextInputFormatter>[
+                //   WhitelistingTextInputFormatter.digitsOnly
+                // ],
                 textInputAction: TextInputAction.done,
                 maxLines: null,
                 cursorColor: Colors.white70,

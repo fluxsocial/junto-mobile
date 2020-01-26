@@ -1,18 +1,86 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
 
 /// Agreements screen shown to the user following registration
 class SignUpAgreements extends StatefulWidget {
-  const SignUpAgreements({
-    Key key,
-  }) : super(key: key);
+  const SignUpAgreements({Key key, this.profilePictures}) : super(key: key);
+
+  final List<dynamic> profilePictures;
 
   @override
   State<StatefulWidget> createState() => SignUpAgreementsState();
 }
 
 class SignUpAgreementsState extends State<SignUpAgreements> {
+  String _userAddress;
+  UserData _userProfile;
+
+  @override
+  void initState() {
+    super.initState();
+
+    getUserInformation();
+  }
+
+  Future<void> getUserInformation() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final Map<String, dynamic> decodedUserData =
+        jsonDecode(prefs.getString('user_data'));
+
+    setState(() {
+      _userAddress = prefs.getString('user_id');
+      _userProfile = UserData.fromMap(decodedUserData);
+    });
+  }
+
+  _updateUserPhotos(List<dynamic> profilePictures) async {
+    // check if user uploaded profile pictures
+    // retrieve key and add to _photoKeys if true
+    final List<String> _photoKeys = <String>[];
+    for (final dynamic image in profilePictures) {
+      if (image != null) {
+        final String key =
+            await Provider.of<ExpressionRepo>(context, listen: false)
+                .createPhoto(
+          '.png',
+          image,
+        );
+        _photoKeys.add(key);
+      }
+    }
+    Map<String, dynamic> _profilePictureKeys;
+
+    // instantiate data structure to update user with profile pictures
+    _profilePictureKeys = <String, dynamic>{
+      'profile_picture': <Map<String, dynamic>>[
+        <String, dynamic>{'index': 0, 'key': _photoKeys[0]},
+        if (_photoKeys.length == 2)
+          <String, dynamic>{'index': 1, 'key': _photoKeys[1]},
+      ]
+    };
+    // update user with profile photos
+    try {
+      JuntoLoader.showLoader(context);
+
+      await Provider.of<UserRepo>(context, listen: false).updateUser(
+          profilePictures.first == null ? _photoKeys : _profilePictureKeys,
+          _userAddress);
+      JuntoLoader.hide();
+    } catch (error) {
+      print(error);
+      JuntoLoader.hide();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,7 +184,9 @@ class SignUpAgreementsState extends State<SignUpAgreements> {
                   ),
                 ),
                 child: RaisedButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    // await _updateUserPhotos(widget.profilePictures);
+
                     Navigator.of(context).pushReplacement(
                       PageRouteBuilder<dynamic>(
                         pageBuilder: (
