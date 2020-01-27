@@ -184,6 +184,7 @@ class CentralizedExpressionResponse {
       this.creator,
       this.context,
       this.privacy,
+      this.channels,
       this.comments = 0,
       this.resonations = 0});
 
@@ -204,6 +205,7 @@ class CentralizedExpressionResponse {
         json['creator'],
       ),
       privacy: json['privacy'] ?? '',
+      channels: json['channels'],
       context: json['context'] ?? '',
       comments: json['comments'],
       resonations: json['resonations'] as int,
@@ -226,6 +228,7 @@ class CentralizedExpressionResponse {
         json['creator'],
       ),
       privacy: json['privacy'] ?? '',
+      channels: json['channels'],
       context: json['context'] ?? '',
       comments: json['comments'] as int,
     );
@@ -239,6 +242,7 @@ class CentralizedExpressionResponse {
   final int comments;
   final int resonations;
   final String privacy;
+  final List<dynamic> channels;
   final String context;
   final UserProfile creator;
 
@@ -251,6 +255,7 @@ class CentralizedExpressionResponse {
       'resonations': numberResonations,
       'creator': creator.toMap(),
       'privacy': privacy ?? '',
+      'channels': channels,
       'context': context ?? '',
     };
   }

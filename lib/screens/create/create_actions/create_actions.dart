@@ -80,7 +80,8 @@ class CreateActionsState extends State<CreateActions> {
             expressionData: CentralizedPhotoFormExpression(
                     image: _photoKey, caption: widget.expression['caption'])
                 .toMap(),
-            context: widget.expressionContext);
+            context: widget.expressionContext,
+            channels: <String>['sustainability', 'architecture']);
       } else if (widget.expressionType == 'EventForm') {
         print(widget.expression['photo']);
         String eventPhoto = '';
@@ -102,6 +103,7 @@ class CreateActionsState extends State<CreateActions> {
                 endTime: widget.expression['endTime'],
                 facilitators: <String>[],
                 members: <String>[]).toMap(),
+            channels: <String>['sustainability', 'architecture'],
             context: widget.expressionContext);
       } else {
         _expression = CentralizedExpression(

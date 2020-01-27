@@ -149,7 +149,7 @@ class ExpressionServiceCentralized implements ExpressionService {
     throw UnimplementedError(
         'Server is needed before this function can be implemented');
   }
- 
+
   @override
   Future<void> deleteExpression(String expressionAddress) async {
     final http.Response _serverResponse = await client.delete(
@@ -157,7 +157,7 @@ class ExpressionServiceCentralized implements ExpressionService {
     );
     JuntoHttp.handleResponse(_serverResponse);
   }
-  
+
   @override
   Future<QueryResults<CentralizedExpressionResponse>> getCollectiveExpressions(
       Map<String, String> params) async {

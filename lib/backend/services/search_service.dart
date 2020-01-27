@@ -18,7 +18,7 @@ class SearchServiceCentralized with RFC3339 implements SearchService {
     String query, {
     bool username = false,
     int paginationPosition = 0,
-    DateTime lastTimeStamp,
+    DateTime lastTimeStamp, 
   }) async {
     final Map<String, String> _queryParam = <String, String>{
       'pagination_position': paginationPosition.toString()
