@@ -326,7 +326,7 @@ class CreateActionsState extends State<CreateActions> {
                             GestureDetector(
                               onTap: () {
                                 if (_channelController.value.text != '' &&
-                                    _channels.length < 4) {
+                                    _channels.length < 3) {
                                   setState(() {
                                     _channels
                                         .add(_channelController.value.text);
