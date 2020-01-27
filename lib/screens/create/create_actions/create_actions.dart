@@ -15,7 +15,6 @@ class CreateActions extends StatefulWidget {
   const CreateActions({
     Key key,
     @required this.expressionType,
-    @required this.channels,
     @required this.expressionContext,
     @required this.expression,
     @required this.address,
@@ -24,9 +23,6 @@ class CreateActions extends StatefulWidget {
   /// Represents the type of expression being created. Possible values include
   /// "LongForm", "ShortForm", "EventForm", etc
   final String expressionType;
-
-  /// This is the name of the channel to which the expression is being posted.
-  final List<String> channels;
 
   /// This represents the Expression's context. Please see [ExpressionContext]
   final ExpressionContext expressionContext;
@@ -48,6 +44,7 @@ class CreateActionsState extends State<CreateActions> {
 
   String _address;
   CentralizedExpression _expression;
+  List<String> _channels = <String>[];
 
   // instantiate TextEditingController to pass to TextField widget
   TextEditingController _channelController;
@@ -262,97 +259,181 @@ class CreateActionsState extends State<CreateActions> {
   // Build bottom modal to add channels to expression
   void _buildChannelsModal(BuildContext context) {
     showModalBottomSheet(
-      isScrollControlled: true,
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          color: Colors.transparent,
-          child: Container(
-            height: MediaQuery.of(context).size.height * .6,
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.background,
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10),
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      height: 5,
-                      width: MediaQuery.of(context).size.width * .1,
-                      decoration: BoxDecoration(
-                          color: Theme.of(context).dividerColor,
-                          borderRadius: BorderRadius.circular(100)),
-                    ),
-                  ],
+        isScrollControlled: true,
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+            return Container(
+              color: Colors.transparent,
+              child: Container(
+                height: MediaQuery.of(context).size.height * .6,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.background,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10),
+                  ),
                 ),
-                const SizedBox(height: 25),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Expanded(
-                      child: Container(
+                child: Stack(children: <Widget>[
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
                         decoration: BoxDecoration(
                           border: Border(
                             bottom: BorderSide(
-                              color: Theme.of(context).dividerColor,
-                              width: .75,
+                                color: Theme.of(context).dividerColor,
+                                width: .75),
+                          ),
+                        ),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: TextField(
+                                controller: _channelController,
+                                buildCounter: (
+                                  BuildContext context, {
+                                  int currentLength,
+                                  int maxLength,
+                                  bool isFocused,
+                                }) =>
+                                    null,
+                                decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.all(0.0),
+                                  hintText: 'add up to three channels',
+                                  border: InputBorder.none,
+                                  hintStyle: TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w500,
+                                      color:
+                                          Theme.of(context).primaryColorLight),
+                                ),
+                                cursorColor: Theme.of(context).primaryColor,
+                                cursorWidth: 1,
+                                maxLines: 1,
+                                style: TextStyle(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w500,
+                                    color: Theme.of(context).primaryColor),
+                                maxLength: 80,
+                                textInputAction: TextInputAction.search,
+                              ),
                             ),
-                          ),
+                            GestureDetector(
+                              onTap: () {
+                                if (_channelController.value.text != '' &&
+                                    _channels.length < 4) {
+                                  setState(() {
+                                    _channels
+                                        .add(_channelController.value.text);
+                                  });
+                                  _channelController.value =
+                                      const TextEditingValue(text: '');
+                                }
+                              },
+                              child: Container(
+                                width: 42,
+                                color: Colors.transparent,
+                                alignment: Alignment.centerRight,
+                                child: Icon(
+                                  Icons.add,
+                                  size: 20,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                              ),
+                            )
+                          ],
                         ),
-                        child: TextField(
-                          controller: _channelController,
-                          buildCounter: (
-                            BuildContext context, {
-                            int currentLength,
-                            int maxLength,
-                            bool isFocused,
-                          }) =>
-                              null,
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.all(0),
-                            border: InputBorder.none,
-                            hintText: 'add up to five channels',
-                            hintStyle: Theme.of(context).textTheme.caption,
-                          ),
-                          cursorColor: Theme.of(context).primaryColorDark,
-                          cursorWidth: 2,
-                          maxLines: null,
-                          style: Theme.of(context).textTheme.caption,
-                          maxLength: 80,
-                          textInputAction: TextInputAction.done,
+                      ),
+                      Expanded(
+                        child: ListView(
+                          children: const <Widget>[
+                            // ChannelPreview(
+                            //   channel: 'design',
+                            // ),
+                            // ChannelPreview(
+                            //   channel: 'technology',
+                            // ),
+                            // ChannelPreview(
+                            //   channel: 'austrian economics',
+                            // )
+                          ],
                         ),
-                      ),
-                    ),
-                  ],
-                ),
-                Expanded(
-                  child: ListView(
-                    children: const <Widget>[
-                      ChannelPreview(
-                        channel: 'design',
-                      ),
-                      ChannelPreview(
-                        channel: 'technology',
-                      ),
-                      ChannelPreview(
-                        channel: 'austrian economics',
                       ),
                     ],
                   ),
-                )
-              ],
-            ),
-          ),
-        );
-      },
-    );
+                  _channels.isNotEmpty
+                      ? Positioned(
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            padding: const EdgeInsets.symmetric(vertical: 20),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).backgroundColor,
+                              border: Border(
+                                top: BorderSide(
+                                    color: Theme.of(context).dividerColor,
+                                    width: .75),
+                              ),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Row(
+                                  children: _channels
+                                      .map(
+                                        (String channel) => GestureDetector(
+                                          onDoubleTap: () {
+                                            print(_channels.indexOf(channel));
+                                            setState(() {
+                                              _channels.removeAt(
+                                                _channels.indexOf(channel),
+                                              );
+                                            });
+                                          },
+                                          child: Container(
+                                            margin: const EdgeInsets.only(
+                                                right: 15),
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 15, vertical: 10),
+                                            color:
+                                                Theme.of(context).dividerColor,
+                                            child: Text(
+                                              channel,
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Theme.of(context)
+                                                      .primaryColor),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                      .toList(),
+                                ),
+                                const SizedBox(height: 10),
+                                Text(
+                                  'Double tap to remove',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                      color:
+                                          Theme.of(context).primaryColorLight),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      : const SizedBox(),
+                ]),
+              ),
+            );
+          });
+        });
   }
 }
 

@@ -160,7 +160,6 @@ class JuntoCreateState extends State<JuntoCreate> {
           return CreateActions(
             expressionType: _expressionType,
             address: widget.address,
-            channels: widget.channels,
             expressionContext: widget.expressionContext,
             expression: getExpression(),
           );
