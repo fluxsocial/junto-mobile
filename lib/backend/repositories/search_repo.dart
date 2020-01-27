@@ -15,6 +15,7 @@ class SearchRepo extends SearchService {
       query,
       paginationPosition: paginationPosition,
       lastTimeStamp: lastTimeStamp,
+      username: username,
     );
   }
 
