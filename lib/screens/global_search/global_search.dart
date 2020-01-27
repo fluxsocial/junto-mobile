@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
+import 'package:provider/provider.dart';
 
 class GlobalSearch extends StatefulWidget {
   const GlobalSearch({Key key, this.onProfileSelected}) : super(key: key);
@@ -40,7 +40,7 @@ class _GlobalSearchState extends State<GlobalSearch> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _searchRepo = Provider.of<SearchRepo>(context);
-    _searchFuture = _searchRepo.searchMembers(query);
+    _searchFuture = _searchRepo.searchMembers(query, username: true);
   }
 
   @override

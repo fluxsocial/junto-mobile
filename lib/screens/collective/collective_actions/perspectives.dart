@@ -1,14 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:flutter/cupertino.dart';
-import 'package:junto_beta_mobile/models/models.dart';
+import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/screens/collective/collective_actions/create_perspective.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart'
     show JuntoException;
 import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/screens/collective/collective_actions/create_perspective.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class JuntoPerspectives extends StatefulWidget {
   const JuntoPerspectives({this.userProfile, this.changePerspective});
@@ -45,6 +46,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
 
   Future<List<CentralizedPerspective>> _fetchUserPerspectives(String address) {
     try {
+      assert(address != null);
       return Provider.of<UserRepo>(context).getUserPerspective(_userAddress);
     } on JuntoException catch (error) {
       debugPrint('error fethcing perspectives ${error.errorCode}');
