@@ -16,6 +16,7 @@ class JuntoPerspectives extends StatefulWidget {
 
   final UserData userProfile;
   final Function changePerspective;
+
   @override
   State<StatefulWidget> createState() {
     return JuntoPerspectivesState();
@@ -29,7 +30,6 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
   @override
   void initState() {
     super.initState();
-
     getUserInformation();
   }
 
@@ -111,16 +111,18 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
             child: ListView(
           padding: const EdgeInsets.all(0),
           children: <Widget>[
-            _buildPerspective(CentralizedPerspective(
-              address: null,
-              name: 'JUNTO',
-              about: null,
-              creator: null,
-              createdAt: null,
-              isDefault: null,
-              userCount: null,
-              users: null,
-            )),
+            _buildPerspective(
+              const CentralizedPerspective(
+                address: null,
+                name: 'JUNTO',
+                about: null,
+                creator: null,
+                createdAt: null,
+                isDefault: null,
+                userCount: null,
+                users: null,
+              ),
+            ),
             _userAddress != null
                 ? FutureBuilder<List<CentralizedPerspective>>(
                     future: _fetchUserPerspectives(_userAddress),
@@ -165,9 +167,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
 
   Widget _buildPerspective(CentralizedPerspective perspective) {
     return GestureDetector(
-      onTap: () {
-        widget.changePerspective(perspective);
-      },
+      onTap: () => widget.changePerspective(perspective),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 20),
         decoration: BoxDecoration(
