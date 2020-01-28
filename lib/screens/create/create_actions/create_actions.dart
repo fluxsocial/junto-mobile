@@ -44,20 +44,20 @@ class CreateActionsState extends State<CreateActions> {
 
   String _address;
   CentralizedExpression _expression;
-  List<String> _channels = <String>[];
+  final ValueNotifier<List<String>> _channels = ValueNotifier<List<String>>(
+    <String>[],
+  );
 
   // instantiate TextEditingController to pass to TextField widget
   TextEditingController _channelController;
+
+  List<String> get channel => _channels.value;
 
   @override
   void initState() {
     super.initState();
     _channelController = TextEditingController();
     _address = widget.address;
-    // _expression = CentralizedExpression(
-    //     type: widget.expressionType,
-    //     expressionData: widget.expression.toMap(),
-    //     context: widget.expressionContext);
   }
 
   @override
@@ -73,12 +73,13 @@ class CreateActionsState extends State<CreateActions> {
             await Provider.of<ExpressionRepo>(context, listen: false)
                 .createPhoto('.png', widget.expression['image']);
         _expression = CentralizedExpression(
-            type: widget.expressionType,
-            expressionData: CentralizedPhotoFormExpression(
-                    image: _photoKey, caption: widget.expression['caption'])
-                .toMap(),
-            context: widget.expressionContext,
-            channels: _channels);
+          type: widget.expressionType,
+          expressionData: CentralizedPhotoFormExpression(
+                  image: _photoKey, caption: widget.expression['caption'])
+              .toMap(),
+          context: widget.expressionContext,
+          channels: channel,
+        );
       } else if (widget.expressionType == 'EventForm') {
         print(widget.expression['photo']);
         String eventPhoto = '';
@@ -90,28 +91,28 @@ class CreateActionsState extends State<CreateActions> {
           print(eventPhoto);
         }
         _expression = CentralizedExpression(
-            type: widget.expressionType,
-            expressionData: CentralizedEventFormExpression(
-                photo: eventPhoto,
-                description: widget.expression['description'],
-                title: widget.expression['title'],
-                location: widget.expression['location'],
-                startTime: widget.expression['startTime'],
-                endTime: widget.expression['endTime'],
-                facilitators: <String>[],
-                members: <String>[]).toMap(),
-            channels: _channels,
-            context: widget.expressionContext);
+          type: widget.expressionType,
+          expressionData: CentralizedEventFormExpression(
+              photo: eventPhoto,
+              description: widget.expression['description'],
+              title: widget.expression['title'],
+              location: widget.expression['location'],
+              startTime: widget.expression['startTime'],
+              endTime: widget.expression['endTime'],
+              facilitators: <String>[],
+              members: <String>[]).toMap(),
+          channels: channel,
+          context: widget.expressionContext,
+        );
       } else {
         _expression = CentralizedExpression(
-            type: widget.expressionType,
-            expressionData: widget.expression.toMap(),
-            context: widget.expressionContext,
-            channels: _channels);
+          type: widget.expressionType,
+          expressionData: widget.expression.toMap(),
+          context: widget.expressionContext,
+          channels: channel,
+        );
       }
-
       JuntoLoader.showLoader(context);
-
       await Provider.of<ExpressionRepo>(context, listen: false)
           .createExpression(
         _expression,
@@ -260,181 +261,14 @@ class CreateActionsState extends State<CreateActions> {
   // Build bottom modal to add channels to expression
   void _buildChannelsModal(BuildContext context) {
     showModalBottomSheet(
-        isScrollControlled: true,
-        context: context,
-        builder: (BuildContext context) {
-          return StatefulBuilder(
-              builder: (BuildContext context, StateSetter setState) {
-            return Container(
-              color: Colors.transparent,
-              child: Container(
-                height: MediaQuery.of(context).size.height * .6,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.background,
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10),
-                  ),
-                ),
-                child: Stack(children: <Widget>[
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                                color: Theme.of(context).dividerColor,
-                                width: .75),
-                          ),
-                        ),
-                        child: Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: TextField(
-                                controller: _channelController,
-                                buildCounter: (
-                                  BuildContext context, {
-                                  int currentLength,
-                                  int maxLength,
-                                  bool isFocused,
-                                }) =>
-                                    null,
-                                decoration: InputDecoration(
-                                  contentPadding: const EdgeInsets.all(0.0),
-                                  hintText: 'add up to three channels',
-                                  border: InputBorder.none,
-                                  hintStyle: TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w500,
-                                      color:
-                                          Theme.of(context).primaryColorLight),
-                                ),
-                                cursorColor: Theme.of(context).primaryColor,
-                                cursorWidth: 1,
-                                maxLines: 1,
-                                style: TextStyle(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w500,
-                                    color: Theme.of(context).primaryColor),
-                                maxLength: 80,
-                                textInputAction: TextInputAction.search,
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                if (_channelController.value.text != '' &&
-                                    _channels.length < 3) {
-                                  setState(() {
-                                    _channels
-                                        .add(_channelController.value.text);
-                                  });
-                                  _channelController.value =
-                                      const TextEditingValue(text: '');
-                                }
-                              },
-                              child: Container(
-                                width: 42,
-                                color: Colors.transparent,
-                                alignment: Alignment.centerRight,
-                                child: Icon(
-                                  Icons.add,
-                                  size: 20,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: ListView(
-                          children: const <Widget>[
-                            // ChannelPreview(
-                            //   channel: 'design',
-                            // ),
-                            // ChannelPreview(
-                            //   channel: 'technology',
-                            // ),
-                            // ChannelPreview(
-                            //   channel: 'austrian economics',
-                            // )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  _channels.isNotEmpty
-                      ? Positioned(
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            padding: const EdgeInsets.symmetric(vertical: 20),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).backgroundColor,
-                              border: Border(
-                                top: BorderSide(
-                                    color: Theme.of(context).dividerColor,
-                                    width: .75),
-                              ),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Row(
-                                  children: _channels
-                                      .map(
-                                        (String channel) => GestureDetector(
-                                          onDoubleTap: () {
-                                            print(_channels.indexOf(channel));
-                                            setState(() {
-                                              _channels.removeAt(
-                                                _channels.indexOf(channel),
-                                              );
-                                            });
-                                          },
-                                          child: Container(
-                                            margin: const EdgeInsets.only(
-                                                right: 15),
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 15, vertical: 10),
-                                            color:
-                                                Theme.of(context).dividerColor,
-                                            child: Text(
-                                              channel,
-                                              style: TextStyle(
-                                                  fontSize: 14,
-                                                  color: Theme.of(context)
-                                                      .primaryColor),
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                      .toList(),
-                                ),
-                                const SizedBox(height: 10),
-                                Text(
-                                  'Double tap to remove',
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500,
-                                      color:
-                                          Theme.of(context).primaryColorLight),
-                                ),
-                              ],
-                            ),
-                          ),
-                        )
-                      : const SizedBox(),
-                ]),
-              ),
-            );
-          });
-        });
+      isScrollControlled: true,
+      context: context,
+      builder: (BuildContext context) {
+        return ChannelSearchModal(
+          channels: _channels,
+        );
+      },
+    );
   }
 }
 
