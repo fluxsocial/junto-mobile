@@ -358,3 +358,27 @@ class QueryResults<T> {
   final List<T> results;
   final String lastTimestamp;
 }
+
+class Channel with RFC3339 {
+  const Channel({
+    @required this.name,
+    @required this.createdAt,
+  });
+
+  factory Channel.fromMap(Map<String, dynamic> map) {
+    return Channel(
+      name: map['name'] as String,
+      createdAt: RFC3339.parseRfc3339(map['created_at']),
+    );
+  }
+
+  final String name;
+  final DateTime createdAt;
+
+  Map<String, dynamic> toMap() {
+    return <String, String>{
+      'name': name,
+      'created_at': createdAt.toIso8601String(),
+    };
+  }
+}

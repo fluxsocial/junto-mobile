@@ -20,7 +20,7 @@ class SearchRepo extends SearchService {
   }
 
   @override
-  Future<QueryResults<String>> searchChannel(String query,
+  Future<QueryResults<Channel>> searchChannel(String query,
       {int paginationPosition = 0, DateTime lastTimeStamp}) {
     return _searchService.searchChannel(
       query,
