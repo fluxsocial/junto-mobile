@@ -21,11 +21,17 @@ class SearchRepo extends SearchService {
 
   @override
   Future<QueryResults<Channel>> searchChannel(String query,
-      {int paginationPosition = 0, DateTime lastTimeStamp}) {
-    return _searchService.searchChannel(
-      query,
-      paginationPosition: paginationPosition,
-      lastTimeStamp: lastTimeStamp,
+      {int paginationPosition = 0, DateTime lastTimeStamp}) async {
+    if (query != null && query.isNotEmpty) {
+      return _searchService.searchChannel(
+        query,
+        paginationPosition: paginationPosition,
+        lastTimeStamp: lastTimeStamp,
+      );
+    }
+    return QueryResults<Channel>(
+      results: <Channel>[],
+      lastTimestamp: DateTime.now().toIso8601String(),
     );
   }
 
