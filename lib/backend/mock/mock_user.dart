@@ -142,4 +142,12 @@ class MockUserService implements UserService {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     return List<UserProfile>.generate(10, (int index) => kUserProfile);
   }
+
+  @override
+  Future<CentralizedPerspective> updatePerspective(
+    CentralizedPerspective perspective,
+  ) async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    return kPerspectives.first;
+  }
 }

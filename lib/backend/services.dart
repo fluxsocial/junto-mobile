@@ -146,6 +146,10 @@ abstract class UserService {
   /// Allows the user to create a [Perspective] on the server.
   Future<CentralizedPerspective> createPerspective(Perspective perspective);
 
+  Future<CentralizedPerspective> updatePerspective(
+    CentralizedPerspective perspective,
+  );
+
   /// Adds the given user to a perspective. The perspective address and user
   /// address must be supplied.
   Future<UserProfile> addUserToPerspective(
