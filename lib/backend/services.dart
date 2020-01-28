@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:junto_beta_mobile/models/models.dart';
 
 abstract class SearchService {
-  /// Retures a [QueryResults] contains a list of [UserProfile] matching the [query]
+  /// Returns a [QueryResults] contains a list of [UserProfile] matching the [query]
   Future<QueryResults<UserProfile>> searchMembers(
     String query, {
     bool username = false,
@@ -11,14 +11,14 @@ abstract class SearchService {
     DateTime lastTimeStamp,
   });
 
-  /// Retures a [QueryResults] contains the names of channels matching the [query]
-  Future<QueryResults<String>> searchChannel(
+  /// Returns a [QueryResults] contains the names of channels matching the [query]
+  Future<QueryResults<Channel>> searchChannel(
     String query, {
     int paginationPosition = 0,
     DateTime lastTimeStamp,
   });
 
-  /// Retures a [QueryResults] contains a list of [Group] matching the [query]
+  /// Returns a [QueryResults] contains a list of [Group] matching the [query]
   Future<QueryResults<Group>> searchSphere(
     String query, {
     int paginationPosition = 0,
