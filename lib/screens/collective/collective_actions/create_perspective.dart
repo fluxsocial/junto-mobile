@@ -165,6 +165,7 @@ class CreatePerspectiveState extends State<CreatePerspective> {
             _currentIndex = index;
           });
         },
+        physics: const NeverScrollableScrollPhysics(),
         controller: _pageController,
         children: <Widget>[
           Column(
@@ -219,13 +220,19 @@ class CreatePerspectiveState extends State<CreatePerspective> {
                   ListView(
                     padding: const EdgeInsets.only(left: 10),
                     children: <Widget>[
-                      MemberPreviewSelect(),
+                      MemberPreviewSelect(
+                        onSelect: () {},
+                        onDeselect: () {},
+                      ),
                     ],
                   ),
                   ListView(
                     padding: const EdgeInsets.only(left: 10),
                     children: <Widget>[
-                      MemberPreviewSelect(),
+                      MemberPreviewSelect(
+                        onSelect: () {},
+                        onDeselect: () {},
+                      ),
                     ],
                   ),
                 ],
