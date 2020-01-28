@@ -136,7 +136,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                       name: _userProfile.user.name,
                     ),
                     SliverPersistentHeader(
-                      delegate: JuntoAppBarDelegate(
+                      delegate: JuntoAppBarDelegate( 
                         TabBar(
                           labelPadding: const EdgeInsets.all(0),
                           isScrollable: true,
