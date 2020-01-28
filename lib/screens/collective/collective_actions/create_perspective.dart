@@ -220,51 +220,13 @@ class CreatePerspectiveState extends State<CreatePerspective> {
                     padding: const EdgeInsets.only(left: 10),
                     children: <Widget>[
                       MemberPreviewSelect(),
-                      // Row(
-                      //   children: <Widget>[
-                      //     Icon(Icons.search,
-                      //         size: 20,
-                      //         color: Theme.of(context).primaryColorLight),
-                      //     const SizedBox(width: 10),
-                      //     Expanded(
-                      //       child: TextField(
-                      //         buildCounter: (
-                      //           BuildContext context, {
-                      //           int currentLength,
-                      //           int maxLength,
-                      //           bool isFocused,
-                      //         }) =>
-                      //             null,
-                      //         decoration: InputDecoration(
-                      //             contentPadding: const EdgeInsets.all(0),
-                      //             border: InputBorder.none,
-                      //             hintText: 'search',
-                      //             hintStyle: TextStyle(
-                      //                 fontSize: 17,
-                      //                 fontWeight: FontWeight.w500,
-                      //                 color:
-                      //                     Theme.of(context).primaryColorLight)),
-                      //         cursorColor: Theme.of(context).primaryColorDark,
-                      //         cursorWidth: 2,
-                      //         maxLines: 1,
-                      //         style: TextStyle(
-                      //           fontSize: 17,
-                      //           fontWeight: FontWeight.w600,
-                      //           color: Theme.of(context).primaryColor,
-                      //         ),
-                      //         maxLength: 80,
-                      //         textInputAction: TextInputAction.done,
-                      //       ),
-                      //     ),
-                      //   ],
-                      // )
                     ],
                   ),
                   ListView(
-                    physics: const ClampingScrollPhysics(),
-                    shrinkWrap: true,
                     padding: const EdgeInsets.only(left: 10),
-                    children: <Widget>[],
+                    children: <Widget>[
+                      MemberPreviewSelect(),
+                    ],
                   ),
                 ],
               ),
@@ -312,7 +274,6 @@ class CreatePerspectiveState extends State<CreatePerspective> {
       ),
     );
   }
-
 }
 
 class JuntoAppBarDelegate extends SliverPersistentHeaderDelegate {
