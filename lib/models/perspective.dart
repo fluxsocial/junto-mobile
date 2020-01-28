@@ -116,27 +116,27 @@ class PerspectiveResponse {
 
 /// Object representation of a perspective returned by the centralized server.
 class CentralizedPerspective {
-  CentralizedPerspective({
+  const CentralizedPerspective({
     @required this.address,
     @required this.name,
     @required this.creator,
     @required this.createdAt,
     @required this.isDefault,
-    @required this.about,
     this.userCount,
     this.users,
+    @required this.about,
   });
 
   factory CentralizedPerspective.fromMap(Map<String, dynamic> map) {
     return CentralizedPerspective(
       address: map['address'] as String,
       name: map['name'] as String,
-      about: map['about'] as String,
       creator: map['creator'] as String,
       createdAt: RFC3339.parseRfc3339(map['created_at']),
       isDefault: map['is_default'] as bool,
-      userCount: map['user_count'] != null ? map['user_count'] as int : null,
-      users: map['users'] != null ? _parseUsers(map['users']) : null,
+      userCount: map['user_count'] as int,
+      users: _parseUsers(map['users']),
+      about: map['about'] as String,
     );
   }
 
@@ -162,16 +162,26 @@ class CentralizedPerspective {
   /// Purpose of the given perspective
   final String about;
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'address': address,
-      'name': name,
-      'creator': creator,
-      'created_at': createdAt?.toIso8601String(),
-      'is_default': isDefault,
-      'user_count': userCount,
-      'about': about,
-    };
+  CentralizedPerspective copyWith({
+    String address,
+    String name,
+    String creator,
+    DateTime createdAt,
+    bool isDefault,
+    int userCount,
+    List<UserProfile> users,
+    String about,
+  }) {
+    return CentralizedPerspective(
+      address: address ?? this.address,
+      name: name ?? this.name,
+      creator: creator ?? this.creator,
+      createdAt: createdAt ?? this.createdAt,
+      isDefault: isDefault ?? this.isDefault,
+      userCount: userCount ?? this.userCount,
+      users: users ?? this.users,
+      about: about ?? this.about,
+    );
   }
 
   static List<UserProfile> _parseUsers(List<dynamic> _listData) {
@@ -181,5 +191,18 @@ class CentralizedPerspective {
       }).toList();
     }
     return <UserProfile>[];
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'address': address,
+      'name': name,
+      'creator': creator,
+      'created_at': createdAt.toIso8601String(),
+      'is_default': isDefault,
+      'user_count': userCount,
+      'users': users,
+      'about': about,
+    };
   }
 }
