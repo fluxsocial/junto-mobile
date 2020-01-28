@@ -7,6 +7,7 @@ import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/re
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 
 class JuntoRelationships extends StatelessWidget {
   JuntoRelationships(this.userAddress, this.userFollowPerspectiveAddress);
@@ -249,39 +250,5 @@ class JuntoRelationships extends StatelessWidget {
         ]);
       },
     );
-  }
-}
-
-/// Custom [SliverPersistentHeaderDelegate] used on Den.
-class JuntoAppBarDelegate extends SliverPersistentHeaderDelegate {
-  JuntoAppBarDelegate(this._tabBar);
-
-  final TabBar _tabBar;
-
-  @override
-  double get minExtent => _tabBar.preferredSize.height + .5;
-
-  @override
-  double get maxExtent => _tabBar.preferredSize.height + .5;
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.background,
-        border: Border(
-          bottom: BorderSide(color: Theme.of(context).dividerColor, width: .5),
-        ),
-      ),
-      width: MediaQuery.of(context).size.width,
-      child: _tabBar,
-    );
-  }
-
-  @override
-  bool shouldRebuild(JuntoAppBarDelegate oldDelegate) {
-    return false;
   }
 }

@@ -8,6 +8,7 @@ import 'package:junto_beta_mobile/utils/junto_exception.dart'
     show JuntoException;
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview_select.dart';
 
 class CreatePerspective extends StatefulWidget {
@@ -280,38 +281,5 @@ class CreatePerspectiveState extends State<CreatePerspective> {
         textInputAction: TextInputAction.done,
       ),
     );
-  }
-}
-
-class JuntoAppBarDelegate extends SliverPersistentHeaderDelegate {
-  JuntoAppBarDelegate(this._tabBar);
-
-  final TabBar _tabBar;
-
-  @override
-  double get minExtent => _tabBar.preferredSize.height + .5;
-
-  @override
-  double get maxExtent => _tabBar.preferredSize.height + .5;
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.background,
-        border: Border(
-          bottom: BorderSide(color: Theme.of(context).dividerColor, width: .5),
-        ),
-      ),
-      width: MediaQuery.of(context).size.width,
-      child: _tabBar,
-    );
-  }
-
-  @override
-  bool shouldRebuild(JuntoAppBarDelegate oldDelegate) {
-    return false;
   }
 }

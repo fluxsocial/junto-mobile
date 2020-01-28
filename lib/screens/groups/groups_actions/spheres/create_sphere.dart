@@ -8,8 +8,10 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
+import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview_select.dart';
 
 class CreateSphere extends StatefulWidget {
   @override
@@ -31,6 +33,8 @@ class CreateSphereState extends State<CreateSphere> {
   TextEditingController sphereHandleController;
   TextEditingController sphereDescriptionController;
   String _currentPrivacy = 'Public';
+
+  final List<String> _tabs = <String>['Subscriptions', 'Connections'];
 
   Future<void> _onPickPressed() async {
     final File image = await ImagePicker.pickImage(source: ImageSource.gallery);
@@ -121,8 +125,7 @@ class CreateSphereState extends State<CreateSphere> {
                           width: 48,
                           alignment: Alignment.centerLeft,
                           child: Icon(CustomIcons.back,
-                              size: 20,
-                              color: Theme.of(context).primaryColor),
+                              size: 20, color: Theme.of(context).primaryColor),
                         ),
                       )
                     : GestureDetector(
@@ -142,8 +145,10 @@ class CreateSphereState extends State<CreateSphere> {
                               color: Theme.of(context).primaryColorDark),
                         ),
                       ),
-                Text('Create Sphere',
-                    style: Theme.of(context).textTheme.title),
+                _currentIndex == 0
+                    ? Text('Create Sphere',
+                        style: Theme.of(context).textTheme.subhead)
+                    : const SizedBox(),
                 _currentIndex == 2
                     ? GestureDetector(
                         onTap: () {
@@ -272,6 +277,7 @@ class CreateSphereState extends State<CreateSphere> {
                 ),
               ),
             ]),
+      const SizedBox(height: 10),
       Container(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         width: MediaQuery.of(context).size.width,
@@ -287,7 +293,7 @@ class CreateSphereState extends State<CreateSphere> {
           decoration: InputDecoration(
               border: InputBorder.none,
               hintText: 'Name of sphere',
-              hintStyle: Theme.of(context).textTheme.title),
+              hintStyle: Theme.of(context).textTheme.subhead),
           cursorColor: JuntoPalette.juntoGrey,
           cursorWidth: 2,
           maxLines: null,
@@ -296,6 +302,7 @@ class CreateSphereState extends State<CreateSphere> {
           textInputAction: TextInputAction.done,
         ),
       ),
+      const SizedBox(height: 10),
       Container(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: TextField(
@@ -309,7 +316,7 @@ class CreateSphereState extends State<CreateSphere> {
               null,
           decoration: InputDecoration(
               border: InputBorder.none,
-              hintText: 'Choose a unique username',
+              hintText: 'Unique username',
               hintStyle: Theme.of(context).textTheme.caption),
           cursorColor: Theme.of(context).primaryColorDark,
           cursorWidth: 2,
@@ -319,20 +326,14 @@ class CreateSphereState extends State<CreateSphere> {
           textInputAction: TextInputAction.done,
         ),
       ),
+      const SizedBox(height: 10),
       Container(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: TextField(
           controller: sphereDescriptionController,
-          // buildCounter: (
-          //   BuildContext context, {
-          //   int currentLength,
-          //   int maxLength,
-          //   bool isFocused,
-          // }) =>
-          //     null,
           decoration: InputDecoration(
             border: InputBorder.none,
-            hintText: 'About your sphere',
+            hintText: 'About sphere',
             hintStyle: Theme.of(context).textTheme.caption,
             counterStyle: const TextStyle(
               fontSize: 12,
@@ -351,69 +352,59 @@ class CreateSphereState extends State<CreateSphere> {
   }
 
   Widget _createSphereTwo() {
-    return ListView(
-      children: <Widget>[
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 10),
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: Theme.of(context).dividerColor,
-                    width: .75,
-                  ),
+    return DefaultTabController(
+      length: _tabs.length,
+      child: NestedScrollView(
+        physics: const ClampingScrollPhysics(),
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            SliverPersistentHeader(
+              delegate: JuntoAppBarDelegate(
+                TabBar(
+                  labelPadding: const EdgeInsets.all(0),
+                  isScrollable: true,
+                  labelColor: Theme.of(context).primaryColorDark,
+                  labelStyle: Theme.of(context).textTheme.subhead,
+                  indicatorWeight: 0.0001,
+                  tabs: <Widget>[
+                    for (String name in _tabs)
+                      Container(
+                        margin: const EdgeInsets.only(right: 24),
+                        color: Theme.of(context).colorScheme.background,
+                        child: Tab(
+                          text: name,
+                        ),
+                      ),
+                  ],
                 ),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Icon(
-                    Icons.search,
-                    size: 20,
-                    color: Theme.of(context).primaryColorLight,
-                  ),
-                  const SizedBox(width: 7.5),
-                  Expanded(
-                    child: Transform.translate(
-                      offset: const Offset(0.0, 2),
-                      child: TextField(
-                        buildCounter: (
-                          BuildContext context, {
-                          int currentLength,
-                          int maxLength,
-                          bool isFocused,
-                        }) =>
-                            null,
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.all(0),
-                          border: InputBorder.none,
-                          hintText: 'Add members to your sphere',
-                          hintStyle: TextStyle(
-                              color: Theme.of(context).primaryColorLight,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        cursorColor: Theme.of(context).primaryColorDark,
-                        cursorWidth: 1,
-                        maxLines: null,
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColorDark,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500),
-                        maxLength: 80,
-                        textInputAction: TextInputAction.done,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              pinned: true,
             ),
-            const SizedBox(height: 10),
+          ];
+        },
+        body: TabBarView(
+          children: <Widget>[
+            ListView(
+              padding: const EdgeInsets.only(left: 10),
+              children: <Widget>[
+                MemberPreviewSelect(
+                  onSelect: () {},
+                  onDeselect: () {},
+                ),
+              ],
+            ),
+            ListView(
+              padding: const EdgeInsets.only(left: 10),
+              children: <Widget>[
+                MemberPreviewSelect(
+                  onSelect: () {},
+                  onDeselect: () {},
+                ),
+              ],
+            ),
           ],
         ),
-      ],
+      ),
     );
   }
 

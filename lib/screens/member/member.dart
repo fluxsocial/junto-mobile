@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,6 +14,7 @@ import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/user_expressions.dart';
+import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:provider/provider.dart';
 
 class JuntoMember extends StatefulWidget {
@@ -264,39 +264,6 @@ class _ProfileDetails extends StatelessWidget {
   }
 }
 
-/// Custom [SliverPersistentHeaderDelegate] used on Den.
-class JuntoAppBarDelegate extends SliverPersistentHeaderDelegate {
-  JuntoAppBarDelegate(this._tabBar);
-
-  final TabBar _tabBar;
-
-  @override
-  double get minExtent => _tabBar.preferredSize.height + .5;
-
-  @override
-  double get maxExtent => _tabBar.preferredSize.height + .5;
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.background,
-        border: Border(
-          bottom: BorderSide(color: Theme.of(context).dividerColor, width: .5),
-        ),
-      ),
-      width: MediaQuery.of(context).size.width,
-      child: _tabBar,
-    );
-  }
-
-  @override
-  bool shouldRebuild(JuntoAppBarDelegate oldDelegate) {
-    return false;
-  }
-}
 
 class MemberRelationshipsModal extends StatelessWidget {
   const MemberRelationshipsModal({

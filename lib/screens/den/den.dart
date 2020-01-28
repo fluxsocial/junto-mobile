@@ -19,6 +19,7 @@ import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Displays the user's DEN or "profile screen"
@@ -136,7 +137,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                       name: _userProfile.user.name,
                     ),
                     SliverPersistentHeader(
-                      delegate: JuntoAppBarDelegate( 
+                      delegate: JuntoAppBarDelegate(
                         TabBar(
                           labelPadding: const EdgeInsets.all(0),
                           isScrollable: true,
