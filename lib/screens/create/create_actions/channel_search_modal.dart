@@ -145,26 +145,24 @@ class _ChannelSearchModalState extends State<ChannelSearchModal> {
             Row(
               children: <Widget>[
                 for (String channel in _channels)
-                  Expanded(
-                    child: GestureDetector(
-                      onDoubleTap: () {
-                        setState(() {
-                          _channels.removeAt(
-                            _channels.indexOf(channel),
-                          );
-                        });
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.only(right: 15),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 10),
-                        color: Theme.of(context).dividerColor,
-                        child: Text(
-                          channel,
-                          style: TextStyle(
-                              fontSize: 14,
-                              color: Theme.of(context).primaryColor),
-                        ),
+                  GestureDetector(
+                    onDoubleTap: () {
+                      setState(() {
+                        _channels.removeAt(
+                          _channels.indexOf(channel),
+                        );
+                      });
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(right: 15),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 10),
+                      color: Theme.of(context).dividerColor,
+                      child: Text(
+                        channel,
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Theme.of(context).primaryColor),
                       ),
                     ),
                   ),
