@@ -82,26 +82,17 @@ class GroupServiceCentralized implements GroupService {
     String groupAddress,
     ExpressionQueryParams params,
   ) async {
-    final SharedPreferences _prefs = await SharedPreferences.getInstance();
-    final String authKey = _prefs.getString('auth');
-    final Uri _uri = Uri.http(
-      END_POINT,
-      '/groups/$groupAddress/expressions',
-      <String, String>{'direct_expressions': 'true'},
-    );
-    final http.Response _serverResponse = await http.get(
-      _uri,
-      headers: <String, String>{
-        'Content-Type': 'application/json',
-        'cookie': 'auth=$authKey',
-      },
-    );
+    final http.Response _serverResponse =
+        await client.get('/groups/$groupAddress/expressions');
 
-    final Map<String, dynamic> items =
-        JuntoHttp.handleResponse(_serverResponse);
-    return (items['direct_posts'] as List<dynamic>)
-        .map((dynamic data) => CentralizedExpressionResponse.fromMap(data))
-        .toList();
+    print(_serverResponse.body);
+    print(_serverResponse.statusCode);
+
+    // final Map<String, dynamic> items =
+    //     JuntoHttp.handleResponse(_serverResponse);
+    // return (items['direct_posts'] as List<dynamic>)
+    //     .map((dynamic data) => CentralizedExpressionResponse.fromMap(data))
+    //     .toList();
   }
 
   @override

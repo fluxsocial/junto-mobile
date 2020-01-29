@@ -49,6 +49,8 @@ class JuntoCreateState extends State<JuntoCreate> {
   GlobalKey<CreatePhotoState> _photoFormKey;
   GlobalKey<CreateEventState> _eventKey;
 
+
+
   @override
   void initState() {
     super.initState();
@@ -71,6 +73,7 @@ class JuntoCreateState extends State<JuntoCreate> {
     isEditing.dispose();
     super.dispose();
   }
+
 
   // Build expression template based off state
   Widget _buildTemplate() {

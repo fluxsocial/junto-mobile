@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:async/async.dart' show AsyncMemoizer;
 
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
@@ -11,6 +12,7 @@ import 'package:junto_beta_mobile/screens/create/create_actions/create_actions_a
 import 'package:junto_beta_mobile/screens/create/create_actions/channel_search_modal.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -42,7 +44,7 @@ class CreateActions extends StatefulWidget {
   State<StatefulWidget> createState() => CreateActionsState();
 }
 
-class CreateActionsState extends State<CreateActions> {
+class CreateActionsState extends State<CreateActions> with ListDistinct {
   // user information
   String _userAddress;
   UserData _userProfile;
@@ -62,6 +64,9 @@ class CreateActionsState extends State<CreateActions> {
   TextEditingController _channelController;
 
   List<String> get channel => _channels.value;
+
+  final AsyncMemoizer<UserGroupsResponse> _memoizer =
+      AsyncMemoizer<UserGroupsResponse>();
 
   @override
   void initState() {
@@ -89,6 +94,12 @@ class CreateActionsState extends State<CreateActions> {
       _userAddress = prefs.getString('user_id');
       _userProfile = UserData.fromMap(decodedUserData);
     });
+  }
+
+  Future<UserGroupsResponse> getUserGroups() async {
+    return _memoizer.runOnce(
+      () => Provider.of<UserRepo>(context).getUserGroups(_userAddress),
+    );
   }
 
   Future<void> _createExpression() async {
@@ -228,18 +239,13 @@ class CreateActionsState extends State<CreateActions> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
-                  height: 45,
-                  child: ListView(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      children: <Widget>[
-                        const SizedBox(width: 15),
-                        _expressionContextSelector('Collective'),
-                        _expressionContextSelector('My Pack'),
-                        _expressionContextSelector('Den'),
-                        _expressionContextSelector('Sphere'),
-                        const SizedBox(width: 15),
-                      ]),
+                  child: Row(children: <Widget>[
+                    const SizedBox(width: 15),
+                    _expressionContextSelector(expressionContext: 'Collective'),
+                    _expressionContextSelector(expressionContext: 'Sphere'),
+                    _expressionContextSelector(expressionContext: 'My Pack'),
+                    _expressionContextSelector(expressionContext: 'Den'),
+                  ]),
                 ),
               ],
             ),
@@ -274,7 +280,7 @@ class CreateActionsState extends State<CreateActions> {
     );
   }
 
-  Widget _expressionContextSelector(String expressionContext) {
+  Widget _expressionContextSelector({String expressionContext, Group sphere}) {
     dynamic _expressionContextIcon;
     Function _setExpressionContextDescription;
 
@@ -339,8 +345,8 @@ class CreateActionsState extends State<CreateActions> {
         _setExpressionContextDescription();
       },
       child: Container(
-          height: 45,
-          width: 45,
+          height: 50,
+          width: 50,
           margin: const EdgeInsets.only(right: 15),
           decoration: BoxDecoration(
             gradient: _currentExpressionContext == expressionContext
