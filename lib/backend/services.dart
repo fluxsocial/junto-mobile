@@ -134,7 +134,7 @@ abstract class GroupService {
   Future<void> removeGroupMember(String groupAddress, String userAddress);
 
   Future<List<CentralizedExpressionResponse>> getGroupExpressions(
-      String groupAddress, ExpressionQueryParams params);
+      String groupAddress, GroupExpressionQueryParams params);
 
   /// Allows for updating a group. The parameter [group] must not be null.
   Future<Group> updateGroup(Group group);

@@ -80,10 +80,14 @@ class GroupServiceCentralized implements GroupService {
   @override
   Future<List<CentralizedExpressionResponse>> getGroupExpressions(
     String groupAddress,
-    ExpressionQueryParams params,
+    GroupExpressionQueryParams params,
   ) async {
-    final http.Response _serverResponse =
-        await client.get('/groups/$groupAddress/expressions');
+    final http.Response _serverResponse = await client
+        .get('/groups/$groupAddress/expressions', queryParams: <String, String>{
+      'direct_expressions': params.directExpressions.toString(),
+      'direct_expressions_pagination_position':
+          params.directExpressionsPaginationPosition.toString(),
+    });
 
     print(_serverResponse.body);
     print(_serverResponse.statusCode);

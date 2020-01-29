@@ -358,6 +358,24 @@ class ExpressionQueryParams {
 
 enum ExpressionContextType { dos, perspective, random, collective }
 
+class GroupExpressionQueryParams {
+  GroupExpressionQueryParams({
+    this.resonations,
+    this.directExpressions,
+    this.creatorExpressions,
+    this.resonationsPaginationPosition,
+    this.directExpressionsPaginationPosition,
+    this.creatorExpressionsPaginationPosition,
+  });
+
+  final bool resonations;
+  final bool directExpressions;
+  final bool creatorExpressions;
+  final int resonationsPaginationPosition;
+  final int directExpressionsPaginationPosition;
+  final int creatorExpressionsPaginationPosition;
+}
+
 /// Generic class encapsulating a query results.
 class QueryResults<T> {
   QueryResults({

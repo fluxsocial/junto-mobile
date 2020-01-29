@@ -61,8 +61,14 @@ class PackOpenState extends State<PackOpen> {
 
   Future<List<CentralizedExpressionResponse>> getPackExpressions() async {
     return _memoizer.runOnce(
-      () => Provider.of<GroupRepo>(context)
-          .getGroupExpressions(_userProfile.pack.address, null),
+      () => Provider.of<GroupRepo>(context).getGroupExpressions(
+        _userProfile.pack.address,
+        GroupExpressionQueryParams(
+            creatorExpressions: true,
+            directExpressions: true,
+            directExpressionsPaginationPosition: 0,
+            creatorExpressionsPaginationPosition: 0),
+      ),
     );
   }
 

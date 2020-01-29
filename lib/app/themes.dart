@@ -241,7 +241,7 @@ class JuntoThemes {
     ),
     bottomAppBarColor: Colors.blue,
     textTheme: const TextTheme(
-      headline4:  TextStyle(
+      headline4: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.w700,
         color: Colors.white,

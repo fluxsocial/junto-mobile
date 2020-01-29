@@ -35,7 +35,7 @@ class GroupRepo {
   }
 
   Future<List<CentralizedExpressionResponse>> getGroupExpressions(
-      String groupAddress, ExpressionQueryParams params) {
+      String groupAddress, GroupExpressionQueryParams params) {
     return _groupService.getGroupExpressions(groupAddress, params);
   }
 
