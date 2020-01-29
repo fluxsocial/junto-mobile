@@ -74,7 +74,7 @@ class CommentActionItems extends StatelessWidget {
           title: Row(
             children: <Widget>[
               Text('Delete Comment',
-                  style: Theme.of(context).textTheme.headline),
+                  style: Theme.of(context).textTheme.headline5),
             ],
           ),
         ),
@@ -104,7 +104,7 @@ class CommentActionItems extends StatelessWidget {
           title: Row(
             children: <Widget>[
               Text('View @' + comment.creator.username + "'s den",
-                  style: Theme.of(context).textTheme.headline),
+                  style: Theme.of(context).textTheme.headline5),
             ],
           ),
         ),
@@ -117,7 +117,7 @@ class CommentActionItems extends StatelessWidget {
           title: Row(
             children: <Widget>[
               Text('Subscribe @' + comment.creator.username,
-                  style: Theme.of(context).textTheme.headline),
+                  style: Theme.of(context).textTheme.headline5),
             ],
           ),
         ),
@@ -130,7 +130,7 @@ class CommentActionItems extends StatelessWidget {
           title: Row(
             children: <Widget>[
               Text('Connect @' + comment.creator.username,
-                  style: Theme.of(context).textTheme.headline),
+                  style: Theme.of(context).textTheme.headline5),
             ],
           ),
         ),

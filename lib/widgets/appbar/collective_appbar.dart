@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/screens/collective/perspectives'
-    '/create_perspective/create_perspective.dart' show SelectedUsers;
 import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
 
 // Junto app bar used in collective screen.
@@ -21,8 +19,6 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
   final bool degrees;
   final String currentDegree;
   final Function switchDegree;
-
-  ValueNotifier<SelectedUsers> _users;
 
   @override
   Widget build(

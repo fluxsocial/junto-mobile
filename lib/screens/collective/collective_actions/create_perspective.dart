@@ -113,7 +113,7 @@ class CreatePerspectiveState extends State<CreatePerspective> {
                 ),
                 _currentIndex == 0
                     ? Text('New Perspective',
-                        style: Theme.of(context).textTheme.subhead)
+                        style: Theme.of(context).textTheme.subtitle1)
                     : const SizedBox(),
                 _currentIndex == 1
                     ? GestureDetector(
@@ -198,7 +198,7 @@ class CreatePerspectiveState extends State<CreatePerspective> {
                         labelPadding: const EdgeInsets.all(0),
                         isScrollable: true,
                         labelColor: Theme.of(context).primaryColorDark,
-                        labelStyle: Theme.of(context).textTheme.subhead,
+                        labelStyle: Theme.of(context).textTheme.subtitle1,
                         indicatorWeight: 0.0001,
                         tabs: <Widget>[
                           for (String name in _tabs)

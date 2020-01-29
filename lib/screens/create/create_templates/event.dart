@@ -125,7 +125,7 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                       children: <Widget>[
                         Text(
                           'Upload new photo',
-                          style: Theme.of(context).textTheme.headline,
+                          style: Theme.of(context).textTheme.headline5,
                         ),
                       ],
                     ),
@@ -142,7 +142,7 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                       children: <Widget>[
                         Text(
                           'Remove photo',
-                          style: Theme.of(context).textTheme.headline,
+                          style: Theme.of(context).textTheme.headline5,
                         ),
                       ],
                     ),
@@ -183,13 +183,13 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                         decoration: InputDecoration(
                             border: InputBorder.none,
                             hintText: 'Name of event',
-                            hintStyle: Theme.of(context).textTheme.title),
+                            hintStyle: Theme.of(context).textTheme.headline6),
                         cursorColor: JuntoPalette.juntoGrey,
                         cursorWidth: 2,
                         maxLines: null,
                         maxLength: 140,
                         textInputAction: TextInputAction.done,
-                        style: Theme.of(context).textTheme.title),
+                        style: Theme.of(context).textTheme.headline6),
                   ),
                   imageFile == null
                       ? GestureDetector(

@@ -1,12 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/pack_open.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';

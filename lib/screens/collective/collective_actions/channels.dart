@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/widgets/previews/channel_preview.dart';
 
 class JuntoChannels extends StatefulWidget {
@@ -103,12 +102,12 @@ class JuntoChannelsState extends State<JuntoChannels> {
             Expanded(
               child: ListView(
                 padding: const EdgeInsets.all(0),
-                children: <Widget>[
-                  const ChannelPreview(channel: 'regenerative agriculture'),
-                  const ChannelPreview(channel: 'biomimicry'),
-                  const ChannelPreview(channel: 'austrian economics'),
-                  const ChannelPreview(channel: 'conscious tech'),
-                  const ChannelPreview(channel: 'implementation next build'),
+                children: const <Widget>[
+                  ChannelPreview(channel: 'regenerative agriculture'),
+                  ChannelPreview(channel: 'biomimicry'),
+                  ChannelPreview(channel: 'austrian economics'),
+                  ChannelPreview(channel: 'conscious tech'),
+                  ChannelPreview(channel: 'implementation next build'),
                 ],
               ),
             ),

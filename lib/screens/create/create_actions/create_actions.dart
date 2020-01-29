@@ -4,8 +4,8 @@ import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
-import 'package:junto_beta_mobile/screens/create/create_actions/create_actions_appbar.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/channel_search_modal.dart';
+import 'package:junto_beta_mobile/screens/create/create_actions/create_actions_appbar.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
@@ -39,6 +39,7 @@ class CreateActions extends StatefulWidget {
 }
 
 class CreateActionsState extends State<CreateActions> {
+  //ignore:unused_field
   String _selectedType = 'Collective';
 
   String _address;
@@ -139,22 +140,6 @@ class CreateActionsState extends State<CreateActions> {
     } catch (error) {
       print(error.message);
       JuntoLoader.hide();
-      // FIXME: (Nash/Eric) - creating an expression retrieves the following error.
-      // '_InternalLinkedHashMap<String, dynamic>' is not a subtype of type 'int'
-      // Temporarily displaying 'Expression Created' for this build as the expressions do get created.
-
-      // JuntoDialog.showJuntoDialog(
-      //   context,
-      //   'Something went wrong',
-      //   <Widget>[
-      //     FlatButton(
-      //       onPressed: () {
-      //         Navigator.pop(context);
-      //       },
-      //       child: const Text('Ok'),
-      //     )
-      //   ],
-      // );
       JuntoDialog.showJuntoDialog(
         context,
         'Expression Created!',
@@ -172,7 +157,7 @@ class CreateActionsState extends State<CreateActions> {
       );
     }
   }
-
+//ignore:unused_element
   void _onSharingClick(String layer, String resource) {
     Navigator.pop(context);
     if (layer == 'Public Den') {
@@ -204,7 +189,7 @@ class CreateActionsState extends State<CreateActions> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 const SizedBox(height: 15),
-                Text('Collective', style: Theme.of(context).textTheme.title),
+                Text('Collective', style: Theme.of(context).textTheme.headline6),
                 Text('description of this context',
                     style: Theme.of(context).textTheme.caption),
               ],
@@ -281,9 +266,9 @@ class CreateActionsState extends State<CreateActions> {
     );
   }
 
-  Widget _expressionContextSelector(expressionContext) {
+  Widget _expressionContextSelector(String expressionContext) {
     return Container(
-      padding: EdgeInsets.all(15),
+      padding: const EdgeInsets.all(15),
       margin: const EdgeInsets.only(right: 15),
       decoration: BoxDecoration(
         gradient: LinearGradient(

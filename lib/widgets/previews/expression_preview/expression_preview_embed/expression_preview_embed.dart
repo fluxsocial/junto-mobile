@@ -49,7 +49,7 @@ class ExpressionPreviewEmbed extends StatelessWidget {
                       Container(
                         margin: const EdgeInsets.only(left: 7.5),
                         child: Text(expression.creator.username,
-                            style: Theme.of(context).textTheme.subhead),
+                            style: Theme.of(context).textTheme.subtitle1),
                       )
                     ],
                   ),

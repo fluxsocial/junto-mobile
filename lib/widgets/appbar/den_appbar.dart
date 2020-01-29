@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/screens/collective/perspectives'
-    '/create_perspective/create_perspective.dart' show SelectedUsers;
 import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
 
 // Junto app bar used throughout the main screens. Rendered in JuntoTemplate.
@@ -18,7 +16,6 @@ class DenAppbar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _DenAppbarState extends State<DenAppbar> {
-  ValueNotifier<SelectedUsers> _users;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +44,7 @@ class _DenAppbarState extends State<DenAppbar> {
                   const SizedBox(width: 7.5),
                   Text(
                     widget.heading,
-                    style: Theme.of(context).appBarTheme.textTheme.body1,
+                    style: Theme.of(context).appBarTheme.textTheme.bodyText1,
                   ),
                 ],
               ),

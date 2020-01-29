@@ -70,9 +70,9 @@ class CommentOpenState extends State<CommentOpen> {
                                 children: <Widget>[
                                   Text(widget.comment.creator.username,
                                       style:
-                                          Theme.of(context).textTheme.subhead),
+                                          Theme.of(context).textTheme.subtitle1),
                                   Text(widget.comment.creator.name,
-                                      style: Theme.of(context).textTheme.body1),
+                                      style: Theme.of(context).textTheme.subtitle1),
                                 ],
                               ),
                             ),

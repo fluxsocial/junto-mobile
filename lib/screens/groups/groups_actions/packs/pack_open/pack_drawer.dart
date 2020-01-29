@@ -36,7 +36,7 @@ class PackDrawer extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(pack.groupData.name,
-                        style: Theme.of(context).textTheme.title),
+                        style: Theme.of(context).textTheme.headline6),
                   ],
                 ),
               ),

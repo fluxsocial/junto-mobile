@@ -37,16 +37,16 @@ class EventPreview extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(expression.expressionData.title,
-                    style: Theme.of(context).textTheme.title),
+                    style: Theme.of(context).textTheme.headline6),
                 const SizedBox(height: 2.5),
                 Text(
                   expression.expressionData.location,
-                  style: Theme.of(context).textTheme.body2,
+                  style: Theme.of(context).textTheme.bodyText1,
                 ),
                 const SizedBox(height: 2.5),
                 Text(
                   expression.expressionData.startTime,
-                  style: Theme.of(context).textTheme.body2,
+                  style: Theme.of(context).textTheme.bodyText1,
                 ),
               ],
             ),

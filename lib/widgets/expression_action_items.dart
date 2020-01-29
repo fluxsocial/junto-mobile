@@ -120,7 +120,7 @@ class ExpressionActionItems extends StatelessWidget {
           title: Row(
             children: <Widget>[
               Text('Delete Expression',
-                  style: Theme.of(context).textTheme.headline),
+                  style: Theme.of(context).textTheme.headline5),
             ],
           ),
         ),
@@ -150,7 +150,7 @@ class ExpressionActionItems extends StatelessWidget {
           title: Row(
             children: <Widget>[
               Text('View @' + expression.creator.username + "'s den",
-                  style: Theme.of(context).textTheme.headline),
+                  style: Theme.of(context).textTheme.headline5),
             ],
           ),
         ),
@@ -163,7 +163,7 @@ class ExpressionActionItems extends StatelessWidget {
           title: Row(
             children: <Widget>[
               Text('Subscribe @' + expression.creator.username,
-                  style: Theme.of(context).textTheme.headline),
+                  style: Theme.of(context).textTheme.headline5),
             ],
           ),
         ),
@@ -176,7 +176,7 @@ class ExpressionActionItems extends StatelessWidget {
           title: Row(
             children: <Widget>[
               Text('Connect @' + expression.creator.username,
-                  style: Theme.of(context).textTheme.headline),
+                  style: Theme.of(context).textTheme.headline5),
             ],
           ),
         ),

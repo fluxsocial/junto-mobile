@@ -92,10 +92,10 @@ class SpherePreview extends StatelessWidget {
                   children: <Widget>[
                     Text('s/' + group.groupData.sphereHandle,
                         textAlign: TextAlign.start,
-                        style: Theme.of(context).textTheme.subhead),
+                        style: Theme.of(context).textTheme.subtitle1),
                     Text(group.groupData.name,
                         textAlign: TextAlign.start,
-                        style: Theme.of(context).textTheme.body1)
+                        style: Theme.of(context).textTheme.bodyText1)
                   ],
                 ),
               )

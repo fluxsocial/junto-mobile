@@ -19,9 +19,13 @@ class JuntoEditDenState extends State<JuntoEditDen> {
   String _userAddress;
   UserData _userData;
 
+//ignore:unused_field
   String _name;
+  //ignore:unused_field
   String _bio;
+  //ignore:unused_field
   List<String> _location;
+  //ignore:unused_field
   List<String> _website;
 
   TextEditingController _nameController;
@@ -60,15 +64,12 @@ class JuntoEditDenState extends State<JuntoEditDen> {
 
     _nameController = TextEditingController(text: _userData.user.name);
     _bioController = TextEditingController(text: _userData.user.bio);
-    _locationController = TextEditingController(
-        text: _userData.user.location[0] == null
-            ? ''
-            : _userData.user.location[0]);
-    _genderController = TextEditingController(
-        text: _userData.user.gender[0] == null ? '' : _userData.user.gender[0]);
-    _websiteController = TextEditingController(
-        text:
-            _userData.user.website[0] == null ? '' : _userData.user.website[0]);
+    _locationController =
+        TextEditingController(text: _userData.user.location[0] ?? '');
+    _genderController =
+        TextEditingController(text: _userData.user.gender[0] ?? '');
+    _websiteController =
+        TextEditingController(text: _userData.user.website[0] ?? '');
   }
 
   @override
@@ -103,11 +104,11 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                 ),
                 Container(
                   child: Text('Edit Profile',
-                      style: Theme.of(context).textTheme.subhead),
+                      style: Theme.of(context).textTheme.subtitle1),
                 ),
                 GestureDetector(
                   onTap: () async {
-                    final Map<String, dynamic> newProfile = {
+                    final Map<String, dynamic> newProfile = <String, dynamic>{
                       'name': _nameController.value.text,
                       'location': _locationController.value.text == ''
                           ? <String>[]
@@ -135,7 +136,7 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                     width: 42,
                     height: 42,
                     child:
-                        Text('Save', style: Theme.of(context).textTheme.body2),
+                        Text('Save', style: Theme.of(context).textTheme.bodyText1),
                   ),
                 )
               ],
@@ -181,7 +182,7 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                       ),
                       const SizedBox(width: 10),
                       Text('Edit profile pictures',
-                          style: Theme.of(context).textTheme.body2)
+                          style: Theme.of(context).textTheme.bodyText1)
                     ]),
                   ),
                   Column(
@@ -202,13 +203,13 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                           decoration: const InputDecoration(
                               border: InputBorder.none, hintText: 'Full Name'),
                           maxLines: null,
-                          style: Theme.of(context).textTheme.body2,
+                          style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ),
                       const SizedBox(height: 10),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Text(
+                        child: const Text(
                           'NAME',
                           style: TextStyle(
                               fontSize: 10, fontWeight: FontWeight.w500),
@@ -236,13 +237,13 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                               border: InputBorder.none,
                               hintText: 'Short/Long Bio'),
                           maxLines: null,
-                          style: Theme.of(context).textTheme.body2,
+                          style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ),
                       const SizedBox(height: 10),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Text(
+                        child: const Text(
                           'BIO',
                           style: TextStyle(
                               fontSize: 10, fontWeight: FontWeight.w500),
@@ -269,13 +270,13 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                           decoration: const InputDecoration(
                               border: InputBorder.none, hintText: 'Location'),
                           maxLines: null,
-                          style: Theme.of(context).textTheme.body2,
+                          style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ),
                       const SizedBox(height: 10),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Text(
+                        child: const Text(
                           'LOCATION',
                           style: TextStyle(
                               fontSize: 10, fontWeight: FontWeight.w500),
@@ -302,13 +303,13 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                           decoration: const InputDecoration(
                               border: InputBorder.none, hintText: 'Gender'),
                           maxLines: null,
-                          style: Theme.of(context).textTheme.body2,
+                          style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ),
                       const SizedBox(height: 10),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Text(
+                        child: const Text(
                           'GENDER',
                           style: TextStyle(
                               fontSize: 10, fontWeight: FontWeight.w500),
@@ -335,13 +336,13 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                           decoration: const InputDecoration(
                               border: InputBorder.none, hintText: 'Website'),
                           maxLines: null,
-                          style: Theme.of(context).textTheme.body2,
+                          style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ),
                       const SizedBox(height: 10),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Text(
+                        child: const Text(
                           'WEBSITE',
                           style: TextStyle(
                               fontSize: 10, fontWeight: FontWeight.w500),

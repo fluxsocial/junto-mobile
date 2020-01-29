@@ -25,6 +25,7 @@ class JuntoPerspectives extends StatefulWidget {
 
 class JuntoPerspectivesState extends State<JuntoPerspectives> {
   String _userAddress;
+  //ignore:unused_field 
   UserData _userProfile;
 
   @override
@@ -68,7 +69,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text('Perspectives', style: Theme.of(context).textTheme.display1),
+              Text('Perspectives', style: Theme.of(context).textTheme.headline4),
               GestureDetector(
                 onTap: () {
                   Navigator.push(
@@ -205,23 +206,23 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(perspective.name,
-                      style: Theme.of(context).textTheme.subhead),
+                      style: Theme.of(context).textTheme.subtitle1),
                   if (perspective.name == 'JUNTO')
                     Text(
                       'Expressions from everyone in Junto.',
-                      style: Theme.of(context).textTheme.body2,
+                      style: Theme.of(context).textTheme.bodyText1,
                     ),
                   if (perspective.name == 'Subscriptions')
                     Text(
                       'Expressions from specific people you\'re subscribed to.',
-                      style: Theme.of(context).textTheme.body2,
+                      style: Theme.of(context).textTheme.bodyText1,
                     ),
                   if (perspective.name != 'JUNTO' &&
                       perspective.name != 'Subscriptions' &&
                       perspective.about != null)
                     Text(
                       perspective.about,
-                      style: Theme.of(context).textTheme.body2,
+                      style: Theme.of(context).textTheme.bodyText1,
                     ),
                 ],
               ),
