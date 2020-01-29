@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 /// Allows the user to create a short form expression.

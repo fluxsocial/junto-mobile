@@ -109,4 +109,8 @@ class UserRepo {
 
   Future<List<UserProfile>> getFollowers(String userAddress) =>
       _userService.getFollowers(userAddress);
+
+  Future<CentralizedPerspective> updatePerspective(
+          CentralizedPerspective perspective) =>
+      _userService.updatePerspective(perspective);
 }

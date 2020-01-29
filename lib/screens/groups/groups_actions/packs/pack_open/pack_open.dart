@@ -27,6 +27,7 @@ class PackOpen extends StatefulWidget {
 }
 
 class PackOpenState extends State<PackOpen> {
+  //ignore:unused_field
   String _userAddress;
   UserData _userProfile;
 

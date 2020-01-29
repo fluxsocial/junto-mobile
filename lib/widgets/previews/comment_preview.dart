@@ -73,7 +73,7 @@ class CommentPreview extends StatelessWidget {
                           const SizedBox(width: 10),
                           Container(
                             child: Text(comment.creator.username,
-                                style: Theme.of(context).textTheme.subhead),
+                                style: Theme.of(context).textTheme.subtitle1),
                           ),
                         ],
                       ),

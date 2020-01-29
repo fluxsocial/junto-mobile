@@ -10,7 +10,6 @@ import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/sphere.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/create_perspective/create_perspective.dart';
-import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
@@ -69,7 +68,7 @@ class _SphereOpenMembersState extends State<SphereOpenMembers>
       );
     }
   }
-
+//ignore:unused_element
   Future<void> _deleteMember(BuildContext context, Users user) async {
     print('User perms level ${user.permissionLevel}');
     JuntoDialog.showJuntoDialog(
@@ -146,7 +145,7 @@ class _SphereOpenMembersState extends State<SphereOpenMembers>
                 Container(
                   margin: const EdgeInsets.only(right: 5),
                   child: Text('Members',
-                      style: Theme.of(context).textTheme.subhead),
+                      style: Theme.of(context).textTheme.subtitle1),
                 ),
                 Container(
                   padding: const EdgeInsets.symmetric(vertical: 15),
@@ -213,6 +212,7 @@ class _SphereOpenMembersState extends State<SphereOpenMembers>
               physics: const ClampingScrollPhysics(),
               itemCount: widget.users.length,
               itemBuilder: (BuildContext context, int index) {
+                //ignore:unused_local_variable
                 final Users user = widget.users[index];
                 return const SizedBox();
                 // return PerspectiveMemberPreview(

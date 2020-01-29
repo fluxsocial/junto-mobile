@@ -54,11 +54,11 @@ class CreateLongformState extends State<CreateLongform> {
                       decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: 'write a title (optional)',
-                          hintStyle: Theme.of(context).textTheme.title),
+                          hintStyle: Theme.of(context).textTheme.headline6),
                       cursorColor: JuntoPalette.juntoGrey,
                       cursorWidth: 2,
                       maxLines: null,
-                      style: Theme.of(context).textTheme.title),
+                      style: Theme.of(context).textTheme.headline6),
                 ),
                 Container(
                   constraints: BoxConstraints(

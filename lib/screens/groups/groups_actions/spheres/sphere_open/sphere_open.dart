@@ -12,8 +12,6 @@ import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_o
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
-import 'package:junto_beta_mobile/widgets/fabs/expression_center_fab.dart';
-import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
 
@@ -200,7 +198,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                             Container(
                               width: MediaQuery.of(context).size.width * .7,
                               child: Text(widget.group.groupData.name,
-                                  style: Theme.of(context).textTheme.display1),
+                                  style: Theme.of(context).textTheme.headline4),
                             ),
                           ],
                         ),
@@ -221,7 +219,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                     labelPadding: const EdgeInsets.all(0),
                     isScrollable: true,
                     labelColor: Theme.of(context).primaryColorDark,
-                    labelStyle: Theme.of(context).textTheme.subhead,
+                    labelStyle: Theme.of(context).textTheme.subtitle1,
                     indicatorWeight: 0.0001,
                     tabs: <Widget>[
                       for (String name in _tabs)
@@ -279,7 +277,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('Bio / Purpose', style: Theme.of(context).textTheme.title),
+              Text('Bio / Purpose', style: Theme.of(context).textTheme.headline6),
               const SizedBox(height: 10),
               Text(widget.group.groupData.description,
                   style: Theme.of(context).textTheme.caption)
@@ -348,7 +346,7 @@ class MemberRow extends StatelessWidget {
       child: Container(
         child: Text(
           'Members',
-          style: Theme.of(context).textTheme.subtitle,
+          style: Theme.of(context).textTheme.subtitle2,
         ),
       ),
     );

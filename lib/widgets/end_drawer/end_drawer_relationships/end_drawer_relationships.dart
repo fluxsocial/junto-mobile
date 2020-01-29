@@ -53,7 +53,7 @@ class JuntoRelationships extends StatelessWidget {
                   ),
                 ),
                 Text('Relationships',
-                    style: Theme.of(context).textTheme.subhead),
+                    style: Theme.of(context).textTheme.subtitle1),
                 const SizedBox(width: 42)
               ],
             ),
@@ -84,7 +84,7 @@ class JuntoRelationships extends StatelessWidget {
                     labelPadding: const EdgeInsets.all(0),
                     isScrollable: true,
                     labelColor: Theme.of(context).primaryColorDark,
-                    labelStyle: Theme.of(context).textTheme.subhead,
+                    labelStyle: Theme.of(context).textTheme.subtitle1,
                     indicatorWeight: 0.0001,
                     tabs: <Widget>[
                       for (String name in _tabs)
@@ -126,7 +126,7 @@ class JuntoRelationships extends StatelessWidget {
               child: Transform.translate(
                 offset: const Offset(0.0, -50.0),
                 child: Text('No connections!',
-                    style: Theme.of(context).textTheme.headline),
+                    style: Theme.of(context).textTheme.headline5),
               ),
             );
           }
@@ -175,7 +175,7 @@ class JuntoRelationships extends StatelessWidget {
               child: Transform.translate(
                 offset: const Offset(0.0, -50.0),
                 child: Text('No subscriptions!',
-                    style: Theme.of(context).textTheme.headline),
+                    style: Theme.of(context).textTheme.headline5),
               ),
             );
           }
@@ -219,7 +219,7 @@ class JuntoRelationships extends StatelessWidget {
               child: Transform.translate(
                 offset: const Offset(0.0, -50.0),
                 child: Text('No pending connection requests!',
-                    style: Theme.of(context).textTheme.headline),
+                    style: Theme.of(context).textTheme.headline5),
               ),
             );
           }

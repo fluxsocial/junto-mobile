@@ -25,6 +25,7 @@ class Packs extends StatefulWidget {
 }
 
 class PacksState extends State<Packs> with ListDistinct {
+  //ignore: unused_field
   String _userAddress;
   UserData _userProfile;
   UserRepo _userProvider;
@@ -80,7 +81,7 @@ class PacksState extends State<Packs> with ListDistinct {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text('Packs', style: Theme.of(context).textTheme.display1),
+                  Text('Packs', style: Theme.of(context).textTheme.headline4),
                 ],
               ),
             ),

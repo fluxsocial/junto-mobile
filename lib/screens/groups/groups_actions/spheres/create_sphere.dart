@@ -147,7 +147,7 @@ class CreateSphereState extends State<CreateSphere> {
                       ),
                 _currentIndex == 0
                     ? Text('Create Sphere',
-                        style: Theme.of(context).textTheme.subhead)
+                        style: Theme.of(context).textTheme.subtitle1)
                     : const SizedBox(),
                 _currentIndex == 2
                     ? GestureDetector(
@@ -293,12 +293,12 @@ class CreateSphereState extends State<CreateSphere> {
           decoration: InputDecoration(
               border: InputBorder.none,
               hintText: 'Name of sphere',
-              hintStyle: Theme.of(context).textTheme.subhead),
+              hintStyle: Theme.of(context).textTheme.subtitle1),
           cursorColor: JuntoPalette.juntoGrey,
           cursorWidth: 2,
           maxLines: null,
           maxLength: 140,
-          style: Theme.of(context).textTheme.title,
+          style: Theme.of(context).textTheme.headline6,
           textInputAction: TextInputAction.done,
         ),
       ),
@@ -364,7 +364,7 @@ class CreateSphereState extends State<CreateSphere> {
                   labelPadding: const EdgeInsets.all(0),
                   isScrollable: true,
                   labelColor: Theme.of(context).primaryColorDark,
-                  labelStyle: Theme.of(context).textTheme.subhead,
+                  labelStyle: Theme.of(context).textTheme.subtitle1,
                   indicatorWeight: 0.0001,
                   tabs: <Widget>[
                     for (String name in _tabs)
@@ -456,7 +456,7 @@ class CreateSphereState extends State<CreateSphere> {
                       ),
                     ),
                     Text(privacyDescription,
-                        style: Theme.of(context).textTheme.body2)
+                        style: Theme.of(context).textTheme.bodyText1)
                   ],
                 ),
               ),
@@ -534,7 +534,7 @@ class CreateSphereState extends State<CreateSphere> {
                       children: <Widget>[
                         Text(
                           'Upload new photo',
-                          style: Theme.of(context).textTheme.headline,
+                          style: Theme.of(context).textTheme.headline5,
                         ),
                       ],
                     ),
@@ -551,7 +551,7 @@ class CreateSphereState extends State<CreateSphere> {
                       children: <Widget>[
                         Text(
                           'Remove photo',
-                          style: Theme.of(context).textTheme.headline,
+                          style: Theme.of(context).textTheme.headline5,
                         ),
                       ],
                     ),

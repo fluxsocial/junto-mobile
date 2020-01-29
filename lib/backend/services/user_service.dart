@@ -327,6 +327,18 @@ class UserServiceCentralized implements UserService {
   }
 
   @override
+  Future<CentralizedPerspective> updatePerspective(
+      CentralizedPerspective perspective) async {
+    final http.Response _serverResponse = await client.patch(
+      '/perspectives/${perspective.address}',
+      body: perspective.toMap(),
+    );
+    final Map<String, dynamic> _data =
+        JuntoHttp.handleResponse(_serverResponse);
+    return CentralizedPerspective.fromMap(_data);
+  }
+
+  @override
   Future<bool> isConnectedUser(String userAddress, String targetAddress) async {
     final http.Response _serverResponse = await client.get(
       '/users/$userAddress/connected/$targetAddress',

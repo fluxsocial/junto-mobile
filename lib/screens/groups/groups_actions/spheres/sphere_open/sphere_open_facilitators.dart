@@ -51,7 +51,7 @@ class SphereOpenFacilitators extends StatelessWidget {
                   ),
                   Container(
                     child: Text('Facilitators',
-                        style: Theme.of(context).textTheme.subhead),
+                        style: Theme.of(context).textTheme.subtitle1),
                   ),
                   GestureDetector(
                     onTap: () {},

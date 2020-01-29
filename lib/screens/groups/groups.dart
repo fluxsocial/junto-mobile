@@ -25,6 +25,7 @@ class JuntoGroups extends StatefulWidget {
 class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
   String _userAddress;
+  //ignore:unused_field
   UserData _userProfile;
 
   Group _currentGroup;

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -110,7 +109,7 @@ class _JuntoMemberState extends State<JuntoMember> {
                     labelPadding: const EdgeInsets.all(0),
                     isScrollable: true,
                     labelColor: Theme.of(context).primaryColor,
-                    labelStyle: Theme.of(context).textTheme.subhead,
+                    labelStyle: Theme.of(context).textTheme.subtitle1,
                     indicatorWeight: 0.0001,
                     tabs: <Widget>[
                       for (String name in _tabs)
@@ -316,7 +315,7 @@ class MemberRelationshipsModal extends StatelessWidget {
                     const SizedBox(width: 15),
                     Text(
                       'Subscribe',
-                      style: Theme.of(context).textTheme.headline,
+                      style: Theme.of(context).textTheme.headline5,
                     ),
                   ],
                 ),
@@ -334,7 +333,7 @@ class MemberRelationshipsModal extends StatelessWidget {
                     const SizedBox(width: 15),
                     Text(
                       'Connect',
-                      style: Theme.of(context).textTheme.headline,
+                      style: Theme.of(context).textTheme.headline5,
                     ),
                   ],
                 ),
@@ -351,7 +350,7 @@ class MemberRelationshipsModal extends StatelessWidget {
                     const SizedBox(width: 15),
                     Text(
                       'Invite to my pack',
-                      style: Theme.of(context).textTheme.headline,
+                      style: Theme.of(context).textTheme.headline5,
                     ),
                   ],
                 ),
@@ -402,7 +401,7 @@ class _MemberDenAppbar extends StatelessWidget {
 
   Widget _displayRelationshipIndicator(BuildContext context) {
     if (isFollowing == true && isConnected == false) {
-      return Icon(CustomIcons.groups, size: 17, color: Colors.white);
+      return const Icon(CustomIcons.groups, size: 17, color: Colors.white);
     } else if (isFollowing == true && isConnected == true) {
       return Icon(CustomIcons.pawprints, size: 17, color: Colors.white);
     } else if (isFollowing == false && isConnected == false) {

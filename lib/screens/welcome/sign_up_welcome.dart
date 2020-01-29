@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,6 +21,7 @@ class SignUpAgreements extends StatefulWidget {
 
 class SignUpAgreementsState extends State<SignUpAgreements> {
   String _userAddress;
+  //ignore:unused_field
   UserData _userProfile;
 
   @override
@@ -42,7 +42,8 @@ class SignUpAgreementsState extends State<SignUpAgreements> {
     });
   }
 
-  _updateUserPhotos(List<dynamic> profilePictures) async {
+//ignore:unused_element
+  Future<void> _updateUserPhotos(List<dynamic> profilePictures) async {
     // check if user uploaded profile pictures
     // retrieve key and add to _photoKeys if true
     final List<String> _photoKeys = <String>[];
@@ -143,7 +144,7 @@ class SignUpAgreementsState extends State<SignUpAgreements> {
                         Container(
                           child: Text(
                             '1. Be aware of the impact your words and actions have. Embrace kindness and compassion when interacting with others.',
-                            style: Theme.of(context).textTheme.headline,
+                            style: Theme.of(context).textTheme.headline5,
                             textAlign: TextAlign.left,
                           ),
                         ),
@@ -151,14 +152,14 @@ class SignUpAgreementsState extends State<SignUpAgreements> {
                         Container(
                           child: Text(
                             '2. Accept everyone else\'s experience as valid, even if it doesn\'t look like yours',
-                            style: Theme.of(context).textTheme.headline,
+                            style: Theme.of(context).textTheme.headline5,
                           ),
                         ),
                         const SizedBox(height: 25),
                         Container(
                           child: Text(
                             '3. Expresson yourself freely. Be real and hold space for authenticity.',
-                            style: Theme.of(context).textTheme.headline,
+                            style: Theme.of(context).textTheme.headline5,
                           ),
                         ),
                       ],

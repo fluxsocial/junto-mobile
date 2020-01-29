@@ -158,7 +158,7 @@ class CreateSphereBottomSheetState extends State<CreateSphereBottomSheet> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               _currentPage == 0
-                  ? Text('New Sphere', style: Theme.of(context).textTheme.title)
+                  ? Text('New Sphere', style: Theme.of(context).textTheme.headline6)
                   : GestureDetector(
                       onTap: () {
                         _createSphereController.previousPage(

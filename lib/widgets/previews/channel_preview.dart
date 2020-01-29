@@ -54,10 +54,10 @@ class ChannelPreview extends StatelessWidget {
                   children: <Widget>[
                     Text(channel,
                         textAlign: TextAlign.start,
-                        style: Theme.of(context).textTheme.subhead),
+                        style: Theme.of(context).textTheme.subtitle1),
                     Text('2,400 expressions',
                         textAlign: TextAlign.start,
-                        style: Theme.of(context).textTheme.body1)
+                        style: Theme.of(context).textTheme.bodyText1)
                   ],
                 ),
               )

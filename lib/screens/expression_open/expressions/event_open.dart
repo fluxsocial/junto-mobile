@@ -60,7 +60,7 @@ class EventOpen extends StatelessWidget {
                       Container(
                         width: MediaQuery.of(context).size.width * .7,
                         child: Text(eventTitle,
-                            style: Theme.of(context).textTheme.display1),
+                            style: Theme.of(context).textTheme.headline4),
                       ),
                     ],
                   ),

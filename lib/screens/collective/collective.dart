@@ -39,6 +39,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
   final GlobalKey<ScaffoldState> _juntoCollectiveKey =
       GlobalKey<ScaffoldState>();
 
+//ignore:unused_field
   AsyncMemoizer<QueryResults<CentralizedExpressionResponse>> _asyncMemoizer;
 
   // Completer which controls expressions querying.
@@ -147,7 +148,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
   // Renders the collective screen within a scaffold.
   Widget _buildCollectivePage(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false, 
+      resizeToAvoidBottomInset: false,
       key: _juntoCollectiveKey,
       floatingActionButton: ValueListenableBuilder<bool>(
         valueListenable: _isVisible,
@@ -187,6 +188,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
             duration: const Duration(milliseconds: 300),
             opacity: actionsVisible ? 0.0 : 1.0,
             child: Visibility(
+              //ignore:avoid_bool_literals_in_conditional_expressions
               visible: actionsVisible ? false : true,
               child: _buildPerspectiveFeed(),
             ),

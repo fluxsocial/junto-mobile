@@ -61,7 +61,7 @@ class ResonateBottomSheet extends StatelessWidget {
                       const SizedBox(width: 10),
                       Text(
                         'Resonate',
-                        style: Theme.of(context).textTheme.headline,
+                        style: Theme.of(context).textTheme.headline5,
                       ),
                     ],
                   ),
@@ -90,7 +90,7 @@ class ResonateBottomSheet extends StatelessWidget {
                       const SizedBox(width: 10),
                       Text(
                         'Resonate with comment',
-                        style: Theme.of(context).textTheme.headline,
+                        style: Theme.of(context).textTheme.headline5,
                       ),
                     ],
                   ),

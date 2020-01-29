@@ -8,8 +8,8 @@ import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
-import 'package:junto_beta_mobile/screens/create/create_actions/create_actions_appbar.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/channel_search_modal.dart';
+import 'package:junto_beta_mobile/screens/create/create_actions/create_actions_appbar.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
@@ -44,6 +44,7 @@ class CreateActions extends StatefulWidget {
   State<StatefulWidget> createState() => CreateActionsState();
 }
 
+<<<<<<< HEAD
 class CreateActionsState extends State<CreateActions> with ListDistinct {
   // user information
   String _userAddress;
@@ -53,6 +54,11 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
   String _currentExpressionContext = 'Collective';
   ExpressionContext _expressionContext;
   String _currentExpressionContextDescription = 'shared to the public of Junto';
+=======
+class CreateActionsState extends State<CreateActions> {
+  //ignore:unused_field
+  String _selectedType = 'Collective';
+>>>>>>> db028fd0482e6d0b109f83b4371689671142e45a
 
   String _address;
   CentralizedExpression _expression;
@@ -192,6 +198,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       );
     }
   }
+<<<<<<< HEAD
 
   void _setExpressionContext() {
     if (_currentExpressionContext == 'Collective') {
@@ -206,6 +213,17 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       setState(() {
         _expressionContext = ExpressionContext.Group;
       });
+=======
+//ignore:unused_element
+  void _onSharingClick(String layer, String resource) {
+    Navigator.pop(context);
+    if (layer == 'Public Den') {
+      _expression = _expression.copyWith(context: ExpressionContext.Group);
+    } else if (layer == 'My Pack') {
+      _expression = _expression.copyWith(context: ExpressionContext.Group);
+    } else {
+      _expression = _expression.copyWith(context: ExpressionContext.Collective);
+>>>>>>> db028fd0482e6d0b109f83b4371689671142e45a
     }
   }
 
@@ -226,9 +244,14 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 const SizedBox(height: 15),
+<<<<<<< HEAD
                 Text(_currentExpressionContext,
                     style: Theme.of(context).textTheme.title),
                 Text(_currentExpressionContextDescription,
+=======
+                Text('Collective', style: Theme.of(context).textTheme.headline6),
+                Text('description of this context',
+>>>>>>> db028fd0482e6d0b109f83b4371689671142e45a
                     style: Theme.of(context).textTheme.caption),
               ],
             ),
@@ -280,6 +303,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
     );
   }
 
+<<<<<<< HEAD
   Widget _expressionContextSelector({String expressionContext, Group sphere}) {
     dynamic _expressionContextIcon;
     Function _setExpressionContextDescription;
@@ -369,6 +393,25 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
           ),
           alignment: Alignment.center,
           child: _expressionContextIcon),
+=======
+  Widget _expressionContextSelector(String expressionContext) {
+    return Container(
+      padding: const EdgeInsets.all(15),
+      margin: const EdgeInsets.only(right: 15),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.bottomLeft,
+          end: Alignment.topRight,
+          stops: const <double>[0.2, 0.9],
+          colors: <Color>[
+            Theme.of(context).colorScheme.secondary,
+            Theme.of(context).colorScheme.primary
+          ],
+        ),
+        borderRadius: BorderRadius.circular(1000),
+      ),
+      child: Icon(CustomIcons.spheres, color: Colors.white, size: 17),
+>>>>>>> db028fd0482e6d0b109f83b4371689671142e45a
     );
   }
 

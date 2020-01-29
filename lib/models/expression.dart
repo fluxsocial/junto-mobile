@@ -175,18 +175,20 @@ class CentralizedEventFormExpression {
 }
 
 class CentralizedExpressionResponse {
-  CentralizedExpressionResponse(
-      {this.address,
-      this.type,
-      this.expressionData,
-      this.createdAt,
-      this.numberResonations,
-      this.creator,
-      this.context,
-      this.privacy,
-      this.channels,
-      this.comments = 0,
-      this.resonations = 0});
+  CentralizedExpressionResponse({
+    this.address,
+    this.type,
+    this.expressionData,
+    this.createdAt,
+    this.numberResonations,
+    this.creator,
+    this.context,
+    this.privacy,
+    this.channels,
+    this.numberComments = 0,
+    this.comments,
+    this.resonations,
+  });
 
   factory CentralizedExpressionResponse.withCommentsAndResonations(
       Map<String, dynamic> json) {
@@ -207,8 +209,7 @@ class CentralizedExpressionResponse {
       privacy: json['privacy'] ?? '',
       channels: json['channels'],
       context: json['context'] ?? '',
-      comments: json['comments'],
-      resonations: json['resonations'] as int,
+      numberComments: json['comments'],
     );
   }
 
@@ -223,14 +224,22 @@ class CentralizedExpressionResponse {
       createdAt: RFC3339.parseRfc3339(
         json['created_at'],
       ),
-      numberResonations: json['resonations'] ?? 0,
       creator: UserProfile.fromMap(
         json['creator'],
       ),
       privacy: json['privacy'] ?? '',
       channels: json['channels'],
       context: json['context'] ?? '',
-      comments: json['comments'] as int,
+      comments: List<Comment>.from(
+        json['comments']['results'].map(
+          (dynamic comment) => Comment.fromMap(comment),
+        ),
+      ),
+      resonations: List<UserProfile>.from(
+        json['resonations']['results'].map(
+          (dynamic res) => UserProfile.fromMap(res),
+        ),
+      ),
     );
   }
 
@@ -239,8 +248,9 @@ class CentralizedExpressionResponse {
   final dynamic expressionData;
   final DateTime createdAt;
   final int numberResonations;
-  final int comments;
-  final int resonations;
+  final int numberComments;
+  final List<UserProfile> resonations;
+  final List<Comment> comments;
   final String privacy;
   final List<dynamic> channels;
   final String context;

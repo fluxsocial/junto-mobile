@@ -123,11 +123,11 @@ class RelationshipRequest extends StatelessWidget {
                           Text(
                             user.username,
                             textAlign: TextAlign.start,
-                            style: Theme.of(context).textTheme.subhead,
+                            style: Theme.of(context).textTheme.subtitle1,
                           ),
                           Text(user.name,
                               textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.body1)
+                              style: Theme.of(context).textTheme.bodyText1)
                         ],
                       ),
                       Row(

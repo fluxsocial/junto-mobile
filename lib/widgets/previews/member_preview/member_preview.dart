@@ -77,11 +77,11 @@ class MemberPreview extends StatelessWidget {
                       Text(
                         profile.username,
                         textAlign: TextAlign.start,
-                        style: Theme.of(context).textTheme.subhead,
+                        style: Theme.of(context).textTheme.subtitle1,
                       ),
                       Text(profile.name,
                           textAlign: TextAlign.start,
-                          style: Theme.of(context).textTheme.body1)
+                          style: Theme.of(context).textTheme.bodyText1)
                     ],
                   ),
                 )
