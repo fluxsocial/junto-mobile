@@ -70,7 +70,7 @@ Resonation kResonation = Resonation(
 CentralizedExpressionResponse kExpressionResponse =
     CentralizedExpressionResponse(
   address: '123e4567-e89b-12d3-a456-426655440000',
-  comments: 1,
+  numberComments: 1,
   context: 'collective',
   createdAt: DateTime.now(),
   creator: kUserProfile,
@@ -78,7 +78,7 @@ CentralizedExpressionResponse kExpressionResponse =
       CentralizedLongFormExpression(title: 'Mocking', body: 'Expressions'),
   numberResonations: 0,
   privacy: 'Public',
-  resonations: 0,
+  resonations: <UserProfile>[],
   type: 'LongForm',
 );
 
@@ -87,7 +87,7 @@ List<CentralizedExpressionResponse> kSampleExpressions =
   CentralizedExpressionResponse(
     address: '0xfee32zokie8',
     type: 'LongForm',
-    comments: 1,
+    numberComments: 1,
     context: '',
     createdAt: DateTime.now(),
     creator: const UserProfile(
@@ -110,7 +110,7 @@ List<CentralizedExpressionResponse> kSampleExpressions =
   CentralizedExpressionResponse(
     address: '0xfee32zokie8',
     type: 'ShortForm',
-    comments: 1,
+    numberComments: 1,
     context: '',
     createdAt: DateTime.now(),
     creator: const UserProfile(
@@ -133,7 +133,7 @@ List<CentralizedExpressionResponse> kSampleExpressions =
   CentralizedExpressionResponse(
     address: '0xfee32zokie8',
     type: 'PhotoForm',
-    comments: 1,
+    numberComments: 1,
     context: '',
     createdAt: DateTime.now(),
     creator: const UserProfile(
@@ -155,7 +155,7 @@ List<CentralizedExpressionResponse> kSampleExpressions =
   CentralizedExpressionResponse(
     address: '0xfee32zokie8',
     type: 'EventForm',
-    comments: 1,
+    numberComments: 1,
     context: '',
     createdAt: DateTime.now(),
     creator: const UserProfile(
@@ -180,7 +180,7 @@ List<CentralizedExpressionResponse> kSampleExpressions =
   CentralizedExpressionResponse(
     address: '0xfee32zokie8',
     type: 'LongForm',
-    comments: 1,
+    numberComments: 1,
     context: '',
     createdAt: DateTime.now(),
     creator: const UserProfile(
@@ -206,7 +206,7 @@ List<CentralizedExpressionResponse> kSampleExpressions =
   CentralizedExpressionResponse(
     address: '0xfee32zokie8',
     type: 'PhotoForm',
-    comments: 1,
+    numberComments: 1,
     context: '',
     createdAt: DateTime.now(),
     creator: const UserProfile(
@@ -228,7 +228,7 @@ List<CentralizedExpressionResponse> kSampleExpressions =
   CentralizedExpressionResponse(
     address: '0xfee32zokie8',
     type: 'LongForm',
-    comments: 1,
+    numberComments: 1,
     context: '',
     createdAt: DateTime.now(),
     creator: const UserProfile(
@@ -251,7 +251,7 @@ List<CentralizedExpressionResponse> kSampleExpressions =
   CentralizedExpressionResponse(
     address: '0xfee32zokie8',
     type: 'EventForm',
-    comments: 1,
+    numberComments: 1,
     context: '',
     createdAt: DateTime.now(),
     creator: const UserProfile(
