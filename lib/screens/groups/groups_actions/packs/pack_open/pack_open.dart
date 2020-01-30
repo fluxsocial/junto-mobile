@@ -66,7 +66,7 @@ class PackOpenState extends State<PackOpen> {
         GroupExpressionQueryParams(
             creatorExpressions: true,
             directExpressions: true,
-            directExpressionsPaginationPosition: 0,
+            directExpressionPaginationPosition: 0,
             creatorExpressionsPaginationPosition: 0),
       ),
     );
@@ -195,7 +195,6 @@ class PackOpenState extends State<PackOpen> {
                               );
                             }
                             if (snapshot.hasData) {
-                              print(snapshot.data);
                               return Expanded(
                                   child: ListView(
                                 padding: const EdgeInsets.all(0),

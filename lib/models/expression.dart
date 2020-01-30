@@ -364,7 +364,7 @@ class GroupExpressionQueryParams {
     this.directExpressions,
     this.creatorExpressions,
     this.resonationsPaginationPosition,
-    this.directExpressionsPaginationPosition,
+    this.directExpressionPaginationPosition,
     this.creatorExpressionsPaginationPosition,
   });
 
@@ -372,7 +372,7 @@ class GroupExpressionQueryParams {
   final bool directExpressions;
   final bool creatorExpressions;
   final int resonationsPaginationPosition;
-  final int directExpressionsPaginationPosition;
+  final int directExpressionPaginationPosition;
   final int creatorExpressionsPaginationPosition;
 }
 

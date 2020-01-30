@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'package:async/async.dart' show AsyncMemoizer;
+
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
@@ -9,18 +12,33 @@ import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 
-class JuntoRelationships extends StatelessWidget {
+class JuntoRelationships extends StatefulWidget {
   JuntoRelationships(this.userAddress, this.userFollowPerspectiveAddress);
 
   final String userAddress;
   final String userFollowPerspectiveAddress;
 
+  @override
+  State<StatefulWidget> createState() {
+    return JuntoRelationshipsState();
+  }
+}
+
+class JuntoRelationshipsState extends State<JuntoRelationships> {
   final List<String> _tabs = <String>[
     'Connections',
     'Subscriptions',
     // 'Subscribers',
     'Pending'
   ];
+
+  final AsyncMemoizer _memoizer = AsyncMemoizer();
+
+  Future getUserRelationships() async {
+    return _memoizer.runOnce(
+      () => Provider.of<UserRepo>(context).userRelations(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +70,6 @@ class JuntoRelationships extends StatelessWidget {
                     ),
                   ),
                 ),
-                Text('Relationships',
-                    style: Theme.of(context).textTheme.subtitle1),
-                const SizedBox(width: 42)
               ],
             ),
           ),
@@ -102,153 +117,98 @@ class JuntoRelationships extends StatelessWidget {
               ),
             ];
           },
-          body: TabBarView(
-            children: <Widget>[
-              _displayConnections(context, userAddress),
-              _displaySubscriptions(context, userFollowPerspectiveAddress),
-              _displayPending(context, userAddress)
-            ],
+          body: FutureBuilder(
+            future: getUserRelationships(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.hasData) {
+                print(snapshot.data);
+                final List<dynamic> _subscriptionsResults =
+                    snapshot.data['following']['results'];
+
+                final List<dynamic> _connectionsResults =
+                    snapshot.data['connections']['results'];
+
+                final List<dynamic> _pendingConnectionsResults =
+                    snapshot.data['pending_connections']['results'];
+
+                final List<dynamic> _connections = <dynamic>[];
+                final List<dynamic> _subscriptions = <dynamic>[];
+                final List<dynamic> _pendingConnections = <dynamic>[];
+
+                if (_connectionsResults.isNotEmpty) {
+                  for (final dynamic result in _connectionsResults) {
+                    _connections.add(
+                      UserProfile.fromMap(result),
+                    );
+                  }
+                }
+
+                if (_subscriptionsResults.isNotEmpty) {
+                  for (final dynamic result in _subscriptionsResults) {
+                    _subscriptions.add(
+                      UserProfile.fromMap(result),
+                    );
+                  }
+                }
+
+                for (final dynamic result in _pendingConnectionsResults) {
+                  _pendingConnections.add(
+                    UserProfile.fromMap(result),
+                  );
+                }
+
+                return TabBarView(
+                  children: <Widget>[
+                    // connections
+                    ListView(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      children: _connections
+                          .map(
+                            (dynamic connection) =>
+                                MemberPreview(profile: connection),
+                          )
+                          .toList(),
+                    ),
+
+                    // subscriptions
+                    ListView(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      children: _subscriptions
+                          .map(
+                            (dynamic connection) =>
+                                MemberPreview(profile: connection),
+                          )
+                          .toList(),
+                    ),
+                    // pending connections
+                    ListView(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      children: _pendingConnections
+                          .map(
+                            (dynamic connection) =>
+                                MemberPreview(profile: connection),
+                          )
+                          .toList(),
+                    ),
+                  ],
+                );
+              } else if (snapshot.hasError) {
+                // print(snapshot.error);
+                return TabBarView(
+                  children: <Widget>[
+                    Text(
+                      snapshot.error.toString(),
+                    ),
+                    Text('or'),
+                    Text('oops'),
+                  ],
+                );
+              }
+              return const Text('what is good');
+            },
           ),
         ),
       ),
-    );
-  }
-
-  Widget _displayConnections(BuildContext context, String userAddress) {
-    return FutureBuilder<List<UserProfile>>(
-      future: Provider.of<UserRepo>(context, listen: false)
-          .connectedUsers(userAddress),
-      builder:
-          (BuildContext context, AsyncSnapshot<List<UserProfile>> snapshot) {
-        if (snapshot.hasData) {
-          if (snapshot.data.isEmpty) {
-            return Center(
-              child: Transform.translate(
-                offset: const Offset(0.0, -50.0),
-                child: Text('No connections!',
-                    style: Theme.of(context).textTheme.headline5),
-              ),
-            );
-          }
-          return Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: ListView.builder(
-              itemCount: snapshot.data.length,
-              itemBuilder: (BuildContext context, int index) {
-                return MemberPreview(profile: snapshot.data[index]);
-              },
-            ),
-          );
-        } else if (snapshot.hasError) {
-          Container(
-            child: Center(
-              child: Text('${snapshot.error}'),
-            ),
-          );
-        }
-        return ListView(children: <Widget>[
-          Container(
-            height: MediaQuery.of(context).size.height - 120,
-            child: Center(
-              child: Transform.translate(
-                offset: const Offset(0.0, -50.0),
-                child: JuntoProgressIndicator(),
-              ),
-            ),
-          ),
-        ]);
-      },
-    );
-  }
-
-  Widget _displaySubscriptions(
-      BuildContext context, String userFollowPerspectiveAddress) {
-    return FutureBuilder<List<UserProfile>>(
-      future: Provider.of<UserRepo>(context, listen: false)
-          .getPerspectiveUsers(userFollowPerspectiveAddress),
-      builder:
-          (BuildContext context, AsyncSnapshot<List<UserProfile>> snapshot) {
-        if (snapshot.hasData) {
-          print(snapshot.data);
-          if (snapshot.data.isEmpty) {
-            return Center(
-              child: Transform.translate(
-                offset: const Offset(0.0, -50.0),
-                child: Text('No subscriptions!',
-                    style: Theme.of(context).textTheme.headline5),
-              ),
-            );
-          }
-          return ListView.builder(
-            itemCount: snapshot.data.length,
-            itemBuilder: (BuildContext context, int index) {
-              final UserProfile data = snapshot.data[index];
-              return MemberPreview(profile: data);
-            },
-          );
-        } else if (snapshot.hasError) {
-          Container(
-            child: Center(
-              child: Text('${snapshot.error}'),
-            ),
-          );
-        }
-        return ListView(children: <Widget>[
-          Container(
-            height: MediaQuery.of(context).size.height - 120,
-            child: Center(
-              child: Transform.translate(
-                offset: const Offset(0.0, -50.0),
-                child: JuntoProgressIndicator(),
-              ),
-            ),
-          ),
-        ]);
-      },
-    );
-  }
-
-  Widget _displayPending(BuildContext context, String userAddress) {
-    return FutureBuilder<List<UserProfile>>(
-      future: Provider.of<UserRepo>(context).pendingConnections(userAddress),
-      builder:
-          (BuildContext context, AsyncSnapshot<List<UserProfile>> snapshot) {
-        if (snapshot.hasData) {
-          if (snapshot.data.isEmpty) {
-            return Center(
-              child: Transform.translate(
-                offset: const Offset(0.0, -50.0),
-                child: Text('No pending connection requests!',
-                    style: Theme.of(context).textTheme.headline5),
-              ),
-            );
-          }
-          return ListView.builder(
-            itemCount: snapshot.data.length,
-            itemBuilder: (BuildContext context, int index) {
-              final UserProfile data = snapshot.data[index];
-              return RelationshipRequest(data);
-            },
-          );
-        } else if (snapshot.hasError) {
-          Container(
-            child: Center(
-              child: Text('${snapshot.error}'),
-            ),
-          );
-        }
-        return ListView(children: <Widget>[
-          Container(
-            height: MediaQuery.of(context).size.height - 120,
-            child: Center(
-              child: Transform.translate(
-                offset: const Offset(0.0, -50.0),
-                child: JuntoProgressIndicator(),
-              ),
-            ),
-          ),
-        ]);
-      },
     );
   }
 }

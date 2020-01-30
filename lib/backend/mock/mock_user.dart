@@ -97,6 +97,12 @@ class MockUserService implements UserService {
   }
 
   @override
+  Future userRelations() async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    return {};
+  }
+
+  @override
   Future<List<UserProfile>> connectedUsers(String userAddress) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     return kUsers;

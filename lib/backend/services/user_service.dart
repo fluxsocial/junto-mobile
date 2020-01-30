@@ -53,8 +53,6 @@ class UserServiceCentralized implements UserService {
 
     final Map<String, dynamic> _body =
         JuntoHttp.handleResponse(_serverResponse);
-    print(_body);
-
     return UserProfile.fromMap(_body);
   }
 
@@ -115,7 +113,6 @@ class UserServiceCentralized implements UserService {
   Future<UserGroupsResponse> getUserGroups(String userAddress) async {
     final http.Response response =
         await client.get('/users/$userAddress/groups');
-    print(response.body);
     final Map<String, dynamic> _responseMap =
         JuntoHttp.handleResponse(response);
     return UserGroupsResponse.fromMap(_responseMap);
@@ -173,7 +170,6 @@ class UserServiceCentralized implements UserService {
         await client.get('/users/$userAddress/perspectives');
     final List<Map<String, dynamic>> items =
         JuntoHttp.handleResponse(_serverResponse);
-    print(items);
     return items.map(
       (Map<String, dynamic> data) => CentralizedPerspective.fromMap(data),
     );
@@ -231,6 +227,17 @@ class UserServiceCentralized implements UserService {
       '/users/$userAddress/connect',
     );
     JuntoHttp.handleResponse(_serverResponse);
+  }
+
+  @override
+  Future userRelations() async {
+    final http.Response _serverResponse = await client.get(
+      '/users/self/relations',
+    );
+
+    final _results = await JuntoHttp.handleResponse(_serverResponse);
+
+    return _results;
   }
 
   @override

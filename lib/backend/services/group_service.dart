@@ -85,12 +85,12 @@ class GroupServiceCentralized implements GroupService {
     final http.Response _serverResponse = await client
         .get('/groups/$groupAddress/expressions', queryParams: <String, String>{
       'direct_expressions': params.directExpressions.toString(),
-      'direct_expressions_pagination_position':
-          params.directExpressionsPaginationPosition.toString(),
+      'direct_expression_pagination_position':
+          params.directExpressionPaginationPosition.toString(),
     });
 
-    print(_serverResponse.body);
-    print(_serverResponse.statusCode);
+    // print(_serverResponse.body);
+    // print(_serverResponse.statusCode);
 
     // final Map<String, dynamic> items =
     //     JuntoHttp.handleResponse(_serverResponse);
@@ -105,7 +105,6 @@ class GroupServiceCentralized implements GroupService {
       '/groups/${group.address}',
       body: group.groupData.toJson(),
     );
-    print(_serverResponse.body);
     final Map<String, dynamic> _data =
         JuntoHttp.handleResponse(_serverResponse);
     return Group.fromMap(_data);

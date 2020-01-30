@@ -131,7 +131,6 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
   }
 
   void _changeGroup(Group group) {
-    print(group.groupType);
     setState(() {
       _currentGroup = group;
       actionsVisible = false;

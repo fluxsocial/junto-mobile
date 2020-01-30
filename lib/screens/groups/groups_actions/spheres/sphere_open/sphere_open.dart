@@ -120,7 +120,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.group.groupData.photo);
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(45),

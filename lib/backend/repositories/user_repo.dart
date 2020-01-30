@@ -79,6 +79,10 @@ class UserRepo {
     return _userService.connectUser(userAddress);
   }
 
+  Future userRelations() {
+    return _userService.userRelations();
+  }  
+
   Future<List<UserProfile>> connectedUsers(String userAddress) {
     return _userService.connectedUsers(userAddress);
   }
