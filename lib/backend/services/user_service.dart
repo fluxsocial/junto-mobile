@@ -235,8 +235,61 @@ class UserServiceCentralized implements UserService {
       '/users/self/relations',
     );
 
+    // handle response from server
     final _results = await JuntoHttp.handleResponse(_serverResponse);
 
+    // set each relationship key into its own variable
+    final Map<String, dynamic> _following = _results['following'];
+    final Map<String, dynamic> _connections = _results['connections'];
+    final Map<String, dynamic> _pendingConnections =
+        _results['pending_connections'];
+
+    // get the list of users for each relationship type
+    final List<dynamic> _followingResults = _results['following']['results'];
+    final List<dynamic> _connectionsResults =
+        _results['connections']['results'];
+    final List<dynamic> _pendingConnectionsResults =
+        _results['pending_connections']['results'];
+
+    // instantiate new variables for list of members; to be used after converting
+    // list of users above to UserProfile
+    final List<UserProfile> _connectionsMembers = <UserProfile>[];
+    final List<UserProfile> _followingMembers = <UserProfile>[];
+    final List<UserProfile> _pendingConnectionsMembers = <UserProfile>[];
+
+    if (_connectionsResults.isNotEmpty) {
+      for (final dynamic result in _connectionsResults) {
+        _connectionsMembers.add(
+          UserProfile.fromMap(result),
+        );
+      }
+    }
+
+    if (_followingResults.isNotEmpty) {
+      for (final dynamic result in _followingResults) {
+        _followingMembers.add(
+          UserProfile.fromMap(result),
+        );
+      }
+    }
+
+    for (final dynamic result in _pendingConnectionsResults) {
+      _pendingConnectionsMembers.add(
+        UserProfile.fromMap(result),
+      );
+    }
+
+    // replace the results (list of users) from the server response with new list of UserProfiles
+    _following['results'] = _followingMembers;
+    _connections['results'] = _connectionsMembers;
+    _pendingConnections['results'] = _pendingConnectionsMembers;
+
+    // replace originalrelationship keys with updated versions
+    _results['following'] = _following;
+    _results['connections'] = _connections;
+    _results['pending_connections'] = _pendingConnections;
+
+    print(_results);
     return _results;
   }
 

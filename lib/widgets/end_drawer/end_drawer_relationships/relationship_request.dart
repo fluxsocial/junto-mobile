@@ -73,7 +73,6 @@ class RelationshipRequest extends StatelessWidget {
         );
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
         color: Theme.of(context).colorScheme.background,
         child: Row(
           children: <Widget>[

@@ -9,6 +9,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/relationship_request.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 
@@ -121,48 +122,24 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
             future: getUserRelationships(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.hasData) {
-                print(snapshot.data);
-                final List<dynamic> _subscriptionsResults =
-                    snapshot.data['following']['results'];
-
-                final List<dynamic> _connectionsResults =
+                // get list of connections
+                final List<UserProfile> _connectionsMembers =
                     snapshot.data['connections']['results'];
 
-                final List<dynamic> _pendingConnectionsResults =
+                // get list of following
+                final List<UserProfile> _followingMembers =
+                    snapshot.data['following']['results'];
+
+                // get list of pending connections
+                final List<UserProfile> _pendingConnectionsMembers =
                     snapshot.data['pending_connections']['results'];
-
-                final List<dynamic> _connections = <dynamic>[];
-                final List<dynamic> _subscriptions = <dynamic>[];
-                final List<dynamic> _pendingConnections = <dynamic>[];
-
-                if (_connectionsResults.isNotEmpty) {
-                  for (final dynamic result in _connectionsResults) {
-                    _connections.add(
-                      UserProfile.fromMap(result),
-                    );
-                  }
-                }
-
-                if (_subscriptionsResults.isNotEmpty) {
-                  for (final dynamic result in _subscriptionsResults) {
-                    _subscriptions.add(
-                      UserProfile.fromMap(result),
-                    );
-                  }
-                }
-
-                for (final dynamic result in _pendingConnectionsResults) {
-                  _pendingConnections.add(
-                    UserProfile.fromMap(result),
-                  );
-                }
 
                 return TabBarView(
                   children: <Widget>[
                     // connections
                     ListView(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
-                      children: _connections
+                      children: _connectionsMembers
                           .map(
                             (dynamic connection) =>
                                 MemberPreview(profile: connection),
@@ -173,7 +150,7 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                     // subscriptions
                     ListView(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
-                      children: _subscriptions
+                      children: _followingMembers
                           .map(
                             (dynamic connection) =>
                                 MemberPreview(profile: connection),
@@ -183,28 +160,62 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                     // pending connections
                     ListView(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
-                      children: _pendingConnections
+                      children: _pendingConnectionsMembers
                           .map(
                             (dynamic connection) =>
-                                MemberPreview(profile: connection),
+                                RelationshipRequest(connection),
                           )
                           .toList(),
                     ),
                   ],
                 );
-              } else if (snapshot.hasError) {
+              } else if (snapshot.hasData) {
                 // print(snapshot.error);
                 return TabBarView(
                   children: <Widget>[
-                    Text(
-                      snapshot.error.toString(),
+                    Center(
+                      child: Transform.translate(
+                        offset: const Offset(0.0, -50),
+                        child: Text('Hmmm, something is up',
+                            style: Theme.of(context).textTheme.caption),
+                      ),
                     ),
-                    Text('or'),
-                    Text('oops'),
+                    Center(
+                      child: Transform.translate(
+                        offset: const Offset(0.0, -50),
+                        child: Text('Hmmm, something is up',
+                            style: Theme.of(context).textTheme.caption),
+                      ),
+                    ),
+                    Center(
+                      child: Transform.translate(
+                        offset: const Offset(0.0, -50),
+                        child: Text('Hmmm, something is up',
+                            style: Theme.of(context).textTheme.caption),
+                      ),
+                    ),
                   ],
                 );
               }
-              return const Text('what is good');
+              return TabBarView(
+                children: <Widget>[
+                  Center(
+                    child: Transform.translate(
+                        offset: const Offset(0.0, -50),
+                        child: JuntoProgressIndicator()),
+                  ),
+                  Center(
+                    child: Transform.translate(
+                        offset: const Offset(0.0, -50),
+                        child: JuntoProgressIndicator()),
+                  ),
+                  Center(
+                    child: Transform.translate(
+                        offset: const Offset(0.0, -50),
+                        child: JuntoProgressIndicator()),
+                  )
+                ],
+              );
             },
           ),
         ),
