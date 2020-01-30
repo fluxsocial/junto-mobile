@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
@@ -20,6 +22,7 @@ class _ChannelSearchModalState extends State<ChannelSearchModal> {
   TextEditingController _channelController;
   String query;
   List<String> _channels;
+  Timer _timer;
 
   @override
   void initState() {
@@ -68,6 +71,24 @@ class _ChannelSearchModalState extends State<ChannelSearchModal> {
     }
   }
 
+  void _onTextChange(String value) {
+    if (_timer != null) {
+      _timer.cancel();
+    }
+    _timer = Timer(
+      const Duration(milliseconds: 300),
+      () => _updateQuery(
+        value,
+      ),
+    );
+  }
+
+  void _updateQuery(String value) {
+    setState(() {
+      query = value;
+    });
+  }
+
   Widget _buildSearchField() {
     return Container(
       decoration: BoxDecoration(
@@ -105,7 +126,7 @@ class _ChannelSearchModalState extends State<ChannelSearchModal> {
                   color: Theme.of(context).primaryColor),
               maxLength: 80,
               textInputAction: TextInputAction.search,
-              onChanged: (String _txt) => setState(() => query = _txt),
+              onChanged: _onTextChange,
             ),
           ),
           GestureDetector(
