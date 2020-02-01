@@ -113,4 +113,9 @@ class ExpressionRepo {
 
     return _expressionService.addEventMember(expressionAddress, _users);
   }
+
+  Future<QueryResults<Users>> getEventMembers(
+      String expressionAddress, Map<String, String> params) async {
+    return _expressionService.getEventMembers(expressionAddress, params);
+  }
 }

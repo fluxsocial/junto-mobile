@@ -196,4 +196,20 @@ class ExpressionServiceCentralized implements ExpressionService {
       return <Users>[for (dynamic data in _data) Users.fromJson(data)];
     }
   }
+
+  @override
+  Future<QueryResults<Users>> getEventMembers(
+      String expressionAddress, Map<String, String> params) async {
+    final http.Response response = await client.get(
+      '/expressions/$expressionAddress/members',
+      queryParams: params,
+    );
+    final dynamic results = JuntoHttp.handleResponse(response);
+    return QueryResults<Users>(
+      results: <Users>[
+        for (dynamic data in results['results']) Users.fromJson(data)
+      ],
+      lastTimestamp: results['last_timestamp'],
+    );
+  }
 }

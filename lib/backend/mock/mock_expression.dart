@@ -105,4 +105,20 @@ class MockExpressionService implements ExpressionService {
       ),
     );
   }
+
+  @override
+  Future<QueryResults<Users>> getEventMembers(
+      String expressionAddress, Map<String, String> params) async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    return QueryResults<Users>(
+      results: List<Users>.generate(
+        12,
+        (int index) => Users(
+          user: kUserProfile,
+          permissionLevel: index % 2 == 0 ? 'Admin' : 'Member',
+        ),
+      ),
+      lastTimestamp: ''
+    );
+  }
 }
