@@ -291,7 +291,6 @@ class UserServiceCentralized implements UserService {
     _results['connections'] = _connections;
     _results['pending_connections'] = _pendingConnections;
 
-    print(_results);
     return _results;
   }
 

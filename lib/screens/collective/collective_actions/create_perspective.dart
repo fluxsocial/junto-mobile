@@ -250,7 +250,6 @@ class CreatePerspectiveState extends State<CreatePerspective> {
                                   profile: connection,
                                   onSelect: () {
                                     _perspectiveMembers.add(connection.address);
-                                    print(_perspectiveMembers);
                                   },
                                   onDeselect: () {
                                     _perspectiveMembers
@@ -271,19 +270,17 @@ class CreatePerspectiveState extends State<CreatePerspective> {
                                   profile: connection,
                                   onSelect: () {
                                     _perspectiveMembers.add(connection.address);
-                                    print(_perspectiveMembers);
                                   },
                                   onDeselect: () {
                                     _perspectiveMembers
                                         .remove(connection.address);
-                                    print(_perspectiveMembers);
                                   },
                                 ),
                               )
                               .toList(),
                         ),
                       ],
-                    );  
+                    );
                   } else if (snapshot.hasError) {
                     return TabBarView(
                       children: <Widget>[

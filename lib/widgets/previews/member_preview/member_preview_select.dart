@@ -94,7 +94,7 @@ class MemberPreviewSelectState extends State<MemberPreviewSelect> {
                                     width: 1),
                               ),
                               alignment: Alignment.center,
-                              child: Icon(Icons.add,
+                              child: Icon(Icons.check,
                                   color: Colors.white, size: 17),
                             ),
                           )
