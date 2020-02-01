@@ -1,12 +1,10 @@
 import 'package:http/http.dart' as http;
-import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/sphere.dart';
 import 'package:junto_beta_mobile/utils/junto_http.dart';
 import 'package:meta/meta.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 @immutable
 class GroupServiceCentralized implements GroupService {
@@ -89,14 +87,11 @@ class GroupServiceCentralized implements GroupService {
           params.directExpressionPaginationPosition.toString(),
     });
 
-    // print(_serverResponse.body);
-    // print(_serverResponse.statusCode);
-
-    // final Map<String, dynamic> items =
-    //     JuntoHttp.handleResponse(_serverResponse);
-    // return (items['direct_posts'] as List<dynamic>)
-    //     .map((dynamic data) => CentralizedExpressionResponse.fromMap(data))
-    //     .toList();
+    final Map<String, dynamic> items =
+        JuntoHttp.handleResponse(_serverResponse);
+    return (items['direct_posts']['results'] as List<dynamic>)
+        .map((dynamic data) => CentralizedExpressionResponse.fromMap(data))
+        .toList();
   }
 
   @override

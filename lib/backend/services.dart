@@ -110,6 +110,18 @@ abstract class ExpressionService {
   List<CentralizedExpressionResponse> get collectiveExpressions;
 
   Future<void> deleteExpression(String expressionAddress);
+
+  /// Added [users] to [expressionAddress]
+  Future<List<Users>> addEventMember(
+    String expressionAddress,
+    List<Map<String, String>> users,
+  );
+
+  /// Retrive a list of members who RSVP to the passed expression
+  Future<QueryResults<Users>> getEventMembers(
+    String expressionAddress,
+    Map<String, String> params,
+  );
 }
 
 abstract class GroupService {

@@ -1,16 +1,17 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/backend/repositories/group_repo.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/pack_open_appbar.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/pack_open_public.dart';
+import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PackOpen extends StatefulWidget {
   const PackOpen({
@@ -175,42 +176,35 @@ class PackOpenState extends State<PackOpen> {
                 },
                 children: <Widget>[
                   PackOpenPublic(fabVisible: _isVisible),
-                  _userProfile == null
-                      ? const SizedBox()
-                      : FutureBuilder<List<CentralizedExpressionResponse>>(
-                          future: getPackExpressions(),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<List<CentralizedExpressionResponse>>
-                                  snapshot) {
-                            if (snapshot.hasError) {
-                              print(snapshot.error);
-                              return Expanded(
-                                child: Center(
-                                  child: Transform.translate(
-                                    offset: const Offset(0.0, -50),
-                                    child: const Text(
-                                        'Hmm, something is up with our server'),
-                                  ),
-                                ),
-                              );
-                            }
-                            if (snapshot.hasData) {
-                              return Expanded(
-                                  child: ListView(
-                                padding: const EdgeInsets.all(0),
-                                children: <Widget>[],
-                              ));
-                            }
-                            return Expanded(
-                              child: Center(
-                                child: Transform.translate(
-                                  offset: const Offset(0.0, -50),
-                                  child: JuntoProgressIndicator(),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
+                  if (_userProfile != null)
+                    FutureBuilder<List<CentralizedExpressionResponse>>(
+                      future: getPackExpressions(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<List<CentralizedExpressionResponse>>
+                              snapshot) {
+                        if (snapshot.hasError) {
+                          return Center(
+                            child: Transform.translate(
+                              offset: const Offset(0.0, -50),
+                              child: const Text(
+                                  'Hmm, something is up with our server'),
+                            ),
+                          );
+                        }
+                        if (snapshot.hasData) {
+                          return ListView(
+                            padding: const EdgeInsets.all(0),
+                            children: const <Widget>[],
+                          );
+                        }
+                        return Center(
+                          child: Transform.translate(
+                            offset: const Offset(0.0, -50),
+                            child: JuntoProgressIndicator(),
+                          ),
+                        );
+                      },
+                    ),
                 ],
               ),
             ),
