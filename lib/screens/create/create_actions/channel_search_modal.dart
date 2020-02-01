@@ -238,7 +238,7 @@ class _ChannelSearchModalState extends State<ChannelSearchModal> {
                               return InkWell(
                                 onTap: () => _addItem(item.name),
                                 child: ChannelPreview(
-                                  channel: item.name,
+                                  channel: item,
                                 ),
                               );
                             },

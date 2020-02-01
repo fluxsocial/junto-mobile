@@ -121,12 +121,7 @@ class FilterChannelModalState extends State<FilterChannelModal> {
             ),
             Expanded(
                 child: ListView(
-              children: const <Widget>[
-                ChannelPreview(channel: 'design'),
-                ChannelPreview(channel: 'philosophy'),
-                ChannelPreview(channel: 'zen'),
-                ChannelPreview(channel: 'plant based'),
-              ],
+              children: const <Widget>[],
             ))
           ],
         ),

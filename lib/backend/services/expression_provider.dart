@@ -161,6 +161,7 @@ class ExpressionServiceCentralized implements ExpressionService {
   @override
   Future<QueryResults<CentralizedExpressionResponse>> getCollectiveExpressions(
       Map<String, String> params) async {
+    print(params);
     final http.Response response = await client.get(
       '/expressions',
       queryParams: params,

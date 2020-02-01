@@ -55,6 +55,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
   String _appbarTitle = 'JUNTO';
   bool _showDegrees = true;
   String currentDegree = 'oo';
+  List<String> _channels = <String>[];
 
   bool actionsVisible = false;
 
@@ -116,18 +117,20 @@ class JuntoCollectiveState extends State<JuntoCollective>
         'context_type': contextType,
         'pagination_position': paginationPos.toString(),
         'dos': dos.toString(),
+        'channels[0]': channels.toString()
       };
     } else {
       _params = <String, String>{
         'context_type': contextType,
         'context': contextString,
         'pagination_position': paginationPos.toString(),
+        'channels[0]': channels.toString()
       };
     }
     try {
       return await _expressionProvider.getCollectiveExpressions(_params);
     } on JuntoException catch (error) {
-      print(error);
+      print(error.message);
       return null;
     }
   }
@@ -201,6 +204,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
               child: JuntoCollectiveActions(
                   userProfile: _userProfile,
                   changePerspective: _changePerspective,
+                  filterByChannel: _filterByChannel,
                   currentPerspective: _appbarTitle),
             ),
           ),
@@ -329,12 +333,26 @@ class JuntoCollectiveState extends State<JuntoCollective>
     });
   }
 
+  void _filterByChannel(Channel channel) {
+    setState(() {
+      if (_channels.length == 0) {
+        _channels.add(channel.name);
+      } else {
+        _channels[0] = channel.name;
+      }
+      _expressionCompleter = getCollectiveExpressions(
+          contextType: 'Collective', paginationPos: 0, channels: _channels);
+
+      actionsVisible = false;
+    });
+  }
+
 // Switch between perspectives; used in perspectives side drawer.
   void _changePerspective(CentralizedPerspective perspective) {
     if (perspective.name == 'JUNTO') {
       setState(() {
         _expressionCompleter = getCollectiveExpressions(
-            contextType: 'Collective', paginationPos: 0);
+            contextType: 'Collective', paginationPos: 0, channels: _channels);
         _showDegrees = true;
         _appbarTitle = 'JUNTO';
       });
@@ -347,6 +365,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
           contextString: perspective.address,
           contextType: 'FollowPerspective',
           dos: null,
+          channels: _channels,
         );
         _showDegrees = false;
         if (perspective.name ==

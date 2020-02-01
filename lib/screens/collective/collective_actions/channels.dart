@@ -7,10 +7,10 @@ import 'package:junto_beta_mobile/widgets/previews/channel_preview.dart';
 import 'package:provider/provider.dart';
 
 class JuntoChannels extends StatefulWidget {
-  const JuntoChannels({this.currentPerspective, this.onChannelSelected});
+  const JuntoChannels({this.currentPerspective, this.filterByChannel});
 
   final String currentPerspective;
-  final ValueChanged<Channel> onChannelSelected;
+  final ValueChanged<Channel> filterByChannel;
 
   @override
   State<StatefulWidget> createState() {
@@ -139,29 +139,26 @@ class JuntoChannelsState extends State<JuntoChannels> {
               ) {
                 if (snapshot.hasData && !snapshot.hasError) {
                   return ListView.builder(
+                    padding: const EdgeInsets.all(0),
                     itemCount: snapshot.data.results.length,
                     itemBuilder: (BuildContext context, int index) {
                       final Channel item = snapshot.data.results[index];
+
                       return InkWell(
-                        onTap: () => widget.onChannelSelected(item),
+                        onTap: () => widget.filterByChannel(item),
                         child: ChannelPreview(
-                          channel: item.name,
+                          channel: item,
                         ),
                       );
                     },
                   );
                 }
-                if (snapshot.hasData && snapshot.data.results.isEmpty) {
-                  return Container(
-                    child: const Center(
-                      child: Text('Add new channel +'),
-                    ),
-                  );
-                }
                 if (snapshot.hasError) {
                   return Container(
                     child: Center(
-                      child: Text(snapshot.error.toString()),
+                      child: Text(
+                        snapshot.error.toString(),
+                      ),
                     ),
                   );
                 }

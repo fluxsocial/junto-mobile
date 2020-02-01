@@ -6,11 +6,15 @@ import 'package:junto_beta_mobile/screens/collective/collective_actions/channels
 
 class JuntoCollectiveActions extends StatefulWidget {
   const JuntoCollectiveActions(
-      {this.userProfile, this.changePerspective, this.currentPerspective});
+      {this.userProfile,
+      this.changePerspective,
+      this.currentPerspective,
+      this.filterByChannel});
 
   final UserData userProfile;
   final Function changePerspective;
   final String currentPerspective;
+  final Function filterByChannel;
 
   @override
   State<StatefulWidget> createState() {
@@ -34,7 +38,9 @@ class JuntoCollectiveActionsState extends State<JuntoCollectiveActions> {
             height: MediaQuery.of(context).size.height - 90,
             child: Stack(children: <Widget>[
               channelsVisible
-                  ? JuntoChannels(currentPerspective: widget.currentPerspective)
+                  ? JuntoChannels(
+                      currentPerspective: widget.currentPerspective,
+                      filterByChannel: widget.filterByChannel)
                   : JuntoPerspectives(
                       userProfile: widget.userProfile,
                       changePerspective: widget.changePerspective),

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 
 class ChannelPreview extends StatelessWidget {
   const ChannelPreview({Key key, this.channel}) : super(key: key);
 
-  final String channel;
+  final Channel channel;
 
   @override
   Widget build(BuildContext context) {
@@ -52,10 +53,10 @@ class ChannelPreview extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(channel,
+                    Text(channel.name,
                         textAlign: TextAlign.start,
                         style: Theme.of(context).textTheme.subtitle1),
-                    Text('2,400 expressions',
+                    Text('x expressions',
                         textAlign: TextAlign.start,
                         style: Theme.of(context).textTheme.bodyText1)
                   ],
