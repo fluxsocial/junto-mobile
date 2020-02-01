@@ -30,7 +30,8 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
 
   Group _currentGroup;
 
-  bool actionsVisible = true;
+  bool actionsVisible = false;
+
   @override
   void initState() {
     super.initState();

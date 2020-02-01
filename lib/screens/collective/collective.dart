@@ -56,7 +56,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
   bool _showDegrees = true;
   String currentDegree = 'oo';
 
-  bool actionsVisible = true;
+  bool actionsVisible = false;
 
   @override
   void initState() {
