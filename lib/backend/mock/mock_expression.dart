@@ -4,6 +4,7 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/mock/mock_data.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/resonation_model.dart';
+import 'package:junto_beta_mobile/models/sphere.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 
 class MockExpressionService implements ExpressionService {
@@ -89,5 +90,19 @@ class MockExpressionService implements ExpressionService {
   @override
   Future<void> deleteExpression(String expressionAddress) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
+  }
+
+  @override
+  Future<List<Users>> addEventMember(
+    String expressionAddress,
+    List<Map<String, String>> users,
+  ) async {
+    return List<Users>.generate(
+      12,
+      (int index) => Users(
+        user: kUserProfile,
+        permissionLevel: index % 2 == 0 ? 'Admin' : 'Member',
+      ),
+    );
   }
 }

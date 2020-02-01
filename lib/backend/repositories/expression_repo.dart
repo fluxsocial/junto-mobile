@@ -97,4 +97,20 @@ class ExpressionRepo {
 
   Future<void> deleteExpression(String address) =>
       _expressionService.deleteExpression(address);
+
+  Future<List<Users>> addEventMember(
+    String expressionAddress,
+    List<UserProfile> userProfile,
+    String perms,
+  ) {
+    final List<Map<String, String>> _users = <Map<String, String>>[];
+    for (final UserProfile _profile in userProfile) {
+      _users.add(<String, String>{
+        'target_user': _profile.address,
+        'permissions': perms
+      });
+    }
+
+    return _expressionService.addEventMember(expressionAddress, _users);
+  }
 }

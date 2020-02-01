@@ -110,6 +110,11 @@ abstract class ExpressionService {
   List<CentralizedExpressionResponse> get collectiveExpressions;
 
   Future<void> deleteExpression(String expressionAddress);
+
+  Future<List<Users>> addEventMember(
+    String expressionAddress,
+    List<Map<String, String>> users,
+  );
 }
 
 abstract class GroupService {
@@ -213,7 +218,7 @@ abstract class UserService {
   Future<void> respondToConnection(String userAddress, bool response);
 
   /// Gets a list of pending user connections
-  Future userRelations();  
+  Future userRelations();
 
   /// Gets a list of pending user connections
   Future<List<UserProfile>> connectedUsers(String userAddress);

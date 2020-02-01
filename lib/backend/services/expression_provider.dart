@@ -181,4 +181,20 @@ class ExpressionServiceCentralized implements ExpressionService {
       );
     }
   }
+
+  @override
+  Future<List<Users>> addEventMember(
+    String expressionAddress,
+    List<Map<String, String>> users,
+  ) async {
+    {
+      final http.Response _serverResponse = await client.postWithoutEncoding(
+        '/expressions/$expressionAddress/members',
+        body: users,
+      );
+      print(_serverResponse.body);
+      final List<dynamic> _data = JuntoHttp.handleResponse(_serverResponse);
+      return <Users>[for (dynamic data in _data) Users.fromJson(data)];
+    }
+  }
 }
