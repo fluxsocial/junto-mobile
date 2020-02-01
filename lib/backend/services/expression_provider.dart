@@ -192,7 +192,6 @@ class ExpressionServiceCentralized implements ExpressionService {
         '/expressions/$expressionAddress/members',
         body: users,
       );
-      print(_serverResponse.body);
       final List<dynamic> _data = JuntoHttp.handleResponse(_serverResponse);
       return <Users>[for (dynamic data in _data) Users.fromJson(data)];
     }

@@ -231,7 +231,11 @@ class __AddEventMembersState extends State<_AddEventMembers>
   ExpressionRepo _expressionRepo;
   Timer debounce;
   String query;
-  List<UserProfile> _selectedUsers = <UserProfile>[];
+
+  final ValueNotifier<List<UserProfile>> _selectedUsers =
+      ValueNotifier<List<UserProfile>>(
+    <UserProfile>[],
+  );
 
   @override
   void initState() {
@@ -257,7 +261,7 @@ class __AddEventMembersState extends State<_AddEventMembers>
       JuntoLoader.showLoader(context);
       await _expressionRepo.addEventMember(
         widget.expressionResponse.address,
-        _selectedUsers,
+        _selectedUsers.value,
         'Member',
       );
       JuntoLoader.hide();
@@ -269,7 +273,6 @@ class __AddEventMembersState extends State<_AddEventMembers>
         ],
       );
     } catch (error) {
-      print(error);
       JuntoLoader.hide();
       JuntoDialog.showJuntoDialog(
         context,
@@ -278,7 +281,6 @@ class __AddEventMembersState extends State<_AddEventMembers>
           DialogBack(),
         ],
       );
-      rethrow;
     }
   }
 
@@ -290,8 +292,10 @@ class __AddEventMembersState extends State<_AddEventMembers>
   }
 
   void _onUserTap(UserProfile user) {
-    final List<UserProfile> items = _selectedUsers;
-    _selectedUsers = placeUser(user, items);
+    final List<UserProfile> items = _selectedUsers.value;
+    _selectedUsers.value = placeUser(user, items);
+    //ignore:invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+    _selectedUsers.notifyListeners();
   }
 
   @override
@@ -310,61 +314,91 @@ class __AddEventMembersState extends State<_AddEventMembers>
                 onChanged: _onTextChange,
               ),
               const SizedBox(height: 12.0),
-              FutureBuilder<QueryResults<UserProfile>>(
-                future: _searchRepo.searchMembers(query),
-                builder: (
-                  BuildContext context,
-                  AsyncSnapshot<QueryResults<UserProfile>> snapshot,
-                ) {
-                  if (snapshot.hasError) {
-                    return Expanded(
-                      child: Container(
-                        child: Center(
-                          child: Text('Something wen wrong ${snapshot.error}'),
-                        ),
-                      ),
-                    );
-                  }
-                  if (snapshot.hasData &&
-                      snapshot.data.results.isEmpty &&
-                      !snapshot.hasError) {
-                    return Expanded(
-                      child: Container(
-                        child: const Center(
-                          child: Text('Your user is mysterious '),
-                        ),
-                      ),
-                    );
-                  }
-                  if (snapshot.hasData &&
-                      snapshot.data.results.isNotEmpty &&
-                      !snapshot.hasError) {
-                    return Expanded(
-                      child: ListView.builder(
-                        itemCount: snapshot.data.results.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          final UserProfile item = snapshot.data.results[index];
-                          return MemberPreview(
-                            profile: item,
-                            onUserTap: _onUserTap,
-                          );
-                        },
-                      ),
-                    );
-                  }
-                  return Expanded(
-                    child: Container(
-                      child: const Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    ),
-                  );
-                },
-              ),
+              _buildResultsList(),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildResultsList() {
+    return FutureBuilder<QueryResults<UserProfile>>(
+      future: _searchRepo.searchMembers(query),
+      builder: (
+        BuildContext context,
+        AsyncSnapshot<QueryResults<UserProfile>> snapshot,
+      ) {
+        if (snapshot.hasError) {
+          return Expanded(
+            child: Container(
+              child: Center(
+                child: Text('Something wen wrong ${snapshot.error}'),
+              ),
+            ),
+          );
+        }
+        if (snapshot.hasData &&
+            snapshot.data.results.isEmpty &&
+            !snapshot.hasError)
+          return Expanded(
+            child: Container(
+              child: const Center(
+                child: Text('Your user is mysterious '),
+              ),
+            ),
+          );
+        if (snapshot.hasData &&
+            snapshot.data.results.isNotEmpty &&
+            !snapshot.hasError)
+          return Expanded(
+            child: ListView.builder(
+                itemCount: snapshot.data.results.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final UserProfile item = snapshot.data.results[index];
+                  return ValueListenableBuilder<List<UserProfile>>(
+                    valueListenable: _selectedUsers,
+                    builder: (
+                      BuildContext context,
+                      List<UserProfile> value,
+                      Widget child,
+                    ) {
+                      if (!value.contains(item))
+                        return MemberPreview(
+                          profile: item,
+                          onUserTap: _onUserTap,
+                        );
+                      return Stack(
+                        children: <Widget>[
+                          MemberPreview(
+                            profile: item,
+                            onUserTap: _onUserTap,
+                          ),
+                          Align(
+                            alignment: Alignment.bottomRight,
+                            child: Container(
+                              height: 15.0,
+                              width: 15.0,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(45.0),
+                                color: Colors.greenAccent,
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                }),
+          );
+        return Expanded(
+          child: Container(
+            child: const Center(
+              child: CircularProgressIndicator(),
+            ),
+          ),
+        );
+      },
     );
   }
 }
