@@ -68,6 +68,7 @@ class _SphereOpenMembersState extends State<SphereOpenMembers>
       );
     }
   }
+
 //ignore:unused_element
   Future<void> _deleteMember(BuildContext context, Users user) async {
     print('User perms level ${user.permissionLevel}');
