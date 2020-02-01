@@ -400,6 +400,18 @@ class UserServiceCentralized implements UserService {
   }
 
   @override
+  Future<Map<String, dynamic>> isRelated(
+      String userAddress, String targetAddress) async {
+    final http.Response _serverResponse = await client.get(
+      '/users/$userAddress/related/$targetAddress',
+    );
+    final Map<String, dynamic> result =
+        JuntoHttp.handleResponse(_serverResponse);
+
+    return result;
+  }
+
+  @override
   Future<bool> isConnectedUser(String userAddress, String targetAddress) async {
     final http.Response _serverResponse = await client.get(
       '/users/$userAddress/connected/$targetAddress',

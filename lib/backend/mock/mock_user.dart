@@ -125,6 +125,13 @@ class MockUserService implements UserService {
   }
 
   @override
+  Future<Map<String, dynamic>> isRelated(
+      String userAddress, String targetAddress) async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    return {};
+  }
+
+  @override
   Future<bool> isConnectedUser(String userAddress, String targetAddress) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     return false;

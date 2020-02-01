@@ -81,7 +81,7 @@ class UserRepo {
 
   Future userRelations() {
     return _userService.userRelations();
-  }  
+  }
 
   Future<List<UserProfile>> connectedUsers(String userAddress) {
     return _userService.connectedUsers(userAddress);
@@ -97,6 +97,11 @@ class UserRepo {
 
   Future<void> respondToConnection(String userAddress, bool response) {
     return _userService.respondToConnection(userAddress, response);
+  }
+
+  Future<Map<String, dynamic>> isRelated(
+      String userAddress, String targetAddress) {
+    return _userService.isRelated(userAddress, targetAddress);
   }
 
   Future<bool> isConnected(String userAddress, String targetAddress) {

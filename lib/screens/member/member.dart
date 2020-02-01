@@ -45,6 +45,8 @@ class _JuntoMemberState extends State<JuntoMember> {
   UserRepo userProvider;
   bool isConnected;
   bool isFollowing;
+  bool isFollowed;
+  bool isPending;
 
   @override
   void initState() {
@@ -67,20 +69,13 @@ class _JuntoMemberState extends State<JuntoMember> {
 
     // // see if user is connected to member
     await userProvider
-        .isConnected(_userAddress, widget.profile.address)
-        .then((bool result) {
-      print(result);
+        .isRelated(_userAddress, widget.profile.address)
+        .then((Map<String, dynamic> result) {
       setState(() {
-        isConnected = result;
-      });
-    });
-
-    // see if user is following member
-    await userProvider
-        .isFollowing(_userAddress, widget.profile.address)
-        .then((bool result) {
-      setState(() {
-        isFollowing = result;
+        isConnected = result['is_connected'];
+        isFollowing = result['is_following'];
+        isFollowed = result['is_followed'];
+        isPending = result['has_pending_connection'];
       });
     });
   }
@@ -262,7 +257,6 @@ class _ProfileDetails extends StatelessWidget {
     );
   }
 }
-
 
 class MemberRelationshipsModal extends StatelessWidget {
   const MemberRelationshipsModal({

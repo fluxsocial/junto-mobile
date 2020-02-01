@@ -213,10 +213,13 @@ abstract class UserService {
   Future<void> respondToConnection(String userAddress, bool response);
 
   /// Gets a list of pending user connections
-  Future userRelations();  
+  Future userRelations();
 
   /// Gets a list of pending user connections
   Future<List<UserProfile>> connectedUsers(String userAddress);
+
+  /// Returns true/false of user's relations to another member
+  Future<Map<String, dynamic>> isRelated(String userAddress, String targetAddress);
 
   /// Returns true/false if the [userAddress] is following the [targetAddress]
   Future<bool> isFollowingUser(String userAddress, String targetAddress);

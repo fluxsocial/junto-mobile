@@ -166,6 +166,8 @@ class ExpressionServiceCentralized implements ExpressionService {
       '/expressions',
       queryParams: params,
     );
+  
+    print(response.statusCode);
     final dynamic results = JuntoHttp.handleResponse(response);
     if (results is Map<dynamic, dynamic>) {
       return QueryResults<CentralizedExpressionResponse>(
