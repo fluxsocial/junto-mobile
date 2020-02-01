@@ -25,7 +25,7 @@ class JuntoPerspectives extends StatefulWidget {
 
 class JuntoPerspectivesState extends State<JuntoPerspectives> {
   String _userAddress;
-  //ignore:unused_field 
+  //ignore:unused_field
   UserData _userProfile;
 
   @override
@@ -69,7 +69,8 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text('Perspectives', style: Theme.of(context).textTheme.headline4),
+              Text('Perspectives',
+                  style: Theme.of(context).textTheme.headline4),
               GestureDetector(
                 onTap: () {
                   Navigator.push(
@@ -141,27 +142,50 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                         );
                       }
                       if (snapshot.hasData) {
-                        return ListView(
-                            padding: const EdgeInsets.all(0),
-                            shrinkWrap: true,
-                            physics: const ClampingScrollPhysics(),
-                            children: snapshot.data
-                                .map((CentralizedPerspective perspective) {
-                              if (perspective.name != 'Connections') {
-                                return GestureDetector(
-                                  child: _buildPerspective(perspective),
-                                );
-                              } else {
-                                return const SizedBox();
-                              }
-                            }).toList());
+                        return Column(
+                          children: <Widget>[
+                            // display Subscriptions perspective first
+                            ListView(
+                              padding: const EdgeInsets.all(0),
+                              shrinkWrap: true,
+                              physics: const ClampingScrollPhysics(),
+                              children: snapshot.data
+                                  .map((CentralizedPerspective perspective) {
+                                if (perspective.name == 'Subscriptions') {
+                                  return GestureDetector(
+                                    child: _buildPerspective(perspective),
+                                  );
+                                } else {
+                                  return const SizedBox();
+                                }
+                              }).toList(),
+                            ),
+                            // display rest of perspectives
+                            ListView(
+                              padding: const EdgeInsets.all(0),
+                              shrinkWrap: true,
+                              physics: const ClampingScrollPhysics(),
+                              children: snapshot.data
+                                  .map((CentralizedPerspective perspective) {
+                                if (perspective.name != 'Connections' &&
+                                    perspective.name != 'Subscriptions') {
+                                  return GestureDetector(
+                                    child: _buildPerspective(perspective),
+                                  );
+                                } else {
+                                  return const SizedBox();
+                                }
+                              }).toList(),
+                            )
+                          ],
+                        );
                       }
                       return Container();
                     },
                   )
                 : const SizedBox(),
           ],
-        )) 
+        ))
       ]),
     );
   }

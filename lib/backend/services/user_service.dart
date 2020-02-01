@@ -32,8 +32,10 @@ class UserServiceCentralized implements UserService {
       '/perspectives',
       body: _postBody,
     );
+
     final Map<String, dynamic> _body =
         JuntoHttp.handleResponse(_serverResponse);
+
     return CentralizedPerspective.fromMap(_body);
   }
 

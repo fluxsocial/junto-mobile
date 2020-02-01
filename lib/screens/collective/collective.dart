@@ -340,6 +340,8 @@ class JuntoCollectiveState extends State<JuntoCollective>
       });
     } else {
       setState(() {
+        print(perspective.address);
+
         _expressionCompleter = getCollectiveExpressions(
           paginationPos: 0,
           contextString: perspective.address,
