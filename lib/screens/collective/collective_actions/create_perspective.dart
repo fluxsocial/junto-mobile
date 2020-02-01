@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:async/async.dart' show AsyncMemoizer;
 
+import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
@@ -9,6 +10,7 @@ import 'package:junto_beta_mobile/utils/junto_exception.dart'
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
+import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview_select.dart';
 
 class CreatePerspective extends StatefulWidget {
@@ -25,6 +27,7 @@ class CreatePerspectiveState extends State<CreatePerspective> {
 
   int _currentIndex = 0;
   final List<String> _tabs = <String>['Subscriptions', 'Connections'];
+  List<String> _perspectiveMembers = <String>[];
 
   @override
   void initState() {
@@ -32,6 +35,14 @@ class CreatePerspectiveState extends State<CreatePerspective> {
     _nameController = TextEditingController();
     _aboutController = TextEditingController();
     _pageController = PageController(initialPage: 0);
+  }
+
+  final AsyncMemoizer _memoizer = AsyncMemoizer();
+
+  Future getUserRelationships() async {
+    return _memoizer.runOnce(
+      () => Provider.of<UserRepo>(context).userRelations(),
+    );
   }
 
   Future<void> _createPerspective() async {
@@ -42,7 +53,7 @@ class CreatePerspectiveState extends State<CreatePerspective> {
       await Provider.of<UserRepo>(context, listen: false).createPerspective(
         Perspective(
           name: name,
-          members: <String>[],
+          members: _perspectiveMembers,
           about: about,
         ),
       );
@@ -216,27 +227,100 @@ class CreatePerspectiveState extends State<CreatePerspective> {
                   ),
                 ];
               },
-              body: TabBarView(
-                children: <Widget>[
-                  ListView(
-                    padding: const EdgeInsets.only(left: 10),
+              body: FutureBuilder(
+                future: getUserRelationships(),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.hasData) {
+                    // get list of connections
+                    final List<UserProfile> _connectionsMembers =
+                        snapshot.data['connections']['results'];
+
+                    // get list of following
+                    final List<UserProfile> _followingMembers =
+                        snapshot.data['following']['results'];
+
+                    return TabBarView(
+                      children: <Widget>[
+                        // subscriptions
+                        ListView(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          children: _followingMembers
+                              .map(
+                                (dynamic connection) => MemberPreviewSelect(
+                                  profile: connection,
+                                  onSelect: () {
+                                    _perspectiveMembers.add(connection.address);
+                                    print(_perspectiveMembers);
+                                  },
+                                  onDeselect: () {
+                                    _perspectiveMembers
+                                        .indexWhere(connection.addres);
+                                    _perspectiveMembers
+                                        .remove(connection.address);
+                                  },
+                                ),
+                              )
+                              .toList(),
+                        ),
+                        // connections
+                        ListView(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          children: _connectionsMembers
+                              .map(
+                                (dynamic connection) => MemberPreviewSelect(
+                                  profile: connection,
+                                  onSelect: () {
+                                    _perspectiveMembers.add(connection.address);
+                                    print(_perspectiveMembers);
+                                  },
+                                  onDeselect: () {
+                                    _perspectiveMembers
+                                        .remove(connection.address);
+                                    print(_perspectiveMembers);
+                                  },
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      ],
+                    );  
+                  } else if (snapshot.hasError) {
+                    return TabBarView(
+                      children: <Widget>[
+                        Center(
+                          child: Transform.translate(
+                            offset: const Offset(0.0, -50),
+                            child: Text('Hmmm, something is up',
+                                style: Theme.of(context).textTheme.caption),
+                          ),
+                        ),
+                        Center(
+                          child: Transform.translate(
+                            offset: const Offset(0.0, -50),
+                            child: Text('Hmmm, something is up',
+                                style: Theme.of(context).textTheme.caption),
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+                  return TabBarView(
                     children: <Widget>[
-                      MemberPreviewSelect(
-                        onSelect: () {},
-                        onDeselect: () {},
+                      Center(
+                        child: Transform.translate(
+                          offset: const Offset(0.0, -50),
+                          child: JuntoProgressIndicator(),
+                        ),
+                      ),
+                      Center(
+                        child: Transform.translate(
+                          offset: const Offset(0.0, -50),
+                          child: JuntoProgressIndicator(),
+                        ),
                       ),
                     ],
-                  ),
-                  ListView(
-                    padding: const EdgeInsets.only(left: 10),
-                    children: <Widget>[
-                      MemberPreviewSelect(
-                        onSelect: () {},
-                        onDeselect: () {},
-                      ),
-                    ],
-                  ),
-                ],
+                  );
+                },
               ),
             ),
           )

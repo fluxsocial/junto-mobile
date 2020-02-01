@@ -55,10 +55,10 @@ class MemberPreviewSelectState extends State<MemberPreviewSelect> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text('sunyata',
+                        Text(widget.profile.username,
                             textAlign: TextAlign.start,
                             style: Theme.of(context).textTheme.subtitle1),
-                        Text('Eric Yang',
+                        Text(widget.profile.name,
                             textAlign: TextAlign.start,
                             style: Theme.of(context).textTheme.bodyText1)
                       ],

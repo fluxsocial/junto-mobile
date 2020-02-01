@@ -161,7 +161,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                   )
                 : const SizedBox(),
           ],
-        ))
+        )) 
       ]),
     );
   }

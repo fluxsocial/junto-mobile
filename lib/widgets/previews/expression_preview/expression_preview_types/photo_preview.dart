@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-/// Displays the given [image] and [imageCaption]
+// Displays the given [image] and [imageCaption]
 class PhotoPreview extends StatelessWidget {
   const PhotoPreview({
     Key key,
