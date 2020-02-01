@@ -39,24 +39,26 @@ class MemberAppbar extends StatelessWidget {
                 memberHandle.toLowerCase(),
                 style: Theme.of(context).textTheme.subtitle1,
               ),
-              GestureDetector(
-                onTap: () {
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (BuildContext context) => Container(
-                      color: Colors.transparent,
-                      child: MemberActionItems(),
-                    ),
-                  );
-                },
-                child: Container(
-                  width: 42,
-                  padding: const EdgeInsets.only(right: 10),
-                  alignment: Alignment.centerRight,
-                  color: Colors.transparent,
-                  child: const Icon(CustomIcons.more),
-                ),
-              )
+              const SizedBox(width: 42),
+              // GestureDetector(
+              //   onTap: () {
+              //     showModalBottomSheet(
+              //       context: context,
+              //       builder: (BuildContext context) => Container(
+              //         color: Colors.transparent,
+              //         child: MemberActionItems(),
+              //       ),
+              //     );
+              //   },
+              //   child: Container(
+              //     width: 42,
+              //     padding: const EdgeInsets.only(right: 10),
+              //     alignment: Alignment.centerRight,
+              //     color: Colors.transparent,
+              //     child: Icon(CustomIcons.morevertical,
+              //         color: Theme.of(context).primaryColor, size: 20),
+              //   ),
+              // )
             ],
           ),
         ),
