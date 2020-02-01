@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:async/async.dart' show AsyncMemoizer;
 
+import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
@@ -108,24 +108,34 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
 
     try {
       if (widget.expressionType == 'PhotoForm') {
+        JuntoLoader.showLoader(context);
         final String _photoKey =
             await Provider.of<ExpressionRepo>(context, listen: false)
-                .createPhoto('.png', widget.expression['image']);
+                .createPhoto(
+          '.png',
+          widget.expression['image'],
+        );
+        JuntoLoader.hide();
         _expression = CentralizedExpression(
           type: widget.expressionType,
           expressionData: CentralizedPhotoFormExpression(
-                  image: _photoKey, caption: widget.expression['caption'])
-              .toMap(),
+            image: _photoKey,
+            caption: widget.expression['caption'],
+          ).toMap(),
           context: _expressionContext,
           channels: channel,
         );
       } else if (widget.expressionType == 'EventForm') {
-        print(widget.expression['photo']);
         String eventPhoto = '';
         if (widget.expression['photo'] != null) {
+          JuntoLoader.showLoader(context);
           final String _eventPhotoKey =
               await Provider.of<ExpressionRepo>(context, listen: false)
-                  .createPhoto('.png', widget.expression['photo']);
+                  .createPhoto(
+            '.png',
+            widget.expression['photo'],
+          );
+          JuntoLoader.hide();
           eventPhoto = _eventPhotoKey;
         }
         _expression = CentralizedExpression(
@@ -157,9 +167,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         _expression.context,
         _address,
       );
-
       JuntoLoader.hide();
-
       JuntoDialog.showJuntoDialog(
         context,
         'Expression Created!',
@@ -176,8 +184,6 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         ],
       );
     } catch (error) {
-      print(error.message);
-      print(error);
       JuntoLoader.hide();
       JuntoDialog.showJuntoDialog(
         context,
@@ -228,7 +234,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
               children: <Widget>[
                 const SizedBox(height: 15),
                 Text(_currentExpressionContext,
-                    style: Theme.of(context).textTheme.title),
+                    style: Theme.of(context).textTheme.headline6),
                 Text(_currentExpressionContextDescription,
                     style: Theme.of(context).textTheme.caption),
               ],
@@ -308,7 +314,6 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
           _currentExpressionContextDescription =
               'shared to just your pack members';
           _address = _userProfile.pack.address;
-          print(_address);
         });
       };
       _expressionContextIcon = Icon(CustomIcons.packs,
