@@ -86,7 +86,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     try {
       JuntoLoader.showLoader(context);
       final List<Users> _members =
-          await Provider.of<GroupRepo>(context).getGroupMembers(
+          await Provider.of<GroupRepo>(context, listen: false).getGroupMembers(
         widget.group.address,
       );
       JuntoLoader.hide();
@@ -120,6 +120,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.group.members);
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(45),
@@ -154,24 +155,34 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                   background: Column(
                     children: <Widget>[
                       widget.group.groupData.photo == ''
-                          ? Container(
-                              height: MediaQuery.of(context).size.height * .3,
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.bottomLeft,
-                                  end: Alignment.topRight,
-                                  stops: const <double>[0.2, 0.9],
-                                  colors: <Color>[
-                                    Theme.of(context).colorScheme.secondary,
-                                    Theme.of(context).colorScheme.primary
-                                  ],
+                          ? GestureDetector(
+                              onTap: () async {
+                                final groupMembers =
+                                    await Provider.of<GroupRepo>(context,
+                                            listen: false)
+                                        .getGroupMembers(widget.group.address);
+                                print(groupMembers);
+                              },
+                              child: Container(
+                                height: MediaQuery.of(context).size.height * .3,
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.bottomLeft,
+                                    end: Alignment.topRight,
+                                    stops: const <double>[0.2, 0.9],
+                                    colors: <Color>[
+                                      Theme.of(context).colorScheme.secondary,
+                                      Theme.of(context).colorScheme.primary
+                                    ],
+                                  ),
                                 ),
+                                alignment: Alignment.center,
+                                child: Icon(CustomIcons.spheres,
+                                    size: 60,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimary),
                               ),
-                              alignment: Alignment.center,
-                              child: Icon(CustomIcons.spheres,
-                                  size: 60,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary),
                             )
                           : CachedNetworkImage(
                               imageUrl: widget.group.groupData.photo,
@@ -244,31 +255,25 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     return ListView(
       physics: const ClampingScrollPhysics(),
       children: <Widget>[
-        Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: JuntoStyles.horizontalPadding,
-            vertical: 15,
-          ),
-          decoration: BoxDecoration(
-            border: Border(
-              bottom: BorderSide(
-                color: Theme.of(context).dividerColor,
-                width: .75,
+        GestureDetector(
+          onTap: () => _getMembers(),
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: JuntoStyles.horizontalPadding,
+              vertical: 15,
+            ),
+            decoration: BoxDecoration(
+              color: Colors.transparent,
+              border: Border(
+                bottom: BorderSide(
+                  color: Theme.of(context).dividerColor,
+                  width: .75,
+                ),
               ),
             ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              GestureDetector(
-                onTap: () => _getMembers(),
-                child: const MemberRow(
-                  membersLength: 1,
-                  // FIXME(Nash+Yang) The server should never return null, bring up with Josh
-                  // widget.group?.members + widget.group?.facilitators,
-                ),
-              )
-            ],
+            child: const MemberRow(
+              membersLength: 1,
+            ),
           ),
         ),
         Container(
@@ -276,7 +281,8 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('Bio / Purpose', style: Theme.of(context).textTheme.headline6),
+              Text('Bio / Purpose',
+                  style: Theme.of(context).textTheme.headline6),
               const SizedBox(height: 10),
               Text(widget.group.groupData.description,
                   style: Theme.of(context).textTheme.caption)

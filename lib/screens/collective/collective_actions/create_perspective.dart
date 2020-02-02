@@ -41,7 +41,7 @@ class CreatePerspectiveState extends State<CreatePerspective> {
 
   Future getUserRelationships() async {
     return _memoizer.runOnce(
-      () => Provider.of<UserRepo>(context).userRelations(),
+      () => Provider.of<UserRepo>(context, listen: false).userRelations(),
     );
   }
 

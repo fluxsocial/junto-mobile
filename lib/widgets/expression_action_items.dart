@@ -291,13 +291,6 @@ class __AddEventMembersState extends State<_AddEventMembers>
     });
   }
 
-  void _onUserTap(UserProfile user) {
-    final List<UserProfile> items = _selectedUsers.value;
-    _selectedUsers.value = placeUser(user, items);
-    //ignore:invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
-    _selectedUsers.notifyListeners();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -366,13 +359,11 @@ class __AddEventMembersState extends State<_AddEventMembers>
                       if (!value.contains(item))
                         return MemberPreview(
                           profile: item,
-                          onUserTap: _onUserTap,
                         );
                       return Stack(
                         children: <Widget>[
                           MemberPreview(
                             profile: item,
-                            onUserTap: _onUserTap,
                           ),
                           Align(
                             alignment: Alignment.bottomRight,

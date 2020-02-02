@@ -8,11 +8,10 @@ import 'package:junto_beta_mobile/screens/member/member.dart';
 /// If this value is not specified and left null, the user will be redirected to
 /// the user "Den".
 class MemberPreview extends StatelessWidget {
-  const MemberPreview({Key key, this.profile, this.onUserTap})
+  const MemberPreview({Key key, this.profile})
       : super(key: key);
 
   final UserProfile profile;
-  final ValueChanged<UserProfile> onUserTap;
 
   void _showUserDen(BuildContext context) {
     Navigator.push(
@@ -27,9 +26,8 @@ class MemberPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-            onUserTap(profile);
-          } ??
-          () => _showUserDen(context),
+        _showUserDen(context);
+      },
       child: Container(
         color: Theme.of(context).colorScheme.background,
         child: Row(

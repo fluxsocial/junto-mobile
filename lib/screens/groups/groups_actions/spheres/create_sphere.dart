@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:async/async.dart' show AsyncMemoizer;
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,6 +12,7 @@ import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview_select.dart';
 
 class CreateSphere extends StatefulWidget {
@@ -33,6 +35,8 @@ class CreateSphereState extends State<CreateSphere> {
   TextEditingController sphereHandleController;
   TextEditingController sphereDescriptionController;
   String _currentPrivacy = 'Public';
+
+  List<String> _sphereMembers = <String>[];
 
   final List<String> _tabs = <String>['Subscriptions', 'Connections'];
 
@@ -74,7 +78,7 @@ class CreateSphereState extends State<CreateSphere> {
       description: sphereDescription,
       facilitators: <String>[userAddress],
       photo: imageKey,
-      members: <String>[],
+      members: _sphereMembers,
       principles: '',
       sphereHandle: sphereHandle,
       privacy: _currentPrivacy,
@@ -99,6 +103,14 @@ class CreateSphereState extends State<CreateSphere> {
     sphereDescriptionController = TextEditingController();
 
     super.initState();
+  }
+
+  final AsyncMemoizer _memoizer = AsyncMemoizer();
+
+  Future getUserRelationships() async {
+    return _memoizer.runOnce(
+      () => Provider.of<UserRepo>(context, listen: false).userRelations(),
+    );
   }
 
   @override
@@ -152,7 +164,6 @@ class CreateSphereState extends State<CreateSphere> {
                 _currentIndex == 2
                     ? GestureDetector(
                         onTap: () {
-                          // create sphere
                           _createSphere();
                         },
                         child: Container(
@@ -382,27 +393,94 @@ class CreateSphereState extends State<CreateSphere> {
             ),
           ];
         },
-        body: TabBarView(
-          children: <Widget>[
-            ListView(
-              padding: const EdgeInsets.only(left: 10),
+        body: FutureBuilder(
+          future: getUserRelationships(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasData) {
+              // get list of connections
+              final List<UserProfile> _connectionsMembers =
+                  snapshot.data['connections']['results'];
+
+              // get list of following
+              final List<UserProfile> _followingMembers =
+                  snapshot.data['following']['results'];
+
+              return TabBarView(
+                children: <Widget>[
+                  // subscriptions
+                  ListView(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    children: _followingMembers
+                        .map(
+                          (dynamic connection) => MemberPreviewSelect(
+                            profile: connection,
+                            onSelect: () {
+                              _sphereMembers.add(connection.address);
+                            },
+                            onDeselect: () {
+                              _sphereMembers.indexWhere(connection.addres);
+                              _sphereMembers.remove(connection.address);
+                            },
+                          ),
+                        )
+                        .toList(),
+                  ),
+                  // connections
+                  ListView(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    children: _connectionsMembers
+                        .map(
+                          (dynamic connection) => MemberPreviewSelect(
+                            profile: connection,
+                            onSelect: () {
+                              _sphereMembers.add(connection.address);
+                            },
+                            onDeselect: () {
+                              _sphereMembers.remove(connection.address);
+                            },
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ],
+              );
+            } else if (snapshot.hasError) {
+              return TabBarView(
+                children: <Widget>[
+                  Center(
+                    child: Transform.translate(
+                      offset: const Offset(0.0, -50),
+                      child: Text('Hmmm, something is up',
+                          style: Theme.of(context).textTheme.caption),
+                    ),
+                  ),
+                  Center(
+                    child: Transform.translate(
+                      offset: const Offset(0.0, -50),
+                      child: Text('Hmmm, something is up',
+                          style: Theme.of(context).textTheme.caption),
+                    ),
+                  ),
+                ],
+              );
+            }
+            return TabBarView(
               children: <Widget>[
-                MemberPreviewSelect(
-                  onSelect: () {},
-                  onDeselect: () {},
+                Center(
+                  child: Transform.translate(
+                    offset: const Offset(0.0, -50),
+                    child: JuntoProgressIndicator(),
+                  ),
+                ),
+                Center(
+                  child: Transform.translate(
+                    offset: const Offset(0.0, -50),
+                    child: JuntoProgressIndicator(),
+                  ),
                 ),
               ],
-            ),
-            ListView(
-              padding: const EdgeInsets.only(left: 10),
-              children: <Widget>[
-                MemberPreviewSelect(
-                  onSelect: () {},
-                  onDeselect: () {},
-                ),
-              ],
-            ),
-          ],
+            );
+          },
         ),
       ),
     );
