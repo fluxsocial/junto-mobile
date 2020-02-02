@@ -5,7 +5,6 @@ import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
-import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_open/sphere_open_appbar.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_open/sphere_open_members.dart';
@@ -29,26 +28,12 @@ class SphereOpen extends StatefulWidget {
 }
 
 class SphereOpenState extends State<SphereOpen> with HideFab {
-  ScrollController _hideFABController;
-  ValueNotifier<bool> _isVisible;
-
-  List<CentralizedExpressionResponse> expressions;
-
   final GlobalKey<SphereOpenState> _keyFlexibleSpace =
       GlobalKey<SphereOpenState>();
 
   @override
   void initState() {
     super.initState();
-    _hideFABController = ScrollController();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _hideFABController.addListener(_onScrollingHasChanged);
-      _hideFABController.position.isScrollingNotifier.addListener(
-        _onScrollingHasChanged,
-      );
-    });
-    _isVisible = ValueNotifier<bool>(true);
-
     WidgetsBinding.instance.addPostFrameCallback(_getFlexibleSpaceSize);
   }
 
@@ -63,23 +48,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     setState(() {
       _flexibleHeightSpace = heightFlexibleSpace;
     });
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    expressions = Provider.of<ExpressionRepo>(context).collectiveExpressions;
-  }
-
-  void _onScrollingHasChanged() {
-    super.hideFabOnScroll(_hideFABController, _isVisible);
-  }
-
-  @override
-  void dispose() {
-    _hideFABController.removeListener(_onScrollingHasChanged);
-    _hideFABController.dispose();
-    super.dispose();
   }
 
   Future<void> _getMembers() async {
@@ -132,14 +100,12 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
         length: _tabs.length,
         child: NestedScrollView(
           body: TabBarView(
-            // These are the contents of the tab views, below the tabs.
             children: <Widget>[
               _buildAboutView(),
               const SizedBox(),
               // _buildExpressionView(),
             ],
           ),
-          controller: _hideFABController,
           physics: const ClampingScrollPhysics(),
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
@@ -155,34 +121,24 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                   background: Column(
                     children: <Widget>[
                       widget.group.groupData.photo == ''
-                          ? GestureDetector(
-                              onTap: () async {
-                                final groupMembers =
-                                    await Provider.of<GroupRepo>(context,
-                                            listen: false)
-                                        .getGroupMembers(widget.group.address);
-                                print(groupMembers);
-                              },
-                              child: Container(
-                                height: MediaQuery.of(context).size.height * .3,
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    begin: Alignment.bottomLeft,
-                                    end: Alignment.topRight,
-                                    stops: const <double>[0.2, 0.9],
-                                    colors: <Color>[
-                                      Theme.of(context).colorScheme.secondary,
-                                      Theme.of(context).colorScheme.primary
-                                    ],
-                                  ),
+                          ? Container(
+                              height: MediaQuery.of(context).size.height * .3,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.bottomLeft,
+                                  end: Alignment.topRight,
+                                  stops: const <double>[0.2, 0.9],
+                                  colors: <Color>[
+                                    Theme.of(context).colorScheme.secondary,
+                                    Theme.of(context).colorScheme.primary
+                                  ],
                                 ),
-                                alignment: Alignment.center,
-                                child: Icon(CustomIcons.spheres,
-                                    size: 60,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onPrimary),
                               ),
+                              alignment: Alignment.center,
+                              child: Icon(CustomIcons.spheres,
+                                  size: 60,
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary),
                             )
                           : CachedNetworkImage(
                               imageUrl: widget.group.groupData.photo,
@@ -271,8 +227,11 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                 ),
               ),
             ),
-            child: const MemberRow(
-              membersLength: 1,
+            child: Container(
+              child: Text(
+                'Members',
+                style: Theme.of(context).textTheme.subtitle2,
+              ),
             ),
           ),
         ),
@@ -292,91 +251,4 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
       ],
     );
   }
-
-//ignore:unused_element
-  // Widget _buildExpressionView() {
-  //   return FutureBuilder<List<CentralizedExpressionResponse>>(
-  //     future: Provider.of<GroupRepo>(context, listen: false)
-  //         .getGroupExpressions(widget.group.address, null),
-  //     builder: (
-  //       BuildContext context,
-  //       AsyncSnapshot<List<CentralizedExpressionResponse>> snapshot,
-  //     ) {
-  //       if (snapshot.hasError)
-  //         return Container(
-  //           height: 400,
-  //           alignment: Alignment.center,
-  //           child: const Text(
-  //             'Oops, something is wrong!',
-  //             style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-  //           ),
-  //         );
-  //       if (snapshot.hasData && !snapshot.hasError) {
-  //         return RefreshIndicator(
-  //           onRefresh: () async => setState(() => print('refresh')),
-  //           child: ListView.builder(
-  //             itemCount: snapshot.data.length,
-  //             itemBuilder: (BuildContext context, int index) {
-  //               return ExpressionPreview(
-  //                 expression: snapshot.data[index],
-  //                 userAddress: widget.userAddress,
-  //               );
-  //             },
-  //           ),
-  //         );
-  //       }
-  //       return Container(
-  //         height: 100.0,
-  //         width: 100.0,
-  //         child: const Center(
-  //           child: CircularProgressIndicator(),
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
 }
-
-class MemberRow extends StatelessWidget {
-  const MemberRow({
-    Key key,
-    @required this.membersLength,
-  }) : super(key: key);
-  final int membersLength;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Theme.of(context).colorScheme.background,
-      child: Container(
-        child: Text(
-          'Members',
-          style: Theme.of(context).textTheme.subtitle2,
-        ),
-      ),
-    );
-  }
-}
-
-// Container(
-//   padding: const EdgeInsets.symmetric(
-//       horizontal: 10, vertical: 7.5),
-//   decoration: BoxDecoration(
-//     border: Border.all(
-//         color: Theme.of(context).primaryColor,
-//         width: 1.5),
-//     borderRadius: BorderRadius.circular(25),
-//   ),
-//   child: Row(
-//     children: <Widget>[
-//       const SizedBox(width: 14),
-//       Icon(CustomIcons.spheres,
-//           size: 14,
-//           color: Theme.of(context).primaryColor),
-//       const SizedBox(width: 2),
-//       Icon(Icons.keyboard_arrow_down,
-//           size: 12,
-//           color: Theme.of(context).primaryColor)
-//     ],
-//   ),
-// )
