@@ -41,7 +41,7 @@ class _GlobalSearchState extends State<GlobalSearch> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _searchRepo = Provider.of<SearchRepo>(context);
-    _searchFuture = _searchRepo.searchMembers(query, username: true);
+    _searchFuture = _searchRepo.searchMembers(query, username: !_fullName);
   }
 
   @override
@@ -59,7 +59,7 @@ class _GlobalSearchState extends State<GlobalSearch> {
         if (mounted)
           setState(() {
             _searchFuture =
-                _searchRepo.searchMembers(query, username: _fullName);
+                _searchRepo.searchMembers(query, username: !_fullName);
           });
       },
     );
@@ -130,11 +130,24 @@ class _GlobalSearchState extends State<GlobalSearch> {
                 padding: const EdgeInsets.symmetric(
                   horizontal: 6.0,
                 ),
-                child: Switch(
-                  value: _fullName,
-                  onChanged: (bool value) => setState(
-                    () => _fullName = value,
-                  ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    const Text(
+                      'Full Name',
+                      style: TextStyle(color: Colors.black, fontSize: 16.0),
+                    ),
+                    const SizedBox(width: 8.0),
+                    SizedBox(
+                      height: 12.0,
+                      child: Switch.adaptive(
+                        value: _fullName,
+                        onChanged: (bool value) => setState(
+                          () => _fullName = value,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               )
             ],
