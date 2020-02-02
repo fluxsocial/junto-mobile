@@ -9,6 +9,7 @@ import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_actions/collective_actions.dart';
+import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/widgets/appbar/collective_appbar.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
@@ -131,7 +132,9 @@ class JuntoCollectiveState extends State<JuntoCollective>
     try {
       return await _expressionProvider.getCollectiveExpressions(_params);
     } on JuntoException catch (error) {
-      print(error.message);
+      if (error.errorCode == 401) {
+        Navigator.of(context).pushReplacement(Welcome.route());
+      }
       return null;
     }
   }
