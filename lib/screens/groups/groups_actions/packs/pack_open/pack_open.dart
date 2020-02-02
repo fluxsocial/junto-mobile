@@ -40,6 +40,7 @@ class PackOpenState extends State<PackOpen> {
   @override
   void initState() {
     super.initState();
+    print('init pack');
     controller = PageController(initialPage: 0);
     getUserInformation();
   }

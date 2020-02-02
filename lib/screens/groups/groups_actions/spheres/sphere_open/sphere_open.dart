@@ -37,9 +37,17 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
 
   String _userAddress;
 
+  // @override
+  // void didUpdateWidget(SphereOpen oldWidget) {
+  //   super.didUpdateWidget(oldWidget);
+
+  //   print('updated widget');
+  // }
+
   @override
   void initState() {
     super.initState();
+    print('init state');
     WidgetsBinding.instance.addPostFrameCallback(_getFlexibleSpaceSize);
   }
 
@@ -295,7 +303,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
           );
         }
         if (snapshot.hasData) {
-          print(snapshot.data);
           return ListView(padding: const EdgeInsets.all(0), children: [
             Container(
               color: Theme.of(context).backgroundColor,

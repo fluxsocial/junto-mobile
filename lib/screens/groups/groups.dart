@@ -25,12 +25,12 @@ class JuntoGroups extends StatefulWidget {
 class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
   String _userAddress;
-  //ignore:unused_field
-  UserData _userProfile;
 
   Group _currentGroup;
 
   bool actionsVisible = false;
+
+  dynamic _groupie;
 
   @override
   void initState() {
@@ -40,36 +40,41 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
 
   Future<void> getUserInformation() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final Map<String, dynamic> decodedUserData =
-        jsonDecode(prefs.getString('user_data'));
 
     setState(() {
       _userAddress = prefs.getString('user_id');
-      _userProfile = UserData.fromMap(decodedUserData);
+
+      _groupie = PackOpen(
+        pack: Group(
+            address: null,
+            groupType: 'Pack',
+            creator: _userAddress,
+            groupData: null,
+            members: null,
+            facilitators: null,
+            privacy: 'Private',
+            createdAt: null),
+      );
     });
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _currentGroup = Group(
-        address: null,
-        groupType: 'Pack',
-        creator: _userAddress,
-        groupData: null,
-        members: null,
-        facilitators: null,
-        privacy: 'Private',
-        createdAt: null);
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   _currentGroup = Group(
+  //       address: null,
+  //       groupType: 'Pack',
+  //       creator: _userAddress,
+  //       groupData: null,
+  //       members: null,
+  //       facilitators: null,
+  //       privacy: 'Private',
+  //       createdAt: null);
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: const PreferredSize(
-      //   preferredSize: Size.fromHeight(45),
-      //   child: JuntoGroupsAppbar(),
-      // ),
       floatingActionButton: ValueListenableBuilder<bool>(
         valueListenable: _isVisible,
         builder: (BuildContext context, bool visible, Widget child) {
@@ -100,10 +105,15 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
       endDrawer: const JuntoDrawer(screen: 'Groups', icon: CustomIcons.groups),
       body: Stack(
         children: <Widget>[
+          // AnimatedOpacity(
+          //   duration: const Duration(milliseconds: 300),
+          //   opacity: actionsVisible ? 0.0 : 1.0,
+          //   child: _displayGroup(_currentGroup),
+          // ),
           AnimatedOpacity(
             duration: const Duration(milliseconds: 300),
             opacity: actionsVisible ? 0.0 : 1.0,
-            child: _displayGroup(_currentGroup),
+            child: _groupie,
           ),
           AnimatedOpacity(
             duration: const Duration(milliseconds: 300),
@@ -132,9 +142,28 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
   }
 
   void _changeGroup(Group group) {
-    setState(() {
-      _currentGroup = group;
-      actionsVisible = false;
-    });
+    // setState(() {
+    //   _currentGroup = group;
+    //   actionsVisible = false;
+    // });
+
+    if (group.groupType == 'Pack') {
+      setState(() {
+        _groupie = PackOpen(pack: group);
+      });
+    }
+
+    if (group.groupType == 'Sphere') {
+      setState(() {
+        _groupie = const SizedBox();
+      });
+      setState(() {
+        _groupie = SphereOpen(
+          group: group,
+        );
+      });
+    }
+
+    actionsVisible = false;
   }
 }

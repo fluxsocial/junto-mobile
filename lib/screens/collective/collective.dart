@@ -126,7 +126,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
         'context_type': contextType,
         'context': contextString,
         'pagination_position': paginationPos.toString(),
-        'channels[0]': channels.toString()
+        if (_channels.length > 0) 'channels[0]': _channels[0]
       };
     }
     try {
