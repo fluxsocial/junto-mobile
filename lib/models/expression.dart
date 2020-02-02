@@ -230,17 +230,24 @@ class CentralizedExpressionResponse {
       privacy: json['privacy'] ?? '',
       channels: json['channels'],
       context: json['context'] ?? '',
-      comments: List<Comment>.from(
-        json['comments']['results'].map(
-          (dynamic comment) => Comment.fromMap(comment),
-        ),
-      ),
-      resonations: List<UserProfile>.from(
-        json['resonations']['results'].map(
-          (dynamic res) => UserProfile.fromMap(res),
-        ),
-      ),
+      comments: json['comments'],
+      resonations: json['resonations'],
     );
+
+    // comments: json['comments'].runtimeType == int
+    //     ? json['comments']
+    //     : List<Comment>.from(
+    //         json['comments']['results'].map(
+    //           (dynamic comment) => Comment.fromMap(comment),
+    //         ),
+    //       ),
+    // resonations: json['resonations'].runtimeType == int
+    //     ? json['resonations']
+    //     : List<UserProfile>.from(
+    //         json['resonations']['results'].map(
+    //           (dynamic res) => UserProfile.fromMap(res),
+    //         ),
+    //       ),
   }
 
   final String address;
@@ -249,8 +256,8 @@ class CentralizedExpressionResponse {
   final DateTime createdAt;
   final int numberResonations;
   final int numberComments;
-  final List<UserProfile> resonations;
-  final List<Comment> comments;
+  final dynamic resonations;
+  final dynamic comments;
   final String privacy;
   final List<dynamic> channels;
   final String context;

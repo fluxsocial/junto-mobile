@@ -73,7 +73,6 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
     super.initState();
     _channelController = TextEditingController();
     _address = widget.address;
-    print(widget.address);
     _expressionContext = widget.expressionContext;
 
     getUserInformation();
@@ -160,6 +159,9 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
           channels: channel,
         );
       }
+      print(_expression.type);
+      print(_expression.context);
+      print(_address);
       JuntoLoader.showLoader(context);
       await Provider.of<ExpressionRepo>(context, listen: false)
           .createExpression(
@@ -204,6 +206,10 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
     if (_currentExpressionContext == 'Collective') {
       setState(() {
         _expressionContext = ExpressionContext.Collective;
+      });
+    } else if (_currentExpressionContext == 'Sphere') {
+      setState(() {
+        _expressionContext = ExpressionContext.Group;
       });
     } else if (_currentExpressionContext == 'My Pack') {
       setState(() {
@@ -336,6 +342,14 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
               : Theme.of(context).primaryColor,
           size: 17);
     } else if (expressionContext == 'Sphere') {
+      _setExpressionContextDescription = () {
+        setState(() {
+          _currentExpressionContextDescription = 'shared with just yourself';
+
+          _address = '44b80193-8c9c-25a2-a3f8-ae7628225acc';
+        });
+        print(_address);
+      };
       _expressionContextIcon = Icon(CustomIcons.spheres,
           color: _currentExpressionContext == expressionContext
               ? Colors.white

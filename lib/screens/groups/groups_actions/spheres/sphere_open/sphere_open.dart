@@ -1,3 +1,4 @@
+import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -12,7 +13,10 @@ import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
+import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SphereOpen extends StatefulWidget {
   const SphereOpen({
@@ -31,6 +35,8 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   final GlobalKey<SphereOpenState> _keyFlexibleSpace =
       GlobalKey<SphereOpenState>();
 
+  String _userAddress;
+
   @override
   void initState() {
     super.initState();
@@ -48,6 +54,30 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     setState(() {
       _flexibleHeightSpace = heightFlexibleSpace;
     });
+  }
+
+  Future<void> getUserInformation() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      _userAddress = prefs.getString('user_id');
+    });
+  }
+
+  final AsyncMemoizer<List<CentralizedExpressionResponse>> _memoizer =
+      AsyncMemoizer<List<CentralizedExpressionResponse>>();
+
+  Future<List<CentralizedExpressionResponse>> _getGroupExpressions() async {
+    return _memoizer.runOnce(
+      () => Provider.of<GroupRepo>(context, listen: false).getGroupExpressions(
+        widget.group.address,
+        GroupExpressionQueryParams(
+            creatorExpressions: true,
+            directExpressions: true,
+            directExpressionPaginationPosition: 0,
+            creatorExpressionsPaginationPosition: 0),
+      ),
+    );
   }
 
   Future<void> _getMembers() async {
@@ -88,7 +118,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.group.members);
+    print(widget.group.address);
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(45),
@@ -102,8 +132,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
           body: TabBarView(
             children: <Widget>[
               _buildAboutView(),
-              const SizedBox(),
-              // _buildExpressionView(),
+              if (widget.group.address != null) _buildExpressionView(),
             ],
           ),
           physics: const ClampingScrollPhysics(),
@@ -249,6 +278,89 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildExpressionView() {
+    return FutureBuilder<List<CentralizedExpressionResponse>>(
+      future: _getGroupExpressions(),
+      builder: (BuildContext context,
+          AsyncSnapshot<List<CentralizedExpressionResponse>> snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Transform.translate(
+              offset: const Offset(0.0, -50),
+              child: const Text('Hmm, something is up'),
+            ),
+          );
+        }
+        if (snapshot.hasData) {
+          print(snapshot.data);
+          return ListView(padding: const EdgeInsets.all(0), children: [
+            Container(
+              color: Theme.of(context).backgroundColor,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    width: MediaQuery.of(context).size.width * .5,
+                    padding: const EdgeInsets.only(
+                      top: 10,
+                      left: 10,
+                      right: 5,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        for (int index = 0;
+                            index < snapshot.data.length + 1;
+                            index++)
+                          if (index == snapshot.data.length)
+                            const SizedBox()
+                          else if (index.isEven)
+                            ExpressionPreview(
+                              expression: snapshot.data[index],
+                              userAddress: _userAddress,
+                            )
+                      ],
+                    ),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * .5,
+                    padding: const EdgeInsets.only(
+                      top: 10,
+                      left: 5,
+                      right: 10,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        for (int index = 0;
+                            index < snapshot.data.length + 1;
+                            index++)
+                          if (index == snapshot.data.length)
+                            const SizedBox()
+                          else if (index.isOdd)
+                            ExpressionPreview(
+                              expression: snapshot.data[index],
+                              userAddress: _userAddress,
+                            )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ]);
+        }
+        return Center(
+          child: Transform.translate(
+            offset: const Offset(0.0, -50),
+            child: JuntoProgressIndicator(),
+          ),
+        );
+      },
     );
   }
 }
