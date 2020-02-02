@@ -9,6 +9,7 @@ import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/channel_search_modal.dart';
+import 'package:junto_beta_mobile/screens/create/create_actions/sphere_select_modal.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions_appbar.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
@@ -56,6 +57,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
 
   String _address;
   CentralizedExpression _expression;
+  String _groupHandle = 'shared to a specific group';
   final ValueNotifier<List<String>> _channels = ValueNotifier<List<String>>(
     <String>[],
   );
@@ -222,6 +224,15 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
     }
   }
 
+  void selectGroup(String groupAddress, String groupHandle) {
+    print('selected');
+    setState(() {
+      _address = groupAddress;
+      _groupHandle = 'shared to s/' + groupHandle;
+    });
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -304,7 +315,6 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
               'shared to the public of Junto';
           _address = null;
         });
-        print(_address);
       };
       _expressionContextIcon = Transform.translate(
         offset: const Offset(-10.0, 0.0),
@@ -334,7 +344,6 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
 
           _address = _userProfile.privateDen.address;
         });
-        print(_address);
       };
       _expressionContextIcon = Icon(CustomIcons.den,
           color: _currentExpressionContext == expressionContext
@@ -344,8 +353,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
     } else if (expressionContext == 'Sphere') {
       _setExpressionContextDescription = () {
         setState(() {
-          _currentExpressionContextDescription = 'shared with just yourself';
-
+          _currentExpressionContextDescription = _groupHandle;
           _address = '44b80193-8c9c-25a2-a3f8-ae7628225acc';
         });
         print(_address);
@@ -358,10 +366,37 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
     }
 
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
+        // set current expression context
         setState(() {
           _currentExpressionContext = expressionContext;
         });
+
+        // if the context is a sphere, get the user's list of spheres and open
+        // the SphereSelectModal
+        if (expressionContext == 'Sphere') {
+          JuntoLoader.showLoader(context);
+          final UserGroupsResponse _userGroups =
+              await Provider.of<UserRepo>(context, listen: false)
+                  .getUserGroups(_userAddress);
+          JuntoLoader.hide();
+          final List<Group> ownedGroups = _userGroups.owned;
+          final List<Group> associatedGroups = _userGroups.associated;
+          final List<Group> userSpheres =
+              distinct<Group>(ownedGroups, associatedGroups)
+                  .where((Group group) => group.groupType == 'Sphere')
+                  .toList();
+
+          showModalBottomSheet(
+            isScrollControlled: true,
+            context: context,
+            builder: (BuildContext context) {
+              return SphereSelectModal(
+                  spheres: userSpheres, onSelect: selectGroup);
+            },
+          );
+        }
+
         _setExpressionContextDescription();
       },
       child: Container(
