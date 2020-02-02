@@ -27,6 +27,7 @@ class _GlobalSearchState extends State<GlobalSearch> {
   Future<QueryResults<UserProfile>> _searchFuture;
   Timer debounceTimer;
   TextEditingController _textEditingController;
+  bool _fullName = false;
 
   String get query => _textEditingController.value.text;
 
@@ -40,7 +41,7 @@ class _GlobalSearchState extends State<GlobalSearch> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _searchRepo = Provider.of<SearchRepo>(context);
-    _searchFuture = _searchRepo.searchMembers(query, username: true);
+    _searchFuture = _searchRepo.searchMembers(query, username: !_fullName);
   }
 
   @override
@@ -57,7 +58,8 @@ class _GlobalSearchState extends State<GlobalSearch> {
       (_) async {
         if (mounted)
           setState(() {
-            _searchFuture = _searchRepo.searchMembers(query, username: true);
+            _searchFuture =
+                _searchRepo.searchMembers(query, username: !_fullName);
           });
       },
     );
@@ -124,6 +126,30 @@ class _GlobalSearchState extends State<GlobalSearch> {
                   textInputAction: TextInputAction.search,
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 6.0,
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    const Text(
+                      'Full Name',
+                      style: TextStyle(color: Colors.black, fontSize: 16.0),
+                    ),
+                    const SizedBox(width: 8.0),
+                    SizedBox(
+                      height: 12.0,
+                      child: Switch.adaptive(
+                        value: _fullName,
+                        onChanged: (bool value) => setState(
+                          () => _fullName = value,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
             ],
           ),
         ),

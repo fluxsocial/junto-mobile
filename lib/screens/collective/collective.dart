@@ -9,6 +9,7 @@ import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_actions/collective_actions.dart';
+import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/widgets/appbar/collective_appbar.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
@@ -119,7 +120,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
         'context_type': contextType,
         'pagination_position': paginationPos.toString(),
         'dos': dos.toString(),
-        'channels[0]': channels.toString()
       };
     } else {
       _params = <String, String>{
@@ -132,7 +132,9 @@ class JuntoCollectiveState extends State<JuntoCollective>
     try {
       return await _expressionProvider.getCollectiveExpressions(_params);
     } on JuntoException catch (error) {
-      print(error.message);
+      if (error.errorCode == 401) {
+        Navigator.of(context).pushReplacement(Welcome.route());
+      }
       return null;
     }
   }
@@ -328,16 +330,17 @@ class JuntoCollectiveState extends State<JuntoCollective>
     setState(() {
       _showDegrees = true;
       _expressionCompleter = getCollectiveExpressions(
-          paginationPos: 0,
-          contextType: degreeNumber == 0 ? 'Collective' : 'Dos',
-          dos: degreeNumber);
+        paginationPos: 0,
+        contextType: degreeNumber == 0 ? 'Collective' : 'Dos',
+        dos: degreeNumber,
+      );
       currentDegree = degreeName;
     });
   }
 
   void _filterByChannel(Channel channel) {
     setState(() {
-      if (_channels.length == 0) {
+      if (_channels.isEmpty) {
         _channels.add(channel.name);
       } else {
         _channels[0] = channel.name;
@@ -360,8 +363,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
       });
     } else {
       setState(() {
-        print(perspective.address);
-
         _expressionCompleter = getCollectiveExpressions(
           paginationPos: 0,
           contextString: perspective.address,

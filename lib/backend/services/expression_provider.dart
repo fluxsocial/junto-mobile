@@ -166,16 +166,25 @@ class ExpressionServiceCentralized implements ExpressionService {
       '/expressions',
       queryParams: params,
     );
-  
-    print(response.statusCode);
     final dynamic results = JuntoHttp.handleResponse(response);
-    if (results is Map<dynamic, dynamic>) {
+    if (results != null && results is Map<dynamic, dynamic>) {
       return QueryResults<CentralizedExpressionResponse>(
         results: <CentralizedExpressionResponse>[
           for (dynamic data in results['results'])
             CentralizedExpressionResponse.withCommentsAndResonations(data)
         ],
         lastTimestamp: results['last_timestamp'],
+      );
+    }
+    //FIXME(Nash+Josh): The server response for a dos query does not follow the format for standard "Collective" query.
+    // Both should return data using the same "query" format.
+    if (results != null && results is List<dynamic>) {
+      return QueryResults<CentralizedExpressionResponse>(
+        results: <CentralizedExpressionResponse>[
+          for (dynamic data in results)
+            CentralizedExpressionResponse.withCommentsAndResonations(data)
+        ],
+        lastTimestamp: null,
       );
     } else {
       return QueryResults<CentralizedExpressionResponse>(
