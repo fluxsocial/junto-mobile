@@ -63,7 +63,6 @@ class SearchServiceCentralized with RFC3339 implements SearchService {
     final Map<String, dynamic> _results = JuntoHttp.handleResponse(
       _serverResponse,
     );
-    print(_serverResponse.body);
     final List<Channel> _users = <Channel>[
       for (dynamic data in _results['results']) Channel.fromMap(data)
     ];

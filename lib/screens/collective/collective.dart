@@ -119,7 +119,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
         'context_type': contextType,
         'pagination_position': paginationPos.toString(),
         'dos': dos.toString(),
-        'channels[0]': channels.toString()
       };
     } else {
       _params = <String, String>{
@@ -328,16 +327,17 @@ class JuntoCollectiveState extends State<JuntoCollective>
     setState(() {
       _showDegrees = true;
       _expressionCompleter = getCollectiveExpressions(
-          paginationPos: 0,
-          contextType: degreeNumber == 0 ? 'Collective' : 'Dos',
-          dos: degreeNumber);
+        paginationPos: 0,
+        contextType: degreeNumber == 0 ? 'Collective' : 'Dos',
+        dos: degreeNumber,
+      );
       currentDegree = degreeName;
     });
   }
 
   void _filterByChannel(Channel channel) {
     setState(() {
-      if (_channels.length == 0) {
+      if (_channels.isEmpty) {
         _channels.add(channel.name);
       } else {
         _channels[0] = channel.name;
@@ -360,8 +360,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
       });
     } else {
       setState(() {
-        print(perspective.address);
-
         _expressionCompleter = getCollectiveExpressions(
           paginationPos: 0,
           contextString: perspective.address,
