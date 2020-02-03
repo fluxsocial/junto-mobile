@@ -13,34 +13,35 @@ class SphereSelectModal extends StatelessWidget {
     return Container(
       color: Colors.transparent,
       child: Container(
-          height: MediaQuery.of(context).size.height * .6,
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.background,
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(10),
-              topRight: Radius.circular(10),
-            ),
+        height: MediaQuery.of(context).size.height * .6,
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.background,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(10),
+            topRight: Radius.circular(10),
           ),
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                child: ListView(
-                  children: spheres
-                      .map(
-                        (Group sphere) => GestureDetector(
-                          onTap: () {
-                            onSelect(
-                                sphere.address, sphere.groupData.sphereHandle);
-                          },
-                          child: SpherePreview(group: sphere),
-                        ),
-                      )
-                      .toList(),
-                ),
-              )
-            ],
-          )),
+        ),
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: ListView(
+                children: spheres
+                    .map(
+                      (Group sphere) => GestureDetector(
+                        onTap: () {
+                          onSelect(
+                              sphere.address, sphere.groupData.sphereHandle);
+                        },
+                        child: SpherePreview(group: sphere),
+                      ),
+                    )
+                    .toList(),
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }

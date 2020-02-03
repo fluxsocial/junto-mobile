@@ -115,11 +115,18 @@ class JuntoCollectiveState extends State<JuntoCollective>
     int paginationPos = 0,
   }) async {
     Map<String, dynamic> _params;
-    if (contextType == 'Dos' && dos != 0) {
+    if (contextType == 'Dos' && dos != -1) {
       _params = <String, String>{
         'context_type': contextType,
         'pagination_position': paginationPos.toString(),
         'dos': dos.toString(),
+      };
+    } else if (contextType == 'ConnectPerspective') {
+      _params = <String, String>{
+        'context_type': contextType,
+        'context': _userProfile.connectionPerspective.address,
+        'pagination_position': paginationPos.toString(),
+        if (_channels.length > 0) 'channels[0]': _channels[0]
       };
     } else {
       _params = <String, String>{
@@ -327,11 +334,21 @@ class JuntoCollectiveState extends State<JuntoCollective>
 
 // switch between degrees of separation
   void _switchDegree({String degreeName, int degreeNumber}) {
+    String _contextType;
+
+    if (degreeNumber == -1) {
+      _contextType = 'Collective';
+    } else if (degreeNumber == 0) {
+      _contextType = 'ConnectPerspective';
+    } else {
+      _contextType = 'Dos';
+    }
+
     setState(() {
       _showDegrees = true;
       _expressionCompleter = getCollectiveExpressions(
         paginationPos: 0,
-        contextType: degreeNumber == 0 ? 'Collective' : 'Dos',
+        contextType: _contextType,
         dos: degreeNumber,
       );
       currentDegree = degreeName;
