@@ -113,6 +113,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         final String _photoKey =
             await Provider.of<ExpressionRepo>(context, listen: false)
                 .createPhoto(
+          true,
           '.png',
           widget.expression['image'],
         );
@@ -133,6 +134,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
           final String _eventPhotoKey =
               await Provider.of<ExpressionRepo>(context, listen: false)
                   .createPhoto(
+            true,
             '.png',
             widget.expression['photo'],
           );

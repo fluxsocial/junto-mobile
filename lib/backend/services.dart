@@ -66,7 +66,7 @@ abstract class ExpressionService {
     CentralizedExpression expression,
   );
 
-  Future<String> createPhoto(String fileType, File file);
+  Future<String> createPhoto(bool isPrivate, String fileType, File file);
 
   /// Returns a [CentralizedExpressionResponse] for the given address.
   Future<CentralizedExpressionResponse> getExpression(
@@ -231,7 +231,8 @@ abstract class UserService {
   Future<List<UserProfile>> connectedUsers(String userAddress);
 
   /// Returns true/false of user's relations to another member
-  Future<Map<String, dynamic>> isRelated(String userAddress, String targetAddress);
+  Future<Map<String, dynamic>> isRelated(
+      String userAddress, String targetAddress);
 
   /// Returns true/false if the [userAddress] is following the [targetAddress]
   Future<bool> isFollowingUser(String userAddress, String targetAddress);

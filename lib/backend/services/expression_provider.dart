@@ -26,6 +26,7 @@ class ExpressionServiceCentralized implements ExpressionService {
       CentralizedExpression expression) async {
     final Map<String, dynamic> _postBody = expression.toMap();
     print(_postBody);
+
     final http.Response _serverResponse =
         await client.postWithoutEncoding('/expressions', body: _postBody);
     final Map<String, dynamic> parseData =
@@ -36,10 +37,20 @@ class ExpressionServiceCentralized implements ExpressionService {
   }
 
   @override
-  Future<String> createPhoto(String fileType, File file) async {
+  Future<String> createPhoto(bool isPrivate, String fileType, File file) async {
+    print(fileType);
+
+    String _serverUrl;
+    if (isPrivate) {
+      _serverUrl = '/auth/s3?private=true';
+    } else if (isPrivate == false) {
+      _serverUrl = '/auth/s3?private=false';
+    }
     // denote file type and get url, headers, and key of s3 bucket
     final http.Response _serverResponse =
-        await client.postWithoutEncoding('/auth/s3', body: fileType);
+        await client.postWithoutEncoding(_serverUrl, body: fileType);
+    print(_serverResponse.body);
+    print(_serverResponse.statusCode);
 
     // parse response
     final Map<String, dynamic> parseData =

@@ -20,7 +20,7 @@ class MockExpressionService implements ExpressionService {
   }
 
   @override
-  Future<String> createPhoto(String fileType, File file) async {
+  Future<String> createPhoto(bool isPrivate, String fileType, File file) async {
     return 'xczxc-qwerqwe-324234';
   }
 
@@ -111,14 +111,13 @@ class MockExpressionService implements ExpressionService {
       String expressionAddress, Map<String, String> params) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     return QueryResults<Users>(
-      results: List<Users>.generate(
-        12,
-        (int index) => Users(
-          user: kUserProfile,
-          permissionLevel: index % 2 == 0 ? 'Admin' : 'Member',
+        results: List<Users>.generate(
+          12,
+          (int index) => Users(
+            user: kUserProfile,
+            permissionLevel: index % 2 == 0 ? 'Admin' : 'Member',
+          ),
         ),
-      ),
-      lastTimestamp: ''
-    );
+        lastTimestamp: '');
   }
 }

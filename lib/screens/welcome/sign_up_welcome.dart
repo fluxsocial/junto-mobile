@@ -52,6 +52,7 @@ class SignUpAgreementsState extends State<SignUpAgreements> {
         final String key =
             await Provider.of<ExpressionRepo>(context, listen: false)
                 .createPhoto(
+          false,
           '.png',
           image,
         );

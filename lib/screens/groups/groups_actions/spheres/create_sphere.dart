@@ -62,7 +62,7 @@ class CreateSphereState extends State<CreateSphere> {
     if (imageFile != null) {
       final String _photoKey =
           await Provider.of<ExpressionRepo>(context, listen: false)
-              .createPhoto('.png', imageFile);
+              .createPhoto(false, '.png', imageFile);
       print(_photoKey);
       setState(() {
         imageKey = _photoKey;

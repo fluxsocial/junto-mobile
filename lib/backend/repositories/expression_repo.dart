@@ -45,8 +45,8 @@ class ExpressionRepo {
     return _expressionService.createExpression(_expression);
   }
 
-  Future<String> createPhoto(String fileType, File file) {
-    return _expressionService.createPhoto(fileType, file);
+  Future<String> createPhoto(bool isPrivate, String fileType, File file) {
+    return _expressionService.createPhoto(isPrivate, fileType, file);
   }
 
   Future<CentralizedExpressionResponse> getExpression(
