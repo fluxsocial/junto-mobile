@@ -16,7 +16,6 @@ class DenAppbar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _DenAppbarState extends State<DenAppbar> {
-
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -42,10 +41,8 @@ class _DenAppbarState extends State<DenAppbar> {
                   Image.asset('assets/images/junto-mobile__logo.png',
                       height: 22.0, width: 22.0),
                   const SizedBox(width: 7.5),
-                  Text(
-                    widget.heading,
-                    style: Theme.of(context).appBarTheme.textTheme.bodyText1,
-                  ),
+                  Text(widget.heading,
+                      style: Theme.of(context).textTheme.subtitle1),
                 ],
               ),
             ),

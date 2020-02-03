@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:junto_beta_mobile/screens/den/den.dart';
 
 class JuntoEditDen extends StatefulWidget {
   @override
@@ -103,7 +104,7 @@ class JuntoEditDenState extends State<JuntoEditDen> {
 
   Future<void> _updateUser() async {
     JuntoLoader.showLoader(context);
-    
+
     Map<String, dynamic> _newProfileBody;
     // check if user uploaded profile pictures
     if (profilePictures.isNotEmpty) {
@@ -169,6 +170,31 @@ class JuntoEditDenState extends State<JuntoEditDen> {
       await Provider.of<UserRepo>(context, listen: false)
           .updateUser(_newProfileBody, _userAddress);
       JuntoLoader.hide();
+      Navigator.of(context).push(
+        PageRouteBuilder<dynamic>(
+          pageBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) {
+            return JuntoDen();
+          },
+          transitionsBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+            Widget child,
+          ) {
+            return FadeTransition(
+              opacity: animation,
+              child: child,
+            );
+          },
+          transitionDuration: const Duration(
+            milliseconds: 300,
+          ),
+        ),
+      );
     } catch (error) {
       print(error);
       JuntoLoader.hide();
@@ -252,7 +278,7 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 10),
+                          vertical: 20, horizontal: 10),
                       decoration: BoxDecoration(
                         border: Border(
                           bottom: BorderSide(
@@ -261,16 +287,16 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                         ),
                       ),
                       child: Row(children: <Widget>[
-                        ClipOval(
-                          child: Image.asset(
-                            'assets/images/junto-mobile__mockprofpic--one.png',
-                            height: 45.0,
-                            width: 45.0,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Text('Edit profile pictures',
+                        // ClipOval(
+                        //   child: Image.asset(
+                        //     'assets/images/junto-mobile__mockprofpic--one.png',
+                        //     height: 45.0,
+                        //     width: 45.0,
+                        //     fit: BoxFit.cover,
+                        //   ),
+                        // ),
+                        // const SizedBox(width: 10),
+                        Text('Edit profile picture',
                             style: Theme.of(context).textTheme.bodyText1)
                       ]),
                     ),
