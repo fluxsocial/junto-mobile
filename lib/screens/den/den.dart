@@ -20,6 +20,7 @@ import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 /// Displays the user's DEN or "profile screen"
 class JuntoDen extends StatefulWidget {
@@ -197,10 +198,10 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                             ],
                           ),
                         ),
-
-                        // _userProfile.user.profilePicture.length > 0 ?
-                        //     ? _displayProfilePictures(_userProfilePictures)
-                        //     : const SizedBox(),
+                        _userProfile.user.profilePicture.isNotEmpty
+                            ? _displayProfilePictures(
+                                _userProfile.user.profilePicture)
+                            : const SizedBox(),
                         Container(
                           child: Text(_userProfile.user.bio,
                               style: Theme.of(context).textTheme.caption),
@@ -432,8 +433,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
     }
   }
 
-//ignore:unused_element
-  Widget _displayProfilePictures(List<File> profilePictures) {
+  Widget _displayProfilePictures(List<String> profilePictures) {
     return Container(
       margin: const EdgeInsets.only(bottom: 15),
       child: CarouselSlider(
@@ -441,14 +441,31 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
           height: MediaQuery.of(context).size.width - 20,
           enableInfiniteScroll: false,
           items: <Widget>[
-            for (File picture in profilePictures)
-              Container(
-                  padding: const EdgeInsets.only(right: 10),
-                  width: MediaQuery.of(context).size.width,
-                  child: Image.file(picture)
-
-                  // child: Image.asset(picture, fit: BoxFit.cover),
-                  ),
+            Container(
+              padding: const EdgeInsets.only(right: 10),
+              width: MediaQuery.of(context).size.width,
+              child: CachedNetworkImage(
+                placeholder: (BuildContext context, String _) {
+                  return Container(
+                    height: 120,
+                    width: 120,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.bottomLeft,
+                        end: Alignment.topRight,
+                        stops: const <double>[0.2, 0.9],
+                        colors: <Color>[
+                          Theme.of(context).colorScheme.secondary,
+                          Theme.of(context).colorScheme.primary
+                        ],
+                      ),
+                    ),
+                  );
+                },
+                imageUrl: profilePictures[0],
+                fit: BoxFit.cover,
+              ),
+            ),
           ]),
     );
   }
