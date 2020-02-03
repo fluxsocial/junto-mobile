@@ -17,6 +17,7 @@ import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 
 class Welcome extends StatefulWidget {
   static Route<dynamic> route() {
@@ -33,6 +34,7 @@ class Welcome extends StatefulWidget {
 
 class WelcomeState extends State<Welcome> {
   bool _isRainbow = false;
+  String _userAddress;
 
   PageController _welcomeController;
   PageController _signInController;
@@ -135,6 +137,8 @@ class WelcomeState extends State<Welcome> {
     );
 
     try {
+      JuntoLoader.showLoader(context);
+
       // create user account
       final UserData results =
           await Provider.of<AuthRepo>(context, listen: false)
@@ -150,38 +154,11 @@ class WelcomeState extends State<Welcome> {
         )
         ..setString('user_id', results.user.address)
         ..setString('user_data', resultsMapToString);
-
-      // navigate to community agreements
-
-      Navigator.of(context).pushReplacement(
-        PageRouteBuilder<dynamic>(
-          pageBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-          ) {
-            return SignUpAgreements(profilePictures: profilePictures);
-          },
-          transitionsBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-            Widget child,
-          ) {
-            return SlideTransition(
-              position: Tween<Offset>(
-                begin: const Offset(-1, 0),
-                end: Offset.zero,
-              ).animate(animation),
-              child: child,
-            );
-          },
-          transitionDuration: const Duration(
-            milliseconds: 400,
-          ),
-        ),
-      );
+      setState(() {
+        _userAddress = results.user.address;
+      });
     } on JuntoException catch (error) {
+      JuntoLoader.hide();
       JuntoDialog.showJuntoDialog(context, error.message, <Widget>[
         FlatButton(
           onPressed: () => Navigator.pop(context),
@@ -194,6 +171,80 @@ class WelcomeState extends State<Welcome> {
       ]);
       print('Error: $error');
     }
+
+    // Update user with profile photos
+    if (profilePictures.isNotEmpty) {
+      // instantiate list to store photo keys retrieve from /s3
+      final List<String> _photoKeys = <String>[];
+      for (final dynamic image in profilePictures) {
+        if (image != null) {
+          try {
+            final String key =
+                await Provider.of<ExpressionRepo>(context, listen: false)
+                    .createPhoto(
+              false,
+              '.png',
+              image,
+            );
+            _photoKeys.add(key);
+          } catch (error) {
+            print(error);
+            JuntoLoader.hide();
+          }
+        }
+      }
+
+      Map<String, dynamic> _profilePictureKeys;
+
+      // instantiate data structure to update user with profile pictures
+      _profilePictureKeys = <String, dynamic>{
+        'profile_picture': <Map<String, dynamic>>[
+          <String, dynamic>{'index': 0, 'key': _photoKeys[0]},
+          if (_photoKeys.length == 2)
+            <String, dynamic>{'index': 1, 'key': _photoKeys[1]},
+        ]
+      };
+      // update user with profile photos
+      try {
+        await Provider.of<UserRepo>(context, listen: false).updateUser(
+            profilePictures.isNotEmpty ? _profilePictureKeys : _photoKeys,
+            _userAddress);
+        JuntoLoader.hide();
+      } catch (error) {
+        print(error);
+        JuntoLoader.hide();
+      }
+    }
+
+    // Navigate to community agreements
+    Navigator.of(context).pushReplacement(
+      PageRouteBuilder<dynamic>(
+        pageBuilder: (
+          BuildContext context,
+          Animation<double> animation,
+          Animation<double> secondaryAnimation,
+        ) {
+          return SignUpAgreements();
+        },
+        transitionsBuilder: (
+          BuildContext context,
+          Animation<double> animation,
+          Animation<double> secondaryAnimation,
+          Widget child,
+        ) {
+          return SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(-1, 0),
+              end: Offset.zero,
+            ).animate(animation),
+            child: child,
+          );
+        },
+        transitionDuration: const Duration(
+          milliseconds: 400,
+        ),
+      ),
+    );
   }
 
   Future<bool> _willPop() async {
