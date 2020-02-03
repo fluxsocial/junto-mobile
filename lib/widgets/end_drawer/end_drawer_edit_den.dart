@@ -230,7 +230,7 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                       size: 17,
                     ),
                   ),
-                ),
+                ),  
                 Container(
                   child: Text('Edit Profile',
                       style: Theme.of(context).textTheme.subtitle1),
@@ -317,7 +317,9 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                         child: TextField(
                           controller: _nameController,
                           decoration: const InputDecoration(
-                              border: InputBorder.none, hintText: 'Full Name'),
+                            border: InputBorder.none,
+                            hintText: 'Full Name',
+                          ),
                           maxLines: null,
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
@@ -340,8 +342,9 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                         child: TextField(
                           controller: _bioController,
                           decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'Short/Long Bio'),
+                            border: InputBorder.none,
+                            hintText: 'Short/Long Bio',
+                          ),
                           maxLines: null,
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
@@ -364,7 +367,9 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                         child: TextField(
                           controller: _locationController,
                           decoration: const InputDecoration(
-                              border: InputBorder.none, hintText: 'Location'),
+                            border: InputBorder.none,
+                            hintText: 'Location',
+                          ),
                           maxLines: null,
                           style: Theme.of(context).textTheme.bodyText1,
                         ),

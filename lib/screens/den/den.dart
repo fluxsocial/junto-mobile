@@ -82,6 +82,8 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
       _userAddress = prefs.getString('user_id');
       _userProfile = UserData.fromMap(decodedUserData);
     });
+
+    print(_userProfile);
   }
 
   Future<List<CentralizedExpressionResponse>> getUsersExpressions() async {
@@ -195,8 +197,6 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                             ],
                           ),
                         ),
-                        Image.network(_userProfile.user.profilePicture[0],
-                            height: 200, width: 200),
 
                         // _userProfile.user.profilePicture.length > 0 ?
                         //     ? _displayProfilePictures(_userProfilePictures)
@@ -408,7 +408,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
   }
 
   Widget _displayAboutItem(List<String> item, dynamic icon) {
-    if (item[0] != ' ') {
+    if (item[0].isNotEmpty) {
       return Container(
         margin: const EdgeInsets.symmetric(vertical: 5),
         child: Row(

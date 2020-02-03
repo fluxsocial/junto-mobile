@@ -127,13 +127,13 @@ class WelcomeState extends State<Welcome> {
       email: email,
       name: name,
       password: password,
-      bio: bio,
       location: <String>[location],
       username: username,
       profileImage: <String>[],
       website: <String>[website],
       gender: <String>[gender],
       verificationCode: verificationCode,
+      bio: bio,
     );
 
     try {
@@ -143,6 +143,7 @@ class WelcomeState extends State<Welcome> {
       final UserData results =
           await Provider.of<AuthRepo>(context, listen: false)
               .registerUser(details);
+      print('ok');
       final Map<String, dynamic> resultsMap = results.toMap();
       final String resultsMapToString = json.encode(resultsMap);
 
@@ -157,23 +158,15 @@ class WelcomeState extends State<Welcome> {
       setState(() {
         _userAddress = results.user.address;
       });
-    } on JuntoException catch (error) {
+    } catch (error) {
+      _welcomeController.jumpToPage(0);
       JuntoLoader.hide();
-      JuntoDialog.showJuntoDialog(context, error.message, <Widget>[
-        FlatButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('OK'),
-        ),
-        FlatButton(
-          onPressed: () => Navigator.pop(context),
-          child: Text(error.message),
-        ),
-      ]);
+      print(error);
       print('Error: $error');
     }
 
     // Update user with profile photos
-    if (profilePictures.isNotEmpty) {
+    if (profilePictures[0] != null) {
       // instantiate list to store photo keys retrieve from /s3
       final List<String> _photoKeys = <String>[];
       for (final dynamic image in profilePictures) {
@@ -207,15 +200,15 @@ class WelcomeState extends State<Welcome> {
       // update user with profile photos
       try {
         await Provider.of<UserRepo>(context, listen: false).updateUser(
-            profilePictures.isNotEmpty ? _profilePictureKeys : _photoKeys,
+            profilePictures[0] == null ? _photoKeys : _profilePictureKeys,
             _userAddress);
-        JuntoLoader.hide();
       } catch (error) {
         print(error);
         JuntoLoader.hide();
       }
     }
 
+    JuntoLoader.hide();
     // Navigate to community agreements
     Navigator.of(context).pushReplacement(
       PageRouteBuilder<dynamic>(
