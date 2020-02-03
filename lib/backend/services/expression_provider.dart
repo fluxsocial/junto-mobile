@@ -38,8 +38,6 @@ class ExpressionServiceCentralized implements ExpressionService {
 
   @override
   Future<String> createPhoto(bool isPrivate, String fileType, File file) async {
-    print(fileType);
-
     String _serverUrl;
     if (isPrivate) {
       _serverUrl = '/auth/s3?private=true';
@@ -72,7 +70,6 @@ class ExpressionServiceCentralized implements ExpressionService {
       body: fileAsBytes,
     );
 
-    print(_serverResponseTwo.statusCode);
     // if successful, return the key for next steps
     if (_serverResponseTwo.statusCode == 200) {
       return parseData['key'];

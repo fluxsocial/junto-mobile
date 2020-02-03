@@ -195,8 +195,10 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                             ],
                           ),
                         ),
+                        Image.network(_userProfile.user.profilePicture[0],
+                            height: 200, width: 200),
 
-                        // _userProfile.user.profilePicture != null
+                        // _userProfile.user.profilePicture.length > 0 ?
                         //     ? _displayProfilePictures(_userProfilePictures)
                         //     : const SizedBox(),
                         Container(
@@ -429,6 +431,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
       return const SizedBox();
     }
   }
+
 //ignore:unused_element
   Widget _displayProfilePictures(List<File> profilePictures) {
     return Container(

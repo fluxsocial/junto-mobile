@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -7,6 +9,9 @@ import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:junto_beta_mobile/widgets/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 
 class JuntoEditDen extends StatefulWidget {
   @override
@@ -19,6 +24,9 @@ class JuntoEditDenState extends State<JuntoEditDen> {
   String _userAddress;
   UserData _userData;
 
+  List<File> profilePictures = <File>[];
+
+  File imageFile;
 //ignore:unused_field
   String _name;
   //ignore:unused_field
@@ -72,6 +80,101 @@ class JuntoEditDenState extends State<JuntoEditDen> {
         TextEditingController(text: _userData.user.website[0] ?? '');
   }
 
+  Future<void> _onPickPressed() async {
+    final File image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    if (image == null) {
+      setState(() => imageFile = null);
+      return;
+    }
+    final File cropped =
+        await ImageCroppingDialog.show(context, image, aspectRatios: <String>[
+      '1:1',
+    ]);
+    if (cropped == null) {
+      setState(() => imageFile = null);
+      return;
+    }
+    setState(() {
+      imageFile = cropped;
+      profilePictures = <File>[];
+      profilePictures.add(imageFile);
+    });
+  }
+
+  Future<void> _updateUser() async {
+    JuntoLoader.showLoader(context);
+    
+    Map<String, dynamic> _newProfileBody;
+    // check if user uploaded profile pictures
+    if (profilePictures.isNotEmpty) {
+      // instantiate list to store photo keys retrieve from /s3
+      final List<String> _photoKeys = <String>[];
+      for (final dynamic image in profilePictures) {
+        if (image != null) {
+          try {
+            final String key =
+                await Provider.of<ExpressionRepo>(context, listen: false)
+                    .createPhoto(
+              false,
+              '.png',
+              image,
+            );
+            _photoKeys.add(key);
+          } catch (error) {
+            print(error);
+            JuntoLoader.hide();
+          }
+        }
+      }
+
+      final List<Map<String, dynamic>> _profilePictureKeys =
+          <Map<String, dynamic>>[
+        <String, dynamic>{'index': 0, 'key': _photoKeys[0]},
+        if (_photoKeys.length == 2)
+          <String, dynamic>{'index': 1, 'key': _photoKeys[1]},
+      ];
+
+      _newProfileBody = _newProfileBody = <String, dynamic>{
+        'profile_picture': _profilePictureKeys,
+        'name': _nameController.value.text,
+        'location': _locationController.value.text == ''
+            ? <String>[]
+            : <String>[_locationController.value.text],
+        'bio': _bioController.value.text,
+        'website': _websiteController.value.text == ''
+            ? <String>[]
+            : <String>[_websiteController.value.text],
+        'gender': _genderController.value.text == ''
+            ? <String>[]
+            : <String>[_genderController.value.text],
+      };
+    } else {
+      _newProfileBody = <String, dynamic>{
+        'name': _nameController.value.text,
+        'location': _locationController.value.text == ''
+            ? <String>[]
+            : <String>[_locationController.value.text],
+        'bio': _bioController.value.text,
+        'website': _websiteController.value.text == ''
+            ? <String>[]
+            : <String>[_websiteController.value.text],
+        'gender': _genderController.value.text == ''
+            ? <String>[]
+            : <String>[_genderController.value.text],
+      };
+    }
+
+    // update user
+    try {
+      await Provider.of<UserRepo>(context, listen: false)
+          .updateUser(_newProfileBody, _userAddress);
+      JuntoLoader.hide();
+    } catch (error) {
+      print(error);
+      JuntoLoader.hide();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,27 +210,8 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                       style: Theme.of(context).textTheme.subtitle1),
                 ),
                 GestureDetector(
-                  onTap: () async {
-                    final Map<String, dynamic> newProfile = <String, dynamic>{
-                      'name': _nameController.value.text,
-                      'location': _locationController.value.text == ''
-                          ? <String>[]
-                          : <String>[_locationController.value.text],
-                      'bio': _bioController.value.text,
-                      'website': _websiteController.value.text == ''
-                          ? <String>[]
-                          : <String>[_websiteController.value.text],
-                      'gender': _genderController.value.text == ''
-                          ? <String>[]
-                          : <String>[_genderController.value.text],
-                    };
-                    try {
-                      await Provider.of<UserRepo>(context, listen: false)
-                          .updateUser(newProfile, _userAddress);
-                    } catch (error) {
-                      print(error);
-                      print(error.message);
-                    }
+                  onTap: () {
+                    _updateUser();
                   },
                   child: Container(
                     padding: const EdgeInsets.only(right: 10),
@@ -135,8 +219,8 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                     color: Colors.transparent,
                     width: 42,
                     height: 42,
-                    child:
-                        Text('Save', style: Theme.of(context).textTheme.bodyText1),
+                    child: Text('Save',
+                        style: Theme.of(context).textTheme.bodyText1),
                   ),
                 )
               ],
@@ -162,28 +246,34 @@ class JuntoEditDenState extends State<JuntoEditDen> {
             Expanded(
               child: ListView(
                 children: <Widget>[
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 15, horizontal: 10),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                            color: Theme.of(context).dividerColor, width: .75),
-                      ),
-                    ),
-                    child: Row(children: <Widget>[
-                      ClipOval(
-                        child: Image.asset(
-                          'assets/images/junto-mobile__mockprofpic--one.png',
-                          height: 45.0,
-                          width: 45.0,
-                          fit: BoxFit.cover,
+                  GestureDetector(
+                    onTap: () {
+                      _onPickPressed();
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 15, horizontal: 10),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                              color: Theme.of(context).dividerColor,
+                              width: .75),
                         ),
                       ),
-                      const SizedBox(width: 10),
-                      Text('Edit profile pictures',
-                          style: Theme.of(context).textTheme.bodyText1)
-                    ]),
+                      child: Row(children: <Widget>[
+                        ClipOval(
+                          child: Image.asset(
+                            'assets/images/junto-mobile__mockprofpic--one.png',
+                            height: 45.0,
+                            width: 45.0,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Text('Edit profile pictures',
+                            style: Theme.of(context).textTheme.bodyText1)
+                      ]),
+                    ),
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -206,18 +296,8 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ),
-                      const SizedBox(height: 10),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: const Text(
-                          'NAME',
-                          style: TextStyle(
-                              fontSize: 10, fontWeight: FontWeight.w500),
-                        ),
-                      ),
                     ],
                   ),
-                  const SizedBox(height: 25),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -240,18 +320,8 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ),
-                      const SizedBox(height: 10),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: const Text(
-                          'BIO',
-                          style: TextStyle(
-                              fontSize: 10, fontWeight: FontWeight.w500),
-                        ),
-                      ),
                     ],
                   ),
-                  const SizedBox(height: 25),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -273,18 +343,8 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ),
-                      const SizedBox(height: 10),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: const Text(
-                          'LOCATION',
-                          style: TextStyle(
-                              fontSize: 10, fontWeight: FontWeight.w500),
-                        ),
-                      ),
                     ],
                   ),
-                  const SizedBox(height: 25),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -306,18 +366,8 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ),
-                      const SizedBox(height: 10),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: const Text(
-                          'GENDER',
-                          style: TextStyle(
-                              fontSize: 10, fontWeight: FontWeight.w500),
-                        ),
-                      ),
                     ],
                   ),
-                  const SizedBox(height: 25),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -339,18 +389,8 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ),
-                      const SizedBox(height: 10),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: const Text(
-                          'WEBSITE',
-                          style: TextStyle(
-                              fontSize: 10, fontWeight: FontWeight.w500),
-                        ),
-                      ),
                     ],
                   ),
-                  const SizedBox(height: 25),
                 ],
               ),
             )
