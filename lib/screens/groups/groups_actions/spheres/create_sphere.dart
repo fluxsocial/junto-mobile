@@ -24,7 +24,6 @@ class CreateSphere extends StatefulWidget {
 
 class CreateSphereState extends State<CreateSphere> {
   File imageFile;
-  String imageKey = '';
   int _currentIndex = 0;
   String sphereName;
   String sphereHandle;
@@ -36,7 +35,7 @@ class CreateSphereState extends State<CreateSphere> {
   TextEditingController sphereDescriptionController;
   String _currentPrivacy = 'Public';
 
-  List<String> _sphereMembers = <String>[];
+  final List<String> _sphereMembers = <String>[];
 
   final List<String> _tabs = <String>['Subscriptions', 'Connections'];
 
@@ -58,35 +57,41 @@ class CreateSphereState extends State<CreateSphere> {
   }
 
   Future<void> _createSphere() async {
-    // check if photo
+    JuntoLoader.showLoader(context);
+
+    // instantiate sphere image key
+    String sphereImageKey = '';
+
+    // check if user uploaded a photo for the sphere
     if (imageFile != null) {
-      final String _photoKey =
-          await Provider.of<ExpressionRepo>(context, listen: false)
-              .createPhoto(false, '.png', imageFile);
-      print(_photoKey);
-      setState(() {
-        imageKey = _photoKey;
-      });
+      try {
+        final String _photoKey =
+            await Provider.of<ExpressionRepo>(context, listen: false)
+                .createPhoto(true, '.png', imageFile);
+        sphereImageKey = _photoKey;
+      } catch (error) {
+        print(error);
+        JuntoLoader.hide();
+      }
     }
 
-    // then
+    // get user address from shared preferences
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String userAddress = prefs.get('user_id');
+    final String userAddress = await prefs.get('user_id');
 
+    // create sphere body
     final CentralizedSphere sphere = CentralizedSphere(
       name: sphereName,
       description: sphereDescription,
       facilitators: <String>[userAddress],
-      photo: imageKey,
+      photo: sphereImageKey,
       members: _sphereMembers,
       principles: '',
       sphereHandle: sphereHandle,
       privacy: _currentPrivacy,
     );
-    print(sphere.photo);
 
     try {
-      JuntoLoader.showLoader(context);
       await Provider.of<GroupRepo>(context, listen: false).createSphere(sphere);
       JuntoLoader.hide();
       Navigator.pop(context);
