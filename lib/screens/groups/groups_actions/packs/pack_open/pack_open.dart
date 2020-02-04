@@ -9,6 +9,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/pack_open_appbar.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/pack_open_public.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
+import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -40,7 +41,6 @@ class PackOpenState extends State<PackOpen> {
   @override
   void initState() {
     super.initState();
-    print('init pack');
     controller = PageController(initialPage: 0);
     getUserInformation();
   }
@@ -57,8 +57,6 @@ class PackOpenState extends State<PackOpen> {
       _userAddress = prefs.getString('user_id');
       _userProfile = UserData.fromMap(decodedUserData);
     });
-
-    print(_userProfile.pack.address);
   }
 
   Future<List<CentralizedExpressionResponse>> getPackExpressions() async {
@@ -100,73 +98,62 @@ class PackOpenState extends State<PackOpen> {
           child: Padding(
             padding: const EdgeInsets.only(bottom: 25),
             child: BottomNav(
-                screen: 'collective',
-                userProfile: _userProfile,
-                onTap: () {
-                  // if (actionsVisible) {
-                  //   setState(() {
-                  //     actionsVisible = false;
-                  //   });
-                  // } else {
-                  //   setState(() {
-                  //     actionsVisible = true;
-                  //   });
-                  // }
-                }),
+                screen: 'collective', userProfile: _userProfile, onTap: () {}),
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body: Column(
           children: <Widget>[
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                      color: Theme.of(context).dividerColor, width: .75),
-                ),
-              ),
-              child: Row(
-                children: <Widget>[
-                  GestureDetector(
-                    onTap: () => controller.jumpToPage(0),
-                    child: Container(
-                      color: Colors.transparent,
-                      child: Text(
-                        'Public',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w700,
-                          color: _currentIndex == 0
-                              ? Theme.of(context).primaryColor
-                              : Theme.of(context).primaryColorLight,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 25),
-                  GestureDetector(
-                    onTap: () {
-                      controller.jumpToPage(1);
-                    },
-                    child: Container(
-                        color: Colors.transparent,
-                        child: Text(
-                          'Private',
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700,
-                            color: _currentIndex == 1
-                                ? Theme.of(context).primaryColor
-                                : Theme.of(context).primaryColorLight,
-                          ),
-                        )),
-                  ),
-                ],
-              ),
-            ),
+            // Container(
+            //   padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+            //   decoration: BoxDecoration(
+            //     border: Border(
+            //       bottom: BorderSide(
+            //           color: Theme.of(context).dividerColor, width: .75),
+            //     ),
+            //   ),
+            //   child: Row(
+            //     children: <Widget>[
+            //       GestureDetector(
+            //         onTap: () => controller.jumpToPage(0),
+            //         child: Container(
+            //           color: Colors.transparent,
+            //           child: Text(
+            //             'Public',
+            //             style: TextStyle(
+            //               fontSize: 15,
+            //               fontWeight: FontWeight.w700,
+            //               color: _currentIndex == 0
+            //                   ? Theme.of(context).primaryColor
+            //                   : Theme.of(context).primaryColorLight,
+            //             ),
+            //           ),
+            //         ),
+            //       ),
+            //       const SizedBox(width: 25),
+            //       GestureDetector(
+            //         onTap: () {
+            //           controller.jumpToPage(1);
+            //         },
+            //         child: Container(
+            //             color: Colors.transparent,
+            //             child: Text(
+            //               'Private',
+            //               style: TextStyle(
+            //                 fontSize: 15,
+            //                 fontWeight: FontWeight.w700,
+            //                 color: _currentIndex == 1
+            //                     ? Theme.of(context).primaryColor
+            //                     : Theme.of(context).primaryColorLight,
+            //               ),
+            //             )),
+            //       ),
+            //     ],
+            //   ),
+            // ),
             Expanded(
               child: PageView(
+                physics: NeverScrollableScrollPhysics(),
                 controller: controller,
                 onPageChanged: (int index) {
                   setState(
@@ -176,7 +163,6 @@ class PackOpenState extends State<PackOpen> {
                   );
                 },
                 children: <Widget>[
-                  PackOpenPublic(fabVisible: _isVisible),
                   if (_userProfile != null)
                     FutureBuilder<List<CentralizedExpressionResponse>>(
                       future: getPackExpressions(),
@@ -187,15 +173,75 @@ class PackOpenState extends State<PackOpen> {
                           return Center(
                             child: Transform.translate(
                               offset: const Offset(0.0, -50),
-                              child: const Text(
-                                  'Hmm, something is up with our server'),
+                              child: const Text('Hmm, something is up'),
                             ),
                           );
                         }
                         if (snapshot.hasData) {
                           return ListView(
-                            padding: const EdgeInsets.all(0),
-                            children: const <Widget>[],
+                            children: <Widget>[
+                              Container(
+                                color: Theme.of(context).backgroundColor,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          .5,
+                                      padding: const EdgeInsets.only(
+                                        top: 10,
+                                        left: 10,
+                                        right: 5,
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: <Widget>[
+                                          for (int index = 0;
+                                              index < snapshot.data.length + 1;
+                                              index++)
+                                            if (index == snapshot.data.length)
+                                              const SizedBox()
+                                            else if (index.isEven)
+                                              ExpressionPreview(
+                                                expression:
+                                                    snapshot.data[index],
+                                                userAddress: _userAddress,
+                                              )
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          .5,
+                                      padding: const EdgeInsets.only(
+                                        top: 10,
+                                        left: 5,
+                                        right: 10,
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: <Widget>[
+                                          for (int index = 0;
+                                              index < snapshot.data.length + 1;
+                                              index++)
+                                            if (index == snapshot.data.length)
+                                              const SizedBox()
+                                            else if (index.isOdd)
+                                              ExpressionPreview(
+                                                expression:
+                                                    snapshot.data[index],
+                                                userAddress: _userAddress,
+                                              )
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           );
                         }
                         return Center(

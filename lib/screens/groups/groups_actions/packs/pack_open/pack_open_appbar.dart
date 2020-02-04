@@ -17,6 +17,13 @@ class PackOpenAppbar extends StatelessWidget {
       iconTheme: const IconThemeData(color: JuntoPalette.juntoSleek),
       elevation: 0,
       titleSpacing: 0,
+      bottom: PreferredSize(
+        preferredSize: const Size.fromHeight(.75),
+        child: Container(
+          height: .75,
+          decoration: BoxDecoration(color: Theme.of(context).dividerColor),
+        ),
+      ),
       title: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Row(

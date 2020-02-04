@@ -89,6 +89,7 @@ class GroupServiceCentralized implements GroupService {
 
     final Map<String, dynamic> items =
         JuntoHttp.handleResponse(_serverResponse);
+    print(items['direct_posts']['results']);
 
     return (items['direct_posts']['results'] as List<dynamic>)
         .map((dynamic data) => CentralizedExpressionResponse.fromMap(data))
