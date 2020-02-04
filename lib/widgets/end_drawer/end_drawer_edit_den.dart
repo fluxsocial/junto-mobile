@@ -29,14 +29,6 @@ class JuntoEditDenState extends State<JuntoEditDen> {
   List<File> profilePictures = <File>[];
 
   File imageFile;
-//ignore:unused_field
-  String _name;
-  //ignore:unused_field
-  String _bio;
-  //ignore:unused_field
-  List<String> _location;
-  //ignore:unused_field
-  List<String> _website;
 
   TextEditingController _nameController;
   TextEditingController _bioController;
@@ -64,14 +56,6 @@ class JuntoEditDenState extends State<JuntoEditDen> {
   }
 
   void setEditInfo() {
-    print('setting info');
-    setState(() {
-      _name = _userData.user.name;
-      _bio = _userData.user.bio;
-      _location = _userData.user.location;
-      _website = _userData.user.website;
-    });
-
     _nameController = TextEditingController(text: _userData.user.name);
     _bioController = TextEditingController(text: _userData.user.bio);
     _locationController =
