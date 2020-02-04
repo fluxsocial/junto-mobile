@@ -50,10 +50,29 @@ class _DenAppbarState extends State<DenAppbar> {
               children: <Widget>[
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute<dynamic>(
-                        builder: (BuildContext context) => const GlobalSearch(),
+                    Navigator.of(context).push(
+                      PageRouteBuilder<dynamic>(
+                        pageBuilder: (
+                          BuildContext context,
+                          Animation<double> animation,
+                          Animation<double> secondaryAnimation,
+                        ) {
+                          return const GlobalSearch();
+                        },
+                        transitionsBuilder: (
+                          BuildContext context,
+                          Animation<double> animation,
+                          Animation<double> secondaryAnimation,
+                          Widget child,
+                        ) {
+                          return FadeTransition(
+                            opacity: animation,
+                            child: child,
+                          );
+                        },
+                        transitionDuration: const Duration(
+                          milliseconds: 300,
+                        ),
                       ),
                     );
                   },
