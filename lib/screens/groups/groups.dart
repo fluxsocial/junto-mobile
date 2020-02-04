@@ -32,6 +32,7 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
   bool actionsVisible = false;
 
   dynamic _currentGroup;
+  bool spheresVisible = false;
 
   @override
   void initState() {
@@ -104,6 +105,7 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
               visible: actionsVisible,
               child: JuntoGroupsActions(
                 changeGroup: _changeGroup,
+                spheresVisible: spheresVisible,
               ),
             ),
           ),
@@ -116,6 +118,7 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
     if (group.groupType == 'Pack') {
       setState(() {
         _currentGroup = PackOpen(pack: group);
+        spheresVisible = false;
       });
     }
 
@@ -128,6 +131,7 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
           group: group,
         );
       });
+      spheresVisible = true;
     }
 
     actionsVisible = false;
