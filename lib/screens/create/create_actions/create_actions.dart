@@ -345,6 +345,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
           _currentExpressionContextDescription = 'shared with just yourself';
 
           _address = _userProfile.privateDen.address;
+          print(_address);
         });
       };
       _expressionContextIcon = Icon(CustomIcons.den,
@@ -356,7 +357,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
       _setExpressionContextDescription = () {
         setState(() {
           _currentExpressionContextDescription = _groupHandle;
-          _address = '44b80193-8c9c-25a2-a3f8-ae7628225acc';
+          _address = null;
         });
         print(_address);
       };
