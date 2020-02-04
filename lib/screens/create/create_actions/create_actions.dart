@@ -8,6 +8,8 @@ import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
+import 'package:junto_beta_mobile/screens/groups/groups.dart';
+import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/channel_search_modal.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/sphere_select_modal.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions_appbar.dart';
@@ -180,9 +182,37 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         <Widget>[
           FlatButton(
             onPressed: () {
-              Navigator.of(context).pushAndRemoveUntil(
-                JuntoCollective.route(),
-                (_) => false,
+              Navigator.of(context).push(
+                PageRouteBuilder<dynamic>(
+                  pageBuilder: (
+                    BuildContext context,
+                    Animation<double> animation,
+                    Animation<double> secondaryAnimation,
+                  ) {
+                    if (_currentExpressionContext == 'Collective') {
+                      return JuntoCollective();
+                    } else if (_currentExpressionContext == 'Sphere' ||
+                        _currentExpressionContext == 'My Pack') {
+                      return JuntoGroups();
+                    } else {
+                      return JuntoDen();
+                    }
+                  },
+                  transitionsBuilder: (
+                    BuildContext context,
+                    Animation<double> animation,
+                    Animation<double> secondaryAnimation,
+                    Widget child,
+                  ) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  },
+                  transitionDuration: const Duration(
+                    milliseconds: 300,
+                  ),
+                ),
               );
             },
             child: const Text('Ok'),
