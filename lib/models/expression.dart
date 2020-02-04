@@ -175,17 +175,20 @@ class CentralizedEventFormExpression {
 }
 
 class CentralizedExpressionResponse {
-  CentralizedExpressionResponse(
-      {this.address,
-      this.type,
-      this.expressionData,
-      this.createdAt,
-      this.numberResonations,
-      this.creator,
-      this.context,
-      this.privacy,
-      this.comments = 0,
-      this.resonations = 0});
+  CentralizedExpressionResponse({
+    this.address,
+    this.type,
+    this.expressionData,
+    this.createdAt,
+    this.numberResonations,
+    this.creator,
+    this.context,
+    this.privacy,
+    this.channels,
+    this.numberComments = 0,
+    this.comments,
+    this.resonations,
+  });
 
   factory CentralizedExpressionResponse.withCommentsAndResonations(
       Map<String, dynamic> json) {
@@ -204,9 +207,9 @@ class CentralizedExpressionResponse {
         json['creator'],
       ),
       privacy: json['privacy'] ?? '',
+      channels: json['channels'],
       context: json['context'] ?? '',
-      comments: json['comments'],
-      resonations: json['resonations'] as int,
+      numberComments: json['comments'],
     );
   }
 
@@ -221,14 +224,30 @@ class CentralizedExpressionResponse {
       createdAt: RFC3339.parseRfc3339(
         json['created_at'],
       ),
-      numberResonations: json['resonations'] ?? 0,
       creator: UserProfile.fromMap(
         json['creator'],
       ),
       privacy: json['privacy'] ?? '',
+      channels: json['channels'],
       context: json['context'] ?? '',
-      comments: json['comments'] as int,
+      comments: json['comments'],
+      resonations: json['resonations'],
     );
+
+    // comments: json['comments'].runtimeType == int
+    //     ? json['comments']
+    //     : List<Comment>.from(
+    //         json['comments']['results'].map(
+    //           (dynamic comment) => Comment.fromMap(comment),
+    //         ),
+    //       ),
+    // resonations: json['resonations'].runtimeType == int
+    //     ? json['resonations']
+    //     : List<UserProfile>.from(
+    //         json['resonations']['results'].map(
+    //           (dynamic res) => UserProfile.fromMap(res),
+    //         ),
+    //       ),
   }
 
   final String address;
@@ -236,9 +255,11 @@ class CentralizedExpressionResponse {
   final dynamic expressionData;
   final DateTime createdAt;
   final int numberResonations;
-  final int comments;
-  final int resonations;
+  final int numberComments;
+  final dynamic resonations;
+  final dynamic comments;
   final String privacy;
+  final List<dynamic> channels;
   final String context;
   final UserProfile creator;
 
@@ -251,6 +272,7 @@ class CentralizedExpressionResponse {
       'resonations': numberResonations,
       'creator': creator.toMap(),
       'privacy': privacy ?? '',
+      'channels': channels,
       'context': context ?? '',
     };
   }
@@ -343,6 +365,24 @@ class ExpressionQueryParams {
 
 enum ExpressionContextType { dos, perspective, random, collective }
 
+class GroupExpressionQueryParams {
+  GroupExpressionQueryParams({
+    this.resonations,
+    this.directExpressions,
+    this.creatorExpressions,
+    this.resonationsPaginationPosition,
+    this.directExpressionPaginationPosition,
+    this.creatorExpressionsPaginationPosition,
+  });
+
+  final bool resonations;
+  final bool directExpressions;
+  final bool creatorExpressions;
+  final int resonationsPaginationPosition;
+  final int directExpressionPaginationPosition;
+  final int creatorExpressionsPaginationPosition;
+}
+
 /// Generic class encapsulating a query results.
 class QueryResults<T> {
   QueryResults({
@@ -352,4 +392,28 @@ class QueryResults<T> {
 
   final List<T> results;
   final String lastTimestamp;
+}
+
+class Channel with RFC3339 {
+  const Channel({
+    @required this.name,
+    @required this.createdAt,
+  });
+
+  factory Channel.fromMap(Map<String, dynamic> map) {
+    return Channel(
+      name: map['name'] as String,
+      createdAt: RFC3339.parseRfc3339(map['created_at']),
+    );
+  }
+
+  final String name;
+  final DateTime createdAt;
+
+  Map<String, dynamic> toMap() {
+    return <String, String>{
+      'name': name,
+      'created_at': createdAt.toIso8601String(),
+    };
+  }
 }

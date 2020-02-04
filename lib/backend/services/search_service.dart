@@ -46,7 +46,7 @@ class SearchServiceCentralized with RFC3339 implements SearchService {
   }
 
   @override
-  Future<QueryResults<String>> searchChannel(
+  Future<QueryResults<Channel>> searchChannel(
     String query, {
     int paginationPosition = 0,
     DateTime lastTimeStamp,
@@ -63,10 +63,10 @@ class SearchServiceCentralized with RFC3339 implements SearchService {
     final Map<String, dynamic> _results = JuntoHttp.handleResponse(
       _serverResponse,
     );
-    final List<String> _users = <String>[
-      for (dynamic data in _results['results']) data
+    final List<Channel> _users = <Channel>[
+      for (dynamic data in _results['results']) Channel.fromMap(data)
     ];
-    return QueryResults<String>(
+    return QueryResults<Channel>(
       results: _users,
       lastTimestamp: _results['last_timestamp'],
     );

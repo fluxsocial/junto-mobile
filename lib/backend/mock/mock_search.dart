@@ -20,12 +20,18 @@ class MockSearch implements SearchService {
   }
 
   @override
-  Future<QueryResults<String>> searchChannel(String query,
+  Future<QueryResults<Channel>> searchChannel(String query,
       {int paginationPosition = 0, DateTime lastTimeStamp}) async {
     await Future<void>.delayed(const Duration(milliseconds: 300));
-    return QueryResults<String>(
+    return QueryResults<Channel>(
       lastTimestamp: DateTime.now().toIso8601String(),
-      results: List<void>.generate(100, (int index) => 'pending'),
+      results: List<void>.generate(
+        100,
+        (int index) => Channel(
+          name: 'pending',
+          createdAt: DateTime.now(),
+        ),
+      ),
     );
   }
 

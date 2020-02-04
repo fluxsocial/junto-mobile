@@ -51,9 +51,9 @@ class ExpressionOpenTop extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(expression.creator.username.toLowerCase() ?? '',
-                          style: Theme.of(context).textTheme.subhead),
+                          style: Theme.of(context).textTheme.subtitle1),
                       Text('${expression.creator.name}',
-                          style: Theme.of(context).textTheme.body1),
+                          style: Theme.of(context).textTheme.bodyText1),
                     ],
                   ),
                 ),

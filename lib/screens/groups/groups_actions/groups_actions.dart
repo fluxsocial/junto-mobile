@@ -5,10 +5,12 @@ import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/packs.dart
 import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/spheres.dart';
 
 class JuntoGroupsActions extends StatefulWidget {
-  const JuntoGroupsActions({this.userProfile, this.changeGroup});
+  const JuntoGroupsActions(
+      {this.userProfile, this.changeGroup, this.spheresVisible});
 
   final UserData userProfile;
   final Function changeGroup;
+  final bool spheresVisible;
   @override
   State<StatefulWidget> createState() {
     return JuntoGroupsActionsState();
@@ -16,7 +18,13 @@ class JuntoGroupsActions extends StatefulWidget {
 }
 
 class JuntoGroupsActionsState extends State<JuntoGroupsActions> {
-  bool spheresVisible = false;
+  bool spheresVisible;
+
+  @override
+  void initState() {
+    super.initState();
+    spheresVisible = widget.spheresVisible;
+  }
 
   @override
   Widget build(BuildContext context) {

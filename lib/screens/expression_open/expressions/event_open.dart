@@ -60,7 +60,7 @@ class EventOpen extends StatelessWidget {
                       Container(
                         width: MediaQuery.of(context).size.width * .7,
                         child: Text(eventTitle,
-                            style: Theme.of(context).textTheme.display1),
+                            style: Theme.of(context).textTheme.headline4),
                       ),
                     ],
                   ),
@@ -68,40 +68,45 @@ class EventOpen extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 10),
-                      child: Row(
-                        children: <Widget>[
-                          Icon(Icons.timer,
-                              color: Theme.of(context).primaryColor, size: 20),
-                          const SizedBox(width: 5),
-                          Text(eventStartTime,
-                              style: Theme.of(context).textTheme.caption),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          bottom: 10, left: 10, right: 10),
-                      child: Row(
-                        children: <Widget>[
-                          Icon(Icons.location_searching,
-                              color: Theme.of(context).primaryColor, size: 20),
-                          const SizedBox(width: 5),
-                          Text(eventLocation,
-                              style: Theme.of(context).textTheme.caption),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 10,
-                        right: 10,
-                      ),
-                      child: Text(eventDescription,
-                          style: Theme.of(context).textTheme.caption),
-                    )
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(
+                    //       horizontal: 10, vertical: 10),
+                    //   child: Row(
+                    //     children: <Widget>[
+                    //       Icon(Icons.timer,
+                    //           color: Theme.of(context).primaryColor, size: 20),
+                    //       const SizedBox(width: 5),
+                    //       Text(eventStartTime,
+                    //           style: Theme.of(context).textTheme.caption),
+                    //     ],
+                    //   ),
+                    // ),
+                    eventLocation != ''
+                        ? Padding(
+                            padding: const EdgeInsets.only(
+                                bottom: 10, left: 10, right: 10),
+                            child: Row(
+                              children: <Widget>[
+                                Icon(Icons.location_searching,
+                                    color: Theme.of(context).primaryColor,
+                                    size: 20),
+                                const SizedBox(width: 5),
+                                Text(eventLocation,
+                                    style: Theme.of(context).textTheme.caption),
+                              ],
+                            ),
+                          )
+                        : const SizedBox(),
+                    eventDescription != ''
+                        ? Padding(
+                            padding: const EdgeInsets.only(
+                              left: 10,
+                              right: 10,
+                            ),
+                            child: Text(eventDescription,
+                                style: Theme.of(context).textTheme.caption),
+                          )
+                        : const SizedBox()
                   ],
                 )
               ],

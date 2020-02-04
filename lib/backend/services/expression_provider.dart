@@ -26,6 +26,7 @@ class ExpressionServiceCentralized implements ExpressionService {
       CentralizedExpression expression) async {
     final Map<String, dynamic> _postBody = expression.toMap();
     print(_postBody);
+
     final http.Response _serverResponse =
         await client.postWithoutEncoding('/expressions', body: _postBody);
     final Map<String, dynamic> parseData =
@@ -36,10 +37,18 @@ class ExpressionServiceCentralized implements ExpressionService {
   }
 
   @override
-  Future<String> createPhoto(String fileType, File file) async {
+  Future<String> createPhoto(bool isPrivate, String fileType, File file) async {
+    String _serverUrl;
+    if (isPrivate) {
+      _serverUrl = '/auth/s3?private=true';
+    } else if (isPrivate == false) {
+      _serverUrl = '/auth/s3?private=false';
+    }
     // denote file type and get url, headers, and key of s3 bucket
     final http.Response _serverResponse =
-        await client.postWithoutEncoding('/auth/s3', body: fileType);
+        await client.postWithoutEncoding(_serverUrl, body: fileType);
+    print(_serverResponse.body);
+    print(_serverResponse.statusCode);
 
     // parse response
     final Map<String, dynamic> parseData =
@@ -61,7 +70,6 @@ class ExpressionServiceCentralized implements ExpressionService {
       body: fileAsBytes,
     );
 
-    print(_serverResponseTwo.statusCode);
     // if successful, return the key for next steps
     if (_serverResponseTwo.statusCode == 200) {
       return parseData['key'];
@@ -159,32 +167,15 @@ class ExpressionServiceCentralized implements ExpressionService {
   }
 
   @override
-  Future<bool> isConnectedUser(String userAddress, String targetAddress) async {
-    final http.Response _serverResponse = await client.get(
-      '/users/$userAddress/connected/$targetAddress',
-    );
-    final bool result = JuntoHttp.handleResponse(_serverResponse) as bool;
-    return result;
-  }
-
-  @override
-  Future<bool> isFollowingUser(String userAddress, String targetAddress) async {
-    final http.Response _serverResponse = await client.get(
-      '/users/$userAddress/following/$targetAddress',
-    );
-    final bool result = JuntoHttp.handleResponse(_serverResponse) as bool;
-    return result;
-  }
-
-  @override
   Future<QueryResults<CentralizedExpressionResponse>> getCollectiveExpressions(
       Map<String, String> params) async {
+    print(params);
     final http.Response response = await client.get(
       '/expressions',
       queryParams: params,
     );
     final dynamic results = JuntoHttp.handleResponse(response);
-    if (results is Map<dynamic, dynamic>) {
+    if (results != null && results is Map<dynamic, dynamic>) {
       return QueryResults<CentralizedExpressionResponse>(
         results: <CentralizedExpressionResponse>[
           for (dynamic data in results['results'])
@@ -192,11 +183,53 @@ class ExpressionServiceCentralized implements ExpressionService {
         ],
         lastTimestamp: results['last_timestamp'],
       );
+    }
+    //FIXME(Nash+Josh): The server response for a dos query does not follow the format for standard "Collective" query.
+    // Both should return data using the same "query" format.
+    if (results != null && results is List<dynamic>) {
+      return QueryResults<CentralizedExpressionResponse>(
+        results: <CentralizedExpressionResponse>[
+          for (dynamic data in results)
+            CentralizedExpressionResponse.withCommentsAndResonations(data)
+        ],
+        lastTimestamp: null,
+      );
     } else {
       return QueryResults<CentralizedExpressionResponse>(
         results: <CentralizedExpressionResponse>[],
         lastTimestamp: null,
       );
     }
+  }
+
+  @override
+  Future<List<Users>> addEventMember(
+    String expressionAddress,
+    List<Map<String, String>> users,
+  ) async {
+    {
+      final http.Response _serverResponse = await client.postWithoutEncoding(
+        '/expressions/$expressionAddress/members',
+        body: users,
+      );
+      final List<dynamic> _data = JuntoHttp.handleResponse(_serverResponse);
+      return <Users>[for (dynamic data in _data) Users.fromJson(data)];
+    }
+  }
+
+  @override
+  Future<QueryResults<Users>> getEventMembers(
+      String expressionAddress, Map<String, String> params) async {
+    final http.Response response = await client.get(
+      '/expressions/$expressionAddress/members',
+      queryParams: params,
+    );
+    final dynamic results = JuntoHttp.handleResponse(response);
+    return QueryResults<Users>(
+      results: <Users>[
+        for (dynamic data in results['results']) Users.fromJson(data)
+      ],
+      lastTimestamp: results['last_timestamp'],
+    );
   }
 }

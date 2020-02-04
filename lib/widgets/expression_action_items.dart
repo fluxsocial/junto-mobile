@@ -1,10 +1,15 @@
+import 'dart:async' show Timer;
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:junto_beta_mobile/utils/utils.dart';
+import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
 import 'package:provider/provider.dart';
 
 class ExpressionActionItems extends StatelessWidget {
@@ -111,19 +116,35 @@ class ExpressionActionItems extends StatelessWidget {
                     child: const Text('No'))
               ],
             );
-            // delete expression
-            // Provider.of<ExpressionRepo>(context, listen: false)
-            //     .deleteExpression(expression.address);
           },
           contentPadding:
               const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
           title: Row(
             children: <Widget>[
               Text('Delete Expression',
-                  style: Theme.of(context).textTheme.headline),
+                  style: Theme.of(context).textTheme.headline5),
             ],
           ),
         ),
+        if (expression.expressionData is CentralizedEventFormExpression)
+          ListTile(
+            onTap: () => Navigator.push(
+              context,
+              _AddEventMembers.route(
+                expression,
+              ),
+            ),
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
+            title: Row(
+              children: <Widget>[
+                Text(
+                  'Add member to event',
+                  style: Theme.of(context).textTheme.headline5,
+                ),
+              ],
+            ),
+          ),
       ],
     );
   }
@@ -150,7 +171,7 @@ class ExpressionActionItems extends StatelessWidget {
           title: Row(
             children: <Widget>[
               Text('View @' + expression.creator.username + "'s den",
-                  style: Theme.of(context).textTheme.headline),
+                  style: Theme.of(context).textTheme.headline5),
             ],
           ),
         ),
@@ -163,7 +184,7 @@ class ExpressionActionItems extends StatelessWidget {
           title: Row(
             children: <Widget>[
               Text('Subscribe @' + expression.creator.username,
-                  style: Theme.of(context).textTheme.headline),
+                  style: Theme.of(context).textTheme.headline5),
             ],
           ),
         ),
@@ -176,11 +197,245 @@ class ExpressionActionItems extends StatelessWidget {
           title: Row(
             children: <Widget>[
               Text('Connect @' + expression.creator.username,
-                  style: Theme.of(context).textTheme.headline),
+                  style: Theme.of(context).textTheme.headline5),
             ],
           ),
         ),
       ],
+    );
+  }
+}
+
+class _AddEventMembers extends StatefulWidget {
+  const _AddEventMembers({Key key, this.expressionResponse}) : super(key: key);
+
+  static Route<dynamic> route(
+      CentralizedExpressionResponse expressionResponse) {
+    return MaterialPageRoute<dynamic>(builder: (BuildContext context) {
+      return _AddEventMembers(
+        expressionResponse: expressionResponse,
+      );
+    });
+  }
+
+  final CentralizedExpressionResponse expressionResponse;
+
+  @override
+  __AddEventMembersState createState() => __AddEventMembersState();
+}
+
+class __AddEventMembersState extends State<_AddEventMembers>
+    with AddUserToList<UserProfile> {
+  TextEditingController _controller;
+  SearchRepo _searchRepo;
+  ExpressionRepo _expressionRepo;
+  Timer debounce;
+  String query;
+
+  final ValueNotifier<List<UserProfile>> _selectedUsers =
+      ValueNotifier<List<UserProfile>>(
+    <UserProfile>[],
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _searchRepo = Provider.of<SearchRepo>(context);
+    _expressionRepo = Provider.of<ExpressionRepo>(context);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  Future<void> _onDoneTap() async {
+    try {
+      JuntoLoader.showLoader(context);
+      await _expressionRepo.addEventMember(
+        widget.expressionResponse.address,
+        _selectedUsers.value,
+        'Member',
+      );
+      JuntoLoader.hide();
+      JuntoDialog.showJuntoDialog(
+        context,
+        'Members added',
+        <Widget>[
+          DialogBack(),
+        ],
+      );
+    } catch (error) {
+      JuntoLoader.hide();
+      JuntoDialog.showJuntoDialog(
+        context,
+        error.message,
+        <Widget>[
+          DialogBack(),
+        ],
+      );
+    }
+  }
+
+  void _onTextChange(String txt) {
+    debounce?.cancel();
+    debounce = Timer(const Duration(milliseconds: 350), () {
+      setState(() => query = txt);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: _SearchAppbar(
+        onDoneTap: _onDoneTap,
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+          child: Column(
+            children: <Widget>[
+              TextField(
+                controller: _controller,
+                onChanged: _onTextChange,
+              ),
+              const SizedBox(height: 12.0),
+              _buildResultsList(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildResultsList() {
+    return FutureBuilder<QueryResults<UserProfile>>(
+      future: _searchRepo.searchMembers(query),
+      builder: (
+        BuildContext context,
+        AsyncSnapshot<QueryResults<UserProfile>> snapshot,
+      ) {
+        if (snapshot.hasError) {
+          return Expanded(
+            child: Container(
+              child: Center(
+                child: Text('Something wen wrong ${snapshot.error}'),
+              ),
+            ),
+          );
+        }
+        if (snapshot.hasData &&
+            snapshot.data.results.isEmpty &&
+            !snapshot.hasError)
+          return Expanded(
+            child: Container(
+              child: const Center(
+                child: Text('Your user is mysterious '),
+              ),
+            ),
+          );
+        if (snapshot.hasData &&
+            snapshot.data.results.isNotEmpty &&
+            !snapshot.hasError)
+          return Expanded(
+            child: ListView.builder(
+                itemCount: snapshot.data.results.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final UserProfile item = snapshot.data.results[index];
+                  return ValueListenableBuilder<List<UserProfile>>(
+                    valueListenable: _selectedUsers,
+                    builder: (
+                      BuildContext context,
+                      List<UserProfile> value,
+                      Widget child,
+                    ) {
+                      if (!value.contains(item))
+                        return MemberPreview(
+                          profile: item,
+                        );
+                      return Stack(
+                        children: <Widget>[
+                          MemberPreview(
+                            profile: item,
+                          ),
+                          Align(
+                            alignment: Alignment.bottomRight,
+                            child: Container(
+                              height: 15.0,
+                              width: 15.0,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(45.0),
+                                color: Colors.greenAccent,
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                }),
+          );
+        return Expanded(
+          child: Container(
+            child: const Center(
+              child: CircularProgressIndicator(),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _SearchAppbar extends StatelessWidget implements PreferredSizeWidget {
+  const _SearchAppbar({Key key, this.onDoneTap}) : super(key: key);
+  final VoidCallback onDoneTap;
+
+  @override
+  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      bottom: false,
+      left: false,
+      right: false,
+      child: Material(
+        color: Theme.of(context).appBarTheme.color,
+        child: Row(
+          children: <Widget>[
+            Align(
+              alignment: Alignment.centerLeft,
+              child: const BackButton(),
+            ),
+            const Spacer(),
+            Align(
+              alignment: Alignment.center,
+              child: Text('Add event attendees',
+                  style: Theme.of(context).textTheme.headline6),
+            ),
+            const Spacer(),
+            Align(
+              alignment: Alignment.centerRight,
+              child: InkWell(
+                onTap: onDoneTap,
+                child: Text(
+                  'Done',
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+              ),
+            ),
+            const SizedBox(width: 12.0),
+          ],
+        ),
+      ),
     );
   }
 }

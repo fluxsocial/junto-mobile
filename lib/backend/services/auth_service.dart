@@ -59,10 +59,7 @@ class AuthenticationServiceCentralized implements AuthenticationService {
 
   @override
   Future<UserData> registerUser(UserAuthRegistrationDetails details) async {
-    assert(details.bio.isNotEmpty);
     assert(details.name.isNotEmpty);
-    assert(details.location.isNotEmpty);
-    assert(details.website.isNotEmpty);
     assert(details.username.isNotEmpty);
     assert(details.password.isNotEmpty);
     final Map<String, dynamic> _body = <String, dynamic>{
@@ -83,6 +80,7 @@ class AuthenticationServiceCentralized implements AuthenticationService {
       '/users',
       body: _body,
     );
+    print(response.body);
     final Map<String, dynamic> _responseMap =
         JuntoHttp.handleResponse(response);
     final UserData _userData = UserData.fromMap(_responseMap);

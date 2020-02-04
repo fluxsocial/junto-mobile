@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'package:async/async.dart' show AsyncMemoizer;
+
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
@@ -6,20 +9,37 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/relationship_request.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 
-class JuntoRelationships extends StatelessWidget {
+class JuntoRelationships extends StatefulWidget {
   JuntoRelationships(this.userAddress, this.userFollowPerspectiveAddress);
 
   final String userAddress;
   final String userFollowPerspectiveAddress;
 
+  @override
+  State<StatefulWidget> createState() {
+    return JuntoRelationshipsState();
+  }
+}
+
+class JuntoRelationshipsState extends State<JuntoRelationships> {
   final List<String> _tabs = <String>[
     'Connections',
     'Subscriptions',
     // 'Subscribers',
     'Pending'
   ];
+
+  final AsyncMemoizer _memoizer = AsyncMemoizer();
+
+  Future getUserRelationships() async {
+    return _memoizer.runOnce(
+      () => Provider.of<UserRepo>(context).userRelations(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,9 +71,6 @@ class JuntoRelationships extends StatelessWidget {
                     ),
                   ),
                 ),
-                Text('Relationships',
-                    style: Theme.of(context).textTheme.subhead),
-                const SizedBox(width: 42)
               ],
             ),
           ),
@@ -83,7 +100,7 @@ class JuntoRelationships extends StatelessWidget {
                     labelPadding: const EdgeInsets.all(0),
                     isScrollable: true,
                     labelColor: Theme.of(context).primaryColorDark,
-                    labelStyle: Theme.of(context).textTheme.subhead,
+                    labelStyle: Theme.of(context).textTheme.subtitle1,
                     indicatorWeight: 0.0001,
                     tabs: <Widget>[
                       for (String name in _tabs)
@@ -101,190 +118,108 @@ class JuntoRelationships extends StatelessWidget {
               ),
             ];
           },
-          body: TabBarView(
-            children: <Widget>[
-              _displayConnections(context, userAddress),
-              _displaySubscriptions(context, userFollowPerspectiveAddress),
-              _displayPending(context, userAddress)
-            ],
+          body: FutureBuilder(
+            future: getUserRelationships(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.hasData) {
+                // get list of connections
+                final List<UserProfile> _connectionsMembers =
+                    snapshot.data['connections']['results'];
+
+                // get list of following
+                final List<UserProfile> _followingMembers =
+                    snapshot.data['following']['results'];
+
+                // get list of pending connections
+                final List<UserProfile> _pendingConnectionsMembers =
+                    snapshot.data['pending_connections']['results'];
+
+                return TabBarView(
+                  children: <Widget>[
+                    // connections
+                    ListView(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      children: _connectionsMembers
+                          .map(
+                            (dynamic connection) =>
+                                MemberPreview(profile: connection),
+                          )
+                          .toList(),
+                    ),
+
+                    // subscriptions
+                    ListView(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      children: _followingMembers
+                          .map(
+                            (dynamic connection) =>
+                                MemberPreview(profile: connection),
+                          )
+                          .toList(),
+                    ),
+                    // pending connections
+                    ListView(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      children: _pendingConnectionsMembers
+                          .map(
+                            (dynamic connection) =>
+                                RelationshipRequest(connection),
+                          )
+                          .toList(),
+                    ),
+                  ],
+                );
+              } else if (snapshot.hasError) {
+                // print(snapshot.error);
+                return TabBarView(
+                  children: <Widget>[
+                    Center(
+                      child: Transform.translate(
+                        offset: const Offset(0.0, -50),
+                        child: Text('Hmmm, something is up',
+                            style: Theme.of(context).textTheme.caption),
+                      ),
+                    ),
+                    Center(
+                      child: Transform.translate(
+                        offset: const Offset(0.0, -50),
+                        child: Text('Hmmm, something is up',
+                            style: Theme.of(context).textTheme.caption),
+                      ),
+                    ),
+                    Center(
+                      child: Transform.translate(
+                        offset: const Offset(0.0, -50),
+                        child: Text('Hmmm, something is up',
+                            style: Theme.of(context).textTheme.caption),
+                      ),
+                    ),
+                  ],
+                );
+              }
+              return TabBarView(
+                children: <Widget>[
+                  Center(
+                    child: Transform.translate(
+                        offset: const Offset(0.0, -50),
+                        child: JuntoProgressIndicator()),
+                  ),
+                  Center(
+                    child: Transform.translate(
+                        offset: const Offset(0.0, -50),
+                        child: JuntoProgressIndicator()),
+                  ),
+                  Center(
+                    child: Transform.translate(
+                        offset: const Offset(0.0, -50),
+                        child: JuntoProgressIndicator()),
+                  )
+                ],
+              );
+            },
           ),
         ),
       ),
     );
-  }
-
-  Widget _displayConnections(BuildContext context, String userAddress) {
-    return FutureBuilder<List<UserProfile>>(
-      future: Provider.of<UserRepo>(context, listen: false)
-          .connectedUsers(userAddress),
-      builder:
-          (BuildContext context, AsyncSnapshot<List<UserProfile>> snapshot) {
-        if (snapshot.hasData) {
-          print(snapshot.data);
-          if (snapshot.data.isEmpty) {
-            return Center(
-              child: Transform.translate(
-                offset: const Offset(0.0, -50.0),
-                child: Text('No connections!',
-                    style: Theme.of(context).textTheme.headline),
-              ),
-            );
-          }
-          return Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: ListView.builder(
-              itemCount: snapshot.data.length,
-              itemBuilder: (BuildContext context, int index) {
-                print(snapshot.data[index]);
-                // return SizedBox();
-                return MemberPreview(profile: snapshot.data[index]);
-              },
-            ),
-          );
-        } else if (snapshot.hasError) {
-          Container(
-            child: Center(
-              child: Text('${snapshot.error}'),
-            ),
-          );
-        }
-        return ListView(children: <Widget>[
-          Container(
-            height: MediaQuery.of(context).size.height - 120,
-            child: Center(
-              child: Transform.translate(
-                offset: const Offset(0.0, -50.0),
-                child: JuntoProgressIndicator(),
-              ),
-            ),
-          ),
-        ]);
-      },
-    );
-  }
-
-  Widget _displaySubscriptions(
-      BuildContext context, String userFollowPerspectiveAddress) {
-    return FutureBuilder<List<UserProfile>>(
-      future: Provider.of<UserRepo>(context, listen: false)
-          .getPerspectiveUsers(userFollowPerspectiveAddress),
-      builder:
-          (BuildContext context, AsyncSnapshot<List<UserProfile>> snapshot) {
-        if (snapshot.hasData) {
-          print(snapshot.data);
-          if (snapshot.data.isEmpty) {
-            return Center(
-              child: Transform.translate(
-                offset: const Offset(0.0, -50.0),
-                child: Text('No subscriptions!',
-                    style: Theme.of(context).textTheme.headline),
-              ),
-            );
-          }
-          return ListView.builder(
-            itemCount: snapshot.data.length,
-            itemBuilder: (BuildContext context, int index) {
-              final UserProfile data = snapshot.data[index];
-              return MemberPreview(profile: data);
-            },
-          );
-        } else if (snapshot.hasError) {
-          Container(
-            child: Center(
-              child: Text('${snapshot.error}'),
-            ),
-          );
-        }
-        return ListView(children: <Widget>[
-          Container(
-            height: MediaQuery.of(context).size.height - 120,
-            child: Center(
-              child: Transform.translate(
-                offset: const Offset(0.0, -50.0),
-                child: JuntoProgressIndicator(),
-              ),
-            ),
-          ),
-        ]);
-      },
-    );
-  }
-
-  Widget _displayPending(BuildContext context, String userAddress) {
-    return FutureBuilder<List<UserProfile>>(
-      future: Provider.of<UserRepo>(context).pendingConnections(userAddress),
-      builder:
-          (BuildContext context, AsyncSnapshot<List<UserProfile>> snapshot) {
-        if (snapshot.hasData) {
-          if (snapshot.data.isEmpty) {
-            return Center(
-              child: Transform.translate(
-                offset: const Offset(0.0, -50.0),
-                child: Text('No pending connection requests!',
-                    style: Theme.of(context).textTheme.headline),
-              ),
-            );
-          }
-          return ListView.builder(
-            itemCount: snapshot.data.length,
-            itemBuilder: (BuildContext context, int index) {
-              final UserProfile data = snapshot.data[index];
-              return RelationshipRequest(data);
-            },
-          );
-        } else if (snapshot.hasError) {
-          Container(
-            child: Center(
-              child: Text('${snapshot.error}'),
-            ),
-          );
-        }
-        return ListView(children: <Widget>[
-          Container(
-            height: MediaQuery.of(context).size.height - 120,
-            child: Center(
-              child: Transform.translate(
-                offset: const Offset(0.0, -50.0),
-                child: JuntoProgressIndicator(),
-              ),
-            ),
-          ),
-        ]);
-      },
-    );
-  }
-}
-
-/// Custom [SliverPersistentHeaderDelegate] used on Den.
-class JuntoAppBarDelegate extends SliverPersistentHeaderDelegate {
-  JuntoAppBarDelegate(this._tabBar);
-
-  final TabBar _tabBar;
-
-  @override
-  double get minExtent => _tabBar.preferredSize.height + .5;
-
-  @override
-  double get maxExtent => _tabBar.preferredSize.height + .5;
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.background,
-        border: Border(
-          bottom: BorderSide(color: Theme.of(context).dividerColor, width: .5),
-        ),
-      ),
-      width: MediaQuery.of(context).size.width,
-      child: _tabBar,
-    );
-  }
-
-  @override
-  bool shouldRebuild(JuntoAppBarDelegate oldDelegate) {
-    return false;
   }
 }

@@ -79,6 +79,10 @@ class UserRepo {
     return _userService.connectUser(userAddress);
   }
 
+  Future userRelations() {
+    return _userService.userRelations();
+  }
+
   Future<List<UserProfile>> connectedUsers(String userAddress) {
     return _userService.connectedUsers(userAddress);
   }
@@ -95,9 +99,27 @@ class UserRepo {
     return _userService.respondToConnection(userAddress, response);
   }
 
-  Future<Map<String, dynamic>> updateUser(Map<String, dynamic> user, String userAddress) =>
+  Future<Map<String, dynamic>> isRelated(
+      String userAddress, String targetAddress) {
+    return _userService.isRelated(userAddress, targetAddress);
+  }
+
+  Future<bool> isConnected(String userAddress, String targetAddress) {
+    return _userService.isConnectedUser(userAddress, targetAddress);
+  }
+
+  Future<bool> isFollowing(String userAddress, String targetAddress) {
+    return _userService.isFollowingUser(userAddress, targetAddress);
+  }
+
+  Future<Map<String, dynamic>> updateUser(
+          Map<String, dynamic> user, String userAddress) =>
       _userService.updateUser(user, userAddress);
 
   Future<List<UserProfile>> getFollowers(String userAddress) =>
       _userService.getFollowers(userAddress);
+
+  Future<CentralizedPerspective> updatePerspective(
+          CentralizedPerspective perspective) =>
+      _userService.updatePerspective(perspective);
 }

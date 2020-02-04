@@ -4,6 +4,7 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/mock/mock_data.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/resonation_model.dart';
+import 'package:junto_beta_mobile/models/sphere.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 
 class MockExpressionService implements ExpressionService {
@@ -19,7 +20,7 @@ class MockExpressionService implements ExpressionService {
   }
 
   @override
-  Future<String> createPhoto(String fileType, File file) async {
+  Future<String> createPhoto(bool isPrivate, String fileType, File file) async {
     return 'xczxc-qwerqwe-324234';
   }
 
@@ -92,14 +93,31 @@ class MockExpressionService implements ExpressionService {
   }
 
   @override
-  Future<bool> isConnectedUser(String userAddress, String targetAddress) async {
-    await Future<void>.delayed(const Duration(milliseconds: 500));
-    return false;
+  Future<List<Users>> addEventMember(
+    String expressionAddress,
+    List<Map<String, String>> users,
+  ) async {
+    return List<Users>.generate(
+      12,
+      (int index) => Users(
+        user: kUserProfile,
+        permissionLevel: index % 2 == 0 ? 'Admin' : 'Member',
+      ),
+    );
   }
 
   @override
-  Future<bool> isFollowingUser(String userAddress, String targetAddress) async {
+  Future<QueryResults<Users>> getEventMembers(
+      String expressionAddress, Map<String, String> params) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
-    return true;
+    return QueryResults<Users>(
+        results: List<Users>.generate(
+          12,
+          (int index) => Users(
+            user: kUserProfile,
+            permissionLevel: index % 2 == 0 ? 'Admin' : 'Member',
+          ),
+        ),
+        lastTimestamp: '');
   }
 }

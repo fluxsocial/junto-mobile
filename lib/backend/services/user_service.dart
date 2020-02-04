@@ -32,8 +32,10 @@ class UserServiceCentralized implements UserService {
       '/perspectives',
       body: _postBody,
     );
+
     final Map<String, dynamic> _body =
         JuntoHttp.handleResponse(_serverResponse);
+
     return CentralizedPerspective.fromMap(_body);
   }
 
@@ -53,8 +55,6 @@ class UserServiceCentralized implements UserService {
 
     final Map<String, dynamic> _body =
         JuntoHttp.handleResponse(_serverResponse);
-    print(_body);
-
     return UserProfile.fromMap(_body);
   }
 
@@ -115,7 +115,6 @@ class UserServiceCentralized implements UserService {
   Future<UserGroupsResponse> getUserGroups(String userAddress) async {
     final http.Response response =
         await client.get('/users/$userAddress/groups');
-    print(response.body);
     final Map<String, dynamic> _responseMap =
         JuntoHttp.handleResponse(response);
     return UserGroupsResponse.fromMap(_responseMap);
@@ -173,7 +172,6 @@ class UserServiceCentralized implements UserService {
         await client.get('/users/$userAddress/perspectives');
     final List<Map<String, dynamic>> items =
         JuntoHttp.handleResponse(_serverResponse);
-    print(items);
     return items.map(
       (Map<String, dynamic> data) => CentralizedPerspective.fromMap(data),
     );
@@ -231,6 +229,69 @@ class UserServiceCentralized implements UserService {
       '/users/$userAddress/connect',
     );
     JuntoHttp.handleResponse(_serverResponse);
+  }
+
+  @override
+  Future userRelations() async {
+    final http.Response _serverResponse = await client.get(
+      '/users/self/relations',
+    );
+
+    // handle response from server
+    final _results = await JuntoHttp.handleResponse(_serverResponse);
+
+    // set each relationship key into its own variable
+    final Map<String, dynamic> _following = _results['following'];
+    final Map<String, dynamic> _connections = _results['connections'];
+    final Map<String, dynamic> _pendingConnections =
+        _results['pending_connections'];
+
+    // get the list of users for each relationship type
+    final List<dynamic> _followingResults = _results['following']['results'];
+    final List<dynamic> _connectionsResults =
+        _results['connections']['results'];
+    final List<dynamic> _pendingConnectionsResults =
+        _results['pending_connections']['results'];
+
+    // instantiate new variables for list of members; to be used after converting
+    // list of users above to UserProfile
+    final List<UserProfile> _connectionsMembers = <UserProfile>[];
+    final List<UserProfile> _followingMembers = <UserProfile>[];
+    final List<UserProfile> _pendingConnectionsMembers = <UserProfile>[];
+
+    if (_connectionsResults.isNotEmpty) {
+      for (final dynamic result in _connectionsResults) {
+        _connectionsMembers.add(
+          UserProfile.fromMap(result),
+        );
+      }
+    }
+
+    if (_followingResults.isNotEmpty) {
+      for (final dynamic result in _followingResults) {
+        _followingMembers.add(
+          UserProfile.fromMap(result),
+        );
+      }
+    }
+
+    for (final dynamic result in _pendingConnectionsResults) {
+      _pendingConnectionsMembers.add(
+        UserProfile.fromMap(result),
+      );
+    }
+
+    // replace the results (list of users) from the server response with new list of UserProfiles
+    _following['results'] = _followingMembers;
+    _connections['results'] = _connectionsMembers;
+    _pendingConnections['results'] = _pendingConnectionsMembers;
+
+    // replace originalrelationship keys with updated versions
+    _results['following'] = _following;
+    _results['connections'] = _connections;
+    _results['pending_connections'] = _pendingConnections;
+
+    return _results;
   }
 
   @override
@@ -324,6 +385,50 @@ class UserServiceCentralized implements UserService {
     return <UserProfile>[
       for (dynamic data in _data['results']) UserProfile.fromMap(data)
     ];
+  }
+
+  @override
+  Future<CentralizedPerspective> updatePerspective(
+      CentralizedPerspective perspective) async {
+    final http.Response _serverResponse = await client.patch(
+      '/perspectives/${perspective.address}',
+      body: perspective.toMap(),
+    );
+    final Map<String, dynamic> _data =
+        JuntoHttp.handleResponse(_serverResponse);
+    return CentralizedPerspective.fromMap(_data);
+  }
+
+  @override
+  Future<Map<String, dynamic>> isRelated(
+      String userAddress, String targetAddress) async {
+    final http.Response _serverResponse = await client.get(
+      '/users/$userAddress/related/$targetAddress',
+    );
+    final Map<String, dynamic> result =
+        JuntoHttp.handleResponse(_serverResponse);
+
+    return result;
+  }
+
+  @override
+  Future<bool> isConnectedUser(String userAddress, String targetAddress) async {
+    final http.Response _serverResponse = await client.get(
+      '/users/$userAddress/connected/$targetAddress',
+    );
+    final bool result = JuntoHttp.handleResponse(_serverResponse) as bool;
+    return result;
+  }
+
+  @override
+  Future<bool> isFollowingUser(String userAddress, String targetAddress) async {
+    final http.Response _serverResponse = await client.get(
+      '/users/$userAddress/following/$targetAddress',
+    );
+    final bool result = JuntoHttp.handleResponse(_serverResponse) as bool;
+    print(result);
+    print('following');
+    return result;
   }
 
   /// Private function which returns the correct query param for the given

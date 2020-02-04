@@ -36,7 +36,7 @@ class JuntoThemes extends StatelessWidget {
                   ),
                 ),
                 Text('Choose a theme',
-                    style: Theme.of(context).textTheme.subhead),
+                    style: Theme.of(context).textTheme.subtitle1),
                 const SizedBox(width: 42)
               ],
             ),
@@ -80,11 +80,11 @@ class JuntoThemes extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text('Light Indigo',
-                              style: Theme.of(context).textTheme.headline),
+                              style: Theme.of(context).textTheme.headline5),
                           const SizedBox(height: 5),
                           Text(
                               'This default theme of Junto carries a light tone complemented by our custom blue and gradient.',
-                              style: Theme.of(context).textTheme.body2)
+                              style: Theme.of(context).textTheme.bodyText1)
                         ],
                       ),
                     ),
@@ -108,11 +108,11 @@ class JuntoThemes extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text('Light Royal',
-                            style: Theme.of(context).textTheme.headline),
+                            style: Theme.of(context).textTheme.headline5),
                         const SizedBox(height: 5),
                         Text(
                             'This default theme of Junto carries a light tone complemented by our custom blue and gradient.',
-                            style: Theme.of(context).textTheme.body2)
+                            style: Theme.of(context).textTheme.bodyText1)
                       ],
                     ),
                   ),
@@ -135,11 +135,11 @@ class JuntoThemes extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text('Night Indigo',
-                            style: Theme.of(context).textTheme.headline),
+                            style: Theme.of(context).textTheme.headline5),
                         const SizedBox(height: 5),
                         Text(
                             'The Night Indigo theme carries a darker shade complemented by our custom blue and purple gradient.',
-                            style: Theme.of(context).textTheme.body2)
+                            style: Theme.of(context).textTheme.bodyText1)
                       ],
                     ),
                   ),

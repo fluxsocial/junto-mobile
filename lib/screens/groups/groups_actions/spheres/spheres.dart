@@ -24,6 +24,7 @@ class Spheres extends StatefulWidget {
 }
 
 class SpheresState extends State<Spheres> with ListDistinct {
+  //ignore:unused_field
   String _userAddress;
   UserData _userProfile;
   UserRepo _userProvider;
@@ -79,7 +80,7 @@ class SpheresState extends State<Spheres> with ListDistinct {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text('Spheres', style: Theme.of(context).textTheme.display1),
+                  Text('Spheres', style: Theme.of(context).textTheme.headline4),
                   GestureDetector(
                     onTap: () {
                       Navigator.push(

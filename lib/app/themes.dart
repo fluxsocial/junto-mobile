@@ -35,7 +35,7 @@ class JuntoThemes {
       color: Colors.white,
       elevation: 0,
       textTheme: TextTheme(
-        body1: TextStyle(
+        bodyText2: TextStyle(
           color: Color(0xff333333),
           fontSize: 15,
           fontWeight: FontWeight.w600,
@@ -49,38 +49,38 @@ class JuntoThemes {
     ),
     bottomAppBarColor: Colors.blue,
     textTheme: const TextTheme(
-      display1: TextStyle(
+      headline4: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.w700,
         color: Color(0xff333333),
       ),
-      title: TextStyle(
+      headline6: TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.w700,
         color: Color(0xff333333),
       ),
-      headline: TextStyle(
+      headline5: TextStyle(
         fontSize: 17,
         color: Color(0xff333333),
         fontWeight: FontWeight.w600,
       ),
       // used for user and sphere handles
-      subhead: TextStyle(
+      subtitle1: TextStyle(
         fontSize: 15,
         color: Color(0xff333333),
         fontWeight: FontWeight.w700,
       ),
-      subtitle: TextStyle(
+      subtitle2: TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.w700,
         color: Color(0xff333333),
       ),
-      body1: TextStyle(
+      bodyText2: TextStyle(
         fontSize: 13,
         color: Color(0xff555555),
         fontWeight: FontWeight.w500,
       ),
-      body2: TextStyle(
+      bodyText1: TextStyle(
         color: Color(0xff333333),
         fontSize: 14,
         fontWeight: FontWeight.w500,
@@ -131,7 +131,7 @@ class JuntoThemes {
       color: Colors.white,
       elevation: 0,
       textTheme: TextTheme(
-        body1: TextStyle(
+        bodyText2: TextStyle(
           color: Color(0xff333333),
           fontSize: 15,
           fontWeight: FontWeight.w600,
@@ -145,38 +145,38 @@ class JuntoThemes {
     ),
     bottomAppBarColor: Colors.blue,
     textTheme: const TextTheme(
-      display1: TextStyle(
+      headline4: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.w700,
         color: Color(0xff333333),
       ),
-      title: TextStyle(
+      headline6: TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.w700,
         color: Color(0xff333333),
       ),
-      headline: TextStyle(
+      headline5: TextStyle(
         fontSize: 17,
         color: Color(0xff333333),
         fontWeight: FontWeight.w600,
       ),
       // used for user and sphere handles
-      subhead: TextStyle(
+      subtitle1: TextStyle(
         fontSize: 15,
         color: Color(0xff333333),
         fontWeight: FontWeight.w700,
       ),
-      subtitle: TextStyle(
+      subtitle2: TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.w700,
         color: Color(0xff333333),
       ),
-      body1: TextStyle(
+      bodyText2: TextStyle(
         fontSize: 13,
         color: Color(0xff555555),
         fontWeight: FontWeight.w500,
       ),
-      body2: TextStyle(
+      bodyText1: TextStyle(
         color: Color(0xff333333),
         fontSize: 14,
         fontWeight: FontWeight.w500,
@@ -227,7 +227,7 @@ class JuntoThemes {
       color: Color(0xff333333),
       elevation: 0,
       textTheme: TextTheme(
-        body1: TextStyle(
+        bodyText2: TextStyle(
           color: Colors.white,
           fontSize: 15,
           fontWeight: FontWeight.w600,
@@ -241,38 +241,38 @@ class JuntoThemes {
     ),
     bottomAppBarColor: Colors.blue,
     textTheme: const TextTheme(
-      display1: TextStyle(
+      headline4: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.w700,
         color: Colors.white,
       ),
-      title: TextStyle(
+      headline6: TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.w700,
         color: Colors.white,
       ),
-      headline: TextStyle(
+      headline5: TextStyle(
         fontSize: 17,
         color: Colors.white,
         fontWeight: FontWeight.w600,
       ),
       // used for user and sphere handles
-      subhead: TextStyle(
+      subtitle1: TextStyle(
         fontSize: 15,
         color: Colors.white,
         fontWeight: FontWeight.w700,
       ),
-      subtitle: TextStyle(
+      subtitle2: TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.w700,
         color: Colors.white,
       ),
-      body1: TextStyle(
+      bodyText2: TextStyle(
         fontSize: 13,
         color: Color(0xfffbfbfb),
         fontWeight: FontWeight.w500,
       ),
-      body2: TextStyle(
+      bodyText1: TextStyle(
         color: Color(0xfff0f0f0),
         fontSize: 14,
         fontWeight: FontWeight.w500,

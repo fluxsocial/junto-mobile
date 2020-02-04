@@ -34,15 +34,15 @@ class SignUpPhotosState extends State<SignUpPhotos> {
       },
       child: Container(
         color: Colors.transparent,
-        margin: const EdgeInsets.only(
-          right: 20,
-        ),
+        // margin: const EdgeInsets.only(
+        //   right: 20,
+        // ),
         child: Column(
           children: <Widget>[
             Container(
                 alignment: Alignment.center,
-                height: 180,
-                width: 180,
+                height: 240,
+                width: 240,
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.white, width: 2),
                   borderRadius: BorderRadius.circular(5),
@@ -104,27 +104,31 @@ class SignUpPhotosState extends State<SignUpPhotos> {
             children: <Widget>[
               Container(
                 child: const Text(
-                  'Add up to two profile pictures',
+                  'Add a profile picture',
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 24,
                       fontWeight: FontWeight.w700),
                 ),
               ),
-              const SizedBox(height: 100),
-              Expanded(
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: <Widget>[
-                    _buildPhotoSelector(
-                        profilePictureNumber: 1,
-                        profilePicture: profilePictureOne),
-                    _buildPhotoSelector(
-                        profilePictureNumber: 2,
-                        profilePicture: profilePictureTwo),
-                  ],
-                ),
-              )
+              const SizedBox(height: 140),
+              // Expanded(
+              //   child: ListView(
+              //     scrollDirection: Axis.horizontal,
+              //     children: <Widget>[
+              //       _buildPhotoSelector(
+              //           profilePictureNumber: 1,
+              //           profilePicture: profilePictureOne),
+              //       _buildPhotoSelector(
+              //           profilePictureNumber: 2,
+              //           profilePicture: profilePictureTwo),
+              //     ],
+              //   ),
+              // )
+              Center(
+                child: _buildPhotoSelector(
+                    profilePictureNumber: 1, profilePicture: profilePictureOne),
+              ),
             ]),
       ),
     );

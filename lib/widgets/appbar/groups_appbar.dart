@@ -48,7 +48,7 @@ class JuntoGroupsAppbar extends StatelessWidget {
                         const SizedBox(width: 7.5),
                         Text(
                           'GROUPS',
-                          style: Theme.of(context).appBarTheme.textTheme.body1,
+                          style: Theme.of(context).appBarTheme.textTheme.bodyText1,
                         ),
                       ],
                     ),

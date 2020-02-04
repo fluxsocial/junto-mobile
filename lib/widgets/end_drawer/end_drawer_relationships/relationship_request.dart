@@ -73,41 +73,31 @@ class RelationshipRequest extends StatelessWidget {
         );
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
         color: Theme.of(context).colorScheme.background,
         child: Row(
           children: <Widget>[
             Row(
               children: <Widget>[
-                user.profilePicture.isNotEmpty
-                    ? ClipOval(
-                        child: Image.asset(
-                          user.profilePicture[0],
-                          height: 45.0,
-                          width: 45.0,
-                          fit: BoxFit.cover,
-                        ),
-                      )
-                    : Container(
-                        alignment: Alignment.center,
-                        height: 45.0,
-                        width: 45.0,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.bottomLeft,
-                            end: Alignment.topRight,
-                            stops: const <double>[0.3, 0.9],
-                            colors: <Color>[
-                              Theme.of(context).colorScheme.secondary,
-                              Theme.of(context).colorScheme.primary
-                            ],
-                          ),
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        child: Image.asset(
-                            'assets/images/junto-mobile__logo--white.png',
-                            height: 15),
-                      ),
+                Container(
+                  alignment: Alignment.center,
+                  height: 45.0,
+                  width: 45.0,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomLeft,
+                      end: Alignment.topRight,
+                      stops: const <double>[0.3, 0.9],
+                      colors: <Color>[
+                        Theme.of(context).colorScheme.secondary,
+                        Theme.of(context).colorScheme.primary
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  child: Image.asset(
+                      'assets/images/junto-mobile__logo--white.png',
+                      height: 15),
+                ),
                 Container(
                   width: MediaQuery.of(context).size.width - 75,
                   padding: const EdgeInsets.symmetric(
@@ -132,11 +122,11 @@ class RelationshipRequest extends StatelessWidget {
                           Text(
                             user.username,
                             textAlign: TextAlign.start,
-                            style: Theme.of(context).textTheme.subhead,
+                            style: Theme.of(context).textTheme.subtitle1,
                           ),
                           Text(user.name,
                               textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.body1)
+                              style: Theme.of(context).textTheme.bodyText1)
                         ],
                       ),
                       Row(

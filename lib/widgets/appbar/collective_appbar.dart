@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/screens/collective/perspectives'
-    '/create_perspective/create_perspective.dart' show SelectedUsers;
 import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
 
 // Junto app bar used in collective screen.
@@ -21,8 +19,6 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
   final bool degrees;
   final String currentDegree;
   final Function switchDegree;
-
-  ValueNotifier<SelectedUsers> _users;
 
   @override
   Widget build(
@@ -73,9 +69,30 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                   children: <Widget>[
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          GlobalSearch.route((_) {}),
+                        Navigator.of(context).push(
+                          PageRouteBuilder<dynamic>(
+                            pageBuilder: (
+                              BuildContext context,
+                              Animation<double> animation,
+                              Animation<double> secondaryAnimation,
+                            ) {
+                              return const GlobalSearch();
+                            },
+                            transitionsBuilder: (
+                              BuildContext context,
+                              Animation<double> animation,
+                              Animation<double> secondaryAnimation,
+                              Widget child,
+                            ) {
+                              return FadeTransition(
+                                opacity: animation,
+                                child: child,
+                              );
+                            },
+                            transitionDuration: const Duration(
+                              milliseconds: 300,
+                            ),
+                          ),
                         );
                       },
                       child: Container(
@@ -134,37 +151,37 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                   context: context,
                   degreeName: 'oo',
                   currentDegree: currentDegree,
-                  degreeNumber: 0),
+                  degreeNumber: -1),
               _degree(
                   context: context,
                   degreeName: 'i',
                   currentDegree: currentDegree,
-                  degreeNumber: 1),
+                  degreeNumber: 0),
               _degree(
                   context: context,
                   degreeName: 'ii',
                   currentDegree: currentDegree,
-                  degreeNumber: 2),
+                  degreeNumber: 1),
               _degree(
                   context: context,
                   degreeName: 'iii',
                   currentDegree: currentDegree,
-                  degreeNumber: 3),
+                  degreeNumber: 2),
               _degree(
                   context: context,
                   degreeName: 'iv',
                   currentDegree: currentDegree,
-                  degreeNumber: 4),
+                  degreeNumber: 3),
               _degree(
                   context: context,
                   degreeName: 'v',
                   currentDegree: currentDegree,
-                  degreeNumber: 5),
+                  degreeNumber: 4),
               _degree(
                   context: context,
                   degreeName: 'vi',
                   currentDegree: currentDegree,
-                  degreeNumber: 6),
+                  degreeNumber: 5),
             ],
           ),
         ],

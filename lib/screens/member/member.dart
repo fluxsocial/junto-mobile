@@ -1,14 +1,19 @@
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/member/member_appbar.dart';
+import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/user_expressions.dart';
+import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:provider/provider.dart';
 
 class JuntoMember extends StatefulWidget {
@@ -36,12 +41,47 @@ class JuntoMember extends StatefulWidget {
 class _JuntoMemberState extends State<JuntoMember> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final List<String> _tabs = <String>['About', 'Expressions'];
+  String _userAddress;
+  UserRepo userProvider;
+  bool isConnected;
+  bool isFollowing;
+  bool isFollowed;
+  bool isPending;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    getUserInformation();
+  }
+
+  Future<void> getUserInformation() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      _userAddress = prefs.getString('user_id');
+      userProvider = Provider.of<UserRepo>(context, listen: false);
+    });
+
+    // // see if user is connected to member
+    await userProvider
+        .isRelated(_userAddress, widget.profile.address)
+        .then((Map<String, dynamic> result) {
+      setState(() {
+        isConnected = result['is_connected'];
+        isFollowing = result['is_following'];
+        isFollowed = result['is_followed'];
+        isPending = result['has_pending_connection'];
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    print(widget.profile.gender);
-    print(widget.profile.location);
-    print(widget.profile.website);
     return Scaffold(
       key: scaffoldKey,
       appBar: PreferredSize(
@@ -54,14 +94,17 @@ class _JuntoMemberState extends State<JuntoMember> {
           physics: const ClampingScrollPhysics(),
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
-              _MemberDenAppbar(profile: widget.profile),
+              _MemberDenAppbar(
+                profile: widget.profile,
+                isConnected: isConnected,
+              ),
               SliverPersistentHeader(
                 delegate: JuntoAppBarDelegate(
                   TabBar(
                     labelPadding: const EdgeInsets.all(0),
                     isScrollable: true,
                     labelColor: Theme.of(context).primaryColor,
-                    labelStyle: Theme.of(context).textTheme.subhead,
+                    labelStyle: Theme.of(context).textTheme.subtitle1,
                     indicatorWeight: 0.0001,
                     tabs: <Widget>[
                       for (String name in _tabs)
@@ -125,7 +168,7 @@ class _JuntoMemberState extends State<JuntoMember> {
                       Container(
                         padding: const EdgeInsets.only(right: 10),
                         width: MediaQuery.of(context).size.width,
-                        child: Image.asset( 
+                        child: Image.asset(
                             'assets/images/junto-mobile__mockprofpic--one.png',
                             fit: BoxFit.cover),
                       ),
@@ -215,40 +258,6 @@ class _ProfileDetails extends StatelessWidget {
   }
 }
 
-/// Custom [SliverPersistentHeaderDelegate] used on Den.
-class JuntoAppBarDelegate extends SliverPersistentHeaderDelegate {
-  JuntoAppBarDelegate(this._tabBar);
-
-  final TabBar _tabBar;
-
-  @override
-  double get minExtent => _tabBar.preferredSize.height + .5;
-
-  @override
-  double get maxExtent => _tabBar.preferredSize.height + .5;
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.background,
-        border: Border(
-          bottom: BorderSide(color: Theme.of(context).dividerColor, width: .5),
-        ),
-      ),
-      width: MediaQuery.of(context).size.width,
-      child: _tabBar,
-    );
-  }
-
-  @override
-  bool shouldRebuild(JuntoAppBarDelegate oldDelegate) {
-    return false;
-  }
-}
-
 class MemberRelationshipsModal extends StatelessWidget {
   const MemberRelationshipsModal({
     Key key,
@@ -300,7 +309,7 @@ class MemberRelationshipsModal extends StatelessWidget {
                     const SizedBox(width: 15),
                     Text(
                       'Subscribe',
-                      style: Theme.of(context).textTheme.headline,
+                      style: Theme.of(context).textTheme.headline5,
                     ),
                   ],
                 ),
@@ -318,7 +327,7 @@ class MemberRelationshipsModal extends StatelessWidget {
                     const SizedBox(width: 15),
                     Text(
                       'Connect',
-                      style: Theme.of(context).textTheme.headline,
+                      style: Theme.of(context).textTheme.headline5,
                     ),
                   ],
                 ),
@@ -335,7 +344,7 @@ class MemberRelationshipsModal extends StatelessWidget {
                     const SizedBox(width: 15),
                     Text(
                       'Invite to my pack',
-                      style: Theme.of(context).textTheme.headline,
+                      style: Theme.of(context).textTheme.headline5,
                     ),
                   ],
                 ),
@@ -349,12 +358,16 @@ class MemberRelationshipsModal extends StatelessWidget {
 }
 
 class _MemberDenAppbar extends StatelessWidget {
-  const _MemberDenAppbar({
-    Key key,
-    @required this.profile,
-  }) : super(key: key);
+  const _MemberDenAppbar(
+      {Key key,
+      @required this.profile,
+      @required this.isConnected,
+      this.isFollowing})
+      : super(key: key);
 
   final UserProfile profile;
+  final bool isConnected;
+  final bool isFollowing;
 
   Future<void> _connectWithUser(BuildContext context) async {
     final UserRepo _userRepo = Provider.of<UserRepo>(context, listen: false);
@@ -380,6 +393,20 @@ class _MemberDenAppbar extends StatelessWidget {
     }
   }
 
+  Widget _displayRelationshipIndicator(BuildContext context) {
+    if (isFollowing == true && isConnected == false) {
+      return const Icon(CustomIcons.groups, size: 17, color: Colors.white);
+    } else if (isFollowing == true && isConnected == true) {
+      return Icon(CustomIcons.pawprints, size: 17, color: Colors.white);
+    } else if (isFollowing == false && isConnected == false) {
+      return Image.asset('assets/images/junto-mobile__infinity.png',
+          height: 14, color: Theme.of(context).colorScheme.onPrimary);
+    } else {
+      return Image.asset('assets/images/junto-mobile__infinity.png',
+          height: 14, color: Theme.of(context).colorScheme.onPrimary);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
@@ -399,19 +426,20 @@ class _MemberDenAppbar extends StatelessWidget {
               padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
               alignment: Alignment.bottomLeft,
               decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    stops: const <double>[0.1, 0.9],
-                    colors: <Color>[
-                      Theme.of(context).colorScheme.secondaryVariant,
-                      Theme.of(context).colorScheme.primaryVariant,
-                    ],
-                  ),
-                  border: Border(
-                    bottom: BorderSide(
-                        color: Theme.of(context).dividerColor, width: .75),
-                  )),
+                gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  stops: const <double>[0.1, 0.9],
+                  colors: <Color>[
+                    Theme.of(context).colorScheme.secondaryVariant,
+                    Theme.of(context).colorScheme.primaryVariant,
+                  ],
+                ),
+                border: Border(
+                  bottom: BorderSide(
+                      color: Theme.of(context).dividerColor, width: .75),
+                ),
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -432,44 +460,39 @@ class _MemberDenAppbar extends StatelessWidget {
                         ),
                       ),
                       GestureDetector(
-                          onTap: () {
-                            showModalBottomSheet(
-                              context: context,
-                              builder: (BuildContext context) => Container(
-                                color: Colors.transparent,
-                                child: MemberRelationshipsModal(
-                                  onConnectTap: () => _connectWithUser(context),
-                                ),
+                        onTap: () {
+                          showModalBottomSheet(
+                            context: context,
+                            builder: (BuildContext context) => Container(
+                              color: Colors.transparent,
+                              child: MemberRelationshipsModal(
+                                onConnectTap: () => _connectWithUser(context),
                               ),
-                            );
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 7.5),
-                            decoration: BoxDecoration(
-                              border: Border.all(
+                            ),
+                          );
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                                color: Theme.of(context).colorScheme.onPrimary,
+                                width: 1.5),
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                          child: Row(
+                            children: <Widget>[
+                              const SizedBox(width: 14),
+                              _displayRelationshipIndicator(context),
+                              const SizedBox(width: 2),
+                              Icon(Icons.keyboard_arrow_down,
+                                  size: 12,
                                   color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                  width: 1.5),
-                              borderRadius: BorderRadius.circular(25),
-                            ),
-                            child: Row(
-                              children: <Widget>[
-                                const SizedBox(width: 14),
-                                Image.asset(
-                                    'assets/images/junto-mobile__infinity.png',
-                                    height: 14,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onPrimary),
-                                const SizedBox(width: 2),
-                                Icon(Icons.keyboard_arrow_down,
-                                    size: 12,
-                                    color:
-                                        Theme.of(context).colorScheme.onPrimary)
-                              ],
-                            ),
-                          )),
+                                      Theme.of(context).colorScheme.onPrimary)
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ],

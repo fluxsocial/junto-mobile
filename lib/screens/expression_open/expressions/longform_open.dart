@@ -24,7 +24,7 @@ class LongformOpen extends StatelessWidget {
                   margin: const EdgeInsets.only(bottom: 5),
                   child: Text(longformTitle,
                       textAlign: TextAlign.start,
-                      style: Theme.of(context).textTheme.title),
+                      style: Theme.of(context).textTheme.headline6),
                 )
               : const SizedBox(),
           longformBody != ''

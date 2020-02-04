@@ -31,29 +31,29 @@ class ExpressionOpenAppbar extends StatelessWidget {
                     size: 17, color: Theme.of(context).primaryColorDark),
               ),
             ),
-            GestureDetector(
-              onTap: () {
-                showModalBottomSheet(
-                  isScrollControlled: true,
-                  context: context,
-                  builder: (BuildContext context) {
-                    return ExpressionOpenContext(expression);
-                  },
-                );
-              },
-              child: Container(
-                color: Colors.transparent,
-                padding: const EdgeInsets.only(right: 10),
-                margin: const EdgeInsets.only(right: 20),
-                width: 42,
-                alignment: Alignment.centerRight,
-                child: Icon(
-                  CustomIcons.collective,
-                  size: 10,
-                  color: Theme.of(context).primaryColorDark,
-                ),
-              ),
-            )
+            // GestureDetector(
+            //   onTap: () {
+            //     showModalBottomSheet(
+            //       isScrollControlled: true,
+            //       context: context,
+            //       builder: (BuildContext context) {
+            //         return ExpressionOpenContext(expression);
+            //       },
+            //     );
+            //   },
+            //   child: Container(
+            //     color: Colors.transparent,
+            //     padding: const EdgeInsets.only(right: 10),
+            //     margin: const EdgeInsets.only(right: 20),
+            //     width: 42,
+            //     alignment: Alignment.centerRight,
+            //     child: Icon(
+            //       CustomIcons.collective,
+            //       size: 10,
+            //       color: Theme.of(context).primaryColorDark,
+            //     ),
+            //   ),
+            // )
           ],
         ),
       ),

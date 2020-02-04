@@ -97,6 +97,12 @@ class MockUserService implements UserService {
   }
 
   @override
+  Future userRelations() async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    return {};
+  }
+
+  @override
   Future<List<UserProfile>> connectedUsers(String userAddress) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     return kUsers;
@@ -119,6 +125,25 @@ class MockUserService implements UserService {
   }
 
   @override
+  Future<Map<String, dynamic>> isRelated(
+      String userAddress, String targetAddress) async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    return {};
+  }
+
+  @override
+  Future<bool> isConnectedUser(String userAddress, String targetAddress) async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    return false;
+  }
+
+  @override
+  Future<bool> isFollowingUser(String userAddress, String targetAddress) async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    return true;
+  }
+
+  @override
   Future<Map<String, dynamic>> updateUser(
       Map<String, dynamic> profile, String userAddress) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
@@ -129,5 +154,13 @@ class MockUserService implements UserService {
   Future<List<UserProfile>> getFollowers(String userAddress) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     return List<UserProfile>.generate(10, (int index) => kUserProfile);
+  }
+
+  @override
+  Future<CentralizedPerspective> updatePerspective(
+    CentralizedPerspective perspective,
+  ) async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    return kPerspectives.first;
   }
 }

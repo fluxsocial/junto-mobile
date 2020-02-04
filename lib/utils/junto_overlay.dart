@@ -23,9 +23,10 @@ class JuntoLoader extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             color: Colors.white30,
             child: Center(
-              child: JuntoLoader(
+              child: SizedBox(
                 height: height,
                 width: width,
+                child: JuntoProgressIndicator(),
               ),
             ),
           ),
@@ -45,7 +46,11 @@ class JuntoLoader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: JuntoProgressIndicator(),
+      child: SizedBox(
+        height: height,
+        width: width,
+        child: JuntoProgressIndicator(),
+      ),
     );
   }
 }

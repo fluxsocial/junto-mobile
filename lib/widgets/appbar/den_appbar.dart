@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/screens/collective/perspectives'
-    '/create_perspective/create_perspective.dart' show SelectedUsers;
 import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
 
 // Junto app bar used throughout the main screens. Rendered in JuntoTemplate.
@@ -18,8 +16,6 @@ class DenAppbar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _DenAppbarState extends State<DenAppbar> {
-  ValueNotifier<SelectedUsers> _users;
-
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -45,10 +41,8 @@ class _DenAppbarState extends State<DenAppbar> {
                   Image.asset('assets/images/junto-mobile__logo.png',
                       height: 22.0, width: 22.0),
                   const SizedBox(width: 7.5),
-                  Text(
-                    widget.heading,
-                    style: Theme.of(context).appBarTheme.textTheme.body1,
-                  ),
+                  Text(widget.heading,
+                      style: Theme.of(context).textTheme.subtitle1),
                 ],
               ),
             ),
@@ -56,10 +50,29 @@ class _DenAppbarState extends State<DenAppbar> {
               children: <Widget>[
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute<dynamic>(
-                        builder: (BuildContext context) => const GlobalSearch(),
+                    Navigator.of(context).push(
+                      PageRouteBuilder<dynamic>(
+                        pageBuilder: (
+                          BuildContext context,
+                          Animation<double> animation,
+                          Animation<double> secondaryAnimation,
+                        ) {
+                          return const GlobalSearch();
+                        },
+                        transitionsBuilder: (
+                          BuildContext context,
+                          Animation<double> animation,
+                          Animation<double> secondaryAnimation,
+                          Widget child,
+                        ) {
+                          return FadeTransition(
+                            opacity: animation,
+                            child: child,
+                          );
+                        },
+                        transitionDuration: const Duration(
+                          milliseconds: 300,
+                        ),
                       ),
                     );
                   },

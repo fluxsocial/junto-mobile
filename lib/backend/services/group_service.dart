@@ -1,12 +1,10 @@
 import 'package:http/http.dart' as http;
-import 'package:junto_beta_mobile/api.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/sphere.dart';
 import 'package:junto_beta_mobile/utils/junto_http.dart';
 import 'package:meta/meta.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 @immutable
 class GroupServiceCentralized implements GroupService {
@@ -80,26 +78,20 @@ class GroupServiceCentralized implements GroupService {
   @override
   Future<List<CentralizedExpressionResponse>> getGroupExpressions(
     String groupAddress,
-    ExpressionQueryParams params,
+    GroupExpressionQueryParams params,
   ) async {
-    final SharedPreferences _prefs = await SharedPreferences.getInstance();
-    final String authKey = _prefs.getString('auth');
-    final Uri _uri = Uri.http(
-      END_POINT,
-      '/groups/$groupAddress/expressions',
-      <String, String>{'direct_expressions': 'true'},
-    );
-    final http.Response _serverResponse = await http.get(
-      _uri,
-      headers: <String, String>{
-        'Content-Type': 'application/json',
-        'cookie': 'auth=$authKey',
-      },
-    );
+    final http.Response _serverResponse = await client
+        .get('/groups/$groupAddress/expressions', queryParams: <String, String>{
+      'direct_expressions': params.directExpressions.toString(),
+      'direct_expression_pagination_position':
+          params.directExpressionPaginationPosition.toString(),
+    });
 
     final Map<String, dynamic> items =
         JuntoHttp.handleResponse(_serverResponse);
-    return (items['direct_posts'] as List<dynamic>)
+    print(items['direct_posts']['results']);
+
+    return (items['direct_posts']['results'] as List<dynamic>)
         .map((dynamic data) => CentralizedExpressionResponse.fromMap(data))
         .toList();
   }
@@ -110,7 +102,6 @@ class GroupServiceCentralized implements GroupService {
       '/groups/${group.address}',
       body: group.groupData.toJson(),
     );
-    print(_serverResponse.body);
     final Map<String, dynamic> _data =
         JuntoHttp.handleResponse(_serverResponse);
     return Group.fromMap(_data);

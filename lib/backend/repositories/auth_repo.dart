@@ -32,7 +32,8 @@ class AuthRepo {
     );
     _isLoggedIn = true;
     await SharedPreferences.getInstance()
-      ..setBool('isLoggedIn', true);
+      ..setBool('isLoggedIn', true)
+      ..setString('user_follow_perspective_id', _data.userPerspective.address);
 
     return _data;
   }
@@ -56,7 +57,7 @@ class AuthRepo {
 
       await SharedPreferences.getInstance()
         ..setBool('isLoggedIn', true)
-        ..setString('user_data', _userMapToString);      
+        ..setString('user_data', _userMapToString);
 
       return _user;
     } catch (error) {

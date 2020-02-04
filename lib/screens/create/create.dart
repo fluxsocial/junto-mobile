@@ -32,6 +32,7 @@ class JuntoCreateState extends State<JuntoCreate> {
   String _expressionType = 'LongForm';
   String _expressionTypeDisplay = 'dynamic';
   bool _expressionCenterVisible = true;
+  bool _activated = false;
   bool _longform = true;
   bool _shortform = false;
   bool _photo = false;
@@ -147,6 +148,7 @@ class JuntoCreateState extends State<JuntoCreate> {
     }
 
     setState(() {
+      _activated = true;
       _expressionCenterVisible = false;
     });
     // Navigator.pop(context);
@@ -160,7 +162,6 @@ class JuntoCreateState extends State<JuntoCreate> {
           return CreateActions(
             expressionType: _expressionType,
             address: widget.address,
-            channels: widget.channels,
             expressionContext: widget.expressionContext,
             expression: getExpression(),
           );
@@ -287,7 +288,8 @@ class JuntoCreateState extends State<JuntoCreate> {
           Column(
             children: <Widget>[
               Container(
-                padding: const EdgeInsets.symmetric(vertical: 25),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 25, horizontal: 25),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
@@ -297,7 +299,8 @@ class JuntoCreateState extends State<JuntoCreate> {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(vertical: 25),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 25, horizontal: 25),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
@@ -308,14 +311,24 @@ class JuntoCreateState extends State<JuntoCreate> {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.pop(context);
+                  if (_activated) {
+                    setState(() {
+                      _expressionCenterVisible = false;
+                    });
+                  } else {
+                    Navigator.pop(context);
+                  }
                 },
                 child: Container(
                   alignment: Alignment.center,
                   margin: const EdgeInsets.symmetric(vertical: 25),
                   height: 50,
                   width: 50,
-                  child: Icon(CustomIcons.lotus, size: 32, color: Colors.white),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.white, width: 1.2),
+                    borderRadius: BorderRadius.circular(1000),
+                  ),
+                  child: Icon(CustomIcons.back, size: 17, color: Colors.white),
                 ),
               ),
             ],
@@ -361,7 +374,7 @@ class JuntoCreateState extends State<JuntoCreate> {
     return GestureDetector(
       onTap: switchExpression,
       child: Container(
-        width: MediaQuery.of(context).size.width * .5,
+        width: MediaQuery.of(context).size.width * .5 - 50,
         color: Colors.transparent,
         alignment: Alignment.center,
         child: Column(
@@ -375,7 +388,7 @@ class JuntoCreateState extends State<JuntoCreate> {
             Text(
               expressionName,
               style: TextStyle(
-                  fontSize: 15,
+                  fontSize: 14,
                   color: Colors.white,
                   fontWeight: FontWeight.w500,
                   decoration: TextDecoration.none),

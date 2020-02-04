@@ -9,6 +9,7 @@ import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_actions/collective_actions.dart';
+import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/widgets/appbar/collective_appbar.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
@@ -39,6 +40,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
   final GlobalKey<ScaffoldState> _juntoCollectiveKey =
       GlobalKey<ScaffoldState>();
 
+//ignore:unused_field
   AsyncMemoizer<QueryResults<CentralizedExpressionResponse>> _asyncMemoizer;
 
   // Completer which controls expressions querying.
@@ -54,8 +56,9 @@ class JuntoCollectiveState extends State<JuntoCollective>
   String _appbarTitle = 'JUNTO';
   bool _showDegrees = true;
   String currentDegree = 'oo';
+  List<String> _channels = <String>[];
 
-  bool actionsVisible = true;
+  bool actionsVisible = false;
 
   @override
   void initState() {
@@ -83,8 +86,10 @@ class JuntoCollectiveState extends State<JuntoCollective>
     _expressionProvider = Provider.of<ExpressionRepo>(context, listen: false);
     // _expressionCompleter = _asyncMemoizer.runOnce(() =>
     //     getCollectiveExpressions(contextType: 'Collective', paginationPos: 0));
-    _expressionCompleter =
-        getCollectiveExpressions(contextType: 'Collective', paginationPos: 0);
+    _expressionCompleter = getCollectiveExpressions(
+      contextType: 'Collective',
+      paginationPos: 0,
+    );
   }
 
   void _onScrollingHasChanged() {
@@ -110,23 +115,33 @@ class JuntoCollectiveState extends State<JuntoCollective>
     int paginationPos = 0,
   }) async {
     Map<String, dynamic> _params;
-    if (contextType == 'Dos' && dos != 0) {
+    if (contextType == 'Dos' && dos != -1) {
       _params = <String, String>{
         'context_type': contextType,
         'pagination_position': paginationPos.toString(),
         'dos': dos.toString(),
+      };
+    } else if (contextType == 'ConnectPerspective') {
+      _params = <String, String>{
+        'context_type': contextType,
+        'context': _userProfile.connectionPerspective.address,
+        'pagination_position': paginationPos.toString(),
+        if (_channels.length > 0) 'channels[0]': _channels[0]
       };
     } else {
       _params = <String, String>{
         'context_type': contextType,
         'context': contextString,
         'pagination_position': paginationPos.toString(),
+        if (_channels.length > 0) 'channels[0]': _channels[0]
       };
     }
     try {
       return await _expressionProvider.getCollectiveExpressions(_params);
     } on JuntoException catch (error) {
-      print(error);
+      if (error.errorCode == 401) {
+        Navigator.of(context).pushReplacement(Welcome.route());
+      }
       return null;
     }
   }
@@ -147,7 +162,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
   // Renders the collective screen within a scaffold.
   Widget _buildCollectivePage(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false, 
+      resizeToAvoidBottomInset: false,
       key: _juntoCollectiveKey,
       floatingActionButton: ValueListenableBuilder<bool>(
         valueListenable: _isVisible,
@@ -187,6 +202,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
             duration: const Duration(milliseconds: 300),
             opacity: actionsVisible ? 0.0 : 1.0,
             child: Visibility(
+              //ignore:avoid_bool_literals_in_conditional_expressions
               visible: actionsVisible ? false : true,
               child: _buildPerspectiveFeed(),
             ),
@@ -199,6 +215,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
               child: JuntoCollectiveActions(
                   userProfile: _userProfile,
                   changePerspective: _changePerspective,
+                  filterByChannel: _filterByChannel,
                   currentPerspective: _appbarTitle),
             ),
           ),
@@ -317,13 +334,38 @@ class JuntoCollectiveState extends State<JuntoCollective>
 
 // switch between degrees of separation
   void _switchDegree({String degreeName, int degreeNumber}) {
+    String _contextType;
+
+    if (degreeNumber == -1) {
+      _contextType = 'Collective';
+    } else if (degreeNumber == 0) {
+      _contextType = 'ConnectPerspective';
+    } else {
+      _contextType = 'Dos';
+    }
+
     setState(() {
       _showDegrees = true;
       _expressionCompleter = getCollectiveExpressions(
-          paginationPos: 0,
-          contextType: degreeNumber == 0 ? 'Collective' : 'Dos',
-          dos: degreeNumber);
+        paginationPos: 0,
+        contextType: _contextType,
+        dos: degreeNumber,
+      );
       currentDegree = degreeName;
+    });
+  }
+
+  void _filterByChannel(Channel channel) {
+    setState(() {
+      if (_channels.isEmpty) {
+        _channels.add(channel.name);
+      } else {
+        _channels[0] = channel.name;
+      }
+      _expressionCompleter = getCollectiveExpressions(
+          contextType: 'Collective', paginationPos: 0, channels: _channels);
+
+      actionsVisible = false;
     });
   }
 
@@ -332,7 +374,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
     if (perspective.name == 'JUNTO') {
       setState(() {
         _expressionCompleter = getCollectiveExpressions(
-            contextType: 'Collective', paginationPos: 0);
+            contextType: 'Collective', paginationPos: 0, channels: _channels);
         _showDegrees = true;
         _appbarTitle = 'JUNTO';
       });
@@ -343,6 +385,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
           contextString: perspective.address,
           contextType: 'FollowPerspective',
           dos: null,
+          channels: _channels,
         );
         _showDegrees = false;
         if (perspective.name ==

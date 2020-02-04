@@ -15,16 +15,23 @@ class SearchRepo extends SearchService {
       query,
       paginationPosition: paginationPosition,
       lastTimeStamp: lastTimeStamp,
+      username: username,
     );
   }
 
   @override
-  Future<QueryResults<String>> searchChannel(String query,
-      {int paginationPosition = 0, DateTime lastTimeStamp}) {
-    return _searchService.searchChannel(
-      query,
-      paginationPosition: paginationPosition,
-      lastTimeStamp: lastTimeStamp,
+  Future<QueryResults<Channel>> searchChannel(String query,
+      {int paginationPosition = 0, DateTime lastTimeStamp}) async {
+    if (query != null && query.isNotEmpty) {
+      return _searchService.searchChannel(
+        query,
+        paginationPosition: paginationPosition,
+        lastTimeStamp: lastTimeStamp,
+      );
+    }
+    return QueryResults<Channel>(
+      results: <Channel>[],
+      lastTimestamp: DateTime.now().toIso8601String(),
     );
   }
 

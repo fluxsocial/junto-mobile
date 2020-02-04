@@ -1,21 +1,22 @@
+import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-
+import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
-import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_open/sphere_open_appbar.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_open/sphere_open_members.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
-import 'package:junto_beta_mobile/widgets/fabs/expression_center_fab.dart';
-import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
+import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SphereOpen extends StatefulWidget {
   const SphereOpen({
@@ -31,26 +32,22 @@ class SphereOpen extends StatefulWidget {
 }
 
 class SphereOpenState extends State<SphereOpen> with HideFab {
-  ScrollController _hideFABController;
-  ValueNotifier<bool> _isVisible;
-
-  List<CentralizedExpressionResponse> expressions;
-
   final GlobalKey<SphereOpenState> _keyFlexibleSpace =
       GlobalKey<SphereOpenState>();
+
+  String _userAddress;
+
+  // @override
+  // void didUpdateWidget(SphereOpen oldWidget) {
+  //   super.didUpdateWidget(oldWidget);
+
+  //   print('updated widget');
+  // }
 
   @override
   void initState() {
     super.initState();
-    _hideFABController = ScrollController();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _hideFABController.addListener(_onScrollingHasChanged);
-      _hideFABController.position.isScrollingNotifier.addListener(
-        _onScrollingHasChanged,
-      );
-    });
-    _isVisible = ValueNotifier<bool>(true);
-
+    print('init state');
     WidgetsBinding.instance.addPostFrameCallback(_getFlexibleSpaceSize);
   }
 
@@ -67,28 +64,35 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     });
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    expressions = Provider.of<ExpressionRepo>(context).collectiveExpressions;
+  Future<void> getUserInformation() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      _userAddress = prefs.getString('user_id');
+    });
   }
 
-  void _onScrollingHasChanged() {
-    super.hideFabOnScroll(_hideFABController, _isVisible);
-  }
+  final AsyncMemoizer<List<CentralizedExpressionResponse>> _memoizer =
+      AsyncMemoizer<List<CentralizedExpressionResponse>>();
 
-  @override
-  void dispose() {
-    _hideFABController.removeListener(_onScrollingHasChanged);
-    _hideFABController.dispose();
-    super.dispose();
+  Future<List<CentralizedExpressionResponse>> _getGroupExpressions() async {
+    return _memoizer.runOnce(
+      () => Provider.of<GroupRepo>(context, listen: false).getGroupExpressions(
+        widget.group.address,
+        GroupExpressionQueryParams(
+            creatorExpressions: true,
+            directExpressions: true,
+            directExpressionPaginationPosition: 0,
+            creatorExpressionsPaginationPosition: 0),
+      ),
+    );
   }
 
   Future<void> _getMembers() async {
     try {
       JuntoLoader.showLoader(context);
       final List<Users> _members =
-          await Provider.of<GroupRepo>(context).getGroupMembers(
+          await Provider.of<GroupRepo>(context, listen: false).getGroupMembers(
         widget.group.address,
       );
       JuntoLoader.hide();
@@ -122,7 +126,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.group.groupData.photo);
+    print(widget.group.address);
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(45),
@@ -134,14 +138,11 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
         length: _tabs.length,
         child: NestedScrollView(
           body: TabBarView(
-            // These are the contents of the tab views, below the tabs.
             children: <Widget>[
               _buildAboutView(),
-              const SizedBox(),
-              // _buildExpressionView(),
+              if (widget.group.address != null) _buildExpressionView(),
             ],
           ),
-          controller: _hideFABController,
           physics: const ClampingScrollPhysics(),
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
@@ -200,7 +201,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                             Container(
                               width: MediaQuery.of(context).size.width * .7,
                               child: Text(widget.group.groupData.name,
-                                  style: Theme.of(context).textTheme.display1),
+                                  style: Theme.of(context).textTheme.headline4),
                             ),
                           ],
                         ),
@@ -216,12 +217,12 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
               ),
               SliverPersistentHeader(
                 pinned: true,
-                delegate: _SliverAppBarDelegate(
+                delegate: JuntoAppBarDelegate(
                   TabBar(
                     labelPadding: const EdgeInsets.all(0),
                     isScrollable: true,
                     labelColor: Theme.of(context).primaryColorDark,
-                    labelStyle: Theme.of(context).textTheme.subhead,
+                    labelStyle: Theme.of(context).textTheme.subtitle1,
                     indicatorWeight: 0.0001,
                     tabs: <Widget>[
                       for (String name in _tabs)
@@ -247,31 +248,28 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     return ListView(
       physics: const ClampingScrollPhysics(),
       children: <Widget>[
-        Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: JuntoStyles.horizontalPadding,
-            vertical: 15,
-          ),
-          decoration: BoxDecoration(
-            border: Border(
-              bottom: BorderSide(
-                color: Theme.of(context).dividerColor,
-                width: .75,
+        GestureDetector(
+          onTap: () => _getMembers(),
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: JuntoStyles.horizontalPadding,
+              vertical: 15,
+            ),
+            decoration: BoxDecoration(
+              color: Colors.transparent,
+              border: Border(
+                bottom: BorderSide(
+                  color: Theme.of(context).dividerColor,
+                  width: .75,
+                ),
               ),
             ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              GestureDetector(
-                onTap: () => _getMembers(),
-                child: const MemberRow(
-                  membersLength: 1,
-                  // FIXME(Nash+Yang) The server should never return null, bring up with Josh
-                  // widget.group?.members + widget.group?.facilitators,
-                ),
-              )
-            ],
+            child: Container(
+              child: Text(
+                'Members',
+                style: Theme.of(context).textTheme.subtitle2,
+              ),
+            ),
           ),
         ),
         Container(
@@ -279,7 +277,8 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('Bio / Purpose', style: Theme.of(context).textTheme.title),
+              Text('Bio / Purpose',
+                  style: Theme.of(context).textTheme.headline6),
               const SizedBox(height: 10),
               Text(widget.group.groupData.description,
                   style: Theme.of(context).textTheme.caption)
@@ -290,123 +289,85 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     );
   }
 
-//ignore:unused_element
-  // Widget _buildExpressionView() {
-  //   return FutureBuilder<List<CentralizedExpressionResponse>>(
-  //     future: Provider.of<GroupRepo>(context, listen: false)
-  //         .getGroupExpressions(widget.group.address, null),
-  //     builder: (
-  //       BuildContext context,
-  //       AsyncSnapshot<List<CentralizedExpressionResponse>> snapshot,
-  //     ) {
-  //       if (snapshot.hasError)
-  //         return Container(
-  //           height: 400,
-  //           alignment: Alignment.center,
-  //           child: const Text(
-  //             'Oops, something is wrong!',
-  //             style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-  //           ),
-  //         );
-  //       if (snapshot.hasData && !snapshot.hasError) {
-  //         return RefreshIndicator(
-  //           onRefresh: () async => setState(() => print('refresh')),
-  //           child: ListView.builder(
-  //             itemCount: snapshot.data.length,
-  //             itemBuilder: (BuildContext context, int index) {
-  //               return ExpressionPreview(
-  //                 expression: snapshot.data[index],
-  //                 userAddress: widget.userAddress,
-  //               );
-  //             },
-  //           ),
-  //         );
-  //       }
-  //       return Container(
-  //         height: 100.0,
-  //         width: 100.0,
-  //         child: const Center(
-  //           child: CircularProgressIndicator(),
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
-}
-
-class MemberRow extends StatelessWidget {
-  const MemberRow({
-    Key key,
-    @required this.membersLength,
-  }) : super(key: key);
-  final int membersLength;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Theme.of(context).colorScheme.background,
-      child: Container(
-        child: Text(
-          'Members',
-          style: Theme.of(context).textTheme.subtitle,
-        ),
-      ),
+  Widget _buildExpressionView() {
+    return FutureBuilder<List<CentralizedExpressionResponse>>(
+      future: _getGroupExpressions(),
+      builder: (BuildContext context,
+          AsyncSnapshot<List<CentralizedExpressionResponse>> snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Transform.translate(
+              offset: const Offset(0.0, -50),
+              child: const Text('Hmm, something is up'),
+            ),
+          );
+        }
+        if (snapshot.hasData) {
+          return ListView(padding: const EdgeInsets.all(0), children: [
+            Container(
+              color: Theme.of(context).backgroundColor,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    width: MediaQuery.of(context).size.width * .5,
+                    padding: const EdgeInsets.only(
+                      top: 10,
+                      left: 10,
+                      right: 5,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        for (int index = 0;
+                            index < snapshot.data.length + 1;
+                            index++)
+                          if (index == snapshot.data.length)
+                            const SizedBox()
+                          else if (index.isEven)
+                            ExpressionPreview(
+                              expression: snapshot.data[index],
+                              userAddress: _userAddress,
+                            )
+                      ],
+                    ),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * .5,
+                    padding: const EdgeInsets.only(
+                      top: 10,
+                      left: 5,
+                      right: 10,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        for (int index = 0;
+                            index < snapshot.data.length + 1;
+                            index++)
+                          if (index == snapshot.data.length)
+                            const SizedBox()
+                          else if (index.isOdd)
+                            ExpressionPreview(
+                              expression: snapshot.data[index],
+                              userAddress: _userAddress,
+                            )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ]);
+        }
+        return Center(
+          child: Transform.translate(
+            offset: const Offset(0.0, -50),
+            child: JuntoProgressIndicator(),
+          ),
+        );
+      },
     );
   }
 }
-
-class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  _SliverAppBarDelegate(this._tabBar);
-
-  final TabBar _tabBar;
-
-  @override
-  double get minExtent => _tabBar.preferredSize.height + .5;
-
-  @override
-  double get maxExtent => _tabBar.preferredSize.height + .5;
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
-          border: Border(
-            bottom:
-                BorderSide(color: Theme.of(context).dividerColor, width: .5),
-          ),
-        ),
-        width: MediaQuery.of(context).size.width,
-        child: _tabBar);
-  }
-
-  @override
-  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
-    return false;
-  }
-}
-
-// Container(
-//   padding: const EdgeInsets.symmetric(
-//       horizontal: 10, vertical: 7.5),
-//   decoration: BoxDecoration(
-//     border: Border.all(
-//         color: Theme.of(context).primaryColor,
-//         width: 1.5),
-//     borderRadius: BorderRadius.circular(25),
-//   ),
-//   child: Row(
-//     children: <Widget>[
-//       const SizedBox(width: 14),
-//       Icon(CustomIcons.spheres,
-//           size: 14,
-//           color: Theme.of(context).primaryColor),
-//       const SizedBox(width: 2),
-//       Icon(Icons.keyboard_arrow_down,
-//           size: 12,
-//           color: Theme.of(context).primaryColor)
-//     ],
-//   ),
-// )

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:async/async.dart' show AsyncMemoizer;
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -8,8 +9,11 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
+import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview_select.dart';
 
 class CreateSphere extends StatefulWidget {
   @override
@@ -20,7 +24,6 @@ class CreateSphere extends StatefulWidget {
 
 class CreateSphereState extends State<CreateSphere> {
   File imageFile;
-  String imageKey = '';
   int _currentIndex = 0;
   String sphereName;
   String sphereHandle;
@@ -31,6 +34,10 @@ class CreateSphereState extends State<CreateSphere> {
   TextEditingController sphereHandleController;
   TextEditingController sphereDescriptionController;
   String _currentPrivacy = 'Public';
+
+  final List<String> _sphereMembers = <String>[];
+
+  final List<String> _tabs = <String>['Subscriptions', 'Connections'];
 
   Future<void> _onPickPressed() async {
     final File image = await ImagePicker.pickImage(source: ImageSource.gallery);
@@ -50,35 +57,41 @@ class CreateSphereState extends State<CreateSphere> {
   }
 
   Future<void> _createSphere() async {
-    // check if photo
+    JuntoLoader.showLoader(context);
+
+    // instantiate sphere image key
+    String sphereImageKey = '';
+
+    // check if user uploaded a photo for the sphere
     if (imageFile != null) {
-      final String _photoKey =
-          await Provider.of<ExpressionRepo>(context, listen: false)
-              .createPhoto('.png', imageFile);
-      print(_photoKey);
-      setState(() {
-        imageKey = _photoKey;
-      });
+      try {
+        final String _photoKey =
+            await Provider.of<ExpressionRepo>(context, listen: false)
+                .createPhoto(true, '.png', imageFile);
+        sphereImageKey = _photoKey;
+      } catch (error) {
+        print(error);
+        JuntoLoader.hide();
+      }
     }
 
-    // then
+    // get user address from shared preferences
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String userAddress = prefs.get('user_id');
+    final String userAddress = await prefs.get('user_id');
 
+    // create sphere body
     final CentralizedSphere sphere = CentralizedSphere(
       name: sphereName,
       description: sphereDescription,
       facilitators: <String>[userAddress],
-      photo: imageKey,
-      members: <String>[],
+      photo: sphereImageKey,
+      members: _sphereMembers,
       principles: '',
       sphereHandle: sphereHandle,
       privacy: _currentPrivacy,
     );
-    print(sphere.photo);
 
     try {
-      JuntoLoader.showLoader(context);
       await Provider.of<GroupRepo>(context, listen: false).createSphere(sphere);
       JuntoLoader.hide();
       Navigator.pop(context);
@@ -95,6 +108,14 @@ class CreateSphereState extends State<CreateSphere> {
     sphereDescriptionController = TextEditingController();
 
     super.initState();
+  }
+
+  final AsyncMemoizer _memoizer = AsyncMemoizer();
+
+  Future getUserRelationships() async {
+    return _memoizer.runOnce(
+      () => Provider.of<UserRepo>(context, listen: false).userRelations(),
+    );
   }
 
   @override
@@ -121,8 +142,7 @@ class CreateSphereState extends State<CreateSphere> {
                           width: 48,
                           alignment: Alignment.centerLeft,
                           child: Icon(CustomIcons.back,
-                              size: 20,
-                              color: Theme.of(context).primaryColor),
+                              size: 20, color: Theme.of(context).primaryColor),
                         ),
                       )
                     : GestureDetector(
@@ -142,12 +162,13 @@ class CreateSphereState extends State<CreateSphere> {
                               color: Theme.of(context).primaryColorDark),
                         ),
                       ),
-                Text('Create Sphere',
-                    style: Theme.of(context).textTheme.title),
+                _currentIndex == 0
+                    ? Text('Create Sphere',
+                        style: Theme.of(context).textTheme.subtitle1)
+                    : const SizedBox(),
                 _currentIndex == 2
                     ? GestureDetector(
                         onTap: () {
-                          // create sphere
                           _createSphere();
                         },
                         child: Container(
@@ -272,6 +293,7 @@ class CreateSphereState extends State<CreateSphere> {
                 ),
               ),
             ]),
+      const SizedBox(height: 10),
       Container(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         width: MediaQuery.of(context).size.width,
@@ -287,15 +309,16 @@ class CreateSphereState extends State<CreateSphere> {
           decoration: InputDecoration(
               border: InputBorder.none,
               hintText: 'Name of sphere',
-              hintStyle: Theme.of(context).textTheme.title),
+              hintStyle: Theme.of(context).textTheme.subtitle1),
           cursorColor: JuntoPalette.juntoGrey,
           cursorWidth: 2,
           maxLines: null,
           maxLength: 140,
-          style: Theme.of(context).textTheme.title,
+          style: Theme.of(context).textTheme.headline6,
           textInputAction: TextInputAction.done,
         ),
       ),
+      const SizedBox(height: 10),
       Container(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: TextField(
@@ -309,7 +332,7 @@ class CreateSphereState extends State<CreateSphere> {
               null,
           decoration: InputDecoration(
               border: InputBorder.none,
-              hintText: 'Choose a unique username',
+              hintText: 'Unique username',
               hintStyle: Theme.of(context).textTheme.caption),
           cursorColor: Theme.of(context).primaryColorDark,
           cursorWidth: 2,
@@ -319,20 +342,14 @@ class CreateSphereState extends State<CreateSphere> {
           textInputAction: TextInputAction.done,
         ),
       ),
+      const SizedBox(height: 10),
       Container(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: TextField(
           controller: sphereDescriptionController,
-          // buildCounter: (
-          //   BuildContext context, {
-          //   int currentLength,
-          //   int maxLength,
-          //   bool isFocused,
-          // }) =>
-          //     null,
           decoration: InputDecoration(
             border: InputBorder.none,
-            hintText: 'About your sphere',
+            hintText: 'About sphere',
             hintStyle: Theme.of(context).textTheme.caption,
             counterStyle: const TextStyle(
               fontSize: 12,
@@ -351,69 +368,126 @@ class CreateSphereState extends State<CreateSphere> {
   }
 
   Widget _createSphereTwo() {
-    return ListView(
-      children: <Widget>[
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 10),
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: Theme.of(context).dividerColor,
-                    width: .75,
-                  ),
+    return DefaultTabController(
+      length: _tabs.length,
+      child: NestedScrollView(
+        physics: const ClampingScrollPhysics(),
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            SliverPersistentHeader(
+              delegate: JuntoAppBarDelegate(
+                TabBar(
+                  labelPadding: const EdgeInsets.all(0),
+                  isScrollable: true,
+                  labelColor: Theme.of(context).primaryColorDark,
+                  labelStyle: Theme.of(context).textTheme.subtitle1,
+                  indicatorWeight: 0.0001,
+                  tabs: <Widget>[
+                    for (String name in _tabs)
+                      Container(
+                        margin: const EdgeInsets.only(right: 24),
+                        color: Theme.of(context).colorScheme.background,
+                        child: Tab(
+                          text: name,
+                        ),
+                      ),
+                  ],
                 ),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              pinned: true,
+            ),
+          ];
+        },
+        body: FutureBuilder(
+          future: getUserRelationships(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasData) {
+              // get list of connections
+              final List<UserProfile> _connectionsMembers =
+                  snapshot.data['connections']['results'];
+
+              // get list of following
+              final List<UserProfile> _followingMembers =
+                  snapshot.data['following']['results'];
+
+              return TabBarView(
                 children: <Widget>[
-                  Icon(
-                    Icons.search,
-                    size: 20,
-                    color: Theme.of(context).primaryColorLight,
+                  // subscriptions
+                  ListView(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    children: _followingMembers
+                        .map(
+                          (dynamic connection) => MemberPreviewSelect(
+                            profile: connection,
+                            onSelect: () {
+                              _sphereMembers.add(connection.address);
+                            },
+                            onDeselect: () {
+                              _sphereMembers.indexWhere(connection.addres);
+                              _sphereMembers.remove(connection.address);
+                            },
+                          ),
+                        )
+                        .toList(),
                   ),
-                  const SizedBox(width: 7.5),
-                  Expanded(
+                  // connections
+                  ListView(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    children: _connectionsMembers
+                        .map(
+                          (dynamic connection) => MemberPreviewSelect(
+                            profile: connection,
+                            onSelect: () {
+                              _sphereMembers.add(connection.address);
+                            },
+                            onDeselect: () {
+                              _sphereMembers.remove(connection.address);
+                            },
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ],
+              );
+            } else if (snapshot.hasError) {
+              return TabBarView(
+                children: <Widget>[
+                  Center(
                     child: Transform.translate(
-                      offset: const Offset(0.0, 2),
-                      child: TextField(
-                        buildCounter: (
-                          BuildContext context, {
-                          int currentLength,
-                          int maxLength,
-                          bool isFocused,
-                        }) =>
-                            null,
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.all(0),
-                          border: InputBorder.none,
-                          hintText: 'Add members to your sphere',
-                          hintStyle: TextStyle(
-                              color: Theme.of(context).primaryColorLight,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        cursorColor: Theme.of(context).primaryColorDark,
-                        cursorWidth: 1,
-                        maxLines: null,
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColorDark,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500),
-                        maxLength: 80,
-                        textInputAction: TextInputAction.done,
-                      ),
+                      offset: const Offset(0.0, -50),
+                      child: Text('Hmmm, something is up',
+                          style: Theme.of(context).textTheme.caption),
+                    ),
+                  ),
+                  Center(
+                    child: Transform.translate(
+                      offset: const Offset(0.0, -50),
+                      child: Text('Hmmm, something is up',
+                          style: Theme.of(context).textTheme.caption),
                     ),
                   ),
                 ],
-              ),
-            ),
-            const SizedBox(height: 10),
-          ],
+              );
+            }
+            return TabBarView(
+              children: <Widget>[
+                Center(
+                  child: Transform.translate(
+                    offset: const Offset(0.0, -50),
+                    child: JuntoProgressIndicator(),
+                  ),
+                ),
+                Center(
+                  child: Transform.translate(
+                    offset: const Offset(0.0, -50),
+                    child: JuntoProgressIndicator(),
+                  ),
+                ),
+              ],
+            );
+          },
         ),
-      ],
+      ),
     );
   }
 
@@ -465,7 +539,7 @@ class CreateSphereState extends State<CreateSphere> {
                       ),
                     ),
                     Text(privacyDescription,
-                        style: Theme.of(context).textTheme.body2)
+                        style: Theme.of(context).textTheme.bodyText1)
                   ],
                 ),
               ),
@@ -543,7 +617,7 @@ class CreateSphereState extends State<CreateSphere> {
                       children: <Widget>[
                         Text(
                           'Upload new photo',
-                          style: Theme.of(context).textTheme.headline,
+                          style: Theme.of(context).textTheme.headline5,
                         ),
                       ],
                     ),
@@ -560,7 +634,7 @@ class CreateSphereState extends State<CreateSphere> {
                       children: <Widget>[
                         Text(
                           'Remove photo',
-                          style: Theme.of(context).textTheme.headline,
+                          style: Theme.of(context).textTheme.headline5,
                         ),
                       ],
                     ),

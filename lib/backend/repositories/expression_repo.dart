@@ -45,8 +45,8 @@ class ExpressionRepo {
     return _expressionService.createExpression(_expression);
   }
 
-  Future<String> createPhoto(String fileType, File file) {
-    return _expressionService.createPhoto(fileType, file);
+  Future<String> createPhoto(bool isPrivate, String fileType, File file) {
+    return _expressionService.createPhoto(isPrivate, fileType, file);
   }
 
   Future<CentralizedExpressionResponse> getExpression(
@@ -97,4 +97,25 @@ class ExpressionRepo {
 
   Future<void> deleteExpression(String address) =>
       _expressionService.deleteExpression(address);
+
+  Future<List<Users>> addEventMember(
+    String expressionAddress,
+    List<UserProfile> userProfile,
+    String perms,
+  ) {
+    final List<Map<String, String>> _users = <Map<String, String>>[];
+    for (final UserProfile _profile in userProfile) {
+      _users.add(<String, String>{
+        'target_user': _profile.address,
+        'permissions': perms
+      });
+    }
+
+    return _expressionService.addEventMember(expressionAddress, _users);
+  }
+
+  Future<QueryResults<Users>> getEventMembers(
+      String expressionAddress, Map<String, String> params) async {
+    return _expressionService.getEventMembers(expressionAddress, params);
+  }
 }
