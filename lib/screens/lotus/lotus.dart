@@ -5,8 +5,11 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
 import 'package:junto_beta_mobile/screens/groups/groups.dart';
+import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/pack_open.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class JuntoLotus extends StatelessWidget {
+class JuntoLotus extends StatefulWidget {
   const JuntoLotus({
     Key key,
     @required this.expressionContext,
@@ -17,6 +20,13 @@ class JuntoLotus extends StatelessWidget {
   final ExpressionContext expressionContext;
   final String address;
 
+  @override
+  State<StatefulWidget> createState() {
+    return JuntoLotusState();
+  }
+}
+
+class JuntoLotusState extends State<JuntoLotus> {
   static Route<dynamic> route() {
     return MaterialPageRoute<dynamic>(
       builder: (BuildContext context) {
@@ -25,6 +35,68 @@ class JuntoLotus extends StatelessWidget {
           expressionContext: ExpressionContext.Collective,
         );
       },
+    );
+  }
+
+  String _userAddress;
+
+  Future<void> getUserInformation() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      _userAddress = prefs.getString('user_id');
+    });
+  }
+
+  dynamic _navigateTo(String screen) {
+    Navigator.of(context).push(
+      PageRouteBuilder<dynamic>(
+        pageBuilder: (
+          BuildContext context,
+          Animation<double> animation,
+          Animation<double> secondaryAnimation,
+        ) {
+          if (screen == 'Collective') {
+            return JuntoCollective();
+          } else if (screen == 'Groups') {
+            return JuntoGroups(
+              initialGroup: PackOpen(
+                pack: Group(
+                    address: null,
+                    groupType: 'Pack',
+                    creator: _userAddress,
+                    groupData: null,
+                    members: null,
+                    facilitators: null,
+                    privacy: 'Private',
+                    createdAt: null),
+              ),
+            );
+          } else if (screen == 'Create') {
+            return JuntoCreate(
+              channels: const <String>[],
+              address: widget.address,
+              expressionContext: widget.expressionContext,
+            );
+          } else {
+            return JuntoCollective();
+          }
+        },
+        transitionsBuilder: (
+          BuildContext context,
+          Animation<double> animation,
+          Animation<double> secondaryAnimation,
+          Widget child,
+        ) {
+          return FadeTransition(
+            opacity: animation,
+            child: child,
+          );
+        },
+        transitionDuration: const Duration(
+          milliseconds: 300,
+        ),
+      ),
     );
   }
 
@@ -58,35 +130,7 @@ class JuntoLotus extends StatelessWidget {
                 children: <Widget>[
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(
-                        PageRouteBuilder<dynamic>(
-                          pageBuilder: (
-                            BuildContext context,
-                            Animation<double> animation,
-                            Animation<double> secondaryAnimation,
-                          ) {
-                            return JuntoCreate(
-                              channels: const <String>[],
-                              address: address,
-                              expressionContext: expressionContext,
-                            );
-                          },
-                          transitionsBuilder: (
-                            BuildContext context,
-                            Animation<double> animation,
-                            Animation<double> secondaryAnimation,
-                            Widget child,
-                          ) {
-                            return FadeTransition(
-                              opacity: animation,
-                              child: child,
-                            );
-                          },
-                          transitionDuration: const Duration(
-                            milliseconds: 300,
-                          ),
-                        ),
-                      );
+                      _navigateTo('Create');
                     },
                     child: Container(
                       color: Colors.transparent,
@@ -130,31 +174,7 @@ class JuntoLotus extends StatelessWidget {
                       children: <Widget>[
                         GestureDetector(
                           onTap: () {
-                            Navigator.of(context).push(
-                              PageRouteBuilder<dynamic>(
-                                pageBuilder: (
-                                  BuildContext context,
-                                  Animation<double> animation,
-                                  Animation<double> secondaryAnimation,
-                                ) {
-                                  return JuntoCollective();
-                                },
-                                transitionsBuilder: (
-                                  BuildContext context,
-                                  Animation<double> animation,
-                                  Animation<double> secondaryAnimation,
-                                  Widget child,
-                                ) {
-                                  return FadeTransition(
-                                    opacity: animation,
-                                    child: child,
-                                  );
-                                },
-                                transitionDuration: const Duration(
-                                  milliseconds: 300,
-                                ),
-                              ),
-                            );
+                            _navigateTo('Collective');
                           },
                           child: Container(
                             color: Colors.transparent,
@@ -187,31 +207,7 @@ class JuntoLotus extends StatelessWidget {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.of(context).push(
-                              PageRouteBuilder<dynamic>(
-                                pageBuilder: (
-                                  BuildContext context,
-                                  Animation<double> animation,
-                                  Animation<double> secondaryAnimation,
-                                ) {
-                                  return JuntoGroups();
-                                },
-                                transitionsBuilder: (
-                                  BuildContext context,
-                                  Animation<double> animation,
-                                  Animation<double> secondaryAnimation,
-                                  Widget child,
-                                ) {
-                                  return FadeTransition(
-                                    opacity: animation,
-                                    child: child,
-                                  );
-                                },
-                                transitionDuration: const Duration(
-                                  milliseconds: 300,
-                                ),
-                              ),
-                            );
+                            _navigateTo('Groups');
                           },
                           child: Container(
                             alignment: Alignment.center,
@@ -246,32 +242,7 @@ class JuntoLotus extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       if (ModalRoute.of(context).isFirst) {
-                        Navigator.pushReplacement(
-                          context,
-                          PageRouteBuilder<dynamic>(
-                            pageBuilder: (
-                              BuildContext context,
-                              Animation<double> animation,
-                              Animation<double> secondaryAnimation,
-                            ) {
-                              return JuntoCollective();
-                            },
-                            transitionsBuilder: (
-                              BuildContext context,
-                              Animation<double> animation,
-                              Animation<double> secondaryAnimation,
-                              Widget child,
-                            ) {
-                              return FadeTransition(
-                                opacity: animation,
-                                child: child,
-                              );
-                            },
-                            transitionDuration: const Duration(
-                              milliseconds: 300,
-                            ),
-                          ),
-                        );
+                        _navigateTo('Back');
                       } else {
                         Navigator.pop(context);
                       }

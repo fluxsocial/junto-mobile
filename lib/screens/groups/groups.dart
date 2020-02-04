@@ -16,6 +16,9 @@ import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/
 // This screen displays groups a member belongs two. Currently, there are two types of
 // groups: spheres (communities) and packs (agent-centric communities)
 class JuntoGroups extends StatefulWidget {
+  const JuntoGroups({@required this.initialGroup});
+
+  final Widget initialGroup;
   @override
   State<StatefulWidget> createState() {
     return JuntoGroupsState();
@@ -44,33 +47,9 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
     setState(() {
       _userAddress = prefs.getString('user_id');
 
-      _groupie = PackOpen(
-        pack: Group(
-            address: null,
-            groupType: 'Pack',
-            creator: _userAddress,
-            groupData: null,
-            members: null,
-            facilitators: null,
-            privacy: 'Private',
-            createdAt: null),
-      );
+      _groupie = widget.initialGroup;
     });
   }
-
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //   _currentGroup = Group(
-  //       address: null,
-  //       groupType: 'Pack',
-  //       creator: _userAddress,
-  //       groupData: null,
-  //       members: null,
-  //       facilitators: null,
-  //       privacy: 'Private',
-  //       createdAt: null);
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -105,11 +84,6 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
       endDrawer: const JuntoDrawer(screen: 'Groups', icon: CustomIcons.groups),
       body: Stack(
         children: <Widget>[
-          // AnimatedOpacity(
-          //   duration: const Duration(milliseconds: 300),
-          //   opacity: actionsVisible ? 0.0 : 1.0,
-          //   child: _displayGroup(_currentGroup),
-          // ),
           AnimatedOpacity(
             duration: const Duration(milliseconds: 300),
             opacity: actionsVisible ? 0.0 : 1.0,
@@ -130,23 +104,7 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
     );
   }
 
-  Widget _displayGroup(Group group) {
-    if (group == null) {
-      return Container();
-    } else if (group.groupType == 'Pack') {
-      return PackOpen(pack: group);
-    } else if (group.groupType == 'Sphere') {
-      return SphereOpen(group: group);
-    }
-    return Container();
-  }
-
   void _changeGroup(Group group) {
-    // setState(() {
-    //   _currentGroup = group;
-    //   actionsVisible = false;
-    // });
-
     if (group.groupType == 'Pack') {
       setState(() {
         _groupie = PackOpen(pack: group);
