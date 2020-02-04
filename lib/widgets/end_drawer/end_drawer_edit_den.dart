@@ -13,6 +13,7 @@ import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class JuntoEditDen extends StatefulWidget {
   @override
@@ -201,6 +202,85 @@ class JuntoEditDenState extends State<JuntoEditDen> {
     }
   }
 
+  _displayCurrentProfilePicture() {
+    if (_userData != null &&
+        _userData.user.profilePicture.isNotEmpty &&
+        imageFile == null) {
+      return ClipOval(
+        child: CachedNetworkImage(
+            imageUrl: _userData.user.profilePicture[0],
+            height: 45,
+            width: 45,
+            fit: BoxFit.cover,
+            placeholder: (BuildContext context, String _) {
+              return Container(
+                alignment: Alignment.center,
+                height: 45.0,
+                width: 45.0,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
+                    stops: const <double>[0.3, 0.9],
+                    colors: <Color>[
+                      Theme.of(context).colorScheme.secondary,
+                      Theme.of(context).colorScheme.primary,
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                child: Icon(
+                  CustomIcons.spheres,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  size: 17,
+                ),
+              );
+            }),
+      );
+    } else if (_userData != null &&
+        _userData.user.profilePicture.isNotEmpty &&
+        imageFile != null) {
+      return ClipOval(
+        child: Container(
+          alignment: Alignment.center,
+          height: 45.0,
+          width: 45.0,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.bottomLeft,
+              end: Alignment.topRight,
+              stops: const <double>[0.3, 0.9],
+              colors: <Color>[
+                Theme.of(context).colorScheme.secondary,
+                Theme.of(context).colorScheme.primary
+              ],
+            ),
+          ),
+          child: Image.file(imageFile),
+        ),
+      );
+    } else
+      return Container(
+        alignment: Alignment.center,
+        height: 45.0,
+        width: 45.0,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.bottomLeft,
+            end: Alignment.topRight,
+            stops: const <double>[0.3, 0.9],
+            colors: <Color>[
+              Theme.of(context).colorScheme.secondary,
+              Theme.of(context).colorScheme.primary
+            ],
+          ),
+          borderRadius: BorderRadius.circular(100),
+        ),
+        child: Image.asset('assets/images/junto-mobile__logo--white.png',
+            height: 15),
+      );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -230,7 +310,7 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                       size: 17,
                     ),
                   ),
-                ),  
+                ),
                 Container(
                   child: Text('Edit Profile',
                       style: Theme.of(context).textTheme.subtitle1),
@@ -287,15 +367,8 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                         ),
                       ),
                       child: Row(children: <Widget>[
-                        // ClipOval(
-                        //   child: Image.asset(
-                        //     'assets/images/junto-mobile__mockprofpic--one.png',
-                        //     height: 45.0,
-                        //     width: 45.0,
-                        //     fit: BoxFit.cover,
-                        //   ),
-                        // ),
-                        // const SizedBox(width: 10),
+                        _displayCurrentProfilePicture(),
+                        const SizedBox(width: 10),
                         Text('Edit profile picture',
                             style: Theme.of(context).textTheme.bodyText1)
                       ]),
