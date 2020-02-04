@@ -31,32 +31,11 @@ class PackOpenAppbar extends StatelessWidget {
           children: <Widget>[
             Row(
               children: <Widget>[
-                Icon(
-                  CustomIcons.packs,
-                  color: Theme.of(context).primaryColor,
-                  size: 17,
-                ),
-                const SizedBox(width: 10),
-                Text('My Pack', style: Theme.of(context).textTheme.caption)
+                Text('My Pack', style: Theme.of(context).textTheme.headline6)
               ],
             ),
             Row(
               children: <Widget>[
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      GlobalSearch.route((_) {}),
-                    );
-                  },
-                  child: Container(
-                    width: 38,
-                    color: Colors.transparent,
-                    alignment: Alignment.centerRight,
-                    child: Icon(Icons.search,
-                        size: 22, color: Theme.of(context).primaryColor),
-                  ),
-                ),
                 GestureDetector(
                   onTap: () {},
                   child: Container(
