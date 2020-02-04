@@ -79,22 +79,10 @@ class _GlobalSearchState extends State<GlobalSearch> {
         elevation: 0,
         titleSpacing: 0.0,
         title: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Container(
-                  padding: const EdgeInsets.only(left: 10),
-                  color: Colors.transparent,
-                  height: 48,
-                  child: Icon(CustomIcons.back,
-                      size: 17, color: Theme.of(context).primaryColor),
-                ),
-              ),
-              const SizedBox(width: 15),
               Expanded(
                 child: TextField(
                   controller: _textEditingController,
@@ -111,7 +99,7 @@ class _GlobalSearchState extends State<GlobalSearch> {
                     hintText: 'search members',
                     border: InputBorder.none,
                     hintStyle: TextStyle(
-                        fontSize: 17,
+                        fontSize: 24,
                         fontWeight: FontWeight.w500,
                         color: Theme.of(context).primaryColorLight),
                   ),
@@ -119,46 +107,58 @@ class _GlobalSearchState extends State<GlobalSearch> {
                   cursorWidth: 1,
                   maxLines: 1,
                   style: TextStyle(
-                      fontSize: 17,
+                      fontSize: 24,
                       fontWeight: FontWeight.w500,
                       color: Theme.of(context).primaryColor),
                   maxLength: 80,
                   textInputAction: TextInputAction.search,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 6.0,
+              const SizedBox(width: 15),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  padding: const EdgeInsets.only(left: 10),
+                  color: Colors.transparent,
+                  height: 48,
+                  child: Icon(CustomIcons.cancel,
+                      size: 33, color: Theme.of(context).dividerColor),
                 ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    const Text(
-                      'Full Name',
-                      style: TextStyle(color: Colors.black, fontSize: 16.0),
-                    ),
-                    const SizedBox(width: 8.0),
-                    SizedBox(
-                      height: 12.0,
-                      child: Switch.adaptive(
-                        value: _fullName,
-                        onChanged: (bool value) => setState(
-                          () => _fullName = value,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              )
+              ),
             ],
           ),
         ),
       ),
       body: SafeArea(
-        child: Padding(
+        child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 5),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Switch.adaptive(
+                      activeColor: Theme.of(context).colorScheme.secondary,
+                      value: _fullName,
+                      onChanged: (bool value) => setState(
+                        () => _fullName = value,
+                      ),
+                    ),
+                    Text(
+                      _fullName ? 'by full name' : 'by username',
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColorLight,
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ],
+                ),
+              ),
               Expanded(
                 child: FutureBuilder<QueryResults<UserProfile>>(
                   future: _searchFuture,

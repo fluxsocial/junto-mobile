@@ -69,9 +69,30 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                   children: <Widget>[
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          GlobalSearch.route((_) {}),
+                        Navigator.of(context).push(
+                          PageRouteBuilder<dynamic>(
+                            pageBuilder: (
+                              BuildContext context,
+                              Animation<double> animation,
+                              Animation<double> secondaryAnimation,
+                            ) {
+                              return const GlobalSearch();
+                            },
+                            transitionsBuilder: (
+                              BuildContext context,
+                              Animation<double> animation,
+                              Animation<double> secondaryAnimation,
+                              Widget child,
+                            ) {
+                              return FadeTransition(
+                                opacity: animation,
+                                child: child,
+                              );
+                            },
+                            transitionDuration: const Duration(
+                              milliseconds: 300,
+                            ),
+                          ),
                         );
                       },
                       child: Container(
