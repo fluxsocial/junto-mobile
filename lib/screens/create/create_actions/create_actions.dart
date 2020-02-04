@@ -18,6 +18,7 @@ import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/pack_open.dart';
 
 class CreateActions extends StatefulWidget {
   const CreateActions({
@@ -191,9 +192,10 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
                   ) {
                     if (_currentExpressionContext == 'Collective') {
                       return JuntoCollective();
-                    } else if (_currentExpressionContext == 'Sphere' ||
-                        _currentExpressionContext == 'My Pack') {
-                      return JuntoGroups();
+                    } else if (_currentExpressionContext == 'My Pack') {
+                      return JuntoGroups(initialGroup: _address);
+                    } else if (_currentExpressionContext == 'Sphere') {
+                      return JuntoGroups(initialGroup: _address);
                     } else {
                       return JuntoDen();
                     }

@@ -1,9 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
@@ -12,13 +11,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/groups_actions.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_open/sphere_open.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/pack_open.dart';
+import 'package:provider/provider.dart';
 
 // This screen displays groups a member belongs two. Currently, there are two types of
 // groups: spheres (communities) and packs (agent-centric communities)
 class JuntoGroups extends StatefulWidget {
   const JuntoGroups({@required this.initialGroup});
 
-  final Widget initialGroup;
+  final String initialGroup;
   @override
   State<StatefulWidget> createState() {
     return JuntoGroupsState();
@@ -29,11 +29,9 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
   String _userAddress;
 
-  Group _currentGroup;
-
   bool actionsVisible = false;
 
-  dynamic _groupie;
+  dynamic _currentGroup;
 
   @override
   void initState() {
@@ -46,9 +44,20 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
 
     setState(() {
       _userAddress = prefs.getString('user_id');
-
-      _groupie = widget.initialGroup;
     });
+
+    final Group group = await Provider.of<GroupRepo>(context, listen: false)
+        .getGroup(widget.initialGroup);
+
+    if (group.groupType == 'Pack') {
+      setState(() {
+        _currentGroup = PackOpen(pack: group);
+      });
+    } else if (group.groupType == 'Sphere') {
+      setState(() {
+        _currentGroup = SphereOpen(group: group);
+      });
+    }
   }
 
   @override
@@ -85,10 +94,9 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
       body: Stack(
         children: <Widget>[
           AnimatedOpacity(
-            duration: const Duration(milliseconds: 300),
-            opacity: actionsVisible ? 0.0 : 1.0,
-            child: _groupie,
-          ),
+              duration: const Duration(milliseconds: 300),
+              opacity: actionsVisible ? 0.0 : 1.0,
+              child: _currentGroup),
           AnimatedOpacity(
             duration: const Duration(milliseconds: 300),
             opacity: actionsVisible ? 1.0 : 0.0,
@@ -107,16 +115,16 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
   void _changeGroup(Group group) {
     if (group.groupType == 'Pack') {
       setState(() {
-        _groupie = PackOpen(pack: group);
+        _currentGroup = PackOpen(pack: group);
       });
     }
 
     if (group.groupType == 'Sphere') {
       setState(() {
-        _groupie = const SizedBox();
+        _currentGroup = const SizedBox();
       });
       setState(() {
-        _groupie = SphereOpen(
+        _currentGroup = SphereOpen(
           group: group,
         );
       });

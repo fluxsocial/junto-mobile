@@ -17,6 +17,7 @@ import 'package:junto_beta_mobile/screens/expression_open/expressions/shortform_
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/widgets/previews/comment_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
 
 class ExpressionOpen extends StatefulWidget {
@@ -54,23 +55,22 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   /// [FocusNode] passed to Comments [TextField]
   FocusNode _focusNode;
 
-  /// If an expression has no comments, we do not show the option "show replies"
-  bool canShowComments = false;
-
   Future<QueryResults<Comment>> futureComments;
 
   @override
   void initState() {
     super.initState();
+
     commentController = TextEditingController();
     _focusNode = FocusNode();
-    canShowComments = widget.expression.numberComments != 0;
+
     print(widget.expression.channels);
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
     futureComments = Provider.of<ExpressionRepo>(context, listen: false)
         .getExpressionsComments(widget.expression.address);
   }
@@ -210,6 +210,8 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   }
 
   Future<void> _createComment() async {
+    JuntoLoader.showLoader(context);
+
     try {
       await Provider.of<ExpressionRepo>(context, listen: false)
           .postCommentExpression(
@@ -221,6 +223,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
         ).toMap(),
       );
       commentController.clear();
+      JuntoLoader.hide();
       JuntoDialog.showJuntoDialog(
         context,
         'Comment Created',
@@ -231,9 +234,10 @@ class ExpressionOpenState extends State<ExpressionOpen> {
           ),
         ],
       );
-      setState(() {});
     } catch (error) {
       debugPrint('Error posting comment $error');
+      JuntoLoader.hide();
+
       JuntoDialog.showJuntoDialog(
         context,
         'Error posting comment',
@@ -279,34 +283,35 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                         userAddress: widget.userAddress),
                     _buildExpression(),
                     ExpressionOpenBottom(widget.expression, _focusTextField),
-                    if (canShowComments)
-                      GestureDetector(
-                        onTap: _showComments,
-                        child: Container(
-                          color: Colors.transparent,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 15),
-                          child: Row(
-                            children: <Widget>[
-                              Text(
-                                'Show replies',
-                                style: TextStyle(
-                                    color: Theme.of(context).primaryColor,
-                                    fontSize: 12),
+                    widget.expression.numberComments > 0
+                        ? GestureDetector(
+                            onTap: _showComments,
+                            child: Container(
+                              color: Colors.transparent,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 15),
+                              child: Row(
+                                children: <Widget>[
+                                  Text(
+                                    'Show replies',
+                                    style: TextStyle(
+                                        color: Theme.of(context).primaryColor,
+                                        fontSize: 12),
+                                  ),
+                                  const SizedBox(width: 5),
+                                  if (commentsVisible == false)
+                                    Icon(Icons.keyboard_arrow_down,
+                                        size: 14,
+                                        color: Theme.of(context).primaryColor),
+                                  if (commentsVisible != false)
+                                    Icon(Icons.keyboard_arrow_up,
+                                        size: 17,
+                                        color: Theme.of(context).primaryColor),
+                                ],
                               ),
-                              const SizedBox(width: 5),
-                              if (commentsVisible == false)
-                                Icon(Icons.keyboard_arrow_down,
-                                    size: 14,
-                                    color: Theme.of(context).primaryColor),
-                              if (commentsVisible != false)
-                                Icon(Icons.keyboard_arrow_up,
-                                    size: 17,
-                                    color: Theme.of(context).primaryColor),
-                            ],
-                          ),
-                        ),
-                      ),
+                            ),
+                          )
+                        : const SizedBox(),
                     if (commentsVisible)
                       FutureBuilder<QueryResults<Comment>>(
                         future: futureComments,

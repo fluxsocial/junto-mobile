@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
@@ -39,12 +41,23 @@ class JuntoLotusState extends State<JuntoLotus> {
   }
 
   String _userAddress;
+  UserData _userProfile;
+
+  @override
+  void initState() {
+    super.initState();
+
+    getUserInformation();
+  }
 
   Future<void> getUserInformation() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final Map<String, dynamic> decodedUserData =
+        jsonDecode(prefs.getString('user_data'));
 
     setState(() {
       _userAddress = prefs.getString('user_id');
+      _userProfile = UserData.fromMap(decodedUserData);
     });
   }
 
@@ -59,19 +72,7 @@ class JuntoLotusState extends State<JuntoLotus> {
           if (screen == 'Collective') {
             return JuntoCollective();
           } else if (screen == 'Groups') {
-            return JuntoGroups(
-              initialGroup: PackOpen(
-                pack: Group(
-                    address: null,
-                    groupType: 'Pack',
-                    creator: _userAddress,
-                    groupData: null,
-                    members: null,
-                    facilitators: null,
-                    privacy: 'Private',
-                    createdAt: null),
-              ),
-            );
+            return JuntoGroups(initialGroup: _userProfile.pack.address);
           } else if (screen == 'Create') {
             return JuntoCreate(
               channels: const <String>[],
