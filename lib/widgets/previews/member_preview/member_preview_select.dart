@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 
 class MemberPreviewSelect extends StatefulWidget {
   const MemberPreviewSelect(
@@ -26,14 +28,58 @@ class MemberPreviewSelectState extends State<MemberPreviewSelect> {
         children: <Widget>[
           Row(
             children: <Widget>[
-              ClipOval(
-                child: Image.asset(
-                  'assets/images/junto-mobile__placeholder--member.png',
-                  height: 45.0,
-                  width: 45.0,
-                  fit: BoxFit.cover,
-                ),
-              ),
+              widget.profile.profilePicture.isNotEmpty
+                  ? ClipOval(
+                      child: CachedNetworkImage(
+                          imageUrl: widget.profile.profilePicture[0],
+                          height: 45,
+                          width: 45,
+                          fit: BoxFit.cover,
+                          placeholder: (BuildContext context, String _) {
+                            return Container(
+                              alignment: Alignment.center,
+                              height: 45.0,
+                              width: 45.0,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.bottomLeft,
+                                  end: Alignment.topRight,
+                                  stops: const <double>[0.3, 0.9],
+                                  colors: <Color>[
+                                    Theme.of(context).colorScheme.secondary,
+                                    Theme.of(context).colorScheme.primary,
+                                  ],
+                                ),
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                              child: Icon(
+                                CustomIcons.spheres,
+                                color: Theme.of(context).colorScheme.onPrimary,
+                                size: 17,
+                              ),
+                            );
+                          }),
+                    )
+                  : Container(
+                      alignment: Alignment.center,
+                      height: 45.0,
+                      width: 45.0,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.bottomLeft,
+                          end: Alignment.topRight,
+                          stops: const <double>[0.3, 0.9],
+                          colors: <Color>[
+                            Theme.of(context).colorScheme.secondary,
+                            Theme.of(context).colorScheme.primary
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      child: Image.asset(
+                          'assets/images/junto-mobile__logo--white.png',
+                          height: 15),
+                    ),
               Container(
                 width: MediaQuery.of(context).size.width - 75,
                 padding: const EdgeInsets.symmetric(
