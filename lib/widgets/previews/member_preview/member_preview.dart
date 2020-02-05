@@ -57,11 +57,7 @@ class MemberPreview extends StatelessWidget {
                               ),
                               borderRadius: BorderRadius.circular(100),
                             ),
-                            child: Icon(
-                              CustomIcons.spheres,
-                              color: Theme.of(context).colorScheme.onPrimary,
-                              size: 17,
-                            ),
+                            child: Image.asset('assets/images/junto-mobile__logo--white.png', height: 17)
                           );
                         }),
                   )

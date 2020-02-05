@@ -4,6 +4,7 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/widgets/expression_action_items.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ExpressionOpenTop extends StatelessWidget {
   const ExpressionOpenTop({Key key, this.expression, this.userAddress})
@@ -34,15 +35,58 @@ class ExpressionOpenTop extends StatelessWidget {
             child: Container(
               color: Colors.transparent,
               child: Row(children: <Widget>[
-                // profile picture
-                ClipOval(
-                  child: Image.asset(
-                    'assets/images/junto-mobile__placeholder--member.png',
-                    height: 45.0,
-                    width: 45.0,
-                    fit: BoxFit.cover,
-                  ),
-                ),
+                expression.creator.profilePicture.isNotEmpty
+                    ? ClipOval(
+                        child: CachedNetworkImage(
+                            imageUrl: expression.creator.profilePicture[0],
+                            height: 45,
+                            width: 45,
+                            fit: BoxFit.cover,
+                            placeholder: (BuildContext context, String _) {
+                              return Container(
+                                alignment: Alignment.center,
+                                height: 45.0,
+                                width: 45.0,
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.bottomLeft,
+                                    end: Alignment.topRight,
+                                    stops: const <double>[0.3, 0.9],
+                                    colors: <Color>[
+                                      Theme.of(context).colorScheme.secondary,
+                                      Theme.of(context).colorScheme.primary,
+                                    ],
+                                  ),
+                                  borderRadius: BorderRadius.circular(100),
+                                ),
+                                child: Image.asset(
+                                    'assets/images/junto-mobile__logo--white.png',
+                                    height: 17),
+                              );
+                            }),
+                      )
+                    :
+                    // profile picture
+                    Container(
+                        alignment: Alignment.center,
+                        height: 45.0,
+                        width: 45.0,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.bottomLeft,
+                            end: Alignment.topRight,
+                            stops: const <double>[0.3, 0.9],
+                            colors: <Color>[
+                              Theme.of(context).colorScheme.secondary,
+                              Theme.of(context).colorScheme.primary,
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        child: Image.asset(
+                            'assets/images/junto-mobile__logo--white.png',
+                            height: 17),
+                      ),
                 const SizedBox(width: 10),
 
                 // profile name and handle

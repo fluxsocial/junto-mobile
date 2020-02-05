@@ -1,5 +1,3 @@
-import 'dart:async' show Timer;
-
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
