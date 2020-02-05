@@ -15,8 +15,7 @@ class CreateShortformState extends State<CreateShortform> {
   num gradientOne;
   num gradientTwo;
 
-  // ignore: unused_field
-  final String _currentBackground = '';
+  String _currentBackground = 'zero';
   TextEditingController _bodyController;
 
   /// Creates a [CentralizedShortFormExpression] from the given data entered
@@ -24,7 +23,7 @@ class CreateShortformState extends State<CreateShortform> {
   CentralizedShortFormExpression createExpression() {
     return CentralizedShortFormExpression(
       body: _bodyController.value.text,
-      background: _currentBackground,
+      background: 'two',
     );
   }
 
@@ -42,12 +41,13 @@ class CreateShortformState extends State<CreateShortform> {
     super.dispose();
   }
 
-  Widget _gradientSelector(num hexOne, num hexTwo) {
+  Widget _gradientSelector(String gradientId, num hexOne, num hexTwo) {
     return GestureDetector(
       onTap: () {
         setState(() {
           gradientOne = hexOne;
           gradientTwo = hexTwo;
+          _currentBackground = gradientId;
         });
       },
       child: Container(
@@ -75,10 +75,11 @@ class CreateShortformState extends State<CreateShortform> {
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             child: Row(
               children: <Widget>[
-                _gradientSelector(0xff2c2cde, 0xff7ec6e9),
-                _gradientSelector(0xff9e81d7, 0xffddcb7f),
-                _gradientSelector(0xff719cf4, 0xffffc7e4),
-                _gradientSelector(0xff639acf, 0xff7bdaa5),
+                _gradientSelector('zero', 0xFF7461a1, 0xff285FA7),
+                _gradientSelector('one', 0xff9e81d7, 0xffddcb7f),
+                _gradientSelector('two', 0xff2c2cde, 0xff7ec6e9),
+                _gradientSelector('three', 0xff719cf4, 0xffffc7e4),
+                _gradientSelector('four', 0xff639acf, 0xff7bdaa5),
               ],
             ),
           ),

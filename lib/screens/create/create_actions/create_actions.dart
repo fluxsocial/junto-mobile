@@ -165,10 +165,8 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
           context: _expressionContext,
           channels: channel,
         );
+        print(_expression.expressionData);
       }
-      print(_expression.type);
-      print(_expression.context);
-      print(_address);
       JuntoLoader.showLoader(context);
       await Provider.of<ExpressionRepo>(context, listen: false)
           .createExpression(
