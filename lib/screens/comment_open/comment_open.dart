@@ -5,6 +5,7 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/comment_open/comment_open_appbar.dart';
 import 'package:junto_beta_mobile/widgets/comment_action_items.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:junto_beta_mobile/widgets/utils/date_parsing.dart';
 
 class CommentOpen extends StatelessWidget {
   const CommentOpen(this.comment, this.parent, this.userAddress);
@@ -180,8 +181,8 @@ class CommentOpen extends StatelessWidget {
                           children: <Widget>[
                             Container(
                               child: Text(
-                                  // expressionTime,
-                                  'today',
+                                  parseDate(context, comment.createdAt)
+                                      .toLowerCase(),
                                   textAlign: TextAlign.start,
                                   style: Theme.of(context).textTheme.overline),
                             )

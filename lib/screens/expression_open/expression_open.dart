@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
@@ -184,7 +183,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                         expression: widget.expression,
                         userAddress: widget.userAddress),
                     _buildExpression(),
-                    ExpressionOpenBottom(widget.expression, _focusTextField),
+                    ExpressionOpenBottom(widget.expression),
                     FutureBuilder<QueryResults<Comment>>(
                       future: futureComments,
                       builder: (

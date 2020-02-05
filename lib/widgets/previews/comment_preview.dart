@@ -6,6 +6,7 @@ import 'package:junto_beta_mobile/screens/comment_open/comment_open.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/widgets/comment_action_items.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:junto_beta_mobile/widgets/utils/date_parsing.dart';
 
 /// Shows a preview of the comments. Takes a un-named [String] as a param.
 class CommentPreview extends StatelessWidget {
@@ -172,8 +173,7 @@ class CommentPreview extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 10),
               child: Text(
-                MaterialLocalizations.of(context)
-                    .formatFullDate(comment.createdAt),
+                parseDate(context, comment.createdAt).toLowerCase(),
                 style: Theme.of(context).textTheme.overline,
               ),
             ),

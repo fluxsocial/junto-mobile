@@ -5,25 +5,10 @@ import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/utils/date_parsing.dart';
 
-class ExpressionOpenBottom extends StatefulWidget {
-  const ExpressionOpenBottom(this.expression, this.focusTextField);
+class ExpressionOpenBottom extends StatelessWidget {
+  const ExpressionOpenBottom(this.expression);
 
   final CentralizedExpressionResponse expression;
-  final Function focusTextField;
-
-  @override
-  State<StatefulWidget> createState() => ExpressionOpenBottomState();
-}
-
-class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
-  String parsedDate;
-
-  @override
-  void initState() {
-    parsedDate = parseDate(context, widget.expression.createdAt).toLowerCase();
-
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +26,7 @@ class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  parsedDate,
+                  parseDate(context, expression.createdAt).toLowerCase(),
                   style: JuntoStyles.expressionTimestamp,
                 ),
               ]),
