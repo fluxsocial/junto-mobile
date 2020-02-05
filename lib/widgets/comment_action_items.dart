@@ -9,13 +9,11 @@ import 'package:provider/provider.dart';
 // This component is used in CommentPreview
 // as the 'more' icon is pressed to view the action items
 class CommentActionItems extends StatelessWidget {
-  const CommentActionItems({
-    this.comment,
-    this.userAddress,
-  });
+  const CommentActionItems({this.comment, this.userAddress, this.source});
 
   final dynamic comment;
   final String userAddress;
+  final String source;
 
   @override
   Widget build(BuildContext context) {
@@ -79,6 +77,9 @@ class CommentActionItems extends StatelessWidget {
 
               JuntoLoader.hide();
               Navigator.pop(context);
+              if (source == 'open') {
+                Navigator.pop(context);
+              }
             } catch (error) {
               print(error);
               print(error.message);

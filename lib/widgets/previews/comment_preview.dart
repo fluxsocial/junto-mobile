@@ -141,6 +141,7 @@ class CommentPreview extends StatelessWidget {
                           child: CommentActionItems(
                             comment: comment,
                             userAddress: userAddress,
+                            source: 'preview'
                           ),
                         ),
                       );

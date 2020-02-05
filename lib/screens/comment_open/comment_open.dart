@@ -137,6 +137,7 @@ class CommentOpen extends StatelessWidget {
                                 CommentActionItems(
                               comment: comment,
                               userAddress: userAddress,
+                              source: 'open'
                             ),
                           );
                         },
