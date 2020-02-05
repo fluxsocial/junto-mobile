@@ -15,6 +15,7 @@ import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/user_expressions.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:provider/provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class JuntoMember extends StatefulWidget {
   const JuntoMember({
@@ -134,54 +135,70 @@ class _JuntoMemberState extends State<JuntoMember> {
                     padding: const EdgeInsets.only(top: 5, bottom: 5),
                     child: Column(
                       children: <Widget>[
-                        widget.profile.gender[0] != ' '
+                        widget.profile.gender[0].isNotEmpty
                             ? _ProfileDetails(
                                 iconData: CustomIcons.gender,
                                 item: widget.profile.gender,
-                                placeholderText: 'Gender',
                               )
                             : const SizedBox(),
-                        widget.profile.location[0] != ' '
+                        widget.profile.location[0].isNotEmpty
                             ? _ProfileDetails(
                                 imageUri:
                                     'assets/images/junto-mobile__location.png',
                                 item: widget.profile.location,
-                                placeholderText: 'Location',
                               )
                             : const SizedBox(),
-                        widget.profile.website[0] != ' '
+                        widget.profile.website.isNotEmpty
                             ? _ProfileDetails(
                                 imageUri:
                                     'assets/images/junto-mobile__link.png',
                                 item: widget.profile.website,
-                                placeholderText: 'Website',
                               )
                             : const SizedBox(),
                       ],
                     ),
                   ),
-                  CarouselSlider(
-                    viewportFraction: 1.0,
-                    height: MediaQuery.of(context).size.width - 20,
-                    enableInfiniteScroll: false,
-                    items: <Widget>[
-                      Container(
-                        padding: const EdgeInsets.only(right: 10),
-                        width: MediaQuery.of(context).size.width,
-                        child: Image.asset(
-                            'assets/images/junto-mobile__mockprofpic--one.png',
-                            fit: BoxFit.cover),
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        padding: const EdgeInsets.only(right: 10),
-                        child: Image.asset(
-                            'assets/images/junto-mobile__mockprofpic--two.png',
-                            fit: BoxFit.cover),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 15),
+                  widget.profile.profilePicture.isNotEmpty
+                      ? Container(
+                          margin: const EdgeInsets.only(bottom: 15),
+                          child: CarouselSlider(
+                              viewportFraction: 1.0,
+                              height: MediaQuery.of(context).size.width - 20,
+                              enableInfiniteScroll: false,
+                              items: <Widget>[
+                                Container(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  width: MediaQuery.of(context).size.width,
+                                  child: CachedNetworkImage(
+                                    placeholder:
+                                        (BuildContext context, String _) {
+                                      return Container(
+                                        height: 120,
+                                        width: 120,
+                                        decoration: BoxDecoration(
+                                          gradient: LinearGradient(
+                                            begin: Alignment.bottomLeft,
+                                            end: Alignment.topRight,
+                                            stops: const <double>[0.2, 0.9],
+                                            colors: <Color>[
+                                              Theme.of(context)
+                                                  .colorScheme
+                                                  .secondary,
+                                              Theme.of(context)
+                                                  .colorScheme
+                                                  .primary
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    imageUrl: widget.profile.profilePicture[0],
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ]),
+                        )
+                      : const SizedBox(),
                   Container(
                     child: Text(widget.profile.bio,
                         style: Theme.of(context).textTheme.caption),
@@ -206,13 +223,11 @@ class _ProfileDetails extends StatelessWidget {
   const _ProfileDetails({
     Key key,
     @required this.item,
-    @required this.placeholderText,
     this.iconData,
     this.imageUri,
   }) : super(key: key);
 
   final List<String> item;
-  final String placeholderText;
   final IconData iconData;
   final String imageUri;
 
@@ -232,26 +247,15 @@ class _ProfileDetails extends StatelessWidget {
             Icon(CustomIcons.gender,
                 size: 17, color: Theme.of(context).primaryColor),
           const SizedBox(width: 5),
-          if (item.isNotEmpty)
-            Text(
-              item.first ?? '',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                  color: Theme.of(context).primaryColor,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600),
-            ),
-          if (item.isEmpty)
-            Text(
-              placeholderText,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                  color: Theme.of(context).primaryColor,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600),
-            ),
+          Text(
+            item[0],
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+                color: Theme.of(context).primaryColor,
+                fontSize: 15,
+                fontWeight: FontWeight.w600),
+          ),
         ],
       ),
     );

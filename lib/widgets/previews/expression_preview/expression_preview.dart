@@ -12,12 +12,11 @@ import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression
 
 /// Renders a concise overview of one given [ExpressionResult].
 class ExpressionPreview extends StatelessWidget {
-  const ExpressionPreview(
-      {Key key,
-      @required this.expression,
-      @required this.userAddress,
-})
-      : super(key: key);
+  const ExpressionPreview({
+    Key key,
+    @required this.expression,
+    @required this.userAddress,
+  }) : super(key: key);
 
   final CentralizedExpressionResponse expression;
   final String userAddress;
@@ -149,7 +148,6 @@ class ExpressionPreview extends StatelessWidget {
                               child: ExpressionActionItems(
                                 expression: expression,
                                 userAddress: userAddress,
-                  
                               ),
                             ),
                           );
