@@ -126,25 +126,25 @@ class ExpressionActionItems extends StatelessWidget {
             ],
           ),
         ),
-        if (expression.expressionData is CentralizedEventFormExpression)
-          ListTile(
-            onTap: () => Navigator.push(
-              context,
-              _AddEventMembers.route(
-                expression,
-              ),
-            ),
-            contentPadding:
-                const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
-            title: Row(
-              children: <Widget>[
-                Text(
-                  'Add member to event',
-                  style: Theme.of(context).textTheme.headline5,
-                ),
-              ],
-            ),
-          ),
+        // if (expression.expressionData is CentralizedEventFormExpression)
+        //   ListTile(
+        //     onTap: () => Navigator.push(
+        //       context,
+        //       _AddEventMembers.route(
+        //         expression,
+        //       ),
+        //     ),
+        //     contentPadding:
+        //         const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
+        //     title: Row(
+        //       children: <Widget>[
+        //         Text(
+        //           'Add member to event',
+        //           style: Theme.of(context).textTheme.headline5,
+        //         ),
+        //       ],
+        //     ),
+        //   ),
       ],
     );
   }
@@ -171,32 +171,6 @@ class ExpressionActionItems extends StatelessWidget {
           title: Row(
             children: <Widget>[
               Text('View @' + expression.creator.username + "'s den",
-                  style: Theme.of(context).textTheme.headline5),
-            ],
-          ),
-        ),
-        ListTile(
-          onTap: () {
-            // subscribe to user
-          },
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
-          title: Row(
-            children: <Widget>[
-              Text('Subscribe @' + expression.creator.username,
-                  style: Theme.of(context).textTheme.headline5),
-            ],
-          ),
-        ),
-        ListTile(
-          onTap: () {
-            // connect with user
-          },
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
-          title: Row(
-            children: <Widget>[
-              Text('Connect @' + expression.creator.username,
                   style: Theme.of(context).textTheme.headline5),
             ],
           ),

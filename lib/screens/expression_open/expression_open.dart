@@ -264,7 +264,6 @@ class ExpressionOpenState extends State<ExpressionOpen> {
             postComment: _createComment,
             commentController: commentController,
             focusNode: _focusNode,
-            onGifSelected: (_) {},
           ),
         ],
       ),
@@ -277,12 +276,10 @@ class _BottomCommentBar extends StatefulWidget {
     Key key,
     @required this.focusNode,
     @required this.commentController,
-    @required this.onGifSelected,
     @required this.postComment,
   }) : super(key: key);
   final FocusNode focusNode;
   final TextEditingController commentController;
-  final ValueChanged<String> onGifSelected;
   final VoidCallback postComment;
 
   @override
