@@ -4,21 +4,15 @@ import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/comment_open/comment_open_appbar.dart';
 import 'package:junto_beta_mobile/widgets/comment_action_items.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
-class CommentOpen extends StatefulWidget {
+class CommentOpen extends StatelessWidget {
   const CommentOpen(this.comment, this.parent, this.userAddress);
 
   final dynamic comment;
   final dynamic parent;
   final String userAddress;
 
-  @override
-  State<StatefulWidget> createState() {
-    return CommentOpenState();
-  }
-}
-
-class CommentOpenState extends State<CommentOpen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +28,7 @@ class CommentOpenState extends State<CommentOpen> {
                 Container(
                   padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
                   child: Text(
-                    'in response to ' + widget.parent.creator.name,
+                    'in response to ' + parent.creator.name,
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       color: Theme.of(context).primaryColorLight,
@@ -52,15 +46,67 @@ class CommentOpenState extends State<CommentOpen> {
                         child: Container(
                           color: Colors.transparent,
                           child: Row(children: <Widget>[
-                            // profile picture
-                            ClipOval(
-                              child: Image.asset(
-                                'assets/images/junto-mobile__placeholder--member.png',
-                                height: 45.0,
-                                width: 45.0,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
+                            comment.creator.profilePicture.isNotEmpty
+                                ? ClipOval(
+                                    child: CachedNetworkImage(
+                                        imageUrl:
+                                            comment.creator.profilePicture[0],
+                                        height: 45,
+                                        width: 45,
+                                        fit: BoxFit.cover,
+                                        placeholder:
+                                            (BuildContext context, String _) {
+                                          return Container(
+                                            alignment: Alignment.center,
+                                            height: 45.0,
+                                            width: 45.0,
+                                            decoration: BoxDecoration(
+                                              gradient: LinearGradient(
+                                                begin: Alignment.bottomLeft,
+                                                end: Alignment.topRight,
+                                                stops: const <double>[0.3, 0.9],
+                                                colors: <Color>[
+                                                  Theme.of(context)
+                                                      .colorScheme
+                                                      .secondary,
+                                                  Theme.of(context)
+                                                      .colorScheme
+                                                      .primary,
+                                                ],
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(100),
+                                            ),
+                                            child: Image.asset(
+                                                'assets/images/junto-mobile__logo--white.png',
+                                                height: 17),
+                                          );
+                                        }),
+                                  )
+                                :
+                                // profile picture
+                                Container(
+                                    alignment: Alignment.center,
+                                    height: 45.0,
+                                    width: 45.0,
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        begin: Alignment.bottomLeft,
+                                        end: Alignment.topRight,
+                                        stops: const <double>[0.3, 0.9],
+                                        colors: <Color>[
+                                          Theme.of(context)
+                                              .colorScheme
+                                              .secondary,
+                                          Theme.of(context).colorScheme.primary,
+                                        ],
+                                      ),
+                                      borderRadius: BorderRadius.circular(100),
+                                    ),
+                                    child: Image.asset(
+                                        'assets/images/junto-mobile__logo--white.png',
+                                        height: 17),
+                                  ),
                             const SizedBox(width: 10),
 
                             // profile name and handle
@@ -68,11 +114,14 @@ class CommentOpenState extends State<CommentOpen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  Text(widget.comment.creator.username,
-                                      style:
-                                          Theme.of(context).textTheme.subtitle1),
-                                  Text(widget.comment.creator.name,
-                                      style: Theme.of(context).textTheme.subtitle1),
+                                  Text(comment.creator.username,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .subtitle1),
+                                  Text(comment.creator.name,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1),
                                 ],
                               ),
                             ),
@@ -85,8 +134,8 @@ class CommentOpenState extends State<CommentOpen> {
                             context: context,
                             builder: (BuildContext context) =>
                                 CommentActionItems(
-                              comment: widget.comment,
-                              userAddress: widget.userAddress,
+                              comment: comment,
+                              userAddress: userAddress,
                             ),
                           );
                         },
@@ -110,7 +159,7 @@ class CommentOpenState extends State<CommentOpen> {
                     children: <Widget>[
                       Container(
                         width: MediaQuery.of(context).size.width,
-                        child: Text(widget.comment.expressionData.body,
+                        child: Text(comment.expressionData.body,
                             textAlign: TextAlign.start,
                             style: Theme.of(context).textTheme.caption),
                       ),
