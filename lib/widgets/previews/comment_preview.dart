@@ -139,10 +139,9 @@ class CommentPreview extends StatelessWidget {
                         builder: (BuildContext context) => Container(
                           color: Colors.transparent,
                           child: CommentActionItems(
-                            comment: comment,
-                            userAddress: userAddress,
-                            source: 'preview'
-                          ),
+                              comment: comment,
+                              userAddress: userAddress,
+                              source: 'preview'),
                         ),
                       );
                     },

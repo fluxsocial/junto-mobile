@@ -24,19 +24,24 @@ class PhotoOpen extends StatelessWidget {
                         imageUrl: photoExpression.expressionData.image,
                         placeholder: (BuildContext context, String _) {
                           return Container(
+                              height: MediaQuery.of(context).size.width,
+                              width: MediaQuery.of(context).size.width,
                               color: Theme.of(context).dividerColor);
                         },
                         fit: BoxFit.cover),
                   ),
                 ),
-          const SizedBox(height: 10),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Text(
-              photoExpression.expressionData.caption,
-              style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
-            ),
-          )
+          photoExpression.expressionData.caption != ''
+              ? Container(
+                  margin: const EdgeInsets.only(top: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Text(
+                    photoExpression.expressionData.caption,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w500, fontSize: 15),
+                  ),
+                )
+              : const SizedBox()
         ],
       ),
     );

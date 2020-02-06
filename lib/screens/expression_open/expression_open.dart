@@ -250,7 +250,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                             return const SizedBox();
                         }
                         return Transform.translate(
-                          offset: const Offset(0.0, -50.0),
+                          offset: const Offset(0.0, 50.0),
                           child: JuntoProgressIndicator(),
                         );
                       },
