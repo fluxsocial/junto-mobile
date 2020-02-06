@@ -80,7 +80,7 @@ class ExpressionPreview extends StatelessWidget {
         }
       },
       child: Container(
-        margin: const EdgeInsets.only(bottom: 25),
+        margin: const EdgeInsets.only(bottom: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -103,10 +103,11 @@ class ExpressionPreview extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 5),
 
             // expression preview handle + more action items
             Container(
+              padding: const EdgeInsets.symmetric(vertical: 7.5),
+              color: Colors.transparent,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -123,48 +124,42 @@ class ExpressionPreview extends StatelessWidget {
                       );
                     },
                     child: Container(
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                            child: Text(
-                              expression.creator.username.toLowerCase(),
-                              style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w700,
-                                  color: Theme.of(context).primaryColor),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          )
-                        ],
+                      constraints: BoxConstraints(
+                        maxWidth: MediaQuery.of(context).size.width * .5 - 40,
+                      ),
+                      child: Text(
+                        expression.creator.username.toLowerCase(),
+                        style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w700,
+                            color: Theme.of(context).primaryColor),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ),
-                  Row(
-                    children: <Widget>[
-                      GestureDetector(
-                        onTap: () {
-                          showModalBottomSheet(
-                            context: context,
-                            builder: (BuildContext context) => Container(
-                              color: Colors.transparent,
-                              child: ExpressionActionItems(
-                                expression: expression,
-                                userAddress: userAddress,
-                              ),
-                            ),
-                          );
-                        },
-                        child: Container(
+                  GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (BuildContext context) => Container(
                           color: Colors.transparent,
-                          child: Icon(
-                            CustomIcons.morevertical,
-                            color: Theme.of(context).primaryColor,
-                            size: 17,
+                          child: ExpressionActionItems(
+                            expression: expression,
+                            userAddress: userAddress,
                           ),
                         ),
-                      )
-                    ],
+                      );
+                    },
+                    child: Container(
+                      color: Colors.transparent,
+                      alignment: Alignment.centerRight,
+                      width: 24,
+                      child: Icon(
+                        CustomIcons.morevertical,
+                        color: Theme.of(context).primaryColor,
+                        size: 17,
+                      ),
+                    ),
                   )
                 ],
               ),

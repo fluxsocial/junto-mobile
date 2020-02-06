@@ -212,20 +212,21 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                                           'Show replies',
                                           style: TextStyle(
                                               color: Theme.of(context)
-                                                  .primaryColor,
-                                              fontSize: 12),
+                                                  .primaryColorLight,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w600),
                                         ),
                                         const SizedBox(width: 5),
-                                        if (commentsVisible == false)
+                                        if (!commentsVisible)
                                           Icon(Icons.keyboard_arrow_down,
                                               size: 14,
                                               color: Theme.of(context)
-                                                  .primaryColor),
-                                        if (commentsVisible != false)
+                                                  .primaryColorLight),
+                                        if (commentsVisible)
                                           Icon(Icons.keyboard_arrow_up,
-                                              size: 17,
+                                              size: 15,
                                               color: Theme.of(context)
-                                                  .primaryColor),
+                                                  .primaryColorLight),
                                       ],
                                     ),
                                   ),
@@ -297,14 +298,13 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
       top: false,
       child: Container(
         padding: const EdgeInsets.symmetric(
-          horizontal: JuntoStyles.horizontalPadding,
-          vertical: 5,
+          horizontal: 10,
+          vertical: 10,
         ),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
           border: Border(
             top: BorderSide(
-              width: .75,
+              width: .5,
               color: Theme.of(context).dividerColor,
             ),
           ),
@@ -331,7 +331,8 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
                           hintText: 'write a reply...',
                           hintStyle: TextStyle(
                               fontSize: 13,
-                              color: Theme.of(context).primaryColor),
+                              color: Theme.of(context).primaryColorLight,
+                              fontWeight: FontWeight.w500),
                         ),
                         maxLines: null,
                         cursorColor: Theme.of(context).primaryColor,

@@ -89,7 +89,7 @@ class JuntoThemes {
         fontSize: 16,
         height: 1.4,
         fontWeight: FontWeight.w500,
-        color: Color(0xff333333),
+        color: Color(0xff555555),
       ),
       overline: TextStyle(
         fontSize: 12,
@@ -185,7 +185,7 @@ class JuntoThemes {
         fontSize: 16,
         height: 1.4,
         fontWeight: FontWeight.w500,
-        color: Color(0xff333333),
+        color: Color(0xff555555),
       ),
       overline: TextStyle(
         fontSize: 12,
