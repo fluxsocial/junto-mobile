@@ -87,10 +87,13 @@ class ExpressionPreview extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.background,
-                border: Border.all(
-                    color: Theme.of(context).dividerColor.withOpacity(.3),
-                    width: 1.5),
-                borderRadius: BorderRadius.circular(10),
+                border: expression.type != 'PhotoForm' &&
+                        expression.type != 'ShortForm'
+                    ? Border.all(
+                        color: Theme.of(context).dividerColor.withOpacity(.3),
+                        width: 1)
+                    : Border.all(width: 0, color: Colors.transparent),
+                borderRadius: BorderRadius.circular(9),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
