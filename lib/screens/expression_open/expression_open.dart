@@ -10,9 +10,9 @@ import 'package:junto_beta_mobile/screens/expression_open/expressions/longform_o
 import 'package:junto_beta_mobile/screens/expression_open/expressions/photo_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/shortform_open.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/previews/comment_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
-import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
 
 class ExpressionOpen extends StatefulWidget {
@@ -22,19 +22,10 @@ class ExpressionOpen extends StatefulWidget {
   final String userAddress;
 
   @override
-  State<StatefulWidget> createState() {
-    return ExpressionOpenState();
-  }
+  State<StatefulWidget> createState() => ExpressionOpenState();
 }
 
 class ExpressionOpenState extends State<ExpressionOpen> {
-  final List<String> comments = <String>[
-    'Hey there! This is what a comment preview looks like.',
-    'All comments are hidden initially so the viewer can have complete independence of thought while viewing expressions.',
-    'In Junto, comments are treated like expressions. You can resonate them or reply to a comment (nested comments). This is quite complex so we are tacklign this once the rest of the core functionality is finished.',
-    "And yes, I know what you're thinking. 'Comments??' We need a new semantic!",
-  ];
-
   //  whether the comments are visible or not
   bool commentsVisible = false;
 

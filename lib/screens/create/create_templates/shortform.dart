@@ -23,7 +23,7 @@ class CreateShortformState extends State<CreateShortform> {
   CentralizedShortFormExpression createExpression() {
     return CentralizedShortFormExpression(
       body: _bodyController.value.text,
-      background: 'two',
+      background: '',
     );
   }
 
