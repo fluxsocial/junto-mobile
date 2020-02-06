@@ -28,22 +28,6 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
   String _userAddress;
   String _userFollowPerspectiveId;
 
-  Future<void> _onPackPress() async {
-    final UserGroupsResponse _userPack =
-        await Provider.of<UserRepo>(context, listen: false)
-            .getUserGroups(_userAddress);
-    Navigator.push(
-      context,
-      CupertinoPageRoute<dynamic>(
-        builder: (BuildContext context) {
-          return PackOpen(
-            pack: _userPack.owned.first,
-          );
-        },
-      ),
-    );
-  }
-
   @override
   void initState() {
     super.initState();
@@ -133,11 +117,7 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                           );
                         },
                       ),
-                      // relationships
-                      JuntoDrawerItem(
-                        title: 'My Pack',
-                        onTap: _onPackPress,
-                      ),
+
                       JuntoDrawerItem(
                         title: 'Relationships',
                         onTap: () async {

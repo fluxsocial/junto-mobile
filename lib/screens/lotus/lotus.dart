@@ -129,41 +129,46 @@ class JuntoLotusState extends State<JuntoLotus> {
               const SizedBox(),
               Column(
                 children: <Widget>[
-                  GestureDetector(
-                    onTap: () {
-                      _navigateTo('Create');
-                    },
-                    child: Container(
-                      color: Colors.transparent,
-                      height: 80,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Container(
-                                width: 27,
-                                child: const Icon(
-                                  CustomIcons.create,
-                                  size: 20,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              const Text(
-                                'CREATE',
-                                style: TextStyle(
+                  Container(
+                    color: Colors.transparent,
+                    height: 80,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        GestureDetector(
+                          onTap: () {
+                            _navigateTo('Create');
+                          },
+                          child: Container(
+                            height: 80,
+                            width: 80,
+                            color: Colors.transparent,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Container(
+                                  width: 27,
+                                  child: const Icon(
+                                    CustomIcons.create,
+                                    size: 20,
                                     color: Colors.white,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w700,
-                                    letterSpacing: 1.4),
-                              )
-                            ],
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                const Text(
+                                  'CREATE',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                      letterSpacing: 1.4),
+                                )
+                              ],
+                            ),
                           ),
-                        ],
-                      ),
+                        )
+                      ],
                     ),
                   ),
                   Container(
@@ -240,27 +245,32 @@ class JuntoLotusState extends State<JuntoLotus> {
                       ],
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      if (ModalRoute.of(context).isFirst) {
-                        _navigateTo('Back');
-                      } else {
-                        Navigator.pop(context);
-                      }
-                    },
-                    child: Container(
-                      color: Colors.transparent,
-                      height: 80,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(
-                            CustomIcons.lotus,
-                            size: 33,
-                            color: Colors.white,
+                  Container(
+                    color: Colors.transparent,
+                    height: 80,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        GestureDetector(
+                          onTap: () {
+                            if (ModalRoute.of(context).isFirst) {
+                              _navigateTo('Back');
+                            } else {
+                              Navigator.pop(context);
+                            }
+                          },
+                          child: Container(
+                            height: 80,
+                            width: 80,
+                            color: Colors.transparent,
+                            child: Icon(
+                              CustomIcons.lotus,
+                              size: 33,
+                              color: Colors.white,
+                            ),
                           ),
-                        ],
-                      ),
+                        )
+                      ],
                     ),
                   ),
                 ],
