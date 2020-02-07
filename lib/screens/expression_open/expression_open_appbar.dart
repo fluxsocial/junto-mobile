@@ -10,7 +10,6 @@ class ExpressionOpenAppbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(expression.context);
     return AppBar(
       automaticallyImplyLeading: false,
       brightness: Brightness.light,

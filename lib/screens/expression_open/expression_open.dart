@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_appbar.dart';
-import 'package:junto_beta_mobile/screens/expression_open/expression_open_bottom.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_top.dart';
+import 'package:junto_beta_mobile/screens/expression_open/expression_open_bottom.dart';
+import 'package:junto_beta_mobile/screens/expression_open/expression_open_context.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/event_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/longform_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/photo_open.dart';
@@ -29,6 +32,9 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   //  whether the comments are visible or not
   bool commentsVisible = false;
 
+  // whether the expression context is visible
+  bool expressionContextVisible = false;
+
   // Create a controller for the comment text field
   TextEditingController commentController;
 
@@ -45,6 +51,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
 
     commentController = TextEditingController();
     _focusNode = FocusNode();
+    print(widget.expression.channels);
   }
 
   @override
@@ -154,7 +161,18 @@ class ExpressionOpenState extends State<ExpressionOpen> {
     );
   }
 
-  openExpressionContext() {}
+  void toggleExpressionContext() {
+    if (expressionContextVisible) {
+      setState(() {
+        expressionContextVisible = false;
+      });
+    } else if (!expressionContextVisible) {
+      setState(() {
+        expressionContextVisible = true;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -180,7 +198,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                             userAddress: widget.userAddress),
                         _buildExpression(),
                         ExpressionOpenBottom(
-                            widget.expression, openExpressionContext),
+                            widget.expression, toggleExpressionContext),
                         if (allowComments)
                           FutureBuilder<QueryResults<Comment>>(
                             future: futureComments,
@@ -272,41 +290,73 @@ class ExpressionOpenState extends State<ExpressionOpen> {
             ],
           ),
         ),
-        Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            color: Color(0xff222222).withOpacity(.25),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                const SizedBox(),
-                Column(
-                  children: <Widget>[
-                    Container(
-                      height: 300,
-                      width: MediaQuery.of(context).size.width,
-                      margin: const EdgeInsets.symmetric(horizontal: 20),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(25),
-                      ),
-                    ),
-                    const SizedBox(height: 25),
-                    Container(
-                      height: 50,
-                      width: MediaQuery.of(context).size.width,
-                      margin: const EdgeInsets.symmetric(horizontal: 20),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                    ),
-                    const SizedBox(height: 50)
-                  ],
-                ),
-              ],
-            ))
+        AnimatedOpacity(
+          duration: const Duration(milliseconds: 200),
+          opacity: expressionContextVisible ? 1.0 : 0.0,
+          child: Visibility(
+            visible: expressionContextVisible,
+            child: ExpressionOpenContext(
+                channels: widget.expression.channels,
+                toggleExpressionContext: toggleExpressionContext),
+          ),
+        ),
       ],
+    );
+  }
+}
+
+class ExpressionContextChannelPreview extends StatelessWidget {
+  const ExpressionContextChannelPreview(this.channel);
+
+  final String channel;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.background,
+        border: Border(
+          bottom: BorderSide(width: .5, color: Theme.of(context).dividerColor),
+        ),
+      ),
+      child: Row(
+        children: <Widget>[
+          Container(
+            alignment: Alignment.center,
+            height: 38.0,
+            width: 38.0,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
+                stops: const <double>[0.2, 0.9],
+                colors: <Color>[
+                  Theme.of(context).colorScheme.secondary,
+                  Theme.of(context).colorScheme.primary
+                ],
+              ),
+              borderRadius: BorderRadius.circular(100),
+            ),
+            child: const Icon(
+              CustomIcons.hash,
+              color: Colors.white,
+              size: 15,
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(left: 10.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(channel,
+                    textAlign: TextAlign.start,
+                    style: Theme.of(context).textTheme.subtitle1),
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }

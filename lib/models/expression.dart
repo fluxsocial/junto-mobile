@@ -397,7 +397,7 @@ class QueryResults<T> {
 class Channel with RFC3339 {
   const Channel({
     @required this.name,
-    @required this.createdAt,
+    this.createdAt,
   });
 
   factory Channel.fromMap(Map<String, dynamic> map) {

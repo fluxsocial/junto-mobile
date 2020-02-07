@@ -58,9 +58,7 @@ class ExpressionOpenBottom extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 GestureDetector(
-                  onTap: () {
-                    openExpressionContext();
-                  },
+                  onTap: openExpressionContext,
                   child: Container(
                     height: 33,
                     width: 33,
