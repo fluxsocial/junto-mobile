@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open.dart';
-import 'package:junto_beta_mobile/widgets/expression_action_items.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
+import 'package:junto_beta_mobile/widgets/expression_action_items.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview_types/event_preview.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview_types/longform_preview.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview_types/photo_preview.dart';
@@ -12,14 +12,16 @@ import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression
 
 /// Renders a concise overview of one given [ExpressionResult].
 class ExpressionPreview extends StatelessWidget {
-  const ExpressionPreview({
-    Key key,
-    @required this.expression,
-    @required this.userAddress,
-  }) : super(key: key);
+  const ExpressionPreview(
+      {Key key,
+      @required this.expression,
+      @required this.userAddress,
+      this.allowComments = true})
+      : super(key: key);
 
   final CentralizedExpressionResponse expression;
   final String userAddress;
+  final bool allowComments;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +38,7 @@ class ExpressionPreview extends StatelessWidget {
                 Animation<double> animation,
                 Animation<double> secondaryAnimation,
               ) {
-                return ExpressionOpen(expression, userAddress);
+                return ExpressionOpen(expression, userAddress, allowComments);
               },
               transitionsBuilder: (
                 BuildContext context,
@@ -59,7 +61,7 @@ class ExpressionPreview extends StatelessWidget {
                 Animation<double> animation,
                 Animation<double> secondaryAnimation,
               ) {
-                return ExpressionOpen(expression, userAddress);
+                return ExpressionOpen(expression, userAddress, allowComments);
               },
               transitionsBuilder: (
                 BuildContext context,

@@ -3,11 +3,18 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
 
 class CustomListView extends StatelessWidget {
-  const CustomListView({Key key, this.data, this.userAddress})
-      : super(key: key);
+  const CustomListView({
+    Key key,
+    @required this.data,
+    @required this.userAddress,
+    @required this.privacyLayer,
+    @required this.showComments,
+  }) : super(key: key);
 
   final List<CentralizedExpressionResponse> data;
   final String userAddress;
+  final String privacyLayer;
+  final bool showComments;
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +33,13 @@ class CustomListView extends StatelessWidget {
                   for (int index = 0; index < data.length + 1; index++)
                     if (index == data.length)
                       const SizedBox()
-                    else if (index.isEven && data[index].privacy == 'Public')
+                    else if (index.isEven &&
+                        data[index].privacy == privacyLayer)
                       ExpressionPreview(
-                          expression: data[index], userAddress: userAddress)
+                        expression: data[index],
+                        userAddress: userAddress,
+                        allowComments: false,
+                      )
                     else
                       const SizedBox()
 
@@ -46,10 +57,11 @@ class CustomListView extends StatelessWidget {
                   for (int index = 0; index < data.length + 1; index++)
                     if (index == data.length)
                       const SizedBox()
-                    else if (index.isOdd && data[index].privacy == 'Public')
+                    else if (index.isOdd && data[index].privacy == privacyLayer)
                       ExpressionPreview(
                         expression: data[index],
                         userAddress: userAddress,
+                        allowComments: false,
                       )
                     else
                       const SizedBox()

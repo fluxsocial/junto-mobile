@@ -15,7 +15,6 @@ import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/custom_listview.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_edit_den.dart';
-import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
@@ -33,6 +32,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
   UserRepo _userProvider;
   String _userAddress;
   UserData _userProfile;
+  bool showComments = false;
 
   ScrollController _denController;
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
@@ -227,71 +227,11 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                         if (snapshot.hasData) {
                           return Container(
                             color: Theme.of(context).colorScheme.background,
-                            child: ListView(
-                              children: <Widget>[
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          .5,
-                                      padding: const EdgeInsets.only(
-                                          left: 10, right: 5, top: 10),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: <Widget>[
-                                          for (int index = 0;
-                                              index < snapshot.data.length + 1;
-                                              index++)
-                                            if (index == snapshot.data.length)
-                                              const SizedBox()
-                                            else if (index.isEven &&
-                                                snapshot.data[index].privacy ==
-                                                    'Public')
-                                              ExpressionPreview(
-                                                  expression:
-                                                      snapshot.data[index],
-                                                  userAddress: _userAddress)
-                                            else
-                                              const SizedBox()
-
-                                          // even number indexes
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          .5,
-                                      padding: const EdgeInsets.only(
-                                          left: 5, right: 10, top: 10),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: <Widget>[
-                                          // odd number indexes
-                                          for (int index = 0;
-                                              index < snapshot.data.length + 1;
-                                              index++)
-                                            if (index == snapshot.data.length)
-                                              const SizedBox()
-                                            else if (index.isOdd &&
-                                                snapshot.data[index].privacy ==
-                                                    'Public')
-                                              ExpressionPreview(
-                                                expression:
-                                                    snapshot.data[index],
-                                                userAddress: _userAddress,
-                                              )
-                                            else
-                                              const SizedBox()
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
+                            child: CustomListView(
+                              data: snapshot.data,
+                              userAddress: _userAddress,
+                              privacyLayer: 'Public',
+                              showComments: false,
                             ),
                           );
                         }
@@ -323,6 +263,8 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                             child: CustomListView(
                               data: snapshot.data,
                               userAddress: _userAddress,
+                              showComments: false,
+                              privacyLayer: 'Private',
                             ),
                           );
                         }
