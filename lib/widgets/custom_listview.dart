@@ -38,7 +38,7 @@ class CustomListView extends StatelessWidget {
                       ExpressionPreview(
                         expression: data[index],
                         userAddress: userAddress,
-                        allowComments: false,
+                        allowComments: showComments,
                       )
                     else
                       const SizedBox()
@@ -61,7 +61,7 @@ class CustomListView extends StatelessWidget {
                       ExpressionPreview(
                         expression: data[index],
                         userAddress: userAddress,
-                        allowComments: false,
+                        allowComments: showComments,
                       )
                     else
                       const SizedBox()

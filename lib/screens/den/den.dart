@@ -231,7 +231,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                               data: snapshot.data,
                               userAddress: _userAddress,
                               privacyLayer: 'Public',
-                              showComments: false,
+                              showComments: true,
                             ),
                           );
                         }
@@ -263,7 +263,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                             child: CustomListView(
                               data: snapshot.data,
                               userAddress: _userAddress,
-                              showComments: false,
+                              showComments: true,
                               privacyLayer: 'Private',
                             ),
                           );
