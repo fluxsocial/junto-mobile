@@ -10,94 +10,83 @@ class ExpressionOpenContext extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        color: const Color(0xff222222).withOpacity(.8),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            const SizedBox(),
-            Column(
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
+      color: const Color(0xff222222).withOpacity(.8),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          const SizedBox(),
+          Container(
+            height: MediaQuery.of(context).size.width - 40,
+            width: MediaQuery.of(context).size.width,
+            margin: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.only(top: 25, left: 25, right: 25),
+            decoration: BoxDecoration(
+              color: Theme.of(context).backgroundColor,
+              borderRadius: BorderRadius.circular(25),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
+                Icon(CustomIcons.create,
+                    size: 20, color: Theme.of(context).primaryColor),
+                const SizedBox(height: 25),
                 Container(
-                  height: MediaQuery.of(context).size.width - 40,
-                  width: MediaQuery.of(context).size.width,
-                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Row(
                     children: <Widget>[
-                      Icon(CustomIcons.create,
-                          size: 20, color: Theme.of(context).primaryColor),
-                      const SizedBox(height: 25),
-                      Container(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: Row(
-                          children: <Widget>[
-                            Text('CHANNELS',
-                                style: Theme.of(context).textTheme.overline)
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: DefaultTabController(
-                          length: 1,
-                          child: TabBarView(
-                            children: <Widget>[
-                              ListView(
-                                padding: const EdgeInsets.all(0),
-                                children: channels
-                                    .map(
-                                      (dynamic channel) =>
-                                          ExpressionContextChannelPreview(
-                                              channel),
-                                    )
-                                    .toList(),
-                              )
-                            ],
-                          ),
-                        ),
-                      )
+                      Text('CHANNELS',
+                          style: Theme.of(context).textTheme.overline)
                     ],
                   ),
                 ),
-                const SizedBox(height: 25),
-                SafeArea(
-                  left: false,
-                  right: false,
-                  top: false,
-                  bottom: true,
-                  child: GestureDetector(
-                    onTap: toggleExpressionContext,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      alignment: Alignment.center,
-                      width: MediaQuery.of(context).size.width,
-                      margin: const EdgeInsets.symmetric(horizontal: 20),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      child: Text(
-                        'CLOSE',
-                        style: TextStyle(
-                            fontSize: 12,
-                            color: Theme.of(context).primaryColor,
-                            letterSpacing: 1.4,
-                            fontWeight: FontWeight.w600),
-                      ),
+                Expanded(
+                  child: DefaultTabController(
+                    length: 1,
+                    child: TabBarView(
+                      children: <Widget>[
+                        ListView(
+                          padding: const EdgeInsets.all(0),
+                          children: channels
+                              .map(
+                                (dynamic channel) =>
+                                    ExpressionContextChannelPreview(channel),
+                              )
+                              .toList(),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: toggleExpressionContext,
+                  child: Container(
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 25),
+                    child: Text(
+                      'CLOSE',
+                      style: TextStyle(
+                          fontSize: 12,
+                          color: Theme.of(context).primaryColor,
+                          letterSpacing: 1.4,
+                          fontWeight: FontWeight.w600,
+                          decoration: TextDecoration.none),
                     ),
                   ),
                 ),
               ],
             ),
-          ],
-        ));
+          ),
+          const SizedBox()
+        ],
+      ),
+    );
   }
 }
 
