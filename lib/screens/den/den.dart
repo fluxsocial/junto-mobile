@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:async/async.dart' show AsyncMemoizer;
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,15 +12,15 @@ import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/den/den_sliver_appbar.dart';
 import 'package:junto_beta_mobile/widgets/appbar/den_appbar.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
+import 'package:junto_beta_mobile/widgets/custom_listview.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_edit_den.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 /// Displays the user's DEN or "profile screen"
 class JuntoDen extends StatefulWidget {
@@ -198,10 +198,10 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                             ],
                           ),
                         ),
-                        _userProfile.user.profilePicture.isNotEmpty
-                            ? _displayProfilePictures(
-                                _userProfile.user.profilePicture)
-                            : const SizedBox(),
+                        if (_userProfile.user.profilePicture.isNotEmpty)
+                          _displayProfilePictures(
+                            _userProfile.user.profilePicture,
+                          ),
                         Container(
                           child: Text(_userProfile.user.bio,
                               style: Theme.of(context).textTheme.caption),
@@ -307,9 +307,11 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                     // private expressions of user
                     FutureBuilder<List<CentralizedExpressionResponse>>(
                       future: getUsersExpressions(),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<List<CentralizedExpressionResponse>>
-                              snapshot) {
+                      builder: (
+                        BuildContext context,
+                        AsyncSnapshot<List<CentralizedExpressionResponse>>
+                            snapshot,
+                      ) {
                         if (snapshot.hasError) {
                           return const Center(
                             child: Text('something is up'),
@@ -318,72 +320,9 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                         if (snapshot.hasData) {
                           return Container(
                             color: Theme.of(context).colorScheme.background,
-                            child: ListView(
-                              children: <Widget>[
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          .5,
-                                      padding: const EdgeInsets.only(
-                                          left: 10, right: 5, top: 10),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: <Widget>[
-                                          for (int index = 0;
-                                              index < snapshot.data.length + 1;
-                                              index++)
-                                            if (index == snapshot.data.length)
-                                              const SizedBox()
-                                            else if (index.isEven &&
-                                                snapshot.data[index].privacy ==
-                                                    'Private')
-                                              ExpressionPreview(
-                                                expression:
-                                                    snapshot.data[index],
-                                                userAddress: _userAddress,
-                                              )
-                                            else
-                                              const SizedBox()
-
-                                          // even number indexes
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          .5,
-                                      padding: const EdgeInsets.only(
-                                          left: 5, right: 10, top: 10),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: <Widget>[
-                                          // odd number indexes
-                                          for (int index = 0;
-                                              index < snapshot.data.length + 1;
-                                              index++)
-                                            if (index == snapshot.data.length)
-                                              const SizedBox()
-                                            else if (index.isOdd &&
-                                                snapshot.data[index].privacy ==
-                                                    'Private')
-                                              ExpressionPreview(
-                                                expression:
-                                                    snapshot.data[index],
-                                                userAddress: _userAddress,
-                                              )
-                                            else
-                                              const SizedBox()
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
+                            child: CustomListView(
+                              data: snapshot.data,
+                              userAddress: _userAddress,
                             ),
                           );
                         }
