@@ -300,7 +300,6 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
                     _expressionContextSelector(expressionContext: 'Collective'),
                     _expressionContextSelector(expressionContext: 'Sphere'),
                     _expressionContextSelector(expressionContext: 'My Pack'),
-                    _expressionContextSelector(expressionContext: 'Den'),
                   ]),
                 ),
               ],

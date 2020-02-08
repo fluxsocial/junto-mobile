@@ -28,7 +28,7 @@ class JuntoDen extends StatefulWidget {
 }
 
 class JuntoDenState extends State<JuntoDen> with HideFab {
-  final List<String> _tabs = <String>['About', 'Public', 'Private'];
+  final List<String> _tabs = <String>['About', 'Expressions'];
   UserRepo _userProvider;
   String _userAddress;
   UserData _userProfile;
@@ -231,40 +231,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                               data: snapshot.data,
                               userAddress: _userAddress,
                               privacyLayer: 'Public',
-                              showComments: true,
-                            ),
-                          );
-                        }
-                        return Center(
-                          child: Transform.translate(
-                            offset: const Offset(0.0, -50),
-                            child: JuntoProgressIndicator(),
-                          ),
-                        );
-                      },
-                    ),
-
-                    // private expressions of user
-                    FutureBuilder<List<CentralizedExpressionResponse>>(
-                      future: getUsersExpressions(),
-                      builder: (
-                        BuildContext context,
-                        AsyncSnapshot<List<CentralizedExpressionResponse>>
-                            snapshot,
-                      ) {
-                        if (snapshot.hasError) {
-                          return const Center(
-                            child: Text('something is up'),
-                          );
-                        }
-                        if (snapshot.hasData) {
-                          return Container(
-                            color: Theme.of(context).colorScheme.background,
-                            child: CustomListView(
-                              data: snapshot.data,
-                              userAddress: _userAddress,
-                              showComments: true,
-                              privacyLayer: 'Private',
+                              showComments: false,
                             ),
                           );
                         }
