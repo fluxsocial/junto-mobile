@@ -21,6 +21,12 @@ class MockUserService implements UserService {
   }
 
   @override
+  Future<void> deletePerspective(String perspective) async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    return;
+  }
+
+  @override
   Future<UserProfile> createPerspectiveUserEntry(
       String userAddress, String perspectiveAddress) async {
     throw kGroupUsers[1].user;

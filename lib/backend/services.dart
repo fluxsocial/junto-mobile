@@ -158,6 +158,9 @@ abstract class UserService {
   /// Allows the user to create a [Perspective] on the server.
   Future<CentralizedPerspective> createPerspective(Perspective perspective);
 
+  /// Allows the user to delete a [Perspective] .
+  Future<void> deletePerspective(String perspective);
+
   Future<CentralizedPerspective> updatePerspective(
     CentralizedPerspective perspective,
   );
