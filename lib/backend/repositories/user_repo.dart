@@ -127,6 +127,6 @@ class UserRepo {
       _userService.getFollowers(userAddress);
 
   Future<CentralizedPerspective> updatePerspective(
-          CentralizedPerspective perspective) =>
-      _userService.updatePerspective(perspective);
+          String perspectiveAddress, Map<String, String> perspectiveBody) =>
+      _userService.updatePerspective(perspectiveAddress, perspectiveBody);
 }

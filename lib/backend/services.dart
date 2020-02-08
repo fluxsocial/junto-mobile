@@ -162,7 +162,7 @@ abstract class UserService {
   Future<void> deletePerspective(String perspective);
 
   Future<CentralizedPerspective> updatePerspective(
-    CentralizedPerspective perspective,
+    String perspectiveAddress, Map<String, String> perspectiveBody,
   );
 
   /// Adds the given user to a perspective. The perspective address and user

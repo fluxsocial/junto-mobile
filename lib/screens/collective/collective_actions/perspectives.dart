@@ -198,26 +198,25 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
         actionExtentRatio: 0.2,
         secondaryActions: <Widget>[
           IconSlideAction(
-            // caption: 'Edit',
             color: Theme.of(context).dividerColor,
             iconWidget: Icon(Icons.edit,
-                size: 15, color: Theme.of(context).backgroundColor),
+                size: 15, color: Theme.of(context).primaryColor),
             onTap: () {
               Navigator.push(
                 context,
                 CupertinoPageRoute<dynamic>(
-                  builder: (BuildContext context) =>
-                      EditPerspective(perspective: perspective),
+                  builder: (BuildContext context) => EditPerspective(
+                      perspective: perspective,
+                      refreshPerspectives: _refreshPerspectives),
                 ),
               );
             },
           ),
           IconSlideAction(
-              // caption: 'Delete',
               color: Colors.red,
               iconWidget: Icon(Icons.delete, size: 15, color: Colors.white),
               onTap: () async {
-                JuntoDialog.showJuntoDialog(context, 'Are you sure?', [
+                JuntoDialog.showJuntoDialog(context, 'Are you sure?', <Widget>[
                   FlatButton(
                     onPressed: () async {
                       Navigator.pop(context);

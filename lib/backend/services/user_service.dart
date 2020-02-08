@@ -398,10 +398,10 @@ class UserServiceCentralized implements UserService {
 
   @override
   Future<CentralizedPerspective> updatePerspective(
-      CentralizedPerspective perspective) async {
+      String perspectiveAddress, Map<String, String> perspectiveBody) async {
     final http.Response _serverResponse = await client.patch(
-      '/perspectives/${perspective.address}',
-      body: perspective.toMap(),
+      '/perspectives/$perspectiveAddress',
+      body: perspectiveBody,
     );
     final Map<String, dynamic> _data =
         JuntoHttp.handleResponse(_serverResponse);

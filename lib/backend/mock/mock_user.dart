@@ -164,7 +164,8 @@ class MockUserService implements UserService {
 
   @override
   Future<CentralizedPerspective> updatePerspective(
-    CentralizedPerspective perspective,
+    String perspectiveAddress,
+    Map<String, String> perspectiveBody,
   ) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     return kPerspectives.first;
