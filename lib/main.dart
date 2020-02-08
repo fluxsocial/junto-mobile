@@ -11,7 +11,6 @@ Future<void> main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
   final Backend backend = await Backend.init();
   final bool _loggedIn = await backend.authRepo.isLoggedIn();
   runLoggedApp(
