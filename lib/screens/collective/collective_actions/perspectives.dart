@@ -204,7 +204,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
             // caption: 'Edit',
             color: Theme.of(context).dividerColor,
             iconWidget: Icon(Icons.edit,
-                size: 15, color: Theme.of(context).primaryColor),
+                size: 15, color: Theme.of(context).backgroundColor),
             onTap: () {
               Navigator.push(
                 context,
@@ -216,10 +216,13 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
             },
           ),
           IconSlideAction(
-            // caption: 'Delete',
-            color: Colors.red,
-            iconWidget: Icon(Icons.delete, size: 15, color: Colors.white),
-          ),
+              // caption: 'Delete',
+              color: Colors.red,
+              iconWidget: Icon(Icons.delete,
+                  size: 15, color: Theme.of(context).primaryColor),
+              onTap: () {
+                // Provider.of<UserRepo>(context).del
+              }),
         ],
         key: Key(perspective.address),
         child: Container(
