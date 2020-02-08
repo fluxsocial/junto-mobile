@@ -29,30 +29,31 @@ class JuntoPerspectives extends StatefulWidget {
 
 class JuntoPerspectivesState extends State<JuntoPerspectives> {
   String _userAddress;
-  //ignore:unused_field
-  UserData _userProfile;
+
+  Future<List<CentralizedPerspective>> getPerspectives;
 
   @override
   void initState() {
     super.initState();
-    getUserInformation();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _refreshPerspectives();
   }
 
   Future<void> getUserInformation() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final Map<String, dynamic> decodedUserData =
-        jsonDecode(prefs.getString('user_data'));
-
     setState(() {
       _userAddress = prefs.getString('user_id');
-      _userProfile = UserData.fromMap(decodedUserData);
     });
   }
 
   Future<List<CentralizedPerspective>> _fetchUserPerspectives(
       String address) async {
     try {
-      return await Provider.of<UserRepo>(context)
+      return await Provider.of<UserRepo>(context, listen: false)
           .getUserPerspective(_userAddress);
     } on JuntoException catch (error) {
       debugPrint('error fethcing perspectives ${error.errorCode}');
@@ -60,139 +61,131 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
     }
   }
 
+  Future<void> _refreshPerspectives() async {
+    try {
+      await getUserInformation();
+      setState(() {
+        getPerspectives = _fetchUserPerspectives(_userAddress);
+      });
+    } on JuntoException catch (error) {
+      JuntoDialog.showJuntoDialog(context, error.message, [DialogBack()]);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height - 150,
-      child:
-          Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <
-              Widget>[
-        Container(
-          height: 100,
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          color: Theme.of(context).backgroundColor,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text('Perspectives',
-                  style: Theme.of(context).textTheme.headline4),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    CupertinoPageRoute<dynamic>(
-                      builder: (BuildContext context) => CreatePerspective(),
-                    ),
-                  );
-                },
-                child: Icon(Icons.add,
-                    size: 24, color: Theme.of(context).primaryColor),
-              )
-            ],
-          ),
-        ),
-        const SizedBox(height: 10),
-        // Container(
-        //   height: 50,
-        //   color: Theme.of(context).backgroundColor,
-        //   child: Row(
-        //     children: <Widget>[
-        //       Container(
-        //           padding: const EdgeInsets.all(10),
-        //           decoration: BoxDecoration(
-        //             borderRadius: BorderRadius.circular(5),
-        //             color: const Color(0xff555555),
-        //           ),
-        //           child: Text(
-        //             'All',
-        //             style: TextStyle(
-        //                 fontSize: 12,
-        //                 fontWeight: FontWeight.w700,
-        //                 color: Colors.white,
-        //                 decoration: TextDecoration.none),
-        //           ))
-        //     ],
-        //   ),
-        // ),
-        Expanded(
-            child: ListView(
-          padding: const EdgeInsets.all(0),
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            _buildPerspective(
-              const CentralizedPerspective(
-                address: null,
-                name: 'JUNTO',
-                about: null,
-                creator: null,
-                createdAt: null,
-                isDefault: true,
-                userCount: null,
-                users: null,
+            Container(
+              height: 100,
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              color: Theme.of(context).backgroundColor,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text('Perspectives',
+                      style: Theme.of(context).textTheme.headline4),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute<dynamic>(
+                          builder: (BuildContext context) => CreatePerspective(
+                              refreshPerspectives: _refreshPerspectives),
+                        ),
+                      );
+                    },
+                    child: Icon(Icons.add,
+                        size: 24, color: Theme.of(context).primaryColor),
+                  )
+                ],
               ),
             ),
-            _userAddress != null
-                ? FutureBuilder<List<CentralizedPerspective>>(
-                    future: _fetchUserPerspectives(_userAddress),
-                    builder: (
-                      BuildContext context,
-                      AsyncSnapshot<List<CentralizedPerspective>> snapshot,
-                    ) {
-                      if (snapshot.hasError) {
-                        print(snapshot.error);
-                        return Container(
-                          child: const Text(
-                            'hmm, something is up...',
-                            style: TextStyle(fontSize: 14, color: Colors.white),
-                          ),
-                        );
-                      }
-                      if (snapshot.hasData) {
-                        return Column(
-                          children: <Widget>[
-                            // display Subscriptions perspective first
-                            ListView(
-                              padding: const EdgeInsets.all(0),
-                              shrinkWrap: true,
-                              physics: const ClampingScrollPhysics(),
-                              children: snapshot.data
-                                  .map((CentralizedPerspective perspective) {
-                                if (perspective.name == 'Subscriptions') {
-                                  return GestureDetector(
-                                    child: _buildPerspective(perspective),
-                                  );
-                                } else {
-                                  return const SizedBox();
-                                }
-                              }).toList(),
-                            ),
-                            // display rest of perspectives
-                            ListView(
-                              padding: const EdgeInsets.all(0),
-                              shrinkWrap: true,
-                              physics: const ClampingScrollPhysics(),
-                              children: snapshot.data
-                                  .map((CentralizedPerspective perspective) {
-                                if (perspective.name != 'Connections' &&
-                                    perspective.name != 'Subscriptions') {
-                                  return GestureDetector(
-                                    child: _buildPerspective(perspective),
-                                  );
-                                } else {
-                                  return const SizedBox();
-                                }
-                              }).toList(),
-                            )
-                          ],
-                        );
-                      }
-                      return Container();
-                    },
-                  )
-                : const SizedBox(),
-          ],
-        ))
-      ]),
+            const SizedBox(height: 10),
+            Expanded(
+                child: ListView(
+              padding: const EdgeInsets.all(0),
+              children: <Widget>[
+                _buildPerspective(
+                  const CentralizedPerspective(
+                    address: null,
+                    name: 'JUNTO',
+                    about: null,
+                    creator: null,
+                    createdAt: null,
+                    isDefault: true,
+                    userCount: null,
+                    users: null,
+                  ),
+                ),
+                _userAddress != null
+                    ? FutureBuilder<List<CentralizedPerspective>>(
+                        future: getPerspectives,
+                        builder: (
+                          BuildContext context,
+                          AsyncSnapshot<List<CentralizedPerspective>> snapshot,
+                        ) {
+                          if (snapshot.hasError) {
+                            print(snapshot.error);
+                            return Container(
+                              child: const Text(
+                                'hmm, something is up...',
+                                style: TextStyle(
+                                    fontSize: 14, color: Colors.white),
+                              ),
+                            );
+                          }
+                          if (snapshot.hasData) {
+                            return Column(
+                              children: <Widget>[
+                                // display Subscriptions perspective first
+                                ListView(
+                                  padding: const EdgeInsets.all(0),
+                                  shrinkWrap: true,
+                                  physics: const ClampingScrollPhysics(),
+                                  children: snapshot.data.map(
+                                      (CentralizedPerspective perspective) {
+                                    if (perspective.isDefault == true &&
+                                        perspective.name != 'Connections') {
+                                      return GestureDetector(
+                                        child: _buildPerspective(perspective),
+                                      );
+                                    } else {
+                                      return const SizedBox();
+                                    }
+                                  }).toList(),
+                                ),
+                                // display rest of perspectives
+                                ListView(
+                                  padding: const EdgeInsets.all(0),
+                                  shrinkWrap: true,
+                                  physics: const ClampingScrollPhysics(),
+                                  children: snapshot.data.map(
+                                      (CentralizedPerspective perspective) {
+                                    if (perspective.name != 'Connections' &&
+                                        perspective.name != 'Subscriptions') {
+                                      return GestureDetector(
+                                        child: _buildPerspective(perspective),
+                                      );
+                                    } else {
+                                      return const SizedBox();
+                                    }
+                                  }).toList(),
+                                )
+                              ],
+                            );
+                          }
+                          return Container();
+                        },
+                      )
+                    : const SizedBox(),
+              ],
+            ))
+          ]),
     );
   }
 
@@ -222,21 +215,27 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
           IconSlideAction(
               // caption: 'Delete',
               color: Colors.red,
-              iconWidget: Icon(Icons.delete,
-                  size: 15, color: Theme.of(context).primaryColor),
+              iconWidget: Icon(Icons.delete, size: 15, color: Colors.white),
               onTap: () async {
                 JuntoDialog.showJuntoDialog(context, 'Are you sure?', [
                   FlatButton(
-                    onPressed: () {
+                    onPressed: () async {
                       Navigator.pop(context);
                     },
-                    child: const Text('Ok'),
+                    child: const Text('No'),
+                  ),
+                  FlatButton(
+                    onPressed: () async {
+                      JuntoLoader.showLoader(context);
+                      await Provider.of<UserRepo>(context, listen: false)
+                          .deletePerspective(perspective.address);
+                      _refreshPerspectives();
+                      JuntoLoader.hide();
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Yes'),
                   ),
                 ]);
-                JuntoLoader.showLoader(context);
-                await Provider.of<UserRepo>(context, listen: false)
-                    .deletePerspective(perspective.address);
-                JuntoLoader.hide();
               }),
         ],
         key: Key(perspective.address),
