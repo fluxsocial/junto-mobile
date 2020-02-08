@@ -434,6 +434,9 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
                 DialogBack(),
               ],
             );
+            setState(() {
+              _currentExpressionContext = 'Collective';
+            });
           }
         }
 
