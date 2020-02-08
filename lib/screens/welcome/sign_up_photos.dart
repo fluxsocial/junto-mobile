@@ -77,6 +77,7 @@ class SignUpPhotosState extends State<SignUpPhotos> {
         await ImageCroppingDialog.show(context, image, aspectRatios: <String>[
       '1:1',
     ]);
+    Navigator.of(context).focusScopeNode.unfocus();
     if (cropped == null) {
       if (profilePictureNumber == 1) {
         setState(() => profilePictureOne = null);
@@ -90,12 +91,6 @@ class SignUpPhotosState extends State<SignUpPhotos> {
     } else if (profilePictureNumber == 2) {
       setState(() => profilePictureTwo = cropped);
     }
-  }
-
-  @override
-  void didUpdateWidget(SignUpPhotos oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    FocusScope.of(context).unfocus();
   }
 
   @override
