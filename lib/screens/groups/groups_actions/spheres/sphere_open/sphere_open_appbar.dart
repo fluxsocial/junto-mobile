@@ -60,21 +60,6 @@ class SphereOpenAppbar extends StatelessWidget {
             Row(
               children: <Widget>[
                 GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      GlobalSearch.route((_) {}),
-                    );
-                  },
-                  child: Container(
-                    width: 38,
-                    color: Colors.transparent,
-                    alignment: Alignment.centerRight,
-                    child: Icon(Icons.search,
-                        size: 22, color: Theme.of(context).primaryColor),
-                  ),
-                ),
-                GestureDetector(
                   onTap: () {},
                   child: Container(
                     width: 38,

@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
 
 // Junto app bar used in collective screen.
 class CollectiveAppBar extends SliverPersistentHeaderDelegate {
@@ -67,43 +66,6 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                 ),
                 Row(
                   children: <Widget>[
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          PageRouteBuilder<dynamic>(
-                            pageBuilder: (
-                              BuildContext context,
-                              Animation<double> animation,
-                              Animation<double> secondaryAnimation,
-                            ) {
-                              return const GlobalSearch();
-                            },
-                            transitionsBuilder: (
-                              BuildContext context,
-                              Animation<double> animation,
-                              Animation<double> secondaryAnimation,
-                              Widget child,
-                            ) {
-                              return FadeTransition(
-                                opacity: animation,
-                                child: child,
-                              );
-                            },
-                            transitionDuration: const Duration(
-                              milliseconds: 300,
-                            ),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        width: 42,
-                        padding: const EdgeInsets.only(right: 10),
-                        alignment: Alignment.bottomRight,
-                        color: Colors.transparent,
-                        child: Icon(Icons.search,
-                            size: 22, color: Theme.of(context).primaryColor),
-                      ),
-                    ),
                     GestureDetector(
                       onTap: () {},
                       child: Container(
