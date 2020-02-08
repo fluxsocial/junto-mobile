@@ -23,11 +23,11 @@ class SignUpPhotosState extends State<SignUpPhotos> {
 
   Widget _buildPhotoSelector({int profilePictureNumber, File profilePicture}) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
         if (profilePictureNumber == 1) {
-          _onPickPressed(profilePictureNumber);
+          await _onPickPressed(profilePictureNumber);
         } else if (profilePictureNumber == 2 && profilePictureOne != null) {
-          _onPickPressed(profilePictureNumber);
+          await _onPickPressed(profilePictureNumber);
         } else {
           return;
         }
@@ -40,22 +40,23 @@ class SignUpPhotosState extends State<SignUpPhotos> {
         child: Column(
           children: <Widget>[
             Container(
-                alignment: Alignment.center,
-                height: 240,
-                width: 240,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.white, width: 2),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: profilePicture == null
-                    ? const Text(
-                        '+',
-                        style: TextStyle(color: Colors.white, fontSize: 60),
-                      )
-                    : Image.file(
-                        profilePicture,
-                        fit: BoxFit.fitHeight,
-                      )),
+              alignment: Alignment.center,
+              height: 240,
+              width: 240,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.white, width: 2),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: profilePicture == null
+                  ? const Text(
+                      '+',
+                      style: TextStyle(color: Colors.white, fontSize: 60),
+                    )
+                  : Image.file(
+                      profilePicture,
+                      fit: BoxFit.fitHeight,
+                    ),
+            ),
           ],
         ),
       ),
@@ -92,9 +93,14 @@ class SignUpPhotosState extends State<SignUpPhotos> {
   }
 
   @override
+  void didUpdateWidget(SignUpPhotos oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    FocusScope.of(context).unfocus();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.transparent,
       width: MediaQuery.of(context).size.width,
       child: Container(
         margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * .16),
@@ -112,22 +118,12 @@ class SignUpPhotosState extends State<SignUpPhotos> {
                 ),
               ),
               const SizedBox(height: 140),
-              // Expanded(
-              //   child: ListView(
-              //     scrollDirection: Axis.horizontal,
-              //     children: <Widget>[
-              //       _buildPhotoSelector(
-              //           profilePictureNumber: 1,
-              //           profilePicture: profilePictureOne),
-              //       _buildPhotoSelector(
-              //           profilePictureNumber: 2,
-              //           profilePicture: profilePictureTwo),
-              //     ],
-              //   ),
-              // )
-              Center(
-                child: _buildPhotoSelector(
-                    profilePictureNumber: 1, profilePicture: profilePictureOne),
+              Expanded(
+                child: Center(
+                  child: _buildPhotoSelector(
+                      profilePictureNumber: 1,
+                      profilePicture: profilePictureOne),
+                ),
               ),
             ]),
       ),
