@@ -15,9 +15,9 @@ import 'package:junto_beta_mobile/screens/welcome/sign_up_verify.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_welcome.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 
 class Welcome extends StatefulWidget {
   static Route<dynamic> route() {
@@ -81,41 +81,37 @@ class WelcomeState extends State<Welcome> {
     _signInController = PageController(keepPage: true);
   }
 
-  Future<String> validateRegistration() async {
+  Future<void> _nextSignUpPage() async {
     try {
-      return await Provider.of<AuthRepo>(context, listen: false)
-          .verifyEmail(email);
-    } catch (error) {
-      debugPrint('Error verifying email $error');
-      print(error.message);
+      if (_currentIndex == 4) {
+        final AboutPageModel _aboutPageModel =
+            signUpAboutKey.currentState.returnDetails();
+        bio = _aboutPageModel.bio;
+        location = _aboutPageModel.location;
+        gender = _aboutPageModel.gender;
+        website = _aboutPageModel.website;
+      } else if (_currentIndex == 5) {
+        profilePictures = signUpPhotosKey.currentState.returnDetails();
+        print(profilePictures);
+      } else if (_currentIndex == 6) {
+        email = signUpRegisterKey.currentState.returnDetails()['email'];
+        password = signUpRegisterKey.currentState.returnDetails()['password'];
+        confirmPassword =
+            signUpRegisterKey.currentState.returnDetails()['confirmPassword'];
+        await Provider.of<AuthRepo>(context, listen: false).verifyEmail(email);
+      }
+      // transition to next page of sign up flow
+      _welcomeController.nextPage(
+        curve: Curves.easeIn,
+        duration: const Duration(milliseconds: 400),
+      );
+    } on JuntoException catch (error) {
+      JuntoDialog.showJuntoDialog(
+        context,
+        error.message,
+        <Widget>[DialogBack()],
+      );
     }
-    throw const JuntoException('Please check your password', -2);
-  }
-
-  void _nextSignUpPage() {
-    if (_currentIndex == 4) {
-      final AboutPageModel _aboutPageModel =
-          signUpAboutKey.currentState.returnDetails();
-      bio = _aboutPageModel.bio;
-      location = _aboutPageModel.location;
-      gender = _aboutPageModel.gender;
-      website = _aboutPageModel.website;
-    } else if (_currentIndex == 5) {
-      profilePictures = signUpPhotosKey.currentState.returnDetails();
-      print(profilePictures);
-    } else if (_currentIndex == 6) {
-      email = signUpRegisterKey.currentState.returnDetails()['email'];
-      password = signUpRegisterKey.currentState.returnDetails()['password'];
-      confirmPassword =
-          signUpRegisterKey.currentState.returnDetails()['confirmPassword'];
-      validateRegistration().then((String value) => print(value));
-    }
-
-    // transition to next page of sign up flow
-    _welcomeController.nextPage(
-      curve: Curves.easeIn,
-      duration: const Duration(milliseconds: 400),
-    );
   }
 
   Future<void> _handleSignUp() async {

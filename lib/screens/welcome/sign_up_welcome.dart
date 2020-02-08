@@ -1,13 +1,6 @@
-import 'dart:async';
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/utils/junto_overlay.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 
 /// Agreements screen shown to the user following registration
 class SignUpAgreements extends StatelessWidget {
@@ -21,79 +14,83 @@ class SignUpAgreements extends StatelessWidget {
             top: MediaQuery.of(context).size.height * .15,
           ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Column(
-                children: <Widget>[
-                  Container(
-                    margin: const EdgeInsets.only(bottom: 25),
-                    child: Image.asset(
-                        'assets/images/junto-mobile__outlinelogo--gradient.png',
-                        height: 69,
-                        color: Theme.of(context).primaryColor),
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: MediaQuery.of(context).size.width * .05),
-                    margin: const EdgeInsets.only(bottom: 25),
-                    child: Text(
-                      'JUNTO',
-                      style: TextStyle(
-                          color: Theme.of(context).primaryColorDark,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 28,
-                          letterSpacing: 1.8),
-                      textAlign: TextAlign.center,
+              Expanded(
+                flex: 8,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 25),
+                      child: Image.asset(
+                          'assets/images/junto-mobile__outlinelogo--gradient.png',
+                          height: 69,
+                          color: Theme.of(context).primaryColor),
                     ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * .5,
-                    margin: const EdgeInsets.only(bottom: 40),
-                    decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: Theme.of(context).dividerColor,
-                          ),
-                        ),
-                        boxShadow: <BoxShadow>[
-                          BoxShadow(
-                              color: Theme.of(context)
-                                  .primaryColorDark
-                                  .withOpacity(.12),
-                              offset: const Offset(0.0, 6.0),
-                              blurRadius: 9),
-                        ]),
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: MediaQuery.of(context).size.width * .1),
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          child: Text(
-                            '1. Be aware of the impact your words and actions have. Embrace kindness and compassion when interacting with others.',
-                            style: Theme.of(context).textTheme.headline5,
-                            textAlign: TextAlign.left,
-                          ),
-                        ),
-                        const SizedBox(height: 25),
-                        Container(
-                          child: Text(
-                            '2. Accept everyone else\'s experience as valid, even if it doesn\'t look like yours',
-                            style: Theme.of(context).textTheme.headline5,
-                          ),
-                        ),
-                        const SizedBox(height: 25),
-                        Container(
-                          child: Text(
-                            '3. Expresson yourself freely. Be real and hold space for authenticity.',
-                            style: Theme.of(context).textTheme.headline5,
-                          ),
-                        ),
-                      ],
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width * .05),
+                      margin: const EdgeInsets.only(bottom: 25),
+                      child: Text(
+                        'JUNTO',
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColorDark,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 28,
+                            letterSpacing: 1.8),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-                  ),
-                ],
+                    Container(
+                      width: MediaQuery.of(context).size.width * .5,
+                      margin: const EdgeInsets.only(bottom: 40),
+                      decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: Theme.of(context).dividerColor,
+                            ),
+                          ),
+                          boxShadow: <BoxShadow>[
+                            BoxShadow(
+                                color: Theme.of(context)
+                                    .primaryColorDark
+                                    .withOpacity(.12),
+                                offset: const Offset(0.0, 6.0),
+                                blurRadius: 9),
+                          ]),
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width * .1),
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            child: Text(
+                              '1. Be aware of the impact your words and actions have. Embrace kindness and compassion when interacting with others.',
+                              style: Theme.of(context).textTheme.headline5,
+                              textAlign: TextAlign.left,
+                            ),
+                          ),
+                          const SizedBox(height: 25),
+                          Container(
+                            child: Text(
+                              '2. Accept everyone else\'s experience as valid, even if it doesn\'t look like yours',
+                              style: Theme.of(context).textTheme.headline5,
+                            ),
+                          ),
+                          const SizedBox(height: 25),
+                          Container(
+                            child: Text(
+                              '3. Expresson yourself freely. Be real and hold space for authenticity.',
+                              style: Theme.of(context).textTheme.headline5,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
               Container(
                 margin: const EdgeInsets.only(top: 50),
@@ -158,7 +155,8 @@ class SignUpAgreements extends StatelessWidget {
                         letterSpacing: 1.4),
                   ),
                 ),
-              )
+              ),
+              Spacer(),
             ],
           ),
         ),
