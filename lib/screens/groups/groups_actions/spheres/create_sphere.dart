@@ -18,9 +18,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 class CreateSphere extends StatefulWidget {
   const CreateSphere({
     Key key,
-    @required this.onSphereCreated,
+    @required this.refreshSpheres,
   }) : super(key: key);
-  final VoidCallback onSphereCreated;
+  final Function refreshSpheres;
 
   @override
   State<StatefulWidget> createState() {
@@ -100,7 +100,7 @@ class CreateSphereState extends State<CreateSphere> {
     try {
       await Provider.of<GroupRepo>(context, listen: false).createSphere(sphere);
       JuntoLoader.hide();
-      widget.onSphereCreated();
+      widget.refreshSpheres();
       Navigator.pop(context);
     } catch (error) {
       print(error);

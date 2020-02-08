@@ -36,10 +36,10 @@ class SpheresState extends State<Spheres> with ListDistinct {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _userProvider = Provider.of<UserRepo>(context);
-    _configureSpheres();
+    _refreshSpheres();
   }
 
-  Future<void> _configureSpheres() async {
+  Future<void> _refreshSpheres() async {
     try {
       await getUserInformation();
       setState(() {
@@ -85,7 +85,7 @@ class SpheresState extends State<Spheres> with ListDistinct {
                       context,
                       CupertinoPageRoute<void>(
                         builder: (BuildContext context) => CreateSphere(
-                          onSphereCreated: _configureSpheres,
+                          refreshSpheres: _refreshSpheres,
                         ),
                       ),
                     );
