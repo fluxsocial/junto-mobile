@@ -62,6 +62,21 @@ class EditPerspectiveState extends State<EditPerspective> {
     _pageController = PageController(initialPage: 0);
   }
 
+  Future<void> _removeMemberFromPerspective(
+      List<Map<String, String>> userAddresses,
+      String perspectiveAddress) async {
+    JuntoLoader.showLoader(context);
+    try {
+      await Provider.of<UserRepo>(context, listen: false)
+          .deleteUsersFromPerspective(userAddresses, perspectiveAddress);
+      _refreshPerspectiveMembers();
+      JuntoLoader.hide();
+    } catch (error) {
+      JuntoLoader.hide();
+      print(error);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -242,14 +257,22 @@ class EditPerspectiveState extends State<EditPerspective> {
                 }
                 if (snapshot.hasData) {
                   return ListView(
-                      children: snapshot.data
-                          .map(
-                            (UserProfile user) =>
-                                MemberPreviewDeselect(profile: user),
-                          )
-                          .toList());
+                    children: snapshot.data
+                        .map(
+                          (UserProfile user) => MemberPreviewDeselect(
+                              profile: user,
+                              onDeselect: () {
+                                _removeMemberFromPerspective([
+                                  {'user_address': user.address}
+                                ], widget.perspective.address);
+                              }),
+                        )
+                        .toList(),
+                  );
                 }
-                return Center(child: Text('pending'));
+                return const Center(
+                  child: Text('pending'),
+                );
               },
             )
           ],

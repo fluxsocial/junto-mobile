@@ -203,12 +203,12 @@ class UserServiceCentralized implements UserService {
   }
 
   @override
-  Future<void> deletePerspectiveUserEntry(
-    String userAddress,
+  Future<void> deleteUsersFromPerspective(
+    List<Map<String, String>> userAddresses,
     String perspectiveAddress,
   ) async {
-    final http.Response _serverResponse =
-        await client.delete('/perspectives/$perspectiveAddress/users');
+    final http.Response _serverResponse = await client
+        .delete('/perspectives/$perspectiveAddress/users', body: userAddresses);
     JuntoHttp.handleResponse(_serverResponse);
   }
 

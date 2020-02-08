@@ -206,8 +206,8 @@ abstract class UserService {
   );
 
   /// Uses a Delete request.
-  Future<void> deletePerspectiveUserEntry(
-    String userAddress,
+  Future<void> deleteUsersFromPerspective(
+    List<Map<String,String>> userAddresses,
     String perspectiveAddress,
   );
 

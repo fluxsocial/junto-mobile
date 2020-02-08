@@ -8,7 +8,7 @@ class MemberPreviewDeselect extends StatelessWidget {
       : super(key: key);
 
   final UserProfile profile;
-  final Function onDeselect;
+  final dynamic onDeselect;
   @override
   Widget build(BuildContext context) {
     return Container(

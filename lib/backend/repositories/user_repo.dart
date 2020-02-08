@@ -68,12 +68,12 @@ class UserRepo {
         userAddress, perspectiveAddress);
   }
 
-  Future<void> deletePerspectiveUserEntry(
-    String userAddress,
+  Future<void> deleteUsersFromPerspective(
+    List<Map<String, String>> userAddresses,
     String perspectiveAddress,
   ) {
-    return _userService.deletePerspectiveUserEntry(
-        userAddress, perspectiveAddress);
+    return _userService.deleteUsersFromPerspective(
+        userAddresses, perspectiveAddress);
   }
 
   Future<List<UserProfile>> getPerspectiveUsers(

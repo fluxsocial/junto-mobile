@@ -33,8 +33,8 @@ class MockUserService implements UserService {
   }
 
   @override
-  Future<void> deletePerspectiveUserEntry(
-      String userAddress, String perspectiveAddress) async {
+  Future<void> deleteUsersFromPerspective(
+      List<Map<String, String>> userAddresses, String perspectiveAddress) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
   }
 
