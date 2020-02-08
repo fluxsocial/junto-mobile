@@ -12,6 +12,8 @@ import 'package:junto_beta_mobile/utils/junto_exception.dart'
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 
 class JuntoPerspectives extends StatefulWidget {
   const JuntoPerspectives({this.userProfile, this.changePerspective});
@@ -47,9 +49,11 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
     });
   }
 
-  Future<List<CentralizedPerspective>> _fetchUserPerspectives(String address) {
+  Future<List<CentralizedPerspective>> _fetchUserPerspectives(
+      String address) async {
     try {
-      return Provider.of<UserRepo>(context).getUserPerspective(_userAddress);
+      return await Provider.of<UserRepo>(context)
+          .getUserPerspective(_userAddress);
     } on JuntoException catch (error) {
       debugPrint('error fethcing perspectives ${error.errorCode}');
       return null;
@@ -220,8 +224,19 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
               color: Colors.red,
               iconWidget: Icon(Icons.delete,
                   size: 15, color: Theme.of(context).primaryColor),
-              onTap: () {
-                // Provider.of<UserRepo>(context).del
+              onTap: () async {
+                JuntoDialog.showJuntoDialog(context, 'Are you sure?', [
+                  FlatButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Ok'),
+                  ),
+                ]);
+                JuntoLoader.showLoader(context);
+                await Provider.of<UserRepo>(context, listen: false)
+                    .deletePerspective(perspective.address);
+                JuntoLoader.hide();
               }),
         ],
         key: Key(perspective.address),

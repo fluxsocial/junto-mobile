@@ -63,8 +63,6 @@ class SpheresState extends State<Spheres> with ListDistinct {
     return _userProvider.getUserGroups(_userProfile.user.address);
   }
 
-  void _onSphereCreated() => _configureSpheres;
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -87,7 +85,7 @@ class SpheresState extends State<Spheres> with ListDistinct {
                       context,
                       CupertinoPageRoute<void>(
                         builder: (BuildContext context) => CreateSphere(
-                          onSphereCreated: _onSphereCreated,
+                          onSphereCreated: _configureSpheres,
                         ),
                       ),
                     );
