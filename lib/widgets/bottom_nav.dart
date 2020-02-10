@@ -33,9 +33,7 @@ class BottomNav extends StatelessWidget {
         children: <Widget>[
           Expanded(
             child: GestureDetector(
-              onTap: () {
-                onTap();
-              },
+              onTap: onTap,
               child: Container(
                 width: 60,
                 height: 50,
