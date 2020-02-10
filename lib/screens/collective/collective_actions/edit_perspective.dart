@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart'
     show JuntoException;
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:junto_beta_mobile/screens/collective/collective_actions/edit_perspective_add_members.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview_deselect.dart';
 
@@ -26,7 +28,7 @@ class EditPerspectiveState extends State<EditPerspective> {
   PageController _pageController;
   int _currentIndex = 0;
 
-  List<String> _perspectiveMembers = <String>[];
+  List<UserProfile> _perspectiveMembers = <UserProfile>[];
 
   Future getPerspectiveMembers;
 
@@ -40,8 +42,14 @@ class EditPerspectiveState extends State<EditPerspective> {
   Future<List<UserProfile>> _fetchPerspectiveMembers(String address) async {
     try {
       print('getting users');
-      return await Provider.of<UserRepo>(context, listen: false)
-          .getPerspectiveUsers(address);
+      final List<UserProfile> _members =
+          await Provider.of<UserRepo>(context, listen: false)
+              .getPerspectiveUsers(address);
+      setState(() {
+        _perspectiveMembers = _members;
+      });
+
+      return _members;
     } on JuntoException catch (error) {
       debugPrint('error fethcing perspectives ${error.errorCode}');
       return null;
@@ -51,6 +59,7 @@ class EditPerspectiveState extends State<EditPerspective> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    print('yellow');
     _refreshPerspectiveMembers();
   }
 
@@ -174,7 +183,16 @@ class EditPerspectiveState extends State<EditPerspective> {
                           ),
                         )
                       : GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (BuildContext context) =>
+                                    EditPerspectiveAddMembers(
+                                        perspective: widget.perspective, refreshPerspectiveMembers: _refreshPerspectiveMembers)
+                              ),
+                            );
+                          },
                           child: Container(
                               height: 45,
                               width: 45,
@@ -262,9 +280,13 @@ class EditPerspectiveState extends State<EditPerspective> {
                           (UserProfile user) => MemberPreviewDeselect(
                               profile: user,
                               onDeselect: () {
-                                _removeMemberFromPerspective([
-                                  {'user_address': user.address}
-                                ], widget.perspective.address);
+                                _removeMemberFromPerspective(
+                                    <Map<String, String>>[
+                                      <String, String>{
+                                        'user_address': user.address
+                                      }
+                                    ],
+                                    widget.perspective.address);
                               }),
                         )
                         .toList(),

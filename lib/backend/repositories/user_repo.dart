@@ -19,11 +19,6 @@ class UserRepo {
     return _userService.deletePerspective(perspectiveAddress);
   }
 
-  Future<UserProfile> addUserToPerspective(
-      String perspectiveAddress, List<String> userAddress) {
-    return _userService.addUserToPerspective(perspectiveAddress, userAddress);
-  }
-
   Future<UserData> getUser(String userAddress) {
     return _userService.getUser(userAddress);
   }
@@ -66,6 +61,11 @@ class UserRepo {
   ) {
     return _userService.createPerspectiveUserEntry(
         userAddress, perspectiveAddress);
+  }
+
+  Future<void> addUsersToPerspective(
+      String perspectiveAddress, List<String> userAddresses) {
+    return _userService.addUsersToPerspective(perspectiveAddress, userAddresses);
   }
 
   Future<void> deleteUsersFromPerspective(

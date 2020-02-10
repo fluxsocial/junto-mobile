@@ -162,13 +162,9 @@ abstract class UserService {
   Future<void> deletePerspective(String perspective);
 
   Future<CentralizedPerspective> updatePerspective(
-    String perspectiveAddress, Map<String, String> perspectiveBody,
+    String perspectiveAddress,
+    Map<String, String> perspectiveBody,
   );
-
-  /// Adds the given user to a perspective. The perspective address and user
-  /// address must be supplied.
-  Future<UserProfile> addUserToPerspective(
-      String perspectiveAddress, List<String> userAddress);
 
   /// Gets the user
   Future<UserData> getUser(String userAddress);
@@ -205,9 +201,14 @@ abstract class UserService {
     String perspectiveAddress,
   );
 
+  /// Adds the given user to a perspective. The perspective address and user
+  /// address must be supplied.
+  Future<void> addUsersToPerspective(
+      String perspectiveAddress, List<String> userAddresses);
+
   /// Uses a Delete request.
   Future<void> deleteUsersFromPerspective(
-    List<Map<String,String>> userAddresses,
+    List<Map<String, String>> userAddresses,
     String perspectiveAddress,
   );
 
