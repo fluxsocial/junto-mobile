@@ -1,4 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:http/io_client.dart';
+import 'package:junto_beta_mobile/app/themes.dart';
+import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/backend/mock/mock_auth.dart';
 import 'package:junto_beta_mobile/backend/mock/mock_expression.dart';
 import 'package:junto_beta_mobile/backend/mock/mock_search.dart';
@@ -27,9 +30,11 @@ class Backend {
     this.collectiveProvider,
     this.groupsProvider,
     this.expressionRepo,
+    this.currentTheme,
   });
 
   static Future<Backend> init() async {
+    final ThemeData currentTheme = await JuntoThemesProvider.loadDefault();
     final JuntoHttp client = JuntoHttp(httpClient: IOClient());
     final AuthenticationService authService =
         AuthenticationServiceCentralized(client);
@@ -45,6 +50,7 @@ class Backend {
       collectiveProvider: CollectiveProviderCentralized(client),
       groupsProvider: GroupRepo(groupService),
       expressionRepo: ExpressionRepo(expressionService),
+      currentTheme: currentTheme,
     );
   }
 
@@ -61,6 +67,7 @@ class Backend {
       groupsProvider: GroupRepo(groupService),
       expressionRepo: ExpressionRepo(expressionService),
       searchRepo: SearchRepo(searchService),
+      currentTheme: JuntoThemes().juntoLightIndigo,
     );
   }
 
@@ -70,4 +77,5 @@ class Backend {
   final CollectiveService collectiveProvider;
   final GroupRepo groupsProvider;
   final ExpressionRepo expressionRepo;
+  final ThemeData currentTheme;
 }

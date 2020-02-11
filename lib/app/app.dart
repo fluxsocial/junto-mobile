@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/themes.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
@@ -33,7 +32,7 @@ class JuntoAppState extends State<JuntoApp> {
     return MultiProvider(
       providers: <SingleChildWidget>[
         ChangeNotifierProvider<JuntoThemesProvider>(
-          create: (_) => JuntoThemesProvider(JuntoThemes().juntoLightIndigo),
+          create: (_) => JuntoThemesProvider(backend.currentTheme),
         ),
         Provider<SearchService>.value(value: backend.searchRepo),
         Provider<AuthRepo>.value(value: backend.authRepo),
