@@ -251,3 +251,8 @@ abstract class UserService {
   // Returns a list of followers for the given user address.
   Future<List<UserProfile>> getFollowers(String userAddress);
 }
+
+/// App wide notification service
+abstract class NotificationService {
+  Future<NotificationResultsModel> getNotifications();
+}

@@ -3,6 +3,7 @@ export 'den_model.dart';
 export 'emoji_model.dart';
 export 'expression.dart';
 export 'group_model.dart';
+export 'notification_model.dart';
 export 'pack.dart';
 export 'page_model.dart';
 export 'perspective.dart';

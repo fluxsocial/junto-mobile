@@ -87,3 +87,4 @@ lib/api.dart
 ios/Runner.xcodeproj/project.pbxproj
 ios/Flutter/Flutter.podspec
 .flutter-plugins-dependencies
+*.http

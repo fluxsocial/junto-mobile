@@ -22,9 +22,7 @@ class JuntoThemesProvider with ChangeNotifier {
 
   ThemeData currentTheme;
 
-  ThemeData getTheme() {
-    return currentTheme;
-  }
+  ThemeData getTheme() => currentTheme;
 
   ThemeData setTheme(String theme) {
     _persistTheme(theme);
