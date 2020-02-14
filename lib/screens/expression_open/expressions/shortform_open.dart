@@ -14,58 +14,11 @@ class ShortformOpen extends StatefulWidget {
 }
 
 class ShortformOpenState extends State<ShortformOpen> {
-  String _shortformBackground;
   String _shortformBody;
-  //ignore:unused_field
-  Color _gradientOne;
-  //ignore:unused_field
-  Color _gradientTwo;
-
-  void _buildBackground() {
-    if (_shortformBackground == 'zero') {
-      setState(() {
-        _gradientOne = const Color(0xffffffff);
-        _gradientTwo = const Color(0xffffffff);
-      });
-    } else if (_shortformBackground == 'one') {
-      setState(() {
-        _gradientOne = JuntoPalette.juntoPrimary;
-        _gradientTwo = JuntoPalette.juntoPrimaryLight;
-      });
-    } else if (_shortformBackground == 'two') {
-      setState(() {
-        _gradientOne = JuntoPalette.juntoSecondary;
-        _gradientTwo = JuntoPalette.juntoSecondaryLight;
-      });
-    } else if (_shortformBackground == 'three') {
-      setState(() {
-        _gradientOne = JuntoPalette.juntoSecondary;
-        _gradientTwo = JuntoPalette.juntoPrimary;
-      });
-    } else if (_shortformBackground == 'four') {
-      setState(() {
-        _gradientOne = JuntoPalette.juntoGreen;
-        _gradientTwo = JuntoPalette.juntoPrimary;
-      });
-    } else if (_shortformBackground == 'five') {
-      setState(() {
-        _gradientOne = JuntoPalette.juntoGreen;
-        _gradientTwo = JuntoPalette.juntoSecondary;
-      });
-    } else {
-      setState(() {
-        _gradientOne = JuntoPalette.juntoBlack;
-        _gradientTwo = JuntoPalette.juntoBlack;
-      });
-    }
-  }
 
   @override
   void initState() {
     _shortformBody = widget.expression.expressionData.body;
-    _shortformBackground = widget.expression.expressionData.background;
-    _buildBackground();
-
     super.initState();
   }
 

@@ -25,50 +25,7 @@ class ShortformPreviewState extends State<ShortformPreview> {
   @override
   void initState() {
     super.initState();
-    _buildBackground();
     shortformBody = widget.expression.expressionData.body;
-  }
-
-  void _buildBackground() {
-    final String shortformBackground =
-        widget.expression.expressionData.background;
-
-    if (shortformBackground == 'zero') {
-      setState(() {
-        _gradientOne = JuntoPalette.juntoWhite;
-        _gradientTwo = JuntoPalette.juntoWhite;
-      });
-    } else if (shortformBackground == 'one') {
-      setState(() {
-        _gradientOne = JuntoPalette.juntoPrimary;
-        _gradientTwo = JuntoPalette.juntoPrimaryLight;
-      });
-    } else if (shortformBackground == 'two') {
-      setState(() {
-        _gradientOne = JuntoPalette.juntoSecondary;
-        _gradientTwo = JuntoPalette.juntoSecondaryLight;
-      });
-    } else if (shortformBackground == 'three') {
-      setState(() {
-        _gradientOne = JuntoPalette.juntoSecondary;
-        _gradientTwo = JuntoPalette.juntoPrimary;
-      });
-    } else if (shortformBackground == 'four') {
-      setState(() {
-        _gradientOne = JuntoPalette.juntoGreen;
-        _gradientTwo = JuntoPalette.juntoPrimary;
-      });
-    } else if (shortformBackground == 'five') {
-      setState(() {
-        _gradientOne = JuntoPalette.juntoGreen;
-        _gradientTwo = JuntoPalette.juntoSecondary;
-      });
-    } else {
-      setState(() {
-        _gradientOne = JuntoPalette.juntoPrimary;
-        _gradientTwo = JuntoPalette.juntoSecondary;
-      });
-    }
   }
 
   @override

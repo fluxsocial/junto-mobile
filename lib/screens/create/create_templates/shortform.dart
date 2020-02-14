@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
 
 /// Allows the user to create a short form expression.
 class CreateShortform extends StatefulWidget {
@@ -14,8 +15,8 @@ class CreateShortform extends StatefulWidget {
 class CreateShortformState extends State<CreateShortform> {
   num gradientOne;
   num gradientTwo;
+  Color gradientThree;
 
-  String _currentBackground = 'zero';
   TextEditingController _bodyController;
 
   /// Creates a [CentralizedShortFormExpression] from the given data entered
@@ -23,7 +24,7 @@ class CreateShortformState extends State<CreateShortform> {
   CentralizedShortFormExpression createExpression() {
     return CentralizedShortFormExpression(
       body: _bodyController.value.text,
-      background: '',
+      background: <dynamic>['2c2cde', '7ec6e9'],
     );
   }
 
@@ -33,6 +34,13 @@ class CreateShortformState extends State<CreateShortform> {
     gradientOne = 0xff2c2cde;
     gradientTwo = 0xff7ec6e9;
     _bodyController = TextEditingController();
+    Color(
+      0xff + 0xff + int.parse('2c2cde', radix: 16),
+    );
+
+    // gradientThree = Color(
+    //   0xff + int.parse('2c2cde'),
+    // );
   }
 
   @override
@@ -47,7 +55,6 @@ class CreateShortformState extends State<CreateShortform> {
         setState(() {
           gradientOne = hexOne;
           gradientTwo = hexTwo;
-          _currentBackground = gradientId;
         });
       },
       child: Container(
@@ -101,7 +108,10 @@ class CreateShortformState extends State<CreateShortform> {
                         0.2,
                         0.9,
                       ],
-                      colors: <Color>[Color(gradientOne), Color(gradientTwo)],
+                      colors: <Color>[
+                        HexColor.fromHex('7ec6e9'),
+                        Color(gradientTwo)
+                      ],
                     ),
                   ),
                   child: TextField(

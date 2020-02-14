@@ -99,7 +99,7 @@ class CentralizedShortFormExpression {
     );
   }
 
-  final String background;
+  final List<dynamic> background;
   final String body;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
