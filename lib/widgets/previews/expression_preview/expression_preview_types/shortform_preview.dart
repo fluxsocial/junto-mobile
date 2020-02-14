@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
 
 /// Takes an un-named [ExpressionResult] to be displayed
 class ShortformPreview extends StatefulWidget {
@@ -16,16 +16,17 @@ class ShortformPreview extends StatefulWidget {
 }
 
 class ShortformPreviewState extends State<ShortformPreview> {
-  //ignore:unused_field
-  Color _gradientOne;
-  //ignore:unused_field
-  Color _gradientTwo;
+  String _hexOne;
+  String _hexTwo;
   String shortformBody = '';
 
   @override
   void initState() {
     super.initState();
+    print(widget.expression.expressionData.background);
     shortformBody = widget.expression.expressionData.body;
+    _hexOne = widget.expression.expressionData.background[0];
+    _hexTwo = widget.expression.expressionData.background[1];
   }
 
   @override
@@ -37,10 +38,7 @@ class ShortformPreviewState extends State<ShortformPreview> {
           begin: Alignment.bottomLeft,
           end: Alignment.topRight,
           stops: const <double>[0.1, 0.9],
-          colors: <Color>[
-            Theme.of(context).colorScheme.secondary,
-            Theme.of(context).colorScheme.primary
-          ],
+          colors: <Color>[HexColor.fromHex(_hexOne), HexColor.fromHex(_hexTwo)],
         ),
       ),
       constraints: BoxConstraints(

@@ -13,9 +13,8 @@ class CreateShortform extends StatefulWidget {
 }
 
 class CreateShortformState extends State<CreateShortform> {
-  num gradientOne;
-  num gradientTwo;
-  Color gradientThree;
+  String gradientOne;
+  String gradientTwo;
 
   TextEditingController _bodyController;
 
@@ -24,23 +23,16 @@ class CreateShortformState extends State<CreateShortform> {
   CentralizedShortFormExpression createExpression() {
     return CentralizedShortFormExpression(
       body: _bodyController.value.text,
-      background: <dynamic>['2c2cde', '7ec6e9'],
+      background: <dynamic>[gradientOne, gradientTwo],
     );
   }
 
   @override
   void initState() {
     super.initState();
-    gradientOne = 0xff2c2cde;
-    gradientTwo = 0xff7ec6e9;
+    gradientOne = '7461a1';
+    gradientTwo = '285FA7';
     _bodyController = TextEditingController();
-    Color(
-      0xff + 0xff + int.parse('2c2cde', radix: 16),
-    );
-
-    // gradientThree = Color(
-    //   0xff + int.parse('2c2cde'),
-    // );
   }
 
   @override
@@ -49,7 +41,7 @@ class CreateShortformState extends State<CreateShortform> {
     super.dispose();
   }
 
-  Widget _gradientSelector(String gradientId, num hexOne, num hexTwo) {
+  Widget _gradientSelector(String hexOne, String hexTwo) {
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -66,7 +58,10 @@ class CreateShortformState extends State<CreateShortform> {
             begin: Alignment.bottomLeft,
             end: Alignment.topRight,
             stops: const <double>[0.2, 0.9],
-            colors: <Color>[Color(hexOne), Color(hexTwo)],
+            colors: <Color>[
+              HexColor.fromHex(hexOne),
+              HexColor.fromHex(hexTwo),
+            ],
           ),
         ),
       ),
@@ -82,11 +77,11 @@ class CreateShortformState extends State<CreateShortform> {
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             child: Row(
               children: <Widget>[
-                _gradientSelector('zero', 0xFF7461a1, 0xff285FA7),
-                _gradientSelector('one', 0xff9e81d7, 0xffddcb7f),
-                _gradientSelector('two', 0xff2c2cde, 0xff7ec6e9),
-                _gradientSelector('three', 0xff719cf4, 0xffffc7e4),
-                _gradientSelector('four', 0xff639acf, 0xff7bdaa5),
+                _gradientSelector('7461a1', '285FA7'),
+                _gradientSelector('9e81d7', 'ddcb7f'),
+                _gradientSelector('2c2cde', '7ec6e9'),
+                _gradientSelector('719cf4', 'ffc7e4'),
+                _gradientSelector('639acf', '7bdaa5'),
               ],
             ),
           ),
@@ -109,8 +104,8 @@ class CreateShortformState extends State<CreateShortform> {
                         0.9,
                       ],
                       colors: <Color>[
-                        HexColor.fromHex('7ec6e9'),
-                        Color(gradientTwo)
+                        HexColor.fromHex(gradientOne),
+                        HexColor.fromHex(gradientTwo),
                       ],
                     ),
                   ),
