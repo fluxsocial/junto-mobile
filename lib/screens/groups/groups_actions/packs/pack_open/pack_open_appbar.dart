@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
@@ -31,7 +32,7 @@ class PackOpenAppbar extends StatelessWidget {
             Row(
               children: <Widget>[
                 Text(
-                  'My Pack Expressions',
+                  'My Pack',
                   style: Theme.of(context).textTheme.headline6,
                 )
               ],
