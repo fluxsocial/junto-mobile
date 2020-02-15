@@ -11,13 +11,13 @@ class NotificationServiceImpl implements NotificationService {
   final JuntoHttp httpClient;
 
   @override
-  Future<NotificationResultsModel> getNotifications() async {
-    final http.Response response =
-        await httpClient.get('/notifications', queryParams: <String, String>{
-      'pagination_position': '0',
-      'connection_requests': 'true',
-      'group_join_requests': 'true'
-    });
+  Future<NotificationResultsModel> getNotifications(
+    NotificationQuery params,
+  ) async {
+    final http.Response response = await httpClient.get(
+      '/notifications',
+      queryParams: params.toMap(),
+    );
     final Map<String, dynamic> data = JuntoHttp.handleResponse(response);
     return NotificationResultsModel.fromMap(data);
   }

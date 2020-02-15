@@ -6,7 +6,7 @@ class NotificationRepo {
 
   final NotificationService service;
 
-  Future<NotificationResultsModel> getNotifications() {
-    return service.getNotifications();
+  Future<NotificationResultsModel> getNotifications(NotificationQuery params) {
+    return service.getNotifications(params);
   }
 }

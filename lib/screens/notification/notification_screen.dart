@@ -180,7 +180,13 @@ class _NotificationScreenState extends State<NotificationScreen>
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12.0),
           child: FutureBuilder<NotificationResultsModel>(
-            future: notificationService.getNotifications(),
+            future: notificationService.getNotifications(
+              const NotificationQuery(
+                connectionRequests: true,
+                groupJoinRequests: true,
+                paginationPosition: 0,
+              ),
+            ),
             builder: (
               BuildContext context,
               AsyncSnapshot<NotificationResultsModel> snapshot,
