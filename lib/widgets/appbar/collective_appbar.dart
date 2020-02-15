@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/screens/notification/notification_screen.dart';
 
 // Junto app bar used in collective screen.
 class CollectiveAppBar extends SliverPersistentHeaderDelegate {
@@ -67,7 +68,9 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                 Row(
                   children: <Widget>[
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () => Navigator.of(context).push(
+                        NotificationScreen.route(),
+                      ),
                       child: Container(
                         width: 42,
                         color: Colors.transparent,
