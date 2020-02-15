@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/utils/junto_dialog.dart';
+import 'package:junto_beta_mobile/utils/junto_exception.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
 
@@ -14,25 +17,95 @@ class NotificationScreen extends StatefulWidget {
   _NotificationScreenState createState() => _NotificationScreenState();
 }
 
-class _NotificationScreenState extends State<NotificationScreen> {
+class _NotificationScreenState extends State<NotificationScreen>
+    with SingleTickerProviderStateMixin {
   NotificationRepo notificationService;
+  TabController _tabController;
+  UserRepo userRepo;
+  GroupRepo groupRepo;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(vsync: this, length: 2);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _tabController.dispose();
+  }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     notificationService = Provider.of<NotificationRepo>(context);
+    userRepo = Provider.of<UserRepo>(context);
   }
 
-  Widget _buildListBody(final NotificationResultsModel data) {
+  Future<void> acceptConnection(final UserProfile user) async {
+    try {
+      JuntoLoader.showLoader(context);
+      userRepo.respondToConnection(user.address, true);
+      JuntoLoader.hide();
+      setState(() {});
+    } on JuntoException catch (error) {
+      JuntoLoader.hide();
+      JuntoDialog.showJuntoDialog(context, error.message, [DialogBack()]);
+    }
+  }
+
+  Future<void> rejectConnection(final UserProfile user) async {
+    try {
+      JuntoLoader.showLoader(context);
+      userRepo.respondToConnection(user.address, false);
+      JuntoLoader.hide();
+      setState(() {});
+    } on JuntoException catch (error) {
+      JuntoLoader.hide();
+      JuntoDialog.showJuntoDialog(context, error.message, [DialogBack()]);
+    }
+  }
+
+  Future<void> acceptGroupConnection(final Group user) async {
+    try {
+      JuntoLoader.showLoader(context);
+      //TODO: Add new endpoint
+      JuntoLoader.hide();
+      setState(() {});
+    } on JuntoException catch (error) {
+      JuntoLoader.hide();
+      JuntoDialog.showJuntoDialog(
+        context,
+        error.message,
+        <Widget>[
+          DialogBack(),
+        ],
+      );
+    }
+  }
+
+  Future<void> rejectGroupConnection(final Group user) async {
+    try {
+      JuntoLoader.showLoader(context);
+      //TODO: Add new endpoint
+      JuntoLoader.hide();
+      setState(() {});
+    } on JuntoException catch (error) {
+      JuntoLoader.hide();
+      JuntoDialog.showJuntoDialog(
+        context,
+        error.message,
+        <Widget>[
+          DialogBack(),
+        ],
+      );
+    }
+  }
+
+  Widget _buildGroupBody(final NotificationResultsModel data) {
     return ListView(
       children: <Widget>[
-        const SizedBox(
-          height: 20.0,
-        ),
-        Text(
-          'Group Notifications',
-          style: Theme.of(context).textTheme.headline4,
-        ),
         if (data.groupJoinNotifications.isEmpty)
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 24.0),
@@ -40,19 +113,22 @@ class _NotificationScreenState extends State<NotificationScreen> {
               name: 'No new group notifications',
             ),
           ),
-        const SizedBox(
-          height: 80.0,
-        ),
         if (data.groupJoinNotifications.isNotEmpty)
           for (Group item in data.groupJoinNotifications)
-            ListTile(
-              title: Text(item.groupData.name),
-              subtitle: Text(item.incomingCreator.name),
+            _ActionTile(
+              key: ValueKey<String>(item.address),
+              onPrimaryAction: () => acceptGroupConnection(item),
+              onSecondaryAction: () => rejectGroupConnection(item),
+              subtitle: 'Creator ${item.incomingCreator.name}',
+              title: item.groupData.name,
             ),
-        Text(
-          'Connection Notifications',
-          style: Theme.of(context).textTheme.headline4,
-        ),
+      ],
+    );
+  }
+
+  Widget _buildConnectionBody(final NotificationResultsModel data) {
+    return ListView(
+      children: <Widget>[
         if (data.connectionNotifications.isEmpty)
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 24.0),
@@ -62,9 +138,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
           ),
         if (data.connectionNotifications.isNotEmpty)
           for (UserProfile item in data.connectionNotifications)
-            ListTile(
-              title: Text(item.name),
-              subtitle: Text(item.username),
+            _ActionTile(
+              key: ValueKey<String>(item.address),
+              onPrimaryAction: () => acceptConnection(item),
+              onSecondaryAction: () => rejectConnection(item),
+              subtitle: '@${item.username}',
+              title: item.name,
             ),
       ],
     );
@@ -77,7 +156,24 @@ class _NotificationScreenState extends State<NotificationScreen> {
         elevation: 1.0,
         title: Text(
           'Notifications',
-          style: Theme.of(context).textTheme.caption,
+          style: Theme.of(context).textTheme.headline6,
+        ),
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: <Widget>[
+            Tab(
+              child: Text(
+                'Group',
+                style: Theme.of(context).textTheme.caption,
+              ),
+            ),
+            Tab(
+              child: Text(
+                'Connection',
+                style: Theme.of(context).textTheme.caption,
+              ),
+            ),
+          ],
         ),
       ),
       body: SafeArea(
@@ -101,8 +197,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 );
               }
               if (snapshot.hasData) {
-                print(snapshot.data);
-                return _buildListBody(snapshot.data);
+                return TabBarView(
+                  controller: _tabController,
+                  children: <Widget>[
+                    _buildGroupBody(snapshot.data),
+                    _buildConnectionBody(snapshot.data),
+                  ],
+                );
               }
               if (!snapshot.hasData && !snapshot.hasError) {
                 return Center(
@@ -139,6 +240,77 @@ class _EmptyResults extends StatelessWidget {
           style: Theme.of(context).textTheme.headline6,
         ),
       ],
+    );
+  }
+}
+
+class _ActionTile extends StatelessWidget {
+  const _ActionTile({
+    Key key,
+    @required this.title,
+    @required this.subtitle,
+    @required this.onPrimaryAction,
+    @required this.onSecondaryAction,
+  }) : super(key: key);
+
+  final String title;
+  final String subtitle;
+  final VoidCallback onPrimaryAction;
+  final VoidCallback onSecondaryAction;
+
+  @override
+  Widget build(BuildContext context) {
+    final TextStyle _style = TextStyle(color: Colors.white);
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 4),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Expanded(
+                child: Text(title),
+              ),
+              FlatButton(
+                visualDensity: const VisualDensity(
+                  vertical: -2.5,
+                  horizontal: -3.0,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24.0),
+                ),
+                onPressed: onPrimaryAction,
+                color: Theme.of(context).accentColor,
+                child: Text(
+                  'Accept',
+                  style: _style,
+                ),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Expanded(
+                child: Text(subtitle),
+              ),
+              FlatButton(
+                visualDensity: const VisualDensity(
+                  vertical: -2.5,
+                  horizontal: -3,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24.0),
+                ),
+                onPressed: onSecondaryAction,
+                color: Colors.redAccent,
+                child: Text('Reject', style: _style),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
