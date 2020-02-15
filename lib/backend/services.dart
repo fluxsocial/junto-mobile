@@ -224,9 +224,6 @@ abstract class UserService {
   /// Removes the user's connection with the given address
   Future<void> removeUserConnection(String userAddress);
 
-  /// Gets a list of pending user connections
-  Future<List<UserProfile>> pendingConnections(String userAddress);
-
   /// Responds to the connection with either `true` or `false`
   Future<void> respondToConnection(String userAddress, bool response);
 
