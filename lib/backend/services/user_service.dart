@@ -191,14 +191,14 @@ class UserServiceCentralized implements UserService {
   Future<void> addUsersToPerspective(
       String perspectiveAddress, List<String> userAddresses) async {
     final List<Map<String, String>> users = <Map<String, String>>[];
-
-    userAddresses.forEach((String user) {
+    for (final String user in userAddresses) {
       users.add(<String, String>{'user_address': user});
-    });
+    }
     final http.Response _serverResponse = await client.postWithoutEncoding(
       '/perspectives/$perspectiveAddress/users',
       body: users,
     );
+    JuntoHttp.handleResponse(_serverResponse);
   }
 
   @override
@@ -240,13 +240,14 @@ class UserServiceCentralized implements UserService {
   }
 
   @override
-  Future userRelations() async {
+  Future<Map<String, dynamic>> userRelations() async {
     final http.Response _serverResponse = await client.get(
       '/users/self/relations',
     );
 
     // handle response from server
-    final _results = await JuntoHttp.handleResponse(_serverResponse);
+    final Map<String, dynamic> _results =
+        await JuntoHttp.handleResponse(_serverResponse);
 
     // set each relationship key into its own variable
     final Map<String, dynamic> _following = _results['following'];
@@ -334,12 +335,19 @@ class UserServiceCentralized implements UserService {
 
   @override
   Future<List<UserProfile>> pendingConnections(String userAddress) async {
-    final http.Response _serverResponse = await client.get(
-      '/notifications',
-    );
-    final List<dynamic> _results = JuntoHttp.handleResponse(_serverResponse);
+    final http.Response _serverResponse =
+        await client.get('/notifications', queryParams: <String, String>{
+      'pagination_position': '0',
+      'connection_requests': 'true',
+      'group_join_requests': 'false'
+    });
+    final Map<String, dynamic> _results =
+        JuntoHttp.handleResponse(_serverResponse);
+    final NotificationResultsModel model =
+        NotificationResultsModel.fromMap(_results);
     return <UserProfile>[
-      for (dynamic data in _results) UserProfile.fromMap(data)
+      for (dynamic data in model.connectionNotifications)
+        UserProfile.fromMap(data)
     ];
   }
 
