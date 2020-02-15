@@ -50,7 +50,7 @@ class Backend {
     return Backend._(
       searchRepo: SearchRepo(searchService),
       authRepo: AuthRepo(authService),
-      userRepo: UserRepo(userService),
+      userRepo: UserRepo(userService, notificationService),
       collectiveProvider: CollectiveProviderCentralized(client),
       groupsProvider: GroupRepo(groupService),
       expressionRepo: ExpressionRepo(expressionService),
@@ -67,7 +67,7 @@ class Backend {
     final SearchService searchService = MockSearch();
     return Backend._(
       authRepo: AuthRepo(authService),
-      userRepo: UserRepo(userService),
+      userRepo: UserRepo(userService, null),
       collectiveProvider: null,
       groupsProvider: GroupRepo(groupService),
       expressionRepo: ExpressionRepo(expressionService),
