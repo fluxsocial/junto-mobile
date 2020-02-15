@@ -1,22 +1,23 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/member/member_appbar.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
+import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/screens/member/member_appbar.dart';
+import 'package:junto_beta_mobile/screens/member/member_relationships.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
-import 'package:junto_beta_mobile/widgets/user_expressions.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
+import 'package:junto_beta_mobile/widgets/user_expressions.dart';
 import 'package:provider/provider.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:junto_beta_mobile/screens/member/member_relationships.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class JuntoMember extends StatefulWidget {
   const JuntoMember({
@@ -500,15 +501,15 @@ class _MemberDenAppbar extends StatelessWidget {
                       GestureDetector(
                         onTap: () {
                           toggleMemberRelationships();
-                          // showModalBottomSheet(
-                          //   context: context,
-                          //   builder: (BuildContext context) => Container(
-                          //     color: Colors.transparent,
-                          //     child: MemberRelationshipsModal(
-                          //       onConnectTap: () => _connectWithUser(context),
-                          //     ),
-                          //   ),
-                          // );
+//                          showModalBottomSheet(
+//                            context: context,
+//                            builder: (BuildContext context) => Container(
+//                              color: Colors.transparent,
+//                              child: MemberRelationshipsModal(
+//                                onConnectTap: () => _connectWithUser(context),
+//                              ),
+//                            ),
+//                          );
                         },
                         child: Container(
                           padding: const EdgeInsets.symmetric(

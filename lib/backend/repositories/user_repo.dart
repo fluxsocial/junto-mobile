@@ -12,7 +12,6 @@ class UserRepo {
     return _userService.createPerspective(perspective);
   }
 
-  @override
   Future<void> deletePerspective(
     String perspectiveAddress,
   ) {
@@ -65,7 +64,8 @@ class UserRepo {
 
   Future<void> addUsersToPerspective(
       String perspectiveAddress, List<String> userAddresses) {
-    return _userService.addUsersToPerspective(perspectiveAddress, userAddresses);
+    return _userService.addUsersToPerspective(
+        perspectiveAddress, userAddresses);
   }
 
   Future<void> deleteUsersFromPerspective(
