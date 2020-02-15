@@ -106,4 +106,15 @@ class GroupServiceCentralized implements GroupService {
         JuntoHttp.handleResponse(_serverResponse);
     return Group.fromMap(_data);
   }
+
+  @override
+  Future<void> respondToGroupRequest(String groupAddress, bool decision) async {
+    final http.Response _serverResponse = await client.postWithoutEncoding(
+      '/groups/$groupAddress/respond',
+      body: <String, dynamic>{
+        'status': decision,
+      },
+    );
+    JuntoHttp.handleResponse(_serverResponse);
+  }
 }
