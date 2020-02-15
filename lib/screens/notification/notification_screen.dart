@@ -67,10 +67,10 @@ class _NotificationScreenState extends State<NotificationScreen>
     }
   }
 
-  Future<void> acceptGroupConnection(final Group user) async {
+  Future<void> acceptGroupConnection(final Group group) async {
     try {
       JuntoLoader.showLoader(context);
-      //TODO: Add new endpoint
+      groupRepo.respondToGroupRequest(group.address, true);
       JuntoLoader.hide();
       setState(() {});
     } on JuntoException catch (error) {
@@ -85,10 +85,10 @@ class _NotificationScreenState extends State<NotificationScreen>
     }
   }
 
-  Future<void> rejectGroupConnection(final Group user) async {
+  Future<void> rejectGroupConnection(final Group group) async {
     try {
       JuntoLoader.showLoader(context);
-      //TODO: Add new endpoint
+      groupRepo.respondToGroupRequest(group.address, false);
       JuntoLoader.hide();
       setState(() {});
     } on JuntoException catch (error) {
