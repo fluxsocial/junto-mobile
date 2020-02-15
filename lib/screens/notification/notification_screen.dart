@@ -74,6 +74,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 1.0,
         title: Text(
           'Notifications',
           style: Theme.of(context).textTheme.caption,
