@@ -44,12 +44,6 @@ class MemberRelationships extends StatelessWidget {
       refreshRelations();
 
       JuntoLoader.hide();
-      JuntoDialog.showJuntoDialog(context, 'Subscribed', <Widget>[
-        FlatButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Ok'),
-        )
-      ]);
     } on JuntoException catch (error) {
       JuntoLoader.hide();
       JuntoDialog.showJuntoDialog(
@@ -63,40 +57,50 @@ class MemberRelationships extends StatelessWidget {
   }
 
   Future<void> _unsubscribeToUser(BuildContext context) async {
-    JuntoLoader.showLoader(context);
-    try {
-      // get address of follow perspective
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final Map<String, dynamic> decodedUserData =
-          jsonDecode(prefs.getString('user_data'));
-      final UserData userProfile = UserData.fromMap(decodedUserData);
-      // add member to follow perspective
-      await userProvider.deleteUsersFromPerspective(
-        <Map<String, String>>[
-          <String, String>{'user_address': memberProfile.address}
-        ],
-        userProfile.userPerspective.address,
-      );
+    JuntoDialog.showJuntoDialog(
+        context, 'Are you sure you want to unsubscribe?', <Widget>[
+      FlatButton(
+        onPressed: () async {
+          JuntoLoader.showLoader(context);
+          try {
+            // get address of follow perspective
+            final SharedPreferences prefs =
+                await SharedPreferences.getInstance();
+            final Map<String, dynamic> decodedUserData =
+                jsonDecode(prefs.getString('user_data'));
+            final UserData userProfile = UserData.fromMap(decodedUserData);
+            // add member to follow perspective
+            await userProvider.deleteUsersFromPerspective(
+              <Map<String, String>>[
+                <String, String>{'user_address': memberProfile.address}
+              ],
+              userProfile.userPerspective.address,
+            );
 
-      refreshRelations();
+            refreshRelations();
 
-      JuntoLoader.hide();
-      JuntoDialog.showJuntoDialog(context, 'Unsubscribed', <Widget>[
-        FlatButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Ok'),
-        )
-      ]);
-    } on JuntoException catch (error) {
-      JuntoLoader.hide();
-      JuntoDialog.showJuntoDialog(
-          context, 'Error occured ${error?.message}', <Widget>[
-        FlatButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Ok'),
-        )
-      ]);
-    }
+            JuntoLoader.hide();
+            Navigator.pop(context);
+          } on JuntoException catch (error) {
+            JuntoLoader.hide();
+            JuntoDialog.showJuntoDialog(
+                context, 'Error occured ${error?.message}', <Widget>[
+              FlatButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Ok'),
+              )
+            ]);
+          }
+        },
+        child: const Text('Yes'),
+      ),
+      FlatButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        child: const Text('No'),
+      ),
+    ]);
   }
 
   Future<void> _connectWithUser(BuildContext context) async {
@@ -393,7 +397,7 @@ class MemberRelationships extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            _connectWithUser(context);
+            isPending ? () {} : _connectWithUser(context);
           },
           child: Container(
             decoration: BoxDecoration(
