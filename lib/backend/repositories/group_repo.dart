@@ -27,7 +27,6 @@ class GroupRepo {
         'permission_level': perms
       });
     }
-    print(_users);
     return _groupService.addGroupMember(groupAddress, _users);
   }
 

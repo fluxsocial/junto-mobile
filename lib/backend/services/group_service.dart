@@ -40,8 +40,6 @@ class GroupServiceCentralized implements GroupService {
       String groupAddress, List<Map<String, dynamic>> users) async {
     final http.Response _serverResponse = await client
         .postWithoutEncoding('/groups/$groupAddress/members', body: users);
-    print(_serverResponse.statusCode);
-    print(_serverResponse.body);
     JuntoHttp.handleResponse(_serverResponse);
   }
 
