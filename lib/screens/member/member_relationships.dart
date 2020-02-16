@@ -123,6 +123,39 @@ class MemberRelationships extends StatelessWidget {
     }
   }
 
+  Future<void> _disconnectWithUser(BuildContext context) async {
+    JuntoDialog.showJuntoDialog(
+        context, 'Are you sure you want to disconnect?', <Widget>[
+      FlatButton(
+        onPressed: () async {
+          try {
+            JuntoLoader.showLoader(context);
+            await userProvider.removeUserConnection(memberProfile.address);
+            refreshRelations();
+            JuntoLoader.hide();
+          } on JuntoException catch (error) {
+            JuntoLoader.hide();
+            JuntoDialog.showJuntoDialog(
+                context, 'Error occured ${error?.message}', <Widget>[
+              FlatButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Ok'),
+              )
+            ]);
+          }
+          Navigator.pop(context);
+        },
+        child: const Text('Yes'),
+      ),
+      FlatButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        child: const Text('No'),
+      ),
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -212,7 +245,7 @@ class MemberRelationships extends StatelessWidget {
                   'SUBSCRIBE',
                   style: TextStyle(
                       fontSize: 14,
-                      fontWeight: FontWeight.w700,
+                      fontWeight: FontWeight.w600,
                       color: Theme.of(context).primaryColor,
                       decoration: TextDecoration.none,
                       letterSpacing: 1.2),
@@ -250,7 +283,7 @@ class MemberRelationships extends StatelessWidget {
                   'CONNECT',
                   style: TextStyle(
                       fontSize: 14,
-                      fontWeight: FontWeight.w700,
+                      fontWeight: FontWeight.w600,
                       color: Theme.of(context).primaryColor,
                       decoration: TextDecoration.none,
                       letterSpacing: 1.2),
@@ -284,7 +317,7 @@ class MemberRelationships extends StatelessWidget {
                 'INVITE TO PACK',
                 style: TextStyle(
                     fontSize: 14,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w600,
                     color: Theme.of(context).primaryColor,
                     decoration: TextDecoration.none,
                     letterSpacing: 1.2),
@@ -330,7 +363,7 @@ class MemberRelationships extends StatelessWidget {
                   'SUBSCRIBED',
                   style: TextStyle(
                       fontSize: 14,
-                      fontWeight: FontWeight.w700,
+                      fontWeight: FontWeight.w600,
                       color: Theme.of(context).primaryColor,
                       decoration: TextDecoration.none,
                       letterSpacing: 1.2),
@@ -380,7 +413,7 @@ class MemberRelationships extends StatelessWidget {
                       'CONNECT',
                       style: TextStyle(
                           fontSize: 14,
-                          fontWeight: FontWeight.w700,
+                          fontWeight: FontWeight.w600,
                           color: Theme.of(context).primaryColor,
                           decoration: TextDecoration.none,
                           letterSpacing: 1.2),
@@ -441,7 +474,7 @@ class MemberRelationships extends StatelessWidget {
                 'INVITE TO PACK',
                 style: TextStyle(
                     fontSize: 14,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w600,
                     color: Theme.of(context).primaryColor,
                     decoration: TextDecoration.none,
                     letterSpacing: 1.2),
@@ -487,7 +520,7 @@ class MemberRelationships extends StatelessWidget {
                   'SUBSCRIBED',
                   style: TextStyle(
                       fontSize: 14,
-                      fontWeight: FontWeight.w700,
+                      fontWeight: FontWeight.w600,
                       color: Theme.of(context).primaryColor,
                       decoration: TextDecoration.none,
                       letterSpacing: 1.2),
@@ -516,7 +549,9 @@ class MemberRelationships extends StatelessWidget {
           ),
         ),
         GestureDetector(
-          onTap: () {},
+          onTap: () {
+            _disconnectWithUser(context);
+          },
           child: Container(
             decoration: BoxDecoration(
               border: Border(
@@ -532,7 +567,7 @@ class MemberRelationships extends StatelessWidget {
                   'CONNECTED',
                   style: TextStyle(
                       fontSize: 14,
-                      fontWeight: FontWeight.w700,
+                      fontWeight: FontWeight.w600,
                       color: Theme.of(context).primaryColor,
                       decoration: TextDecoration.none,
                       letterSpacing: 1.2),
@@ -574,7 +609,7 @@ class MemberRelationships extends StatelessWidget {
                 'INVITE TO PACK',
                 style: TextStyle(
                     fontSize: 14,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w600,
                     color: Theme.of(context).primaryColor,
                     decoration: TextDecoration.none,
                     letterSpacing: 1.2),
