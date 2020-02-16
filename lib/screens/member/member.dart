@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -69,10 +70,24 @@ class _JuntoMemberState extends State<JuntoMember> {
 
     setState(() {
       _userAddress = prefs.getString('user_id');
+
       userProvider = Provider.of<UserRepo>(context, listen: false);
     });
 
     // // see if user is connected to member
+    await userProvider
+        .isRelated(_userAddress, widget.profile.address)
+        .then((Map<String, dynamic> result) {
+      setState(() {
+        isConnected = result['is_connected'];
+        isFollowing = result['is_following'];
+        isFollowed = result['is_followed'];
+        isPending = result['has_pending_connection'];
+      });
+    });
+  }
+
+  Future<void> refreshRelations() async {
     await userProvider
         .isRelated(_userAddress, widget.profile.address)
         .then((Map<String, dynamic> result) {
@@ -242,8 +257,13 @@ class _JuntoMemberState extends State<JuntoMember> {
           child: Visibility(
             visible: memberRelationshipsVisible,
             child: MemberRelationships(
+              isFollowing: isFollowing,
+              isConnected: isConnected,
+              isPending: isPending,
+              userProvider: userProvider,
               memberProfile: widget.profile,
               toggleMemberRelationships: toggleMemberRelationships,
+              refreshRelations: refreshRelations
             ),
           ),
         ),
