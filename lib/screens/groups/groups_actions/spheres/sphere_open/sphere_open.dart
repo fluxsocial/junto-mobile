@@ -47,7 +47,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   @override
   void initState() {
     super.initState();
-    print('init state');
+    print(widget.group.address);
     WidgetsBinding.instance.addPostFrameCallback(_getFlexibleSpaceSize);
   }
 

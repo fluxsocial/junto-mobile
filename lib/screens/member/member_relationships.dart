@@ -167,7 +167,10 @@ class MemberRelationships extends StatelessWidget {
     JuntoLoader.showLoader(context);
     try {
       await Provider.of<GroupRepo>(context, listen: false).addGroupMember(
-          userProfile.pack.address, <UserProfile>[memberProfile], 'member');
+          // userProfile.pack.address,
+          'dab827aa-244c-930c-d91c-d3b6681c26dc',
+          <UserProfile>[memberProfile],
+          'member');
       refreshRelations();
       JuntoLoader.hide();
       JuntoDialog.showJuntoDialog(context, 'Invited to Pack', <Widget>[

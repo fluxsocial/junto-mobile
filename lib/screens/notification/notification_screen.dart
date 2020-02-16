@@ -40,7 +40,8 @@ class _NotificationScreenState extends State<NotificationScreen>
   void didChangeDependencies() {
     super.didChangeDependencies();
     notificationService = Provider.of<NotificationRepo>(context);
-    userRepo = Provider.of<UserRepo>(context);
+    userRepo = Provider.of<UserRepo>(context, listen: false);
+    groupRepo = Provider.of<GroupRepo>(context, listen: false);
   }
 
   Future<void> acceptConnection(final UserProfile user) async {
@@ -119,7 +120,7 @@ class _NotificationScreenState extends State<NotificationScreen>
               key: ValueKey<String>(item.address),
               onPrimaryAction: () => acceptGroupConnection(item),
               onSecondaryAction: () => rejectGroupConnection(item),
-              subtitle: 'Creator ${item.incomingCreator.name}',
+              subtitle: 'Creator',
               title: item.groupData.name,
             ),
       ],
