@@ -41,6 +41,7 @@ class JuntoAppState extends State<JuntoApp> {
         Provider<GroupRepo>.value(value: backend.groupsProvider),
         Provider<ExpressionRepo>.value(value: backend.expressionRepo),
         Provider<SearchRepo>.value(value: backend.searchRepo),
+        Provider<NotificationRepo>.value(value: backend.notificationRepo),
       ],
       child: MaterialAppWithTheme(
         loggedIn: widget.loggedIn,

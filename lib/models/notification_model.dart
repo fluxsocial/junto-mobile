@@ -32,3 +32,23 @@ class NotificationResultsModel {
     };
   }
 }
+
+class NotificationQuery {
+  const NotificationQuery({
+    this.paginationPosition,
+    this.connectionRequests,
+    this.groupJoinRequests,
+  });
+
+  final int paginationPosition;
+  final bool connectionRequests;
+  final bool groupJoinRequests;
+
+  Map<String, String> toMap() {
+    return <String, String>{
+      'pagination_position': '$paginationPosition',
+      'connection_requests': '$connectionRequests',
+      'group_join_requests': '$groupJoinRequests',
+    };
+  }
+}

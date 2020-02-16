@@ -45,4 +45,10 @@ class GroupRepo {
     assert(group.groupData.principles != null);
     return _groupService.updateGroup(group);
   }
+
+  Future<void> respondToGroupRequest(String groupAddress, bool decision) {
+    assert(groupAddress != null);
+    assert(decision != null);
+    return _groupService.respondToGroupRequest(groupAddress, decision);
+  }
 }

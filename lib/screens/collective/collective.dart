@@ -84,12 +84,14 @@ class JuntoCollectiveState extends State<JuntoCollective>
 
   void refreshData() {
     _expressionProvider = Provider.of<ExpressionRepo>(context, listen: false);
-    // _expressionCompleter = _asyncMemoizer.runOnce(() =>
-    //     getCollectiveExpressions(contextType: 'Collective', paginationPos: 0));
-    _expressionCompleter = getCollectiveExpressions(
-      contextType: 'Collective',
-      paginationPos: 0,
-    );
+//    _expressionCompleter = _asyncMemoizer.runOnce(() =>
+//        getCollectiveExpressions(contextType: 'Collective', paginationPos: 0));
+    setState(() {
+      _expressionCompleter = getCollectiveExpressions(
+        contextType: 'Collective',
+        paginationPos: 0,
+      );
+    });
   }
 
   void _onScrollingHasChanged() {

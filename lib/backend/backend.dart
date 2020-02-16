@@ -15,6 +15,7 @@ import 'package:junto_beta_mobile/backend/services/auth_service.dart';
 import 'package:junto_beta_mobile/backend/services/collective_provider.dart';
 import 'package:junto_beta_mobile/backend/services/expression_provider.dart';
 import 'package:junto_beta_mobile/backend/services/group_service.dart';
+import 'package:junto_beta_mobile/backend/services/notification_service.dart';
 import 'package:junto_beta_mobile/backend/services/search_service.dart';
 import 'package:junto_beta_mobile/backend/services/user_service.dart';
 import 'package:junto_beta_mobile/utils/junto_http.dart';
@@ -31,6 +32,7 @@ class Backend {
     this.groupsProvider,
     this.expressionRepo,
     this.currentTheme,
+    this.notificationRepo,
   });
 
   static Future<Backend> init() async {
@@ -43,14 +45,17 @@ class Backend {
         ExpressionServiceCentralized(client);
     final GroupService groupService = GroupServiceCentralized(client);
     final SearchService searchService = SearchServiceCentralized(client);
+    final NotificationService notificationService =
+        NotificationServiceImpl(client);
     return Backend._(
       searchRepo: SearchRepo(searchService),
       authRepo: AuthRepo(authService),
-      userRepo: UserRepo(userService),
+      userRepo: UserRepo(userService, notificationService),
       collectiveProvider: CollectiveProviderCentralized(client),
       groupsProvider: GroupRepo(groupService),
       expressionRepo: ExpressionRepo(expressionService),
       currentTheme: currentTheme,
+      notificationRepo: NotificationRepo(notificationService),
     );
   }
 
@@ -62,7 +67,7 @@ class Backend {
     final SearchService searchService = MockSearch();
     return Backend._(
       authRepo: AuthRepo(authService),
-      userRepo: UserRepo(userService),
+      userRepo: UserRepo(userService, null),
       collectiveProvider: null,
       groupsProvider: GroupRepo(groupService),
       expressionRepo: ExpressionRepo(expressionService),
@@ -77,5 +82,6 @@ class Backend {
   final CollectiveService collectiveProvider;
   final GroupRepo groupsProvider;
   final ExpressionRepo expressionRepo;
+  final NotificationRepo notificationRepo;
   final ThemeData currentTheme;
 }

@@ -2,9 +2,10 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 class UserRepo {
-  UserRepo(this._userService);
+  UserRepo(this._userService, this._notificationService);
 
   final UserService _userService;
+  final NotificationService _notificationService;
 
   Future<CentralizedPerspective> createPerspective(Perspective perspective) {
     assert(perspective.name != null);
@@ -12,7 +13,6 @@ class UserRepo {
     return _userService.createPerspective(perspective);
   }
 
-  @override
   Future<void> deletePerspective(
     String perspectiveAddress,
   ) {
@@ -65,7 +65,8 @@ class UserRepo {
 
   Future<void> addUsersToPerspective(
       String perspectiveAddress, List<String> userAddresses) {
-    return _userService.addUsersToPerspective(perspectiveAddress, userAddresses);
+    return _userService.addUsersToPerspective(
+        perspectiveAddress, userAddresses);
   }
 
   Future<void> deleteUsersFromPerspective(
@@ -94,8 +95,18 @@ class UserRepo {
     return _userService.connectedUsers(userAddress);
   }
 
-  Future<List<UserProfile>> pendingConnections(String userAddress) {
-    return _userService.pendingConnections(userAddress);
+  Future<List<UserProfile>> pendingConnections(String userAddress) async {
+    final NotificationResultsModel result =
+        await _notificationService.getNotifications(
+      const NotificationQuery(
+          groupJoinRequests: false,
+          connectionRequests: true,
+          paginationPosition: 0),
+    );
+    return <UserProfile>[
+      for (dynamic data in result.connectionNotifications)
+        UserProfile.fromMap(data)
+    ];
   }
 
   Future<void> removeUserConnection(String userAddress) {

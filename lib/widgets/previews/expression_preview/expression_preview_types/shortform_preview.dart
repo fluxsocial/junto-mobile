@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
 
 /// Takes an un-named [ExpressionResult] to be displayed

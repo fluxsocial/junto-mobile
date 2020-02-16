@@ -46,7 +46,7 @@ void main() {
         CentralizedExpression(
           type: 'ShortForm',
           expressionData: CentralizedShortFormExpression(
-            background: '#FFFF',
+            background: <String>['#FFFF'],
             body: 'Test ShortForm expression',
           ).toMap(),
           context: <String, dynamic>{

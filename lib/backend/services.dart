@@ -150,6 +150,8 @@ abstract class GroupService {
 
   /// Allows for updating a group. The parameter [group] must not be null.
   Future<Group> updateGroup(Group group);
+
+  Future<void> respondToGroupRequest(String groupAddress, bool decision);
 }
 
 enum QueryType { address, email, username }
@@ -222,9 +224,6 @@ abstract class UserService {
   /// Removes the user's connection with the given address
   Future<void> removeUserConnection(String userAddress);
 
-  /// Gets a list of pending user connections
-  Future<List<UserProfile>> pendingConnections(String userAddress);
-
   /// Responds to the connection with either `true` or `false`
   Future<void> respondToConnection(String userAddress, bool response);
 
@@ -254,5 +253,5 @@ abstract class UserService {
 
 /// App wide notification service
 abstract class NotificationService {
-  Future<NotificationResultsModel> getNotifications();
+  Future<NotificationResultsModel> getNotifications(NotificationQuery params);
 }
