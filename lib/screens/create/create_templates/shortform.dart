@@ -90,11 +90,12 @@ class CreateShortformState extends State<CreateShortform> {
               padding: const EdgeInsets.all(0),
               children: <Widget>[
                 Container(
-                  padding: EdgeInsets.only(
-                      left: 10.0,
-                      right: 10.0,
-                      top: MediaQuery.of(context).size.height * .1),
-                  height: MediaQuery.of(context).size.height * .40,
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 25.0,
+                    horizontal: 25.0,
+                  ),
+                  alignment: Alignment.center,
+                  height: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.bottomLeft,
