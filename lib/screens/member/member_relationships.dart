@@ -190,16 +190,18 @@ class MemberRelationships extends StatelessWidget {
             )
           ],
         );
-      JuntoDialog.showJuntoDialog(
-        context,
-        '${error.message}',
-        <Widget>[
-          FlatButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Ok'),
-          )
-        ],
-      );
+      if (!error.message
+          .contains('does not exist or is already a group member'))
+        JuntoDialog.showJuntoDialog(
+          context,
+          '${error.message}',
+          <Widget>[
+            FlatButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Ok'),
+            )
+          ],
+        );
     }
   }
 
