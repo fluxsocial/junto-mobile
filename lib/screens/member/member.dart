@@ -168,7 +168,7 @@ class _JuntoMemberState extends State<JuntoMember> {
                                     item: widget.profile.location,
                                   )
                                 : const SizedBox(),
-                            widget.profile.website.isNotEmpty
+                            widget.profile.website[0].isNotEmpty
                                 ? _ProfileDetails(
                                     imageUri:
                                         'assets/images/junto-mobile__link.png',
@@ -242,7 +242,9 @@ class _JuntoMemberState extends State<JuntoMember> {
           child: Visibility(
             visible: memberRelationshipsVisible,
             child: MemberRelationships(
-                toggleMemberRelationships: toggleMemberRelationships),
+              memberProfile: widget.profile,
+              toggleMemberRelationships: toggleMemberRelationships,
+            ),
           ),
         ),
       ],
@@ -295,105 +297,6 @@ class _ProfileDetails extends StatelessWidget {
   }
 }
 
-class MemberRelationshipsModal extends StatelessWidget {
-  const MemberRelationshipsModal({
-    Key key,
-    @required this.onConnectTap,
-  }) : super(key: key);
-  final VoidCallback onConnectTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height * .36,
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.background,
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(10),
-          topRight: Radius.circular(10),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    height: 5,
-                    width: MediaQuery.of(context).size.width * .1,
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).dividerColor,
-                        borderRadius: BorderRadius.circular(100)),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              ListTile(
-                contentPadding: const EdgeInsets.all(0),
-                title: Row(
-                  children: <Widget>[
-                    Icon(
-                      CustomIcons.pawprints,
-                      size: 17,
-                      color: Theme.of(context).primaryColorDark,
-                    ),
-                    const SizedBox(width: 15),
-                    Text(
-                      'Subscribe',
-                      style: Theme.of(context).textTheme.headline5,
-                    ),
-                  ],
-                ),
-              ),
-              ListTile(
-                onTap: onConnectTap,
-                contentPadding: const EdgeInsets.all(0),
-                title: Row(
-                  children: <Widget>[
-                    Icon(
-                      CustomIcons.circle,
-                      size: 17,
-                      color: Theme.of(context).primaryColorDark,
-                    ),
-                    const SizedBox(width: 15),
-                    Text(
-                      'Connect',
-                      style: Theme.of(context).textTheme.headline5,
-                    ),
-                  ],
-                ),
-              ),
-              ListTile(
-                contentPadding: const EdgeInsets.all(0),
-                title: Row(
-                  children: <Widget>[
-                    Icon(
-                      CustomIcons.packs,
-                      size: 17,
-                      color: Theme.of(context).primaryColorDark,
-                    ),
-                    const SizedBox(width: 15),
-                    Text(
-                      'Invite to my pack',
-                      style: Theme.of(context).textTheme.headline5,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class _MemberDenAppbar extends StatelessWidget {
   const _MemberDenAppbar(
       {Key key,
@@ -407,30 +310,6 @@ class _MemberDenAppbar extends StatelessWidget {
   final bool isConnected;
   final bool isFollowing;
   final Function toggleMemberRelationships;
-
-  Future<void> _connectWithUser(BuildContext context) async {
-    final UserRepo _userRepo = Provider.of<UserRepo>(context, listen: false);
-    try {
-      JuntoLoader.showLoader(context);
-      await _userRepo.connectUser(profile.address);
-      JuntoLoader.hide();
-      JuntoDialog.showJuntoDialog(context, 'Connection Sent', <Widget>[
-        FlatButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Ok'),
-        )
-      ]);
-    } on JuntoException catch (error) {
-      JuntoLoader.hide();
-      JuntoDialog.showJuntoDialog(
-          context, 'Error occured ${error?.message}', <Widget>[
-        FlatButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Ok'),
-        )
-      ]);
-    }
-  }
 
   Widget _displayRelationshipIndicator(BuildContext context) {
     if (isFollowing == true && isConnected == false) {
@@ -501,15 +380,6 @@ class _MemberDenAppbar extends StatelessWidget {
                       GestureDetector(
                         onTap: () {
                           toggleMemberRelationships();
-//                          showModalBottomSheet(
-//                            context: context,
-//                            builder: (BuildContext context) => Container(
-//                              color: Colors.transparent,
-//                              child: MemberRelationshipsModal(
-//                                onConnectTap: () => _connectWithUser(context),
-//                              ),
-//                            ),
-//                          );
                         },
                         child: Container(
                           padding: const EdgeInsets.symmetric(
