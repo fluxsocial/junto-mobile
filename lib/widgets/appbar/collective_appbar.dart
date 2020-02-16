@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
 
 // Junto app bar used in collective screen.
 class CollectiveAppBar extends SliverPersistentHeaderDelegate {
@@ -66,6 +67,24 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                 ),
                 Row(
                   children: <Widget>[
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => GlobalSearch(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        width: 42,
+                        color: Colors.transparent,
+                        alignment: Alignment.bottomRight,
+                        padding: const EdgeInsets.only(right: 10),
+                        child: Icon(Icons.search,
+                            size: 22, color: Theme.of(context).primaryColor),
+                      ),
+                    ),
                     GestureDetector(
                       onTap: () {},
                       child: Container(
