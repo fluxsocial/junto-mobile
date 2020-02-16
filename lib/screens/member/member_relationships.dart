@@ -178,15 +178,28 @@ class MemberRelationships extends StatelessWidget {
         )
       ]);
     } on JuntoException catch (error) {
-      print(error.message);
       JuntoLoader.hide();
+      if (error.message.contains('does not exist or is already a group member'))
+        JuntoDialog.showJuntoDialog(
+          context,
+          'Connection already sent',
+          <Widget>[
+            FlatButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Ok'),
+            )
+          ],
+        );
       JuntoDialog.showJuntoDialog(
-          context, 'Error occured ${error?.message}', <Widget>[
-        FlatButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Ok'),
-        )
-      ]);
+        context,
+        '${error.message}',
+        <Widget>[
+          FlatButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Ok'),
+          )
+        ],
+      );
     }
   }
 
