@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
@@ -16,6 +17,7 @@ class MemberRelationships extends StatelessWidget {
       this.isConnected,
       this.isPending,
       this.userProvider,
+      this.userProfile,
       this.toggleMemberRelationships,
       this.memberProfile,
       this.refreshRelations});
@@ -26,6 +28,7 @@ class MemberRelationships extends StatelessWidget {
   final Function toggleMemberRelationships;
   final Function refreshRelations;
   final UserProfile memberProfile;
+  final UserData userProfile;
   final UserRepo userProvider;
 
   Future<void> _subscribeToUser(BuildContext context) async {
@@ -158,6 +161,32 @@ class MemberRelationships extends StatelessWidget {
         child: const Text('No'),
       ),
     ]);
+  }
+
+  Future<void> _inviteToPack(BuildContext context) async {
+    JuntoLoader.showLoader(context);
+    try {
+      await Provider.of<GroupRepo>(context, listen: false).addGroupMember(
+          userProfile.pack.address, <UserProfile>[memberProfile], 'member');
+      refreshRelations();
+      JuntoLoader.hide();
+      JuntoDialog.showJuntoDialog(context, 'Invited to Pack', <Widget>[
+        FlatButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Ok'),
+        )
+      ]);
+    } on JuntoException catch (error) {
+      print(error.message);
+      JuntoLoader.hide();
+      JuntoDialog.showJuntoDialog(
+          context, 'Error occured ${error?.message}', <Widget>[
+        FlatButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Ok'),
+        )
+      ]);
+    }
   }
 
   @override
@@ -306,38 +335,44 @@ class MemberRelationships extends StatelessWidget {
             ),
           ),
         ),
-        Container(
-          decoration: BoxDecoration(
-            border: Border(
-              bottom:
-                  BorderSide(color: Theme.of(context).dividerColor, width: .5),
-            ),
-          ),
-          padding: const EdgeInsets.symmetric(vertical: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                'INVITE TO PACK',
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Theme.of(context).primaryColor,
-                    decoration: TextDecoration.none,
-                    letterSpacing: 1.2),
+        GestureDetector(
+          onTap: () {
+            _inviteToPack(context);
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.transparent,
+              border: Border(
+                bottom: BorderSide(
+                    color: Theme.of(context).dividerColor, width: .5),
               ),
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                      color: Theme.of(context).primaryColor, width: 1.2),
-                  borderRadius: BorderRadius.circular(5),
+            ),
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  'INVITE TO PACK',
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: Theme.of(context).primaryColor,
+                      decoration: TextDecoration.none,
+                      letterSpacing: 1.2),
                 ),
-                child: Icon(Icons.add,
-                    size: 15, color: Theme.of(context).primaryColor),
-              )
-            ],
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        color: Theme.of(context).primaryColor, width: 1.2),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Icon(Icons.add,
+                      size: 15, color: Theme.of(context).primaryColor),
+                )
+              ],
+            ),
           ),
         ),
       ],
@@ -463,38 +498,43 @@ class MemberRelationships extends StatelessWidget {
             ),
           ),
         ),
-        Container(
-          decoration: BoxDecoration(
-            border: Border(
-              bottom:
-                  BorderSide(color: Theme.of(context).dividerColor, width: .5),
-            ),
-          ),
-          padding: const EdgeInsets.symmetric(vertical: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                'INVITE TO PACK',
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Theme.of(context).primaryColor,
-                    decoration: TextDecoration.none,
-                    letterSpacing: 1.2),
+        GestureDetector(
+          onTap: () {
+            _inviteToPack(context);
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                    color: Theme.of(context).dividerColor, width: .5),
               ),
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                      color: Theme.of(context).primaryColor, width: 1.2),
-                  borderRadius: BorderRadius.circular(5),
+            ),
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  'INVITE TO PACK',
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: Theme.of(context).primaryColor,
+                      decoration: TextDecoration.none,
+                      letterSpacing: 1.2),
                 ),
-                child: Icon(Icons.add,
-                    size: 15, color: Theme.of(context).primaryColor),
-              )
-            ],
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        color: Theme.of(context).primaryColor, width: 1.2),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Icon(Icons.add,
+                      size: 15, color: Theme.of(context).primaryColor),
+                )
+              ],
+            ),
           ),
         ),
       ],
@@ -598,38 +638,43 @@ class MemberRelationships extends StatelessWidget {
             ),
           ),
         ),
-        Container(
-          decoration: BoxDecoration(
-            border: Border(
-              bottom:
-                  BorderSide(color: Theme.of(context).dividerColor, width: .5),
-            ),
-          ),
-          padding: const EdgeInsets.symmetric(vertical: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                'INVITE TO PACK',
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Theme.of(context).primaryColor,
-                    decoration: TextDecoration.none,
-                    letterSpacing: 1.2),
+        GestureDetector(
+          onTap: () {
+            _inviteToPack(context);
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                    color: Theme.of(context).dividerColor, width: .5),
               ),
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                      color: Theme.of(context).primaryColor, width: 1.2),
-                  borderRadius: BorderRadius.circular(5),
+            ),
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  'INVITE TO PACK',
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: Theme.of(context).primaryColor,
+                      decoration: TextDecoration.none,
+                      letterSpacing: 1.2),
                 ),
-                child: Icon(Icons.add,
-                    size: 15, color: Theme.of(context).primaryColor),
-              )
-            ],
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        color: Theme.of(context).primaryColor, width: 1.2),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Icon(Icons.add,
+                      size: 15, color: Theme.of(context).primaryColor),
+                )
+              ],
+            ),
           ),
         ),
       ],

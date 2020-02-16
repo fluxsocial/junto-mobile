@@ -424,14 +424,14 @@ class CreateSphereState extends State<CreateSphere> {
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     children: _followingMembers
                         .map(
-                          (dynamic connection) => MemberPreviewSelect(
-                            profile: connection,
+                          (dynamic member) => MemberPreviewSelect(
+                            profile: member,
                             onSelect: () {
-                              _sphereMembers.add(connection.address);
+                              _sphereMembers.add(member.address);
                             },
                             onDeselect: () {
-                              _sphereMembers.indexWhere(connection.addres);
-                              _sphereMembers.remove(connection.address);
+                              _sphereMembers.indexWhere(member.addres);
+                              _sphereMembers.remove(member.address);
                             },
                           ),
                         )

@@ -279,7 +279,7 @@ class UserServiceCentralized implements UserService {
     if (_followingResults.isNotEmpty) {
       for (final dynamic result in _followingResults) {
         _followingMembers.add(
-          UserProfile.fromMap(result),
+          UserProfile.fromMap(result['user']),
         );
       }
     }
@@ -300,6 +300,7 @@ class UserServiceCentralized implements UserService {
     _results['connections'] = _connections;
     _results['pending_connections'] = _pendingConnections;
 
+    print(_results);
     return _results;
   }
 

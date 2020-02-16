@@ -46,6 +46,7 @@ class _JuntoMemberState extends State<JuntoMember> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final List<String> _tabs = <String>['About', 'Expressions'];
   String _userAddress;
+  UserData _userProfile;
   UserRepo userProvider;
   bool isConnected;
   bool isFollowing;
@@ -67,9 +68,12 @@ class _JuntoMemberState extends State<JuntoMember> {
 
   Future<void> getUserInformation() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final Map<String, dynamic> decodedUserData =
+        jsonDecode(prefs.getString('user_data'));
 
     setState(() {
       _userAddress = prefs.getString('user_id');
+      _userProfile = UserData.fromMap(decodedUserData);
 
       userProvider = Provider.of<UserRepo>(context, listen: false);
     });
@@ -257,14 +261,14 @@ class _JuntoMemberState extends State<JuntoMember> {
           child: Visibility(
             visible: memberRelationshipsVisible,
             child: MemberRelationships(
-              isFollowing: isFollowing,
-              isConnected: isConnected,
-              isPending: isPending,
-              userProvider: userProvider,
-              memberProfile: widget.profile,
-              toggleMemberRelationships: toggleMemberRelationships,
-              refreshRelations: refreshRelations
-            ),
+                isFollowing: isFollowing,
+                isConnected: isConnected,
+                isPending: isPending,
+                userProvider: userProvider,
+                memberProfile: widget.profile,
+                userProfile: _userProfile,
+                toggleMemberRelationships: toggleMemberRelationships,
+                refreshRelations: refreshRelations),
           ),
         ),
       ],
