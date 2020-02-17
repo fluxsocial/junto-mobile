@@ -179,6 +179,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
           child: BottomNav(
               screen: 'collective',
               userProfile: _userProfile,
+              actionsVisible: actionsVisible,
               onTap: () {
                 if (actionsVisible) {
                   setState(() {

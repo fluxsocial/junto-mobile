@@ -239,6 +239,7 @@ class JuntoCreateState extends State<JuntoCreate> {
                   ? Padding(
                       padding: const EdgeInsets.only(bottom: 25),
                       child: BottomNav(
+                        actionsVisible: false,
                         screen: 'create',
                         onTap: () {
                           setState(() {
