@@ -3,12 +3,10 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
-import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
-import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/pack_open.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_edit_den.dart';
+import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/end_drawer_relationships.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_themes.dart';
 import 'package:provider/provider.dart';
@@ -68,15 +66,38 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   const SizedBox(),
-                  // ClipOval(
-                  //   child: Image.asset(
-                  //       'assets/images/junto-mobile__placeholder--member.png',
-                  //       height: 45,
-                  //       width: 45),
-                  // ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
+                      JuntoDrawerItem(
+                          title: 'Search',
+                          onTap: () {
+                            Navigator.of(context).push(
+                              PageRouteBuilder<dynamic>(
+                                pageBuilder: (
+                                  BuildContext context,
+                                  Animation<double> animation,
+                                  Animation<double> secondaryAnimation,
+                                ) {
+                                  return const GlobalSearch();
+                                },
+                                transitionsBuilder: (
+                                  BuildContext context,
+                                  Animation<double> animation,
+                                  Animation<double> secondaryAnimation,
+                                  Widget child,
+                                ) {
+                                  return FadeTransition(
+                                    opacity: animation,
+                                    child: child,
+                                  );
+                                },
+                                transitionDuration: const Duration(
+                                  milliseconds: 300,
+                                ),
+                              ),
+                            );
+                          }),
                       JuntoDrawerItem(
                           title: 'My Den',
                           onTap: () {
