@@ -345,29 +345,26 @@ class JuntoCreateState extends State<JuntoCreate> {
     Function switchExpression;
     if (expressionType == 'dynamic') {
       expressionName = 'DYNAMIC';
-      expressionIcon = Icon(CustomIcons.longform,
-          color: Theme.of(context).dividerColor, size: 24);
+      expressionIcon =
+          Icon(CustomIcons.longform, color: Colors.white, size: 24);
       switchExpression = () {
         switchTemplate('LongForm');
       };
     } else if (expressionType == 'shortform') {
       expressionName = 'SHORTFORM';
-      expressionIcon = Icon(CustomIcons.feather,
-          color: Theme.of(context).dividerColor, size: 24);
+      expressionIcon = Icon(CustomIcons.feather, color: Colors.white, size: 24);
       switchExpression = () {
         switchTemplate('ShortForm');
       };
     } else if (expressionType == 'photo') {
       expressionName = 'PHOTO';
-      expressionIcon = Icon(CustomIcons.camera,
-          color: Theme.of(context).dividerColor, size: 24);
+      expressionIcon = Icon(CustomIcons.camera, color: Colors.white, size: 24);
       switchExpression = () {
         switchTemplate('PhotoForm');
       };
     } else if (expressionType == 'event') {
       expressionName = 'EVENT';
-      expressionIcon = Icon(CustomIcons.event,
-          color: Theme.of(context).dividerColor, size: 24);
+      expressionIcon = Icon(CustomIcons.event, color: Colors.white, size: 24);
       switchExpression = () {
         switchTemplate('EventForm');
       };

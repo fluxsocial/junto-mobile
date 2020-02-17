@@ -54,10 +54,10 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
         child: Container(
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.background,
-            borderRadius: const BorderRadius.only(
-              bottomLeft: Radius.circular(25),
-              topLeft: Radius.circular(25),
-            ),
+            // borderRadius: const BorderRadius.only(
+            //   bottomLeft: Radius.circular(25),
+            //   topLeft: Radius.circular(25),
+            // ),
           ),
           padding: EdgeInsets.only(top: statusBarHeight, left: 20, right: 20),
           child: ListView(
