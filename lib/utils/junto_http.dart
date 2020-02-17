@@ -112,10 +112,11 @@ class JuntoHttp {
     if (response.statusCode >= 400 && response.statusCode <= 499) {
       if (response.body.isNotEmpty) {
         final dynamic responseBody = convert.json.decode(response.body);
-        if (responseBody.runtimeType == Map && responseBody['error'] != null) {
+        if (responseBody is Map && responseBody['error'] != null) {
           throw JuntoException("${responseBody['error']}", response.statusCode);
         } else {
-          return convert.json.decode(response.body);
+          throw JuntoException(
+              convert.json.decode(response.body), response.statusCode);
         }
       }
       throw JuntoException('${response?.body}', response.statusCode);

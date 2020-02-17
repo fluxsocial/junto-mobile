@@ -56,7 +56,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
   String _appbarTitle = 'JUNTO';
   bool _showDegrees = true;
   String currentDegree = 'oo';
-  List<String> _channels = <String>[];
+  final List<String> _channels = <String>[];
 
   bool actionsVisible = false;
 
@@ -128,14 +128,14 @@ class JuntoCollectiveState extends State<JuntoCollective>
         'context_type': contextType,
         'context': _userProfile.connectionPerspective.address,
         'pagination_position': paginationPos.toString(),
-        if (_channels.length > 0) 'channels[0]': _channels[0]
+        if (_channels.isNotEmpty) 'channels[0]': _channels[0]
       };
     } else {
       _params = <String, String>{
         'context_type': contextType,
         'context': contextString,
         'pagination_position': paginationPos.toString(),
-        if (_channels.length > 0) 'channels[0]': _channels[0]
+        if (_channels.isNotEmpty) 'channels[0]': _channels[0]
       };
     }
     try {

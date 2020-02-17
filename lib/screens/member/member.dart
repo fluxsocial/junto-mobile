@@ -12,9 +12,6 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/member/member_appbar.dart';
 import 'package:junto_beta_mobile/screens/member/member_relationships.dart';
-import 'package:junto_beta_mobile/utils/junto_dialog.dart';
-import 'package:junto_beta_mobile/utils/junto_exception.dart';
-import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/user_expressions.dart';
 import 'package:provider/provider.dart';
@@ -48,10 +45,10 @@ class _JuntoMemberState extends State<JuntoMember> {
   String _userAddress;
   UserData _userProfile;
   UserRepo userProvider;
-  bool isConnected;
-  bool isFollowing;
   bool isFollowed;
-  bool isPending;
+  final ValueNotifier<bool> isFollowing = ValueNotifier<bool>(false);
+  final ValueNotifier<bool> isConnected = ValueNotifier<bool>(false);
+  final ValueNotifier<bool> isPending = ValueNotifier<bool>(false);
 
   bool memberRelationshipsVisible = false;
 
@@ -78,29 +75,17 @@ class _JuntoMemberState extends State<JuntoMember> {
       userProvider = Provider.of<UserRepo>(context, listen: false);
     });
 
-    // // see if user is connected to member
-    await userProvider
-        .isRelated(_userAddress, widget.profile.address)
-        .then((Map<String, dynamic> result) {
-      setState(() {
-        isConnected = result['is_connected'];
-        isFollowing = result['is_following'];
-        isFollowed = result['is_followed'];
-        isPending = result['has_pending_connection'];
-      });
-    });
+    await refreshRelations();
   }
 
   Future<void> refreshRelations() async {
     await userProvider
         .isRelated(_userAddress, widget.profile.address)
         .then((Map<String, dynamic> result) {
-      setState(() {
-        isConnected = result['is_connected'];
-        isFollowing = result['is_following'];
-        isFollowed = result['is_followed'];
-        isPending = result['has_pending_connection'];
-      });
+      isConnected.value = result['is_connected'];
+      isFollowing.value = result['is_following'];
+      isFollowed = result['is_followed'];
+      isPending.value = result['has_pending_connection'];
     });
   }
 
@@ -136,6 +121,7 @@ class _JuntoMemberState extends State<JuntoMember> {
                   _MemberDenAppbar(
                     profile: widget.profile,
                     isConnected: isConnected,
+                    isFollowing: isFollowing,
                     toggleMemberRelationships: toggleMemberRelationships,
                   ),
                   SliverPersistentHeader(
@@ -322,25 +308,25 @@ class _ProfileDetails extends StatelessWidget {
 }
 
 class _MemberDenAppbar extends StatelessWidget {
-  const _MemberDenAppbar(
-      {Key key,
-      @required this.profile,
-      @required this.isConnected,
-      @required this.toggleMemberRelationships,
-      this.isFollowing})
-      : super(key: key);
+  const _MemberDenAppbar({
+    Key key,
+    @required this.profile,
+    @required this.isConnected,
+    @required this.toggleMemberRelationships,
+    @required this.isFollowing,
+  }) : super(key: key);
 
   final UserProfile profile;
-  final bool isConnected;
-  final bool isFollowing;
+  final ValueNotifier<bool> isFollowing;
+  final ValueNotifier<bool> isConnected;
   final Function toggleMemberRelationships;
 
   Widget _displayRelationshipIndicator(BuildContext context) {
-    if (isFollowing == true && isConnected == false) {
+    if (isFollowing.value == true && isConnected.value == false) {
       return const Icon(CustomIcons.groups, size: 17, color: Colors.white);
-    } else if (isFollowing == true && isConnected == true) {
+    } else if (isFollowing.value == true && isConnected.value == true) {
       return Icon(CustomIcons.pawprints, size: 17, color: Colors.white);
-    } else if (isFollowing == false && isConnected == false) {
+    } else if (isFollowing.value == false && isConnected.value == false) {
       return Image.asset('assets/images/junto-mobile__infinity.png',
           height: 14, color: Theme.of(context).colorScheme.onPrimary);
     } else {
@@ -417,7 +403,17 @@ class _MemberDenAppbar extends StatelessWidget {
                           child: Row(
                             children: <Widget>[
                               const SizedBox(width: 14),
-                              _displayRelationshipIndicator(context),
+                              AnimatedBuilder(
+                                  animation:
+                                      Listenable.merge(<ValueNotifier<bool>>[
+                                    isFollowing,
+                                    isConnected
+                                  ]),
+                                  builder: (BuildContext context, _) {
+                                    return _displayRelationshipIndicator(
+                                      context,
+                                    );
+                                  }),
                               const SizedBox(width: 2),
                               Icon(Icons.keyboard_arrow_down,
                                   size: 12,
