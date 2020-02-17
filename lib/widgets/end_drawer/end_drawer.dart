@@ -67,12 +67,13 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  ClipOval(
-                    child: Image.asset(
-                        'assets/images/junto-mobile__placeholder--member.png',
-                        height: 45,
-                        width: 45),
-                  ),
+                  const SizedBox(),
+                  // ClipOval(
+                  //   child: Image.asset(
+                  //       'assets/images/junto-mobile__placeholder--member.png',
+                  //       height: 45,
+                  //       width: 45),
+                  // ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
