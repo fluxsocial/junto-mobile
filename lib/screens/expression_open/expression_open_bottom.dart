@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/utils/date_parsing.dart';
@@ -35,7 +35,10 @@ class ExpressionOpenBottom extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        parseDate(context, expression.createdAt).toLowerCase(),
+                        parseDate(
+                          context,
+                          expression.createdAt,
+                        ).toLowerCase(),
                         style: JuntoStyles.expressionTimestamp,
                       ),
                     ]),
