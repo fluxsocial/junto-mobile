@@ -24,7 +24,6 @@ class ShortformPreviewState extends State<ShortformPreview> {
   @override
   void initState() {
     super.initState();
-    print(widget.expression.expressionData.background);
     shortformBody = widget.expression.expressionData.body;
     _hexOne = widget.expression.expressionData.background[0];
     _hexTwo = widget.expression.expressionData.background[1];
