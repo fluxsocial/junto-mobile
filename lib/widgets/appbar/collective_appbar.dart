@@ -69,9 +69,10 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                 Row(
                   children: <Widget>[
                     GestureDetector(
-                      onTap: () => Navigator.of(context).push(
-                        NotificationScreen.route(),
-                      ),
+                      onTap: () {},
+                      // onTap: () => Navigator.of(context).push(
+                      //   NotificationScreen.route(),
+                      // ),
                       child: Container(
                         width: 42,
                         color: Colors.transparent,
