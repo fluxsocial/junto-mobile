@@ -76,6 +76,7 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
         child: Padding(
           padding: const EdgeInsets.only(bottom: 25),
           child: BottomNav(
+              actionsVisible: actionsVisible,
               screen: 'groups',
               onTap: () {
                 if (actionsVisible) {

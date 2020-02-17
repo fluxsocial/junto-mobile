@@ -69,27 +69,10 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                 Row(
                   children: <Widget>[
                     GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                            builder: (context) => GlobalSearch(),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        width: 42,
-                        color: Colors.transparent,
-                        alignment: Alignment.bottomRight,
-                        padding: const EdgeInsets.only(right: 10),
-                        child: Icon(Icons.search,
-                            size: 22, color: Theme.of(context).primaryColor),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () => Navigator.of(context).push(
-                        NotificationScreen.route(),
-                      ),
+                      onTap: () {},
+                      // onTap: () => Navigator.of(context).push(
+                      //   NotificationScreen.route(),
+                      // ),
                       child: Container(
                         width: 42,
                         color: Colors.transparent,

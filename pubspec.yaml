@@ -7,7 +7,7 @@ description: A new Flutter project.
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # Read more about versioning at semver.org.
-version: 1.0.1+10
+version: 1.0.1+11
 
 environment:
   sdk: ">=2.6.0-dev <3.0.0"
@@ -123,6 +123,8 @@ flutter:
     - assets/images/junto-mobile__mockprofpic--two.png    
     - assets/images/junto-mobile__binoculars.png    
     - assets/images/moonlight.png
+    - assets/images/junto-mobile__double-up-arrow.png    
+    - assets/images/junto-mobile__menu.png    
 
   #  - images/a_dot_ham.jpeg
 

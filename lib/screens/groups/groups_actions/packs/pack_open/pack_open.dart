@@ -98,7 +98,10 @@ class PackOpenState extends State<PackOpen> {
           child: Padding(
             padding: const EdgeInsets.only(bottom: 25),
             child: BottomNav(
-                screen: 'collective', userProfile: _userProfile, onTap: () {}),
+                actionsVisible: false,
+                screen: 'collective',
+                userProfile: _userProfile,
+                onTap: () {}),
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

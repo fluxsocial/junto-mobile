@@ -63,27 +63,28 @@ class PackPreview extends StatelessWidget {
                     size: 17,
                   ),
                 ),
-          Container(
-            width: MediaQuery.of(context).size.width - 95,
-            padding: const EdgeInsets.symmetric(vertical: 15),
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                    width: .5, color: Theme.of(context).dividerColor),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 15),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                      width: .5, color: Theme.of(context).dividerColor),
+                ),
               ),
-            ),
-            margin: const EdgeInsets.only(left: 10.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(group.groupData.name,
-                    textAlign: TextAlign.start,
-                    style: Theme.of(context).textTheme.subtitle1),
-                Text('username',
-                    textAlign: TextAlign.start,
-                    style: Theme.of(context).textTheme.bodyText1),
-              ],
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(group.groupData.name,
+                      textAlign: TextAlign.start,
+                      style: Theme.of(context).textTheme.subtitle1),
+                  Text('username',
+                      textAlign: TextAlign.start,
+                      style: Theme.of(context).textTheme.bodyText1),
+                ],
+              ),
             ),
           )
         ],
