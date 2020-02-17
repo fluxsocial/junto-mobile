@@ -17,10 +17,10 @@ class SphereSelectModal extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.background,
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(10),
-            topRight: Radius.circular(10),
-          ),
+          // borderRadius: const BorderRadius.only(
+          //   topLeft: Radius.circular(10),
+          //   topRight: Radius.circular(10),
+          // ),
         ),
         child: Column(
           children: <Widget>[

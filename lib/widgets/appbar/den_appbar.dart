@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
 
 // Junto app bar used throughout the main screens. Rendered in JuntoTemplate.
 class DenAppbar extends StatefulWidget implements PreferredSizeWidget {
@@ -48,44 +47,6 @@ class _DenAppbarState extends State<DenAppbar> {
             ),
             Row(
               children: <Widget>[
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      PageRouteBuilder<dynamic>(
-                        pageBuilder: (
-                          BuildContext context,
-                          Animation<double> animation,
-                          Animation<double> secondaryAnimation,
-                        ) {
-                          return const GlobalSearch();
-                        },
-                        transitionsBuilder: (
-                          BuildContext context,
-                          Animation<double> animation,
-                          Animation<double> secondaryAnimation,
-                          Widget child,
-                        ) {
-                          return FadeTransition(
-                            opacity: animation,
-                            child: child,
-                          );
-                        },
-                        transitionDuration: const Duration(
-                          milliseconds: 300,
-                        ),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    width: 42,
-                    padding: const EdgeInsets.only(right: 10),
-                    alignment: Alignment.centerRight,
-                    color: Colors.transparent,
-                    child: const Icon(
-                      Icons.search,
-                    ),
-                  ),
-                ),
                 GestureDetector(
                   onTap: () {
                     showModalBottomSheet(

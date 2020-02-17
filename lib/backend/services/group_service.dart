@@ -38,10 +38,10 @@ class GroupServiceCentralized implements GroupService {
   @override
   Future<void> addGroupMember(
       String groupAddress, List<Map<String, dynamic>> users) async {
-    final http.Response _serverResponse = await client.postWithoutEncoding(
-      '/groups/$groupAddress/members',
-      body: users,
-    );
+    final http.Response _serverResponse = await client
+        .postWithoutEncoding('/groups/$groupAddress/members', body: users);
+        print(_serverResponse.statusCode);
+        print(_serverResponse.body);
     JuntoHttp.handleResponse(_serverResponse);
   }
 
@@ -105,5 +105,16 @@ class GroupServiceCentralized implements GroupService {
     final Map<String, dynamic> _data =
         JuntoHttp.handleResponse(_serverResponse);
     return Group.fromMap(_data);
+  }
+
+  @override
+  Future<void> respondToGroupRequest(String groupAddress, bool decision) async {
+    final http.Response _serverResponse = await client.postWithoutEncoding(
+      '/groups/$groupAddress/respond',
+      body: <String, dynamic>{
+        'status': decision,
+      },
+    );
+    JuntoHttp.handleResponse(_serverResponse);
   }
 }

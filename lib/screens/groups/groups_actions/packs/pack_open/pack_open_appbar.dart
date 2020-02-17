@@ -1,7 +1,7 @@
+
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
-import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
 
 class PackOpenAppbar extends StatelessWidget {
   const PackOpenAppbar({Key key, @required this.pack}) : super(key: key);
@@ -31,7 +31,10 @@ class PackOpenAppbar extends StatelessWidget {
           children: <Widget>[
             Row(
               children: <Widget>[
-                Text('My Pack', style: Theme.of(context).textTheme.headline6)
+                Text(
+                  'My Pack',
+                  style: Theme.of(context).textTheme.headline6,
+                )
               ],
             ),
             Row(

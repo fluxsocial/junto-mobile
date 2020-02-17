@@ -14,6 +14,9 @@ import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview_select.dart';
 
 class CreatePerspective extends StatefulWidget {
+  const CreatePerspective({this.refreshPerspectives});
+  final Function refreshPerspectives;
+
   @override
   State<StatefulWidget> createState() {
     return CreatePerspectiveState();
@@ -58,6 +61,7 @@ class CreatePerspectiveState extends State<CreatePerspective> {
         ),
       );
       JuntoLoader.hide();
+      widget.refreshPerspectives();
       Navigator.pop(context);
     } on JuntoException catch (error, stacktrace) {
       print(error);

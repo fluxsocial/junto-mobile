@@ -150,6 +150,8 @@ abstract class GroupService {
 
   /// Allows for updating a group. The parameter [group] must not be null.
   Future<Group> updateGroup(Group group);
+
+  Future<void> respondToGroupRequest(String groupAddress, bool decision);
 }
 
 enum QueryType { address, email, username }
@@ -158,14 +160,13 @@ abstract class UserService {
   /// Allows the user to create a [Perspective] on the server.
   Future<CentralizedPerspective> createPerspective(Perspective perspective);
 
-  Future<CentralizedPerspective> updatePerspective(
-    CentralizedPerspective perspective,
-  );
+  /// Allows the user to delete a [Perspective] .
+  Future<void> deletePerspective(String perspective);
 
-  /// Adds the given user to a perspective. The perspective address and user
-  /// address must be supplied.
-  Future<UserProfile> addUserToPerspective(
-      String perspectiveAddress, List<String> userAddress);
+  Future<CentralizedPerspective> updatePerspective(
+    String perspectiveAddress,
+    Map<String, String> perspectiveBody,
+  );
 
   /// Gets the user
   Future<UserData> getUser(String userAddress);
@@ -202,9 +203,14 @@ abstract class UserService {
     String perspectiveAddress,
   );
 
+  /// Adds the given user to a perspective. The perspective address and user
+  /// address must be supplied.
+  Future<void> addUsersToPerspective(
+      String perspectiveAddress, List<String> userAddresses);
+
   /// Uses a Delete request.
-  Future<void> deletePerspectiveUserEntry(
-    String userAddress,
+  Future<void> deleteUsersFromPerspective(
+    List<Map<String, String>> userAddresses,
     String perspectiveAddress,
   );
 
@@ -217,9 +223,6 @@ abstract class UserService {
 
   /// Removes the user's connection with the given address
   Future<void> removeUserConnection(String userAddress);
-
-  /// Gets a list of pending user connections
-  Future<List<UserProfile>> pendingConnections(String userAddress);
 
   /// Responds to the connection with either `true` or `false`
   Future<void> respondToConnection(String userAddress, bool response);
@@ -246,4 +249,9 @@ abstract class UserService {
 
   // Returns a list of followers for the given user address.
   Future<List<UserProfile>> getFollowers(String userAddress);
+}
+
+/// App wide notification service
+abstract class NotificationService {
+  Future<NotificationResultsModel> getNotifications(NotificationQuery params);
 }

@@ -9,7 +9,6 @@ class JuntoThemes {
     primaryColorLight: const Color(0xff999999),
     dividerColor: const Color(0xffeeeeee),
     backgroundColor: Colors.white,
-    canvasColor: Colors.transparent,
     accentColor: const Color(0xFF22517D),
     colorScheme: const ColorScheme(
       // Junto blue
@@ -89,7 +88,7 @@ class JuntoThemes {
         fontSize: 16,
         height: 1.4,
         fontWeight: FontWeight.w500,
-        color: Color(0xff333333),
+        color: Color(0xff555555),
       ),
       overline: TextStyle(
         fontSize: 12,
@@ -108,7 +107,6 @@ class JuntoThemes {
     primaryColorLight: const Color(0xff999999),
     dividerColor: const Color(0xffeeeeee),
     backgroundColor: Colors.white,
-    canvasColor: Colors.transparent,
     accentColor: const Color(0xFFF0BA45),
     colorScheme: const ColorScheme(
         // Junto gold
@@ -185,7 +183,7 @@ class JuntoThemes {
         fontSize: 16,
         height: 1.4,
         fontWeight: FontWeight.w500,
-        color: Color(0xff333333),
+        color: Color(0xff555555),
       ),
       overline: TextStyle(
         fontSize: 12,
@@ -204,7 +202,6 @@ class JuntoThemes {
     primaryColorLight: const Color(0xff999999),
     dividerColor: const Color(0xff555555),
     backgroundColor: const Color(0xff333333),
-    canvasColor: Colors.transparent,
     accentColor: const Color(0xFF333333),
     colorScheme: const ColorScheme(
         // Junto blue

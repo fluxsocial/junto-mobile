@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
 
 /// Allows the user to create a short form expression.
 class CreateShortform extends StatefulWidget {
@@ -12,11 +13,9 @@ class CreateShortform extends StatefulWidget {
 }
 
 class CreateShortformState extends State<CreateShortform> {
-  num gradientOne;
-  num gradientTwo;
+  String gradientOne;
+  String gradientTwo;
 
-  // ignore: unused_field
-  final String _currentBackground = '';
   TextEditingController _bodyController;
 
   /// Creates a [CentralizedShortFormExpression] from the given data entered
@@ -24,15 +23,15 @@ class CreateShortformState extends State<CreateShortform> {
   CentralizedShortFormExpression createExpression() {
     return CentralizedShortFormExpression(
       body: _bodyController.value.text,
-      background: _currentBackground,
+      background: <dynamic>[gradientOne, gradientTwo],
     );
   }
 
   @override
   void initState() {
     super.initState();
-    gradientOne = 0xff2c2cde;
-    gradientTwo = 0xff7ec6e9;
+    gradientOne = '7461a1';
+    gradientTwo = '285FA7';
     _bodyController = TextEditingController();
   }
 
@@ -42,7 +41,7 @@ class CreateShortformState extends State<CreateShortform> {
     super.dispose();
   }
 
-  Widget _gradientSelector(num hexOne, num hexTwo) {
+  Widget _gradientSelector(String hexOne, String hexTwo) {
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -59,7 +58,10 @@ class CreateShortformState extends State<CreateShortform> {
             begin: Alignment.bottomLeft,
             end: Alignment.topRight,
             stops: const <double>[0.2, 0.9],
-            colors: <Color>[Color(hexOne), Color(hexTwo)],
+            colors: <Color>[
+              HexColor.fromHex(hexOne),
+              HexColor.fromHex(hexTwo),
+            ],
           ),
         ),
       ),
@@ -75,10 +77,11 @@ class CreateShortformState extends State<CreateShortform> {
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             child: Row(
               children: <Widget>[
-                _gradientSelector(0xff2c2cde, 0xff7ec6e9),
-                _gradientSelector(0xff9e81d7, 0xffddcb7f),
-                _gradientSelector(0xff719cf4, 0xffffc7e4),
-                _gradientSelector(0xff639acf, 0xff7bdaa5),
+                _gradientSelector('7461a1', '285FA7'),
+                _gradientSelector('9e81d7', 'ddcb7f'),
+                _gradientSelector('2c2cde', '7ec6e9'),
+                _gradientSelector('719cf4', 'ffc7e4'),
+                _gradientSelector('639acf', '7bdaa5'),
               ],
             ),
           ),
@@ -87,11 +90,12 @@ class CreateShortformState extends State<CreateShortform> {
               padding: const EdgeInsets.all(0),
               children: <Widget>[
                 Container(
-                  padding: EdgeInsets.only(
-                      left: 10.0,
-                      right: 10.0,
-                      top: MediaQuery.of(context).size.height * .1),
-                  height: MediaQuery.of(context).size.height * .40,
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 25.0,
+                    horizontal: 25.0,
+                  ),
+                  alignment: Alignment.center,
+                  height: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.bottomLeft,
@@ -100,7 +104,10 @@ class CreateShortformState extends State<CreateShortform> {
                         0.2,
                         0.9,
                       ],
-                      colors: <Color>[Color(gradientOne), Color(gradientTwo)],
+                      colors: <Color>[
+                        HexColor.fromHex(gradientOne),
+                        HexColor.fromHex(gradientTwo),
+                      ],
                     ),
                   ),
                   child: TextField(

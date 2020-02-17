@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
-import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
 
 /// Takes an un-named [ExpressionResult] to be displayed
 class ShortformPreview extends StatefulWidget {
@@ -17,59 +17,16 @@ class ShortformPreview extends StatefulWidget {
 }
 
 class ShortformPreviewState extends State<ShortformPreview> {
-  //ignore:unused_field
-  Color _gradientOne;
-  //ignore:unused_field
-  Color _gradientTwo;
+  String _hexOne;
+  String _hexTwo;
   String shortformBody = '';
 
   @override
   void initState() {
     super.initState();
-    _buildBackground();
     shortformBody = widget.expression.expressionData.body;
-  }
-
-  void _buildBackground() {
-    final String shortformBackground =
-        widget.expression.expressionData.background;
-
-    if (shortformBackground == 'zero') {
-      setState(() {
-        _gradientOne = JuntoPalette.juntoWhite;
-        _gradientTwo = JuntoPalette.juntoWhite;
-      });
-    } else if (shortformBackground == 'one') {
-      setState(() {
-        _gradientOne = JuntoPalette.juntoPrimary;
-        _gradientTwo = JuntoPalette.juntoPrimaryLight;
-      });
-    } else if (shortformBackground == 'two') {
-      setState(() {
-        _gradientOne = JuntoPalette.juntoSecondary;
-        _gradientTwo = JuntoPalette.juntoSecondaryLight;
-      });
-    } else if (shortformBackground == 'three') {
-      setState(() {
-        _gradientOne = JuntoPalette.juntoSecondary;
-        _gradientTwo = JuntoPalette.juntoPrimary;
-      });
-    } else if (shortformBackground == 'four') {
-      setState(() {
-        _gradientOne = JuntoPalette.juntoGreen;
-        _gradientTwo = JuntoPalette.juntoPrimary;
-      });
-    } else if (shortformBackground == 'five') {
-      setState(() {
-        _gradientOne = JuntoPalette.juntoGreen;
-        _gradientTwo = JuntoPalette.juntoSecondary;
-      });
-    } else {
-      setState(() {
-        _gradientOne = JuntoPalette.juntoPrimary;
-        _gradientTwo = JuntoPalette.juntoSecondary;
-      });
-    }
+    _hexOne = widget.expression.expressionData.background[0];
+    _hexTwo = widget.expression.expressionData.background[1];
   }
 
   @override
@@ -81,10 +38,7 @@ class ShortformPreviewState extends State<ShortformPreview> {
           begin: Alignment.bottomLeft,
           end: Alignment.topRight,
           stops: const <double>[0.1, 0.9],
-          colors: <Color>[
-            Theme.of(context).colorScheme.secondary,
-            Theme.of(context).colorScheme.primary
-          ],
+          colors: <Color>[HexColor.fromHex(_hexOne), HexColor.fromHex(_hexTwo)],
         ),
       ),
       constraints: BoxConstraints(
@@ -97,7 +51,8 @@ class ShortformPreviewState extends State<ShortformPreview> {
         shortformBody,
         maxLines: 5,
         textAlign: TextAlign.center,
-        style: JuntoStyles.shortformPreviewTitle,
+        style: TextStyle(
+            fontSize: 18, color: Colors.white, fontWeight: FontWeight.w700),
         overflow: TextOverflow.ellipsis,
       ),
     );

@@ -3,12 +3,10 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
-import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
-import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/pack_open.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_edit_den.dart';
+import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/end_drawer_relationships.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_themes.dart';
 import 'package:provider/provider.dart';
@@ -27,22 +25,6 @@ class JuntoDrawer extends StatefulWidget {
 class _JuntoDrawerState extends State<JuntoDrawer> {
   String _userAddress;
   String _userFollowPerspectiveId;
-
-  Future<void> _onPackPress() async {
-    final UserGroupsResponse _userPack =
-        await Provider.of<UserRepo>(context, listen: false)
-            .getUserGroups(_userAddress);
-    Navigator.push(
-      context,
-      CupertinoPageRoute<dynamic>(
-        builder: (BuildContext context) {
-          return PackOpen(
-            pack: _userPack.owned.first,
-          );
-        },
-      ),
-    );
-  }
 
   @override
   void initState() {
@@ -70,10 +52,10 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
         child: Container(
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.background,
-            borderRadius: const BorderRadius.only(
-              bottomLeft: Radius.circular(25),
-              topLeft: Radius.circular(25),
-            ),
+            // borderRadius: const BorderRadius.only(
+            //   bottomLeft: Radius.circular(25),
+            //   topLeft: Radius.circular(25),
+            // ),
           ),
           padding: EdgeInsets.only(top: statusBarHeight, left: 20, right: 20),
           child: ListView(
@@ -83,15 +65,39 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  ClipOval(
-                    child: Image.asset(
-                        'assets/images/junto-mobile__placeholder--member.png',
-                        height: 45,
-                        width: 45),
-                  ),
+                  const SizedBox(),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
+                      JuntoDrawerItem(
+                          title: 'Search',
+                          onTap: () {
+                            Navigator.of(context).push(
+                              PageRouteBuilder<dynamic>(
+                                pageBuilder: (
+                                  BuildContext context,
+                                  Animation<double> animation,
+                                  Animation<double> secondaryAnimation,
+                                ) {
+                                  return const GlobalSearch();
+                                },
+                                transitionsBuilder: (
+                                  BuildContext context,
+                                  Animation<double> animation,
+                                  Animation<double> secondaryAnimation,
+                                  Widget child,
+                                ) {
+                                  return FadeTransition(
+                                    opacity: animation,
+                                    child: child,
+                                  );
+                                },
+                                transitionDuration: const Duration(
+                                  milliseconds: 300,
+                                ),
+                              ),
+                            );
+                          }),
                       JuntoDrawerItem(
                           title: 'My Den',
                           onTap: () {
@@ -133,11 +139,7 @@ class _JuntoDrawerState extends State<JuntoDrawer> {
                           );
                         },
                       ),
-                      // relationships
-                      JuntoDrawerItem(
-                        title: 'My Pack',
-                        onTap: _onPackPress,
-                      ),
+
                       JuntoDrawerItem(
                         title: 'Relationships',
                         onTap: () async {

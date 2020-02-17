@@ -12,7 +12,7 @@ class LongformPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(15),
       width: MediaQuery.of(context).size.width,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,7 +29,10 @@ class LongformPreview extends StatelessWidget {
         child: Text(
           expressionTitle,
           textAlign: TextAlign.left,
-          style: Theme.of(context).textTheme.headline6,
+          style: TextStyle(
+              color: Theme.of(context).primaryColor,
+              fontSize: 20,
+              fontWeight: FontWeight.w700),
         ),
       );
     } else {
@@ -46,8 +49,8 @@ class LongformPreview extends StatelessWidget {
         overflow: TextOverflow.ellipsis,
         // style: Theme.of(context).textTheme.caption,
         style: TextStyle(
-          height: 1.7,
-          color: Theme.of(context).primaryColorDark,
+          height: 1.5,
+          color: Theme.of(context).primaryColor,
           fontSize: 15,
         ),
       );

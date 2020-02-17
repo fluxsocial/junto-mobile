@@ -14,6 +14,7 @@ class EventPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           expression.expressionData.photo != ''
               ? ClipRRect(
@@ -32,7 +33,7 @@ class EventPreview extends StatelessWidget {
                 )
               : const SizedBox(),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -43,11 +44,6 @@ class EventPreview extends StatelessWidget {
                   expression.expressionData.location,
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
-                // const SizedBox(height: 2.5),
-                // Text(
-                //   expression.expressionData.startTime,
-                //   style: Theme.of(context).textTheme.bodyText1,
-                // ),
               ],
             ),
           )

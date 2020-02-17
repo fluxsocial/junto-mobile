@@ -6,11 +6,13 @@ import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 
 class BottomNav extends StatelessWidget {
-  const BottomNav({this.screen, this.onTap, this.userProfile});
+  const BottomNav(
+      {this.screen, this.onTap, this.userProfile, @required this.actionsVisible});
 
   final String screen;
   final VoidCallback onTap;
   final UserData userProfile;
+  final bool actionsVisible;
 
   @override
   Widget build(BuildContext context) {
@@ -33,20 +35,24 @@ class BottomNav extends StatelessWidget {
         children: <Widget>[
           Expanded(
             child: GestureDetector(
-              onTap: () {
-                onTap();
-              },
+              onTap: onTap,
               child: Container(
-                width: 60,
-                height: 50,
-                color: Colors.transparent,
-                alignment: Alignment.center,
-                child: RotatedBox(
-                  quarterTurns: 1,
-                  child: Icon(CustomIcons.back,
-                      size: 17, color: Theme.of(context).primaryColor),
-                ),
-              ),
+                  width: 60,
+                  height: 50,
+                  color: Colors.transparent,
+                  alignment: Alignment.center,
+                  // child: RotatedBox(
+                  //   quarterTurns: 1,
+                  //   child: Icon(CustomIcons.back,
+                  //       size: 17, color: Theme.of(context).primaryColor),
+                  // ),
+                  child: RotatedBox(
+                    quarterTurns: actionsVisible ? 2 : 0,
+                    child: Image.asset(
+                        'assets/images/junto-mobile__double-up-arrow.png',
+                        height: 14,
+                        color: Theme.of(context).primaryColor),
+                  )),
             ),
           ),
           Expanded(
@@ -100,15 +106,17 @@ class BottomNav extends StatelessWidget {
                 Scaffold.of(context).openEndDrawer();
               },
               child: Container(
-                alignment: Alignment.center,
-                width: 60,
-                height: 50,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                ),
-                child: Icon(CustomIcons.morevertical,
-                    size: 17, color: Theme.of(context).primaryColor),
-              ),
+                  alignment: Alignment.center,
+                  width: 60,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  child: Image.asset('assets/images/junto-mobile__menu.png',
+                      height: 8, color: Theme.of(context).primaryColor)
+                  // child: Icon(CustomIcons.morevertical,
+                  //     size: 17, color: Theme.of(context).primaryColor),
+                  ),
             ),
           ),
         ],

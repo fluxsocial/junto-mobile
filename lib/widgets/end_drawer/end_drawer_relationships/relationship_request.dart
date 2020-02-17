@@ -8,6 +8,7 @@ import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class RelationshipRequest extends StatelessWidget {
   const RelationshipRequest(this.user);
@@ -25,7 +26,6 @@ class RelationshipRequest extends StatelessWidget {
         true,
       );
       JuntoLoader.hide();
-      Navigator.pop(context);
     } on JuntoException catch (error) {
       JuntoDialog.showJuntoDialog(context, '${error.message}', <Widget>[
         FlatButton(
@@ -78,26 +78,55 @@ class RelationshipRequest extends StatelessWidget {
           children: <Widget>[
             Row(
               children: <Widget>[
-                Container(
-                  alignment: Alignment.center,
-                  height: 45.0,
-                  width: 45.0,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.bottomLeft,
-                      end: Alignment.topRight,
-                      stops: const <double>[0.3, 0.9],
-                      colors: <Color>[
-                        Theme.of(context).colorScheme.secondary,
-                        Theme.of(context).colorScheme.primary
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                  child: Image.asset(
-                      'assets/images/junto-mobile__logo--white.png',
-                      height: 15),
-                ),
+                user.profilePicture.isNotEmpty
+                    ? ClipOval(
+                        child: CachedNetworkImage(
+                            imageUrl: user.profilePicture[0],
+                            height: 45,
+                            width: 45,
+                            fit: BoxFit.cover,
+                            placeholder: (BuildContext context, String _) {
+                              return Container(
+                                  alignment: Alignment.center,
+                                  height: 45.0,
+                                  width: 45.0,
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      begin: Alignment.bottomLeft,
+                                      end: Alignment.topRight,
+                                      stops: const <double>[0.3, 0.9],
+                                      colors: <Color>[
+                                        Theme.of(context).colorScheme.secondary,
+                                        Theme.of(context).colorScheme.primary,
+                                      ],
+                                    ),
+                                    borderRadius: BorderRadius.circular(100),
+                                  ),
+                                  child: Image.asset(
+                                      'assets/images/junto-mobile__logo--white.png',
+                                      height: 17));
+                            }),
+                      )
+                    : Container(
+                        alignment: Alignment.center,
+                        height: 45.0,
+                        width: 45.0,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.bottomLeft,
+                            end: Alignment.topRight,
+                            stops: const <double>[0.3, 0.9],
+                            colors: <Color>[
+                              Theme.of(context).colorScheme.secondary,
+                              Theme.of(context).colorScheme.primary
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        child: Image.asset(
+                            'assets/images/junto-mobile__logo--white.png',
+                            height: 15),
+                      ),
                 Container(
                   width: MediaQuery.of(context).size.width - 75,
                   padding: const EdgeInsets.symmetric(

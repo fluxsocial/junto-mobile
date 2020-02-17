@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 String parseDate(BuildContext context, DateTime time) {
   // Current date in UTC
   final DateTime currentDate = DateTime.now().toUtc();
-  
+
   // Ensure the passed time is in `UTC` and independent of any timezones.
   final Duration timeDifference = currentDate.difference(time.toUtc());
 
@@ -25,6 +25,6 @@ String parseDate(BuildContext context, DateTime time) {
   } else if (elapsedTimeInHours > 168 && elapsedTimeInHours <= 192) {
     return '1 week ago';
   } else {
-    return MaterialLocalizations.of(context).formatFullDate(time);
+    return MaterialLocalizations.of(context).formatFullDate(time.toLocal());
   }
 }

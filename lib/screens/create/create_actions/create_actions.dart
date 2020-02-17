@@ -8,17 +8,16 @@ import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
-import 'package:junto_beta_mobile/screens/groups/groups.dart';
-import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/channel_search_modal.dart';
-import 'package:junto_beta_mobile/screens/create/create_actions/sphere_select_modal.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions_appbar.dart';
+import 'package:junto_beta_mobile/screens/create/create_actions/sphere_select_modal.dart';
+import 'package:junto_beta_mobile/screens/den/den.dart';
+import 'package:junto_beta_mobile/screens/groups/groups.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/pack_open.dart';
 
 class CreateActions extends StatefulWidget {
   const CreateActions({
@@ -165,10 +164,8 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
           context: _expressionContext,
           channels: channel,
         );
+        print(_expression.expressionData);
       }
-      print(_expression.type);
-      print(_expression.context);
-      print(_address);
       JuntoLoader.showLoader(context);
       await Provider.of<ExpressionRepo>(context, listen: false)
           .createExpression(
@@ -259,7 +256,6 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
   }
 
   void selectGroup(String groupAddress, String groupHandle) {
-    print('selected');
     setState(() {
       _address = groupAddress;
       _groupHandle = 'shared to s/' + groupHandle;
@@ -302,7 +298,6 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
                     _expressionContextSelector(expressionContext: 'Collective'),
                     _expressionContextSelector(expressionContext: 'Sphere'),
                     _expressionContextSelector(expressionContext: 'My Pack'),
-                    _expressionContextSelector(expressionContext: 'Den'),
                   ]),
                 ),
               ],
@@ -421,15 +416,28 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
               distinct<Group>(ownedGroups, associatedGroups)
                   .where((Group group) => group.groupType == 'Sphere')
                   .toList();
-
-          showModalBottomSheet(
-            isScrollControlled: true,
-            context: context,
-            builder: (BuildContext context) {
-              return SphereSelectModal(
-                  spheres: userSpheres, onSelect: selectGroup);
-            },
-          );
+          if (userSpheres.isNotEmpty) {
+            showModalBottomSheet(
+              isScrollControlled: true,
+              context: context,
+              builder: (BuildContext context) {
+                return SphereSelectModal(
+                    spheres: userSpheres, onSelect: selectGroup);
+              },
+            );
+          }
+          if (userSpheres.isEmpty) {
+            JuntoDialog.showJuntoDialog(
+              context,
+              'You are not apart of any spheres',
+              <Widget>[
+                DialogBack(),
+              ],
+            );
+            setState(() {
+              _currentExpressionContext = 'Collective';
+            });
+          }
         }
 
         _setExpressionContextDescription();

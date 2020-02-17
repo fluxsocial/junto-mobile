@@ -1,17 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:junto_beta_mobile/utils/junto_dialog.dart';
+import 'package:junto_beta_mobile/backend/repositories.dart';
+import 'package:provider/provider.dart';
 
 // This component is used in CommentPreview
 // as the 'more' icon is pressed to view the action items
 class CommentActionItems extends StatelessWidget {
-  const CommentActionItems({
-    this.comment,
-    this.userAddress,
-  });
+  const CommentActionItems({this.comment, this.userAddress, this.source});
 
   final dynamic comment;
   final String userAddress;
+  final String source;
 
   @override
   Widget build(BuildContext context) {
@@ -66,8 +68,36 @@ class CommentActionItems extends StatelessWidget {
     return Column(
       children: <Widget>[
         ListTile(
-          onTap: () {
+          onTap: () async {
             // delete comment
+            JuntoLoader.showLoader(context);
+            try {
+              await Provider.of<ExpressionRepo>(context, listen: false)
+                  .deleteExpression(comment.address);
+
+              JuntoLoader.hide();
+              Navigator.pop(context);
+              if (source == 'open') {
+                Navigator.pop(context);
+              }
+            } catch (error) {
+              print(error);
+              print(error.message);
+              Navigator.pop(context);
+              JuntoLoader.hide();
+              JuntoDialog.showJuntoDialog(
+                context,
+                'Sorry, something went wrong',
+                <Widget>[
+                  FlatButton(
+                    onPressed: () async {
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Ok'),
+                  )
+                ],
+              );
+            }
           },
           contentPadding:
               const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
@@ -104,32 +134,6 @@ class CommentActionItems extends StatelessWidget {
           title: Row(
             children: <Widget>[
               Text('View @' + comment.creator.username + "'s den",
-                  style: Theme.of(context).textTheme.headline5),
-            ],
-          ),
-        ),
-        ListTile(
-          onTap: () {
-            // subscribe to user
-          },
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
-          title: Row(
-            children: <Widget>[
-              Text('Subscribe @' + comment.creator.username,
-                  style: Theme.of(context).textTheme.headline5),
-            ],
-          ),
-        ),
-        ListTile(
-          onTap: () {
-            // connect with user
-          },
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
-          title: Row(
-            children: <Widget>[
-              Text('Connect @' + comment.creator.username,
                   style: Theme.of(context).textTheme.headline5),
             ],
           ),

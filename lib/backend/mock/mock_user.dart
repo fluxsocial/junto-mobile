@@ -7,17 +7,16 @@ import 'package:junto_beta_mobile/models/user_model.dart';
 
 class MockUserService implements UserService {
   @override
-  Future<UserProfile> addUserToPerspective(
-      String perspectiveAddress, List<String> userAddress) async {
-    await Future<void>.delayed(const Duration(milliseconds: 500));
-    throw kUserProfile;
-  }
-
-  @override
   Future<CentralizedPerspective> createPerspective(
       Perspective perspective) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     return kPerspectives.first;
+  }
+
+  @override
+  Future<void> deletePerspective(String perspective) async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    return;
   }
 
   @override
@@ -27,8 +26,16 @@ class MockUserService implements UserService {
   }
 
   @override
-  Future<void> deletePerspectiveUserEntry(
-      String userAddress, String perspectiveAddress) async {
+  Future<void> addUsersToPerspective(
+      String perspectiveAddress, List<String> userAddresses) async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    throw kUserProfile;
+  }
+
+  @override
+  Future<void> deleteUsersFromPerspective(
+      List<Map<String, String>> userAddresses,
+      String perspectiveAddress) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
   }
 
@@ -158,7 +165,8 @@ class MockUserService implements UserService {
 
   @override
   Future<CentralizedPerspective> updatePerspective(
-    CentralizedPerspective perspective,
+    String perspectiveAddress,
+    Map<String, String> perspectiveBody,
   ) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     return kPerspectives.first;

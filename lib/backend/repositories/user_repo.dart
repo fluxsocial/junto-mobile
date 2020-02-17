@@ -2,9 +2,10 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 class UserRepo {
-  UserRepo(this._userService);
+  UserRepo(this._userService, this._notificationService);
 
   final UserService _userService;
+  final NotificationService _notificationService;
 
   Future<CentralizedPerspective> createPerspective(Perspective perspective) {
     assert(perspective.name != null);
@@ -12,9 +13,10 @@ class UserRepo {
     return _userService.createPerspective(perspective);
   }
 
-  Future<UserProfile> addUserToPerspective(
-      String perspectiveAddress, List<String> userAddress) {
-    return _userService.addUserToPerspective(perspectiveAddress, userAddress);
+  Future<void> deletePerspective(
+    String perspectiveAddress,
+  ) {
+    return _userService.deletePerspective(perspectiveAddress);
   }
 
   Future<UserData> getUser(String userAddress) {
@@ -61,12 +63,18 @@ class UserRepo {
         userAddress, perspectiveAddress);
   }
 
-  Future<void> deletePerspectiveUserEntry(
-    String userAddress,
+  Future<void> addUsersToPerspective(
+      String perspectiveAddress, List<String> userAddresses) {
+    return _userService.addUsersToPerspective(
+        perspectiveAddress, userAddresses);
+  }
+
+  Future<void> deleteUsersFromPerspective(
+    List<Map<String, String>> userAddresses,
     String perspectiveAddress,
   ) {
-    return _userService.deletePerspectiveUserEntry(
-        userAddress, perspectiveAddress);
+    return _userService.deleteUsersFromPerspective(
+        userAddresses, perspectiveAddress);
   }
 
   Future<List<UserProfile>> getPerspectiveUsers(
@@ -87,8 +95,18 @@ class UserRepo {
     return _userService.connectedUsers(userAddress);
   }
 
-  Future<List<UserProfile>> pendingConnections(String userAddress) {
-    return _userService.pendingConnections(userAddress);
+  Future<List<UserProfile>> pendingConnections(String userAddress) async {
+    final NotificationResultsModel result =
+        await _notificationService.getNotifications(
+      const NotificationQuery(
+          groupJoinRequests: false,
+          connectionRequests: true,
+          paginationPosition: 0),
+    );
+    return <UserProfile>[
+      for (dynamic data in result.connectionNotifications)
+        UserProfile.fromMap(data)
+    ];
   }
 
   Future<void> removeUserConnection(String userAddress) {
@@ -120,6 +138,6 @@ class UserRepo {
       _userService.getFollowers(userAddress);
 
   Future<CentralizedPerspective> updatePerspective(
-          CentralizedPerspective perspective) =>
-      _userService.updatePerspective(perspective);
+          String perspectiveAddress, Map<String, String> perspectiveBody) =>
+      _userService.updatePerspective(perspectiveAddress, perspectiveBody);
 }

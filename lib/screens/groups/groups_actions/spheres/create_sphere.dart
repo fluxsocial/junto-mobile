@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'package:async/async.dart' show AsyncMemoizer;
 
+import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
@@ -9,13 +9,19 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
+import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview_select.dart';
+import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
-import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview_select.dart';
 
 class CreateSphere extends StatefulWidget {
+  const CreateSphere({
+    Key key,
+    @required this.refreshSpheres,
+  }) : super(key: key);
+  final Function refreshSpheres;
+
   @override
   State<StatefulWidget> createState() {
     return CreateSphereState();
@@ -94,6 +100,7 @@ class CreateSphereState extends State<CreateSphere> {
     try {
       await Provider.of<GroupRepo>(context, listen: false).createSphere(sphere);
       JuntoLoader.hide();
+      widget.refreshSpheres();
       Navigator.pop(context);
     } catch (error) {
       print(error);
@@ -417,14 +424,14 @@ class CreateSphereState extends State<CreateSphere> {
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     children: _followingMembers
                         .map(
-                          (dynamic connection) => MemberPreviewSelect(
-                            profile: connection,
+                          (dynamic member) => MemberPreviewSelect(
+                            profile: member,
                             onSelect: () {
-                              _sphereMembers.add(connection.address);
+                              _sphereMembers.add(member.address);
                             },
                             onDeselect: () {
-                              _sphereMembers.indexWhere(connection.addres);
-                              _sphereMembers.remove(connection.address);
+                              _sphereMembers.indexWhere(member.addres);
+                              _sphereMembers.remove(member.address);
                             },
                           ),
                         )

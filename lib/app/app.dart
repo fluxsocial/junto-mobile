@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/themes.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
-import 'package:junto_beta_mobile/screens/collective/collective.dart';
+import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
@@ -33,7 +32,7 @@ class JuntoAppState extends State<JuntoApp> {
     return MultiProvider(
       providers: <SingleChildWidget>[
         ChangeNotifierProvider<JuntoThemesProvider>(
-          create: (_) => JuntoThemesProvider(JuntoThemes().juntoLightIndigo),
+          create: (_) => JuntoThemesProvider(backend.currentTheme),
         ),
         Provider<SearchService>.value(value: backend.searchRepo),
         Provider<AuthRepo>.value(value: backend.authRepo),
@@ -42,6 +41,7 @@ class JuntoAppState extends State<JuntoApp> {
         Provider<GroupRepo>.value(value: backend.groupsProvider),
         Provider<ExpressionRepo>.value(value: backend.expressionRepo),
         Provider<SearchRepo>.value(value: backend.searchRepo),
+        Provider<NotificationRepo>.value(value: backend.notificationRepo),
       ],
       child: MaterialAppWithTheme(
         loggedIn: widget.loggedIn,
@@ -62,7 +62,12 @@ class MaterialAppWithTheme extends StatelessWidget {
   Widget build(BuildContext context) {
     final JuntoThemesProvider theme = Provider.of<JuntoThemesProvider>(context);
     return MaterialApp(
-      home: loggedIn ? JuntoCollective() : Welcome(),
+      home: loggedIn
+          ? const JuntoLotus(
+              address: null,
+              expressionContext: ExpressionContext.Collective,
+            )
+          : Welcome(),
       title: 'JUNTO Alpha',
       debugShowCheckedModeBanner: false,
       theme: theme.getTheme(),

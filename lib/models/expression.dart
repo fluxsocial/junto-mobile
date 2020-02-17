@@ -99,7 +99,7 @@ class CentralizedShortFormExpression {
     );
   }
 
-  final String background;
+  final List<dynamic> background;
   final String body;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -397,7 +397,7 @@ class QueryResults<T> {
 class Channel with RFC3339 {
   const Channel({
     @required this.name,
-    @required this.createdAt,
+    this.createdAt,
   });
 
   factory Channel.fromMap(Map<String, dynamic> map) {

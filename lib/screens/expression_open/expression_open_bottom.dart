@@ -1,24 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
-import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/utils/junto_dialog.dart';
-import 'package:junto_beta_mobile/widgets/resonate_bottom_sheet.dart';
-import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/widgets/utils/date_parsing.dart';
 
-class ExpressionOpenBottom extends StatefulWidget {
-  const ExpressionOpenBottom(this.expression, this.focusTextField);
+class ExpressionOpenBottom extends StatelessWidget {
+  const ExpressionOpenBottom(this.expression, this.openExpressionContext);
 
   final CentralizedExpressionResponse expression;
-  final Function focusTextField;
+  final Function openExpressionContext;
 
-  @override
-  State<StatefulWidget> createState() => ExpressionOpenBottomState();
-}
-
-class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -27,82 +20,70 @@ class ExpressionOpenBottomState extends State<ExpressionOpenBottom> {
           bottom: BorderSide(color: Theme.of(context).dividerColor, width: .5),
         ),
       ),
-      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 15, top: 15),
+      padding: const EdgeInsets.only(
+        left: 10,
+        right: 10,
+      ),
       child: Column(
         children: <Widget>[
-          Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
+          Container(
+            padding: const EdgeInsets.only(top: 10),
+            child: Column(
               children: <Widget>[
-                Text(
-                  MaterialLocalizations.of(context).formatFullDate(
-                    widget.expression.createdAt ?? DateTime.now(),
-                  ),
-                  // widget.expression.createdAt.toString(),
-                  style: JuntoStyles.expressionTimestamp,
-                ),
                 Row(
-                  children: const <Widget>[
-                    // GestureDetector(
-                    //   onTap: () {
-                    //     widget.focusTextField();®
-                    //   },
-                    //   child: Container(
-                    //     color: Colors.transparent,
-                    //     child: Icon(CustomIcons.commenticon,
-                    //         size: 20, color: Theme.of(context).primaryColor),
-                    //   ),
-                    // ),
-                    // GestureDetector(
-                    //   onTap: _buildResonationModal,
-                    //   child: Container(
-                    //     color: Colors.transparent,
-                    //     padding: const EdgeInsets.only(left: 12.5),
-                    //     child: Image.asset(
-                    //       'assets/images/junto-mobile__resonation.png',
-                    //       height: 20,
-                    //       color: Theme.of(context).primaryColor,
-                    //     ),
-                    //   ),
-                    // ),
-                  ],
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        parseDate(
+                          context,
+                          expression.createdAt,
+                        ).toLowerCase(),
+                        style: JuntoStyles.expressionTimestamp,
+                      ),
+                    ]),
+                const SizedBox(height: 10),
+                Container(
+                  width: MediaQuery.of(context).size.width - 20,
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                          color: Theme.of(context).dividerColor, width: .5),
+                    ),
+                  ),
                 ),
-              ]),
+              ],
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                GestureDetector(
+                  onTap: openExpressionContext,
+                  child: Container(
+                    height: 33,
+                    width: 33,
+                    alignment: Alignment.centerLeft,
+                    color: Colors.transparent,
+                    child: Icon(CustomIcons.create,
+                        size: 15, color: Theme.of(context).primaryColorLight),
+                  ),
+                )
+
+                // Container(
+                //   color: Colors.transparent,
+                //   height: 33,
+                //   width: 33,
+                //   child: Icon(CustomIcons.comment,
+                //       size: 15, color: Theme.of(context).primaryColorLight),
+                // ),
+              ],
+            ),
+          )
         ],
       ),
-    );
-  }
-
-  //ignore: unused_element
-  void _buildResonationModal() {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return ResonateBottomSheet(
-          expression: widget.expression,
-          onResonationPress: () async {
-            Provider.of<ExpressionRepo>(context)
-                .postResonation(
-              widget.expression.address,
-            )
-                .then((Resonation resonation) {
-              JuntoDialog.showJuntoDialog(
-                context,
-                'Resonation Created',
-                <Widget>[
-                  FlatButton(
-                    child: const Text('Ok'),
-                    onPressed: () => Navigator.pop(context),
-                  )
-                ],
-              );
-            }).catchError(
-              (Object error, StackTrace stacktrace) =>
-                  print('Error posting resonnation $error'),
-            );
-          },
-        );
-      },
     );
   }
 }
