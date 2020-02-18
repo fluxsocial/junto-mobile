@@ -18,6 +18,7 @@ import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_edit_den.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
+import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -83,14 +84,17 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
       _userAddress = prefs.getString('user_id');
       _userProfile = UserData.fromMap(decodedUserData);
     });
-
-    print(_userProfile);
   }
 
   Future<List<CentralizedExpressionResponse>> getUsersExpressions() async {
     return _memoizer.runOnce(
       () => _userProvider.getUsersExpressions(_userAddress),
     );
+  }
+
+  Future<PackageInfo> getVersionNumber() async {
+    final PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    return packageInfo;
   }
 
   @override
@@ -113,7 +117,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
         child: Padding(
           padding: const EdgeInsets.only(bottom: 25),
           child: BottomNav(
-            actionsVisible: false,
+              actionsVisible: false,
               screen: 'den',
               onTap: () {
                 Navigator.push(
@@ -163,88 +167,124 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                     ),
                   ];
                 },
-                body: TabBarView(
-                  children: <Widget>[
-                    ListView(
-                      physics: const ClampingScrollPhysics(),
-                      shrinkWrap: true,
-                      padding: const EdgeInsets.only(left: 10),
-                      children: <Widget>[
-                        Container(
-                          padding: const EdgeInsets.only(top: 5, bottom: 5),
-                          child: Column(
-                            children: <Widget>[
-                              _displayAboutItem(
-                                _userProfile.user.gender,
-                                Icon(CustomIcons.gender,
-                                    size: 17,
-                                    color: Theme.of(context).primaryColor),
-                              ),
-                              _displayAboutItem(
-                                _userProfile.user.location,
-                                Image.asset(
-                                  'assets/images/junto-mobile__location.png',
-                                  height: 15,
-                                  color: Theme.of(context).primaryColor,
+                body: SafeArea(
+                  child: TabBarView(
+                    children: <Widget>[
+                      Column(
+                        children: <Widget>[
+                          Expanded(
+                            child: ListView(
+                              physics: const ClampingScrollPhysics(),
+                              shrinkWrap: true,
+                              padding: const EdgeInsets.only(left: 10),
+                              children: <Widget>[
+                                Container(
+                                  padding:
+                                      const EdgeInsets.only(top: 5, bottom: 5),
+                                  child: Column(
+                                    children: <Widget>[
+                                      _displayAboutItem(
+                                        _userProfile.user.gender,
+                                        Icon(CustomIcons.gender,
+                                            size: 17,
+                                            color:
+                                                Theme.of(context).primaryColor),
+                                      ),
+                                      _displayAboutItem(
+                                        _userProfile.user.location,
+                                        Image.asset(
+                                          'assets/images/junto-mobile__location.png',
+                                          height: 15,
+                                          color: Theme.of(context).primaryColor,
+                                        ),
+                                      ),
+                                      _displayAboutItem(
+                                        _userProfile.user.website,
+                                        Image.asset(
+                                          'assets/images/junto-mobile__link.png',
+                                          height: 15,
+                                          color: Theme.of(context).primaryColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              _displayAboutItem(
-                                _userProfile.user.website,
-                                Image.asset(
-                                  'assets/images/junto-mobile__link.png',
-                                  height: 15,
-                                  color: Theme.of(context).primaryColor,
+                                if (_userProfile.user.profilePicture.isNotEmpty)
+                                  _displayProfilePictures(
+                                    _userProfile.user.profilePicture,
+                                  ),
+                                Container(
+                                  child: Text(_userProfile.user.bio,
+                                      style:
+                                          Theme.of(context).textTheme.caption),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        if (_userProfile.user.profilePicture.isNotEmpty)
-                          _displayProfilePictures(
-                            _userProfile.user.profilePicture,
+                          FutureBuilder<PackageInfo>(
+                            future: getVersionNumber(),
+                            builder: (
+                              BuildContext context,
+                              AsyncSnapshot<PackageInfo> snapshot,
+                            ) {
+                              if (snapshot.hasData) {
+                                return Container(
+                                  child: Text(
+                                    '${snapshot.data.appName} Build Number: ${snapshot.data.buildNumber} Version: ${snapshot.data.version}',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .caption
+                                        .copyWith(
+                                          color: const Color(0xFFDFDFDF),
+                                        ),
+                                  ),
+                                );
+                              }
+                              return Text(
+                                'Loading ',
+                                style: Theme.of(context).textTheme.caption,
+                              );
+                            },
                           ),
-                        Container(
-                          child: Text(_userProfile.user.bio,
-                              style: Theme.of(context).textTheme.caption),
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
 
-                    // public expressions of user
-                    FutureBuilder<List<CentralizedExpressionResponse>>(
-                      future: getUsersExpressions(),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<List<CentralizedExpressionResponse>>
-                              snapshot) {
-                        if (snapshot.hasError) {
+                      // public expressions of user
+                      FutureBuilder<List<CentralizedExpressionResponse>>(
+                        future: getUsersExpressions(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<List<CentralizedExpressionResponse>>
+                                snapshot) {
+                          if (snapshot.hasError) {
+                            return Center(
+                              child: Transform.translate(
+                                offset: const Offset(0.0, -50),
+                                child: const Text(
+                                    'Hmm, something is up with our server'),
+                              ),
+                            );
+                          }
+                          if (snapshot.hasData) {
+                            return Container(
+                              color: Theme.of(context).colorScheme.background,
+                              child: CustomListView(
+                                data: snapshot.data,
+                                userAddress: _userAddress,
+                                privacyLayer: 'Public',
+                                showComments: false,
+                              ),
+                            );
+                          }
                           return Center(
                             child: Transform.translate(
                               offset: const Offset(0.0, -50),
-                              child: const Text(
-                                  'Hmm, something is up with our server'),
+                              child: JuntoProgressIndicator(),
                             ),
                           );
-                        }
-                        if (snapshot.hasData) {
-                          return Container(
-                            color: Theme.of(context).colorScheme.background,
-                            child: CustomListView(
-                              data: snapshot.data,
-                              userAddress: _userAddress,
-                              privacyLayer: 'Public',
-                              showComments: false,
-                            ),
-                          );
-                        }
-                        return Center(
-                          child: Transform.translate(
-                            offset: const Offset(0.0, -50),
-                            child: JuntoProgressIndicator(),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             )
