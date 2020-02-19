@@ -245,7 +245,7 @@ class MemberRelationships extends StatelessWidget {
                           fontSize: 12,
                           color: Theme.of(context).primaryColor,
                           letterSpacing: 1.4,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w700,
                           decoration: TextDecoration.none),
                     ),
                   ),
@@ -293,7 +293,7 @@ class MemberRelationships extends StatelessWidget {
                   'SUBSCRIBE',
                   style: TextStyle(
                       fontSize: 14,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w700,
                       color: Theme.of(context).primaryColor,
                       decoration: TextDecoration.none,
                       letterSpacing: 1.2),
@@ -331,7 +331,7 @@ class MemberRelationships extends StatelessWidget {
                   'CONNECT',
                   style: TextStyle(
                       fontSize: 14,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w700,
                       color: Theme.of(context).primaryColor,
                       decoration: TextDecoration.none,
                       letterSpacing: 1.2),
@@ -370,7 +370,7 @@ class MemberRelationships extends StatelessWidget {
                   'INVITE TO PACK',
                   style: TextStyle(
                       fontSize: 14,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w700,
                       color: Theme.of(context).primaryColor,
                       decoration: TextDecoration.none,
                       letterSpacing: 1.2),
@@ -417,7 +417,7 @@ class MemberRelationships extends StatelessWidget {
                   'SUBSCRIBED',
                   style: TextStyle(
                       fontSize: 14,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w700,
                       color: Theme.of(context).primaryColor,
                       decoration: TextDecoration.none,
                       letterSpacing: 1.2),
@@ -467,7 +467,7 @@ class MemberRelationships extends StatelessWidget {
                       'CONNECT',
                       style: TextStyle(
                           fontSize: 14,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w700,
                           color: Theme.of(context).primaryColor,
                           decoration: TextDecoration.none,
                           letterSpacing: 1.2),
@@ -532,7 +532,7 @@ class MemberRelationships extends StatelessWidget {
                   'INVITE TO PACK',
                   style: TextStyle(
                       fontSize: 14,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w700,
                       color: Theme.of(context).primaryColor,
                       decoration: TextDecoration.none,
                       letterSpacing: 1.2),
@@ -579,7 +579,7 @@ class MemberRelationships extends StatelessWidget {
                   'SUBSCRIBED',
                   style: TextStyle(
                       fontSize: 14,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w700,
                       color: Theme.of(context).primaryColor,
                       decoration: TextDecoration.none,
                       letterSpacing: 1.2),
@@ -626,7 +626,7 @@ class MemberRelationships extends StatelessWidget {
                   'CONNECTED',
                   style: TextStyle(
                       fontSize: 14,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w700,
                       color: Theme.of(context).primaryColor,
                       decoration: TextDecoration.none,
                       letterSpacing: 1.2),
@@ -672,7 +672,7 @@ class MemberRelationships extends StatelessWidget {
                   'INVITE TO PACK',
                   style: TextStyle(
                       fontSize: 14,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w700,
                       color: Theme.of(context).primaryColor,
                       decoration: TextDecoration.none,
                       letterSpacing: 1.2),
