@@ -6,10 +6,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/widgets/previews/pack_preview.dart';
+import 'package:junto_beta_mobile/widgets/previews/pack_preview/pack_preview.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:junto_beta_mobile/widgets/previews/pack_preview/pack_request.dart';
 
 class Packs extends StatefulWidget {
   const Packs({this.userProfile, this.changeGroup});
@@ -83,6 +84,11 @@ class PacksState extends State<Packs> with ListDistinct {
         ),
       ),
     );
+  }
+
+  void refreshGroupsAndRequests() {
+    getUserGroups();
+    getGroupNotifications();
   }
 
   @override
@@ -237,11 +243,17 @@ class PacksState extends State<Packs> with ListDistinct {
                             );
                           }
                           if (snapshot.hasData) {
-                            print(snapshot.data);
                             return Expanded(
                                 child: ListView(
                               padding: const EdgeInsets.all(0),
-                              children: <Widget>[],
+                              children: <Widget>[
+                                for (Group packRequest
+                                    in snapshot.data.groupJoinNotifications)
+                                  if (packRequest.groupType == 'Pack')
+                                    PackRequest(
+                                        pack: packRequest,
+                                        refreshGroups: refreshGroupsAndRequests)
+                              ],
                             ));
                           }
                           return Expanded(
