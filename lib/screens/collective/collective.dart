@@ -325,10 +325,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
             );
           }
           return Center(
-            child: Transform.translate(
-              offset: const Offset(0.0, 0.0),
-              child: JuntoProgressIndicator(),
-            ),
+            child: JuntoProgressIndicator(),
           );
         },
       ),

@@ -12,9 +12,6 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/member/member_appbar.dart';
 import 'package:junto_beta_mobile/screens/member/member_relationships.dart';
-import 'package:junto_beta_mobile/utils/junto_dialog.dart';
-import 'package:junto_beta_mobile/utils/junto_exception.dart';
-import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/user_expressions.dart';
 import 'package:provider/provider.dart';
@@ -174,26 +171,26 @@ class _JuntoMemberState extends State<JuntoMember> {
                         padding: const EdgeInsets.only(top: 5, bottom: 5),
                         child: Column(
                           children: <Widget>[
-                            widget.profile.gender[0].isNotEmpty
-                                ? _ProfileDetails(
-                                    iconData: CustomIcons.gender,
-                                    item: widget.profile.gender,
-                                  )
-                                : const SizedBox(),
-                            widget.profile.location[0].isNotEmpty
-                                ? _ProfileDetails(
-                                    imageUri:
-                                        'assets/images/junto-mobile__location.png',
-                                    item: widget.profile.location,
-                                  )
-                                : const SizedBox(),
-                            widget.profile.website[0].isNotEmpty
-                                ? _ProfileDetails(
-                                    imageUri:
-                                        'assets/images/junto-mobile__link.png',
-                                    item: widget.profile.website,
-                                  )
-                                : const SizedBox(),
+                            if (widget.profile.gender.isNotEmpty &&
+                                widget.profile.gender[0].isNotEmpty)
+                              _ProfileDetails(
+                                iconData: CustomIcons.gender,
+                                item: widget.profile.gender,
+                              ),
+                            if (widget.profile.location.isNotEmpty &&
+                                widget.profile.location[0].isNotEmpty)
+                              _ProfileDetails(
+                                imageUri:
+                                    'assets/images/junto-mobile__location.png',
+                                item: widget.profile.location,
+                              ),
+                            if (widget.profile.website.isNotEmpty &&
+                                widget.profile.website[0].isNotEmpty)
+                              _ProfileDetails(
+                                imageUri:
+                                    'assets/images/junto-mobile__link.png',
+                                item: widget.profile.website,
+                              )
                           ],
                         ),
                       ),
