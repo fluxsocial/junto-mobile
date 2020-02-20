@@ -104,7 +104,7 @@ class PacksState extends State<Packs> with ListDistinct {
                     child: Text(
                       'My Packs',
                       style: TextStyle(
-                          fontSize: 15,
+                          fontSize: 16,
                           fontWeight: FontWeight.w700,
                           color: _currentIndex == 0
                               ? Theme.of(context).primaryColorDark
@@ -124,7 +124,7 @@ class PacksState extends State<Packs> with ListDistinct {
                     child: Text(
                       'Requests',
                       style: TextStyle(
-                          fontSize: 15,
+                          fontSize: 16,
                           fontWeight: FontWeight.w700,
                           color: _currentIndex == 1
                               ? Theme.of(context).primaryColorDark

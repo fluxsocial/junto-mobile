@@ -32,6 +32,16 @@ class SpheresState extends State<Spheres> with ListDistinct {
   UserRepo _userProvider;
   Future<UserGroupsResponse> getSpheres;
 
+  PageController circlesPageController;
+  int _currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    circlesPageController = PageController(initialPage: 0);
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -99,58 +109,148 @@ class SpheresState extends State<Spheres> with ListDistinct {
               ],
             ),
           ),
-          const SizedBox(height: 10),
-          if (_userProfile != null)
-            FutureBuilder<UserGroupsResponse>(
-              future: getSpheres,
-              builder: (BuildContext context,
-                  AsyncSnapshot<UserGroupsResponse> snapshot) {
-                if (snapshot.hasError) {
-                  print(snapshot.error);
-                  return Expanded(
-                    child: Center(
-                      child: Transform.translate(
-                        offset: const Offset(0.0, -50),
-                        child:
-                            const Text('Hmm, something is up with our server'),
-                      ),
-                    ),
-                  );
-                }
-                if (snapshot.hasData) {
-                  final List<Group> ownedGroups = snapshot.data.owned;
-                  final List<Group> associatedGroups = snapshot.data.associated;
-                  final List<Group> userSpheres =
-                      distinct<Group>(ownedGroups, associatedGroups)
-                          .where((Group group) => group.groupType == 'Sphere')
-                          .toList();
-
-                  return Expanded(
-                      child: ListView(
-                    padding: const EdgeInsets.all(0),
-                    children: <Widget>[
-                      for (Group group in userSpheres)
-                        GestureDetector(
-                          onTap: () {
-                            widget.changeGroup(group);
-                          },
-                          child: SpherePreview(
-                            group: group,
-                          ),
-                        )
-                    ],
-                  ));
-                }
-                return Expanded(
-                  child: Center(
-                    child: Transform.translate(
-                      offset: const Offset(0.0, -50),
-                      child: JuntoProgressIndicator(),
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            color: Theme.of(context).backgroundColor,
+            child: Row(
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () {
+                    circlesPageController.animateToPage(0,
+                        duration: const Duration(milliseconds: 200),
+                        curve: Curves.easeIn);
+                  },
+                  child: Container(
+                    child: Text(
+                      'My Circles',
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: _currentIndex == 0
+                              ? Theme.of(context).primaryColorDark
+                              : Theme.of(context).primaryColorLight,
+                          decoration: TextDecoration.none),
                     ),
                   ),
-                );
-              },
+                ),
+                const SizedBox(width: 20),
+                GestureDetector(
+                  onTap: () {
+                    circlesPageController.animateToPage(1,
+                        duration: const Duration(milliseconds: 200),
+                        curve: Curves.easeIn);
+                  },
+                  child: Container(
+                    child: Text(
+                      'Requests',
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: _currentIndex == 1
+                              ? Theme.of(context).primaryColorDark
+                              : Theme.of(context).primaryColorLight,
+                          decoration: TextDecoration.none),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 20),
+                GestureDetector(
+                  onTap: () {
+                    circlesPageController.animateToPage(2,
+                        duration: const Duration(milliseconds: 200),
+                        curve: Curves.easeIn);
+                  },
+                  child: Container(
+                    child: Text(
+                      'Search',
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: _currentIndex == 2
+                              ? Theme.of(context).primaryColorDark
+                              : Theme.of(context).primaryColorLight,
+                          decoration: TextDecoration.none),
+                    ),
+                  ),
+                ),
+              ],
             ),
+          ),
+          Expanded(
+            child: PageView(
+              onPageChanged: (int index) {
+                setState(() {
+                  _currentIndex = index;
+                });
+              },
+              controller: circlesPageController,
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    if (_userProfile != null)
+                      FutureBuilder<UserGroupsResponse>(
+                        future: getSpheres,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<UserGroupsResponse> snapshot) {
+                          if (snapshot.hasError) {
+                            print(snapshot.error);
+                            return Expanded(
+                              child: Center(
+                                child: Transform.translate(
+                                  offset: const Offset(0.0, -50),
+                                  child: const Text(
+                                      'Hmm, something is up with our server'),
+                                ),
+                              ),
+                            );
+                          }
+                          if (snapshot.hasData) {
+                            final List<Group> ownedGroups = snapshot.data.owned;
+                            final List<Group> associatedGroups =
+                                snapshot.data.associated;
+                            final List<Group> userSpheres =
+                                distinct<Group>(ownedGroups, associatedGroups)
+                                    .where((Group group) =>
+                                        group.groupType == 'Sphere')
+                                    .toList();
+
+                            return Expanded(
+                                child: ListView(
+                              padding: const EdgeInsets.all(0),
+                              children: <Widget>[
+                                for (Group group in userSpheres)
+                                  GestureDetector(
+                                    onTap: () {
+                                      widget.changeGroup(group);
+                                    },
+                                    child: SpherePreview(
+                                      group: group,
+                                    ),
+                                  )
+                              ],
+                            ));
+                          }
+                          return Expanded(
+                            child: Center(
+                              child: Transform.translate(
+                                offset: const Offset(0.0, -50),
+                                child: JuntoProgressIndicator(),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                  ],
+                ),
+                const Center(
+                  child: Text('requests'),
+                ),
+                const Center(
+                  child: Text('search'),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
