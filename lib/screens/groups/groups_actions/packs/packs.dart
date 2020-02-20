@@ -33,11 +33,15 @@ class PacksState extends State<Packs> with ListDistinct {
   final AsyncMemoizer<UserGroupsResponse> _memoizer =
       AsyncMemoizer<UserGroupsResponse>();
 
+  PageController packsPageController;
+  int _currentIndex = 0;
+
   @override
   void initState() {
     super.initState();
 
     getUserInformation();
+    packsPageController = PageController(initialPage: 0);
   }
 
   @override
@@ -71,96 +75,161 @@ class PacksState extends State<Packs> with ListDistinct {
     return Container(
       height: MediaQuery.of(context).size.height - 150,
       child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Container(
-              height: 100,
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              color: Theme.of(context).backgroundColor,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text('Packs', style: Theme.of(context).textTheme.headline4),
-                ],
-              ),
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Container(
+            height: 100,
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            color: Theme.of(context).backgroundColor,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text('Packs', style: Theme.of(context).textTheme.headline4),
+              ],
             ),
-            const SizedBox(height: 10),
-            // Container(
-            //   height: 50,
-            //   color: Theme.of(context).backgroundColor,
-            //   child: Row(
-            //     children: <Widget>[
-            //       Container(
-            //           padding: const EdgeInsets.all(10),
-            //           decoration: BoxDecoration(
-            //             borderRadius: BorderRadius.circular(5),
-            //             color: const Color(0xff555555),
-            //           ),
-            //           child: Text(
-            //             'All',
-            //             style: TextStyle(
-            //                 fontSize: 12,
-            //                 fontWeight: FontWeight.w700,
-            //                 color: Colors.white,
-            //                 decoration: TextDecoration.none),
-            //           ))
-            //     ],
-            //   ),
-            // ),
-            if (_userProfile != null)
-              FutureBuilder<UserGroupsResponse>(
-                future: getUserGroups(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<UserGroupsResponse> snapshot) {
-                  if (snapshot.hasError) {
-                    print(snapshot.error);
-                    return Expanded(
-                      child: Center(
-                        child: Transform.translate(
-                          offset: const Offset(0.0, -50),
-                          child: const Text(
-                              'Hmm, something is up with our server'),
-                        ),
-                      ),
-                    );
-                  }
-                  if (snapshot.hasData) {
-                    final List<Group> ownedGroups = snapshot.data.owned;
-                    final List<Group> associatedGroups =
-                        snapshot.data.associated;
-                    final List<Group> userPacks =
-                        distinct<Group>(ownedGroups, associatedGroups)
-                            .where((Group group) => group.groupType == 'Pack')
-                            .toList();
-
-                    return Expanded(
-                        child: ListView(
-                      padding: const EdgeInsets.all(0),
-                      children: <Widget>[
-                        for (Group group in userPacks)
-                          GestureDetector(
-                            onTap: () {
-                              widget.changeGroup(group);
-                            },
-                            child: PackPreview(
-                              group: group,
+          ),
+          const SizedBox(height: 15),
+          Container(
+            color: Theme.of(context).backgroundColor,
+            child: Row(
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () {
+                    packsPageController.animateToPage(0,
+                        duration: const Duration(milliseconds: 200),
+                        curve: Curves.easeIn);
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    decoration: _currentIndex == 0
+                        ? BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                  color: Theme.of(context).primaryColorDark,
+                                  width: 1.5),
                             ),
                           )
-                      ],
-                    ));
-                  }
-                  return Expanded(
-                    child: Center(
-                      child: Transform.translate(
-                        offset: const Offset(0.0, -50),
-                        child: JuntoProgressIndicator(),
-                      ),
+                        : null,
+                    child: Text(
+                      'My Packs',
+                      style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                          color: _currentIndex == 0
+                              ? Theme.of(context).primaryColorDark
+                              : Theme.of(context).primaryColorLight,
+                          decoration: TextDecoration.none),
                     ),
-                  );
-                },
-              ),
-          ]),
+                  ),
+                ),
+                const SizedBox(width: 20),
+                GestureDetector(
+                  onTap: () {
+                    packsPageController.animateToPage(1,
+                        duration: const Duration(milliseconds: 200),
+                        curve: Curves.easeIn);
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    decoration: BoxDecoration(
+                      border: _currentIndex == 1
+                          ? Border(
+                              bottom: BorderSide(
+                                  color: Theme.of(context).primaryColorDark,
+                                  width: 1.5),
+                            )
+                          : null,
+                    ),
+                    child: Text(
+                      'Requests',
+                      style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                          color: _currentIndex == 1
+                              ? Theme.of(context).primaryColorDark
+                              : Theme.of(context).primaryColorLight,
+                          decoration: TextDecoration.none),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+          Expanded(
+            child: PageView(
+              controller: packsPageController,
+              onPageChanged: (int index) {
+                setState(() {
+                  _currentIndex = index;
+                });
+              },
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    if (_userProfile != null)
+                      FutureBuilder<UserGroupsResponse>(
+                        future: getUserGroups(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<UserGroupsResponse> snapshot) {
+                          if (snapshot.hasError) {
+                            print(snapshot.error);
+                            return Expanded(
+                              child: Center(
+                                child: Transform.translate(
+                                  offset: const Offset(0.0, -50),
+                                  child: const Text(
+                                      'Hmm, something is up with our server'),
+                                ),
+                              ),
+                            );
+                          }
+                          if (snapshot.hasData) {
+                            final List<Group> ownedGroups = snapshot.data.owned;
+                            final List<Group> associatedGroups =
+                                snapshot.data.associated;
+                            final List<Group> userPacks = distinct<Group>(
+                                    ownedGroups, associatedGroups)
+                                .where(
+                                    (Group group) => group.groupType == 'Pack')
+                                .toList();
+
+                            return Expanded(
+                                child: ListView(
+                              padding: const EdgeInsets.all(0),
+                              children: <Widget>[
+                                for (Group group in userPacks)
+                                  GestureDetector(
+                                    onTap: () {
+                                      widget.changeGroup(group);
+                                    },
+                                    child: PackPreview(
+                                      group: group,
+                                    ),
+                                  )
+                              ],
+                            ));
+                          }
+                          return Expanded(
+                            child: Center(
+                              child: Transform.translate(
+                                offset: const Offset(0.0, -50),
+                                child: JuntoProgressIndicator(),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                  ],
+                ),
+                const Center(
+                  child: Text('pack requests'),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }

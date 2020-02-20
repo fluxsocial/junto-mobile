@@ -78,7 +78,7 @@ class SpheresState extends State<Spheres> with ListDistinct {
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text('Spheres', style: Theme.of(context).textTheme.headline4),
+                Text('Circles', style: Theme.of(context).textTheme.headline4),
                 GestureDetector(
                   onTap: () {
                     Navigator.push(

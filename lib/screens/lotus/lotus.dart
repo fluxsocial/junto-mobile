@@ -200,7 +200,7 @@ class JuntoLotusState extends State<JuntoLotus> {
                                 ),
                                 const SizedBox(height: 10),
                                 const Text(
-                                  'DISCOVER',
+                                  'COLLECTIVE',
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 14,
@@ -230,7 +230,7 @@ class JuntoLotusState extends State<JuntoLotus> {
                                 ),
                                 SizedBox(height: 10),
                                 Text(
-                                  'CONNECT',
+                                  'GROUPS',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 14,

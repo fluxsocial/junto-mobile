@@ -109,7 +109,7 @@ class JuntoGroupsActionsState extends State<JuntoGroupsActions> {
                                       : Theme.of(context).primaryColorLight,
                                 ),
                                 const SizedBox(height: 7),
-                                Text('SPHERES',
+                                Text('CIRCLES',
                                     style: TextStyle(
                                         fontSize: 10,
                                         fontWeight: FontWeight.w500,
