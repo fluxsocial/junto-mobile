@@ -80,31 +80,54 @@ class SpheresState extends State<Spheres> with ListDistinct {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
+          const SizedBox(height: 45),
           Container(
-            height: 100,
-            padding: const EdgeInsets.symmetric(vertical: 10),
+            padding: const EdgeInsets.symmetric(vertical: 5),
             color: Theme.of(context).backgroundColor,
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text('Circles', style: Theme.of(context).textTheme.headline4),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute<void>(
-                        builder: (BuildContext context) => CreateSphere(
-                          refreshSpheres: _refreshSpheres,
+                Row(
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        color: Colors.transparent,
+                        alignment: Alignment.centerRight,
+                        height: 38,
+                        width: 38,
+                        child: Icon(
+                          Icons.search,
+                          size: 20,
+                          color: Theme.of(context).primaryColor,
                         ),
                       ),
-                    );
-                  },
-                  child: Icon(
-                    Icons.add,
-                    size: 24,
-                    color: Theme.of(context).primaryColor,
-                  ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute<void>(
+                            builder: (BuildContext context) => CreateSphere(
+                              refreshSpheres: _refreshSpheres,
+                            ),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        alignment: Alignment.centerRight,
+                        color: Colors.transparent,
+                        width: 38,
+                        height: 38,
+                        child: Icon(
+                          Icons.add,
+                          size: 24,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                    ),
+                  ],
                 )
               ],
             ),
@@ -147,26 +170,6 @@ class SpheresState extends State<Spheres> with ListDistinct {
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
                           color: _currentIndex == 1
-                              ? Theme.of(context).primaryColorDark
-                              : Theme.of(context).primaryColorLight,
-                          decoration: TextDecoration.none),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 20),
-                GestureDetector(
-                  onTap: () {
-                    circlesPageController.animateToPage(2,
-                        duration: const Duration(milliseconds: 200),
-                        curve: Curves.easeIn);
-                  },
-                  child: Container(
-                    child: Text(
-                      'Search',
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          color: _currentIndex == 2
                               ? Theme.of(context).primaryColorDark
                               : Theme.of(context).primaryColorLight,
                           decoration: TextDecoration.none),
@@ -244,9 +247,6 @@ class SpheresState extends State<Spheres> with ListDistinct {
                 ),
                 const Center(
                   child: Text('requests'),
-                ),
-                const Center(
-                  child: Text('search'),
                 ),
               ],
             ),
