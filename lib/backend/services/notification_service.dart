@@ -18,6 +18,7 @@ class NotificationServiceImpl implements NotificationService {
       '/notifications',
       queryParams: params.toMap(),
     );
+
     print(response.body);
     print(response.statusCode);
 

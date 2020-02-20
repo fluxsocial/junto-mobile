@@ -25,16 +25,12 @@ class Packs extends StatefulWidget {
 }
 
 class PacksState extends State<Packs> with ListDistinct {
-  //ignore: unused_field
   String _userAddress;
-  UserData _userProfile;
   UserRepo _userProvider;
   NotificationRepo _notificationRepo;
 
-  final AsyncMemoizer<UserGroupsResponse> _userGroupsMemoizer =
-      AsyncMemoizer<UserGroupsResponse>();
-  final AsyncMemoizer<NotificationResultsModel> _groupNotificationsMemoizer =
-      AsyncMemoizer<NotificationResultsModel>();
+  Future<UserGroupsResponse> userGroups;
+  Future<NotificationResultsModel> userGroupRequests;
 
   PageController packsPageController;
   int _currentIndex = 0;
@@ -55,6 +51,8 @@ class PacksState extends State<Packs> with ListDistinct {
       _userProvider = Provider.of<UserRepo>(context, listen: false);
       _notificationRepo = Provider.of<NotificationRepo>(context, listen: false);
     });
+
+    refreshGroupsAndRequests();
   }
 
   Future<void> getUserInformation() async {
@@ -64,31 +62,40 @@ class PacksState extends State<Packs> with ListDistinct {
 
     setState(() {
       _userAddress = prefs.getString('user_id');
-      _userProfile = UserData.fromMap(decodedUserData);
     });
   }
 
   Future<UserGroupsResponse> getUserGroups() async {
-    return _userGroupsMemoizer.runOnce(
-      () => _userProvider.getUserGroups(_userProfile.user.address),
-    );
+    try {
+      return _userProvider.getUserGroups(_userAddress);
+    } catch (error) {
+      print(error);
+      return null;
+    }
   }
 
   Future<NotificationResultsModel> getGroupNotifications() async {
-    return _groupNotificationsMemoizer.runOnce(
-      () => _notificationRepo.getNotifications(
+    try {
+      return _notificationRepo.getNotifications(
         const NotificationQuery(
           connectionRequests: false,
           groupJoinRequests: true,
           paginationPosition: 0,
         ),
-      ),
-    );
+      );
+    } catch (error) {
+      print(error);
+      return null;
+    }
   }
 
-  void refreshGroupsAndRequests() {
-    getUserGroups();
-    getGroupNotifications();
+  Future<void> refreshGroupsAndRequests() async {
+    await getUserInformation();
+
+    setState(() {
+      userGroups = getUserGroups();
+      userGroupRequests = getGroupNotifications();
+    });
   }
 
   @override
@@ -168,9 +175,9 @@ class PacksState extends State<Packs> with ListDistinct {
               children: <Widget>[
                 Column(
                   children: <Widget>[
-                    if (_userProfile != null)
+                    if (_userAddress != null)
                       FutureBuilder<UserGroupsResponse>(
-                        future: getUserGroups(),
+                        future: userGroups,
                         builder: (BuildContext context,
                             AsyncSnapshot<UserGroupsResponse> snapshot) {
                           if (snapshot.hasError) {
@@ -225,9 +232,9 @@ class PacksState extends State<Packs> with ListDistinct {
                 ),
                 Column(
                   children: <Widget>[
-                    if (_userProfile != null)
+                    if (_userAddress != null)
                       FutureBuilder<NotificationResultsModel>(
-                        future: getGroupNotifications(),
+                        future: userGroupRequests,
                         builder: (BuildContext context,
                             AsyncSnapshot<NotificationResultsModel> snapshot) {
                           if (snapshot.hasError) {

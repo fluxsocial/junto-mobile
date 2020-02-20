@@ -94,6 +94,7 @@ class UserServiceCentralized implements UserService {
       String userAddress) async {
     final http.Response response =
         await client.get('/users/$userAddress/perspectives');
+    print('getting perspectives');
     final List<dynamic> _listData = JuntoHttp.handleResponse(response);
     final List<CentralizedPerspective> _results = _listData
         .map((dynamic data) => CentralizedPerspective.fromMap(data))
