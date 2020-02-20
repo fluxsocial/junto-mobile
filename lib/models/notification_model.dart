@@ -12,12 +12,14 @@ class NotificationResultsModel {
   factory NotificationResultsModel.fromMap(Map<String, dynamic> map) {
     return NotificationResultsModel(
       connectionNotifications: <UserProfile>[
-        for (dynamic data in map['connection_notifications'])
-          UserProfile.fromMap(data)
+        if (map['connection_notifications'] != null)
+          for (dynamic data in map['connection_notifications'])
+            UserProfile.fromMap(data)
       ],
       groupJoinNotifications: <Group>[
-        for (dynamic data in map['group_join_notifications'])
-          Group.fromMap(data),
+        if (map['group_join_notifications'] != null)
+          for (dynamic data in map['group_join_notifications'])
+            Group.fromMap(data),
       ],
     );
   }

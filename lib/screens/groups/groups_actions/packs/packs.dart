@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
-
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/previews/pack_preview.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
@@ -29,9 +28,12 @@ class PacksState extends State<Packs> with ListDistinct {
   String _userAddress;
   UserData _userProfile;
   UserRepo _userProvider;
+  NotificationRepo _notificationRepo;
 
-  final AsyncMemoizer<UserGroupsResponse> _memoizer =
+  final AsyncMemoizer<UserGroupsResponse> _userGroupsMemoizer =
       AsyncMemoizer<UserGroupsResponse>();
+  final AsyncMemoizer<NotificationResultsModel> _groupNotificationsMemoizer =
+      AsyncMemoizer<NotificationResultsModel>();
 
   PageController packsPageController;
   int _currentIndex = 0;
@@ -49,7 +51,8 @@ class PacksState extends State<Packs> with ListDistinct {
     super.didChangeDependencies();
 
     setState(() {
-      _userProvider = Provider.of<UserRepo>(context);
+      _userProvider = Provider.of<UserRepo>(context, listen: false);
+      _notificationRepo = Provider.of<NotificationRepo>(context, listen: false);
     });
   }
 
@@ -65,8 +68,20 @@ class PacksState extends State<Packs> with ListDistinct {
   }
 
   Future<UserGroupsResponse> getUserGroups() async {
-    return _memoizer.runOnce(
+    return _userGroupsMemoizer.runOnce(
       () => _userProvider.getUserGroups(_userProfile.user.address),
+    );
+  }
+
+  Future<NotificationResultsModel> getGroupNotifications() async {
+    return _groupNotificationsMemoizer.runOnce(
+      () => _notificationRepo.getNotifications(
+        const NotificationQuery(
+          connectionRequests: false,
+          groupJoinRequests: true,
+          paginationPosition: 0,
+        ),
+      ),
     );
   }
 
@@ -202,9 +217,45 @@ class PacksState extends State<Packs> with ListDistinct {
                       ),
                   ],
                 ),
-                const Center(
-                  child: Text('pack requests'),
-                )
+                Column(
+                  children: <Widget>[
+                    if (_userProfile != null)
+                      FutureBuilder<NotificationResultsModel>(
+                        future: getGroupNotifications(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<NotificationResultsModel> snapshot) {
+                          if (snapshot.hasError) {
+                            print(snapshot.error);
+                            return Expanded(
+                              child: Center(
+                                child: Transform.translate(
+                                  offset: const Offset(0.0, -50),
+                                  child: const Text(
+                                      'Hmm, something is up with our server'),
+                                ),
+                              ),
+                            );
+                          }
+                          if (snapshot.hasData) {
+                            print(snapshot.data);
+                            return Expanded(
+                                child: ListView(
+                              padding: const EdgeInsets.all(0),
+                              children: <Widget>[],
+                            ));
+                          }
+                          return Expanded(
+                            child: Center(
+                              child: Transform.translate(
+                                offset: const Offset(0.0, -50),
+                                child: JuntoProgressIndicator(),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                  ],
+                ),
               ],
             ),
           )
