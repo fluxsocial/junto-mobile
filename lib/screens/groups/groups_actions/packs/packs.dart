@@ -89,8 +89,8 @@ class PacksState extends State<Packs> with ListDistinct {
               ],
             ),
           ),
-          const SizedBox(height: 15),
           Container(
+            padding: const EdgeInsets.symmetric(vertical: 10),
             color: Theme.of(context).backgroundColor,
             child: Row(
               children: <Widget>[
@@ -101,16 +101,6 @@ class PacksState extends State<Packs> with ListDistinct {
                         curve: Curves.easeIn);
                   },
                   child: Container(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    decoration: _currentIndex == 0
-                        ? BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                  color: Theme.of(context).primaryColorDark,
-                                  width: 1.5),
-                            ),
-                          )
-                        : null,
                     child: Text(
                       'My Packs',
                       style: TextStyle(
@@ -131,16 +121,6 @@ class PacksState extends State<Packs> with ListDistinct {
                         curve: Curves.easeIn);
                   },
                   child: Container(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    decoration: BoxDecoration(
-                      border: _currentIndex == 1
-                          ? Border(
-                              bottom: BorderSide(
-                                  color: Theme.of(context).primaryColorDark,
-                                  width: 1.5),
-                            )
-                          : null,
-                    ),
                     child: Text(
                       'Requests',
                       style: TextStyle(
