@@ -94,7 +94,6 @@ class UserServiceCentralized implements UserService {
       String userAddress) async {
     final http.Response response =
         await client.get('/users/$userAddress/perspectives');
-    print('getting perspectives');
     final List<dynamic> _listData = JuntoHttp.handleResponse(response);
     final List<CentralizedPerspective> _results = _listData
         .map((dynamic data) => CentralizedPerspective.fromMap(data))
@@ -300,8 +299,6 @@ class UserServiceCentralized implements UserService {
     _results['following'] = _following;
     _results['connections'] = _connections;
     _results['pending_connections'] = _pendingConnections;
-
-    print(_results);
     return _results;
   }
 
@@ -352,7 +349,6 @@ class UserServiceCentralized implements UserService {
     // make request to api with encoded json body
     final http.Response _serverResponse =
         await client.patch('/users/$userAddress', body: body);
-    print(_serverResponse.statusCode);
 
     // handle response
     final Map<String, dynamic> _data =
@@ -366,7 +362,6 @@ class UserServiceCentralized implements UserService {
     // replace user with response and update shared prefs
     decodedUserData['user'] = _data;
     final String _userMapToString = json.encode(decodedUserData);
-    print(_userMapToString);
     _prefs..setString('user_data', _userMapToString);
 
     return _data;
@@ -426,8 +421,6 @@ class UserServiceCentralized implements UserService {
       '/users/$userAddress/following/$targetAddress',
     );
     final bool result = JuntoHttp.handleResponse(_serverResponse) as bool;
-    print(result);
-    print('following');
     return result;
   }
 

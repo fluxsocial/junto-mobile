@@ -27,7 +27,7 @@ class Packs extends StatefulWidget {
 class PacksState extends State<Packs> with ListDistinct {
   String _userAddress;
   UserRepo _userProvider;
-  NotificationRepo _notificationRepo;
+  NotificationRepo _notificationProvider;
 
   Future<UserGroupsResponse> userGroups;
   Future<NotificationResultsModel> userGroupRequests;
@@ -49,7 +49,8 @@ class PacksState extends State<Packs> with ListDistinct {
 
     setState(() {
       _userProvider = Provider.of<UserRepo>(context, listen: false);
-      _notificationRepo = Provider.of<NotificationRepo>(context, listen: false);
+      _notificationProvider =
+          Provider.of<NotificationRepo>(context, listen: false);
     });
 
     refreshGroupsAndRequests();
@@ -76,7 +77,7 @@ class PacksState extends State<Packs> with ListDistinct {
 
   Future<NotificationResultsModel> getGroupNotifications() async {
     try {
-      return _notificationRepo.getNotifications(
+      return _notificationProvider.getNotifications(
         const NotificationQuery(
           connectionRequests: false,
           groupJoinRequests: true,
@@ -105,15 +106,15 @@ class PacksState extends State<Packs> with ListDistinct {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
+          const SizedBox(height: 45),
           Container(
-            height: 100,
-            padding: const EdgeInsets.symmetric(vertical: 10),
+            padding: const EdgeInsets.symmetric(vertical: 5),
             color: Theme.of(context).backgroundColor,
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text('Packs', style: Theme.of(context).textTheme.headline4),
+                const SizedBox(width: 38, height: 38)
               ],
             ),
           ),

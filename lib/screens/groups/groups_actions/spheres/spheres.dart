@@ -10,6 +10,7 @@ import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/previews/sphere_preview/sphere_preview.dart';
+import 'package:junto_beta_mobile/widgets/previews/sphere_preview/sphere_request.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,7 +31,10 @@ class Spheres extends StatefulWidget {
 class SpheresState extends State<Spheres> with ListDistinct {
   UserData _userProfile;
   UserRepo _userProvider;
+  NotificationRepo _notificationProvider;
+
   Future<UserGroupsResponse> getSpheres;
+  Future<NotificationResultsModel> getSphereRequests;
 
   PageController circlesPageController;
   int _currentIndex = 0;
@@ -45,7 +49,9 @@ class SpheresState extends State<Spheres> with ListDistinct {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _userProvider = Provider.of<UserRepo>(context);
+    _userProvider = Provider.of<UserRepo>(context, listen: false);
+    _notificationProvider =
+        Provider.of<NotificationRepo>(context, listen: false);
     _refreshSpheres();
   }
 
@@ -54,6 +60,7 @@ class SpheresState extends State<Spheres> with ListDistinct {
       await getUserInformation();
       setState(() {
         getSpheres = getUserGroups();
+        getSphereRequests = getGroupNotifications();
       });
     } on JuntoException catch (error) {
       JuntoDialog.showJuntoDialog(context, error.message, [DialogBack()]);
@@ -70,7 +77,27 @@ class SpheresState extends State<Spheres> with ListDistinct {
   }
 
   Future<UserGroupsResponse> getUserGroups() async {
-    return _userProvider.getUserGroups(_userProfile.user.address);
+    try {
+      return _userProvider.getUserGroups(_userProfile.user.address);
+    } catch (error) {
+      print(error);
+      return null;
+    }
+  }
+
+  Future<NotificationResultsModel> getGroupNotifications() async {
+    try {
+      return _notificationProvider.getNotifications(
+        const NotificationQuery(
+          connectionRequests: false,
+          groupJoinRequests: true,
+          paginationPosition: 0,
+        ),
+      );
+    } catch (error) {
+      print(error);
+      return null;
+    }
   }
 
   @override
@@ -229,7 +256,7 @@ class SpheresState extends State<Spheres> with ListDistinct {
                                     child: SpherePreview(
                                       group: group,
                                     ),
-                                  )
+                                  ),
                               ],
                             ));
                           }
@@ -245,8 +272,51 @@ class SpheresState extends State<Spheres> with ListDistinct {
                       ),
                   ],
                 ),
-                const Center(
-                  child: Text('requests'),
+                Column(
+                  children: <Widget>[
+                    if (_userProfile != null)
+                      FutureBuilder<NotificationResultsModel>(
+                        future: getSphereRequests,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<NotificationResultsModel> snapshot) {
+                          if (snapshot.hasError) {
+                            print(snapshot.error);
+                            return Expanded(
+                              child: Center(
+                                child: Transform.translate(
+                                  offset: const Offset(0.0, -50),
+                                  child: const Text(
+                                      'Hmm, something is up with our server'),
+                                ),
+                              ),
+                            );
+                          }
+                          if (snapshot.hasData) {
+                            return Expanded(
+                                child: ListView(
+                              padding: const EdgeInsets.all(0),
+                              children: <Widget>[
+                                for (Group sphereRequest
+                                    in snapshot.data.groupJoinNotifications)
+                                  if (sphereRequest.groupType == 'Sphere')
+                                    SphereRequest(
+                                      sphere: sphereRequest,
+                                      refreshGroups: _refreshSpheres,
+                                    )
+                              ],
+                            ));
+                          }
+                          return Expanded(
+                            child: Center(
+                              child: Transform.translate(
+                                offset: const Offset(0.0, -50),
+                                child: JuntoProgressIndicator(),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                  ],
                 ),
               ],
             ),
