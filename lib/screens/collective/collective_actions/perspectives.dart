@@ -74,7 +74,8 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
         getPerspectives = _fetchUserPerspectives(_userAddress);
       });
     } on JuntoException catch (error) {
-      JuntoDialog.showJuntoDialog(context, error.message, [DialogBack()]);
+      JuntoDialog.showJuntoDialog(
+          context, error.message, <Widget>[DialogBack()]);
     }
   }
 
@@ -198,7 +199,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
     return GestureDetector(
       onTap: () => widget.changePerspective(perspective),
       child: Slidable(
-        enabled: perspective.isDefault ? false : true,
+        enabled: !perspective.isDefault,
         actionPane: const SlidableDrawerActionPane(),
         actionExtentRatio: 0.2,
         secondaryActions: <Widget>[
