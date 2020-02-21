@@ -127,7 +127,7 @@ class SpheresState extends State<Spheres> with ListDistinct {
                                 SpheresSearch(changeGroup: widget.changeGroup),
                           ),
                         );
-                      },
+                      },  
                       child: Container(
                         color: Colors.transparent,
                         alignment: Alignment.centerRight,
