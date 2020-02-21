@@ -118,8 +118,10 @@ class _RichTextEditorState extends State<RichTextEditor> with TickerProviderStat
   }
 
   void _onTextChanged(RichTextNode node) {
-    _controlsMode.value =
-        (!node.selection.isCollapsed) ? RichTextControlsMode.SelectionMode : RichTextControlsMode.InsertMode;
+    if (_currentNode == node) {
+      _controlsMode.value =
+          (!node.selection.isCollapsed) ? RichTextControlsMode.SelectionMode : RichTextControlsMode.InsertMode;
+    }
   }
 
   void _onFocusChanged() {
@@ -230,6 +232,7 @@ class _RichTextEditorState extends State<RichTextEditor> with TickerProviderStat
           break;
       }
     });
+    print('control $control > ${node.type}');
   }
 
   @override
