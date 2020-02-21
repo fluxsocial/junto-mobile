@@ -103,8 +103,10 @@ class UserServiceCentralized implements UserService {
 
   @override
   Future<UserGroupsResponse> getUserGroups(String userAddress) async {
-    final http.Response response =
-        await client.get('/users/$userAddress/groups');
+    final http.Response response = await client.get(
+      '/users/$userAddress/groups',
+      // queryParams: <String, String>{'spheres': 'false', 'pack': 'false'},
+    );
     final Map<String, dynamic> _responseMap =
         JuntoHttp.handleResponse(response);
     return UserGroupsResponse.fromMap(_responseMap);
