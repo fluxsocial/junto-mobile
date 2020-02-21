@@ -57,8 +57,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
   bool _showDegrees = true;
   String currentDegree = 'oo';
   final List<String> _channels = <String>[];
-
-  bool actionsVisible = false;
+  ValueNotifier<bool> actionsVisible = ValueNotifier<bool>(false);
 
   @override
   void initState() {
@@ -84,8 +83,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
 
   void refreshData() {
     _expressionProvider = Provider.of<ExpressionRepo>(context, listen: false);
-//    _expressionCompleter = _asyncMemoizer.runOnce(() =>
-//        getCollectiveExpressions(contextType: 'Collective', paginationPos: 0));
     setState(() {
       _expressionCompleter = getCollectiveExpressions(
         contextType: 'Collective',
@@ -176,21 +173,23 @@ class JuntoCollectiveState extends State<JuntoCollective>
         },
         child: Padding(
           padding: const EdgeInsets.only(bottom: 25),
-          child: BottomNav(
-              screen: 'collective',
-              userProfile: _userProfile,
-              actionsVisible: actionsVisible,
-              onTap: () {
-                if (actionsVisible) {
-                  setState(() {
-                    actionsVisible = false;
-                  });
-                } else {
-                  setState(() {
-                    actionsVisible = true;
-                  });
-                }
-              }),
+          child: ValueListenableBuilder<bool>(
+            valueListenable: actionsVisible,
+            builder: (BuildContext context, bool value, _) {
+              return BottomNav(
+                screen: 'collective',
+                userProfile: _userProfile,
+                actionsVisible: value,
+                onTap: () {
+                  if (value) {
+                    actionsVisible.value = false;
+                  } else {
+                    actionsVisible.value = true;
+                  }
+                },
+              );
+            },
+          ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -199,31 +198,36 @@ class JuntoCollectiveState extends State<JuntoCollective>
         icon: CustomIcons.collective,
       ),
       // dynamically render body
-      body: Stack(
-        children: <Widget>[
-          AnimatedOpacity(
-            duration: const Duration(milliseconds: 300),
-            opacity: actionsVisible ? 0.0 : 1.0,
-            child: Visibility(
-              //ignore:avoid_bool_literals_in_conditional_expressions
-              visible: actionsVisible ? false : true,
-              child: _buildPerspectiveFeed(),
-            ),
-          ),
-          AnimatedOpacity(
-            duration: const Duration(milliseconds: 300),
-            opacity: actionsVisible ? 1.0 : 0.0,
-            child: Visibility(
-              visible: actionsVisible,
-              child: JuntoCollectiveActions(
-                  userProfile: _userProfile,
-                  changePerspective: _changePerspective,
-                  filterByChannel: _filterByChannel,
-                  currentPerspective: _appbarTitle),
-            ),
-          ),
-        ],
-      ),
+      body: ValueListenableBuilder<bool>(
+          valueListenable: actionsVisible,
+          builder: (BuildContext context, bool value, _) {
+            return Stack(
+              children: <Widget>[
+                AnimatedOpacity(
+                  duration: const Duration(milliseconds: 300),
+                  opacity: value ? 0.0 : 1.0,
+                  child: Visibility(
+                    //ignore:avoid_bool_literals_in_conditional_expressions
+                    visible: value ? false : true,
+                    child: _buildPerspectiveFeed(),
+                  ),
+                ),
+                AnimatedOpacity(
+                  duration: const Duration(milliseconds: 300),
+                  opacity: value ? 1.0 : 0.0,
+                  child: Visibility(
+                    visible: value,
+                    child: JuntoCollectiveActions(
+                      userProfile: _userProfile,
+                      changePerspective: _changePerspective,
+                      filterByChannel: _filterByChannel,
+                      currentPerspective: _appbarTitle,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }),
     );
   }
 
@@ -365,7 +369,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
       _expressionCompleter = getCollectiveExpressions(
           contextType: 'Collective', paginationPos: 0, channels: _channels);
 
-      actionsVisible = false;
+      actionsVisible.value = false;
     });
   }
 
@@ -396,8 +400,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
         }
       });
     }
-    setState(() {
-      actionsVisible = false;
-    });
+    actionsVisible.value = false;
   }
 }
