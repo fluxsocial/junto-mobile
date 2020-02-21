@@ -11,18 +11,21 @@ class QuoteNode extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return Container(
-      margin: const EdgeInsets.only(left: 24.0),
-      padding: const EdgeInsets.only(left: 12.0),
-      decoration: const BoxDecoration(
-        border: Border(left: BorderSide(color: Color(0xFFDDDDDD), width: 6.0)),
+      padding: const EdgeInsets.only(left: 16.0, top: 4.0, bottom: 4.0),
+      decoration: BoxDecoration(
+        border: Border(
+          left: BorderSide(color: theme.accentColor, width: 4.0),
+        ),
       ),
       child: TextField(
         controller: node.controller,
         focusNode: node.focus,
         decoration: null,
         style: const TextStyle(
-          fontSize: 18.0,
+          fontSize: 16.0,
+          fontStyle: FontStyle.italic,
           fontWeight: FontWeight.normal,
         ),
         showCursor: true,
