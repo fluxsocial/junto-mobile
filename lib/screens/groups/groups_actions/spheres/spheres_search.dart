@@ -21,7 +21,6 @@ class _SpheresSearchState extends State<SpheresSearch> {
   Future<QueryResults<Group>> _searchFuture;
   Timer debounceTimer;
   TextEditingController _textEditingController;
-  bool _fullName = false;
 
   String get query => _textEditingController.value.text;
 
@@ -74,10 +73,22 @@ class _SpheresSearchState extends State<SpheresSearch> {
         elevation: 0,
         titleSpacing: 0.0,
         title: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
+              GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  padding: const EdgeInsets.only(
+                      left: 15, right: 10, top: 10, bottom: 10),
+                  color: Colors.transparent,
+                  alignment: Alignment.centerLeft,
+                  child: Icon(CustomIcons.back,
+                      color: Theme.of(context).primaryColor, size: 17),
+                ),
+              ),
               Expanded(
                 child: TextField(
                   controller: _textEditingController,
@@ -94,7 +105,7 @@ class _SpheresSearchState extends State<SpheresSearch> {
                     hintText: 'search circles',
                     border: InputBorder.none,
                     hintStyle: TextStyle(
-                        fontSize: 24,
+                        fontSize: 20,
                         fontWeight: FontWeight.w500,
                         color: Theme.of(context).primaryColorLight),
                   ),
@@ -102,7 +113,7 @@ class _SpheresSearchState extends State<SpheresSearch> {
                   cursorWidth: 1,
                   maxLines: 1,
                   style: TextStyle(
-                      fontSize: 24,
+                      fontSize: 20,
                       fontWeight: FontWeight.w500,
                       color: Theme.of(context).primaryColor),
                   maxLength: 80,
@@ -112,14 +123,23 @@ class _SpheresSearchState extends State<SpheresSearch> {
               const SizedBox(width: 15),
               GestureDetector(
                 onTap: () {
-                  Navigator.pop(context);
+                  if (_textEditingController.text != '') {
+                    _textEditingController.text = '';
+                    onTextChange('');
+                  }
                 },
                 child: Container(
-                  padding: const EdgeInsets.only(left: 10),
+                  padding: const EdgeInsets.only(
+                      left: 10, right: 15, top: 10, bottom: 10),
                   color: Colors.transparent,
-                  height: 48,
-                  child: Icon(CustomIcons.cancel,
-                      size: 33, color: Theme.of(context).dividerColor),
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    'X',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                        color: Theme.of(context).primaryColorLight),
+                  ),
                 ),
               ),
             ],
