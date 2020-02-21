@@ -1,19 +1,20 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:convert';
+import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:junto_beta_mobile/screens/den/den.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class JuntoEditDen extends StatefulWidget {
   @override
@@ -39,8 +40,22 @@ class JuntoEditDenState extends State<JuntoEditDen> {
   @override
   void initState() {
     super.initState();
-
+    _nameController = TextEditingController();
+    _bioController = TextEditingController();
+    _locationController = TextEditingController();
+    _genderController = TextEditingController();
+    _websiteController = TextEditingController();
     getUserInformation();
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _bioController.dispose();
+    _locationController.dispose();
+    _genderController.dispose();
+    _websiteController.dispose();
+    super.dispose();
   }
 
   Future<void> getUserInformation() async {
@@ -56,14 +71,14 @@ class JuntoEditDenState extends State<JuntoEditDen> {
   }
 
   void setEditInfo() {
-    _nameController = TextEditingController(text: _userData.user.name);
-    _bioController = TextEditingController(text: _userData.user.bio);
-    _locationController =
-        TextEditingController(text: _userData.user.location[0] ?? '');
-    _genderController =
-        TextEditingController(text: _userData.user.gender[0] ?? '');
-    _websiteController =
-        TextEditingController(text: _userData.user.website[0] ?? '');
+    _nameController.text = _userData.user.name;
+    _bioController.text = _userData.user.bio;
+    _locationController.text =
+        _userData.user.location.isNotEmpty ? _userData.user.location[0] : '';
+    _genderController.text =
+        _userData.user.gender.isNotEmpty ? _userData.user.gender[0] : '';
+    _websiteController.text =
+        _userData.user.website.isNotEmpty ? _userData.user.website[0] : '';
   }
 
   Future<void> _onPickPressed() async {
@@ -92,7 +107,7 @@ class JuntoEditDenState extends State<JuntoEditDen> {
 
     Map<String, dynamic> _newProfileBody;
     // check if user uploaded profile pictures
-    if (profilePictures.isNotEmpty) {
+    if (profilePictures != null && profilePictures.isNotEmpty) {
       // instantiate list to store photo keys retrieve from /s3
       final List<String> _photoKeys = <String>[];
       for (final dynamic image in profilePictures) {
@@ -140,7 +155,7 @@ class JuntoEditDenState extends State<JuntoEditDen> {
         'location': _locationController.value.text == ''
             ? <String>[]
             : <String>[_locationController.value.text],
-        'bio': _bioController.value.text,
+        'bio': _bioController?.value?.text,
         'website': _websiteController.value.text == ''
             ? <String>[]
             : <String>[_websiteController.value.text],
@@ -186,7 +201,7 @@ class JuntoEditDenState extends State<JuntoEditDen> {
     }
   }
 
-  _displayCurrentProfilePicture() {
+  Widget _displayCurrentProfilePicture() {
     if (_userData != null &&
         _userData.user.profilePicture.isNotEmpty &&
         imageFile == null) {
