@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:junto_beta_mobile/widgets/rich_text_editor/nodes/bullet_list.dart';
 import 'package:junto_beta_mobile/widgets/rich_text_editor/nodes/quote_node.dart';
 import 'package:junto_beta_mobile/widgets/rich_text_editor/nodes/text_node.dart';
 import 'package:junto_beta_mobile/widgets/rich_text_editor/nodes/unknown_node.dart';
@@ -266,6 +267,9 @@ class _RichTextEditorState extends State<RichTextEditor> with TickerProviderStat
                                     return TextNode(node: node);
                                   case RichTextNodeType.Quote:
                                     return QuoteNode(node: node);
+                                  case RichTextNodeType.OrderedBulletList:
+                                  case RichTextNodeType.UnorderedBulletList:
+                                    return BulletListNode(node: node);
                                   default:
                                     return UnknownNode(node: node);
                                 }
