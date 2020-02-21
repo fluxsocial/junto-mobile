@@ -4,19 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
+import 'package:junto_beta_mobile/widgets/previews/sphere_preview/sphere_preview.dart';
 import 'package:provider/provider.dart';
 
 class SpheresSearch extends StatefulWidget {
-  const SpheresSearch({Key key, this.onProfileSelected}) : super(key: key);
+  const SpheresSearch({Key key, this.changeGroup}) : super(key: key);
 
-  static Route<dynamic> route(ValueChanged<UserProfile> onProfileSelected) {
-    return MaterialPageRoute<dynamic>(builder: (BuildContext context) {
-      return SpheresSearch(onProfileSelected: onProfileSelected);
-    });
-  }
-
-  final ValueChanged<UserProfile> onProfileSelected;
+  final Function changeGroup;
 
   @override
   _SpheresSearchState createState() => _SpheresSearchState();
@@ -24,7 +18,7 @@ class SpheresSearch extends StatefulWidget {
 
 class _SpheresSearchState extends State<SpheresSearch> {
   SearchRepo _searchRepo;
-  Future<QueryResults<UserProfile>> _searchFuture;
+  Future<QueryResults<Group>> _searchFuture;
   Timer debounceTimer;
   TextEditingController _textEditingController;
   bool _fullName = false;
@@ -40,8 +34,8 @@ class _SpheresSearchState extends State<SpheresSearch> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _searchRepo = Provider.of<SearchRepo>(context);
-    _searchFuture = _searchRepo.searchMembers(query, username: !_fullName);
+    _searchRepo = Provider.of<SearchRepo>(context, listen: false);
+    _searchFuture = searchSphere(query);
   }
 
   @override
@@ -51,18 +45,19 @@ class _SpheresSearchState extends State<SpheresSearch> {
     super.dispose();
   }
 
+  Future<QueryResults<Group>> searchSphere(String searchText) async {
+    try {
+      return await _searchRepo.searchSphere(searchText, handle: true);
+    } catch (error) {
+      print(error);
+      return null;
+    }
+  }
+
   void onTextChange(String query) {
-    debounceTimer?.cancel();
-    debounceTimer = Timer.periodic(
-      const Duration(milliseconds: 600),
-      (_) async {
-        if (mounted)
-          setState(() {
-            _searchFuture =
-                _searchRepo.searchMembers(query, username: !_fullName);
-          });
-      },
-    );
+    setState(() {
+      _searchFuture = searchSphere(query);
+    });
   }
 
   @override
@@ -96,7 +91,7 @@ class _SpheresSearchState extends State<SpheresSearch> {
                       null,
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.all(0.0),
-                    hintText: 'search members',
+                    hintText: 'search circles',
                     border: InputBorder.none,
                     hintStyle: TextStyle(
                         fontSize: 24,
@@ -137,35 +132,25 @@ class _SpheresSearchState extends State<SpheresSearch> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Switch.adaptive(
-                      activeColor: Theme.of(context).colorScheme.secondary,
-                      value: _fullName,
-                      onChanged: (bool value) => setState(
-                        () => _fullName = value,
-                      ),
-                    ),
-                    Text(
-                      _fullName ? 'by full name' : 'by username',
-                      style: TextStyle(
-                          color: Theme.of(context).primaryColorLight,
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w500),
-                    ),
-                  ],
-                ),
-              ),
               Expanded(
-                child: FutureBuilder<QueryResults<UserProfile>>(
+                child: FutureBuilder<QueryResults<Group>>(
                   future: _searchFuture,
                   builder: (BuildContext context,
-                      AsyncSnapshot<QueryResults<UserProfile>> snapshot) {
-                    if (!snapshot.hasData) {
-                      return const SizedBox();
+                      AsyncSnapshot<QueryResults<Group>> snapshot) {
+                    if (snapshot.hasData) {
+                      print(snapshot.data);
+                      return ListView(
+                        children: <Widget>[
+                          for (Group group in snapshot.data.results)
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                                widget.changeGroup(group);
+                              },
+                              child: SpherePreview(group: group),
+                            )
+                        ],
+                      );
                     }
                     if (snapshot.hasError) {
                       return Container(
@@ -174,14 +159,7 @@ class _SpheresSearchState extends State<SpheresSearch> {
                         ),
                       );
                     }
-
-                    return ListView.builder(
-                      itemCount: snapshot.data.results.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final UserProfile data = snapshot.data.results[index];
-                        return MemberPreview(profile: data);
-                      },
-                    );
+                    return const SizedBox();
                   },
                 ),
               )

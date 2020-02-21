@@ -37,13 +37,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
 
   String _userAddress;
 
-  // @override
-  // void didUpdateWidget(SphereOpen oldWidget) {
-  //   super.didUpdateWidget(oldWidget);
-
-  //   print('updated widget');
-  // }
-
   @override
   void initState() {
     super.initState();

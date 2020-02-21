@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/create_sphere.dart';
+import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/spheres_search.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
@@ -118,7 +119,15 @@ class SpheresState extends State<Spheres> with ListDistinct {
                 Row(
                   children: <Widget>[
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute<dynamic>(
+                            builder: (BuildContext context) =>
+                                SpheresSearch(changeGroup: widget.changeGroup),
+                          ),
+                        );
+                      },
                       child: Container(
                         color: Colors.transparent,
                         alignment: Alignment.centerRight,
