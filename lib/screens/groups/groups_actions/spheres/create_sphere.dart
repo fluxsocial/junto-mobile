@@ -7,6 +7,8 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/utils/junto_dialog.dart';
+import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview_select.dart';
@@ -102,8 +104,15 @@ class CreateSphereState extends State<CreateSphere> {
       JuntoLoader.hide();
       widget.refreshSpheres();
       Navigator.pop(context);
-    } catch (error) {
-      print(error);
+    } on JuntoException catch (error) {
+      JuntoLoader.hide();
+      JuntoDialog.showJuntoDialog(
+        context,
+        error.message,
+        <Widget>[
+          DialogBack(),
+        ],
+      );
     }
   }
 
