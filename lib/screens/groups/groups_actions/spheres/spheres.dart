@@ -96,7 +96,13 @@ class SpheresState extends State<Spheres> with ListDistinct {
         ),
       );
     } catch (error) {
-      print(error);
+      JuntoDialog.showJuntoDialog(
+        context,
+        error.message,
+        <Widget>[
+          DialogBack(),
+        ],
+      );
       return null;
     }
   }
