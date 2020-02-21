@@ -64,7 +64,13 @@ class SpheresState extends State<Spheres> with ListDistinct {
         getSphereRequests = getGroupNotifications();
       });
     } on JuntoException catch (error) {
-      JuntoDialog.showJuntoDialog(context, error.message, [DialogBack()]);
+      JuntoDialog.showJuntoDialog(
+        context,
+        error.message,
+        <Widget>[
+          DialogBack(),
+        ],
+      );
     }
   }
 
