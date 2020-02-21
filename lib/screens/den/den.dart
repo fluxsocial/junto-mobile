@@ -298,7 +298,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
   }
 
   Widget _displayAboutItem(List<String> item, dynamic icon) {
-    if (item[0].isNotEmpty) {
+    if (item.isNotEmpty && item[0].isNotEmpty) {
       return Container(
         margin: const EdgeInsets.symmetric(vertical: 5),
         child: Row(
