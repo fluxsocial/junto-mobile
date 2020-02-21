@@ -37,7 +37,7 @@ class PackPreview extends StatelessWidget {
                     child: Icon(
                       CustomIcons.packs,
                       color: Theme.of(context).colorScheme.onPrimary,
-                      size: 17,
+                      size: 15,
                     ),
                   ),
                 )
@@ -60,7 +60,7 @@ class PackPreview extends StatelessWidget {
                   child: Icon(
                     CustomIcons.packs,
                     color: Theme.of(context).colorScheme.onPrimary,
-                    size: 17,
+                    size: 15,
                   ),
                 ),
           const SizedBox(width: 10),

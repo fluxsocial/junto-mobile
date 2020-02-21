@@ -40,8 +40,6 @@ class GroupServiceCentralized implements GroupService {
       String groupAddress, List<Map<String, dynamic>> users) async {
     final http.Response _serverResponse = await client
         .postWithoutEncoding('/groups/$groupAddress/members', body: users);
-        print(_serverResponse.statusCode);
-        print(_serverResponse.body);
     JuntoHttp.handleResponse(_serverResponse);
   }
 
@@ -89,8 +87,6 @@ class GroupServiceCentralized implements GroupService {
 
     final Map<String, dynamic> items =
         JuntoHttp.handleResponse(_serverResponse);
-    print(items['direct_posts']['results']);
-
     return (items['direct_posts']['results'] as List<dynamic>)
         .map((dynamic data) => CentralizedExpressionResponse.fromMap(data))
         .toList();
