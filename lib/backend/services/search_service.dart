@@ -33,6 +33,7 @@ class SearchServiceCentralized with RFC3339 implements SearchService {
       '/search/users',
       queryParams: _queryParam,
     );
+    print(_serverResponse.statusCode);
     final Map<String, dynamic> _results = JuntoHttp.handleResponse(
       _serverResponse,
     );
@@ -92,6 +93,7 @@ class SearchServiceCentralized with RFC3339 implements SearchService {
       '/search/spheres',
       queryParams: _queryParam,
     );
+    print(_serverResponse.statusCode);
     final Map<String, dynamic> _results = JuntoHttp.handleResponse(
       _serverResponse,
     );
