@@ -1,19 +1,18 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_actions/create_perspective.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_actions/edit_perspective.dart';
+import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart'
     show JuntoException;
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:junto_beta_mobile/utils/junto_overlay.dart';
-import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 
 class JuntoPerspectives extends StatefulWidget {
   const JuntoPerspectives({this.userProfile, this.changePerspective});
@@ -57,6 +56,13 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
           .getUserPerspective(_userAddress);
     } on JuntoException catch (error) {
       debugPrint('error fethcing perspectives ${error.errorCode}');
+      JuntoDialog.showJuntoDialog(
+        context,
+        error.message,
+        <Widget>[
+          DialogBack(),
+        ],
+      );
       return null;
     }
   }
@@ -77,115 +83,114 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
     return Container(
       height: MediaQuery.of(context).size.height - 150,
       child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Container(
-              height: 100,
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              color: Theme.of(context).backgroundColor,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text('Perspectives',
-                      style: Theme.of(context).textTheme.headline4),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        CupertinoPageRoute<dynamic>(
-                          builder: (BuildContext context) => CreatePerspective(
-                              refreshPerspectives: _refreshPerspectives),
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Container(
+            height: 100,
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            color: Theme.of(context).backgroundColor,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text('Perspectives',
+                    style: Theme.of(context).textTheme.headline4),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute<dynamic>(
+                        builder: (BuildContext context) => CreatePerspective(
+                            refreshPerspectives: _refreshPerspectives),
+                      ),
+                    );
+                  },
+                  child: Icon(Icons.add,
+                      size: 24, color: Theme.of(context).primaryColor),
+                )
+              ],
+            ),
+          ),
+          const SizedBox(height: 10),
+          Expanded(
+              child: ListView(
+            padding: const EdgeInsets.all(0),
+            children: <Widget>[
+              _buildPerspective(
+                const CentralizedPerspective(
+                  address: null,
+                  name: 'JUNTO',
+                  about: null,
+                  creator: null,
+                  createdAt: null,
+                  isDefault: true,
+                  userCount: null,
+                  users: null,
+                ),
+              ),
+              if (_userAddress != null)
+                FutureBuilder<List<CentralizedPerspective>>(
+                  future: getPerspectives,
+                  builder: (
+                    BuildContext context,
+                    AsyncSnapshot<List<CentralizedPerspective>> snapshot,
+                  ) {
+                    if (snapshot.hasError) {
+                      return Container(
+                        child: const Text(
+                          'hmm, something is up...',
+                          style: TextStyle(fontSize: 14, color: Colors.white),
                         ),
                       );
-                    },
-                    child: Icon(Icons.add,
-                        size: 24, color: Theme.of(context).primaryColor),
-                  )
-                ],
-              ),
-            ),
-            const SizedBox(height: 10),
-            Expanded(
-                child: ListView(
-              padding: const EdgeInsets.all(0),
-              children: <Widget>[
-                _buildPerspective(
-                  const CentralizedPerspective(
-                    address: null,
-                    name: 'JUNTO',
-                    about: null,
-                    creator: null,
-                    createdAt: null,
-                    isDefault: true,
-                    userCount: null,
-                    users: null,
-                  ),
+                    }
+                    if (snapshot.hasData) {
+                      return Column(
+                        children: <Widget>[
+                          // display Subscriptions perspective first
+                          ListView(
+                            padding: const EdgeInsets.all(0),
+                            shrinkWrap: true,
+                            physics: const ClampingScrollPhysics(),
+                            children: snapshot.data
+                                .map((CentralizedPerspective perspective) {
+                              if (perspective.isDefault == true &&
+                                  perspective.name != 'Connections') {
+                                return GestureDetector(
+                                  child: _buildPerspective(perspective),
+                                );
+                              } else {
+                                return const SizedBox();
+                              }
+                            }).toList(),
+                          ),
+                          // display rest of perspectives
+                          ListView(
+                            padding: const EdgeInsets.all(0),
+                            shrinkWrap: true,
+                            physics: const ClampingScrollPhysics(),
+                            children: snapshot.data.map(
+                              (CentralizedPerspective perspective) {
+                                if (perspective.name != 'Connections' &&
+                                    perspective.name != 'Subscriptions') {
+                                  return GestureDetector(
+                                    child: _buildPerspective(perspective),
+                                  );
+                                } else {
+                                  return const SizedBox();
+                                }
+                              },
+                            ).toList(),
+                          )
+                        ],
+                      );
+                    }
+                    return Container();
+                  },
                 ),
-                _userAddress != null
-                    ? FutureBuilder<List<CentralizedPerspective>>(
-                        future: getPerspectives,
-                        builder: (
-                          BuildContext context,
-                          AsyncSnapshot<List<CentralizedPerspective>> snapshot,
-                        ) {
-                          if (snapshot.hasError) {
-                            print(snapshot.error);
-                            return Container(
-                              child: const Text(
-                                'hmm, something is up...',
-                                style: TextStyle(
-                                    fontSize: 14, color: Colors.white),
-                              ),
-                            );
-                          }
-                          if (snapshot.hasData) {
-                            return Column(
-                              children: <Widget>[
-                                // display Subscriptions perspective first
-                                ListView(
-                                  padding: const EdgeInsets.all(0),
-                                  shrinkWrap: true,
-                                  physics: const ClampingScrollPhysics(),
-                                  children: snapshot.data.map(
-                                      (CentralizedPerspective perspective) {
-                                    if (perspective.isDefault == true &&
-                                        perspective.name != 'Connections') {
-                                      return GestureDetector(
-                                        child: _buildPerspective(perspective),
-                                      );
-                                    } else {
-                                      return const SizedBox();
-                                    }
-                                  }).toList(),
-                                ),
-                                // display rest of perspectives
-                                ListView(
-                                  padding: const EdgeInsets.all(0),
-                                  shrinkWrap: true,
-                                  physics: const ClampingScrollPhysics(),
-                                  children: snapshot.data.map(
-                                      (CentralizedPerspective perspective) {
-                                    if (perspective.name != 'Connections' &&
-                                        perspective.name != 'Subscriptions') {
-                                      return GestureDetector(
-                                        child: _buildPerspective(perspective),
-                                      );
-                                    } else {
-                                      return const SizedBox();
-                                    }
-                                  }).toList(),
-                                )
-                              ],
-                            );
-                          }
-                          return Container();
-                        },
-                      )
-                    : const SizedBox(),
-              ],
-            ))
-          ]),
+            ],
+          ))
+        ],
+      ),
     );
   }
 
