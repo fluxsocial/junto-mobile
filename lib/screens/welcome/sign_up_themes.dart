@@ -5,29 +5,32 @@ import 'package:provider/provider.dart';
 class SignUpThemes extends StatelessWidget {
   const SignUpThemes({
     Key key,
-    @required this.toggleRainbow,
+    @required this.toggleTheme,
   }) : super(key: key);
 
-  final Function toggleRainbow;
+  final Function toggleTheme;
 
   void _setTheme(String theme, BuildContext context) {
     if (theme == 'LIGHT INDIGO') {
       Provider.of<JuntoThemesProvider>(context, listen: false)
           .setTheme('light-indigo');
+      toggleTheme('aqueous');
     } else if (theme == 'LIGHT ROYAL') {
       Provider.of<JuntoThemesProvider>(context, listen: false)
           .setTheme('light-royal');
+      toggleTheme('royal');
     } else if (theme == 'JUNTO NIGHT') {
       Provider.of<JuntoThemesProvider>(context, listen: false)
           .setTheme('night-indigo');
+      toggleTheme('night');
+    } else if (theme == 'RAINBOW') {
+      toggleTheme('rainbow');
     }
   }
 
   Widget _displayThemeSelector(String theme, BuildContext context) {
     return GestureDetector(
       onTap: () {
-        toggleRainbow(false);
-
         _setTheme(theme, context);
       },
       child: Container(
@@ -36,16 +39,17 @@ class SignUpThemes extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Container(
-              height: 70,
-              width: 70,
               decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
                 border: Border.all(color: Colors.white, width: 3),
-                borderRadius: BorderRadius.circular(1000),
-                gradient: LinearGradient(
-                    begin: Alignment.bottomLeft,
-                    end: Alignment.topRight,
-                    stops: const <double>[0.3, 0.9],
-                    colors: _displayThemeSelectorGradient(theme)),
+              ),
+              child: ClipOval(
+                child: Image.asset(
+                  _displayThemeAsset(theme),
+                  fit: BoxFit.cover,
+                  height: 70,
+                  width: 70,
+                ),
               ),
             ),
             const SizedBox(height: 15),
@@ -61,29 +65,17 @@ class SignUpThemes extends StatelessWidget {
     );
   }
 
-  List<Color> _displayThemeSelectorGradient(String theme) {
+  String _displayThemeAsset(String theme) {
     if (theme == 'LIGHT INDIGO') {
-      return <Color>[
-        // junto purple
-        const Color(0xFF635FAA),
-        const Color(0xff22517D)
-      ];
+      return 'assets/images/junto-mobile__themes--aqueous.png';
     } else if (theme == 'LIGHT ROYAL') {
-      return <Color>[
-        // junto purple
-        const Color(0xFF635FAA),
-        // junto gold
-        const Color(0xFFF7BF47)
-      ];
+      return 'assets/images/junto-mobile__themes--royal.png';
     } else if (theme == 'JUNTO NIGHT') {
-      return <Color>[
-        // junto purple
-        const Color(0xFF333333),
-        // junto gold
-        const Color(0xff555555)
-      ];
+      return 'assets/images/junto-mobile__themes--night.png';
+    } else if (theme == 'RAINBOW') {
+      return 'assets/images/junto-mobile__themes--rainbow.png';
     }
-    return <Color>[];
+    return '';
   }
 
   @override
@@ -115,45 +107,9 @@ class SignUpThemes extends StatelessWidget {
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
+                  _displayThemeSelector('RAINBOW', context),
                   _displayThemeSelector('LIGHT INDIGO', context),
                   _displayThemeSelector('LIGHT ROYAL', context),
-                  GestureDetector(
-                    onTap: () {
-                      toggleRainbow(true);
-                      Provider.of<JuntoThemesProvider>(context, listen: false)
-                          .setTheme('light-indigo');
-                    },
-                    child: Container(
-                      color: Colors.transparent,
-                      margin: const EdgeInsets.only(right: 20, left: 20),
-                      child: Column(
-                        children: <Widget>[
-                          Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.white, width: 3),
-                              borderRadius: BorderRadius.circular(1000),
-                            ),
-                            child: ClipOval(
-                              child: Image.asset(
-                                  '',
-                                  height: 65,
-                                  width: 65,
-                                  fit: BoxFit.cover),
-                            ),
-                          ),
-                          const SizedBox(height: 15),
-                          const Text(
-                            'JUNTO RAINBOW',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w700,
-                                letterSpacing: 1.2),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
                   _displayThemeSelector('JUNTO NIGHT', context),
                 ],
               ),

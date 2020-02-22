@@ -33,7 +33,7 @@ class Welcome extends StatefulWidget {
 }
 
 class WelcomeState extends State<Welcome> {
-  bool _isRainbow = false;
+  String _currentTheme = 'aqueous';
   String _userAddress;
 
   PageController _welcomeController;
@@ -61,9 +61,9 @@ class WelcomeState extends State<Welcome> {
   GlobalKey<SignUpRegisterState> signUpRegisterKey;
   GlobalKey<SignUpVerifyState> signUpVerifyKey;
 
-  void _toggleRainbow(bool visibility) {
+  void _toggleTheme(String theme) {
     setState(() {
-      _isRainbow = visibility;
+      _currentTheme = theme;
     });
   }
 
@@ -249,6 +249,30 @@ class WelcomeState extends State<Welcome> {
     return true;
   }
 
+  Widget _setBackground() {
+    String imageAsset;
+
+    if (_currentTheme == 'aqueous') {
+      imageAsset = 'assets/images/junto-mobile__themes--aqueous.png';
+    } else if (_currentTheme == 'royal') {
+      imageAsset = 'assets/images/junto-mobile__themes--royal.png';
+    } else if (_currentTheme == 'night') {
+      imageAsset = 'assets/images/junto-mobile__themes--night.png';
+    } else if (_currentTheme == 'rainbow') {
+      imageAsset = 'assets/images/junto-mobile__themes--rainbow.png';
+    } else {
+      imageAsset = 'assets/images/junto-mobile__themes--aqueous.png';
+    }
+
+    return Image.asset(
+      imageAsset,
+      key: ValueKey<String>(imageAsset),
+      fit: BoxFit.cover,
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -257,28 +281,9 @@ class WelcomeState extends State<Welcome> {
         resizeToAvoidBottomInset: true,
         body: Stack(children: <Widget>[
           Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.bottomLeft,
-                end: Alignment.topRight,
-                stops: const <double>[0.3, 0.9],
-                colors: <Color>[
-                  Theme.of(context).colorScheme.secondaryVariant,
-                  Theme.of(context).colorScheme.primaryVariant
-                ],
-              ),
-            ),
-          ),
-          AnimatedOpacity(
-            opacity: _isRainbow ? 1.0 : 0.0,
-            duration: const Duration(milliseconds: 300),
-            child: Container(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              child: Image.asset(
-                  ''),
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              child: _setBackground(),
             ),
           ),
           PageView(
@@ -313,7 +318,7 @@ class WelcomeState extends State<Welcome> {
                 ),
               ),
               PageKeepAlive(
-                child: SignUpThemes(toggleRainbow: _toggleRainbow),
+                child: SignUpThemes(toggleTheme: _toggleTheme),
               ),
               PageKeepAlive(
                 child: SignUpAbout(key: signUpAboutKey),
