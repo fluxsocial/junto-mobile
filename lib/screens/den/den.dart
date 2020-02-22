@@ -18,7 +18,6 @@ import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_edit_den.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
-import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -58,17 +57,14 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
-    setState(() {
-      _userProvider = Provider.of<UserRepo>(context);
-    });
+    _userProvider = Provider.of<UserRepo>(context);
   }
 
   @override
   void dispose() {
     super.dispose();
-    _denController.dispose();
     _denController.removeListener(_onScrollingHasChanged);
+    _denController.dispose();
   }
 
   void _onScrollingHasChanged() {
@@ -92,11 +88,6 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
     );
   }
 
-  Future<PackageInfo> getVersionNumber() async {
-    final PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    return packageInfo;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,7 +99,11 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
             ),
       floatingActionButton: ValueListenableBuilder<bool>(
         valueListenable: _isVisible,
-        builder: (BuildContext context, bool visible, Widget child) {
+        builder: (
+          BuildContext context,
+          bool visible,
+          Widget child,
+        ) {
           return AnimatedOpacity(
               duration: const Duration(milliseconds: 300),
               opacity: visible ? 1.0 : 0.0,
@@ -170,133 +165,99 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                 body: SafeArea(
                   child: TabBarView(
                     children: <Widget>[
-                      Column(
-                        children: <Widget>[
-                          Expanded(
-                            child: ListView(
-                              physics: const ClampingScrollPhysics(),
-                              shrinkWrap: true,
-                              padding: const EdgeInsets.only(left: 10),
-                              children: <Widget>[
-                                Container(
-                                  padding:
-                                      const EdgeInsets.only(top: 5, bottom: 5),
-                                  child: Column(
-                                    children: <Widget>[
-                                      _displayAboutItem(
-                                        _userProfile.user.gender,
-                                        Icon(CustomIcons.gender,
-                                            size: 17,
-                                            color:
-                                                Theme.of(context).primaryColor),
-                                      ),
-                                      _displayAboutItem(
-                                        _userProfile.user.location,
-                                        Image.asset(
-                                          'assets/images/junto-mobile__location.png',
-                                          height: 15,
-                                          color: Theme.of(context).primaryColor,
-                                        ),
-                                      ),
-                                      _displayAboutItem(
-                                        _userProfile.user.website,
-                                        Image.asset(
-                                          'assets/images/junto-mobile__link.png',
-                                          height: 15,
-                                          color: Theme.of(context).primaryColor,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                if (_userProfile.user.profilePicture.isNotEmpty)
-                                  _displayProfilePictures(
-                                    _userProfile.user.profilePicture,
-                                  ),
-                                Container(
-                                  child: Text(_userProfile.user.bio,
-                                      style:
-                                          Theme.of(context).textTheme.caption),
-                                ),
-                              ],
-                            ),
-                          ),
-                          FutureBuilder<PackageInfo>(
-                            future: getVersionNumber(),
-                            builder: (
-                              BuildContext context,
-                              AsyncSnapshot<PackageInfo> snapshot,
-                            ) {
-                              if (snapshot.hasData) {
-                                return Container(
-                                  child: Text(
-                                    '${snapshot.data.appName} Build Number: ${snapshot.data.buildNumber} Version: ${snapshot.data.version}',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .caption
-                                        .copyWith(
-                                          color: const Color(0xFFDFDFDF),
-                                        ),
-                                  ),
-                                );
-                              }
-                              return Text(
-                                'Loading ',
-                                style: Theme.of(context).textTheme.caption,
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-
+                      _buildAbout(context),
                       // public expressions of user
-                      FutureBuilder<List<CentralizedExpressionResponse>>(
-                        future: getUsersExpressions(),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<List<CentralizedExpressionResponse>>
-                                snapshot) {
-                          if (snapshot.hasError) {
-                            return Center(
-                              child: Transform.translate(
-                                offset: const Offset(0.0, -50),
-                                child: const Text(
-                                    'Hmm, something is up with our server'),
-                              ),
-                            );
-                          }
-                          if (snapshot.hasData) {
-                            return Container(
-                              color: Theme.of(context).colorScheme.background,
-                              child: CustomListView(
-                                data: snapshot.data,
-                                userAddress: _userAddress,
-                                privacyLayer: 'Public',
-                                showComments: false,
-                              ),
-                            );
-                          }
-                          return Center(
-                            child: Transform.translate(
-                              offset: const Offset(0.0, -50),
-                              child: JuntoProgressIndicator(),
-                            ),
-                          );
-                        },
-                      ),
+                      _buildUserExpressions(),
                     ],
                   ),
                 ),
               ),
             )
           : Center(
-              child: Transform.translate(
-                offset: const Offset(0.0, -50),
-                child: JuntoProgressIndicator(),
-              ),
+              child: JuntoProgressIndicator(),
             ),
     );
   }
 
+  /// Loads the user's personal expressions
+  FutureBuilder<List<CentralizedExpressionResponse>> _buildUserExpressions() {
+    return FutureBuilder<List<CentralizedExpressionResponse>>(
+      future: getUsersExpressions(),
+      builder: (BuildContext context,
+          AsyncSnapshot<List<CentralizedExpressionResponse>> snapshot) {
+        if (snapshot.hasError) {
+          return const Center(
+            child: Text('Hmm, something is up with our server'),
+          );
+        }
+        if (snapshot.hasData) {
+          return Container(
+            color: Theme.of(context).colorScheme.background,
+            child: CustomListView(
+              data: snapshot.data,
+              userAddress: _userAddress,
+              privacyLayer: 'Public',
+              showComments: false,
+            ),
+          );
+        }
+        return Center(
+          child: JuntoProgressIndicator(),
+        );
+      },
+    );
+  }
+
+  /// Loads and displays the user's profile information stored in the server.
+  Widget _buildAbout(BuildContext context) {
+    return ListView(
+      physics: const ClampingScrollPhysics(),
+      shrinkWrap: true,
+      padding: const EdgeInsets.only(left: 10),
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(top: 5, bottom: 5),
+          child: Column(
+            children: <Widget>[
+              _displayAboutItem(
+                _userProfile.user.gender,
+                Icon(CustomIcons.gender,
+                    size: 17, color: Theme.of(context).primaryColor),
+              ),
+              _displayAboutItem(
+                _userProfile.user.location,
+                Image.asset(
+                  'assets/images/junto-mobile__location.png',
+                  height: 15,
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
+              _displayAboutItem(
+                _userProfile.user.website,
+                Image.asset(
+                  'assets/images/junto-mobile__link.png',
+                  height: 15,
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
+            ],
+          ),
+        ),
+        if (_userProfile.user.profilePicture.isNotEmpty)
+          _displayProfilePictures(
+            _userProfile.user.profilePicture,
+          ),
+        Container(
+          child: Text(
+            _userProfile.user.bio,
+            style: Theme.of(context).textTheme.caption,
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// Displays the user's profile information as an Item tile.
   Widget _displayAboutItem(List<String> item, dynamic icon) {
     if (item.isNotEmpty && item[0].isNotEmpty) {
       return Container(
@@ -326,36 +287,37 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
     return Container(
       margin: const EdgeInsets.only(bottom: 15),
       child: CarouselSlider(
-          viewportFraction: 1.0,
-          height: MediaQuery.of(context).size.width - 20,
-          enableInfiniteScroll: false,
-          items: <Widget>[
-            Container(
-              padding: const EdgeInsets.only(right: 10),
-              width: MediaQuery.of(context).size.width,
-              child: CachedNetworkImage(
-                placeholder: (BuildContext context, String _) {
-                  return Container(
-                    height: 120,
-                    width: 120,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.bottomLeft,
-                        end: Alignment.topRight,
-                        stops: const <double>[0.2, 0.9],
-                        colors: <Color>[
-                          Theme.of(context).colorScheme.secondary,
-                          Theme.of(context).colorScheme.primary
-                        ],
-                      ),
+        viewportFraction: 1.0,
+        height: MediaQuery.of(context).size.width - 20,
+        enableInfiniteScroll: false,
+        items: <Widget>[
+          Container(
+            padding: const EdgeInsets.only(right: 10),
+            width: MediaQuery.of(context).size.width,
+            child: CachedNetworkImage(
+              placeholder: (BuildContext context, String _) {
+                return Container(
+                  height: 120,
+                  width: 120,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomLeft,
+                      end: Alignment.topRight,
+                      stops: const <double>[0.2, 0.9],
+                      colors: <Color>[
+                        Theme.of(context).colorScheme.secondary,
+                        Theme.of(context).colorScheme.primary
+                      ],
                     ),
-                  );
-                },
-                imageUrl: profilePictures[0],
-                fit: BoxFit.cover,
-              ),
+                  ),
+                );
+              },
+              imageUrl: profilePictures[0],
+              fit: BoxFit.cover,
             ),
-          ]),
+          ),
+        ],
+      ),
     );
   }
 }
