@@ -447,7 +447,7 @@ class WelcomeState extends State<Welcome> {
                     margin: const EdgeInsets.symmetric(horizontal: 40),
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primaryVariant,
+                        color: Theme.of(context).accentColor,
                         borderRadius: BorderRadius.circular(1000),
                         boxShadow: <BoxShadow>[
                           BoxShadow(

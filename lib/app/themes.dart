@@ -9,15 +9,14 @@ class JuntoThemes {
     primaryColorLight: const Color(0xff999999),
     dividerColor: const Color(0xffeeeeee),
     backgroundColor: Colors.white,
-    accentColor: const Color(0xFF22517D),
+    accentColor: const Color(0xFF4687A2),
     colorScheme: const ColorScheme(
-      // Junto blue
-      primary: Color(0xFF7461a1),
-      primaryVariant: Color(0xFF4687A2),
-
       // Junto purple
-      secondary: Color(0xff285FA7),
-      secondaryVariant: Color(0xff285FA7),
+      primary: Color(0xff8E8098),
+      primaryVariant: Color(0xff285FA7),
+      // Junto blue
+      secondary: Color(0xFF307FAA),
+      secondaryVariant: Color(0xFF4687A2),
 
       surface: Color(0xfff9f9f9),
       background: Colors.white,
@@ -107,15 +106,15 @@ class JuntoThemes {
     primaryColorLight: const Color(0xff999999),
     dividerColor: const Color(0xffeeeeee),
     backgroundColor: Colors.white,
-    accentColor: const Color(0xFF22517D),
+    accentColor: const Color(0xFF2E4F78),
     colorScheme: const ColorScheme(
-      // Junto blue
-      primary: Color(0xFF7461a1),
+      // Dark blue
+      primary: Color(0xFF1A2F54),
       primaryVariant: Color(0xFF2E4F78),
 
-      // Junto purple
-      secondary: Color(0xff285FA7),
-      secondaryVariant: Color(0xff285FA7),
+      // Light Blue
+      secondary: Color(0xff2B5583),
+      secondaryVariant: Color(0xff2B5583),
 
       surface: Color(0xfff9f9f9),
       background: Colors.white,
@@ -205,14 +204,14 @@ class JuntoThemes {
     primaryColorLight: const Color(0xff999999),
     dividerColor: const Color(0xffeeeeee),
     backgroundColor: Colors.white,
-    accentColor: const Color(0xFFF0BA45),
+    accentColor: const Color(0xFF7C5C97),
     colorScheme: const ColorScheme(
-        // Junto gold
-        primary: Color(0xffF0BA45),
-        primaryVariant: Color(0xFF7C5C97),
         // Junto purple
-        secondary: Color(0xFF7461a1),
-        secondaryVariant: Color(0xFF7461a1),
+        primary: Color(0xff6F51A8),
+        primaryVariant: Color(0xFF7C5C97),
+        // Junto gold
+        secondary: Color(0xFFE8B974),
+        secondaryVariant: Color(0xFFE8B974),
         surface: Color(0xfff9f9f9),
         background: Colors.white,
         error: Color(0xff333333),
@@ -300,14 +299,12 @@ class JuntoThemes {
     primaryColorLight: const Color(0xff999999),
     dividerColor: const Color(0xff555555),
     backgroundColor: const Color(0xff333333),
-    accentColor: const Color(0xFF333333),
+    accentColor: const Color(0xFF2B2B2B),
     colorScheme: const ColorScheme(
-        // Junto blue
-        // primary: Color(0xFF223E72),
-        primary: Color(0xff22517D),
+        primary: Color(0xff222222),
         primaryVariant: Color(0xff2B2B2B),
-        secondary: Color(0xFF635FAA),
-        secondaryVariant: Color(0xff333333),
+        secondary: Color(0xFF3C3C3C),
+        secondaryVariant: Color(0xff3C3C3C),
         surface: Color(0xff393939),
         background: Color(0xff333333),
         error: Color(0xff333333),
