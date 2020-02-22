@@ -10,17 +10,19 @@ import 'package:junto_beta_mobile/screens/create/create_templates/photo.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/shortform.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class JuntoCreate extends StatefulWidget {
-  const JuntoCreate({
-    @required this.channels,
-    @required this.address,
-    @required this.expressionContext,
-  });
+  const JuntoCreate(
+      {@required this.channels,
+      @required this.address,
+      @required this.expressionContext,
+      @required this.expressionCenterBackground});
 
   final List<String> channels;
   final String address;
   final ExpressionContext expressionContext;
+  final expressionCenterBackground;
 
   @override
   State<StatefulWidget> createState() {
@@ -268,74 +270,74 @@ class JuntoCreateState extends State<JuntoCreate> {
   }
 
   Widget _expressionCenter() {
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.bottomLeft,
-          end: Alignment.topRight,
-          stops: const <double>[0.2, 0.9],
-          colors: <Color>[
-            Theme.of(context).colorScheme.secondaryVariant,
-            Theme.of(context).colorScheme.primaryVariant
-          ],
+    return Stack(
+      children: <Widget>[
+        Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: Image.asset(widget.expressionCenterBackground,
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              fit: BoxFit.cover),
         ),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          const SizedBox(),
-          Column(
+        Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 25, horizontal: 25),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    _selectExpression('dynamic'),
-                    _selectExpression('shortform'),
-                  ],
-                ),
-              ),
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 25, horizontal: 25),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    _selectExpression('photo'),
-                    _selectExpression('event'),
-                  ],
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  if (_activated) {
-                    setState(() {
-                      _expressionCenterVisible = false;
-                    });
-                  } else {
-                    Navigator.pop(context);
-                  }
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  margin: const EdgeInsets.symmetric(vertical: 25),
-                  height: 50,
-                  width: 50,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.white, width: 1.2),
-                    borderRadius: BorderRadius.circular(1000),
+              const SizedBox(),
+              Column(
+                children: <Widget>[
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 25, horizontal: 25),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        _selectExpression('dynamic'),
+                        _selectExpression('shortform'),
+                      ],
+                    ),
                   ),
-                  child: Icon(CustomIcons.back, size: 17, color: Colors.white),
-                ),
-              ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 25, horizontal: 25),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        _selectExpression('photo'),
+                        _selectExpression('event'),
+                      ],
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      if (_activated) {
+                        setState(() {
+                          _expressionCenterVisible = false;
+                        });
+                      } else {
+                        Navigator.pop(context);
+                      }
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      margin: const EdgeInsets.symmetric(vertical: 25),
+                      height: 50,
+                      width: 50,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.white, width: 1.2),
+                        borderRadius: BorderRadius.circular(1000),
+                      ),
+                      child:
+                          Icon(CustomIcons.back, size: 17, color: Colors.white),
+                    ),
+                  ),
+                ],
+              )
             ],
-          )
-        ],
-      ),
+          ),
+        ),
+      ],
     );
   }
 

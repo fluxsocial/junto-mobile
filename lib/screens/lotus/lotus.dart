@@ -42,6 +42,7 @@ class JuntoLotusState extends State<JuntoLotus> {
   String _userAddress;
   UserData _userProfile;
   String _currentTheme;
+  String backgroundImageAsset;
 
   @override
   void initState() {
@@ -83,6 +84,7 @@ class JuntoLotusState extends State<JuntoLotus> {
               channels: const <String>[],
               address: widget.address,
               expressionContext: widget.expressionContext,
+              expressionCenterBackground: backgroundImageAsset,
             );
           } else {
             return JuntoCollective();
@@ -107,22 +109,25 @@ class JuntoLotusState extends State<JuntoLotus> {
   }
 
   Widget _setBackground() {
-    String imageAsset;
-
-    if (_currentTheme == 'aqueous') {
-      imageAsset = 'assets/images/junto-mobile__themes--aqueous.png';
-    } else if (_currentTheme == 'royal') {
-      imageAsset = 'assets/images/junto-mobile__themes--royal.png';
-    } else if (_currentTheme == 'night') {
-      imageAsset = 'assets/images/junto-mobile__themes--night.png';
-    } else if (_currentTheme == 'rainbow') {
-      imageAsset = 'assets/images/junto-mobile__themes--rainbow.png';
-    } else {
-      imageAsset = 'assets/images/junto-mobile__themes--rainbow.png';
-    }
+    setState(() {
+      if (_currentTheme == 'aqueous') {
+        backgroundImageAsset =
+            'assets/images/junto-mobile__themes--aqueous.png';
+      } else if (_currentTheme == 'royal') {
+        backgroundImageAsset = 'assets/images/junto-mobile__themes--royal.png';
+      } else if (_currentTheme == 'night') {
+        backgroundImageAsset = 'assets/images/junto-mobile__themes--night.png';
+      } else if (_currentTheme == 'rainbow') {
+        backgroundImageAsset =
+            'assets/images/junto-mobile__themes--rainbow.png';
+      } else {
+        backgroundImageAsset =
+            'assets/images/junto-mobile__themes--rainbow.png';
+      }
+    });
 
     return Image.asset(
-      imageAsset,
+      backgroundImageAsset,
       fit: BoxFit.cover,
     );
   }
