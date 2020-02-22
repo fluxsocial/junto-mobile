@@ -62,32 +62,6 @@ class PackDrawer extends StatelessWidget {
                         children: <Widget>[
                           Row(
                             children: <Widget>[
-                              ClipOval(
-                                child: Image.asset(
-                                  'assets/images/junto-mobile__eric.png',
-                                  height: 28.0,
-                                  width: 28.0,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              const SizedBox(width: 5),
-                              ClipOval(
-                                child: Image.asset(
-                                  'assets/images/junto-mobile__riley.png',
-                                  height: 28.0,
-                                  width: 28.0,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              const SizedBox(width: 5),
-                              ClipOval(
-                                child: Image.asset(
-                                  'assets/images/junto-mobile__josh.png',
-                                  height: 28.0,
-                                  width: 28.0,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
                             ],
                           ),
                           const SizedBox(height: 5),

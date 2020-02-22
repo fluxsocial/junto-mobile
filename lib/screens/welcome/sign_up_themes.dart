@@ -135,7 +135,7 @@ class SignUpThemes extends StatelessWidget {
                             ),
                             child: ClipOval(
                               child: Image.asset(
-                                  'assets/images/junto-mobile__background--lotus.png',
+                                  '',
                                   height: 65,
                                   width: 65,
                                   fit: BoxFit.cover),
