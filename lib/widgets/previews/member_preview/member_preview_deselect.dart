@@ -34,8 +34,8 @@ class MemberPreviewDeselect extends StatelessWidget {
                               end: Alignment.topRight,
                               stops: const <double>[0.3, 0.9],
                               colors: <Color>[
-                                Theme.of(context).colorScheme.secondary,
                                 Theme.of(context).colorScheme.primary,
+                                Theme.of(context).colorScheme.secondary,
                               ],
                             ),
                             borderRadius: BorderRadius.circular(100),
@@ -58,8 +58,8 @@ class MemberPreviewDeselect extends StatelessWidget {
                       end: Alignment.topRight,
                       stops: const <double>[0.3, 0.9],
                       colors: <Color>[
+                        Theme.of(context).colorScheme.primary,
                         Theme.of(context).colorScheme.secondary,
-                        Theme.of(context).colorScheme.primary
                       ],
                     ),
                     borderRadius: BorderRadius.circular(100),
