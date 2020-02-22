@@ -23,9 +23,7 @@ class JuntoLotus extends StatefulWidget {
   final String address;
 
   @override
-  State<StatefulWidget> createState() {
-    return JuntoLotusState();
-  }
+  State<StatefulWidget> createState() => JuntoLotusState();
 }
 
 class JuntoLotusState extends State<JuntoLotus> {
