@@ -1,14 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
 import 'package:junto_beta_mobile/screens/groups/groups.dart';
-import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/pack_open.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class JuntoLotus extends StatefulWidget {
