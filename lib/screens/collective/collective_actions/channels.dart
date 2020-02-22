@@ -79,9 +79,10 @@ class JuntoChannelsState extends State<JuntoChannels> {
                 Text(
                   widget.currentPerspective,
                   style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
-                      color: Theme.of(context).primaryColor),
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).primaryColor,
+                  ),
                 )
               ],
             ),
