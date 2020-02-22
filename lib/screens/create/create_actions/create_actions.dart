@@ -322,8 +322,10 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
               child: Row(
                 children: <Widget>[
-                  Text('# add channels',
-                      style: Theme.of(context).textTheme.caption),
+                  Text(
+                    '# add channels',
+                    style: Theme.of(context).textTheme.caption,
+                  ),
                 ],
               ),
             ),
