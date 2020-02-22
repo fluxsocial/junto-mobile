@@ -8,7 +8,6 @@ import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
 import 'package:junto_beta_mobile/screens/groups/groups.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/pack_open.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class JuntoLotus extends StatefulWidget {
@@ -42,6 +41,7 @@ class JuntoLotusState extends State<JuntoLotus> {
 
   String _userAddress;
   UserData _userProfile;
+  String _currentTheme;
 
   @override
   void initState() {
@@ -52,12 +52,17 @@ class JuntoLotusState extends State<JuntoLotus> {
 
   Future<void> getUserInformation() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final Map<String, dynamic> decodedUserData =
-        jsonDecode(prefs.getString('user_data'));
+    final Map<String, dynamic> decodedUserData = jsonDecode(
+      prefs.getString('user_data'),
+    );
 
+    print(
+      prefs.getString('current-theme'),
+    );
     setState(() {
       _userAddress = prefs.getString('user_id');
       _userProfile = UserData.fromMap(decodedUserData);
+      _currentTheme = prefs.getString('current-theme');
     });
   }
 
@@ -101,6 +106,25 @@ class JuntoLotusState extends State<JuntoLotus> {
     );
   }
 
+  Widget _setBackground() {
+    String imageAsset;
+
+    if (_currentTheme == 'light-indigo') {
+      imageAsset = 'assets/images/junto-mobile__themes--aqueous.png';
+    } else if (_currentTheme == 'light-royal') {
+      imageAsset = 'assets/images/junto-mobile__themes--royal.png';
+    } else if (_currentTheme == 'night-indigo') {
+      imageAsset = 'assets/images/junto-mobile__themes--night.png';
+    } else {
+      imageAsset = 'assets/images/junto-mobile__themes--aqueous.png';
+    }
+
+    return Image.asset(
+      imageAsset,
+      fit: BoxFit.cover,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,17 +132,7 @@ class JuntoLotusState extends State<JuntoLotus> {
         Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.bottomLeft,
-              end: Alignment.topRight,
-              stops: const <double>[0.2, 0.9],
-              colors: <Color>[
-                Theme.of(context).colorScheme.secondaryVariant,
-                Theme.of(context).colorScheme.primaryVariant
-              ],
-            ),
-          ),
+          child: _setBackground(),
         ),
         Container(
           height: MediaQuery.of(context).size.height,
