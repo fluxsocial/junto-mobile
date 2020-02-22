@@ -33,7 +33,7 @@ class Welcome extends StatefulWidget {
 }
 
 class WelcomeState extends State<Welcome> {
-  String _currentTheme = 'aqueous';
+  String _currentTheme = 'rainbow';
   String _userAddress;
 
   PageController _welcomeController;
@@ -447,14 +447,12 @@ class WelcomeState extends State<Welcome> {
                     margin: const EdgeInsets.symmetric(horizontal: 40),
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.secondaryVariant,
+                        color: Theme.of(context).colorScheme.primaryVariant,
                         borderRadius: BorderRadius.circular(1000),
                         boxShadow: <BoxShadow>[
                           BoxShadow(
-                              color: Theme.of(context)
-                                  .primaryColorDark
-                                  .withOpacity(.12),
-                              offset: const Offset(0.0, 6.0),
+                              color: const Color(0xff222222).withOpacity(.2),
+                              offset: const Offset(0.0, 5.0),
                               blurRadius: 9),
                         ]),
                     child: const Text(

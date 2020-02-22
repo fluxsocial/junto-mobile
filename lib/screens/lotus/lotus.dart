@@ -109,14 +109,16 @@ class JuntoLotusState extends State<JuntoLotus> {
   Widget _setBackground() {
     String imageAsset;
 
-    if (_currentTheme == 'light-indigo') {
+    if (_currentTheme == 'aqueous') {
       imageAsset = 'assets/images/junto-mobile__themes--aqueous.png';
-    } else if (_currentTheme == 'light-royal') {
+    } else if (_currentTheme == 'royal') {
       imageAsset = 'assets/images/junto-mobile__themes--royal.png';
-    } else if (_currentTheme == 'night-indigo') {
+    } else if (_currentTheme == 'night') {
       imageAsset = 'assets/images/junto-mobile__themes--night.png';
+    } else if (_currentTheme == 'rainbow') {
+      imageAsset = 'assets/images/junto-mobile__themes--rainbow.png';
     } else {
-      imageAsset = 'assets/images/junto-mobile__themes--aqueous.png';
+      imageAsset = 'assets/images/junto-mobile__themes--rainbow.png';
     }
 
     return Image.asset(

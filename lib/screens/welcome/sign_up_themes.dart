@@ -11,19 +11,21 @@ class SignUpThemes extends StatelessWidget {
   final Function toggleTheme;
 
   void _setTheme(String theme, BuildContext context) {
-    if (theme == 'LIGHT INDIGO') {
+    if (theme == 'AQUEOUS') {
       Provider.of<JuntoThemesProvider>(context, listen: false)
-          .setTheme('light-indigo');
+          .setTheme('aqueous');
       toggleTheme('aqueous');
-    } else if (theme == 'LIGHT ROYAL') {
+    } else if (theme == 'ROYAL') {
       Provider.of<JuntoThemesProvider>(context, listen: false)
-          .setTheme('light-royal');
+          .setTheme('royal');
       toggleTheme('royal');
-    } else if (theme == 'JUNTO NIGHT') {
+    } else if (theme == 'NIGHT') {
       Provider.of<JuntoThemesProvider>(context, listen: false)
-          .setTheme('night-indigo');
+          .setTheme('night');
       toggleTheme('night');
     } else if (theme == 'RAINBOW') {
+      Provider.of<JuntoThemesProvider>(context, listen: false)
+          .setTheme('rainbow');
       toggleTheme('rainbow');
     }
   }
@@ -35,7 +37,7 @@ class SignUpThemes extends StatelessWidget {
       },
       child: Container(
         color: Colors.transparent,
-        margin: const EdgeInsets.only(right: 20, left: 20),
+        margin: const EdgeInsets.only(right: 25, left: 25),
         child: Column(
           children: <Widget>[
             Container(
@@ -66,11 +68,11 @@ class SignUpThemes extends StatelessWidget {
   }
 
   String _displayThemeAsset(String theme) {
-    if (theme == 'LIGHT INDIGO') {
+    if (theme == 'AQUEOUS') {
       return 'assets/images/junto-mobile__themes--aqueous.png';
-    } else if (theme == 'LIGHT ROYAL') {
+    } else if (theme == 'ROYAL') {
       return 'assets/images/junto-mobile__themes--royal.png';
-    } else if (theme == 'JUNTO NIGHT') {
+    } else if (theme == 'NIGHT') {
       return 'assets/images/junto-mobile__themes--night.png';
     } else if (theme == 'RAINBOW') {
       return 'assets/images/junto-mobile__themes--rainbow.png';
@@ -108,9 +110,9 @@ class SignUpThemes extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
                   _displayThemeSelector('RAINBOW', context),
-                  _displayThemeSelector('LIGHT INDIGO', context),
-                  _displayThemeSelector('LIGHT ROYAL', context),
-                  _displayThemeSelector('JUNTO NIGHT', context),
+                  _displayThemeSelector('AQUEOUS', context),
+                  _displayThemeSelector('ROYAL', context),
+                  _displayThemeSelector('NIGHT', context),
                 ],
               ),
             )

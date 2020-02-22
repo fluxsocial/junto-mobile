@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class JuntoThemes {
-  // Junto Light Indigo Theme
-  ThemeData juntoLightIndigo = ThemeData(
+  // Rainbow Theme
+  ThemeData rainbow = ThemeData(
     fontFamily: 'Avenir',
     primaryColor: const Color(0xff555555),
     primaryColorDark: const Color(0xff333333),
@@ -13,7 +13,7 @@ class JuntoThemes {
     colorScheme: const ColorScheme(
       // Junto blue
       primary: Color(0xFF7461a1),
-      primaryVariant: Color(0xFF7461a1),
+      primaryVariant: Color(0xFF4687A2),
 
       // Junto purple
       secondary: Color(0xff285FA7),
@@ -99,8 +99,106 @@ class JuntoThemes {
     ),
   );
 
-  // Junto Light Royal Theme
-  ThemeData juntoLightRoyal = ThemeData(
+  // Aqueous Theme
+  ThemeData aqueous = ThemeData(
+    fontFamily: 'Avenir',
+    primaryColor: const Color(0xff555555),
+    primaryColorDark: const Color(0xff333333),
+    primaryColorLight: const Color(0xff999999),
+    dividerColor: const Color(0xffeeeeee),
+    backgroundColor: Colors.white,
+    accentColor: const Color(0xFF22517D),
+    colorScheme: const ColorScheme(
+      // Junto blue
+      primary: Color(0xFF7461a1),
+      primaryVariant: Color(0xFF2E4F78),
+
+      // Junto purple
+      secondary: Color(0xff285FA7),
+      secondaryVariant: Color(0xff285FA7),
+
+      surface: Color(0xfff9f9f9),
+      background: Colors.white,
+      error: Color(0xff333333),
+      onPrimary: Colors.white,
+      onSecondary: Colors.white,
+      onBackground: Color(0xff333333),
+      onError: Color(0xff333333),
+      onSurface: Color(0xff333333),
+      brightness: Brightness.light,
+    ),
+    scaffoldBackgroundColor: Colors.white,
+    appBarTheme: const AppBarTheme(
+      color: Colors.white,
+      elevation: 0,
+      textTheme: TextTheme(
+        bodyText2: TextStyle(
+          color: Color(0xff333333),
+          fontSize: 15,
+          fontWeight: FontWeight.w600,
+          letterSpacing: 1.02,
+        ),
+      ),
+      iconTheme: IconThemeData(
+        color: Color(0xff333333),
+        size: 22,
+      ),
+    ),
+    bottomAppBarColor: Colors.blue,
+    textTheme: const TextTheme(
+      headline4: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.w700,
+        color: Color(0xff333333),
+      ),
+      headline6: TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.w700,
+        color: Color(0xff333333),
+      ),
+      headline5: TextStyle(
+        fontSize: 17,
+        color: Color(0xff333333),
+        fontWeight: FontWeight.w600,
+      ),
+      // used for user and sphere handles
+      subtitle1: TextStyle(
+        fontSize: 15,
+        color: Color(0xff333333),
+        fontWeight: FontWeight.w700,
+      ),
+      subtitle2: TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w700,
+        color: Color(0xff333333),
+      ),
+      bodyText2: TextStyle(
+        fontSize: 13,
+        color: Color(0xff555555),
+        fontWeight: FontWeight.w500,
+      ),
+      bodyText1: TextStyle(
+        color: Color(0xff333333),
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+      ),
+      caption: TextStyle(
+        fontSize: 16,
+        height: 1.4,
+        fontWeight: FontWeight.w500,
+        color: Color(0xff555555),
+      ),
+      overline: TextStyle(
+        fontSize: 12,
+        color: Color(0xff999999),
+        fontWeight: FontWeight.w600,
+        letterSpacing: .5,
+      ),
+    ),
+  );
+
+  // Royal Theme
+  ThemeData royal = ThemeData(
     fontFamily: 'Avenir',
     primaryColor: const Color(0xff555555),
     primaryColorDark: const Color(0xff333333),
@@ -111,7 +209,7 @@ class JuntoThemes {
     colorScheme: const ColorScheme(
         // Junto gold
         primary: Color(0xffF0BA45),
-        primaryVariant: Color(0xFFF0BA45),
+        primaryVariant: Color(0xFF7C5C97),
         // Junto purple
         secondary: Color(0xFF7461a1),
         secondaryVariant: Color(0xFF7461a1),
@@ -194,8 +292,8 @@ class JuntoThemes {
     ),
   );
 
-// Junto Night Theme
-  ThemeData juntoNight = ThemeData(
+// Night Theme
+  ThemeData night = ThemeData(
     fontFamily: 'Avenir',
     primaryColor: const Color(0xfff0f0f0),
     primaryColorDark: const Color(0xffffffff),
@@ -207,7 +305,7 @@ class JuntoThemes {
         // Junto blue
         // primary: Color(0xFF223E72),
         primary: Color(0xff22517D),
-        primaryVariant: Color(0xff222222),
+        primaryVariant: Color(0xff2B2B2B),
         secondary: Color(0xFF635FAA),
         secondaryVariant: Color(0xff333333),
         surface: Color(0xff393939),

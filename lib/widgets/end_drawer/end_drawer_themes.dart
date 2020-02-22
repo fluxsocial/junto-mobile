@@ -5,6 +5,45 @@ import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:provider/provider.dart';
 
 class JuntoThemes extends StatelessWidget {
+  Widget _themeSelector(BuildContext context, String theme) {
+    return GestureDetector(
+      onTap: () {
+        Provider.of<JuntoThemesProvider>(context, listen: false)
+            .setTheme(theme);
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 15),
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height * .15,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: Stack(
+            children: <Widget>[
+              Image.asset(
+                'assets/images/junto-mobile__themes--' + theme + '.png',
+                height: MediaQuery.of(context).size.height * .15,
+                width: MediaQuery.of(context).size.width,
+                fit: BoxFit.cover,
+              ),
+              Positioned(
+                bottom: 10,
+                left: 10,
+                child: Text(
+                  theme.toUpperCase(),
+                  style: TextStyle(
+                      fontSize: 14,
+                      letterSpacing: 1.7,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,8 +74,7 @@ class JuntoThemes extends StatelessWidget {
                     ),
                   ),
                 ),
-                Text('Choose a theme',
-                    style: Theme.of(context).textTheme.subtitle1),
+                Text('Themes', style: Theme.of(context).textTheme.subtitle1),
                 const SizedBox(width: 42)
               ],
             ),
@@ -59,91 +97,12 @@ class JuntoThemes extends StatelessWidget {
         children: <Widget>[
           Expanded(
             child: ListView(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               children: <Widget>[
-                InkWell(
-                  child: GestureDetector(
-                    onTap: () {
-                      Provider.of<JuntoThemesProvider>(context, listen: false)
-                          .setTheme('light-indigo');
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 15),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                              color: Theme.of(context).dividerColor,
-                              width: .75),
-                        ),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text('Light Indigo',
-                              style: Theme.of(context).textTheme.headline5),
-                          const SizedBox(height: 5),
-                          Text(
-                              'This default theme of Junto carries a light tone complemented by our custom blue and gradient.',
-                              style: Theme.of(context).textTheme.bodyText1)
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Provider.of<JuntoThemesProvider>(context, listen: false)
-                        .setTheme('light-royal');
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 15),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                            color: Theme.of(context).dividerColor, width: .75),
-                      ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text('Light Royal',
-                            style: Theme.of(context).textTheme.headline5),
-                        const SizedBox(height: 5),
-                        Text(
-                            'This default theme of Junto carries a light tone complemented by our custom blue and gradient.',
-                            style: Theme.of(context).textTheme.bodyText1)
-                      ],
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Provider.of<JuntoThemesProvider>(context, listen: false)
-                        .setTheme('night-indigo');
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 15),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                            color: Theme.of(context).dividerColor, width: .75),
-                      ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text('Night Indigo',
-                            style: Theme.of(context).textTheme.headline5),
-                        const SizedBox(height: 5),
-                        Text(
-                            'The Night Indigo theme carries a darker shade complemented by our custom blue and purple gradient.',
-                            style: Theme.of(context).textTheme.bodyText1)
-                      ],
-                    ),
-                  ),
-                ),
+                _themeSelector(context, 'rainbow'),
+                _themeSelector(context, 'aqueous'),
+                _themeSelector(context, 'royal'),
+                _themeSelector(context, 'night'),
               ],
             ),
           )
