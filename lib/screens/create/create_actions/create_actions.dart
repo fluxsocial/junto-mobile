@@ -345,14 +345,11 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
           _address = null;
         });
       };
-      _expressionContextIcon = Transform.translate(
-        offset: const Offset(-10.0, 0.0),
-        child: Icon(CustomIcons.collective,
-            color: _currentExpressionContext == expressionContext
-                ? Colors.white
-                : Theme.of(context).primaryColor,
-            size: 10),
-      );
+      _expressionContextIcon = Icon(CustomIcons.collective,
+          color: _currentExpressionContext == expressionContext
+              ? Colors.white
+              : Theme.of(context).primaryColor,
+          size: 10);
     } else if (expressionContext == 'My Pack') {
       _setExpressionContextDescription = () {
         setState(() {
@@ -443,30 +440,30 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         _setExpressionContextDescription();
       },
       child: Container(
-          height: 50,
-          width: 50,
-          margin: const EdgeInsets.only(right: 15),
-          decoration: BoxDecoration(
-            gradient: _currentExpressionContext == expressionContext
-                ? LinearGradient(
-                    begin: Alignment.bottomLeft,
-                    end: Alignment.topRight,
-                    stops: const <double>[0.2, 0.9],
-                    colors: <Color>[
-                      Theme.of(context).colorScheme.secondary,
-                      Theme.of(context).colorScheme.primary
-                    ],
-                  )
-                : null,
-            borderRadius: const BorderRadius.all(
-              Radius.circular(1000),
-            ),
-            border: _currentExpressionContext == expressionContext
-                ? null
-                : Border.all(color: Theme.of(context).primaryColor, width: 1.5),
+        height: 50,
+        width: 50,
+        margin: const EdgeInsets.only(right: 15),
+        decoration: BoxDecoration(
+          gradient: _currentExpressionContext == expressionContext
+              ? LinearGradient(
+                  begin: Alignment.bottomLeft,
+                  end: Alignment.topRight,
+                  stops: const <double>[0.2, 0.9],
+                  colors: <Color>[
+                    Theme.of(context).colorScheme.secondary,
+                    Theme.of(context).colorScheme.primary
+                  ],
+                )
+              : null,
+          borderRadius: const BorderRadius.all(
+            Radius.circular(1000),
           ),
-          alignment: Alignment.center,
-          child: _expressionContextIcon),
+          border: _currentExpressionContext == expressionContext
+              ? null
+              : Border.all(color: Theme.of(context).primaryColor, width: 1.5),
+        ),
+        child: _expressionContextIcon,
+      ),
     );
   }
 
