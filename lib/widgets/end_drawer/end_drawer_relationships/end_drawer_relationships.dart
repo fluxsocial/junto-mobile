@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:async/async.dart' show AsyncMemoizer;
 
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
@@ -9,12 +8,11 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/relationship_request.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
-import 'package:junto_beta_mobile/utils/junto_overlay.dart';
-import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
+import 'package:provider/provider.dart';
 
 class JuntoRelationships extends StatefulWidget {
-  JuntoRelationships(this.userAddress, this.userFollowPerspectiveAddress);
+  const JuntoRelationships(this.userAddress, this.userFollowPerspectiveAddress);
 
   final String userAddress;
   final String userFollowPerspectiveAddress;
@@ -26,6 +24,7 @@ class JuntoRelationships extends StatefulWidget {
 }
 
 class JuntoRelationshipsState extends State<JuntoRelationships> {
+  Future<dynamic> _userRelations;
   final List<String> _tabs = <String>[
     'Connections',
     'Subscriptions',
@@ -33,12 +32,20 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
     'Pending'
   ];
 
-  final AsyncMemoizer _memoizer = AsyncMemoizer();
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _userRelations = getUserRelationships();
+  }
 
-  Future getUserRelationships() async {
-    return _memoizer.runOnce(
-      () => Provider.of<UserRepo>(context).userRelations(),
-    );
+  Future<dynamic> getUserRelationships() async {
+    return Provider.of<UserRepo>(context, listen: false).userRelations();
+  }
+
+  void _refreshActions(bool action) {
+    setState(() {
+      _userRelations = getUserRelationships();
+    });
   }
 
   @override
@@ -118,9 +125,9 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
               ),
             ];
           },
-          body: FutureBuilder(
-            future: getUserRelationships(),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
+          body: FutureBuilder<dynamic>(
+            future: _userRelations,
+            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (snapshot.hasData) {
                 // get list of connections
                 final List<UserProfile> _connectionsMembers =
@@ -162,37 +169,30 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       children: _pendingConnectionsMembers
                           .map(
-                            (dynamic connection) =>
-                                RelationshipRequest(connection),
+                            (dynamic connection) => RelationshipRequest(
+                              connection,
+                              _refreshActions,
+                            ),
                           )
                           .toList(),
                     ),
                   ],
                 );
               } else if (snapshot.hasError) {
-                // print(snapshot.error);
+                print(snapshot.error);
                 return TabBarView(
                   children: <Widget>[
                     Center(
-                      child: Transform.translate(
-                        offset: const Offset(0.0, -50),
-                        child: Text('Hmmm, something is up',
-                            style: Theme.of(context).textTheme.caption),
-                      ),
+                      child: Text('Hmmm, something is up',
+                          style: Theme.of(context).textTheme.caption),
                     ),
                     Center(
-                      child: Transform.translate(
-                        offset: const Offset(0.0, -50),
-                        child: Text('Hmmm, something is up',
-                            style: Theme.of(context).textTheme.caption),
-                      ),
+                      child: Text('Hmmm, something is up',
+                          style: Theme.of(context).textTheme.caption),
                     ),
                     Center(
-                      child: Transform.translate(
-                        offset: const Offset(0.0, -50),
-                        child: Text('Hmmm, something is up',
-                            style: Theme.of(context).textTheme.caption),
-                      ),
+                      child: Text('Hmmm, something is up',
+                          style: Theme.of(context).textTheme.caption),
                     ),
                   ],
                 );
@@ -200,19 +200,13 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
               return TabBarView(
                 children: <Widget>[
                   Center(
-                    child: Transform.translate(
-                        offset: const Offset(0.0, -50),
-                        child: JuntoProgressIndicator()),
+                    child: JuntoProgressIndicator(),
                   ),
                   Center(
-                    child: Transform.translate(
-                        offset: const Offset(0.0, -50),
-                        child: JuntoProgressIndicator()),
+                    child: JuntoProgressIndicator(),
                   ),
                   Center(
-                    child: Transform.translate(
-                        offset: const Offset(0.0, -50),
-                        child: JuntoProgressIndicator()),
+                    child: JuntoProgressIndicator(),
                   )
                 ],
               );

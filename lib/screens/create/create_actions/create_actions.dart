@@ -322,8 +322,10 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
               child: Row(
                 children: <Widget>[
-                  Text('# add channels',
-                      style: Theme.of(context).textTheme.caption),
+                  Text(
+                    '# add channels',
+                    style: Theme.of(context).textTheme.caption,
+                  ),
                 ],
               ),
             ),
@@ -345,14 +347,11 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
           _address = null;
         });
       };
-      _expressionContextIcon = Transform.translate(
-        offset: const Offset(-10.0, 0.0),
-        child: Icon(CustomIcons.collective,
-            color: _currentExpressionContext == expressionContext
-                ? Colors.white
-                : Theme.of(context).primaryColor,
-            size: 10),
-      );
+      _expressionContextIcon = Icon(CustomIcons.collective,
+          color: _currentExpressionContext == expressionContext
+              ? Colors.white
+              : Theme.of(context).primaryColor,
+          size: 10);
     } else if (expressionContext == 'My Pack') {
       _setExpressionContextDescription = () {
         setState(() {
@@ -466,7 +465,9 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
                 : Border.all(color: Theme.of(context).primaryColor, width: 1.5),
           ),
           alignment: Alignment.center,
-          child: _expressionContextIcon),
+      
+        child: _expressionContextIcon,
+      ),
     );
   }
 

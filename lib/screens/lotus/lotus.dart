@@ -1,13 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
 import 'package:junto_beta_mobile/screens/groups/groups.dart';
-import 'package:junto_beta_mobile/models/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class JuntoLotus extends StatefulWidget {
@@ -22,9 +23,7 @@ class JuntoLotus extends StatefulWidget {
   final String address;
 
   @override
-  State<StatefulWidget> createState() {
-    return JuntoLotusState();
-  }
+  State<StatefulWidget> createState() => JuntoLotusState();
 }
 
 class JuntoLotusState extends State<JuntoLotus> {

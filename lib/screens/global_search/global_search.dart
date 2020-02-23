@@ -53,9 +53,9 @@ class _GlobalSearchState extends State<GlobalSearch> {
 
   void onTextChange(String query) {
     debounceTimer?.cancel();
-    debounceTimer = Timer.periodic(
+    debounceTimer = Timer(
       const Duration(milliseconds: 600),
-      (_) async {
+      () async {
         if (mounted)
           setState(() {
             _searchFuture =
