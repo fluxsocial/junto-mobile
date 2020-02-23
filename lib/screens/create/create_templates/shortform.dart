@@ -77,9 +77,9 @@ class CreateShortformState extends State<CreateShortform> {
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             child: Row(
               children: <Widget>[
-                _gradientSelector('7461a1', '285FA7'),
-                _gradientSelector('9e81d7', 'ddcb7f'),
-                _gradientSelector('2c2cde', '7ec6e9'),
+                _gradientSelector('8E8098', '307FAA'),
+                _gradientSelector('6F51A8', 'E8B974'),
+                _gradientSelector('2E4F78', '6397C7'),
                 _gradientSelector('719cf4', 'ffc7e4'),
                 _gradientSelector('639acf', '7bdaa5'),
               ],
@@ -96,6 +96,7 @@ class CreateShortformState extends State<CreateShortform> {
                   ),
                   alignment: Alignment.center,
                   height: MediaQuery.of(context).size.width,
+                  width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.bottomLeft,
