@@ -30,8 +30,8 @@ class CreateShortformState extends State<CreateShortform> {
   @override
   void initState() {
     super.initState();
-    gradientOne = '7461a1';
-    gradientTwo = '285FA7';
+    gradientOne = '8E8098';
+    gradientTwo = '307FAA';
     _bodyController = TextEditingController();
   }
 
