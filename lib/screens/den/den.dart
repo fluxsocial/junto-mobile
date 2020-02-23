@@ -32,6 +32,8 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
   UserRepo _userProvider;
   String _userAddress;
   UserData _userProfile;
+  String _currentTheme;
+
   bool showComments = false;
 
   ScrollController _denController;
@@ -51,13 +53,14 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
           _onScrollingHasChanged,
         );
     });
-    getUserInformation();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _userProvider = Provider.of<UserRepo>(context);
+
+   _userProvider = Provider.of<UserRepo>(context);
+    getUserInformation();
   }
 
   @override
@@ -79,6 +82,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
     setState(() {
       _userAddress = prefs.getString('user_id');
       _userProfile = UserData.fromMap(decodedUserData);
+      _currentTheme = prefs.getString('current-theme');
     });
   }
 
@@ -137,6 +141,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
                   return <Widget>[
                     JuntoDenSliverAppbar(
                       name: _userProfile.user.name,
+                      currentTheme: _currentTheme,
                     ),
                     SliverPersistentHeader(
                       delegate: JuntoAppBarDelegate(

@@ -6,9 +6,10 @@ class JuntoThemesProvider with ChangeNotifier {
   JuntoThemesProvider(this.currentTheme);
 
   static final Map<String, ThemeData> _themes = <String, ThemeData>{
-    'light-indigo': JuntoThemes().juntoLightIndigo,
-    'night-indigo': JuntoThemes().juntoNight,
-    'light-royal': JuntoThemes().juntoLightRoyal
+    'rainbow': JuntoThemes().rainbow,
+    'aqueous': JuntoThemes().aqueous,
+    'night': JuntoThemes().night,
+    'royal': JuntoThemes().royal
   };
 
   static Future<ThemeData> loadDefault() async {
@@ -17,7 +18,7 @@ class JuntoThemesProvider with ChangeNotifier {
     if (currentTheme != null && currentTheme.isNotEmpty) {
       return _themes[currentTheme];
     }
-    return _themes['light-indigo'];
+    return _themes['rainbow'];
   }
 
   ThemeData currentTheme;

@@ -23,7 +23,7 @@ class Sphere {
       const Sphere(
         sphereTitle: 'Ecstatic Dance',
         sphereMembers: '12000',
-        sphereImage: 'assets/images/junto-mobile__ecstatic.png',
+        sphereImage: '',
         sphereHandle: 'ecstaticdance',
         sphereDescription:
             'Ecstatic dance is a space for movement, rhythm, non-judgment, and '
@@ -32,7 +32,7 @@ class Sphere {
       const Sphere(
         sphereTitle: 'Flutter NYC',
         sphereMembers: '690',
-        sphereImage: 'assets/images/junto-mobile__flutter.png',
+        sphereImage: '',
         sphereHandle: 'flutternyc',
         sphereDescription:
             'Connect with other members in the Flutter NYC community and learn'
@@ -41,7 +41,7 @@ class Sphere {
       const Sphere(
         sphereTitle: 'Zen',
         sphereMembers: '77',
-        sphereImage: 'assets/images/junto-mobile__stillmind.png',
+        sphereImage: '',
         sphereHandle: 'zen',
         sphereDescription:
             '"To a mind that is still, the whole universe surrenders"',
@@ -49,14 +49,14 @@ class Sphere {
       const Sphere(
         sphereTitle: 'JUNTO Core',
         sphereMembers: '7',
-        sphereImage: 'assets/images/junto-mobile__junto.png',
+        sphereImage: '',
         sphereHandle: 'juntocore',
         sphereDescription: 'Junto Core team happenings',
       ),
       const Sphere(
         sphereTitle: 'Holochain',
         sphereMembers: '22',
-        sphereImage: 'assets/images/junto-mobile__expression--photo.png',
+        sphereImage: '',
         sphereHandle: 'holochain',
         sphereDescription:
             'Holochain is a framework to build scalable, distributed applications.',

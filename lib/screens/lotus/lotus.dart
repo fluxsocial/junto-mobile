@@ -40,6 +40,8 @@ class JuntoLotusState extends State<JuntoLotus> {
 
   String _userAddress;
   UserData _userProfile;
+  String _currentTheme;
+  String backgroundImageAsset;
 
   @override
   void initState() {
@@ -50,12 +52,17 @@ class JuntoLotusState extends State<JuntoLotus> {
 
   Future<void> getUserInformation() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final Map<String, dynamic> decodedUserData =
-        jsonDecode(prefs.getString('user_data'));
+    final Map<String, dynamic> decodedUserData = jsonDecode(
+      prefs.getString('user_data'),
+    );
 
+    print(
+      prefs.getString('current-theme'),
+    );
     setState(() {
       _userAddress = prefs.getString('user_id');
       _userProfile = UserData.fromMap(decodedUserData);
+      _currentTheme = prefs.getString('current-theme');
     });
   }
 
@@ -76,6 +83,7 @@ class JuntoLotusState extends State<JuntoLotus> {
               channels: const <String>[],
               address: widget.address,
               expressionContext: widget.expressionContext,
+              expressionCenterBackground: backgroundImageAsset,
             );
           } else {
             return JuntoCollective();
@@ -99,6 +107,30 @@ class JuntoLotusState extends State<JuntoLotus> {
     );
   }
 
+  Widget _setBackground() {
+    setState(() {
+      if (_currentTheme == 'aqueous') {
+        backgroundImageAsset =
+            'assets/images/junto-mobile__themes--aqueous.png';
+      } else if (_currentTheme == 'royal') {
+        backgroundImageAsset = 'assets/images/junto-mobile__themes--royal.png';
+      } else if (_currentTheme == 'night') {
+        backgroundImageAsset = 'assets/images/junto-mobile__themes--night.png';
+      } else if (_currentTheme == 'rainbow') {
+        backgroundImageAsset =
+            'assets/images/junto-mobile__themes--rainbow.png';
+      } else {
+        backgroundImageAsset =
+            'assets/images/junto-mobile__themes--rainbow.png';
+      }
+    });
+
+    return Image.asset(
+      backgroundImageAsset,
+      fit: BoxFit.cover,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,17 +138,7 @@ class JuntoLotusState extends State<JuntoLotus> {
         Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.bottomLeft,
-              end: Alignment.topRight,
-              stops: const <double>[0.2, 0.9],
-              colors: <Color>[
-                Theme.of(context).colorScheme.secondaryVariant,
-                Theme.of(context).colorScheme.primaryVariant
-              ],
-            ),
-          ),
+          child: _setBackground(),
         ),
         Container(
           height: MediaQuery.of(context).size.height,

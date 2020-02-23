@@ -54,7 +54,7 @@ class ResonateBottomSheet extends StatelessWidget {
                   title: Row(
                     children: <Widget>[
                       Image.asset(
-                        'assets/images/junto-mobile__resonation.png',
+                        '',
                         height: 20,
                         color: Theme.of(context).primaryColor,
                       ),

@@ -23,8 +23,8 @@ class ChannelPreview extends StatelessWidget {
                 end: Alignment.topRight,
                 stops: const <double>[0.2, 0.9],
                 colors: <Color>[
+                  Theme.of(context).colorScheme.primary,
                   Theme.of(context).colorScheme.secondary,
-                  Theme.of(context).colorScheme.primary
                 ],
               ),
               borderRadius: BorderRadius.circular(100),
