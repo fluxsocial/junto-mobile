@@ -52,7 +52,13 @@ class _NotificationScreenState extends State<NotificationScreen>
       setState(() {});
     } on JuntoException catch (error) {
       JuntoLoader.hide();
-      JuntoDialog.showJuntoDialog(context, error.message, [DialogBack()]);
+      JuntoDialog.showJuntoDialog(
+        context,
+        error.message,
+        <Widget>[
+          DialogBack(),
+        ],
+      );
     }
   }
 
@@ -64,7 +70,8 @@ class _NotificationScreenState extends State<NotificationScreen>
       setState(() {});
     } on JuntoException catch (error) {
       JuntoLoader.hide();
-      JuntoDialog.showJuntoDialog(context, error.message, [DialogBack()]);
+      JuntoDialog.showJuntoDialog(
+          context, error.message, <Widget>[DialogBack()]);
     }
   }
 
@@ -267,7 +274,7 @@ class _ActionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle _style = TextStyle(color: Colors.white);
+    const TextStyle _style = TextStyle(color: Colors.white);
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 4),
       child: Column(
@@ -289,7 +296,7 @@ class _ActionTile extends StatelessWidget {
                 ),
                 onPressed: onPrimaryAction,
                 color: Theme.of(context).accentColor,
-                child: Text(
+                child: const Text(
                   'Accept',
                   style: _style,
                 ),
@@ -312,7 +319,7 @@ class _ActionTile extends StatelessWidget {
                 ),
                 onPressed: onSecondaryAction,
                 color: Colors.redAccent,
-                child: Text('Reject', style: _style),
+                child: const Text('Reject', style: _style),
               ),
             ],
           ),

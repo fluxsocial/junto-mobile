@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class JuntoThemes {
   // Rainbow Theme
   ThemeData rainbow = ThemeData(
+    brightness: Brightness.light,
     fontFamily: 'Avenir',
     primaryColor: const Color(0xff555555),
     primaryColorDark: const Color(0xff333333),
@@ -100,6 +101,7 @@ class JuntoThemes {
 
   // Aqueous Theme
   ThemeData aqueous = ThemeData(
+    brightness: Brightness.light,
     fontFamily: 'Avenir',
     primaryColor: const Color(0xff555555),
     primaryColorDark: const Color(0xff333333),
@@ -198,6 +200,7 @@ class JuntoThemes {
 
   // Royal Theme
   ThemeData royal = ThemeData(
+    brightness: Brightness.light,
     fontFamily: 'Avenir',
     primaryColor: const Color(0xff555555),
     primaryColorDark: const Color(0xff333333),
@@ -293,6 +296,7 @@ class JuntoThemes {
 
 // Night Theme
   ThemeData night = ThemeData(
+    brightness: Brightness.dark,
     fontFamily: 'Avenir',
     primaryColor: const Color(0xfff0f0f0),
     primaryColorDark: const Color(0xffffffff),
@@ -301,19 +305,20 @@ class JuntoThemes {
     backgroundColor: const Color(0xff333333),
     accentColor: const Color(0xFF2B2B2B),
     colorScheme: const ColorScheme(
-        primary: Color(0xff222222),
-        primaryVariant: Color(0xff2B2B2B),
-        secondary: Color(0xFF3C3C3C),
-        secondaryVariant: Color(0xff3C3C3C),
-        surface: Color(0xff393939),
-        background: Color(0xff333333),
-        error: Color(0xff333333),
-        onPrimary: Colors.white,
-        onSecondary: Colors.white,
-        onBackground: Color(0xff333333),
-        onError: Color(0xff333333),
-        onSurface: Color(0xff333333),
-        brightness: Brightness.light),
+      primary: Color(0xff222222),
+      primaryVariant: Color(0xff2B2B2B),
+      secondary: Color(0xFF3C3C3C),
+      secondaryVariant: Color(0xff3C3C3C),
+      surface: Color(0xff393939),
+      background: Color(0xff333333),
+      error: Color(0xff333333),
+      onPrimary: Colors.white,
+      onSecondary: Colors.white,
+      onBackground: Color(0xff333333),
+      onError: Color(0xff333333),
+      onSurface: Color(0xff333333),
+      brightness: Brightness.dark,
+    ),
     scaffoldBackgroundColor: const Color(0xff333333),
     appBarTheme: const AppBarTheme(
       color: Color(0xff333333),

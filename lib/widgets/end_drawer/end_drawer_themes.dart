@@ -30,7 +30,7 @@ class JuntoThemes extends StatelessWidget {
                 left: 10,
                 child: Text(
                   theme.toUpperCase(),
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontSize: 14,
                       letterSpacing: 1.7,
                       fontWeight: FontWeight.w700,

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_appbar.dart';
-import 'package:junto_beta_mobile/screens/expression_open/expression_open_top.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_bottom.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_context.dart';
+import 'package:junto_beta_mobile/screens/expression_open/expression_open_top.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/event_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/longform_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/photo_open.dart';
@@ -91,6 +91,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   }
 
   // Bring the focus back to the TextField
+  // ignore: unused_element
   void _focusTextField() {
     FocusScope.of(context).requestFocus(_focusNode);
   }

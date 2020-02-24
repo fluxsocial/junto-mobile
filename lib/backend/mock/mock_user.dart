@@ -104,9 +104,9 @@ class MockUserService implements UserService {
   }
 
   @override
-  Future userRelations() async {
+  Future<Map<String, dynamic>> userRelations() async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
-    return {};
+    return <String, dynamic>{};
   }
 
   @override
@@ -115,7 +115,6 @@ class MockUserService implements UserService {
     return kUsers;
   }
 
-  @override
   Future<List<UserProfile>> pendingConnections(String userAddress) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     return kUsers;
@@ -135,7 +134,7 @@ class MockUserService implements UserService {
   Future<Map<String, dynamic>> isRelated(
       String userAddress, String targetAddress) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
-    return {};
+    return <String, dynamic>{};
   }
 
   @override

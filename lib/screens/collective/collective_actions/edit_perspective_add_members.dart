@@ -1,19 +1,19 @@
 import 'package:async/async.dart' show AsyncMemoizer;
-
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
-import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/widgets/tab_bar.dart';
-import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview_select.dart';
+import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:junto_beta_mobile/widgets/tab_bar.dart';
+import 'package:provider/provider.dart';
 
 class EditPerspectiveAddMembers extends StatefulWidget {
   const EditPerspectiveAddMembers(
       {this.perspective, this.refreshPerspectiveMembers});
+
   final CentralizedPerspective perspective;
   final Function refreshPerspectiveMembers;
 
@@ -26,17 +26,18 @@ class EditPerspectiveAddMembers extends StatefulWidget {
 class EditPerspectiveAddMembersState extends State<EditPerspectiveAddMembers>
     with ListDistinct {
   final List<String> _tabs = <String>['Subscriptions', 'Connections'];
-  List<String> _perspectiveMembers = <String>[];
+  final List<String> _perspectiveMembers = <String>[];
 
-  final AsyncMemoizer _memoizer = AsyncMemoizer();
+  final AsyncMemoizer<Map<String, dynamic>> _memoizer =
+      AsyncMemoizer<Map<String, dynamic>>();
 
-  Future getUserRelationships() async {
+  Future<Map<String, dynamic>> getUserRelationships() async {
     return _memoizer.runOnce(
       () => Provider.of<UserRepo>(context, listen: false).userRelations(),
     );
   }
 
-  Future addMembersToPerspective() async {
+  Future<void> addMembersToPerspective() async {
     if (_perspectiveMembers.isNotEmpty) {
       JuntoLoader.showLoader(context);
       print(_perspectiveMembers);
@@ -151,9 +152,10 @@ class EditPerspectiveAddMembersState extends State<EditPerspectiveAddMembers>
                 ),
               ];
             },
-            body: FutureBuilder(
+            body: FutureBuilder<Map<String, dynamic>>(
               future: getUserRelationships(),
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
+              builder: (BuildContext context,
+                  AsyncSnapshot<Map<String, dynamic>> snapshot) {
                 if (snapshot.hasData) {
                   // get list of connections
                   final List<UserProfile> _connectionsMembers =

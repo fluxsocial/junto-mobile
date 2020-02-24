@@ -1,14 +1,14 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/screens/collective/collective_actions/edit_perspective_add_members.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart'
     show JuntoException;
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
-import 'package:junto_beta_mobile/screens/collective/collective_actions/edit_perspective_add_members.dart';
-import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview_deselect.dart';
+import 'package:provider/provider.dart';
 
 class EditPerspective extends StatefulWidget {
   const EditPerspective({this.perspective, this.refreshPerspectives});
@@ -28,9 +28,10 @@ class EditPerspectiveState extends State<EditPerspective> {
   PageController _pageController;
   int _currentIndex = 0;
 
+  // ignore: unused_field
   List<UserProfile> _perspectiveMembers = <UserProfile>[];
 
-  Future getPerspectiveMembers;
+  Future<List<UserProfile>> getPerspectiveMembers;
 
   void _refreshPerspectiveMembers() {
     setState(() {
@@ -186,21 +187,27 @@ class EditPerspectiveState extends State<EditPerspective> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              CupertinoPageRoute(
+                              CupertinoPageRoute<dynamic>(
                                 builder: (BuildContext context) =>
                                     EditPerspectiveAddMembers(
-                                        perspective: widget.perspective, refreshPerspectiveMembers: _refreshPerspectiveMembers)
+                                  perspective: widget.perspective,
+                                  refreshPerspectiveMembers:
+                                      _refreshPerspectiveMembers,
+                                ),
                               ),
                             );
                           },
                           child: Container(
-                              height: 45,
-                              width: 45,
-                              color: Colors.transparent,
-                              alignment: Alignment.centerRight,
-                              child: Icon(Icons.add,
-                                  size: 24,
-                                  color: Theme.of(context).primaryColor)),
+                            height: 45,
+                            width: 45,
+                            color: Colors.transparent,
+                            alignment: Alignment.centerRight,
+                            child: Icon(
+                              Icons.add,
+                              size: 24,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
                         ),
                 ],
               ),

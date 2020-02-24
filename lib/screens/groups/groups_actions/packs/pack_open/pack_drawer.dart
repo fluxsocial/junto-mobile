@@ -60,13 +60,10 @@ class PackDrawer extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                            ],
-                          ),
+                          const Spacer(),
                           const SizedBox(height: 5),
-                          const Text(
-                            '50 pack members',
+                          Text(
+                            '${pack.members}',
                             style: TextStyle(
                                 fontWeight: FontWeight.w700, fontSize: 14),
                           ),

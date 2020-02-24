@@ -10,7 +10,6 @@ import 'package:junto_beta_mobile/screens/create/create_templates/photo.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/shortform.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class JuntoCreate extends StatefulWidget {
   const JuntoCreate(
@@ -22,7 +21,7 @@ class JuntoCreate extends StatefulWidget {
   final List<String> channels;
   final String address;
   final ExpressionContext expressionContext;
-  final expressionCenterBackground;
+  final String expressionCenterBackground;
 
   @override
   State<StatefulWidget> createState() {

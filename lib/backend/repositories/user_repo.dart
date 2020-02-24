@@ -87,7 +87,7 @@ class UserRepo {
     return _userService.connectUser(userAddress);
   }
 
-  Future userRelations() {
+  Future<Map<String, dynamic>> userRelations() {
     return _userService.userRelations();
   }
 

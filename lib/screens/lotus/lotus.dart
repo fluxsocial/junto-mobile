@@ -38,7 +38,6 @@ class JuntoLotusState extends State<JuntoLotus> {
     );
   }
 
-  String _userAddress;
   UserData _userProfile;
   String _currentTheme;
   String backgroundImageAsset;
@@ -60,7 +59,6 @@ class JuntoLotusState extends State<JuntoLotus> {
       prefs.getString('current-theme'),
     );
     setState(() {
-      _userAddress = prefs.getString('user_id');
       _userProfile = UserData.fromMap(decodedUserData);
       _currentTheme = prefs.getString('current-theme');
     });

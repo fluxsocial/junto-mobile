@@ -126,9 +126,10 @@ class CreateSphereState extends State<CreateSphere> {
     super.initState();
   }
 
-  final AsyncMemoizer _memoizer = AsyncMemoizer();
+  final AsyncMemoizer<Map<String, dynamic>> _memoizer =
+      AsyncMemoizer<Map<String, dynamic>>();
 
-  Future getUserRelationships() async {
+  Future<Map<String, dynamic>> getUserRelationships() async {
     return _memoizer.runOnce(
       () => Provider.of<UserRepo>(context, listen: false).userRelations(),
     );
@@ -414,9 +415,10 @@ class CreateSphereState extends State<CreateSphere> {
             ),
           ];
         },
-        body: FutureBuilder(
+        body: FutureBuilder<Map<String, dynamic>>(
           future: getUserRelationships(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
+          builder: (BuildContext context,
+              AsyncSnapshot<Map<String, dynamic>> snapshot) {
             if (snapshot.hasData) {
               // get list of connections
               final List<UserProfile> _connectionsMembers =

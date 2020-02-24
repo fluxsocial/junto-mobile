@@ -51,7 +51,7 @@ class ShortformPreviewState extends State<ShortformPreview> {
         shortformBody,
         maxLines: 5,
         textAlign: TextAlign.center,
-        style: TextStyle(
+        style: const TextStyle(
             fontSize: 18, color: Colors.white, fontWeight: FontWeight.w700),
         overflow: TextOverflow.ellipsis,
       ),

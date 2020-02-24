@@ -1,16 +1,15 @@
 import 'dart:async';
-import 'dart:convert';
-import 'package:async/async.dart' show AsyncMemoizer;
-import 'package:flutter/material.dart';
+
 import 'package:flutter/cupertino.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/widgets/previews/pack_preview/pack_preview.dart';
+import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
-import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:junto_beta_mobile/widgets/previews/pack_preview/pack_preview.dart';
 import 'package:junto_beta_mobile/widgets/previews/pack_preview/pack_request.dart';
+import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Packs extends StatefulWidget {
   const Packs({this.userProfile, this.changeGroup});
@@ -58,9 +57,6 @@ class PacksState extends State<Packs> with ListDistinct {
 
   Future<void> getUserInformation() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final Map<String, dynamic> decodedUserData =
-        jsonDecode(prefs.getString('user_data'));
-
     setState(() {
       _userAddress = prefs.getString('user_id');
     });

@@ -1,16 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
+import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/screens/groups/groups_actions/groups_actions.dart';
+import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/pack_open.dart';
+import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_open/sphere_open.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:junto_beta_mobile/screens/groups/groups_actions/groups_actions.dart';
-import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_open/sphere_open.dart';
-import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/pack_open.dart';
 import 'package:provider/provider.dart';
 
 // This screen displays groups a member belongs two. Currently, there are two types of
@@ -19,6 +18,7 @@ class JuntoGroups extends StatefulWidget {
   const JuntoGroups({@required this.initialGroup});
 
   final String initialGroup;
+
   @override
   State<StatefulWidget> createState() {
     return JuntoGroupsState();
@@ -27,7 +27,6 @@ class JuntoGroups extends StatefulWidget {
 
 class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
-  String _userAddress;
 
   bool actionsVisible = false;
 
@@ -41,12 +40,6 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
   }
 
   Future<void> getUserInformation() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    setState(() {
-      _userAddress = prefs.getString('user_id');
-    });
-
     final Group group = await Provider.of<GroupRepo>(context, listen: false)
         .getGroup(widget.initialGroup);
 

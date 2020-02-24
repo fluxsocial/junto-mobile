@@ -1,9 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 
 /// Render a list tile showing the user's profile image.
 /// Contains a callback [onUserTap] triggered when the user is selected.

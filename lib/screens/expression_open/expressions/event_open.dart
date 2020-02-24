@@ -1,6 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 class EventOpen extends StatelessWidget {
   const EventOpen(this.expression);
@@ -12,6 +12,7 @@ class EventOpen extends StatelessWidget {
     final CentralizedEventFormExpression eventExpression =
         expression.expressionData as CentralizedEventFormExpression;
     final String eventTitle = eventExpression.title;
+    // ignore: unused_local_variable
     final String eventStartTime = eventExpression.startTime;
     //ignore:unused_local_variable
     final String eventEndTime = eventExpression.endTime;
