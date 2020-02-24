@@ -52,8 +52,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
   ScrollController _collectiveController;
   String _appbarTitle = 'JUNTO';
-  bool _showDegrees = true;
-  String currentDegree = 'oo';
   final List<String> _channels = <String>[];
   ValueNotifier<bool> actionsVisible = ValueNotifier<bool>(false);
 
@@ -253,10 +251,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
                     slivers: <Widget>[
                       SliverPersistentHeader(
                         delegate: CollectiveAppBar(
-                          expandedHeight: _showDegrees == true ? 135 : 85,
-                          degrees: _showDegrees,
-                          currentDegree: currentDegree,
-                          switchDegree: _switchDegree,
+                          expandedHeight: 85,
                           appbarTitle: _appbarTitle,
                           openPerspectivesDrawer: () {},
                         ),
@@ -348,29 +343,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
     );
   }
 
-// switch between degrees of separation
-  void _switchDegree({String degreeName, int degreeNumber}) {
-    String _contextType;
-
-    if (degreeNumber == -1) {
-      _contextType = 'Collective';
-    } else if (degreeNumber == 0) {
-      _contextType = 'ConnectPerspective';
-    } else {
-      _contextType = 'Dos';
-    }
-    _expressionCompleter.value = getCollectiveExpressions(
-      paginationPos: 0,
-      contextType: _contextType,
-      dos: degreeNumber,
-    );
-
-    setState(() {
-      _showDegrees = true;
-      currentDegree = degreeName;
-    });
-  }
-
   void _filterByChannel(Channel channel) {
     setState(() {
       if (_channels.isEmpty) {
@@ -388,14 +360,12 @@ class JuntoCollectiveState extends State<JuntoCollective>
   void _changePerspective(CentralizedPerspective perspective) {
     if (perspective.name == 'JUNTO') {
       setState(() {
-        _showDegrees = true;
         _appbarTitle = 'JUNTO';
       });
       _expressionCompleter.value = getCollectiveExpressions(
           contextType: 'Collective', paginationPos: 0, channels: _channels);
     } else {
       setState(() {
-        _showDegrees = false;
         if (perspective.name ==
             _userProfile.user.name + "'s Follow Perspective") {
           _appbarTitle = 'Subscriptions';
