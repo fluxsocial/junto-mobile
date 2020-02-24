@@ -64,9 +64,11 @@ class MaterialAppWithTheme extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<JuntoThemesProvider>(
       builder: (BuildContext context, JuntoThemesProvider theme, _) {
-        theme.currentTheme.brightness == Brightness.dark
-            ? SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light)
-            : SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+        if (theme.currentTheme != null) {
+          theme.currentTheme.brightness == Brightness.dark
+              ? SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light)
+              : SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+        }
         return MaterialApp(
           home: loggedIn
               ? const JuntoLotus(

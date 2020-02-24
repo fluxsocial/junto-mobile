@@ -82,5 +82,5 @@ class Backend {
   final GroupRepo groupsProvider;
   final ExpressionRepo expressionRepo;
   final NotificationRepo notificationRepo;
-  final ThemeData currentTheme;
+  final ThemeData   currentTheme;
 }

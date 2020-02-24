@@ -14,9 +14,9 @@ class JuntoThemesProvider with ChangeNotifier {
 
   static Future<ThemeData> loadDefault() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String currentTheme = prefs.getString('current-theme');
-    if (currentTheme != null && currentTheme.isNotEmpty) {
-      return _themes[currentTheme];
+    final String _currentTheme = prefs.getString('current-theme');
+    if (_currentTheme != null && _currentTheme.isNotEmpty) {
+      return _themes[_currentTheme];
     }
     return _themes['rainbow'];
   }

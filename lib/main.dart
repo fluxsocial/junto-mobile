@@ -13,9 +13,6 @@ Future<void> main() async {
   ]);
   final Backend backend = await Backend.init();
   final bool _loggedIn = await backend.authRepo.isLoggedIn();
-  backend.currentTheme.brightness == Brightness.dark
-      ? SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light)
-      : SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
   runLoggedApp(
     JuntoApp(
       backend: backend,
