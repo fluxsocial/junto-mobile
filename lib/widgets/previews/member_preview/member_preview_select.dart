@@ -1,7 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 
 class MemberPreviewSelect extends StatefulWidget {
   const MemberPreviewSelect(

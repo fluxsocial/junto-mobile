@@ -1,15 +1,16 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
+
 import 'package:flutter/cupertino.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
+import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MemberRelationships extends StatelessWidget {
   const MemberRelationships(
@@ -446,9 +447,7 @@ class MemberRelationships extends StatelessWidget {
           ),
         ),
         GestureDetector(
-          onTap: () {
-            isPending ? () {} : _connectWithUser(context);
-          },
+          onTap: () => isPending ?? _connectWithUser(context),
           child: Container(
             decoration: BoxDecoration(
               border: Border(

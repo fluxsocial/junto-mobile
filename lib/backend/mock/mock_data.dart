@@ -125,7 +125,7 @@ List<CentralizedExpressionResponse> kSampleExpressions =
       address: 'testing-address',
     ),
     expressionData: CentralizedShortFormExpression(
-      background: [],
+      background: <String>[],
       body: ' Have you heard of Paradym sound healing meditation? Join us for '
           'a transformational session this Friday!',
     ),

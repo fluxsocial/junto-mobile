@@ -1,8 +1,7 @@
 import 'package:async/async.dart' show AsyncMemoizer;
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
@@ -12,10 +11,11 @@ import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_o
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
-import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
-import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:junto_beta_mobile/widgets/tab_bar.dart';
+import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SphereOpen extends StatefulWidget {
@@ -25,6 +25,7 @@ class SphereOpen extends StatefulWidget {
   }) : super(key: key);
 
   final Group group;
+
   @override
   State<StatefulWidget> createState() {
     return SphereOpenState();
@@ -296,69 +297,69 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
           );
         }
         if (snapshot.hasData) {
-          return ListView(padding: const EdgeInsets.all(0), children: [
-            Container(
-              color: Theme.of(context).backgroundColor,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    width: MediaQuery.of(context).size.width * .5,
-                    padding: const EdgeInsets.only(
-                      top: 10,
-                      left: 10,
-                      right: 5,
+          return ListView(
+            padding: const EdgeInsets.all(0),
+            children: <Widget>[
+              Container(
+                color: Theme.of(context).backgroundColor,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      width: MediaQuery.of(context).size.width * .5,
+                      padding: const EdgeInsets.only(
+                        top: 10,
+                        left: 10,
+                        right: 5,
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          for (int index = 0;
+                              index < snapshot.data.length + 1;
+                              index++)
+                            if (index == snapshot.data.length)
+                              const SizedBox()
+                            else if (index.isEven)
+                              ExpressionPreview(
+                                expression: snapshot.data[index],
+                                userAddress: _userAddress,
+                              )
+                        ],
+                      ),
                     ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        for (int index = 0;
-                            index < snapshot.data.length + 1;
-                            index++)
-                          if (index == snapshot.data.length)
-                            const SizedBox()
-                          else if (index.isEven)
-                            ExpressionPreview(
-                              expression: snapshot.data[index],
-                              userAddress: _userAddress,
-                            )
-                      ],
+                    Container(
+                      width: MediaQuery.of(context).size.width * .5,
+                      padding: const EdgeInsets.only(
+                        top: 10,
+                        left: 5,
+                        right: 10,
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          for (int index = 0;
+                              index < snapshot.data.length + 1;
+                              index++)
+                            if (index == snapshot.data.length)
+                              const SizedBox()
+                            else if (index.isOdd)
+                              ExpressionPreview(
+                                expression: snapshot.data[index],
+                                userAddress: _userAddress,
+                              )
+                        ],
+                      ),
                     ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * .5,
-                    padding: const EdgeInsets.only(
-                      top: 10,
-                      left: 5,
-                      right: 10,
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        for (int index = 0;
-                            index < snapshot.data.length + 1;
-                            index++)
-                          if (index == snapshot.data.length)
-                            const SizedBox()
-                          else if (index.isOdd)
-                            ExpressionPreview(
-                              expression: snapshot.data[index],
-                              userAddress: _userAddress,
-                            )
-                      ],
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ]);
+            ],
+          );
         }
         return Center(
-          child: Transform.translate(
-            offset: const Offset(0.0, -50),
-            child: JuntoProgressIndicator(),
-          ),
+          child: JuntoProgressIndicator(),
         );
       },
     );

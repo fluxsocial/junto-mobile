@@ -7,7 +7,6 @@ import 'package:flutter/rendering.dart';
 import 'package:junto_beta_mobile/backend/repositories/group_repo.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/pack_open_appbar.dart';
-import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/pack_open_public.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
@@ -35,7 +34,6 @@ class PackOpenState extends State<PackOpen> {
 
   // Controller for PageView
   PageController controller;
-  int _currentIndex = 0;
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
 
   @override
@@ -156,15 +154,9 @@ class PackOpenState extends State<PackOpen> {
             // ),
             Expanded(
               child: PageView(
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 controller: controller,
-                onPageChanged: (int index) {
-                  setState(
-                    () {
-                      _currentIndex = index;
-                    },
-                  );
-                },
+                onPageChanged: (int index) {},
                 children: <Widget>[
                   if (_userProfile != null)
                     FutureBuilder<List<CentralizedExpressionResponse>>(

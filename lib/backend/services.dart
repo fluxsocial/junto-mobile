@@ -228,7 +228,7 @@ abstract class UserService {
   Future<void> respondToConnection(String userAddress, bool response);
 
   /// Gets a list of pending user connections
-  Future userRelations();
+  Future<Map<String, dynamic>> userRelations();
 
   /// Gets a list of pending user connections
   Future<List<UserProfile>> connectedUsers(String userAddress);
