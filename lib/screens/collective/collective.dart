@@ -294,6 +294,8 @@ class JuntoCollectiveState extends State<JuntoCollective>
                                             const SizedBox()
                                           else if (index.isEven)
                                             ExpressionPreview(
+                                              key: ValueKey<String>(snapshot
+                                                  .data.results[index].address),
                                               expression:
                                                   snapshot.data.results[index],
                                               userAddress: _userAddress,
@@ -323,6 +325,8 @@ class JuntoCollectiveState extends State<JuntoCollective>
                                             const SizedBox()
                                           else if (index.isOdd)
                                             ExpressionPreview(
+                                              key: ValueKey<String>(snapshot
+                                                  .data.results[index].address),
                                               expression:
                                                   snapshot.data.results[index],
                                               userAddress: _userAddress,
