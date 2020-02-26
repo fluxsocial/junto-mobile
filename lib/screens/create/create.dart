@@ -3,7 +3,6 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
-import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/event.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/longform.dart';
@@ -158,9 +157,32 @@ class JuntoCreateState extends State<JuntoCreate> {
     // Navigator.pop(context);
   }
 
+// Helper method which calls the correct validation method based on the
+// expression type
+  bool _expressionValid(String expressionName) {
+    switch (expressionName) {
+      case 'ShortForm':
+        return _shortFormKey.currentState.validate();
+        break;
+      case 'LongForm':
+        return _longFormKey.currentState.validate();
+        break;
+      case 'EventForm':
+        return formKey.currentState.validate();
+        break;
+      case 'PhotoFrom':
+        return true;
+        break;
+      default:
+        return false;
+        break;
+    }
+  }
+
+// Validates the expression before pushing to `CreateActions`
   void _onNextClick() {
-    final dynamic expression = getExpression();
-    if (_expressionType != 'ShortForm') {
+    if (_expressionValid(_expressionType)) {
+      final dynamic expression = getExpression();
       Navigator.push(
         context,
         MaterialPageRoute<dynamic>(
@@ -175,31 +197,14 @@ class JuntoCreateState extends State<JuntoCreate> {
         ),
       );
     } else {
-      assert(_expressionType == 'ShortForm');
-      assert(expression is CentralizedShortFormExpression);
-      if (expression.body == null || expression.body.isEmpty) {
-        JuntoDialog.showJuntoDialog(
-          context,
-          'Please enter an expression',
-          <Widget>[
-            DialogBack(),
-          ],
-        );
-        return;
-      }
-      Navigator.push(
+      JuntoDialog.showJuntoDialog(
         context,
-        MaterialPageRoute<dynamic>(
-          builder: (BuildContext context) {
-            return CreateActions(
-              expressionType: _expressionType,
-              address: widget.address,
-              expressionContext: widget.expressionContext,
-              expression: expression,
-            );
-          },
-        ),
+        'Please ensure all required fields are filled.',
+        <Widget>[
+          DialogBack(),
+        ],
       );
+      return;
     }
   }
 
@@ -225,78 +230,62 @@ class JuntoCreateState extends State<JuntoCreate> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Scaffold(
-          resizeToAvoidBottomPadding: true,
-          appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(45),
-            child: AppBar(
-              automaticallyImplyLeading: false,
-              brightness: Brightness.light,
-              actions: <Widget>[Container()],
-              iconTheme: const IconThemeData(color: JuntoPalette.juntoGrey),
-              elevation: 0,
-              titleSpacing: 0,
-              title: Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: JuntoStyles.horizontalPadding),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        _currentIcon,
-                        const SizedBox(width: 7.5),
-                        Text(_expressionTypeDisplay,
-                            style: Theme.of(context).textTheme.caption)
-                      ],
-                    ),
-                    GestureDetector(
-                      onTap: _onNextClick,
-                      child: Text('next',
-                          style: Theme.of(context).textTheme.caption),
-                    )
-                  ],
-                ),
+  Widget _selectExpression(String expressionType) {
+    String expressionName;
+    Widget expressionIcon;
+    Function switchExpression;
+    if (expressionType == 'dynamic') {
+      expressionName = 'DYNAMIC';
+      expressionIcon =
+          Icon(CustomIcons.longform, color: Colors.white, size: 24);
+      switchExpression = () {
+        switchTemplate('LongForm');
+      };
+    } else if (expressionType == 'shortform') {
+      expressionName = 'SHORTFORM';
+      expressionIcon = Icon(CustomIcons.feather, color: Colors.white, size: 24);
+      switchExpression = () {
+        switchTemplate('ShortForm');
+      };
+    } else if (expressionType == 'photo') {
+      expressionName = 'PHOTO';
+      expressionIcon = Icon(CustomIcons.camera, color: Colors.white, size: 24);
+      switchExpression = () {
+        switchTemplate('PhotoForm');
+      };
+    } else if (expressionType == 'event') {
+      expressionName = 'EVENT';
+      expressionIcon = Icon(CustomIcons.event, color: Colors.white, size: 24);
+      switchExpression = () {
+        switchTemplate('EventForm');
+      };
+    }
+    return GestureDetector(
+      onTap: switchExpression,
+      child: Container(
+        width: MediaQuery.of(context).size.width * .5 - 50,
+        color: Colors.transparent,
+        alignment: Alignment.center,
+        child: Column(
+          children: <Widget>[
+            Container(
+                alignment: Alignment.center,
+                height: 50,
+                width: 50,
+                child: expressionIcon),
+            const SizedBox(height: 2.5),
+            Text(
+              expressionName,
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+                decoration: TextDecoration.none,
               ),
-            ),
-          ),
-          endDrawer:
-              const JuntoDrawer(screen: 'Create', icon: CustomIcons.create),
-          floatingActionButton:
-              _bottomNavVisible && MediaQuery.of(context).viewInsets.bottom == 0
-                  ? Padding(
-                      padding: const EdgeInsets.only(bottom: 25),
-                      child: BottomNav(
-                        actionsVisible: false,
-                        screen: 'create',
-                        onTap: () {
-                          setState(() {
-                            _expressionCenterVisible = true;
-                          });
-                        },
-                      ),
-                    )
-                  : const SizedBox(),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
-          body: Column(
-            children: <Widget>[
-              _buildTemplate(),
-            ],
-          ),
+            )
+          ],
         ),
-        AnimatedOpacity(
-          duration: const Duration(milliseconds: 300),
-          opacity: _expressionCenterVisible ? 1.0 : 0.0,
-          child:
-              _expressionCenterVisible ? _expressionCenter() : const SizedBox(),
-        )
-      ],
+      ),
     );
   }
 
@@ -372,62 +361,78 @@ class JuntoCreateState extends State<JuntoCreate> {
     );
   }
 
-  Widget _selectExpression(String expressionType) {
-    String expressionName;
-    Widget expressionIcon;
-    Function switchExpression;
-    if (expressionType == 'dynamic') {
-      expressionName = 'DYNAMIC';
-      expressionIcon =
-          Icon(CustomIcons.longform, color: Colors.white, size: 24);
-      switchExpression = () {
-        switchTemplate('LongForm');
-      };
-    } else if (expressionType == 'shortform') {
-      expressionName = 'SHORTFORM';
-      expressionIcon = Icon(CustomIcons.feather, color: Colors.white, size: 24);
-      switchExpression = () {
-        switchTemplate('ShortForm');
-      };
-    } else if (expressionType == 'photo') {
-      expressionName = 'PHOTO';
-      expressionIcon = Icon(CustomIcons.camera, color: Colors.white, size: 24);
-      switchExpression = () {
-        switchTemplate('PhotoForm');
-      };
-    } else if (expressionType == 'event') {
-      expressionName = 'EVENT';
-      expressionIcon = Icon(CustomIcons.event, color: Colors.white, size: 24);
-      switchExpression = () {
-        switchTemplate('EventForm');
-      };
-    }
-    return GestureDetector(
-      onTap: switchExpression,
-      child: Container(
-        width: MediaQuery.of(context).size.width * .5 - 50,
-        color: Colors.transparent,
-        alignment: Alignment.center,
-        child: Column(
-          children: <Widget>[
-            Container(
-                alignment: Alignment.center,
-                height: 50,
-                width: 50,
-                child: expressionIcon),
-            const SizedBox(height: 2.5),
-            Text(
-              expressionName,
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.white,
-                fontWeight: FontWeight.w500,
-                decoration: TextDecoration.none,
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        Scaffold(
+          resizeToAvoidBottomPadding: true,
+          appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(45),
+            child: AppBar(
+              automaticallyImplyLeading: false,
+              brightness: Brightness.light,
+              actions: <Widget>[Container()],
+              iconTheme: const IconThemeData(color: JuntoPalette.juntoGrey),
+              elevation: 0,
+              titleSpacing: 0,
+              title: Container(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: JuntoStyles.horizontalPadding),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        _currentIcon,
+                        const SizedBox(width: 7.5),
+                        Text(_expressionTypeDisplay,
+                            style: Theme.of(context).textTheme.caption)
+                      ],
+                    ),
+                    GestureDetector(
+                      onTap: _onNextClick,
+                      child: Text('next',
+                          style: Theme.of(context).textTheme.caption),
+                    )
+                  ],
+                ),
               ),
-            )
-          ],
+            ),
+          ),
+          endDrawer:
+              const JuntoDrawer(screen: 'Create', icon: CustomIcons.create),
+          floatingActionButton:
+              _bottomNavVisible && MediaQuery.of(context).viewInsets.bottom == 0
+                  ? Padding(
+                      padding: const EdgeInsets.only(bottom: 25),
+                      child: BottomNav(
+                        actionsVisible: false,
+                        screen: 'create',
+                        onTap: () {
+                          setState(() {
+                            _expressionCenterVisible = true;
+                          });
+                        },
+                      ),
+                    )
+                  : const SizedBox(),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          body: Column(
+            children: <Widget>[
+              _buildTemplate(),
+            ],
+          ),
         ),
-      ),
+        AnimatedOpacity(
+          duration: const Duration(milliseconds: 300),
+          opacity: _expressionCenterVisible ? 1.0 : 0.0,
+          child:
+              _expressionCenterVisible ? _expressionCenter() : const SizedBox(),
+        )
+      ],
     );
   }
 }
