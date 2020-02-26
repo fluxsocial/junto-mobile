@@ -3,20 +3,23 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/event.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/longform.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/photo.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/shortform.dart';
+import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 
 class JuntoCreate extends StatefulWidget {
-  const JuntoCreate(
-      {@required this.channels,
-      @required this.address,
-      @required this.expressionContext,
-      @required this.expressionCenterBackground});
+  const JuntoCreate({
+    @required this.channels,
+    @required this.address,
+    @required this.expressionContext,
+    @required this.expressionCenterBackground,
+  });
 
   final List<String> channels;
   final String address;
@@ -156,19 +159,48 @@ class JuntoCreateState extends State<JuntoCreate> {
   }
 
   void _onNextClick() {
-    Navigator.push(
-      context,
-      MaterialPageRoute<dynamic>(
-        builder: (BuildContext context) {
-          return CreateActions(
-            expressionType: _expressionType,
-            address: widget.address,
-            expressionContext: widget.expressionContext,
-            expression: getExpression(),
-          );
-        },
-      ),
-    );
+    final dynamic expression = getExpression();
+    if (_expressionType != 'ShortForm') {
+      Navigator.push(
+        context,
+        MaterialPageRoute<dynamic>(
+          builder: (BuildContext context) {
+            return CreateActions(
+              expressionType: _expressionType,
+              address: widget.address,
+              expressionContext: widget.expressionContext,
+              expression: expression,
+            );
+          },
+        ),
+      );
+    } else {
+      assert(_expressionType == 'ShortForm');
+      assert(expression is CentralizedShortFormExpression);
+      if (expression.body == null || expression.body.isEmpty) {
+        JuntoDialog.showJuntoDialog(
+          context,
+          'Please enter an expression',
+          <Widget>[
+            DialogBack(),
+          ],
+        );
+        return;
+      }
+      Navigator.push(
+        context,
+        MaterialPageRoute<dynamic>(
+          builder: (BuildContext context) {
+            return CreateActions(
+              expressionType: _expressionType,
+              address: widget.address,
+              expressionContext: widget.expressionContext,
+              expression: expression,
+            );
+          },
+        ),
+      );
+    }
   }
 
   dynamic getExpression() {

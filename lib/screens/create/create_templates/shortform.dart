@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/utils/form-validation.dart';
 import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
 
 /// Allows the user to create a short form expression.
@@ -86,62 +87,66 @@ class CreateShortformState extends State<CreateShortform> {
             ),
           ),
           Expanded(
-            child: ListView(
-              padding: const EdgeInsets.all(0),
-              children: <Widget>[
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 25.0,
-                    horizontal: 25.0,
-                  ),
-                  alignment: Alignment.center,
-                  height: MediaQuery.of(context).size.width,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.bottomLeft,
-                      end: Alignment.topRight,
-                      stops: const <double>[
-                        0.2,
-                        0.9,
-                      ],
-                      colors: <Color>[
-                        HexColor.fromHex(gradientOne),
-                        HexColor.fromHex(gradientTwo),
-                      ],
+            child: Form(
+              autovalidate: true,
+              child: ListView(
+                padding: const EdgeInsets.all(0),
+                children: <Widget>[
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 25.0,
+                      horizontal: 25.0,
                     ),
-                  ),
-                  child: TextField(
-                    controller: _bodyController,
-                    buildCounter: (
-                      BuildContext context, {
-                      int currentLength,
-                      int maxLength,
-                      bool isFocused,
-                    }) =>
-                        null,
-                    decoration: InputDecoration(
-                      hintMaxLines: 25,
-                      hintStyle: TextStyle(
-                        color: Colors.white.withOpacity(0.5),
-                        fontSize: 24,
-                        fontWeight: FontWeight.w700,
+                    alignment: Alignment.center,
+                    height: MediaQuery.of(context).size.width,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.bottomLeft,
+                        end: Alignment.topRight,
+                        stops: const <double>[
+                          0.2,
+                          0.9,
+                        ],
+                        colors: <Color>[
+                          HexColor.fromHex(gradientOne),
+                          HexColor.fromHex(gradientTwo),
+                        ],
                       ),
-                      border: InputBorder.none,
                     ),
-                    cursorColor: Colors.white,
-                    cursorWidth: 2,
-                    maxLines: null,
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
-                        fontWeight: FontWeight.w700),
-                    maxLength: 220,
-                    textAlign: TextAlign.center,
-                    textInputAction: TextInputAction.done,
-                  ),
-                )
-              ],
+                    child: TextFormField(
+                      validator: Validator.validateNonEmpty,
+                      controller: _bodyController,
+                      buildCounter: (
+                        BuildContext context, {
+                        int currentLength,
+                        int maxLength,
+                        bool isFocused,
+                      }) =>
+                          null,
+                      decoration: InputDecoration(
+                        hintMaxLines: 25,
+                        hintStyle: TextStyle(
+                          color: Colors.white.withOpacity(0.5),
+                          fontSize: 24,
+                          fontWeight: FontWeight.w700,
+                        ),
+                        border: InputBorder.none,
+                      ),
+                      cursorColor: Colors.white,
+                      cursorWidth: 2,
+                      maxLines: null,
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w700),
+                      maxLength: 220,
+                      textAlign: TextAlign.center,
+                      textInputAction: TextInputAction.done,
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ],
