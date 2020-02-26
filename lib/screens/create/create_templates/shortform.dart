@@ -28,6 +28,11 @@ class CreateShortformState extends State<CreateShortform> {
     );
   }
 
+  bool validate() {
+    return _bodyController.value.text != null &&
+        _bodyController.value.text.isNotEmpty;
+  }
+
   @override
   void initState() {
     super.initState();
