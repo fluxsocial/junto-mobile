@@ -419,10 +419,11 @@ class JuntoCreateState extends State<JuntoCreate> {
             Text(
               expressionName,
               style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500,
-                  decoration: TextDecoration.none),
+                fontSize: 14,
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+                decoration: TextDecoration.none,
+              ),
             )
           ],
         ),
