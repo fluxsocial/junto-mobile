@@ -43,11 +43,10 @@ class CreateSphereState extends State<CreateSphere> {
   TextEditingController sphereHandleController;
   TextEditingController sphereDescriptionController;
   String _currentPrivacy = 'Public';
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final List<String> _sphereMembers = <String>[];
-
   final List<String> _tabs = <String>['Subscriptions', 'Connections'];
-
   final AsyncMemoizer<Map<String, dynamic>> _memoizer =
       AsyncMemoizer<Map<String, dynamic>>();
 
@@ -163,71 +162,77 @@ class CreateSphereState extends State<CreateSphere> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            _currentIndex == 0
-                ? GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child: Container(
-                      padding: const EdgeInsets.only(left: 10),
-                      color: Colors.transparent,
-                      width: 48,
-                      alignment: Alignment.centerLeft,
-                      child: Icon(CustomIcons.back,
-                          size: 20, color: Theme.of(context).primaryColor),
-                    ),
-                  )
-                : GestureDetector(
-                    onTap: () {
-                      createSphereController.previousPage(
-                        curve: Curves.easeIn,
-                        duration: const Duration(milliseconds: 300),
-                      );
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.only(left: 10),
-                      color: Colors.transparent,
-                      width: 60,
-                      alignment: Alignment.centerLeft,
-                      child: Icon(CustomIcons.back,
-                          size: 17, color: Theme.of(context).primaryColorDark),
-                    ),
+            if (_currentIndex == 0)
+              GestureDetector(
+                onTap: () => Navigator.pop(context),
+                child: Container(
+                  padding: const EdgeInsets.only(left: 10),
+                  color: Colors.transparent,
+                  width: 48,
+                  alignment: Alignment.centerLeft,
+                  child: Icon(
+                    CustomIcons.back,
+                    size: 20,
+                    color: Theme.of(context).primaryColor,
                   ),
-            _currentIndex == 0
-                ? Text('Create Sphere',
-                    style: Theme.of(context).textTheme.subtitle1)
-                : const SizedBox(),
-            _currentIndex == 2
-                ? GestureDetector(
-                    onTap: _createSphere,
-                    child: Container(
-                      color: Colors.transparent,
-                      padding: const EdgeInsets.only(right: 10),
-                      width: 60,
-                      alignment: Alignment.centerRight,
-                      child: Text('create',
-                          style: Theme.of(context).textTheme.caption),
-                    ),
-                  )
-                : GestureDetector(
-                    onTap: () {
-                      if (_currentIndex == 0) {
-                        setState(() {
-                          sphereName = sphereNameController.value.text;
-                          sphereHandle = sphereHandleController.value.text;
-                          sphereDescription =
-                              sphereDescriptionController.value.text;
-                        });
-                      }
-                      _validateSphereCreation();
-                    },
-                    child: Container(
-                      color: Colors.transparent,
-                      padding: const EdgeInsets.only(right: 10),
-                      width: 48,
-                      alignment: Alignment.centerRight,
-                      child: Text('next',
-                          style: Theme.of(context).textTheme.caption),
-                    ),
-                  )
+                ),
+              ),
+            if (_currentIndex != 0)
+              GestureDetector(
+                onTap: () {
+                  createSphereController.previousPage(
+                    curve: Curves.easeIn,
+                    duration: const Duration(milliseconds: 300),
+                  );
+                },
+                child: Container(
+                  padding: const EdgeInsets.only(left: 10),
+                  color: Colors.transparent,
+                  width: 60,
+                  alignment: Alignment.centerLeft,
+                  child: Icon(CustomIcons.back,
+                      size: 17, color: Theme.of(context).primaryColorDark),
+                ),
+              ),
+            if (_currentIndex == 0)
+              Text(
+                'Create Sphere',
+                style: Theme.of(context).textTheme.subtitle1,
+              ),
+            if (_currentIndex == 2)
+              GestureDetector(
+                onTap: _createSphere,
+                child: Container(
+                  color: Colors.transparent,
+                  padding: const EdgeInsets.only(right: 10),
+                  width: 60,
+                  alignment: Alignment.centerRight,
+                  child: Text('create',
+                      style: Theme.of(context).textTheme.caption),
+                ),
+              ),
+            if (_currentIndex != 2)
+              GestureDetector(
+                onTap: () {
+                  if (_currentIndex == 0) {
+                    setState(() {
+                      sphereName = sphereNameController.value.text;
+                      sphereHandle = sphereHandleController.value.text;
+                      sphereDescription =
+                          sphereDescriptionController.value.text;
+                    });
+                  }
+                  _validateSphereCreation();
+                },
+                child: Container(
+                  color: Colors.transparent,
+                  padding: const EdgeInsets.only(right: 10),
+                  width: 48,
+                  alignment: Alignment.centerRight,
+                  child:
+                      Text('next', style: Theme.of(context).textTheme.caption),
+                ),
+              )
           ],
         ),
       ),
@@ -283,53 +288,54 @@ class CreateSphereState extends State<CreateSphere> {
   Widget _createSphereOne() {
     return ListView(
       children: <Widget>[
-        imageFile == null
-            ? GestureDetector(
-                onTap: _onPickPressed,
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 15),
-                  alignment: Alignment.center,
-                  width: MediaQuery.of(context).size.width,
-                  height: (MediaQuery.of(context).size.width / 3) * 2,
-                  color: Theme.of(context).dividerColor,
-                  child: Icon(
-                    CustomIcons.camera,
-                    size: 38,
-                    color: Theme.of(context).primaryColorLight,
+        if (imageFile == null)
+          GestureDetector(
+            onTap: _onPickPressed,
+            child: Container(
+              margin: const EdgeInsets.only(bottom: 15),
+              alignment: Alignment.center,
+              width: MediaQuery.of(context).size.width,
+              height: (MediaQuery.of(context).size.width / 3) * 2,
+              color: Theme.of(context).dividerColor,
+              child: Icon(
+                CustomIcons.camera,
+                size: 38,
+                color: Theme.of(context).primaryColorLight,
+              ),
+            ),
+          ),
+        if (imageFile != null)
+          Column(children: <Widget>[
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: (MediaQuery.of(context).size.width / 3) * 2,
+              color: Theme.of(context).dividerColor,
+              child: Image.file(imageFile, fit: BoxFit.cover),
+            ),
+            GestureDetector(
+              onTap: _openChangePhotoModal,
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  border: Border(
+                    bottom: BorderSide(
+                        color: Theme.of(context).dividerColor, width: .75),
                   ),
                 ),
-              )
-            : Column(children: <Widget>[
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: (MediaQuery.of(context).size.width / 3) * 2,
-                  color: Theme.of(context).dividerColor,
-                  child: Image.file(imageFile, fit: BoxFit.cover),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text('Change photo',
+                        style: Theme.of(context).textTheme.caption),
+                    Icon(Icons.keyboard_arrow_right,
+                        color: Theme.of(context).primaryColorLight)
+                  ],
                 ),
-                GestureDetector(
-                  onTap: _openChangePhotoModal,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 15, horizontal: 10),
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      border: Border(
-                        bottom: BorderSide(
-                            color: Theme.of(context).dividerColor, width: .75),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text('Change photo',
-                            style: Theme.of(context).textTheme.caption),
-                        Icon(Icons.keyboard_arrow_right,
-                            color: Theme.of(context).primaryColorLight)
-                      ],
-                    ),
-                  ),
-                ),
-              ]),
+              ),
+            ),
+          ]),
         const SizedBox(height: 10),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -408,6 +414,14 @@ class CreateSphereState extends State<CreateSphere> {
     );
   }
 
+  void _sphereAddMember(UserProfile member) {
+    _sphereMembers.add(member.address);
+  }
+
+  void _sphereRemoveMember(UserProfile member) {
+    _sphereMembers.remove(member.address);
+  }
+
   Widget _createSphereTwo() {
     return DefaultTabController(
       length: _tabs.length,
@@ -454,40 +468,28 @@ class CreateSphereState extends State<CreateSphere> {
 
               return TabBarView(
                 children: <Widget>[
-                  // subscriptions
                   ListView(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
-                    children: _followingMembers
-                        .map(
-                          (dynamic member) => MemberPreviewSelect(
-                            profile: member,
-                            onSelect: () {
-                              _sphereMembers.add(member.address);
-                            },
-                            onDeselect: () {
-                              _sphereMembers.indexWhere(member.addres);
-                              _sphereMembers.remove(member.address);
-                            },
-                          ),
-                        )
-                        .toList(),
+                    children: [
+                      for (UserProfile member in _followingMembers)
+                        MemberPreviewSelect(
+                          profile: member,
+                          onSelect: _sphereAddMember,
+                          onDeselect: _sphereRemoveMember,
+                        ),
+                    ],
                   ),
                   // connections
                   ListView(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
-                    children: _connectionsMembers
-                        .map(
-                          (dynamic connection) => MemberPreviewSelect(
-                            profile: connection,
-                            onSelect: () {
-                              _sphereMembers.add(connection.address);
-                            },
-                            onDeselect: () {
-                              _sphereMembers.remove(connection.address);
-                            },
-                          ),
-                        )
-                        .toList(),
+                    children: <Widget>[
+                      for (UserProfile connection in _connectionsMembers)
+                        MemberPreviewSelect(
+                          profile: connection,
+                          onSelect: _sphereAddMember,
+                          onDeselect: _sphereRemoveMember,
+                        ),
+                    ],
                   ),
                 ],
               );
