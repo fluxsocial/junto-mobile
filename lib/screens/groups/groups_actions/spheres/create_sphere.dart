@@ -470,7 +470,7 @@ class CreateSphereState extends State<CreateSphere> {
                 children: <Widget>[
                   ListView(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
-                    children: [
+                    children: <Widget>[
                       for (UserProfile member in _followingMembers)
                         MemberPreviewSelect(
                           profile: member,
