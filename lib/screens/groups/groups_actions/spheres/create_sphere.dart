@@ -7,6 +7,7 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/utils/form-validation.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
@@ -42,10 +43,13 @@ class CreateSphereState extends State<CreateSphere> {
   TextEditingController sphereHandleController;
   TextEditingController sphereDescriptionController;
   String _currentPrivacy = 'Public';
-
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final List<String> _sphereMembers = <String>[];
 
   final List<String> _tabs = <String>['Subscriptions', 'Connections'];
+
+  final AsyncMemoizer<Map<String, dynamic>> _memoizer =
+      AsyncMemoizer<Map<String, dynamic>>();
 
   Future<void> _onPickPressed() async {
     final File image = await ImagePicker.pickImage(source: ImageSource.gallery);
@@ -118,20 +122,122 @@ class CreateSphereState extends State<CreateSphere> {
 
   @override
   void initState() {
+    super.initState();
     createSphereController = PageController();
     sphereNameController = TextEditingController();
     sphereHandleController = TextEditingController();
     sphereDescriptionController = TextEditingController();
-
-    super.initState();
   }
-
-  final AsyncMemoizer<Map<String, dynamic>> _memoizer =
-      AsyncMemoizer<Map<String, dynamic>>();
 
   Future<Map<String, dynamic>> getUserRelationships() async {
     return _memoizer.runOnce(
       () => Provider.of<UserRepo>(context, listen: false).userRelations(),
+    );
+  }
+
+  void _validateSphereCreation() {
+    if (_formKey.currentState.validate()) {
+      createSphereController.nextPage(
+        curve: Curves.easeIn,
+        duration: const Duration(milliseconds: 300),
+      );
+    } else {
+      JuntoDialog.showJuntoDialog(
+        context,
+        'Please ensure all fields are filled',
+        <Widget>[
+          DialogBack(),
+        ],
+      );
+    }
+  }
+
+  Widget _buildAppBar() {
+    return AppBar(
+      automaticallyImplyLeading: false,
+      brightness: Brightness.light,
+      iconTheme: const IconThemeData(color: JuntoPalette.juntoSleek),
+      elevation: 0,
+      titleSpacing: 0,
+      title: Container(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            _currentIndex == 0
+                ? GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: Container(
+                      padding: const EdgeInsets.only(left: 10),
+                      color: Colors.transparent,
+                      width: 48,
+                      alignment: Alignment.centerLeft,
+                      child: Icon(CustomIcons.back,
+                          size: 20, color: Theme.of(context).primaryColor),
+                    ),
+                  )
+                : GestureDetector(
+                    onTap: () {
+                      createSphereController.previousPage(
+                        curve: Curves.easeIn,
+                        duration: const Duration(milliseconds: 300),
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.only(left: 10),
+                      color: Colors.transparent,
+                      width: 60,
+                      alignment: Alignment.centerLeft,
+                      child: Icon(CustomIcons.back,
+                          size: 17, color: Theme.of(context).primaryColorDark),
+                    ),
+                  ),
+            _currentIndex == 0
+                ? Text('Create Sphere',
+                    style: Theme.of(context).textTheme.subtitle1)
+                : const SizedBox(),
+            _currentIndex == 2
+                ? GestureDetector(
+                    onTap: _createSphere,
+                    child: Container(
+                      color: Colors.transparent,
+                      padding: const EdgeInsets.only(right: 10),
+                      width: 60,
+                      alignment: Alignment.centerRight,
+                      child: Text('create',
+                          style: Theme.of(context).textTheme.caption),
+                    ),
+                  )
+                : GestureDetector(
+                    onTap: () {
+                      if (_currentIndex == 0) {
+                        setState(() {
+                          sphereName = sphereNameController.value.text;
+                          sphereHandle = sphereHandleController.value.text;
+                          sphereDescription =
+                              sphereDescriptionController.value.text;
+                        });
+                      }
+                      _validateSphereCreation();
+                    },
+                    child: Container(
+                      color: Colors.transparent,
+                      padding: const EdgeInsets.only(right: 10),
+                      width: 48,
+                      alignment: Alignment.centerRight,
+                      child: Text('next',
+                          style: Theme.of(context).textTheme.caption),
+                    ),
+                  )
+          ],
+        ),
+      ),
+      bottom: PreferredSize(
+        preferredSize: const Size.fromHeight(.75),
+        child: Container(
+          height: .75,
+          decoration: BoxDecoration(color: Theme.of(context).dividerColor),
+        ),
+      ),
     );
   }
 
@@ -140,98 +246,7 @@ class CreateSphereState extends State<CreateSphere> {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(45),
-        child: AppBar(
-          automaticallyImplyLeading: false,
-          brightness: Brightness.light,
-          iconTheme: const IconThemeData(color: JuntoPalette.juntoSleek),
-          elevation: 0,
-          titleSpacing: 0,
-          title: Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                _currentIndex == 0
-                    ? GestureDetector(
-                        onTap: () => Navigator.pop(context),
-                        child: Container(
-                          padding: const EdgeInsets.only(left: 10),
-                          color: Colors.transparent,
-                          width: 48,
-                          alignment: Alignment.centerLeft,
-                          child: Icon(CustomIcons.back,
-                              size: 20, color: Theme.of(context).primaryColor),
-                        ),
-                      )
-                    : GestureDetector(
-                        onTap: () {
-                          createSphereController.previousPage(
-                            curve: Curves.easeIn,
-                            duration: const Duration(milliseconds: 300),
-                          );
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.only(left: 10),
-                          color: Colors.transparent,
-                          width: 60,
-                          alignment: Alignment.centerLeft,
-                          child: Icon(CustomIcons.back,
-                              size: 17,
-                              color: Theme.of(context).primaryColorDark),
-                        ),
-                      ),
-                _currentIndex == 0
-                    ? Text('Create Sphere',
-                        style: Theme.of(context).textTheme.subtitle1)
-                    : const SizedBox(),
-                _currentIndex == 2
-                    ? GestureDetector(
-                        onTap: () {
-                          _createSphere();
-                        },
-                        child: Container(
-                          color: Colors.transparent,
-                          padding: const EdgeInsets.only(right: 10),
-                          width: 60,
-                          alignment: Alignment.centerRight,
-                          child: Text('create',
-                              style: Theme.of(context).textTheme.caption),
-                        ),
-                      )
-                    : GestureDetector(
-                        onTap: () {
-                          if (_currentIndex == 0) {
-                            setState(() {
-                              sphereName = sphereNameController.value.text;
-                              sphereHandle = sphereHandleController.value.text;
-                              sphereDescription =
-                                  sphereDescriptionController.value.text;
-                            });
-                          }
-                          createSphereController.nextPage(
-                            curve: Curves.easeIn,
-                            duration: const Duration(milliseconds: 300),
-                          );
-                        },
-                        child: Container(
-                          color: Colors.transparent,
-                          padding: const EdgeInsets.only(right: 10),
-                          width: 48,
-                          alignment: Alignment.centerRight,
-                          child: Text('next',
-                              style: Theme.of(context).textTheme.caption),
-                        ),
-                      )
-              ],
-            ),
-          ),
-          bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(.75),
-            child: Container(
-              height: .75,
-              decoration: BoxDecoration(color: Theme.of(context).dividerColor),
-            ),
-          ),
-        ),
+        child: _buildAppBar(),
       ),
       backgroundColor: Theme.of(context).backgroundColor,
       body: Container(
@@ -249,7 +264,11 @@ class CreateSphereState extends State<CreateSphere> {
                   });
                 },
                 children: <Widget>[
-                  _createSphereOne(),
+                  Form(
+                    key: _formKey,
+                    autovalidate: true,
+                    child: _createSphereOne(),
+                  ),
                   _createSphereTwo(),
                   _createSphereThree()
                 ],
@@ -262,126 +281,131 @@ class CreateSphereState extends State<CreateSphere> {
   }
 
   Widget _createSphereOne() {
-    return ListView(children: <Widget>[
-      imageFile == null
-          ? GestureDetector(
-              onTap: () {
-                _onPickPressed();
-              },
-              child: Container(
+    return ListView(
+      children: <Widget>[
+        imageFile == null
+            ? GestureDetector(
+                onTap: _onPickPressed,
+                child: Container(
                   margin: const EdgeInsets.only(bottom: 15),
                   alignment: Alignment.center,
                   width: MediaQuery.of(context).size.width,
                   height: (MediaQuery.of(context).size.width / 3) * 2,
                   color: Theme.of(context).dividerColor,
-                  child: Icon(CustomIcons.camera,
-                      size: 38, color: Theme.of(context).primaryColorLight)),
-            )
-          : Column(children: <Widget>[
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: (MediaQuery.of(context).size.width / 3) * 2,
-                color: Theme.of(context).dividerColor,
-                child: Image.file(imageFile, fit: BoxFit.cover),
-              ),
-              GestureDetector(
-                onTap: () {
-                  _openChangePhotoModal();
-                },
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    border: Border(
-                      bottom: BorderSide(
-                          color: Theme.of(context).dividerColor, width: .75),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text('Change photo',
-                          style: Theme.of(context).textTheme.caption),
-                      Icon(Icons.keyboard_arrow_right,
-                          color: Theme.of(context).primaryColorLight)
-                    ],
+                  child: Icon(
+                    CustomIcons.camera,
+                    size: 38,
+                    color: Theme.of(context).primaryColorLight,
                   ),
                 ),
-              ),
-            ]),
-      const SizedBox(height: 10),
-      Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        width: MediaQuery.of(context).size.width,
-        child: TextFormField(
-          controller: sphereNameController,
-          buildCounter: (
-            BuildContext context, {
-            int currentLength,
-            int maxLength,
-            bool isFocused,
-          }) =>
-              null,
-          decoration: InputDecoration(
-              border: InputBorder.none,
-              hintText: 'Name of sphere',
-              hintStyle: Theme.of(context).textTheme.subtitle1),
-          cursorColor: JuntoPalette.juntoGrey,
-          cursorWidth: 2,
-          maxLines: null,
-          maxLength: 140,
-          style: Theme.of(context).textTheme.headline6,
-          textInputAction: TextInputAction.done,
-        ),
-      ),
-      const SizedBox(height: 10),
-      Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: TextField(
-          controller: sphereHandleController,
-          buildCounter: (
-            BuildContext context, {
-            int currentLength,
-            int maxLength,
-            bool isFocused,
-          }) =>
-              null,
-          decoration: InputDecoration(
-              border: InputBorder.none,
-              hintText: 'Unique username',
-              hintStyle: Theme.of(context).textTheme.caption),
-          cursorColor: Theme.of(context).primaryColorDark,
-          cursorWidth: 2,
-          maxLines: null,
-          style: Theme.of(context).textTheme.caption,
-          maxLength: 80,
-          textInputAction: TextInputAction.done,
-        ),
-      ),
-      const SizedBox(height: 10),
-      Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: TextField(
-          controller: sphereDescriptionController,
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            hintText: 'About sphere',
-            hintStyle: Theme.of(context).textTheme.caption,
-            counterStyle: const TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
-            ),
+              )
+            : Column(children: <Widget>[
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: (MediaQuery.of(context).size.width / 3) * 2,
+                  color: Theme.of(context).dividerColor,
+                  child: Image.file(imageFile, fit: BoxFit.cover),
+                ),
+                GestureDetector(
+                  onTap: _openChangePhotoModal,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 15, horizontal: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      border: Border(
+                        bottom: BorderSide(
+                            color: Theme.of(context).dividerColor, width: .75),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text('Change photo',
+                            style: Theme.of(context).textTheme.caption),
+                        Icon(Icons.keyboard_arrow_right,
+                            color: Theme.of(context).primaryColorLight)
+                      ],
+                    ),
+                  ),
+                ),
+              ]),
+        const SizedBox(height: 10),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          width: MediaQuery.of(context).size.width,
+          child: TextFormField(
+            validator: Validator.validateNonEmpty,
+            controller: sphereNameController,
+            buildCounter: (
+              BuildContext context, {
+              int currentLength,
+              int maxLength,
+              bool isFocused,
+            }) =>
+                null,
+            decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: 'Name of sphere',
+                hintStyle: Theme.of(context).textTheme.subtitle1),
+            cursorColor: JuntoPalette.juntoGrey,
+            cursorWidth: 2,
+            maxLines: null,
+            maxLength: 140,
+            style: Theme.of(context).textTheme.headline6,
+            textInputAction: TextInputAction.done,
           ),
-          cursorColor: Theme.of(context).primaryColorDark,
-          cursorWidth: 2,
-          maxLines: null,
-          style: Theme.of(context).textTheme.caption,
-          maxLength: 1000,
-          textInputAction: TextInputAction.done,
         ),
-      ),
-    ]);
+        const SizedBox(height: 10),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: TextFormField(
+            validator: Validator.validateNonEmpty,
+            controller: sphereHandleController,
+            buildCounter: (
+              BuildContext context, {
+              int currentLength,
+              int maxLength,
+              bool isFocused,
+            }) =>
+                null,
+            decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: 'Unique username',
+                hintStyle: Theme.of(context).textTheme.caption),
+            cursorColor: Theme.of(context).primaryColorDark,
+            cursorWidth: 2,
+            maxLines: null,
+            style: Theme.of(context).textTheme.caption,
+            maxLength: 80,
+            textInputAction: TextInputAction.done,
+          ),
+        ),
+        const SizedBox(height: 10),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: TextFormField(
+            validator: Validator.validateNonEmpty,
+            controller: sphereDescriptionController,
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              hintText: 'About sphere',
+              hintStyle: Theme.of(context).textTheme.caption,
+              counterStyle: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            cursorColor: Theme.of(context).primaryColorDark,
+            cursorWidth: 2,
+            maxLines: null,
+            style: Theme.of(context).textTheme.caption,
+            maxLength: 1000,
+            textInputAction: TextInputAction.done,
+          ),
+        ),
+      ],
+    );
   }
 
   Widget _createSphereTwo() {
