@@ -31,6 +31,22 @@ class CreateLongformState extends State<CreateLongform> {
     );
   }
 
+  bool validate() {
+    // Body cannot be empty if the title is also empty
+    if (_titleController.value.text.isEmpty) {
+      return _bodyController.value.text.isNotEmpty;
+    }
+    // Body can be empty if the title is not empty
+    if (_titleController.value.text.isNotEmpty) {
+      return true;
+    }
+    // Title can be empty if the title is not empty
+    if (_bodyController.value.text.isNotEmpty) {
+      return true;
+    }
+    return false;
+  }
+
   @override
   void dispose() {
     super.dispose();
