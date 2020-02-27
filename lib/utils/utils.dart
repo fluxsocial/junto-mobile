@@ -1,5 +1,12 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/screens/den/den.dart';
+import 'package:junto_beta_mobile/screens/member/member.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 /// Should not be used. Values that are expected
 /// to be `String`s are actually non-nullable.
 Map<String, dynamic> _stringifyValuesRecursively(Map<String, dynamic> source) {
@@ -199,5 +206,36 @@ mixin RFC3339 {
       }
     }
     return null;
+  }
+}
+
+/// Mixin which allows you to verify whether the [incoming] user is
+/// the same as the user currently logged into the application.
+mixin MemberValidation {
+  Future<bool> isHostUser(UserProfile incoming) async {
+    final SharedPreferences _prefs = await SharedPreferences.getInstance();
+    final String _userAddress = _prefs.getString('user_id');
+    return incoming.address == _userAddress;
+  }
+
+  /// Navigates the user to the correct profile "Den" screen based on whether
+  /// they are the host (logged in) user or not.
+  Future<void> showUserDen(BuildContext context, UserProfile profile) async {
+    if (await isHostUser(profile)) {
+      Navigator.push(
+        context,
+        CupertinoPageRoute<dynamic>(
+          builder: (BuildContext context) => JuntoDen(),
+        ),
+      );
+      return;
+    }
+    Navigator.push(
+      context,
+      CupertinoPageRoute<dynamic>(
+        builder: (BuildContext context) => JuntoMember(profile: profile),
+      ),
+    );
+    return;
   }
 }
