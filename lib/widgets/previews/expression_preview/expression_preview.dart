@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open.dart';
-import 'package:junto_beta_mobile/screens/member/member.dart';
+import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/expression_action_items.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview_types/event_preview.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview_types/longform_preview.dart';
@@ -11,7 +11,7 @@ import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview_types/shortform_preview.dart';
 
 /// Renders a concise overview of one given [ExpressionResult].
-class ExpressionPreview extends StatelessWidget {
+class ExpressionPreview extends StatelessWidget with MemberValidation {
   const ExpressionPreview(
       {Key key,
       @required this.expression,
@@ -114,17 +114,7 @@ class ExpressionPreview extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        CupertinoPageRoute<dynamic>(
-                          builder: (
-                            BuildContext context,
-                          ) =>
-                              JuntoMember(profile: expression.creator),
-                        ),
-                      );
-                    },
+                    onTap: () => showUserDen(context, expression.creator),
                     child: Container(
                       constraints: BoxConstraints(
                         maxWidth: MediaQuery.of(context).size.width * .5 - 40,
