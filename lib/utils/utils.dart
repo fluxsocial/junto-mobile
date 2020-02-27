@@ -1,73 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-/// Should not be used. Values that are expected
-/// to be `String`s are actually non-nullable.
-Map<String, dynamic> _stringifyValuesRecursively(Map<String, dynamic> source) {
-  return source.map(
-    (String key, dynamic value) {
-      return MapEntry<String, dynamic>(
-        key,
-        value is Map ? _stringifyValuesRecursively(value) : value.toString(),
-      );
-    },
-  );
-}
-
-/// Serializes (json.encode) all fields in `source`
-/// for compatibility with the current backend,
-/// i.e., maps within objects are also converted to their
-/// respective JSON representation.
-String serializeHoloJson(Map<String, dynamic> source) {
-  final Map<String, dynamic> stringifiedValuesMap =
-      _stringifyValuesRecursively(source);
-
-  return json.encode(
-    stringifiedValuesMap.map(
-      (String key, dynamic value) {
-        return MapEntry<String, dynamic>(
-          key,
-          value is Map ? json.encode(value) : value,
-        );
-      },
-    ),
-  ).replaceAll('\\\\', '');
-}
-
-/// Deserializes (json.decode) all fields `source`
-/// for compatibility with the current backend,
-/// i.e., maps within the `source` are also converted to their
-/// respective JSON representation.
-dynamic deserializeHoloJson(String source) {
-  dynamic deserialized;
-  try {
-    deserialized = json.decode(source);
-  } on FormatException {
-    return source;
-  }
-
-  if (deserialized is Map<String, dynamic>) {
-    return deserialized.map(
-      (String key, dynamic value) => MapEntry<String, dynamic>(
-        key,
-        value is String ? deserializeHoloJson(value) : value,
-      ),
-    );
-  }
-  if (deserialized is List) {
-    return deserialized
-        .map((dynamic element) => deserializeHoloJson(element))
-        .toList();
-  }
-
-  return deserialized;
-}
 
 mixin AddUserToList<T> {
   List<T> placeUser(T data, List<T> list) {
@@ -80,6 +16,69 @@ mixin AddUserToList<T> {
       newList.add(data);
       return newList;
     }
+  }
+}
+
+/// Mixin containing a helper list method
+mixin ListDistinct {
+  /// Creates a new list with the unique elements form [listOne] and [listTwo].
+  /// The new list is returned  with the specified type [T]
+  List<T> distinct<T>(List<T> listOne, List<T> listTwo) {
+    final List<T> _newList = <T>[];
+    _newList.addAll(listOne);
+    for (final T item in listTwo) {
+      if (_newList.contains(item)) {
+        _newList.remove(item);
+      }
+      _newList.add(item);
+    }
+    return _newList;
+  }
+}
+
+mixin RFC3339 {
+  static DateTime parseRfc3339(String time) {
+    if (time != null) {
+      if (time.length > 25) {
+        final String limitedString =
+            time.substring(0, 20) + time[time.length - 1];
+        return DateTime.parse(limitedString);
+      } else {
+        return DateTime.parse(time);
+      }
+    }
+    return null;
+  }
+}
+
+/// Mixin which allows you to verify whether the [incoming] user is
+/// the same as the user currently logged into the application.
+mixin MemberValidation {
+  Future<bool> isHostUser(UserProfile incoming) async {
+    final SharedPreferences _prefs = await SharedPreferences.getInstance();
+    final String _userAddress = _prefs.getString('user_id');
+    return incoming.address == _userAddress;
+  }
+
+  /// Navigates the user to the correct profile "Den" screen based on whether
+  /// they are the host (logged in) user or not.
+  Future<void> showUserDen(BuildContext context, UserProfile profile) async {
+    if (await isHostUser(profile)) {
+      Navigator.push(
+        context,
+        CupertinoPageRoute<dynamic>(
+          builder: (BuildContext context) => JuntoDen(),
+        ),
+      );
+      return;
+    }
+    Navigator.push(
+      context,
+      CupertinoPageRoute<dynamic>(
+        builder: (BuildContext context) => JuntoMember(profile: profile),
+      ),
+    );
+    return;
   }
 }
 
@@ -174,68 +173,5 @@ mixin DateParser {
         break;
     }
     return 0;
-  }
-}
-
-/// Mixin containing a helper list method
-mixin ListDistinct {
-  /// Creates a new list with the unique elements form [listOne] and [listTwo].
-  /// The new list is returned  with the specified type [T]
-  List<T> distinct<T>(List<T> listOne, List<T> listTwo) {
-    final List<T> _newList = <T>[];
-    _newList.addAll(listOne);
-    for (final T item in listTwo) {
-      if (_newList.contains(item)) {
-        _newList.remove(item);
-      }
-      _newList.add(item);
-    }
-    return _newList;
-  }
-}
-
-mixin RFC3339 {
-  static DateTime parseRfc3339(String time) {
-    if (time != null) {
-      if (time.length > 25) {
-        final String limitedString =
-            time.substring(0, 20) + time[time.length - 1];
-        return DateTime.parse(limitedString);
-      } else {
-        return DateTime.parse(time);
-      }
-    }
-    return null;
-  }
-}
-
-/// Mixin which allows you to verify whether the [incoming] user is
-/// the same as the user currently logged into the application.
-mixin MemberValidation {
-  Future<bool> isHostUser(UserProfile incoming) async {
-    final SharedPreferences _prefs = await SharedPreferences.getInstance();
-    final String _userAddress = _prefs.getString('user_id');
-    return incoming.address == _userAddress;
-  }
-
-  /// Navigates the user to the correct profile "Den" screen based on whether
-  /// they are the host (logged in) user or not.
-  Future<void> showUserDen(BuildContext context, UserProfile profile) async {
-    if (await isHostUser(profile)) {
-      Navigator.push(
-        context,
-        CupertinoPageRoute<dynamic>(
-          builder: (BuildContext context) => JuntoDen(),
-        ),
-      );
-      return;
-    }
-    Navigator.push(
-      context,
-      CupertinoPageRoute<dynamic>(
-        builder: (BuildContext context) => JuntoMember(profile: profile),
-      ),
-    );
-    return;
   }
 }
