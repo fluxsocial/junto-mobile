@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/packs.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/spheres.dart';
 
 class JuntoGroupsActions extends StatefulWidget {
-  const JuntoGroupsActions(
-      {this.userProfile, this.changeGroup, this.spheresVisible});
+  const JuntoGroupsActions({
+    this.userProfile,
+    this.changeGroup,
+    this.spheresVisible,
+  });
 
   final UserData userProfile;
   final Function changeGroup;
   final bool spheresVisible;
+
   @override
   State<StatefulWidget> createState() {
     return JuntoGroupsActionsState();
@@ -69,22 +73,25 @@ class JuntoGroupsActionsState extends State<JuntoGroupsActions> {
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                Icon(CustomIcons.packs,
-                                    size: 20,
+                                Icon(
+                                  CustomIcons.packs,
+                                  size: 20,
+                                  color: spheresVisible
+                                      ? Theme.of(context).primaryColorLight
+                                      : Theme.of(context).primaryColorDark,
+                                ),
+                                const SizedBox(height: 7),
+                                Text(
+                                  'PACKS',
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w500,
                                     color: spheresVisible
                                         ? Theme.of(context).primaryColorLight
-                                        : Theme.of(context).primaryColorDark),
-                                const SizedBox(height: 7),
-                                Text('PACKS',
-                                    style: TextStyle(
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.w500,
-                                        color: spheresVisible
-                                            ? Theme.of(context)
-                                                .primaryColorLight
-                                            : Theme.of(context)
-                                                .primaryColorDark,
-                                        decoration: TextDecoration.none))
+                                        : Theme.of(context).primaryColorDark,
+                                    decoration: TextDecoration.none,
+                                  ),
+                                )
                               ]),
                         ),
                       ),
