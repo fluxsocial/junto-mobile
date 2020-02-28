@@ -15,7 +15,6 @@ import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/custom_listview.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/drawer/filter_drawer.dart';
-import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
@@ -237,43 +236,40 @@ class JuntoCollectiveState extends State<JuntoCollective>
   Widget _buildPerspectiveFeed() {
     return RefreshIndicator(
       onRefresh: refreshData,
-      child: ValueListenableBuilder<
-              Future<QueryResults<CentralizedExpressionResponse>>>(
-          valueListenable: _expressionCompleter,
-          builder: (
-            BuildContext context,
-            Future<QueryResults<CentralizedExpressionResponse>> value,
-            _,
-          ) {
-            return FutureBuilder<QueryResults<CentralizedExpressionResponse>>(
-              future: value,
-              builder: (
-                BuildContext context,
-                AsyncSnapshot<QueryResults<CentralizedExpressionResponse>>
-                    snapshot,
-              ) {
-                if (snapshot.hasError) {
-                  print('Error: ${snapshot.error}');
-                  return const Center(
-                    child: Text('hmm, something is up with our servers'),
-                  );
-                }
-                if (snapshot.hasData) {
-                  return CustomScrollView(
-                    controller: _collectiveController,
-                    slivers: <Widget>[
-                      SliverPersistentHeader(
-                        delegate: CollectiveAppBar(
-                          // expandedHeight: 85,
-                          expandedHeight: 135,
-                          appbarTitle: _appbarTitle,
-                          openFilterDrawer: () {
-                            Scaffold.of(context).openDrawer();
-                          },
-                        ),
-                        pinned: false,
-                        floating: true,
-
+      child: ValueListenableBuilder<Future<QueryResults<ExpressionResponse>>>(
+        valueListenable: _expressionCompleter,
+        builder: (
+          BuildContext context,
+          Future<QueryResults<ExpressionResponse>> value,
+          _,
+        ) {
+          return FutureBuilder<QueryResults<ExpressionResponse>>(
+            future: value,
+            builder: (
+              BuildContext context,
+              AsyncSnapshot<QueryResults<ExpressionResponse>> snapshot,
+            ) {
+              if (snapshot.hasError) {
+                print('Error: ${snapshot.error}');
+                return const Center(
+                  child: Text('hmm, something is up with our servers'),
+                );
+              }
+              if (snapshot.hasData) {
+                return CustomScrollView(
+                  controller: _collectiveController,
+                  slivers: <Widget>[
+                    SliverPersistentHeader(
+                      delegate: CollectiveAppBar(
+                        // expandedHeight: 85,
+                        expandedHeight: 135,
+                        appbarTitle: _appbarTitle,
+                        openFilterDrawer: () {
+                          Scaffold.of(context).openDrawer();
+                        },
+                      ),
+                      pinned: false,
+                      floating: true,
                     ),
                     CustomSliverListView(
                       userAddress: _userAddress,
