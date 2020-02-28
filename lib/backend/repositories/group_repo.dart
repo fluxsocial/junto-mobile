@@ -6,7 +6,7 @@ class GroupRepo {
 
   final GroupService _groupService;
 
-  Future<CentralizedSphereResponse> createSphere(CentralizedSphere sphere) {
+  Future<SphereResponse> createSphere(SphereModel sphere) {
     return _groupService.createSphere(sphere);
   }
 

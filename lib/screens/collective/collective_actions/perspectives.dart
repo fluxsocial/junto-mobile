@@ -29,7 +29,7 @@ class JuntoPerspectives extends StatefulWidget {
 class JuntoPerspectivesState extends State<JuntoPerspectives> {
   String _userAddress;
 
-  Future<List<CentralizedPerspective>> getPerspectives;
+  Future<List<PerspectiveModel>> getPerspectives;
 
   @override
   void initState() {
@@ -49,8 +49,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
     });
   }
 
-  Future<List<CentralizedPerspective>> _fetchUserPerspectives(
-      String address) async {
+  Future<List<PerspectiveModel>> _fetchUserPerspectives(String address) async {
     try {
       return await Provider.of<UserRepo>(context, listen: false)
           .getUserPerspective(_userAddress);
@@ -118,7 +117,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
             padding: const EdgeInsets.all(0),
             children: <Widget>[
               _buildPerspective(
-                const CentralizedPerspective(
+                const PerspectiveModel(
                   address: null,
                   name: 'JUNTO',
                   about: null,
@@ -130,11 +129,11 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                 ),
               ),
               if (_userAddress != null)
-                FutureBuilder<List<CentralizedPerspective>>(
+                FutureBuilder<List<PerspectiveModel>>(
                   future: getPerspectives,
                   builder: (
                     BuildContext context,
-                    AsyncSnapshot<List<CentralizedPerspective>> snapshot,
+                    AsyncSnapshot<List<PerspectiveModel>> snapshot,
                   ) {
                     if (snapshot.hasError) {
                       return Container(
@@ -153,7 +152,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                             shrinkWrap: true,
                             physics: const ClampingScrollPhysics(),
                             children: snapshot.data
-                                .map((CentralizedPerspective perspective) {
+                                .map((PerspectiveModel perspective) {
                               if (perspective.isDefault == true &&
                                   perspective.name != 'Connections') {
                                 return GestureDetector(
@@ -170,7 +169,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                             shrinkWrap: true,
                             physics: const ClampingScrollPhysics(),
                             children: snapshot.data.map(
-                              (CentralizedPerspective perspective) {
+                              (PerspectiveModel perspective) {
                                 if (perspective.name != 'Connections' &&
                                     perspective.name != 'Subscriptions') {
                                   return GestureDetector(
@@ -195,7 +194,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
     );
   }
 
-  Widget _buildPerspective(CentralizedPerspective perspective) {
+  Widget _buildPerspective(PerspectiveModel perspective) {
     return GestureDetector(
       onTap: () => widget.changePerspective(perspective),
       child: Slidable(

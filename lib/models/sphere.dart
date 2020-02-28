@@ -65,8 +65,8 @@ class Sphere {
   }
 }
 
-class CentralizedSphere {
-  CentralizedSphere({
+class SphereModel {
+  SphereModel({
     this.name,
     this.privacy,
     this.sphereHandle,
@@ -77,8 +77,8 @@ class CentralizedSphere {
     this.members,
   });
 
-  factory CentralizedSphere.fromJson(Map<String, dynamic> json) {
-    return CentralizedSphere(
+  factory SphereModel.fromJson(Map<String, dynamic> json) {
+    return SphereModel(
       name: json['name'],
       privacy: json['privacy'],
       sphereHandle: json['sphere_handle'],
@@ -112,7 +112,7 @@ class CentralizedSphere {
     };
   }
 
-  CentralizedSphere copyWith(
+  SphereModel copyWith(
       {String name,
       String privacy,
       String sphereHandle,
@@ -121,7 +121,7 @@ class CentralizedSphere {
       List<String> facilitators,
       String photo,
       List<String> members}) {
-    return CentralizedSphere(
+    return SphereModel(
         name: name ?? this.name,
         privacy: privacy ?? this.privacy,
         sphereHandle: sphereHandle ?? this.sphereHandle,
@@ -134,8 +134,8 @@ class CentralizedSphere {
 }
 
 /// Response sent back from the server when creating a sphere
-class CentralizedSphereResponse {
-  CentralizedSphereResponse({
+class SphereResponse {
+  SphereResponse({
     @required this.address,
     @required this.creator,
     @required this.createdAt,
@@ -145,8 +145,8 @@ class CentralizedSphereResponse {
     @required this.users,
   });
 
-  factory CentralizedSphereResponse.fromJson(Map<String, dynamic> json) {
-    return CentralizedSphereResponse(
+  factory SphereResponse.fromJson(Map<String, dynamic> json) {
+    return SphereResponse(
       address: json['address'],
       creator: json['creator'],
       createdAt: RFC3339.parseRfc3339(json['created_at']),

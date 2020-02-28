@@ -128,7 +128,7 @@ abstract class GroupService {
   List<Sphere> get spheres;
 
   /// Allows an authenticated user to create a sphere.
-  Future<CentralizedSphereResponse> createSphere(CentralizedSphere sphere);
+  Future<SphereResponse> createSphere(SphereModel sphere);
 
   /// Returns a [Group] for the given address
   Future<Group> getGroup(String groupAddress);
@@ -158,12 +158,12 @@ enum QueryType { address, email, username }
 
 abstract class UserService {
   /// Allows the user to create a [Perspective] on the server.
-  Future<CentralizedPerspective> createPerspective(Perspective perspective);
+  Future<PerspectiveModel> createPerspective(Perspective perspective);
 
   /// Allows the user to delete a [Perspective] .
   Future<void> deletePerspective(String perspective);
 
-  Future<CentralizedPerspective> updatePerspective(
+  Future<PerspectiveModel> updatePerspective(
     String perspectiveAddress,
     Map<String, String> perspectiveBody,
   );
@@ -174,12 +174,12 @@ abstract class UserService {
   /// Returns the [UserProfile] for the given [QueryType]
   Future<UserProfile> queryUser(String param, QueryType queryType);
 
-  /// Returns a [CentralizedPerspective] containing a list of `user`s who are
+  /// Returns a [PerspectiveModel] containing a list of `user`s who are
   /// apart of the given perspective.
-  Future<List<CentralizedPerspective>> getUserPerspective(String userAddress);
+  Future<List<PerspectiveModel>> getUserPerspective(String userAddress);
 
   /// Returns a list of users in a group. Note: The return type of this
-  /// function is [CentralizedPerspective] since the response sent back from
+  /// function is [PerspectiveModel] since the response sent back from
   /// the server is identical to [getUserPerspective]
   Future<UserGroupsResponse> getUserGroups(String userAddress);
 
@@ -195,7 +195,7 @@ abstract class UserService {
   Future<UserData> readLocalUser();
 
   /// Returns a list of perspectives owned by the given user
-  Future<List<CentralizedPerspective>> userPerspectives(String userAddress);
+  Future<List<PerspectiveModel>> userPerspectives(String userAddress);
 
   Future<UserProfile> createPerspectiveUserEntry(
     String userAddress,

@@ -115,8 +115,8 @@ class PerspectiveResponse {
 }
 
 /// Object representation of a perspective returned by the centralized server.
-class CentralizedPerspective {
-  const CentralizedPerspective({
+class PerspectiveModel {
+  const PerspectiveModel({
     @required this.address,
     @required this.name,
     @required this.creator,
@@ -127,8 +127,8 @@ class CentralizedPerspective {
     @required this.about,
   });
 
-  factory CentralizedPerspective.fromMap(Map<String, dynamic> map) {
-    return CentralizedPerspective(
+  factory PerspectiveModel.fromMap(Map<String, dynamic> map) {
+    return PerspectiveModel(
       address: map['address'] as String,
       name: map['name'] as String,
       creator: map['creator'] as String,
@@ -162,7 +162,7 @@ class CentralizedPerspective {
   /// Purpose of the given perspective
   final String about;
 
-  CentralizedPerspective copyWith({
+  PerspectiveModel copyWith({
     String address,
     String name,
     String creator,
@@ -172,7 +172,7 @@ class CentralizedPerspective {
     List<UserProfile> users,
     String about,
   }) {
-    return CentralizedPerspective(
+    return PerspectiveModel(
       address: address ?? this.address,
       name: name ?? this.name,
       creator: creator ?? this.creator,

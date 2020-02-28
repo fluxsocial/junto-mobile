@@ -7,7 +7,7 @@ class UserRepo {
   final UserService _userService;
   final NotificationService _notificationService;
 
-  Future<CentralizedPerspective> createPerspective(Perspective perspective) {
+  Future<PerspectiveModel> createPerspective(Perspective perspective) {
     assert(perspective.name != null);
     assert(perspective.members != null);
     return _userService.createPerspective(perspective);
@@ -27,7 +27,7 @@ class UserRepo {
     return _userService.queryUser(param, queryType);
   }
 
-  Future<List<CentralizedPerspective>> getUserPerspective(String userAddress) {
+  Future<List<PerspectiveModel>> getUserPerspective(String userAddress) {
     return _userService.getUserPerspective(userAddress);
   }
 
@@ -50,7 +50,7 @@ class UserRepo {
     return _userService.readLocalUser();
   }
 
-  Future<List<CentralizedPerspective>> userPerspectives(String userAddress) {
+  Future<List<PerspectiveModel>> userPerspectives(String userAddress) {
     return _userService.userPerspectives(userAddress);
   }
 
@@ -136,7 +136,7 @@ class UserRepo {
   Future<List<UserProfile>> getFollowers(String userAddress) =>
       _userService.getFollowers(userAddress);
 
-  Future<CentralizedPerspective> updatePerspective(
+  Future<PerspectiveModel> updatePerspective(
           String perspectiveAddress, Map<String, String> perspectiveBody) =>
       _userService.updatePerspective(perspectiveAddress, perspectiveBody);
 }

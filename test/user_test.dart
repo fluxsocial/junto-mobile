@@ -66,7 +66,7 @@ void main() {
   });
 
   test('Get user perspective', () async {
-    final List<CentralizedPerspective> _result = await _userProvider
+    final List<PerspectiveModel> _result = await _userProvider
         .getUserPerspective('85235b21-1725-4e89-b6fa-305df7978e52');
     expect(_result, isNotNull);
   });
@@ -95,8 +95,7 @@ void main() {
     expect(_result, isNotNull);
   });
   test('Creating a  perspective', () async {
-    final CentralizedPerspective _result =
-        await _userProvider.createPerspective(
+    final PerspectiveModel _result = await _userProvider.createPerspective(
       const Perspective(
         name: 'Test Perspective',
         about: 'This is the great test.',

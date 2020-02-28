@@ -20,9 +20,8 @@ void main() {
     });
   });
   test('Create Sphere', () async {
-    final CentralizedSphereResponse _result =
-        await _sphereProvider.createSphere(
-      CentralizedSphere(
+    final SphereResponse _result = await _sphereProvider.createSphere(
+      SphereModel(
         photo: '',
         name: 'Testing Sphere',
         description: 'This was created from a test',

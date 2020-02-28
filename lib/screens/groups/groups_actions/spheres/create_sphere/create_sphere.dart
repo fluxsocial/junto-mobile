@@ -71,7 +71,7 @@ class CreateSphereState extends State<CreateSphere> {
     final String userAddress = await prefs.get('user_id');
 
     // create sphere body
-    final CentralizedSphere sphere = CentralizedSphere(
+    final SphereModel sphere = SphereModel(
       name: sphereName,
       description: sphereDescription,
       facilitators: <String>[userAddress],
