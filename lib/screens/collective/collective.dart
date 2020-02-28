@@ -137,6 +137,15 @@ class JuntoCollectiveState extends State<JuntoCollective>
     }
   }
 
+  void _resetChannels() {
+    setState(() {
+      _channels.clear();
+    });
+    _expressionCompleter.value = getCollectiveExpressions(
+        contextType: 'Collective', paginationPos: 0, channels: _channels);
+    Navigator.pop(context);
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -185,8 +194,9 @@ class JuntoCollectiveState extends State<JuntoCollective>
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       drawer: FilterDrawer(
-        filterByChannel: _filterByChannel,
-      ),
+          filterByChannel: _filterByChannel,
+          channels: _channels,
+          resetChannels: _resetChannels),
       endDrawer: const JuntoDrawer(
         screen: 'Collective',
         icon: CustomIcons.collective,

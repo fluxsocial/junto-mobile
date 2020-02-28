@@ -8,8 +8,10 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/drawer/channel_preview.dart';
 
 class FilterDrawer extends StatefulWidget {
-  const FilterDrawer({this.filterByChannel});
+  const FilterDrawer({this.filterByChannel, this.channels, this.resetChannels});
   final ValueChanged<Channel> filterByChannel;
+  final List<String> channels;
+  final Function resetChannels;
 
   @override
   _FilterDrawerState createState() => _FilterDrawerState();
@@ -105,7 +107,7 @@ class _FilterDrawerState extends State<FilterDrawer> {
                               color: Theme.of(context).primaryColorLight),
                         ),
                         onChanged: _onTextChange,
-                        cursorColor: Theme.of(context).primaryColor,
+                        cursorColor: Colors.white,
                         cursorWidth: 1,
                         maxLines: 1,
                         style: TextStyle(
@@ -119,6 +121,22 @@ class _FilterDrawerState extends State<FilterDrawer> {
                   ],
                 ),
               ),
+              widget.channels.isNotEmpty
+                  ? Container(
+                      margin:
+                          const EdgeInsets.only(left: 10, top: 15, bottom: 15),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 10),
+                      decoration: BoxDecoration(
+                          color: const Color(0xff555555),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Text(
+                        widget.channels[0],
+                        style:
+                            const TextStyle(fontSize: 14, color: Colors.white),
+                      ),
+                    )
+                  : const SizedBox(),
               Expanded(
                 child: FutureBuilder<QueryResults<Channel>>(
                   future: _searchRepo.searchChannel(query),
@@ -163,31 +181,37 @@ class _FilterDrawerState extends State<FilterDrawer> {
                   },
                 ),
               ),
-              Container(
-                height: 50,
-                width: MediaQuery.of(context).size.width,
-                margin: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 25,
-                ),
-                decoration: BoxDecoration(
-                  color: const Color(0xff3F3F3F),
-                  borderRadius: BorderRadius.circular(100),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      alignment: Alignment.center,
-                      child: Text(
-                        'RESET',
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.white,
-                            letterSpacing: 1.7),
+              GestureDetector(
+                onTap: () {
+                  widget.resetChannels();
+                },
+                child: Container(
+                  height: 50,
+                  width: MediaQuery.of(context).size.width,
+                  margin: const EdgeInsets.only(
+                    left: 20,
+                    right: 20,
+                    bottom: 25,
+                  ),
+                  decoration: BoxDecoration(
+                    color: const Color(0xff3F3F3F),
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        alignment: Alignment.center,
+                        child: const Text(
+                          'RESET',
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.white,
+                              letterSpacing: 1.7),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               )
             ],
