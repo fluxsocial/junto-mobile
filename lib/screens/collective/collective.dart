@@ -14,6 +14,8 @@ import 'package:junto_beta_mobile/widgets/appbar/collective_appbar.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/custom_listview.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
+import 'package:junto_beta_mobile/widgets/drawer/filter_drawer.dart';
+import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
@@ -52,8 +54,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
   ScrollController _collectiveController;
   String _appbarTitle = 'JUNTO';
-  bool _showDegrees = true;
-  String currentDegree = 'oo';
   final List<String> _channels = <String>[];
   ValueNotifier<bool> actionsVisible = ValueNotifier<bool>(false);
 
@@ -138,6 +138,15 @@ class JuntoCollectiveState extends State<JuntoCollective>
     }
   }
 
+  void _resetChannels() {
+    setState(() {
+      _channels.clear();
+    });
+    _expressionCompleter.value = getCollectiveExpressions(
+        contextType: 'Collective', paginationPos: 0, channels: _channels);
+    Navigator.pop(context);
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -185,6 +194,10 @@ class JuntoCollectiveState extends State<JuntoCollective>
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      drawer: FilterDrawer(
+          filterByChannel: _filterByChannel,
+          channels: _channels,
+          resetChannels: _resetChannels),
       endDrawer: const JuntoDrawer(
         screen: 'Collective',
         icon: CustomIcons.collective,
@@ -212,8 +225,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
                     child: JuntoCollectiveActions(
                       userProfile: _userProfile,
                       changePerspective: _changePerspective,
-                      filterByChannel: _filterByChannel,
-                      currentPerspective: _appbarTitle,
                     ),
                   ),
                 ),
@@ -226,40 +237,43 @@ class JuntoCollectiveState extends State<JuntoCollective>
   Widget _buildPerspectiveFeed() {
     return RefreshIndicator(
       onRefresh: refreshData,
-      child: ValueListenableBuilder<Future<QueryResults<ExpressionResponse>>>(
-        valueListenable: _expressionCompleter,
-        builder: (
-          BuildContext context,
-          Future<QueryResults<ExpressionResponse>> value,
-          _,
-        ) {
-          return FutureBuilder<QueryResults<ExpressionResponse>>(
-            future: value,
-            builder: (
-              BuildContext context,
-              AsyncSnapshot<QueryResults<ExpressionResponse>> snapshot,
-            ) {
-              if (snapshot.hasError) {
-                print('Error: ${snapshot.error}');
-                return const Center(
-                  child: Text('hmm, something is up with our servers'),
-                );
-              }
-              if (snapshot.hasData) {
-                return CustomScrollView(
-                  controller: _collectiveController,
-                  slivers: <Widget>[
-                    SliverPersistentHeader(
-                      delegate: CollectiveAppBar(
-                        expandedHeight: _showDegrees == true ? 135 : 85,
-                        degrees: _showDegrees,
-                        currentDegree: currentDegree,
-                        switchDegree: _switchDegree,
-                        appbarTitle: _appbarTitle,
-                        openPerspectivesDrawer: () {},
-                      ),
-                      pinned: false,
-                      floating: true,
+      child: ValueListenableBuilder<
+              Future<QueryResults<CentralizedExpressionResponse>>>(
+          valueListenable: _expressionCompleter,
+          builder: (
+            BuildContext context,
+            Future<QueryResults<CentralizedExpressionResponse>> value,
+            _,
+          ) {
+            return FutureBuilder<QueryResults<CentralizedExpressionResponse>>(
+              future: value,
+              builder: (
+                BuildContext context,
+                AsyncSnapshot<QueryResults<CentralizedExpressionResponse>>
+                    snapshot,
+              ) {
+                if (snapshot.hasError) {
+                  print('Error: ${snapshot.error}');
+                  return const Center(
+                    child: Text('hmm, something is up with our servers'),
+                  );
+                }
+                if (snapshot.hasData) {
+                  return CustomScrollView(
+                    controller: _collectiveController,
+                    slivers: <Widget>[
+                      SliverPersistentHeader(
+                        delegate: CollectiveAppBar(
+                          // expandedHeight: 85,
+                          expandedHeight: 135,
+                          appbarTitle: _appbarTitle,
+                          openFilterDrawer: () {
+                            Scaffold.of(context).openDrawer();
+                          },
+                        ),
+                        pinned: false,
+                        floating: true,
+
                     ),
                     CustomSliverListView(
                       userAddress: _userAddress,
@@ -276,29 +290,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
         },
       ),
     );
-  }
-
-// switch between degrees of separation
-  void _switchDegree({String degreeName, int degreeNumber}) {
-    String _contextType;
-
-    if (degreeNumber == -1) {
-      _contextType = 'Collective';
-    } else if (degreeNumber == 0) {
-      _contextType = 'ConnectPerspective';
-    } else {
-      _contextType = 'Dos';
-    }
-    _expressionCompleter.value = getCollectiveExpressions(
-      paginationPos: 0,
-      contextType: _contextType,
-      dos: degreeNumber,
-    );
-
-    setState(() {
-      _showDegrees = true;
-      currentDegree = degreeName;
-    });
   }
 
   void _filterByChannel(Channel channel) {
@@ -318,14 +309,12 @@ class JuntoCollectiveState extends State<JuntoCollective>
   void _changePerspective(PerspectiveModel perspective) {
     if (perspective.name == 'JUNTO') {
       setState(() {
-        _showDegrees = true;
         _appbarTitle = 'JUNTO';
       });
       _expressionCompleter.value = getCollectiveExpressions(
           contextType: 'Collective', paginationPos: 0, channels: _channels);
     } else {
       setState(() {
-        _showDegrees = false;
         if (perspective.name ==
             _userProfile.user.name + "'s Follow Perspective") {
           _appbarTitle = 'Subscriptions';

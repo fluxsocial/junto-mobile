@@ -5,25 +5,18 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 // Junto app bar used in collective screen.
 class CollectiveAppBar extends SliverPersistentHeaderDelegate {
   CollectiveAppBar(
-      {@required this.expandedHeight,
-      this.degrees,
-      this.currentDegree,
-      this.switchDegree,
-      this.appbarTitle,
-      this.openPerspectivesDrawer});
+      {@required this.expandedHeight, this.appbarTitle, this.openFilterDrawer});
 
   final double expandedHeight;
   final String appbarTitle;
-  final Function openPerspectivesDrawer;
-  final bool degrees;
-  final String currentDegree;
-  final Function switchDegree;
+  final Function openFilterDrawer;
 
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
-      height: degrees == true ? 135 : 85,
+      // height: 85,
+      height: 135,
       child: Column(
         children: <Widget>[
           Container(
@@ -42,11 +35,7 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-                GestureDetector(
-                  onTap: () {
-                    openPerspectivesDrawer();
-                  },
-                  child: Container(
+                Container(
                     alignment: Alignment.bottomLeft,
                     padding: const EdgeInsets.only(left: 10),
                     color: Colors.transparent,
@@ -62,15 +51,11 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                         ),
                       ],
                     ),
-                  ),
                 ),
                 Row(
                   children: <Widget>[
                     GestureDetector(
                       onTap: () {},
-                      // onTap: () => Navigator.of(context).push(
-                      //   NotificationScreen.route(),
-                      // ),
                       child: Container(
                         width: 42,
                         color: Colors.transparent,
@@ -85,100 +70,35 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
               ],
             ),
           ),
-          degrees == true ? _degreesOfSeparation(context) : const SizedBox(),
-        ],
-      ),
-    );
-  }
-
-  // Creates a row of degrees of separation; displayed if on 'Junto' perspective
-  Widget _degreesOfSeparation(
-    BuildContext context,
-  ) {
-    return Container(
-      height: 50,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(
-              color: Theme.of(context).dividerColor,
-              width: .75,
+          Container(
+            height: 50,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              color: Theme.of(context).backgroundColor,
+              border: Border(
+                bottom: BorderSide(
+                    color: Theme.of(context).dividerColor, width: .75),
+              ),
             ),
-          ),
-          color: Theme.of(context).backgroundColor),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              _degree(
-                  context: context,
-                  degreeName: 'oo',
-                  currentDegree: currentDegree,
-                  degreeNumber: -1),
-              _degree(
-                  context: context,
-                  degreeName: 'i',
-                  currentDegree: currentDegree,
-                  degreeNumber: 0),
-              _degree(
-                  context: context,
-                  degreeName: 'ii',
-                  currentDegree: currentDegree,
-                  degreeNumber: 1),
-              _degree(
-                  context: context,
-                  degreeName: 'iii',
-                  currentDegree: currentDegree,
-                  degreeNumber: 2),
-              _degree(
-                  context: context,
-                  degreeName: 'iv',
-                  currentDegree: currentDegree,
-                  degreeNumber: 3),
-              _degree(
-                  context: context,
-                  degreeName: 'v',
-                  currentDegree: currentDegree,
-                  degreeNumber: 4),
-              _degree(
-                  context: context,
-                  degreeName: 'vi',
-                  currentDegree: currentDegree,
-                  degreeNumber: 5),
-            ],
-          ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () {
+                    openFilterDrawer();
+                  },
+                  child: Container(
+                    child: Image.asset('assets/images/junto-mobile__filter.png',
+                        height: 17, color: Theme.of(context).primaryColor),
+                  ),
+                ),
+                Row(
+                  children: <Widget>[],
+                ),
+              ],
+            ),
+          )
         ],
-      ),
-    );
-  }
-
-  // Function to return a single degree of separation; used in the _degreesOfSeparation
-  // function above
-  Widget _degree(
-      {BuildContext context,
-      String degreeName,
-      int degreeNumber,
-      String currentDegree}) {
-    return Expanded(
-      child: GestureDetector(
-        onTap: () {
-          switchDegree(degreeName: degreeName, degreeNumber: degreeNumber);
-        },
-        child: Container(
-          alignment: Alignment.center,
-          height: 49.25,
-          color: Colors.transparent,
-          child: Text(
-            degreeName,
-            style: degreeName == currentDegree
-                ? TextStyle(
-                    color: Theme.of(context).primaryColorDark,
-                    fontWeight: FontWeight.w700)
-                : TextStyle(color: Theme.of(context).primaryColorLight),
-          ),
-        ),
       ),
     );
   }

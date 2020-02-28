@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
-class ChannelPreview extends StatelessWidget {
-  const ChannelPreview({Key key, this.channel}) : super(key: key);
+class FilterDrawerChannelPreview extends StatelessWidget {
+  const FilterDrawerChannelPreview({Key key, this.channel}) : super(key: key);
 
   final Channel channel;
 
@@ -15,8 +15,8 @@ class ChannelPreview extends StatelessWidget {
         children: <Widget>[
           Container(
             alignment: Alignment.center,
-            height: 45.0,
-            width: 45.0,
+            height: 38.0,
+            width: 38.0,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.bottomLeft,
@@ -41,22 +41,27 @@ class ChannelPreview extends StatelessWidget {
               padding: const EdgeInsets.symmetric(
                 vertical: 20,
               ),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
-                      width: .5, color: Theme.of(context).dividerColor),
+                    width: .5,
+                    color: Color(0xff444444),
+                  ),
                 ),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(channel.name,
-                      textAlign: TextAlign.start,
-                      style: Theme.of(context).textTheme.subtitle1),
-                  Text('x expressions',
-                      textAlign: TextAlign.start,
-                      style: Theme.of(context).textTheme.bodyText1)
+                  Text(
+                    channel.name,
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                      fontSize: 17,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                 ],
               ),
             ),
