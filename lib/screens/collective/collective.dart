@@ -224,8 +224,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
                     child: JuntoCollectiveActions(
                       userProfile: _userProfile,
                       changePerspective: _changePerspective,
-                      filterByChannel: _filterByChannel,
-                      currentPerspective: _appbarTitle,
                     ),
                   ),
                 ),

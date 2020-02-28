@@ -245,7 +245,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
         ],
         key: Key(perspective.address),
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 20),
+          padding: const EdgeInsets.symmetric(vertical: 15),
           decoration: BoxDecoration(
             color: Colors.transparent,
             border: Border(
