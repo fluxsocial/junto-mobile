@@ -10,8 +10,8 @@ class ExpressionRepo {
 
   final ExpressionService _expressionService;
 
-  Future<CentralizedExpressionResponse> createExpression(
-    CentralizedExpression expression,
+  Future<ExpressionResponse> createExpression(
+    ExpressionModel expression,
     ExpressionContext context,
     String address,
   ) {
@@ -21,7 +21,7 @@ class ExpressionRepo {
     // Channels can only contain strings.
     assert(expression.channels is List<String>);
 
-    CentralizedExpression _expression;
+    ExpressionModel _expression;
 
     if (context == ExpressionContext.Group) {
       assert(address != null);
@@ -49,7 +49,7 @@ class ExpressionRepo {
     return _expressionService.createPhoto(isPrivate, fileType, file);
   }
 
-  Future<CentralizedExpressionResponse> getExpression(
+  Future<ExpressionResponse> getExpression(
     String expressionAddress,
   ) {
     // Expression address must not be null or empty.
@@ -67,7 +67,7 @@ class ExpressionRepo {
     return _expressionService.postResonation(expressionAddress);
   }
 
-  Future<CentralizedExpressionResponse> postCommentExpression(
+  Future<ExpressionResponse> postCommentExpression(
     String parentAddress,
     String type,
     Map<String, dynamic> data,
@@ -87,12 +87,12 @@ class ExpressionRepo {
     return _expressionService.getExpressionsComments(expressionAddress);
   }
 
-  Future<QueryResults<CentralizedExpressionResponse>> getCollectiveExpressions(
+  Future<QueryResults<ExpressionResponse>> getCollectiveExpressions(
       Map<String, String> params) {
     return _expressionService.getCollectiveExpressions(params);
   }
 
-  List<CentralizedExpressionResponse> get collectiveExpressions =>
+  List<ExpressionResponse> get collectiveExpressions =>
       _expressionService.collectiveExpressions;
 
   Future<void> deleteExpression(String address) =>

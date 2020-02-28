@@ -22,10 +22,10 @@ class CreateLongformState extends State<CreateLongform> {
     _bodyController = TextEditingController();
   }
 
-  /// Creates a [CentralizedLongFormExpression] from the given data entered
+  /// Creates a [LongFormExpression] from the given data entered
   /// by the user.
-  CentralizedLongFormExpression createExpression() {
-    return CentralizedLongFormExpression(
+  LongFormExpression createExpression() {
+    return LongFormExpression(
       body: _bodyController.value.text,
       title: _titleController.value.text,
     );

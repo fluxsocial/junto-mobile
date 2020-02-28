@@ -20,7 +20,7 @@ import 'package:provider/provider.dart';
 class ExpressionOpen extends StatefulWidget {
   const ExpressionOpen(this.expression, this.userAddress, this.allowComments);
 
-  final CentralizedExpressionResponse expression;
+  final ExpressionResponse expression;
   final String userAddress;
   final bool allowComments;
 
@@ -116,7 +116,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
             .postCommentExpression(
           widget.expression.address,
           'LongForm',
-          CentralizedLongFormExpression(
+          LongFormExpression(
             title: 'Expression Comment',
             body: commentController.value.text,
           ).toMap(),

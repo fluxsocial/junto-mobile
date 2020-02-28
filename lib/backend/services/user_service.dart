@@ -113,7 +113,7 @@ class UserServiceCentralized implements UserService {
   }
 
   @override
-  Future<List<CentralizedExpressionResponse>> getUsersResonations(
+  Future<List<ExpressionResponse>> getUsersResonations(
     String userAddress,
   ) async {
     final http.Response response =
@@ -121,14 +121,13 @@ class UserServiceCentralized implements UserService {
     final List<dynamic> _responseMap = JuntoHttp.handleResponse(response);
     return _responseMap
         .map(
-          (dynamic data) =>
-              CentralizedExpressionResponse.withCommentsAndResonations(data),
+          (dynamic data) => ExpressionResponse.withCommentsAndResonations(data),
         )
         .toList();
   }
 
   @override
-  Future<List<CentralizedExpressionResponse>> getUsersExpressions(
+  Future<List<ExpressionResponse>> getUsersExpressions(
     String userAddress,
   ) async {
     final http.Response response = await client
@@ -140,9 +139,9 @@ class UserServiceCentralized implements UserService {
 
     final Map<String, dynamic> _responseMap =
         JuntoHttp.handleResponse(response);
-    return <CentralizedExpressionResponse>[
+    return <ExpressionResponse>[
       for (dynamic data in _responseMap['root_expressions']['results'])
-        CentralizedExpressionResponse.fromMap(data)
+        ExpressionResponse.fromMap(data)
     ];
   }
 

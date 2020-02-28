@@ -54,7 +54,7 @@ class MockSphere with ChangeNotifier implements GroupService {
   }
 
   @override
-  Future<List<CentralizedExpressionResponse>> getGroupExpressions(
+  Future<List<ExpressionResponse>> getGroupExpressions(
       String groupAddress, GroupExpressionQueryParams params) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     return kSampleExpressions;

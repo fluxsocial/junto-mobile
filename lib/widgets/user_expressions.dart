@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
-import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:provider/provider.dart';
 
 /// Linear list of expressions created by the given [userProfile].
 class UserExpressions extends StatefulWidget {
@@ -26,8 +26,8 @@ class UserExpressions extends StatefulWidget {
 
 class _UserExpressionsState extends State<UserExpressions> {
   UserRepo _userProvider;
-  AsyncMemoizer<List<CentralizedExpressionResponse>> memoizer =
-      AsyncMemoizer<List<CentralizedExpressionResponse>>();
+  AsyncMemoizer<List<ExpressionResponse>> memoizer =
+      AsyncMemoizer<List<ExpressionResponse>>();
 
   @override
   void didChangeDependencies() {
@@ -35,7 +35,7 @@ class _UserExpressionsState extends State<UserExpressions> {
     _userProvider = Provider.of<UserRepo>(context);
   }
 
-  Future<List<CentralizedExpressionResponse>> getExpressions() {
+  Future<List<ExpressionResponse>> getExpressions() {
     return memoizer.runOnce(
         () => _userProvider.getUsersExpressions(widget.userProfile.address));
   }
@@ -43,11 +43,11 @@ class _UserExpressionsState extends State<UserExpressions> {
   @override
   Widget build(BuildContext context) {
     // public expressions of user
-    return FutureBuilder<List<CentralizedExpressionResponse>>(
+    return FutureBuilder<List<ExpressionResponse>>(
       future: getExpressions(),
       builder: (
         BuildContext context,
-        AsyncSnapshot<List<CentralizedExpressionResponse>> snapshot,
+        AsyncSnapshot<List<ExpressionResponse>> snapshot,
       ) {
         if (snapshot.hasError) {
           return Center(

@@ -19,10 +19,10 @@ class CreateShortformState extends State<CreateShortform> {
 
   TextEditingController _bodyController;
 
-  /// Creates a [CentralizedShortFormExpression] from the given data entered
+  /// Creates a [ShortFormExpression] from the given data entered
   /// by the user.
-  CentralizedShortFormExpression createExpression() {
-    return CentralizedShortFormExpression(
+  ShortFormExpression createExpression() {
+    return ShortFormExpression(
       body: _bodyController.value.text,
       background: <dynamic>[gradientOne, gradientTwo],
     );

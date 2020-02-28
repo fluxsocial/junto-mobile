@@ -10,7 +10,7 @@ class ExpressionPreviewEmbed extends StatelessWidget {
   const ExpressionPreviewEmbed({Key key, @required this.expression})
       : super(key: key);
 
-  final CentralizedExpressionResponse expression;
+  final ExpressionResponse expression;
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +100,7 @@ class ExpressionPreviewEmbed extends StatelessWidget {
     );
   }
 
-  Widget _returnExpression(CentralizedExpressionResponse expression) {
+  Widget _returnExpression(ExpressionResponse expression) {
     if (expression.type == 'LongForm') {
       return LongformPreview(expression: expression);
     } else if (expression.type == 'ShortForm') {

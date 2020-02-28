@@ -38,8 +38,8 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
 
   ScrollController _denController;
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
-  final AsyncMemoizer<List<CentralizedExpressionResponse>> _memoizer =
-      AsyncMemoizer<List<CentralizedExpressionResponse>>();
+  final AsyncMemoizer<List<ExpressionResponse>> _memoizer =
+      AsyncMemoizer<List<ExpressionResponse>>();
 
   @override
   void initState() {
@@ -59,7 +59,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-   _userProvider = Provider.of<UserRepo>(context);
+    _userProvider = Provider.of<UserRepo>(context);
     getUserInformation();
   }
 
@@ -86,7 +86,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
     });
   }
 
-  Future<List<CentralizedExpressionResponse>> getUsersExpressions() async {
+  Future<List<ExpressionResponse>> getUsersExpressions() async {
     return _memoizer.runOnce(
       () => _userProvider.getUsersExpressions(_userAddress),
     );
@@ -185,11 +185,11 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
   }
 
   /// Loads the user's personal expressions
-  FutureBuilder<List<CentralizedExpressionResponse>> _buildUserExpressions() {
-    return FutureBuilder<List<CentralizedExpressionResponse>>(
+  FutureBuilder<List<ExpressionResponse>> _buildUserExpressions() {
+    return FutureBuilder<List<ExpressionResponse>>(
       future: getUsersExpressions(),
       builder: (BuildContext context,
-          AsyncSnapshot<List<CentralizedExpressionResponse>> snapshot) {
+          AsyncSnapshot<List<ExpressionResponse>> snapshot) {
         if (snapshot.hasError) {
           return const Center(
             child: Text('Hmm, something is up with our server'),

@@ -19,7 +19,7 @@ class ExpressionPreview extends StatelessWidget with MemberValidation {
       this.allowComments = true})
       : super(key: key);
 
-  final CentralizedExpressionResponse expression;
+  final ExpressionResponse expression;
   final String userAddress;
   final bool allowComments;
 

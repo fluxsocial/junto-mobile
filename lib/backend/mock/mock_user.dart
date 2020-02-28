@@ -66,14 +66,14 @@ class MockUserService implements UserService {
   }
 
   @override
-  Future<List<CentralizedExpressionResponse>> getUsersExpressions(
+  Future<List<ExpressionResponse>> getUsersExpressions(
       String userAddress) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     return kSampleExpressions;
   }
 
   @override
-  Future<List<CentralizedExpressionResponse>> getUsersResonations(
+  Future<List<ExpressionResponse>> getUsersResonations(
       String userAddress) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     return kSampleExpressions.reversed.toList();

@@ -34,7 +34,7 @@ class GroupRepo {
     return _groupService.removeGroupMember(groupAddress, userAddress);
   }
 
-  Future<List<CentralizedExpressionResponse>> getGroupExpressions(
+  Future<List<ExpressionResponse>> getGroupExpressions(
       String groupAddress, GroupExpressionQueryParams params) {
     return _groupService.getGroupExpressions(groupAddress, params);
   }
