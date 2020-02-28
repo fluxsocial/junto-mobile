@@ -43,8 +43,8 @@ class PackOpenState extends State<PackOpen> {
     getUserInformation();
   }
 
-  final AsyncMemoizer<List<CentralizedExpressionResponse>> _memoizer =
-      AsyncMemoizer<List<CentralizedExpressionResponse>>();
+  final AsyncMemoizer<List<ExpressionResponse>> _memoizer =
+      AsyncMemoizer<List<ExpressionResponse>>();
 
   Future<void> getUserInformation() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -57,7 +57,7 @@ class PackOpenState extends State<PackOpen> {
     });
   }
 
-  Future<List<CentralizedExpressionResponse>> getPackExpressions() async {
+  Future<List<ExpressionResponse>> getPackExpressions() async {
     return _memoizer.runOnce(
       () => Provider.of<GroupRepo>(context).getGroupExpressions(
         _userProfile.pack.address,
@@ -159,11 +159,10 @@ class PackOpenState extends State<PackOpen> {
                 onPageChanged: (int index) {},
                 children: <Widget>[
                   if (_userProfile != null)
-                    FutureBuilder<List<CentralizedExpressionResponse>>(
+                    FutureBuilder<List<ExpressionResponse>>(
                       future: getPackExpressions(),
                       builder: (BuildContext context,
-                          AsyncSnapshot<List<CentralizedExpressionResponse>>
-                              snapshot) {
+                          AsyncSnapshot<List<ExpressionResponse>> snapshot) {
                         if (snapshot.hasError) {
                           return Center(
                             child: Transform.translate(

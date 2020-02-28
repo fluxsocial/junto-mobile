@@ -14,7 +14,7 @@ class EditPerspectiveAddMembers extends StatefulWidget {
   const EditPerspectiveAddMembers(
       {this.perspective, this.refreshPerspectiveMembers});
 
-  final CentralizedPerspective perspective;
+  final PerspectiveModel perspective;
   final Function refreshPerspectiveMembers;
 
   @override

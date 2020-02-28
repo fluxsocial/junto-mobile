@@ -93,10 +93,10 @@ class CollectionResponse {
     return CollectionResponse._(
       collective: Collective.fromMap(json['collection']),
       nestedCollections: NestedCollections.fromMap(json['nested_collections']),
-      expressions: List<CentralizedExpressionResponse>.from(
+      expressions: List<ExpressionResponse>.from(
         json['expressions'].map(
           (Map<String, dynamic> expression) =>
-              CentralizedExpressionResponse.fromMap(expression),
+              ExpressionResponse.fromMap(expression),
         ),
       ),
     );
@@ -108,6 +108,6 @@ class CollectionResponse {
   /// List of [Collective]
   final NestedCollections nestedCollections;
 
-  /// List of [CentralizedExpressionResponse]
-  final List<CentralizedExpressionResponse> expressions;
+  /// List of [ExpressionResponse]
+  final List<ExpressionResponse> expressions;
 }

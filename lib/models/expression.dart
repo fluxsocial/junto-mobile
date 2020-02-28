@@ -4,16 +4,16 @@ import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 
 /// Base class for posting an expression to the server
-class CentralizedExpression {
-  CentralizedExpression({
+class ExpressionModel {
+  ExpressionModel({
     @required this.type,
     @required this.expressionData,
     this.channels: const <String>[],
     this.context,
   });
 
-  factory CentralizedExpression.fromMap(Map<String, dynamic> map) {
-    return CentralizedExpression(
+  factory ExpressionModel.fromMap(Map<String, dynamic> map) {
+    return ExpressionModel(
       type: map['type'] as String,
       channels: List<String>.from(map['channels']),
       expressionData: map['expression_data'] as Map<String, dynamic>,
@@ -27,10 +27,10 @@ class CentralizedExpression {
 
   /// Map representation of the expression. Values are dependant on [type].
   /// Can be serialized to an object:
-  /// * [CentralizedLongFormExpression],
-  /// * [CentralizedShortFormExpression]
-  /// * [CentralizedPhotoFormExpression]
-  /// * [CentralizedEventFormExpression]
+  /// * [LongFormExpression],
+  /// * [ShortFormExpression]
+  /// * [PhotoFormExpression]
+  /// * [EventFormExpression]
   final Map<String, dynamic> expressionData;
 
   /// Context for the given expression. Value is dependant on [ExpressionContext].
@@ -49,13 +49,13 @@ class CentralizedExpression {
     };
   }
 
-  CentralizedExpression copyWith({
+  ExpressionModel copyWith({
     String type,
     Map<String, dynamic> expressionData,
     dynamic context,
     List<String> channels = const <String>[],
   }) {
-    return CentralizedExpression(
+    return ExpressionModel(
       type: type ?? this.type,
       expressionData: expressionData ?? this.expressionData,
       context: context ?? this.context,
@@ -64,14 +64,14 @@ class CentralizedExpression {
   }
 }
 
-class CentralizedLongFormExpression {
-  CentralizedLongFormExpression({
+class LongFormExpression {
+  LongFormExpression({
     this.title,
     this.body,
   });
 
-  factory CentralizedLongFormExpression.fromMap(Map<String, dynamic> json) {
-    return CentralizedLongFormExpression(
+  factory LongFormExpression.fromMap(Map<String, dynamic> json) {
+    return LongFormExpression(
       title: json['title'] ?? '',
       body: json['body'] ?? '',
     );
@@ -86,14 +86,14 @@ class CentralizedLongFormExpression {
       };
 }
 
-class CentralizedShortFormExpression {
-  CentralizedShortFormExpression({
+class ShortFormExpression {
+  ShortFormExpression({
     @required this.background,
     @required this.body,
   });
 
-  factory CentralizedShortFormExpression.fromMap(Map<String, dynamic> json) {
-    return CentralizedShortFormExpression(
+  factory ShortFormExpression.fromMap(Map<String, dynamic> json) {
+    return ShortFormExpression(
       background: json['background'],
       body: json['body'],
     );
@@ -108,14 +108,14 @@ class CentralizedShortFormExpression {
       };
 }
 
-class CentralizedPhotoFormExpression {
-  CentralizedPhotoFormExpression({
+class PhotoFormExpression {
+  PhotoFormExpression({
     this.image,
     this.caption,
   });
 
-  factory CentralizedPhotoFormExpression.fromMap(Map<String, dynamic> json) {
-    return CentralizedPhotoFormExpression(
+  factory PhotoFormExpression.fromMap(Map<String, dynamic> json) {
+    return PhotoFormExpression(
       image: json['image'],
       caption: json['caption'],
     );
@@ -130,8 +130,8 @@ class CentralizedPhotoFormExpression {
       };
 }
 
-class CentralizedEventFormExpression {
-  CentralizedEventFormExpression(
+class EventFormExpression {
+  EventFormExpression(
       {this.title,
       this.description,
       this.photo,
@@ -141,8 +141,8 @@ class CentralizedEventFormExpression {
       this.facilitators,
       this.members});
 
-  factory CentralizedEventFormExpression.fromMap(Map<String, dynamic> json) {
-    return CentralizedEventFormExpression(
+  factory EventFormExpression.fromMap(Map<String, dynamic> json) {
+    return EventFormExpression(
         title: json['title'],
         description: json['description'],
         photo: json['photo'],
@@ -174,8 +174,8 @@ class CentralizedEventFormExpression {
       };
 }
 
-class CentralizedExpressionResponse {
-  CentralizedExpressionResponse({
+class ExpressionResponse {
+  ExpressionResponse({
     this.address,
     this.type,
     this.expressionData,
@@ -190,9 +190,9 @@ class CentralizedExpressionResponse {
     this.resonations,
   });
 
-  factory CentralizedExpressionResponse.withCommentsAndResonations(
+  factory ExpressionResponse.withCommentsAndResonations(
       Map<String, dynamic> json) {
-    return CentralizedExpressionResponse(
+    return ExpressionResponse(
       address: json['address'],
       type: json['type'],
       expressionData: generateExpressionData(
@@ -213,8 +213,8 @@ class CentralizedExpressionResponse {
     );
   }
 
-  factory CentralizedExpressionResponse.fromMap(Map<String, dynamic> json) {
-    return CentralizedExpressionResponse(
+  factory ExpressionResponse.fromMap(Map<String, dynamic> json) {
+    return ExpressionResponse(
       address: json['address'],
       type: json['type'],
       expressionData: generateExpressionData(
@@ -280,16 +280,16 @@ class CentralizedExpressionResponse {
   static dynamic generateExpressionData(
       String type, Map<String, dynamic> json) {
     if (type == 'LongForm') {
-      return CentralizedLongFormExpression.fromMap(json);
+      return LongFormExpression.fromMap(json);
     }
     if (type == 'ShortForm') {
-      return CentralizedShortFormExpression.fromMap(json);
+      return ShortFormExpression.fromMap(json);
     }
     if (type == 'PhotoForm') {
-      return CentralizedPhotoFormExpression.fromMap(json);
+      return PhotoFormExpression.fromMap(json);
     }
     if (type == 'EventForm') {
-      return CentralizedEventFormExpression.fromMap(json);
+      return EventFormExpression.fromMap(json);
     }
   }
 }
@@ -311,7 +311,7 @@ class Comment {
     return Comment(
       address: json['address'],
       type: json['type'],
-      expressionData: CentralizedExpressionResponse.generateExpressionData(
+      expressionData: ExpressionResponse.generateExpressionData(
         json['type'],
         json['expression_data'],
       ),

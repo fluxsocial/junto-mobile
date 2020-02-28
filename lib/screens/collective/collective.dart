@@ -12,6 +12,7 @@ import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/widgets/appbar/collective_appbar.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
+import 'package:junto_beta_mobile/widgets/custom_listview.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/drawer/filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
@@ -41,9 +42,9 @@ class JuntoCollectiveState extends State<JuntoCollective>
       GlobalKey<ScaffoldState>();
 
   // Completer which controls expressions querying.
-  final ValueNotifier<Future<QueryResults<CentralizedExpressionResponse>>>
+  final ValueNotifier<Future<QueryResults<ExpressionResponse>>>
       _expressionCompleter =
-      ValueNotifier<Future<QueryResults<CentralizedExpressionResponse>>>(null);
+      ValueNotifier<Future<QueryResults<ExpressionResponse>>>(null);
 
   ExpressionRepo _expressionProvider;
 
@@ -98,7 +99,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
     });
   }
 
-  Future<QueryResults<CentralizedExpressionResponse>> getCollectiveExpressions({
+  Future<QueryResults<ExpressionResponse>> getCollectiveExpressions({
     int dos,
     String contextType,
     String contextString,
@@ -272,89 +273,22 @@ class JuntoCollectiveState extends State<JuntoCollective>
                         ),
                         pinned: false,
                         floating: true,
-                      ),
-                      SliverList(
-                        delegate: SliverChildListDelegate(
-                          <Widget>[
-                            Container(
-                              color: Theme.of(context).backgroundColor,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * .5,
-                                    padding: const EdgeInsets.only(
-                                      top: 10,
-                                      left: 10,
-                                      right: 5,
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: <Widget>[
-                                        for (int index = 0;
-                                            index <
-                                                snapshot.data.results.length +
-                                                    1;
-                                            index++)
-                                          if (index ==
-                                              snapshot.data.results.length)
-                                            const SizedBox()
-                                          else if (index.isEven)
-                                            ExpressionPreview(
-                                              expression:
-                                                  snapshot.data.results[index],
-                                              userAddress: _userAddress,
-                                            )
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * .5,
-                                    padding: const EdgeInsets.only(
-                                      top: 10,
-                                      left: 5,
-                                      right: 10,
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: <Widget>[
-                                        for (int index = 0;
-                                            index <
-                                                snapshot.data.results.length +
-                                                    1;
-                                            index++)
-                                          if (index ==
-                                              snapshot.data.results.length)
-                                            const SizedBox()
-                                          else if (index.isOdd)
-                                            ExpressionPreview(
-                                              expression:
-                                                  snapshot.data.results[index],
-                                              userAddress: _userAddress,
-                                            )
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  );
-                }
-                return Center(
-                  child: JuntoProgressIndicator(),
+
+                    ),
+                    CustomSliverListView(
+                      userAddress: _userAddress,
+                      data: snapshot.data.results,
+                    ),
+                  ],
                 );
-              },
-            );
-          }),
+              }
+              return Center(
+                child: JuntoProgressIndicator(),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 
@@ -372,7 +306,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
   }
 
 // Switch between perspectives; used in perspectives side drawer.
-  void _changePerspective(CentralizedPerspective perspective) {
+  void _changePerspective(PerspectiveModel perspective) {
     if (perspective.name == 'JUNTO') {
       setState(() {
         _appbarTitle = 'JUNTO';

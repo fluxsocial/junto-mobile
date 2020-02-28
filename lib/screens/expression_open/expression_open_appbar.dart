@@ -6,7 +6,7 @@ import 'package:junto_beta_mobile/models/expression.dart';
 class ExpressionOpenAppbar extends StatelessWidget {
   const ExpressionOpenAppbar({this.expression});
 
-  final CentralizedExpressionResponse expression;
+  final ExpressionResponse expression;
 
   @override
   Widget build(BuildContext context) {

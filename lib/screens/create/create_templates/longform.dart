@@ -22,13 +22,29 @@ class CreateLongformState extends State<CreateLongform> {
     _bodyController = TextEditingController();
   }
 
-  /// Creates a [CentralizedLongFormExpression] from the given data entered
+  /// Creates a [LongFormExpression] from the given data entered
   /// by the user.
-  CentralizedLongFormExpression createExpression() {
-    return CentralizedLongFormExpression(
+  LongFormExpression createExpression() {
+    return LongFormExpression(
       body: _bodyController.value.text,
       title: _titleController.value.text,
     );
+  }
+
+  bool validate() {
+    // Body cannot be empty if the title is also empty
+    if (_titleController.value.text.isEmpty) {
+      return _bodyController.value.text.isNotEmpty;
+    }
+    // Body can be empty if the title is not empty
+    if (_titleController.value.text.isNotEmpty) {
+      return true;
+    }
+    // Title can be empty if the title is not empty
+    if (_bodyController.value.text.isNotEmpty) {
+      return true;
+    }
+    return false;
   }
 
   @override

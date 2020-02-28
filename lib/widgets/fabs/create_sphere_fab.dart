@@ -112,7 +112,7 @@ class CreateSphereBottomSheetState extends State<CreateSphereBottomSheet> {
     final String sphereName = _nameController.value.text;
     final String sphereHandle = _handleController.value.text;
     final String sphereDescription = _descriptionController.value.text;
-    final CentralizedSphere sphere = CentralizedSphere(
+    final SphereModel sphere = SphereModel(
       name: sphereName,
       description: sphereDescription,
       facilitators: <String>[
@@ -158,7 +158,8 @@ class CreateSphereBottomSheetState extends State<CreateSphereBottomSheet> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               _currentPage == 0
-                  ? Text('New Sphere', style: Theme.of(context).textTheme.headline6)
+                  ? Text('New Sphere',
+                      style: Theme.of(context).textTheme.headline6)
                   : GestureDetector(
                       onTap: () {
                         _createSphereController.previousPage(

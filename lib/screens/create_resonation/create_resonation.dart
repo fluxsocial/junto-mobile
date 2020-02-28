@@ -7,7 +7,7 @@ class CreateResonation extends StatefulWidget {
   const CreateResonation({Key key, @required this.expression})
       : super(key: key);
 
-  final CentralizedExpressionResponse expression;
+  final ExpressionResponse expression;
 
   @override
   State<StatefulWidget> createState() {

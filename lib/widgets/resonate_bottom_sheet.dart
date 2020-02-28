@@ -10,7 +10,7 @@ class ResonateBottomSheet extends StatelessWidget {
     @required this.onResonationPress,
   }) : super(key: key);
 
-  final CentralizedExpressionResponse expression;
+  final ExpressionResponse expression;
   final VoidCallback onResonationPress;
 
   @override

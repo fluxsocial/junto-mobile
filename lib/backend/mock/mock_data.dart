@@ -22,14 +22,14 @@ UserData kUserData = UserData(
   connectionPerspective: kPerspectives[1],
 );
 
-CentralizedDen kPublicDen = CentralizedDen(
+Den kPublicDen = Den(
   creator: kUserProfile.address,
   privacy: 'Public',
   isDefault: false,
   name: 'Mock Public Den',
   address: '123123-34345345-23422423',
 );
-CentralizedDen kPrivateDen = CentralizedDen(
+Den kPrivateDen = Den(
   creator: kUserProfile.address,
   privacy: 'Private',
   isDefault: false,
@@ -52,7 +52,7 @@ Comment kComment = Comment(
   context: 'collective',
   createdAt: DateTime.now(),
   creator: kUserProfile,
-  expressionData: CentralizedLongFormExpression(
+  expressionData: LongFormExpression(
     title: 'Mocking',
     body: 'Expressions',
   ),
@@ -67,24 +67,21 @@ Resonation kResonation = Resonation(
   linkType: 'Resonation',
 );
 
-CentralizedExpressionResponse kExpressionResponse =
-    CentralizedExpressionResponse(
+ExpressionResponse kExpressionResponse = ExpressionResponse(
   address: '123e4567-e89b-12d3-a456-426655440000',
   numberComments: 1,
   context: 'collective',
   createdAt: DateTime.now(),
   creator: kUserProfile,
-  expressionData:
-      CentralizedLongFormExpression(title: 'Mocking', body: 'Expressions'),
+  expressionData: LongFormExpression(title: 'Mocking', body: 'Expressions'),
   numberResonations: 0,
   privacy: 'Public',
   resonations: <UserProfile>[],
   type: 'LongForm',
 );
 
-List<CentralizedExpressionResponse> kSampleExpressions =
-    <CentralizedExpressionResponse>[
-  CentralizedExpressionResponse(
+List<ExpressionResponse> kSampleExpressions = <ExpressionResponse>[
+  ExpressionResponse(
     address: '0xfee32zokie8',
     type: 'LongForm',
     numberComments: 1,
@@ -101,13 +98,13 @@ List<CentralizedExpressionResponse> kSampleExpressions =
       gender: <String>[],
       address: 'ajdsbasbd-4234jdsf-dfmbjs',
     ),
-    expressionData: CentralizedLongFormExpression(
+    expressionData: LongFormExpression(
       title: 'Dynamic form is in motion!',
       body: "Hey! Eric here. We're currently working with a London-based dev "
           "agency called DevAngels to build out our dynamic, rich text editor. Soon, you'll be able to create short or longform expressions that contain text, links, images complemented with features such as bullet points, horiozntal lines, bold and italic font, and much more. This should be done in the next 1 or 2 weeks so stay tuned!",
     ),
   ),
-  CentralizedExpressionResponse(
+  ExpressionResponse(
     address: '0xfee32zokie8',
     type: 'ShortForm',
     numberComments: 1,
@@ -124,13 +121,13 @@ List<CentralizedExpressionResponse> kSampleExpressions =
       gender: <String>[],
       address: 'testing-address',
     ),
-    expressionData: CentralizedShortFormExpression(
+    expressionData: ShortFormExpression(
       background: <String>[],
       body: ' Have you heard of Paradym sound healing meditation? Join us for '
           'a transformational session this Friday!',
     ),
   ),
-  CentralizedExpressionResponse(
+  ExpressionResponse(
     address: '0xfee32zokie8',
     type: 'PhotoForm',
     numberComments: 1,
@@ -147,12 +144,12 @@ List<CentralizedExpressionResponse> kSampleExpressions =
       location: <String>['Somewhere on Earth'],
       gender: <String>[],
     ),
-    expressionData: CentralizedPhotoFormExpression(
+    expressionData: PhotoFormExpression(
       image: '',
       caption: 'Catching some waves in New Polzeath!',
     ),
   ),
-  CentralizedExpressionResponse(
+  ExpressionResponse(
     address: '0xfee32zokie8',
     type: 'EventForm',
     numberComments: 1,
@@ -169,7 +166,7 @@ List<CentralizedExpressionResponse> kSampleExpressions =
       location: <String>['Somewhere on Earth'],
       gender: <String>[],
     ),
-    expressionData: CentralizedEventFormExpression(
+    expressionData: EventFormExpression(
         title: 'Junto Presents: Jazz and Draw',
         // location: 'The Assemblage',
         // startTime: 'Sun, Sep 15, 3:00PM',
@@ -177,7 +174,7 @@ List<CentralizedExpressionResponse> kSampleExpressions =
         description:
             "Join us for a splendiferous afternoon of paint-splattering fun! We'll be syncing our movements to your favorite blues while creating beautiful masterpieces together. All are invited!"),
   ),
-  CentralizedExpressionResponse(
+  ExpressionResponse(
     address: '0xfee32zokie8',
     type: 'LongForm',
     numberComments: 1,
@@ -194,7 +191,7 @@ List<CentralizedExpressionResponse> kSampleExpressions =
       location: <String>['Somewhere on Earth'],
       gender: <String>[],
     ),
-    expressionData: CentralizedLongFormExpression(
+    expressionData: LongFormExpression(
       // title: 'Welcome to Junto!',
       title: '',
       body: "Hey! I'm Nash. Over the past few weeks, I've been working with"
@@ -203,7 +200,7 @@ List<CentralizedExpressionResponse> kSampleExpressions =
           "government of Trinidad and Tobago (where i'm from) and I'm stoked to say we won first place! Anyway, really looking forward to watching this g,o live. Can't wait to meet you all!",
     ),
   ),
-  CentralizedExpressionResponse(
+  ExpressionResponse(
     address: '0xfee32zokie8',
     type: 'PhotoForm',
     numberComments: 1,
@@ -220,12 +217,12 @@ List<CentralizedExpressionResponse> kSampleExpressions =
       verified: true,
       username: 'yaz',
     ),
-    expressionData: CentralizedPhotoFormExpression(
+    expressionData: PhotoFormExpression(
       image: '',
       caption: 'Hi, Yaz here!',
     ),
   ),
-  CentralizedExpressionResponse(
+  ExpressionResponse(
     address: '0xfee32zokie8',
     type: 'LongForm',
     numberComments: 1,
@@ -242,13 +239,13 @@ List<CentralizedExpressionResponse> kSampleExpressions =
       bio: 'hellooo',
       username: 'tomis',
     ),
-    expressionData: CentralizedLongFormExpression(
+    expressionData: LongFormExpression(
       title: 'The funny story about my name...',
       body: "A question I get all the time is, 'Is that your real name?' "
           "Well, I'm glad you asked. You see, it was a hot afternoon in Lexington, Kentucky. Feeling hangry, I swung by the closest Subway shop and...",
     ),
   ),
-  CentralizedExpressionResponse(
+  ExpressionResponse(
     address: '0xfee32zokie8',
     type: 'EventForm',
     numberComments: 1,
@@ -265,7 +262,7 @@ List<CentralizedExpressionResponse> kSampleExpressions =
       verified: true,
       username: 'leifthelion',
     ),
-    expressionData: CentralizedEventFormExpression(
+    expressionData: EventFormExpression(
         title: 'Happiness is Your True Nature',
         // location: 'within',
         // startTime: 'ANYTIME',
@@ -530,8 +527,8 @@ List<Users> kGroupUsers = <Users>[
   Users(user: kUsers[2], permissionLevel: 'Member'),
 ];
 
-List<CentralizedPerspective> kPerspectives = <CentralizedPerspective>[
-  CentralizedPerspective(
+List<PerspectiveModel> kPerspectives = <PerspectiveModel>[
+  PerspectiveModel(
     creator: kUserProfile.address,
     about: 'Mock Perspective One',
     createdAt: DateTime(2019, 06, 06),
@@ -539,7 +536,7 @@ List<CentralizedPerspective> kPerspectives = <CentralizedPerspective>[
     name: 'Mock One',
     address: '123123-3452345-234234',
   ),
-  CentralizedPerspective(
+  PerspectiveModel(
     creator: kGroupUsers[1].user.address,
     about: 'Mock Perspective Two',
     createdAt: DateTime(2019, 06, 07),
@@ -547,7 +544,7 @@ List<CentralizedPerspective> kPerspectives = <CentralizedPerspective>[
     name: 'Mock Two',
     address: '223123-3452345-234234',
   ),
-  CentralizedPerspective(
+  PerspectiveModel(
     creator: kUserProfile.address,
     about: 'Mock Perspective Three',
     createdAt: DateTime(2019, 06, 08),

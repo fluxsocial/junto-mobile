@@ -18,12 +18,11 @@ class ExpressionServiceCentralized implements ExpressionService {
   final JuntoHttp client;
 
   @override
-  List<CentralizedExpressionResponse> get collectiveExpressions =>
-      <CentralizedExpressionResponse>[];
+  List<ExpressionResponse> get collectiveExpressions => <ExpressionResponse>[];
 
   @override
-  Future<CentralizedExpressionResponse> createExpression(
-      CentralizedExpression expression) async {
+  Future<ExpressionResponse> createExpression(
+      ExpressionModel expression) async {
     final Map<String, dynamic> _postBody = expression.toMap();
     final http.Response _serverResponse =
         await client.postWithoutEncoding('/expressions', body: _postBody);
@@ -31,8 +30,7 @@ class ExpressionServiceCentralized implements ExpressionService {
     print(_serverResponse.statusCode);
     final Map<String, dynamic> parseData =
         JuntoHttp.handleResponse(_serverResponse);
-    final CentralizedExpressionResponse response =
-        CentralizedExpressionResponse.fromMap(parseData);
+    final ExpressionResponse response = ExpressionResponse.fromMap(parseData);
     return response;
   }
 
@@ -82,7 +80,7 @@ class ExpressionServiceCentralized implements ExpressionService {
   }
 
   @override
-  Future<CentralizedExpressionResponse> postCommentExpression(
+  Future<ExpressionResponse> postCommentExpression(
       String expressionAddress, String type, Map<String, dynamic> data) async {
     final Map<String, dynamic> _postBody = <String, dynamic>{
       'target_expression': expressionAddress,
@@ -96,7 +94,7 @@ class ExpressionServiceCentralized implements ExpressionService {
     );
     final Map<String, dynamic> _parseResponse =
         JuntoHttp.handleResponse(_serverResponse);
-    return CentralizedExpressionResponse.fromMap(_parseResponse);
+    return ExpressionResponse.fromMap(_parseResponse);
   }
 
   @override
@@ -110,15 +108,14 @@ class ExpressionServiceCentralized implements ExpressionService {
   }
 
   @override
-  Future<CentralizedExpressionResponse> getExpression(
+  Future<ExpressionResponse> getExpression(
     String expressionAddress,
   ) async {
     final http.Response _response =
         await client.get('/expressions/$expressionAddress');
     final Map<String, dynamic> _decodedResponse =
         JuntoHttp.handleResponse(_response);
-    return CentralizedExpressionResponse.withCommentsAndResonations(
-        _decodedResponse);
+    return ExpressionResponse.withCommentsAndResonations(_decodedResponse);
   }
 
   @override
@@ -151,7 +148,7 @@ class ExpressionServiceCentralized implements ExpressionService {
   }
 
   @override
-  Future<List<CentralizedExpressionResponse>> queryExpression(
+  Future<List<ExpressionResponse>> queryExpression(
     ExpressionQueryParams params,
   ) {
     throw UnimplementedError(
@@ -167,7 +164,7 @@ class ExpressionServiceCentralized implements ExpressionService {
   }
 
   @override
-  Future<QueryResults<CentralizedExpressionResponse>> getCollectiveExpressions(
+  Future<QueryResults<ExpressionResponse>> getCollectiveExpressions(
       Map<String, String> params) async {
     print(params);
     final http.Response response = await client.get(
@@ -176,10 +173,10 @@ class ExpressionServiceCentralized implements ExpressionService {
     );
     final dynamic results = JuntoHttp.handleResponse(response);
     if (results != null && results is Map<dynamic, dynamic>) {
-      return QueryResults<CentralizedExpressionResponse>(
-        results: <CentralizedExpressionResponse>[
+      return QueryResults<ExpressionResponse>(
+        results: <ExpressionResponse>[
           for (dynamic data in results['results'])
-            CentralizedExpressionResponse.withCommentsAndResonations(data)
+            ExpressionResponse.withCommentsAndResonations(data)
         ],
         lastTimestamp: results['last_timestamp'],
       );
@@ -187,16 +184,16 @@ class ExpressionServiceCentralized implements ExpressionService {
     //FIXME(Nash+Josh): The server response for a dos query does not follow the format for standard "Collective" query.
     // Both should return data using the same "query" format.
     if (results != null && results is List<dynamic>) {
-      return QueryResults<CentralizedExpressionResponse>(
-        results: <CentralizedExpressionResponse>[
+      return QueryResults<ExpressionResponse>(
+        results: <ExpressionResponse>[
           for (dynamic data in results)
-            CentralizedExpressionResponse.withCommentsAndResonations(data)
+            ExpressionResponse.withCommentsAndResonations(data)
         ],
         lastTimestamp: null,
       );
     } else {
-      return QueryResults<CentralizedExpressionResponse>(
-        results: <CentralizedExpressionResponse>[],
+      return QueryResults<ExpressionResponse>(
+        results: <ExpressionResponse>[],
         lastTimestamp: null,
       );
     }

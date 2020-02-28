@@ -9,12 +9,11 @@ import 'package:junto_beta_mobile/models/user_model.dart';
 
 class MockExpressionService implements ExpressionService {
   @override
-  List<CentralizedExpressionResponse> get collectiveExpressions =>
-      kSampleExpressions;
+  List<ExpressionResponse> get collectiveExpressions => kSampleExpressions;
 
   @override
-  Future<CentralizedExpressionResponse> createExpression(
-      CentralizedExpression expression) async {
+  Future<ExpressionResponse> createExpression(
+      ExpressionModel expression) async {
     await Future<void>.delayed(const Duration(seconds: 1));
     return kExpressionResponse;
   }
@@ -25,7 +24,7 @@ class MockExpressionService implements ExpressionService {
   }
 
   @override
-  Future<CentralizedExpressionResponse> getExpression(
+  Future<ExpressionResponse> getExpression(
     String expressionAddress,
   ) async {
     await Future<void>.delayed(const Duration(milliseconds: 2000));
@@ -50,7 +49,7 @@ class MockExpressionService implements ExpressionService {
   }
 
   @override
-  Future<CentralizedExpressionResponse> postCommentExpression(
+  Future<ExpressionResponse> postCommentExpression(
     String parentAddress,
     String type,
     Map<String, dynamic> data,
@@ -66,18 +65,18 @@ class MockExpressionService implements ExpressionService {
   }
 
   @override
-  Future<List<CentralizedExpressionResponse>> queryExpression(
+  Future<List<ExpressionResponse>> queryExpression(
       ExpressionQueryParams params) async {
     await Future<void>.delayed(const Duration(milliseconds: 300));
     return kSampleExpressions.reversed.toList();
   }
 
   @override
-  Future<QueryResults<CentralizedExpressionResponse>> getCollectiveExpressions(
+  Future<QueryResults<ExpressionResponse>> getCollectiveExpressions(
     Map<String, String> params,
   ) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
-    return QueryResults<CentralizedExpressionResponse>(
+    return QueryResults<ExpressionResponse>(
       results: kSampleExpressions,
       lastTimestamp: DateTime(
         2019,

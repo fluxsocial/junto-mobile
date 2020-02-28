@@ -17,8 +17,7 @@ class PackOpenPublic extends StatefulWidget {
 }
 
 class _PackOpenPublicState extends State<PackOpenPublic> with HideFab {
-  List<CentralizedExpressionResponse> expression =
-      <CentralizedExpressionResponse>[];
+  List<ExpressionResponse> expression = <ExpressionResponse>[];
 
   ScrollController _packOpenPublicController;
 

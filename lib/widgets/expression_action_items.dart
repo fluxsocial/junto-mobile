@@ -18,7 +18,7 @@ class ExpressionActionItems extends StatelessWidget {
     this.userAddress,
   });
 
-  final CentralizedExpressionResponse expression;
+  final ExpressionResponse expression;
   final String userAddress;
 
   @override
@@ -184,8 +184,7 @@ class _AddEventMembers extends StatefulWidget {
   const _AddEventMembers({Key key, this.expressionResponse}) : super(key: key);
 
   // ignore: unused_element
-  static Route<dynamic> route(
-      CentralizedExpressionResponse expressionResponse) {
+  static Route<dynamic> route(ExpressionResponse expressionResponse) {
     return MaterialPageRoute<dynamic>(
       builder: (BuildContext context) {
         return _AddEventMembers(
@@ -195,7 +194,7 @@ class _AddEventMembers extends StatefulWidget {
     );
   }
 
-  final CentralizedExpressionResponse expressionResponse;
+  final ExpressionResponse expressionResponse;
 
   @override
   __AddEventMembersState createState() => __AddEventMembersState();
