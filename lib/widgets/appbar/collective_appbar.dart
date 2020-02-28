@@ -36,21 +36,21 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
                 Container(
-                    alignment: Alignment.bottomLeft,
-                    padding: const EdgeInsets.only(left: 10),
-                    color: Colors.transparent,
-                    height: 36,
-                    child: Row(
-                      children: <Widget>[
-                        Image.asset('assets/images/junto-mobile__logo.png',
-                            height: 22.0, width: 22.0),
-                        const SizedBox(width: 7.5),
-                        Text(
-                          appbarTitle,
-                          style: Theme.of(context).textTheme.caption,
-                        ),
-                      ],
-                    ),
+                  alignment: Alignment.bottomLeft,
+                  padding: const EdgeInsets.only(left: 10),
+                  color: Colors.transparent,
+                  height: 36,
+                  child: Row(
+                    children: <Widget>[
+                      Image.asset('assets/images/junto-mobile__logo.png',
+                          height: 22.0, width: 22.0),
+                      const SizedBox(width: 7.5),
+                      Text(
+                        appbarTitle,
+                        style: Theme.of(context).textTheme.caption,
+                      ),
+                    ],
+                  ),
                 ),
                 Row(
                   children: <Widget>[
@@ -93,7 +93,25 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                   ),
                 ),
                 Row(
-                  children: <Widget>[],
+                  children: <Widget>[
+                    Container(
+                      color: Colors.transparent,
+                      alignment: Alignment.centerRight,
+                      width: 38,
+                      child: Icon(CustomIcons.twocolumn,
+                          size: 20, color: Theme.of(context).primaryColor),
+                    ),
+                    Container(
+                      color: Colors.transparent,
+                      alignment: Alignment.centerRight,
+                      width: 38,
+                      child: RotatedBox(
+                        quarterTurns: 1,
+                        child: Icon(CustomIcons.onecolumn,
+                            size: 20, color: Theme.of(context).primaryColor),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
