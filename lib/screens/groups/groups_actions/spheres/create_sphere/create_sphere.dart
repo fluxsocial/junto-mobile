@@ -2,19 +2,15 @@ import 'dart:io';
 
 import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/utils/form-validation.dart';
+import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/create_sphere/create_sphere_page_one.dart';
+import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/create_sphere/create_sphere_page_two.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
-import 'package:junto_beta_mobile/widgets/image_cropper.dart';
-import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview_select.dart';
-import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
-import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -32,7 +28,7 @@ class CreateSphere extends StatefulWidget {
 }
 
 class CreateSphereState extends State<CreateSphere> {
-  File imageFile;
+  ValueNotifier<File> imageFile = ValueNotifier<File>(null);
   int _currentIndex = 0;
   String sphereName;
   String sphereHandle;
@@ -44,7 +40,8 @@ class CreateSphereState extends State<CreateSphere> {
   TextEditingController sphereDescriptionController;
   String _currentPrivacy = 'Public';
 
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  GlobalKey<FormState> _formKey;
+
   final List<String> _sphereMembers = <String>[];
   final List<String> _tabs = <String>['Subscriptions', 'Connections'];
   final AsyncMemoizer<Map<String, dynamic>> _memoizer =
@@ -57,11 +54,11 @@ class CreateSphereState extends State<CreateSphere> {
     String sphereImageKey = '';
 
     // check if user uploaded a photo for the sphere
-    if (imageFile != null) {
+    if (imageFile.value != null) {
       try {
         final String _photoKey =
             await Provider.of<ExpressionRepo>(context, listen: false)
-                .createPhoto(true, '.png', imageFile);
+                .createPhoto(true, '.png', imageFile.value);
         sphereImageKey = _photoKey;
       } catch (error) {
         print(error);
@@ -109,6 +106,16 @@ class CreateSphereState extends State<CreateSphere> {
     sphereNameController = TextEditingController();
     sphereHandleController = TextEditingController();
     sphereDescriptionController = TextEditingController();
+    _formKey = GlobalKey<FormState>();
+  }
+
+  @override
+  void dispose() {
+    createSphereController.dispose();
+    sphereNameController.dispose();
+    sphereHandleController.dispose();
+    sphereDescriptionController.dispose();
+    super.dispose();
   }
 
   Future<Map<String, dynamic>> getUserRelationships() async {
@@ -132,6 +139,94 @@ class CreateSphereState extends State<CreateSphere> {
         ],
       );
     }
+  }
+
+  void _sphereAddMember(UserProfile member) {
+    _sphereMembers.add(member.address);
+  }
+
+  void _sphereRemoveMember(UserProfile member) {
+    _sphereMembers.remove(member.address);
+  }
+
+  Widget _createSphereThree() {
+    return ListView(
+      children: <Widget>[
+        _spherePrivacy('Public',
+            'Anyone can join this sphere, read its expressions and share to it'),
+        // _spherePrivacy(
+        //     'Shared',
+        //     'Only members can read expressions '
+        //         'and share to it. Facilitators can invite members or accept their request to join.'),
+        // _spherePrivacy(
+        //     'Private',
+        //     'Members must be invited into this sphere. This sphere is only searchable by members.'
+        //         ' Only members can read expressions '),
+      ],
+    );
+  }
+
+  Widget _spherePrivacy(String privacyLayer, String privacyDescription) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _currentPrivacy = privacyLayer;
+        });
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(color: Theme.of(context).dividerColor, width: 1),
+          ),
+        ),
+        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+        child: InkWell(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                width: MediaQuery.of(context).size.width * .75,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      privacyLayer,
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Text(privacyDescription,
+                        style: Theme.of(context).textTheme.bodyText1)
+                  ],
+                ),
+              ),
+              AnimatedContainer(
+                duration: kThemeChangeDuration,
+                height: 22,
+                width: 22,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: _currentPrivacy == privacyLayer
+                          ? <Color>[
+                              Theme.of(context).colorScheme.secondary,
+                              Theme.of(context).colorScheme.primary
+                            ]
+                          : <Color>[Colors.white, Colors.white],
+                      begin: Alignment.bottomLeft,
+                      end: Alignment.topRight),
+                  border: Border.all(
+                    color: Theme.of(context).dividerColor,
+                    width: 2,
+                  ),
+                  borderRadius: BorderRadius.circular(25),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _buildAppBar() {
@@ -252,13 +347,14 @@ class CreateSphereState extends State<CreateSphere> {
                   });
                 },
                 children: <Widget>[
-                  _CreateSpherePageOne(
+                  CreateSpherePageOne(
                     formKey: _formKey,
                     sphereDescriptionController: sphereDescriptionController,
                     sphereHandleController: sphereHandleController,
                     sphereNameController: sphereNameController,
+                    imageFile: imageFile,
                   ),
-                  _CreateSpherePageTwo(
+                  CreateSpherePageTwo(
                     future: getUserRelationships(),
                     addMember: _sphereAddMember,
                     removeMember: _sphereRemoveMember,
@@ -269,467 +365,6 @@ class CreateSphereState extends State<CreateSphere> {
               ),
             )
           ],
-        ),
-      ),
-    );
-  }
-
-  void _sphereAddMember(UserProfile member) {
-    _sphereMembers.add(member.address);
-  }
-
-  void _sphereRemoveMember(UserProfile member) {
-    _sphereMembers.remove(member.address);
-  }
-
-  Widget _createSphereThree() {
-    return ListView(
-      children: <Widget>[
-        _spherePrivacy('Public',
-            'Anyone can join this sphere, read its expressions and share to it'),
-        // _spherePrivacy(
-        //     'Shared',
-        //     'Only members can read expressions '
-        //         'and share to it. Facilitators can invite members or accept their request to join.'),
-        // _spherePrivacy(
-        //     'Private',
-        //     'Members must be invited into this sphere. This sphere is only searchable by members.'
-        //         ' Only members can read expressions '),
-      ],
-    );
-  }
-
-  Widget _spherePrivacy(String privacyLayer, String privacyDescription) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _currentPrivacy = privacyLayer;
-        });
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(color: Theme.of(context).dividerColor, width: 1),
-          ),
-        ),
-        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-        child: InkWell(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Container(
-                width: MediaQuery.of(context).size.width * .75,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      privacyLayer,
-                      style: const TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    Text(privacyDescription,
-                        style: Theme.of(context).textTheme.bodyText1)
-                  ],
-                ),
-              ),
-              AnimatedContainer(
-                duration: kThemeChangeDuration,
-                height: 22,
-                width: 22,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      colors: _currentPrivacy == privacyLayer
-                          ? <Color>[
-                              Theme.of(context).colorScheme.secondary,
-                              Theme.of(context).colorScheme.primary
-                            ]
-                          : <Color>[Colors.white, Colors.white],
-                      begin: Alignment.bottomLeft,
-                      end: Alignment.topRight),
-                  border: Border.all(
-                    color: Theme.of(context).dividerColor,
-                    width: 2,
-                  ),
-                  borderRadius: BorderRadius.circular(25),
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _CreateSpherePageOne extends StatefulWidget {
-  const _CreateSpherePageOne({
-    Key key,
-    @required this.formKey,
-    @required this.sphereNameController,
-    @required this.sphereHandleController,
-    @required this.sphereDescriptionController,
-    @required this.imageFile,
-  }) : super(key: key);
-  final GlobalKey<FormState> formKey;
-  final TextEditingController sphereNameController;
-  final TextEditingController sphereHandleController;
-  final TextEditingController sphereDescriptionController;
-  final ValueNotifier<File> imageFile;
-
-  @override
-  __CreateSpherePageOneState createState() => __CreateSpherePageOneState();
-}
-
-class __CreateSpherePageOneState extends State<_CreateSpherePageOne> {
-  File get imageFile => widget.imageFile.value;
-
-  Future<void> _onPickPressed() async {
-    final File image = await ImagePicker.pickImage(source: ImageSource.gallery);
-    if (image == null) {
-      setState(() => widget.imageFile.value = null);
-      return;
-    }
-    final File cropped =
-        await ImageCroppingDialog.show(context, image, aspectRatios: <String>[
-      '3:2',
-    ]);
-    if (cropped == null) {
-      setState(() => widget.imageFile.value = null);
-      return;
-    }
-    setState(() => widget.imageFile.value = cropped);
-  }
-
-  void _openChangePhotoModal() {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) => Container(
-        color: const Color(0xff737373),
-        child: Container(
-          height: MediaQuery.of(context).size.height * .4,
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(10),
-              topRight: Radius.circular(10),
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        height: 5,
-                        width: MediaQuery.of(context).size.width * .1,
-                        decoration: BoxDecoration(
-                          color: const Color(0xffeeeeee),
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  ListTile(
-                    onTap: () {
-                      Navigator.pop(context);
-                      _onPickPressed();
-                    },
-                    contentPadding: const EdgeInsets.all(0),
-                    title: Row(
-                      children: <Widget>[
-                        Text(
-                          'Upload new photo',
-                          style: Theme.of(context).textTheme.headline5,
-                        ),
-                      ],
-                    ),
-                  ),
-                  ListTile(
-                    contentPadding: const EdgeInsets.all(0),
-                    onTap: () {
-                      setState(() {
-                        widget.imageFile.value = null;
-                      });
-                      Navigator.pop(context);
-                    },
-                    title: Row(
-                      children: <Widget>[
-                        Text(
-                          'Remove photo',
-                          style: Theme.of(context).textTheme.headline5,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      key: widget.formKey,
-      autovalidate: true,
-      child: ListView(
-        children: <Widget>[
-          if (imageFile == null)
-            GestureDetector(
-              onTap: _onPickPressed,
-              child: Container(
-                margin: const EdgeInsets.only(bottom: 15),
-                alignment: Alignment.center,
-                width: MediaQuery.of(context).size.width,
-                height: (MediaQuery.of(context).size.width / 3) * 2,
-                color: Theme.of(context).dividerColor,
-                child: Icon(
-                  CustomIcons.camera,
-                  size: 38,
-                  color: Theme.of(context).primaryColorLight,
-                ),
-              ),
-            ),
-          if (imageFile != null)
-            Column(children: <Widget>[
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: (MediaQuery.of(context).size.width / 3) * 2,
-                color: Theme.of(context).dividerColor,
-                child: Image.file(imageFile, fit: BoxFit.cover),
-              ),
-              GestureDetector(
-                onTap: _openChangePhotoModal,
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    border: Border(
-                      bottom: BorderSide(
-                          color: Theme.of(context).dividerColor, width: .75),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text('Change photo',
-                          style: Theme.of(context).textTheme.caption),
-                      Icon(Icons.keyboard_arrow_right,
-                          color: Theme.of(context).primaryColorLight)
-                    ],
-                  ),
-                ),
-              ),
-            ]),
-          const SizedBox(height: 10),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            width: MediaQuery.of(context).size.width,
-            child: TextFormField(
-              validator: Validator.validateNonEmpty,
-              controller: widget.sphereNameController,
-              buildCounter: (
-                BuildContext context, {
-                int currentLength,
-                int maxLength,
-                bool isFocused,
-              }) =>
-                  null,
-              decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'Name of sphere',
-                  hintStyle: Theme.of(context).textTheme.subtitle1),
-              cursorColor: JuntoPalette.juntoGrey,
-              cursorWidth: 2,
-              maxLines: null,
-              maxLength: 140,
-              style: Theme.of(context).textTheme.headline6,
-              textInputAction: TextInputAction.done,
-            ),
-          ),
-          const SizedBox(height: 10),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: TextFormField(
-              validator: Validator.validateNonEmpty,
-              controller: widget.sphereHandleController,
-              buildCounter: (
-                BuildContext context, {
-                int currentLength,
-                int maxLength,
-                bool isFocused,
-              }) =>
-                  null,
-              decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'Unique username',
-                  hintStyle: Theme.of(context).textTheme.caption),
-              cursorColor: Theme.of(context).primaryColorDark,
-              cursorWidth: 2,
-              maxLines: null,
-              style: Theme.of(context).textTheme.caption,
-              maxLength: 80,
-              textInputAction: TextInputAction.done,
-            ),
-          ),
-          const SizedBox(height: 10),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: TextFormField(
-              validator: Validator.validateNonEmpty,
-              controller: widget.sphereDescriptionController,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'About sphere',
-                hintStyle: Theme.of(context).textTheme.caption,
-                counterStyle: const TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              cursorColor: Theme.of(context).primaryColorDark,
-              cursorWidth: 2,
-              maxLines: null,
-              style: Theme.of(context).textTheme.caption,
-              maxLength: 1000,
-              textInputAction: TextInputAction.done,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _CreateSpherePageTwo extends StatelessWidget {
-  const _CreateSpherePageTwo({
-    Key key,
-    @required this.tabs,
-    @required this.future,
-    @required this.addMember,
-    @required this.removeMember,
-  }) : super(key: key);
-  final List<String> tabs;
-  final Future<Map<String, dynamic>> future;
-  final ValueChanged<UserProfile> addMember;
-  final ValueChanged<UserProfile> removeMember;
-
-  @override
-  Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: tabs.length,
-      child: NestedScrollView(
-        physics: const ClampingScrollPhysics(),
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return <Widget>[
-            SliverPersistentHeader(
-              delegate: JuntoAppBarDelegate(
-                TabBar(
-                  labelPadding: const EdgeInsets.all(0),
-                  isScrollable: true,
-                  labelColor: Theme.of(context).primaryColorDark,
-                  labelStyle: Theme.of(context).textTheme.subtitle1,
-                  indicatorWeight: 0.0001,
-                  tabs: <Widget>[
-                    for (String name in tabs)
-                      Container(
-                        margin: const EdgeInsets.only(right: 24),
-                        color: Theme.of(context).colorScheme.background,
-                        child: Tab(
-                          text: name,
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-              pinned: true,
-            ),
-          ];
-        },
-        body: FutureBuilder<Map<String, dynamic>>(
-          future: future,
-          builder: (BuildContext context,
-              AsyncSnapshot<Map<String, dynamic>> snapshot) {
-            if (snapshot.hasData) {
-              // get list of connections
-              final List<UserProfile> _connectionsMembers =
-                  snapshot.data['connections']['results'];
-
-              // get list of following
-              final List<UserProfile> _followingMembers =
-                  snapshot.data['following']['results'];
-
-              return TabBarView(
-                children: <Widget>[
-                  ListView(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    children: <Widget>[
-                      for (UserProfile member in _followingMembers)
-                        MemberPreviewSelect(
-                          profile: member,
-                          onSelect: addMember,
-                          onDeselect: removeMember,
-                        ),
-                    ],
-                  ),
-                  // connections
-                  ListView(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    children: <Widget>[
-                      for (UserProfile connection in _connectionsMembers)
-                        MemberPreviewSelect(
-                          profile: connection,
-                          onSelect: addMember,
-                          onDeselect: removeMember,
-                        ),
-                    ],
-                  ),
-                ],
-              );
-            } else if (snapshot.hasError) {
-              return TabBarView(
-                children: <Widget>[
-                  Center(
-                    child: Transform.translate(
-                      offset: const Offset(0.0, -50),
-                      child: Text('Hmmm, something is up',
-                          style: Theme.of(context).textTheme.caption),
-                    ),
-                  ),
-                  Center(
-                    child: Transform.translate(
-                      offset: const Offset(0.0, -50),
-                      child: Text('Hmmm, something is up',
-                          style: Theme.of(context).textTheme.caption),
-                    ),
-                  ),
-                ],
-              );
-            }
-            return TabBarView(
-              children: <Widget>[
-                Center(
-                  child: JuntoProgressIndicator(),
-                ),
-                Center(
-                  child: JuntoProgressIndicator(),
-                ),
-              ],
-            );
-          },
         ),
       ),
     );
