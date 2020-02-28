@@ -8,7 +8,8 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/drawer/channel_preview.dart';
 
 class FilterDrawer extends StatefulWidget {
-  const FilterDrawer();
+  const FilterDrawer({this.filterByChannel});
+  final ValueChanged<Channel> filterByChannel;
 
   @override
   _FilterDrawerState createState() => _FilterDrawerState();
@@ -134,7 +135,10 @@ class _FilterDrawerState extends State<FilterDrawer> {
                           final Channel item = snapshot.data.results[index];
 
                           return InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              widget.filterByChannel(item);
+                              Navigator.pop(context);
+                            },
                             child: FilterDrawerChannelPreview(
                               channel: item,
                             ),

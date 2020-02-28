@@ -184,7 +184,9 @@ class JuntoCollectiveState extends State<JuntoCollective>
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      drawer: FilterDrawer(),
+      drawer: FilterDrawer(
+        filterByChannel: _filterByChannel,
+      ),
       endDrawer: const JuntoDrawer(
         screen: 'Collective',
         icon: CustomIcons.collective,
