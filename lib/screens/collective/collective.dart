@@ -13,6 +13,7 @@ import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/widgets/appbar/collective_appbar.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
+import 'package:junto_beta_mobile/widgets/drawer/filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
@@ -183,6 +184,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      drawer: FilterDrawer(),
       endDrawer: const JuntoDrawer(
         screen: 'Collective',
         icon: CustomIcons.collective,
@@ -251,9 +253,12 @@ class JuntoCollectiveState extends State<JuntoCollective>
                     slivers: <Widget>[
                       SliverPersistentHeader(
                         delegate: CollectiveAppBar(
-                          expandedHeight: 85,
+                          // expandedHeight: 85,
+                          expandedHeight: 135,
                           appbarTitle: _appbarTitle,
-                          openPerspectivesDrawer: () {},
+                          openFilterDrawer: () {
+                            Scaffold.of(context).openDrawer();
+                          },
                         ),
                         pinned: false,
                         floating: true,

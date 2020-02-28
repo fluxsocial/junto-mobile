@@ -5,19 +5,18 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 // Junto app bar used in collective screen.
 class CollectiveAppBar extends SliverPersistentHeaderDelegate {
   CollectiveAppBar(
-      {@required this.expandedHeight,
-      this.appbarTitle,
-      this.openPerspectivesDrawer});
+      {@required this.expandedHeight, this.appbarTitle, this.openFilterDrawer});
 
   final double expandedHeight;
   final String appbarTitle;
-  final Function openPerspectivesDrawer;
+  final Function openFilterDrawer;
 
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
-      height: 85,
+      // height: 85,
+      height: 135,
       child: Column(
         children: <Widget>[
           Container(
@@ -36,11 +35,7 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-                GestureDetector(
-                  onTap: () {
-                    openPerspectivesDrawer();
-                  },
-                  child: Container(
+                Container(
                     alignment: Alignment.bottomLeft,
                     padding: const EdgeInsets.only(left: 10),
                     color: Colors.transparent,
@@ -56,7 +51,6 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                         ),
                       ],
                     ),
-                  ),
                 ),
                 Row(
                   children: <Widget>[
@@ -76,12 +70,38 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
               ],
             ),
           ),
+          Container(
+            height: 50,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              color: Theme.of(context).backgroundColor,
+              border: Border(
+                bottom: BorderSide(
+                    color: Theme.of(context).dividerColor, width: .75),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () {
+                    openFilterDrawer();
+                  },
+                  child: Container(
+                    child: Image.asset('assets/images/junto-mobile__filter.png',
+                        height: 17, color: Theme.of(context).primaryColor),
+                  ),
+                ),
+                Row(
+                  children: <Widget>[],
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );
   }
-
-
 
   @override
   double get maxExtent => expandedHeight;
