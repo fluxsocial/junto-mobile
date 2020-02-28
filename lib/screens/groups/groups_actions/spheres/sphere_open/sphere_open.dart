@@ -66,10 +66,10 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     });
   }
 
-  final AsyncMemoizer<List<CentralizedExpressionResponse>> _memoizer =
-      AsyncMemoizer<List<CentralizedExpressionResponse>>();
+  final AsyncMemoizer<List<ExpressionResponse>> _memoizer =
+      AsyncMemoizer<List<ExpressionResponse>>();
 
-  Future<List<CentralizedExpressionResponse>> _getGroupExpressions() async {
+  Future<List<ExpressionResponse>> _getGroupExpressions() async {
     return _memoizer.runOnce(
       () => Provider.of<GroupRepo>(context, listen: false).getGroupExpressions(
         widget.group.address,
@@ -284,10 +284,10 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   }
 
   Widget _buildExpressionView() {
-    return FutureBuilder<List<CentralizedExpressionResponse>>(
+    return FutureBuilder<List<ExpressionResponse>>(
       future: _getGroupExpressions(),
       builder: (BuildContext context,
-          AsyncSnapshot<List<CentralizedExpressionResponse>> snapshot) {
+          AsyncSnapshot<List<ExpressionResponse>> snapshot) {
         if (snapshot.hasError) {
           return Center(
             child: Transform.translate(

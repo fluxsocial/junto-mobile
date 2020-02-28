@@ -9,8 +9,8 @@ class ShortformPreview extends StatefulWidget {
     @required this.expression,
   });
 
-  /// [CentralizedExpressionResponse] to be displayed
-  final CentralizedExpressionResponse expression;
+  /// [ExpressionResponse] to be displayed
+  final ExpressionResponse expression;
 
   @override
   State<StatefulWidget> createState() => ShortformPreviewState();

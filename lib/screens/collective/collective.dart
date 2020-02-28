@@ -40,9 +40,9 @@ class JuntoCollectiveState extends State<JuntoCollective>
       GlobalKey<ScaffoldState>();
 
   // Completer which controls expressions querying.
-  final ValueNotifier<Future<QueryResults<CentralizedExpressionResponse>>>
+  final ValueNotifier<Future<QueryResults<ExpressionResponse>>>
       _expressionCompleter =
-      ValueNotifier<Future<QueryResults<CentralizedExpressionResponse>>>(null);
+      ValueNotifier<Future<QueryResults<ExpressionResponse>>>(null);
 
   ExpressionRepo _expressionProvider;
 
@@ -99,7 +99,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
     });
   }
 
-  Future<QueryResults<CentralizedExpressionResponse>> getCollectiveExpressions({
+  Future<QueryResults<ExpressionResponse>> getCollectiveExpressions({
     int dos,
     String contextType,
     String contextString,
@@ -226,20 +226,18 @@ class JuntoCollectiveState extends State<JuntoCollective>
   Widget _buildPerspectiveFeed() {
     return RefreshIndicator(
       onRefresh: refreshData,
-      child: ValueListenableBuilder<
-              Future<QueryResults<CentralizedExpressionResponse>>>(
+      child: ValueListenableBuilder<Future<QueryResults<ExpressionResponse>>>(
           valueListenable: _expressionCompleter,
           builder: (
             BuildContext context,
-            Future<QueryResults<CentralizedExpressionResponse>> value,
+            Future<QueryResults<ExpressionResponse>> value,
             _,
           ) {
-            return FutureBuilder<QueryResults<CentralizedExpressionResponse>>(
+            return FutureBuilder<QueryResults<ExpressionResponse>>(
               future: value,
               builder: (
                 BuildContext context,
-                AsyncSnapshot<QueryResults<CentralizedExpressionResponse>>
-                    snapshot,
+                AsyncSnapshot<QueryResults<ExpressionResponse>> snapshot,
               ) {
                 if (snapshot.hasError) {
                   print('Error: ${snapshot.error}');

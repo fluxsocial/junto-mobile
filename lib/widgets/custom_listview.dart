@@ -11,7 +11,7 @@ class CustomListView extends StatelessWidget {
     @required this.showComments,
   }) : super(key: key);
 
-  final List<CentralizedExpressionResponse> data;
+  final List<ExpressionResponse> data;
   final String userAddress;
   final String privacyLayer;
   final bool showComments;

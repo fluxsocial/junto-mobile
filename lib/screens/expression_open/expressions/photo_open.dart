@@ -1,11 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 class PhotoOpen extends StatelessWidget {
   const PhotoOpen(this.photoExpression);
 
-  final CentralizedExpressionResponse photoExpression;
+  final ExpressionResponse photoExpression;
 
   @override
   Widget build(BuildContext context) {

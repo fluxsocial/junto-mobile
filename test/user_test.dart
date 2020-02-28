@@ -80,12 +80,12 @@ void main() {
   });
 
   test('Get user resonations', () async {
-    final List<CentralizedExpressionResponse> _result = await _userProvider
+    final List<ExpressionResponse> _result = await _userProvider
         .getUsersResonations('85235b21-1725-4e89-b6fa-305df7978e52');
     expect(_result, isNotNull);
   });
   test('Get user expressions', () async {
-    final List<CentralizedExpressionResponse> _result = await _userProvider
+    final List<ExpressionResponse> _result = await _userProvider
         .getUsersExpressions('85235b21-1725-4e89-b6fa-305df7978e52');
     expect(_result, isNotNull);
   });

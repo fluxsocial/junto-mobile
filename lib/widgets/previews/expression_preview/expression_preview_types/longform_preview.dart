@@ -7,7 +7,7 @@ class LongformPreview extends StatelessWidget {
     @required this.expression,
   }) : super(key: key);
 
-  final CentralizedExpressionResponse expression;
+  final ExpressionResponse expression;
 
   @override
   Widget build(BuildContext context) {

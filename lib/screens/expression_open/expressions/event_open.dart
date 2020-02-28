@@ -5,12 +5,12 @@ import 'package:junto_beta_mobile/models/expression.dart';
 class EventOpen extends StatelessWidget {
   const EventOpen(this.expression);
 
-  final CentralizedExpressionResponse expression;
+  final ExpressionResponse expression;
 
   @override
   Widget build(BuildContext context) {
-    final CentralizedEventFormExpression eventExpression =
-        expression.expressionData as CentralizedEventFormExpression;
+    final EventFormExpression eventExpression =
+        expression.expressionData as EventFormExpression;
     final String eventTitle = eventExpression.title;
     // ignore: unused_local_variable
     final String eventStartTime = eventExpression.startTime;

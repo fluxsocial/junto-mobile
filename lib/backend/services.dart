@@ -61,15 +61,15 @@ abstract class CollectiveService {
 /// CollectiveProvider.
 abstract class ExpressionService {
   /// Creates an expression on the server.
-  /// Method requires [CentralizedExpression] as it's only arg.
-  Future<CentralizedExpressionResponse> createExpression(
-    CentralizedExpression expression,
+  /// Method requires [ExpressionModel] as it's only arg.
+  Future<ExpressionResponse> createExpression(
+    ExpressionModel expression,
   );
 
   Future<String> createPhoto(bool isPrivate, String fileType, File file);
 
-  /// Returns a [CentralizedExpressionResponse] for the given address.
-  Future<CentralizedExpressionResponse> getExpression(
+  /// Returns a [ExpressionResponse] for the given address.
+  Future<ExpressionResponse> getExpression(
     String expressionAddress,
   );
 
@@ -81,7 +81,7 @@ abstract class ExpressionService {
 
   /// Allows the user to comment under the supplied expression.
   /// [parentAddress], [type] and [data] must be passed.
-  Future<CentralizedExpressionResponse> postCommentExpression(
+  Future<ExpressionResponse> postCommentExpression(
     String parentAddress,
     String type,
     Map<String, dynamic> data,
@@ -98,16 +98,16 @@ abstract class ExpressionService {
     String expressionAddress,
   );
 
-  Future<List<CentralizedExpressionResponse>> queryExpression(
+  Future<List<ExpressionResponse>> queryExpression(
       ExpressionQueryParams params);
 
   /// Returns a [QueryExpressionResults] containing a list of results which
   /// satisfies the query.
-  Future<QueryResults<CentralizedExpressionResponse>> getCollectiveExpressions(
+  Future<QueryResults<ExpressionResponse>> getCollectiveExpressions(
       Map<String, String> params);
 
   /// Returns mock expression data.
-  List<CentralizedExpressionResponse> get collectiveExpressions;
+  List<ExpressionResponse> get collectiveExpressions;
 
   Future<void> deleteExpression(String expressionAddress);
 
@@ -145,7 +145,7 @@ abstract class GroupService {
   /// to perform this action.
   Future<void> removeGroupMember(String groupAddress, String userAddress);
 
-  Future<List<CentralizedExpressionResponse>> getGroupExpressions(
+  Future<List<ExpressionResponse>> getGroupExpressions(
       String groupAddress, GroupExpressionQueryParams params);
 
   /// Allows for updating a group. The parameter [group] must not be null.
@@ -184,11 +184,10 @@ abstract class UserService {
   Future<UserGroupsResponse> getUserGroups(String userAddress);
 
   /// Currently under development server-side.
-  Future<List<CentralizedExpressionResponse>> getUsersResonations(
-      String userAddress);
+  Future<List<ExpressionResponse>> getUsersResonations(String userAddress);
 
   /// Placeholder for now, currently under development server-side.
-  Future<List<CentralizedExpressionResponse>> getUsersExpressions(
+  Future<List<ExpressionResponse>> getUsersExpressions(
     String userAddress,
   );
 

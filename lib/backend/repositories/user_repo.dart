@@ -35,12 +35,11 @@ class UserRepo {
     return _userService.getUserGroups(userAddress);
   }
 
-  Future<List<CentralizedExpressionResponse>> getUsersResonations(
-      String userAddress) {
+  Future<List<ExpressionResponse>> getUsersResonations(String userAddress) {
     return _userService.getUsersResonations(userAddress);
   }
 
-  Future<List<CentralizedExpressionResponse>> getUsersExpressions(
+  Future<List<ExpressionResponse>> getUsersExpressions(
     String userAddress,
   ) {
     assert(userAddress != null && userAddress.isNotEmpty);

@@ -58,7 +58,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
   String _currentExpressionContextDescription = 'shared to the public of Junto';
 
   String _address;
-  CentralizedExpression _expression;
+  ExpressionModel _expression;
   String _groupHandle = 'shared to a specific group';
   final ValueNotifier<List<String>> _channels = ValueNotifier<List<String>>(
     <String>[],
@@ -120,9 +120,9 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
           widget.expression['image'],
         );
         JuntoLoader.hide();
-        _expression = CentralizedExpression(
+        _expression = ExpressionModel(
           type: widget.expressionType,
-          expressionData: CentralizedPhotoFormExpression(
+          expressionData: PhotoFormExpression(
             image: _photoKey,
             caption: widget.expression['caption'],
           ).toMap(),
@@ -143,9 +143,9 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
           JuntoLoader.hide();
           eventPhoto = _eventPhotoKey;
         }
-        _expression = CentralizedExpression(
+        _expression = ExpressionModel(
           type: widget.expressionType,
-          expressionData: CentralizedEventFormExpression(
+          expressionData: EventFormExpression(
               photo: eventPhoto,
               description: widget.expression['description'],
               title: widget.expression['title'],
@@ -158,7 +158,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
           context: _expressionContext,
         );
       } else {
-        _expression = CentralizedExpression(
+        _expression = ExpressionModel(
           type: widget.expressionType,
           expressionData: widget.expression.toMap(),
           context: _expressionContext,

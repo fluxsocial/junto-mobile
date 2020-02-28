@@ -5,7 +5,7 @@ import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
 class ShortformOpen extends StatelessWidget {
   const ShortformOpen(this.expression);
 
-  final CentralizedExpressionResponse expression;
+  final ExpressionResponse expression;
   @override
   Widget build(BuildContext context) {
     return Container(

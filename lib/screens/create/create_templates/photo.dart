@@ -70,7 +70,7 @@ class CreatePhotoState extends State<CreatePhoto> {
     widget.setBottomNav(false);
   }
 
-  /// Creates a [CentralizedPhotoFormExpression] from the given data entered
+  /// Creates a [PhotoFormExpression] from the given data entered
   /// by the user.
   Map<String, dynamic> createExpression() {
     return <String, dynamic>{

@@ -10,7 +10,7 @@ class ExpressionOpenTop extends StatelessWidget with MemberValidation {
   const ExpressionOpenTop({Key key, this.expression, this.userAddress})
       : super(key: key);
 
-  final CentralizedExpressionResponse expression;
+  final ExpressionResponse expression;
   final String userAddress;
 
   @override
