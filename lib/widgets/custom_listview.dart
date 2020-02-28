@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
 
+/// Box implementation of the custom `ListView` used across Junto.
 class CustomListView extends StatelessWidget {
   const CustomListView({
     Key key,
@@ -71,6 +72,81 @@ class CustomListView extends StatelessWidget {
           ],
         )
       ],
+    );
+  }
+}
+
+/// Sliver implementation of the custom `ListView` used across Junto.
+class CustomSliverListView extends StatelessWidget {
+  const CustomSliverListView({
+    Key key,
+    @required this.data,
+    @required this.userAddress,
+  }) : super(key: key);
+
+  final List<ExpressionResponse> data;
+  final String userAddress;
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverList(
+      delegate: SliverChildListDelegate(
+        <Widget>[
+          Container(
+            color: Theme.of(context).backgroundColor,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  width: MediaQuery.of(context).size.width * .5,
+                  padding: const EdgeInsets.only(
+                    top: 10,
+                    left: 10,
+                    right: 5,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      for (int index = 0; index < data.length + 1; index++)
+                        if (index == data.length)
+                          const SizedBox()
+                        else if (index.isEven)
+                          ExpressionPreview(
+                            key: ValueKey<String>(data[index].address),
+                            expression: data[index],
+                            userAddress: userAddress,
+                          )
+                    ],
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width * .5,
+                  padding: const EdgeInsets.only(
+                    top: 10,
+                    left: 5,
+                    right: 10,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      for (int index = 0; index < data.length + 1; index++)
+                        if (index == data.length)
+                          const SizedBox()
+                        else if (index.isOdd)
+                          ExpressionPreview(
+                            key: ValueKey<String>(data[index].address),
+                            expression: data[index],
+                            userAddress: userAddress,
+                          )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

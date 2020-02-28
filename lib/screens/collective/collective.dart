@@ -12,8 +12,8 @@ import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/widgets/appbar/collective_appbar.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
+import 'package:junto_beta_mobile/widgets/custom_listview.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
-import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
@@ -227,126 +227,54 @@ class JuntoCollectiveState extends State<JuntoCollective>
     return RefreshIndicator(
       onRefresh: refreshData,
       child: ValueListenableBuilder<Future<QueryResults<ExpressionResponse>>>(
-          valueListenable: _expressionCompleter,
-          builder: (
-            BuildContext context,
-            Future<QueryResults<ExpressionResponse>> value,
-            _,
-          ) {
-            return FutureBuilder<QueryResults<ExpressionResponse>>(
-              future: value,
-              builder: (
-                BuildContext context,
-                AsyncSnapshot<QueryResults<ExpressionResponse>> snapshot,
-              ) {
-                if (snapshot.hasError) {
-                  print('Error: ${snapshot.error}');
-                  return const Center(
-                    child: Text('hmm, something is up with our servers'),
-                  );
-                }
-                if (snapshot.hasData) {
-                  return CustomScrollView(
-                    controller: _collectiveController,
-                    slivers: <Widget>[
-                      SliverPersistentHeader(
-                        delegate: CollectiveAppBar(
-                          expandedHeight: _showDegrees == true ? 135 : 85,
-                          degrees: _showDegrees,
-                          currentDegree: currentDegree,
-                          switchDegree: _switchDegree,
-                          appbarTitle: _appbarTitle,
-                          openPerspectivesDrawer: () {},
-                        ),
-                        pinned: false,
-                        floating: true,
-                      ),
-                      SliverList(
-                        delegate: SliverChildListDelegate(
-                          <Widget>[
-                            Container(
-                              color: Theme.of(context).backgroundColor,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * .5,
-                                    padding: const EdgeInsets.only(
-                                      top: 10,
-                                      left: 10,
-                                      right: 5,
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: <Widget>[
-                                        for (int index = 0;
-                                            index <
-                                                snapshot.data.results.length +
-                                                    1;
-                                            index++)
-                                          if (index ==
-                                              snapshot.data.results.length)
-                                            const SizedBox()
-                                          else if (index.isEven)
-                                            ExpressionPreview(
-                                              key: ValueKey<String>(snapshot
-                                                  .data.results[index].address),
-                                              expression:
-                                                  snapshot.data.results[index],
-                                              userAddress: _userAddress,
-                                            )
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * .5,
-                                    padding: const EdgeInsets.only(
-                                      top: 10,
-                                      left: 5,
-                                      right: 10,
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: <Widget>[
-                                        for (int index = 0;
-                                            index <
-                                                snapshot.data.results.length +
-                                                    1;
-                                            index++)
-                                          if (index ==
-                                              snapshot.data.results.length)
-                                            const SizedBox()
-                                          else if (index.isOdd)
-                                            ExpressionPreview(
-                                              key: ValueKey<String>(snapshot
-                                                  .data.results[index].address),
-                                              expression:
-                                                  snapshot.data.results[index],
-                                              userAddress: _userAddress,
-                                            )
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  );
-                }
-                return Center(
-                  child: JuntoProgressIndicator(),
+        valueListenable: _expressionCompleter,
+        builder: (
+          BuildContext context,
+          Future<QueryResults<ExpressionResponse>> value,
+          _,
+        ) {
+          return FutureBuilder<QueryResults<ExpressionResponse>>(
+            future: value,
+            builder: (
+              BuildContext context,
+              AsyncSnapshot<QueryResults<ExpressionResponse>> snapshot,
+            ) {
+              if (snapshot.hasError) {
+                print('Error: ${snapshot.error}');
+                return const Center(
+                  child: Text('hmm, something is up with our servers'),
                 );
-              },
-            );
-          }),
+              }
+              if (snapshot.hasData) {
+                return CustomScrollView(
+                  controller: _collectiveController,
+                  slivers: <Widget>[
+                    SliverPersistentHeader(
+                      delegate: CollectiveAppBar(
+                        expandedHeight: _showDegrees == true ? 135 : 85,
+                        degrees: _showDegrees,
+                        currentDegree: currentDegree,
+                        switchDegree: _switchDegree,
+                        appbarTitle: _appbarTitle,
+                        openPerspectivesDrawer: () {},
+                      ),
+                      pinned: false,
+                      floating: true,
+                    ),
+                    CustomSliverListView(
+                      userAddress: _userAddress,
+                      data: snapshot.data.results,
+                    ),
+                  ],
+                );
+              }
+              return Center(
+                child: JuntoProgressIndicator(),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 
