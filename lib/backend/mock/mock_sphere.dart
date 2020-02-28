@@ -13,10 +13,9 @@ class MockSphere with ChangeNotifier implements GroupService {
   }
 
   @override
-  Future<CentralizedSphereResponse> createSphere(
-      CentralizedSphere sphere) async {
+  Future<SphereResponse> createSphere(SphereModel sphere) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
-    return CentralizedSphereResponse(
+    return SphereResponse(
       creator: kUserProfile.address,
       groupData: null,
       privacy: null,

@@ -22,14 +22,14 @@ UserData kUserData = UserData(
   connectionPerspective: kPerspectives[1],
 );
 
-CentralizedDen kPublicDen = CentralizedDen(
+Den kPublicDen = Den(
   creator: kUserProfile.address,
   privacy: 'Public',
   isDefault: false,
   name: 'Mock Public Den',
   address: '123123-34345345-23422423',
 );
-CentralizedDen kPrivateDen = CentralizedDen(
+Den kPrivateDen = Den(
   creator: kUserProfile.address,
   privacy: 'Private',
   isDefault: false,
@@ -527,8 +527,8 @@ List<Users> kGroupUsers = <Users>[
   Users(user: kUsers[2], permissionLevel: 'Member'),
 ];
 
-List<CentralizedPerspective> kPerspectives = <CentralizedPerspective>[
-  CentralizedPerspective(
+List<PerspectiveModel> kPerspectives = <PerspectiveModel>[
+  PerspectiveModel(
     creator: kUserProfile.address,
     about: 'Mock Perspective One',
     createdAt: DateTime(2019, 06, 06),
@@ -536,7 +536,7 @@ List<CentralizedPerspective> kPerspectives = <CentralizedPerspective>[
     name: 'Mock One',
     address: '123123-3452345-234234',
   ),
-  CentralizedPerspective(
+  PerspectiveModel(
     creator: kGroupUsers[1].user.address,
     about: 'Mock Perspective Two',
     createdAt: DateTime(2019, 06, 07),
@@ -544,7 +544,7 @@ List<CentralizedPerspective> kPerspectives = <CentralizedPerspective>[
     name: 'Mock Two',
     address: '223123-3452345-234234',
   ),
-  CentralizedPerspective(
+  PerspectiveModel(
     creator: kUserProfile.address,
     about: 'Mock Perspective Three',
     createdAt: DateTime(2019, 06, 08),

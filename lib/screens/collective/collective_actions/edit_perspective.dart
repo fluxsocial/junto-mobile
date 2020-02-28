@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 class EditPerspective extends StatefulWidget {
   const EditPerspective({this.perspective, this.refreshPerspectives});
 
-  final CentralizedPerspective perspective;
+  final PerspectiveModel perspective;
   final Function refreshPerspectives;
 
   @override

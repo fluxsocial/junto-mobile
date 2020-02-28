@@ -13,8 +13,8 @@ class GroupServiceCentralized implements GroupService {
   final JuntoHttp client;
 
   @override
-  Future<CentralizedSphereResponse> createSphere(
-    CentralizedSphere sphere,
+  Future<SphereResponse> createSphere(
+    SphereModel sphere,
   ) async {
     final Map<String, dynamic> _postBody = sphere.toMap();
     final http.Response _serverResponse = await client.postWithoutEncoding(
@@ -23,7 +23,7 @@ class GroupServiceCentralized implements GroupService {
     );
     final Map<String, dynamic> _decodedResponse =
         JuntoHttp.handleResponse(_serverResponse);
-    return CentralizedSphereResponse.fromJson(_decodedResponse);
+    return SphereResponse.fromJson(_decodedResponse);
   }
 
   @override
