@@ -153,8 +153,7 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                             physics: const ClampingScrollPhysics(),
                             children: snapshot.data
                                 .map((PerspectiveModel perspective) {
-                              if (perspective.isDefault == true &&
-                                  perspective.name != 'Connections') {
+                              if (perspective.isDefault == true) {
                                 return GestureDetector(
                                   child: _buildPerspective(perspective),
                                 );
@@ -286,12 +285,18 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
                         'Expressions from everyone in Junto.',
                         style: Theme.of(context).textTheme.bodyText1,
                       ),
+                    if (perspective.name == 'Connections')
+                      Text(
+                        'Expressions from people you are connected with.',
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
                     if (perspective.name == 'Subscriptions')
                       Text(
                         'Expressions from specific people you\'re subscribed to.',
                         style: Theme.of(context).textTheme.bodyText1,
                       ),
                     if (perspective.name != 'JUNTO' &&
+                        perspective.name != 'Connections' &&
                         perspective.name != 'Subscriptions' &&
                         perspective.about != null)
                       Text(

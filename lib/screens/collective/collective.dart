@@ -309,6 +309,15 @@ class JuntoCollectiveState extends State<JuntoCollective>
       });
       _expressionCompleter.value = getCollectiveExpressions(
           contextType: 'Collective', paginationPos: 0, channels: _channels);
+    } else if (perspective.name == 'Connections') {
+      setState(() {
+        _appbarTitle = 'Connections';
+      });
+      _expressionCompleter.value = getCollectiveExpressions(
+        paginationPos: 0,
+        contextType: 'ConnectPerspective',
+        dos: 0,
+      );
     } else {
       setState(() {
         if (perspective.name ==
