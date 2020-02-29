@@ -19,6 +19,7 @@ import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:junto_beta_mobile/widgets/previews/expression_preview/two_column_preview/two_column_expression_preview.dart';
 
 // This class is a collective screen
 class JuntoCollective extends StatefulWidget {
@@ -271,6 +272,39 @@ class JuntoCollectiveState extends State<JuntoCollective>
                       pinned: false,
                       floating: true,
                     ),
+
+                    // SliverList(
+                    //   delegate: SliverChildListDelegate(
+                    //     <Widget>[
+                    //       Container(
+                    //         color: Theme.of(context).backgroundColor,
+                    //         padding: const EdgeInsets.only(
+                    //           top: 10,
+                    //           left: 10,
+                    //           right: 5,
+                    //         ),
+                    //         child: Column(
+                    //           mainAxisAlignment: MainAxisAlignment.start,
+                    //           children: <Widget>[
+                    //             for (int index = 0;
+                    //                 index < snapshot.data.results.length + 1;
+                    //                 index++)
+                    //               if (index == snapshot.data.results.length)
+                    //                 const SizedBox()
+                    //               else
+                    //                 TwoColumnExpressionPreview(
+                    //                   key: ValueKey<String>(
+                    //                       snapshot.data.results[index].address),
+                    //                   expression: snapshot.data.results[index],
+                    //                   userAddress: _userAddress,
+                    //                 )
+                    //           ],
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+
                     CustomSliverListView(
                       userAddress: _userAddress,
                       data: snapshot.data.results,

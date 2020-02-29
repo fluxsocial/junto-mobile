@@ -2,7 +2,7 @@ import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
+import 'package:junto_beta_mobile/widgets/previews/expression_preview/two_column_preview/two_column_expression_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
 
@@ -80,7 +80,7 @@ class _UserExpressionsState extends State<UserExpressions> {
                               const SizedBox()
                             else if (index.isEven &&
                                 snapshot.data[index].privacy == widget.privacy)
-                              ExpressionPreview(
+                              TwoColumnExpressionPreview(
                                 expression: snapshot.data[index],
                                 userAddress: widget.userProfile.address,
                               )
@@ -106,7 +106,7 @@ class _UserExpressionsState extends State<UserExpressions> {
                               const SizedBox()
                             else if (index.isOdd &&
                                 snapshot.data[index].privacy == widget.privacy)
-                              ExpressionPreview(
+                              TwoColumnExpressionPreview(
                                 expression: snapshot.data[index],
                                 userAddress: widget.userProfile.address,
                               )

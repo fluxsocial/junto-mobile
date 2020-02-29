@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
+import 'package:junto_beta_mobile/widgets/previews/expression_preview/two_column_preview/two_column_expression_preview.dart';
 
 /// Box implementation of the custom `ListView` used across Junto.
 class CustomListView extends StatelessWidget {
@@ -36,7 +36,7 @@ class CustomListView extends StatelessWidget {
                       const SizedBox()
                     else if (index.isEven &&
                         data[index].privacy == privacyLayer)
-                      ExpressionPreview(
+                      TwoColumnExpressionPreview(
                         expression: data[index],
                         userAddress: userAddress,
                         allowComments: showComments,
@@ -59,7 +59,7 @@ class CustomListView extends StatelessWidget {
                     if (index == data.length)
                       const SizedBox()
                     else if (index.isOdd && data[index].privacy == privacyLayer)
-                      ExpressionPreview(
+                      TwoColumnExpressionPreview(
                         expression: data[index],
                         userAddress: userAddress,
                         allowComments: showComments,
@@ -112,7 +112,7 @@ class CustomSliverListView extends StatelessWidget {
                         if (index == data.length)
                           const SizedBox()
                         else if (index.isEven)
-                          ExpressionPreview(
+                          TwoColumnExpressionPreview(
                             key: ValueKey<String>(data[index].address),
                             expression: data[index],
                             userAddress: userAddress,
@@ -134,7 +134,7 @@ class CustomSliverListView extends StatelessWidget {
                         if (index == data.length)
                           const SizedBox()
                         else if (index.isOdd)
-                          ExpressionPreview(
+                          TwoColumnExpressionPreview(
                             key: ValueKey<String>(data[index].address),
                             expression: data[index],
                             userAddress: userAddress,

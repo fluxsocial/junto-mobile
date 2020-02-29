@@ -8,7 +8,7 @@ import 'package:junto_beta_mobile/backend/repositories/group_repo.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/pack_open_appbar.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
-import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
+import 'package:junto_beta_mobile/widgets/previews/expression_preview/two_column_preview/two_column_expression_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -198,7 +198,7 @@ class PackOpenState extends State<PackOpen> {
                                             if (index == snapshot.data.length)
                                               const SizedBox()
                                             else if (index.isEven)
-                                              ExpressionPreview(
+                                              TwoColumnExpressionPreview(
                                                 expression:
                                                     snapshot.data[index],
                                                 userAddress: _userAddress,
@@ -224,7 +224,7 @@ class PackOpenState extends State<PackOpen> {
                                             if (index == snapshot.data.length)
                                               const SizedBox()
                                             else if (index.isOdd)
-                                              ExpressionPreview(
+                                              TwoColumnExpressionPreview(
                                                 expression:
                                                     snapshot.data[index],
                                                 userAddress: _userAddress,

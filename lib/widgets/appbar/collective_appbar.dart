@@ -105,11 +105,8 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                       color: Colors.transparent,
                       alignment: Alignment.centerRight,
                       width: 38,
-                      child: RotatedBox(
-                        quarterTurns: 1,
-                        child: Icon(CustomIcons.onecolumn,
-                            size: 20, color: Theme.of(context).primaryColor),
-                      ),
+                      child: Icon(CustomIcons.onecolumn,
+                          size: 20, color: Theme.of(context).primaryColor),
                     ),
                   ],
                 ),
