@@ -21,20 +21,18 @@ class CreateEvent extends StatefulWidget {
 
 class CreateEventState extends State<CreateEvent> with DateParser {
   TextEditingController titleController;
-  TextEditingController startDateController;
-  TextEditingController endDateController;
 
   TextEditingController locationController;
   TextEditingController detailsController;
 
   File imageFile;
+  DateTime startTime;
+  DateTime endTime;
 
   @override
   void initState() {
     super.initState();
     titleController = TextEditingController();
-    startDateController = TextEditingController();
-    endDateController = TextEditingController();
     locationController = TextEditingController();
     detailsController = TextEditingController();
   }
@@ -42,8 +40,6 @@ class CreateEventState extends State<CreateEvent> with DateParser {
   @override
   void dispose() {
     titleController.dispose();
-    startDateController.dispose();
-    endDateController.dispose();
     locationController.dispose();
     detailsController.dispose();
     super.dispose();
@@ -55,8 +51,8 @@ class CreateEventState extends State<CreateEvent> with DateParser {
       'photo': imageFile,
       'title': titleController.value.text,
       'location': locationController.text,
-      'start_time': DateTime.now().toUtc().toIso8601String(),
-      'end_time': DateTime.now().toUtc().toIso8601String(),
+      'start_time': startTime.toUtc().toIso8601String(),
+      'end_time': endTime.toUtc().toIso8601String(),
       'facilitators': <String>[],
       'members': <String>[]
     };
@@ -153,6 +149,80 @@ class CreateEventState extends State<CreateEvent> with DateParser {
           ),
         ),
       ),
+    );
+  }
+
+  String _generateMessage(String message, DateTime time) {
+    if (time == null) {
+      return message;
+    }
+    return MaterialLocalizations.of(context).formatFullDate(time);
+  }
+
+  Widget _createDateSelector() {
+    final ThemeData theme = Theme.of(context);
+    final DateTime _currentTime = DateTime.now();
+    if (theme.platform == TargetPlatform.iOS) {
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          _CollapsiblePicker(
+            title: 'Start Time/date',
+            subtitle: _generateMessage('Select date', startTime),
+            initialTime: startTime,
+            onChanged: (DateTime time) => setState(() => startTime = time),
+          ),
+          _CollapsiblePicker(
+            title: 'End Time/date',
+            subtitle: _generateMessage('Select date', endTime),
+            initialTime: endTime,
+            onChanged: (DateTime time) => setState(() => endTime = time),
+          ),
+        ],
+      );
+    }
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        ListTile(
+          contentPadding: EdgeInsets.zero,
+          title: Text(
+            'Start Time/date',
+            style: Theme.of(context).textTheme.caption,
+          ),
+          subtitle: Text(
+            _generateMessage('Select date', startTime),
+          ),
+          onTap: () async {
+            final DateTime selectedDate = await showDatePicker(
+              context: context,
+              initialDate: _currentTime,
+              firstDate: _currentTime,
+              lastDate: DateTime(2100),
+            );
+            setState(() => startTime = selectedDate);
+          },
+        ),
+        ListTile(
+          contentPadding: EdgeInsets.zero,
+          title: Text(
+            'End Time/date',
+            style: Theme.of(context).textTheme.caption,
+          ),
+          subtitle: Text(
+            _generateMessage('Select date', endTime),
+          ),
+          onTap: () async {
+            final DateTime selectedDate = await showDatePicker(
+              context: context,
+              initialDate: _currentTime,
+              firstDate: _currentTime,
+              lastDate: DateTime(2100),
+            );
+            setState(() => endTime = selectedDate);
+          },
+        ),
+      ],
     );
   }
 
@@ -347,6 +417,55 @@ class CreateEventState extends State<CreateEvent> with DateParser {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// Date picker which expands to reveal the iOS styled [CupertinoDatePicker]
+class _CollapsiblePicker extends StatelessWidget {
+  const _CollapsiblePicker({
+    Key key,
+    @required this.title,
+    @required this.onChanged,
+    @required this.initialTime,
+    @required this.subtitle,
+  }) : super(key: key);
+
+  /// Tile heading
+  final String title;
+
+  /// Initial date
+  final DateTime initialTime;
+
+  /// If null, this will prompt the user to select a date. It also displays the selected date.
+  final String subtitle;
+
+  /// Called whenever the user changes the time.
+  final ValueChanged<DateTime> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTileTheme(
+      contentPadding: EdgeInsets.zero,
+      child: ExpansionTile(
+        title: Padding(
+          padding: EdgeInsets.zero,
+          child: Text(
+            title,
+            style: Theme.of(context).textTheme.caption,
+          ),
+        ),
+        subtitle: Text(subtitle),
+        children: <Widget>[
+          SizedBox(
+            height: 100,
+            child: CupertinoDatePicker(
+              initialDateTime: initialTime,
+              onDateTimeChanged: onChanged,
+            ),
+          ),
+        ],
       ),
     );
   }
