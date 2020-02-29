@@ -262,107 +262,60 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                         textInputAction: TextInputAction.done,
                         style: Theme.of(context).textTheme.headline6),
                   ),
-                  imageFile == null
-                      ? GestureDetector(
+                  if (imageFile == null)
+                    GestureDetector(
+                      onTap: () {
+                        _onPickPressed();
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.only(bottom: 15),
+                        alignment: Alignment.center,
+                        width: MediaQuery.of(context).size.width,
+                        height: (MediaQuery.of(context).size.width / 3) * 2,
+                        color: Theme.of(context).dividerColor,
+                        child: Icon(CustomIcons.camera,
+                            size: 38,
+                            color: Theme.of(context).primaryColorLight),
+                      ),
+                    ),
+                  if (imageFile != null)
+                    Column(
+                      children: <Widget>[
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: (MediaQuery.of(context).size.width / 3) * 2,
+                          color: Theme.of(context).dividerColor,
+                          child: Image.file(imageFile, fit: BoxFit.cover),
+                        ),
+                        GestureDetector(
                           onTap: () {
-                            _onPickPressed();
+                            _openChangePhotoModal();
                           },
                           child: Container(
-                            margin: const EdgeInsets.only(bottom: 15),
-                            alignment: Alignment.center,
-                            width: MediaQuery.of(context).size.width,
-                            height: (MediaQuery.of(context).size.width / 3) * 2,
-                            color: Theme.of(context).dividerColor,
-                            child: Icon(CustomIcons.camera,
-                                size: 38,
-                                color: Theme.of(context).primaryColorLight),
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              border: Border(
+                                bottom: BorderSide(
+                                    color: Theme.of(context).dividerColor,
+                                    width: .75),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text('Change photo',
+                                    style: Theme.of(context).textTheme.caption),
+                                Icon(Icons.keyboard_arrow_right,
+                                    color: Theme.of(context).primaryColorLight)
+                              ],
+                            ),
                           ),
                         )
-                      : Column(children: <Widget>[
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: (MediaQuery.of(context).size.width / 3) * 2,
-                            color: Theme.of(context).dividerColor,
-                            child: Image.file(imageFile, fit: BoxFit.cover),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              _openChangePhotoModal();
-                            },
-                            child: Container(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 15),
-                                decoration: BoxDecoration(
-                                  color: Colors.transparent,
-                                  border: Border(
-                                    bottom: BorderSide(
-                                        color: Theme.of(context).dividerColor,
-                                        width: .75),
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Text('Change photo',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .caption),
-                                    Icon(Icons.keyboard_arrow_right,
-                                        color:
-                                            Theme.of(context).primaryColorLight)
-                                  ],
-                                )),
-                          )
-                        ]),
-                  const SizedBox(height: 10),
-                  Container(
-                    child: TextFormField(
-                      controller: startDateController,
-                      validator: Validator.validateNonEmpty,
-                      buildCounter: (
-                        BuildContext context, {
-                        int currentLength,
-                        int maxLength,
-                        bool isFocused,
-                      }) =>
-                          null,
-                      decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Start time/date',
-                          hintStyle: Theme.of(context).textTheme.caption),
-                      cursorColor: Theme.of(context).primaryColorDark,
-                      cursorWidth: 2,
-                      maxLines: null,
-                      style: Theme.of(context).textTheme.caption,
-                      maxLength: 80,
-                      textInputAction: TextInputAction.done,
+                      ],
                     ),
-                  ),
                   const SizedBox(height: 10),
-                  Container(
-                    child: TextFormField(
-                      controller: endDateController,
-                      validator: Validator.validateNonEmpty,
-                      buildCounter: (
-                        BuildContext context, {
-                        int currentLength,
-                        int maxLength,
-                        bool isFocused,
-                      }) =>
-                          null,
-                      decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'End time/date',
-                          hintStyle: Theme.of(context).textTheme.caption),
-                      cursorColor: Theme.of(context).primaryColorDark,
-                      cursorWidth: 2,
-                      maxLines: null,
-                      style: Theme.of(context).textTheme.caption,
-                      maxLength: 80,
-                      textInputAction: TextInputAction.done,
-                    ),
-                  ),
+                  _createDateSelector(),
                   const SizedBox(height: 10),
                   Container(
                     child: TextFormField(
