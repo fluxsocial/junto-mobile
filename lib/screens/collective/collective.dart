@@ -273,39 +273,12 @@ class JuntoCollectiveState extends State<JuntoCollective>
                       floating: true,
                     ),
 
-                    // SliverList(
-                    //   delegate: SliverChildListDelegate(
-                    //     <Widget>[
-                    //       Container(
-                    //         color: Theme.of(context).backgroundColor,
-                    //         padding: const EdgeInsets.only(
-                    //           top: 10,
-                    //           left: 10,
-                    //           right: 5,
-                    //         ),
-                    //         child: Column(
-                    //           mainAxisAlignment: MainAxisAlignment.start,
-                    //           children: <Widget>[
-                    //             for (int index = 0;
-                    //                 index < snapshot.data.results.length + 1;
-                    //                 index++)
-                    //               if (index == snapshot.data.results.length)
-                    //                 const SizedBox()
-                    //               else
-                    //                 TwoColumnExpressionPreview(
-                    //                   key: ValueKey<String>(
-                    //                       snapshot.data.results[index].address),
-                    //                   expression: snapshot.data.results[index],
-                    //                   userAddress: _userAddress,
-                    //                 )
-                    //           ],
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),
+                    // fade transition between the two
+                    // SingleColumnSliverListView(
+                    //   userAddress: _userAddress,
+                    //   data: snapshot.data.results,
                     // ),
-
-                    CustomSliverListView(
+                    TwoColumnSliverListView(
                       userAddress: _userAddress,
                       data: snapshot.data.results,
                     ),

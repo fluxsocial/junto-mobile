@@ -11,8 +11,8 @@ import 'package:junto_beta_mobile/widgets/previews/expression_preview/two_column
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/two_column_preview/two_column_expression_preview_types/shortform.dart';
 
 /// Renders a concise overview of one given [ExpressionResult].
-class TwoColumnExpressionPreview extends StatelessWidget with MemberValidation {
-  const TwoColumnExpressionPreview(
+class OneColumnExpressionPreview extends StatelessWidget with MemberValidation {
+  const OneColumnExpressionPreview(
       {Key key,
       @required this.expression,
       @required this.userAddress,
