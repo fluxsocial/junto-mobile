@@ -5,11 +5,17 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 // Junto app bar used in collective screen.
 class CollectiveAppBar extends SliverPersistentHeaderDelegate {
   CollectiveAppBar(
-      {@required this.expandedHeight, this.appbarTitle, this.openFilterDrawer});
+      {@required this.expandedHeight,
+      this.appbarTitle,
+      this.openFilterDrawer,
+      this.twoColumnView,
+      this.switchColumnView});
 
   final double expandedHeight;
   final String appbarTitle;
   final Function openFilterDrawer;
+  final bool twoColumnView;
+  final Function switchColumnView;
 
   @override
   Widget build(
@@ -36,21 +42,21 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
                 Container(
-                    alignment: Alignment.bottomLeft,
-                    padding: const EdgeInsets.only(left: 10),
-                    color: Colors.transparent,
-                    height: 36,
-                    child: Row(
-                      children: <Widget>[
-                        Image.asset('assets/images/junto-mobile__logo.png',
-                            height: 22.0, width: 22.0),
-                        const SizedBox(width: 7.5),
-                        Text(
-                          appbarTitle,
-                          style: Theme.of(context).textTheme.caption,
-                        ),
-                      ],
-                    ),
+                  alignment: Alignment.bottomLeft,
+                  padding: const EdgeInsets.only(left: 10),
+                  color: Colors.transparent,
+                  height: 36,
+                  child: Row(
+                    children: <Widget>[
+                      Image.asset('assets/images/junto-mobile__logo.png',
+                          height: 22.0, width: 22.0),
+                      const SizedBox(width: 7.5),
+                      Text(
+                        appbarTitle,
+                        style: Theme.of(context).textTheme.caption,
+                      ),
+                    ],
+                  ),
                 ),
                 Row(
                   children: <Widget>[
@@ -93,7 +99,38 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                   ),
                 ),
                 Row(
-                  children: <Widget>[],
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: () {
+                        switchColumnView('two');
+                      },
+                      child: Container(
+                        color: Colors.transparent,
+                        alignment: Alignment.centerRight,
+                        width: 38,
+                        child: Icon(CustomIcons.twocolumn,
+                            size: 20,
+                            color: twoColumnView
+                                ? Theme.of(context).primaryColorDark
+                                : Theme.of(context).primaryColorLight),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        switchColumnView('single');
+                      },
+                      child: Container(
+                        color: Colors.transparent,
+                        alignment: Alignment.centerRight,
+                        width: 38,
+                        child: Icon(CustomIcons.singlecolumn,
+                            size: 20,
+                            color: twoColumnView
+                                ? Theme.of(context).primaryColorLight
+                                : Theme.of(context).primaryColorDark),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

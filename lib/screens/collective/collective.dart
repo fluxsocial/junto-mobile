@@ -19,6 +19,7 @@ import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:junto_beta_mobile/widgets/previews/expression_preview/two_column_preview/two_column_expression_preview.dart';
 
 // This class is a collective screen
 class JuntoCollective extends StatefulWidget {
@@ -55,6 +56,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
   String _appbarTitle = 'JUNTO';
   final List<String> _channels = <String>[];
   ValueNotifier<bool> actionsVisible = ValueNotifier<bool>(false);
+  bool twoColumnView = true;
 
   @override
   void initState() {
@@ -144,6 +146,16 @@ class JuntoCollectiveState extends State<JuntoCollective>
     _expressionCompleter.value = getCollectiveExpressions(
         contextType: 'Collective', paginationPos: 0, channels: _channels);
     Navigator.pop(context);
+  }
+
+  void _switchColumnView(String columnType) {
+    setState(() {
+      if (columnType == 'two') {
+        twoColumnView = true;
+      } else if (columnType == 'single') {
+        twoColumnView = false;
+      }
+    });
   }
 
   @override
@@ -261,20 +273,34 @@ class JuntoCollectiveState extends State<JuntoCollective>
                   slivers: <Widget>[
                     SliverPersistentHeader(
                       delegate: CollectiveAppBar(
-                        // expandedHeight: 85,
-                        expandedHeight: 135,
-                        appbarTitle: _appbarTitle,
-                        openFilterDrawer: () {
-                          Scaffold.of(context).openDrawer();
-                        },
-                      ),
+                          expandedHeight: 135,
+                          appbarTitle: _appbarTitle,
+                          openFilterDrawer: () {
+                            Scaffold.of(context).openDrawer();
+                          },
+                          twoColumnView: twoColumnView,
+                          switchColumnView: _switchColumnView),
                       pinned: false,
                       floating: true,
                     ),
-                    CustomSliverListView(
-                      userAddress: _userAddress,
-                      data: snapshot.data.results,
-                    ),
+                    SliverList(
+                      delegate: SliverChildListDelegate(<Widget>[
+                        AnimatedCrossFade(
+                          crossFadeState: twoColumnView
+                              ? CrossFadeState.showFirst
+                              : CrossFadeState.showSecond,
+                          duration: const Duration(milliseconds: 200),
+                          firstChild: TwoColumnSliverListView(
+                            userAddress: _userAddress,
+                            data: snapshot.data.results,
+                          ),
+                          secondChild: SingleColumnSliverListView(
+                            userAddress: _userAddress,
+                            data: snapshot.data.results,
+                          ),
+                        )
+                      ]),
+                    )
                   ],
                 );
               }

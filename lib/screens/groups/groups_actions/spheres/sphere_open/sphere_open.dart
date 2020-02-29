@@ -11,7 +11,7 @@ import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_o
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
-import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
+import 'package:junto_beta_mobile/widgets/previews/expression_preview/two_column_preview/two_column_expression_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
@@ -322,7 +322,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                             if (index == snapshot.data.length)
                               const SizedBox()
                             else if (index.isEven)
-                              ExpressionPreview(
+                              TwoColumnExpressionPreview(
                                 expression: snapshot.data[index],
                                 userAddress: _userAddress,
                               )
@@ -345,7 +345,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                             if (index == snapshot.data.length)
                               const SizedBox()
                             else if (index.isOdd)
-                              ExpressionPreview(
+                              TwoColumnExpressionPreview(
                                 expression: snapshot.data[index],
                                 userAddress: _userAddress,
                               )

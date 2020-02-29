@@ -198,7 +198,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
         if (snapshot.hasData) {
           return Container(
             color: Theme.of(context).colorScheme.background,
-            child: CustomListView(
+            child: TwoColumnListView(
               data: snapshot.data,
               userAddress: _userAddress,
               privacyLayer: 'Public',

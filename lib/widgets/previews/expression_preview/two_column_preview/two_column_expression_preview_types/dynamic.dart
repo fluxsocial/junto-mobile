@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 
-class LongformPreview extends StatelessWidget {
-  const LongformPreview({
+class DynamicPreview extends StatelessWidget {
+  const DynamicPreview({
     Key key,
     @required this.expression,
   }) : super(key: key);
