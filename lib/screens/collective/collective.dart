@@ -278,6 +278,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
                           openFilterDrawer: () {
                             Scaffold.of(context).openDrawer();
                           },
+                          twoColumnView: twoColumnView,
                           switchColumnView: _switchColumnView),
                       pinned: false,
                       floating: true,

@@ -8,11 +8,13 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
       {@required this.expandedHeight,
       this.appbarTitle,
       this.openFilterDrawer,
+      this.twoColumnView,
       this.switchColumnView});
 
   final double expandedHeight;
   final String appbarTitle;
   final Function openFilterDrawer;
+  final bool twoColumnView;
   final Function switchColumnView;
 
   @override
@@ -107,7 +109,10 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                         alignment: Alignment.centerRight,
                         width: 38,
                         child: Icon(CustomIcons.twocolumn,
-                            size: 20, color: Theme.of(context).primaryColor),
+                            size: 20,
+                            color: twoColumnView
+                                ? Theme.of(context).primaryColorDark
+                                : Theme.of(context).primaryColorLight),
                       ),
                     ),
                     GestureDetector(
@@ -118,8 +123,11 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                         color: Colors.transparent,
                         alignment: Alignment.centerRight,
                         width: 38,
-                        child: Icon(CustomIcons.onecolumn,
-                            size: 20, color: Theme.of(context).primaryColor),
+                        child: Icon(CustomIcons.singlecolumn,
+                            size: 20,
+                            color: twoColumnView
+                                ? Theme.of(context).primaryColorLight
+                                : Theme.of(context).primaryColorDark),
                       ),
                     ),
                   ],
