@@ -164,7 +164,7 @@ class TwoColumnExpressionPreview extends StatelessWidget with MemberValidation {
 
   Widget _returnExpression() {
     if (expression.type == 'LongForm') {
-      return LongformPreview(expression: expression);
+      return DynamicPreview(expression: expression);
     } else if (expression.type == 'ShortForm') {
       return ShortformPreview(expression: expression);
     } else if (expression.type == 'PhotoForm') {

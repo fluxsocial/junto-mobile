@@ -5,11 +5,15 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 // Junto app bar used in collective screen.
 class CollectiveAppBar extends SliverPersistentHeaderDelegate {
   CollectiveAppBar(
-      {@required this.expandedHeight, this.appbarTitle, this.openFilterDrawer});
+      {@required this.expandedHeight,
+      this.appbarTitle,
+      this.openFilterDrawer,
+      this.switchColumnView});
 
   final double expandedHeight;
   final String appbarTitle;
   final Function openFilterDrawer;
+  final Function switchColumnView;
 
   @override
   Widget build(
@@ -94,19 +98,29 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                 ),
                 Row(
                   children: <Widget>[
-                    Container(
-                      color: Colors.transparent,
-                      alignment: Alignment.centerRight,
-                      width: 38,
-                      child: Icon(CustomIcons.twocolumn,
-                          size: 20, color: Theme.of(context).primaryColor),
+                    GestureDetector(
+                      onTap: () {
+                        switchColumnView('two');
+                      },
+                      child: Container(
+                        color: Colors.transparent,
+                        alignment: Alignment.centerRight,
+                        width: 38,
+                        child: Icon(CustomIcons.twocolumn,
+                            size: 20, color: Theme.of(context).primaryColor),
+                      ),
                     ),
-                    Container(
-                      color: Colors.transparent,
-                      alignment: Alignment.centerRight,
-                      width: 38,
-                      child: Icon(CustomIcons.onecolumn,
-                          size: 20, color: Theme.of(context).primaryColor),
+                    GestureDetector(
+                      onTap: () {
+                        switchColumnView('single');
+                      },
+                      child: Container(
+                        color: Colors.transparent,
+                        alignment: Alignment.centerRight,
+                        width: 38,
+                        child: Icon(CustomIcons.onecolumn,
+                            size: 20, color: Theme.of(context).primaryColor),
+                      ),
                     ),
                   ],
                 ),
