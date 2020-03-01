@@ -42,14 +42,14 @@ class ShortformPreviewState extends State<ShortformPreview> {
         ),
       ),
       constraints: BoxConstraints(
-        minHeight: MediaQuery.of(context).size.height * .33,
+        minHeight: MediaQuery.of(context).size.height * .24,
       ),
       alignment: Alignment.center,
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 50.0),
       child: Text(
         shortformBody,
-        maxLines: 5,
+        maxLines: 7,
         textAlign: TextAlign.center,
         style: const TextStyle(
             fontSize: 18, color: Colors.white, fontWeight: FontWeight.w700),

@@ -221,6 +221,8 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                                         onTap: _showComments,
                                         child: Container(
                                           color: Colors.transparent,
+                                          margin: EdgeInsets.only(
+                                              bottom: commentsVisible ? 0 : 15),
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 10, vertical: 15),
                                           child: Row(
@@ -230,14 +232,14 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                                                 style: TextStyle(
                                                     color: Theme.of(context)
                                                         .primaryColorLight,
-                                                    fontSize: 12,
+                                                    fontSize: 14,
                                                     fontWeight:
                                                         FontWeight.w600),
                                               ),
                                               const SizedBox(width: 5),
                                               if (!commentsVisible)
                                                 Icon(Icons.keyboard_arrow_down,
-                                                    size: 14,
+                                                    size: 15,
                                                     color: Theme.of(context)
                                                         .primaryColorLight),
                                               if (commentsVisible)
@@ -389,7 +391,7 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
       child: Container(
         padding: const EdgeInsets.symmetric(
           horizontal: 10,
-          vertical: 10,
+          vertical: 20,
         ),
         decoration: BoxDecoration(
           border: Border(

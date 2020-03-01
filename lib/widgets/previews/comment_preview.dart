@@ -166,7 +166,10 @@ class CommentPreview extends StatelessWidget {
                 comment.expressionData.body,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 3,
-                style: Theme.of(context).textTheme.caption,
+                style: TextStyle(
+                    fontSize: 17,
+                    color: Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.w500),
               ),
             ),
             const SizedBox(height: 5),

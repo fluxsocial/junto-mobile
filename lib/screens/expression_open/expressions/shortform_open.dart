@@ -21,18 +21,18 @@ class ShortformOpen extends StatelessWidget {
         ),
       ),
       constraints: BoxConstraints(
-        minHeight: MediaQuery.of(context).size.width,
+        minHeight: MediaQuery.of(context).size.width * (2 / 3),
       ),
       alignment: Alignment.center,
       padding: const EdgeInsets.symmetric(
         horizontal: 25.0,
-        vertical: 25.0,
+        vertical: 50.0,
       ),
       child: Text(
         expression.expressionData.body,
         textAlign: TextAlign.center,
         style: const TextStyle(
-          fontSize: 24.0,
+          fontSize: 20.0,
           fontWeight: FontWeight.w700,
           color: Colors.white,
         ),

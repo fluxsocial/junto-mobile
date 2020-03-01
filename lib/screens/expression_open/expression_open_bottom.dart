@@ -71,14 +71,6 @@ class ExpressionOpenBottom extends StatelessWidget {
                         size: 15, color: Theme.of(context).primaryColorLight),
                   ),
                 )
-
-                // Container(
-                //   color: Colors.transparent,
-                //   height: 33,
-                //   width: 33,
-                //   child: Icon(CustomIcons.comment,
-                //       size: 15, color: Theme.of(context).primaryColorLight),
-                // ),
               ],
             ),
           )

@@ -41,7 +41,7 @@ class ShortformPreviewState extends State<ShortformPreview> {
         ),
       ),
       constraints: BoxConstraints(
-        minHeight: MediaQuery.of(context).size.width * (2/3),
+        minHeight: MediaQuery.of(context).size.width * (2 / 3),
       ),
       alignment: Alignment.center,
       width: MediaQuery.of(context).size.width,
@@ -51,7 +51,7 @@ class ShortformPreviewState extends State<ShortformPreview> {
         maxLines: 5,
         textAlign: TextAlign.center,
         style: const TextStyle(
-            fontSize: 18, color: Colors.white, fontWeight: FontWeight.w700),
+            fontSize: 20, color: Colors.white, fontWeight: FontWeight.w700),
         overflow: TextOverflow.ellipsis,
       ),
     );
