@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
@@ -19,6 +23,7 @@ class JuntoDrawer extends StatefulWidget {
 
 class JuntoDrawerState extends State<JuntoDrawer> {
   String _userAddress;
+  UserData _userProfile;
   String _userFollowPerspectiveId;
   String _currentTheme;
 
@@ -29,9 +34,12 @@ class JuntoDrawerState extends State<JuntoDrawer> {
 
   Future<void> getUserInformation() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final Map<String, dynamic> decodedUserData =
+        jsonDecode(prefs.getString('user_data'));
 
     setState(() {
       _userAddress = prefs.getString('user_id');
+      _userProfile = UserData.fromMap(decodedUserData);
       _userFollowPerspectiveId = prefs.getString('user_follow_perspective_id');
       _currentTheme = prefs.getString('current-theme');
     });
@@ -79,18 +87,70 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                 Column(
                   children: <Widget>[
                     JuntoDrawerItem(
-                      icon: Container(
-                        margin: const EdgeInsets.only(right: 32),
-                        child: ClipOval(
-                          child: Container(
-                            width: 28,
-                            height: 28,
-                            child: Image.asset(
-                                'assets/images/junto-mobile__themes--rainbow.png',
-                                fit: BoxFit.cover),
-                          ),
-                        ),
-                      ),
+                      icon: _userProfile != null &&
+                              _userProfile.user.profilePicture.isNotEmpty
+                          ? Container(
+                              margin: const EdgeInsets.only(right: 32),
+                              child: ClipOval(
+                                child: CachedNetworkImage(
+                                  imageUrl: _userProfile.user.profilePicture[0],
+                                  height: 28,
+                                  width: 28,
+                                  fit: BoxFit.cover,
+                                  placeholder:
+                                      (BuildContext context, String _) {
+                                    return Container(
+                                      alignment: Alignment.center,
+                                      height: 28.0,
+                                      width: 28.0,
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          begin: Alignment.bottomLeft,
+                                          end: Alignment.topRight,
+                                          stops: const <double>[0.3, 0.9],
+                                          colors: <Color>[
+                                            Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                            Theme.of(context)
+                                                .colorScheme
+                                                .secondary,
+                                          ],
+                                        ),
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                      ),
+                                      child: Image.asset(
+                                        'assets/images/junto-mobile__logo--white.png',
+                                        height: 17,
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            )
+                          : Container(
+                              alignment: Alignment.center,
+                              height: 28.0,
+                              width: 28.0,
+                              margin: const EdgeInsets.only(right: 32),
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.bottomLeft,
+                                  end: Alignment.topRight,
+                                  stops: const <double>[0.3, 0.9],
+                                  colors: <Color>[
+                                    Theme.of(context).colorScheme.primary,
+                                    Theme.of(context).colorScheme.secondary,
+                                  ],
+                                ),
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                              child: Image.asset(
+                                'assets/images/junto-mobile__logo--white.png',
+                                height: 12,
+                              ),
+                            ),
                       title: 'My Den',
                       onTap: () {
                         Navigator.of(context).push(
@@ -193,7 +253,7 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                     width: 60,
                     alignment: Alignment.centerLeft,
                     child: Icon(
-                      Icons.favorite,
+                      Icons.settings,
                       color: Colors.white,
                       size: 24,
                     ),
