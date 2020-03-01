@@ -49,7 +49,7 @@ class CreateEventState extends State<CreateEvent> with DateParser {
   Map<String, dynamic> createExpression() {
     return <String, dynamic>{
       'description': detailsController.value.text,
-      'photo': imageFile,
+      'photo': imageFile.value,
       'title': titleController.value.text,
       'location': locationController.text,
       'start_time': startTime.value.toUtc().toIso8601String(),
