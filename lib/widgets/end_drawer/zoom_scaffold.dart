@@ -29,8 +29,9 @@ class _ZoomScaffoldState extends State<ZoomScaffold>
     ));
   }
 
-  zoomAndSlideContent(Widget content) {
-    var slidePercent, scalePercent;
+  Widget zoomAndSlideContent(Widget content) {
+    double slidePercent;
+    double scalePercent;
 
     switch (Provider.of<MenuController>(context, listen: false).state) {
       case MenuState.closed:
@@ -55,9 +56,9 @@ class _ZoomScaffoldState extends State<ZoomScaffold>
         break;
     }
 
-    final slideAmount = 250.0 * slidePercent;
-    final contentScale = 1.0 - (0.2 * scalePercent);
-    final cornerRadius =
+    final double slideAmount = 250.0 * slidePercent;
+    final double contentScale = 1.0 - (0.2 * scalePercent);
+    final double cornerRadius =
         16.0 * Provider.of<MenuController>(context, listen: false).percentOpen;
 
     return Transform(
@@ -66,7 +67,7 @@ class _ZoomScaffoldState extends State<ZoomScaffold>
       alignment: Alignment.centerLeft,
       child: Container(
         decoration: BoxDecoration(
-          boxShadow: [
+          boxShadow: <BoxShadow>[
             BoxShadow(
               color: Colors.black12,
               offset: const Offset(0.0, 5.0),
@@ -97,11 +98,10 @@ class _ZoomScaffoldState extends State<ZoomScaffold>
 }
 
 class ZoomScaffoldMenuController extends StatefulWidget {
-  final ZoomScaffoldBuilder builder;
-
-  ZoomScaffoldMenuController({
+  const ZoomScaffoldMenuController({
     this.builder,
   });
+  final ZoomScaffoldBuilder builder;
 
   @override
   ZoomScaffoldMenuControllerState createState() {
@@ -122,11 +122,10 @@ typedef Widget ZoomScaffoldBuilder(
     BuildContext context, MenuController menuController);
 
 class Layout {
-  final WidgetBuilder contentBuilder;
-
   Layout({
     this.contentBuilder,
   });
+  final WidgetBuilder contentBuilder;
 }
 
 class MenuController extends ChangeNotifier {
@@ -162,24 +161,24 @@ class MenuController extends ChangeNotifier {
   }
 
   @override
-  dispose() {
+  void dispose() {
     _animationController.dispose();
     super.dispose();
   }
 
-  get percentOpen {
+  double get percentOpen {
     return _animationController.value;
   }
 
-  open() {
+  void open() {
     _animationController.forward();
   }
 
-  close() {
+  void close() {
     _animationController.reverse();
   }
 
-  toggle() {
+  void toggle() {
     if (state == MenuState.open) {
       close();
     } else if (state == MenuState.closed) {

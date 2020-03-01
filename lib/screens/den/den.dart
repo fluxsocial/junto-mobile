@@ -30,8 +30,6 @@ class JuntoDen extends StatefulWidget {
 
 class JuntoDenState extends State<JuntoDen>
     with HideFab, TickerProviderStateMixin {
-  MenuController menuController;
-
   final List<String> _tabs = <String>['About', 'Expressions'];
   UserRepo _userProvider;
   String _userAddress;
@@ -44,6 +42,8 @@ class JuntoDenState extends State<JuntoDen>
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
   final AsyncMemoizer<List<ExpressionResponse>> _memoizer =
       AsyncMemoizer<List<ExpressionResponse>>();
+
+  MenuController menuController;
 
   @override
   void initState() {

@@ -183,74 +183,81 @@ class JuntoCollectiveState extends State<JuntoCollective>
       child: ZoomScaffold(
         menuScreen: JuntoDrawer(),
         contentScreen: Layout(
-          contentBuilder: (BuildContext context) => Scaffold(
-            resizeToAvoidBottomInset: false,
-            key: _juntoCollectiveKey,
-            floatingActionButton: ValueListenableBuilder<bool>(
-              valueListenable: _isVisible,
-              builder: (BuildContext context, bool visible, Widget child) {
-                return AnimatedOpacity(
-                    duration: const Duration(milliseconds: 300),
-                    opacity: visible ? 1.0 : 0.0,
-                    child: child);
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 25),
-                child: ValueListenableBuilder<bool>(
-                  valueListenable: actionsVisible,
-                  builder: (BuildContext context, bool value, _) {
-                    return BottomNav(
-                      screen: 'collective',
-                      userProfile: _userProfile,
-                      actionsVisible: value,
-                      onTap: () {
-                        if (value) {
-                          actionsVisible.value = false;
-                        } else {
-                          actionsVisible.value = true;
-                        }
-                      },
-                    );
-                  },
+          contentBuilder: (BuildContext context) => GestureDetector(
+            onPanUpdate: (DragUpdateDetails details) {
+              //on swiping from right to left
+              if (details.delta.dx < 6) {
+                Provider.of<MenuController>(context, listen: false).open();
+              }
+            },
+            child: Scaffold(
+              resizeToAvoidBottomInset: false,
+              key: _juntoCollectiveKey,
+              floatingActionButton: ValueListenableBuilder<bool>(
+                valueListenable: _isVisible,
+                builder: (BuildContext context, bool visible, Widget child) {
+                  return AnimatedOpacity(
+                      duration: const Duration(milliseconds: 300),
+                      opacity: visible ? 1.0 : 0.0,
+                      child: child);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 25),
+                  child: ValueListenableBuilder<bool>(
+                    valueListenable: actionsVisible,
+                    builder: (BuildContext context, bool value, _) {
+                      return BottomNav(
+                        screen: 'collective',
+                        userProfile: _userProfile,
+                        actionsVisible: value,
+                        onTap: () {
+                          if (value) {
+                            actionsVisible.value = false;
+                          } else {
+                            actionsVisible.value = true;
+                          }
+                        },
+                      );
+                    },
+                  ),
                 ),
               ),
-            ),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerDocked,
-            drawer: FilterDrawer(
-                filterByChannel: _filterByChannel,
-                channels: _channels,
-                resetChannels: _resetChannels),
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerDocked,
+              drawer: FilterDrawer(
+                  filterByChannel: _filterByChannel,
+                  channels: _channels,
+                  resetChannels: _resetChannels),
 
-            // dynamically render body
-            body: ValueListenableBuilder<bool>(
-                valueListenable: actionsVisible,
-                builder: (BuildContext context, bool value, _) {
-                  return Stack(
-                    children: <Widget>[
-                      AnimatedOpacity(
-                        duration: const Duration(milliseconds: 300),
-                        opacity: value ? 0.0 : 1.0,
-                        child: Visibility(
-                          //ignore:avoid_bool_literals_in_conditional_expressions
-                          visible: value ? false : true,
-                          child: _buildPerspectiveFeed(),
-                        ),
-                      ),
-                      AnimatedOpacity(
-                        duration: const Duration(milliseconds: 300),
-                        opacity: value ? 1.0 : 0.0,
-                        child: Visibility(
-                          visible: value,
-                          child: JuntoCollectiveActions(
-                            userProfile: _userProfile,
-                            changePerspective: _changePerspective,
+              // dynamically render body
+              body: ValueListenableBuilder<bool>(
+                  valueListenable: actionsVisible,
+                  builder: (BuildContext context, bool value, _) {
+                    return Stack(
+                      children: <Widget>[
+                        AnimatedOpacity(
+                          duration: const Duration(milliseconds: 300),
+                          opacity: value ? 0.0 : 1.0,
+                          child: Visibility(
+                            visible: value ? false : true,
+                            child: _buildPerspectiveFeed(),
                           ),
                         ),
-                      ),
-                    ],
-                  );
-                }),
+                        AnimatedOpacity(
+                          duration: const Duration(milliseconds: 300),
+                          opacity: value ? 1.0 : 0.0,
+                          child: Visibility(
+                            visible: value,
+                            child: JuntoCollectiveActions(
+                              userProfile: _userProfile,
+                              changePerspective: _changePerspective,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  }),
+            ),
           ),
         ),
       ),

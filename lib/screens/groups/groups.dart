@@ -8,6 +8,7 @@ import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_o
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/zoom_scaffold.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
 
@@ -24,18 +25,24 @@ class JuntoGroups extends StatefulWidget {
   }
 }
 
-class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
+class JuntoGroupsState extends State<JuntoGroups>
+    with HideFab, ListDistinct, TickerProviderStateMixin {
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
 
   bool actionsVisible = false;
-
   dynamic _currentGroup;
   bool spheresVisible = false;
+
+  MenuController menuController;
 
   @override
   void initState() {
     super.initState();
     getUserInformation();
+
+    menuController = MenuController(
+      vsync: this,
+    )..addListener(() => setState(() {}));
   }
 
   Future<void> getUserInformation() async {
@@ -55,54 +62,62 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: ValueListenableBuilder<bool>(
-        valueListenable: _isVisible,
-        builder: (BuildContext context, bool visible, Widget child) {
-          return AnimatedOpacity(
-            duration: const Duration(milliseconds: 300),
-            opacity: visible ? 1.0 : 0.0,
-            child: child,
-          );
-        },
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 25),
-          child: BottomNav(
-              actionsVisible: actionsVisible,
-              screen: 'groups',
-              onTap: () {
-                if (actionsVisible) {
-                  setState(() {
-                    actionsVisible = false;
-                  });
-                } else {
-                  setState(() {
-                    actionsVisible = true;
-                  });
-                }
-              }),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      endDrawer: JuntoDrawer(),
-      body: Stack(
-        children: <Widget>[
-          AnimatedOpacity(
-              duration: const Duration(milliseconds: 300),
-              opacity: actionsVisible ? 0.0 : 1.0,
-              child: _currentGroup),
-          AnimatedOpacity(
-            duration: const Duration(milliseconds: 300),
-            opacity: actionsVisible ? 1.0 : 0.0,
-            child: Visibility(
-              visible: actionsVisible,
-              child: JuntoGroupsActions(
-                changeGroup: _changeGroup,
-                spheresVisible: spheresVisible,
+    return ChangeNotifierProvider<MenuController>.value(
+      value: menuController,
+      child: ZoomScaffold(
+        menuScreen: JuntoDrawer(),
+        contentScreen: Layout(
+          contentBuilder: (BuildContext context) => Scaffold(
+            floatingActionButton: ValueListenableBuilder<bool>(
+              valueListenable: _isVisible,
+              builder: (BuildContext context, bool visible, Widget child) {
+                return AnimatedOpacity(
+                  duration: const Duration(milliseconds: 300),
+                  opacity: visible ? 1.0 : 0.0,
+                  child: child,
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 25),
+                child: BottomNav(
+                    actionsVisible: actionsVisible,
+                    screen: 'groups',
+                    onTap: () {
+                      if (actionsVisible) {
+                        setState(() {
+                          actionsVisible = false;
+                        });
+                      } else {
+                        setState(() {
+                          actionsVisible = true;
+                        });
+                      }
+                    }),
               ),
             ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
+            body: Stack(
+              children: <Widget>[
+                AnimatedOpacity(
+                    duration: const Duration(milliseconds: 300),
+                    opacity: actionsVisible ? 0.0 : 1.0,
+                    child: _currentGroup),
+                AnimatedOpacity(
+                  duration: const Duration(milliseconds: 300),
+                  opacity: actionsVisible ? 1.0 : 0.0,
+                  child: Visibility(
+                    visible: actionsVisible,
+                    child: JuntoGroupsActions(
+                      changeGroup: _changeGroup,
+                      spheresVisible: spheresVisible,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ],
+        ),
       ),
     );
   }
