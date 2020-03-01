@@ -13,15 +13,15 @@ class EventPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: MediaQuery.of(context).size.width,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           expression.expressionData.photo != ''
               ? ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
                   child: Container(
-                    height: MediaQuery.of(context).size.height * .3,
                     child: CachedNetworkImage(
+                        width: MediaQuery.of(context).size.width,
                         imageUrl: expression.expressionData.photo,
                         placeholder: (BuildContext context, String _) {
                           return Container(

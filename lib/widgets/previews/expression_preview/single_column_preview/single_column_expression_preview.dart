@@ -92,8 +92,12 @@ class SingleColumnExpressionPreview extends StatelessWidget
                 color: Theme.of(context).colorScheme.background,
                 border: expression.type != 'PhotoForm' &&
                         expression.type != 'ShortForm'
-                    ? Border.all(
-                        color: Theme.of(context).dividerColor, width: .5)
+                    ? Border(
+                        bottom: BorderSide(
+                            color: Theme.of(context).dividerColor, width: .5),
+                        top: BorderSide(
+                            color: Theme.of(context).dividerColor, width: .5),
+                      )
                     : Border.all(width: 0, color: Colors.transparent),
               ),
               child: Column(
