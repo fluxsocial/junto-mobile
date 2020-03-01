@@ -391,7 +391,7 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
       child: Container(
         padding: const EdgeInsets.symmetric(
           horizontal: 10,
-          vertical: 10,
+          vertical: 20,
         ),
         decoration: BoxDecoration(
           border: Border(
