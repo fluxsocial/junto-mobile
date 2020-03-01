@@ -50,7 +50,7 @@ class DynamicPreview extends StatelessWidget {
         style: TextStyle(
           height: 1.5,
           color: Theme.of(context).primaryColor,
-          fontSize: 15,
+          fontSize: 17,
         ),
       );
     } else {

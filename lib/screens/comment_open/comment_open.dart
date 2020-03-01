@@ -135,10 +135,9 @@ class CommentOpen extends StatelessWidget {
                             context: context,
                             builder: (BuildContext context) =>
                                 CommentActionItems(
-                              comment: comment,
-                              userAddress: userAddress,
-                              source: 'open'
-                            ),
+                                    comment: comment,
+                                    userAddress: userAddress,
+                                    source: 'open'),
                           );
                         },
                         child: Container(
@@ -161,9 +160,14 @@ class CommentOpen extends StatelessWidget {
                     children: <Widget>[
                       Container(
                         width: MediaQuery.of(context).size.width,
-                        child: Text(comment.expressionData.body,
-                            textAlign: TextAlign.start,
-                            style: Theme.of(context).textTheme.caption),
+                        child: Text(
+                          comment.expressionData.body,
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                              fontSize: 17,
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.w500),
+                        ),
                       ),
                     ],
                   ),

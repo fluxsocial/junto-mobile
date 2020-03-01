@@ -53,7 +53,7 @@ class ShortformPreviewState extends State<ShortformPreview> {
         textAlign: TextAlign.center,
         style: const TextStyle(
             fontSize: 18, color: Colors.white, fontWeight: FontWeight.w700),
-        // overflow: TextOverflow.ellipsis,
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }
