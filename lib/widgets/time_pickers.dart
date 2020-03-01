@@ -35,7 +35,7 @@ class CollapsiblePicker extends StatelessWidget {
             style: Theme.of(context).textTheme.caption,
           ),
         ),
-        subtitle: Text(subtitle),
+        subtitle: subtitle != null ? Text(subtitle) : null,
         children: <Widget>[
           SizedBox(
             height: 100,
@@ -83,7 +83,7 @@ class CreateDateSelectorState extends State<CreateDateSelector> {
         children: <Widget>[
           CollapsiblePicker(
               title: _generateMessage('Start Time', widget.startTime.value),
-              subtitle: widget.startTime == null ? 'Select date' : null,
+              subtitle: widget.startTime.value == null ? 'Select date' : null,
               initialTime: widget.startTime.value,
               onChanged: (DateTime time) => widget.startTime.value = time),
           CollapsiblePicker(
