@@ -5,11 +5,16 @@ import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:provider/provider.dart';
 
 class JuntoThemes extends StatelessWidget {
+  const JuntoThemes({this.refreshData});
+
+  final Function refreshData;
+
   Widget _themeSelector(BuildContext context, String theme) {
     return GestureDetector(
       onTap: () {
         Provider.of<JuntoThemesProvider>(context, listen: false)
             .setTheme(theme);
+        refreshData();
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 15),

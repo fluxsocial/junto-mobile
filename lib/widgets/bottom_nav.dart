@@ -4,10 +4,15 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
+import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/zoom_scaffold.dart';
 
 class BottomNav extends StatelessWidget {
   const BottomNav(
-      {this.screen, this.onTap, this.userProfile, @required this.actionsVisible});
+      {this.screen,
+      this.onTap,
+      this.userProfile,
+      @required this.actionsVisible});
 
   final String screen;
   final VoidCallback onTap;
@@ -41,11 +46,6 @@ class BottomNav extends StatelessWidget {
                   height: 50,
                   color: Colors.transparent,
                   alignment: Alignment.center,
-                  // child: RotatedBox(
-                  //   quarterTurns: 1,
-                  //   child: Icon(CustomIcons.back,
-                  //       size: 17, color: Theme.of(context).primaryColor),
-                  // ),
                   child: RotatedBox(
                     quarterTurns: actionsVisible ? 2 : 0,
                     child: Image.asset(
@@ -103,7 +103,7 @@ class BottomNav extends StatelessWidget {
           Expanded(
             child: GestureDetector(
               onTap: () {
-                Scaffold.of(context).openEndDrawer();
+                Provider.of<MenuController>(context, listen: false).toggle();
               },
               child: Container(
                   alignment: Alignment.center,
@@ -113,10 +113,7 @@ class BottomNav extends StatelessWidget {
                     borderRadius: BorderRadius.circular(100),
                   ),
                   child: Image.asset('assets/images/junto-mobile__menu.png',
-                      height: 8, color: Theme.of(context).primaryColor)
-                  // child: Icon(CustomIcons.morevertical,
-                  //     size: 17, color: Theme.of(context).primaryColor),
-                  ),
+                      height: 8, color: Theme.of(context).primaryColor)),
             ),
           ),
         ],

@@ -83,6 +83,18 @@ class _GlobalSearchState extends State<GlobalSearch> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
+              GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Container(
+                    color: Colors.transparent,
+                    alignment: Alignment.centerLeft,
+                    height: 48,
+                    width: 38,
+                    child: Icon(CustomIcons.back,
+                        size: 17, color: Theme.of(context).primaryColor)),
+              ),
               Expanded(
                 child: TextField(
                   controller: _textEditingController,
@@ -99,7 +111,7 @@ class _GlobalSearchState extends State<GlobalSearch> {
                     hintText: 'search members',
                     border: InputBorder.none,
                     hintStyle: TextStyle(
-                        fontSize: 24,
+                        fontSize: 20,
                         fontWeight: FontWeight.w500,
                         color: Theme.of(context).primaryColorLight),
                   ),
@@ -107,24 +119,11 @@ class _GlobalSearchState extends State<GlobalSearch> {
                   cursorWidth: 1,
                   maxLines: 1,
                   style: TextStyle(
-                      fontSize: 24,
+                      fontSize: 20,
                       fontWeight: FontWeight.w500,
                       color: Theme.of(context).primaryColor),
                   maxLength: 80,
                   textInputAction: TextInputAction.search,
-                ),
-              ),
-              const SizedBox(width: 15),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Container(
-                  padding: const EdgeInsets.only(left: 10),
-                  color: Colors.transparent,
-                  height: 48,
-                  child: Icon(CustomIcons.cancel,
-                      size: 33, color: Theme.of(context).dividerColor),
                 ),
               ),
             ],
@@ -133,17 +132,25 @@ class _GlobalSearchState extends State<GlobalSearch> {
       ),
       body: SafeArea(
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
-                padding: const EdgeInsets.symmetric(vertical: 5),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                        color: Theme.of(context).dividerColor, width: .75),
+                  ),
+                ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Switch.adaptive(
-                      activeColor: Theme.of(context).colorScheme.secondary,
+                      activeColor: Theme.of(context).accentColor,
                       value: _fullName,
                       onChanged: (bool value) => setState(
                         () => _fullName = value,
@@ -176,6 +183,8 @@ class _GlobalSearchState extends State<GlobalSearch> {
                     }
 
                     return ListView.builder(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 0, horizontal: 15),
                       itemCount: snapshot.data.results.length,
                       itemBuilder: (BuildContext context, int index) {
                         final UserProfile data = snapshot.data.results[index];
