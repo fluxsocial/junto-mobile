@@ -31,9 +31,9 @@ class CommentOpen extends StatelessWidget {
                   child: Text(
                     'in response to ' + parent.creator.name,
                     style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      color: Theme.of(context).primaryColorLight,
-                    ),
+                        fontWeight: FontWeight.w600,
+                        color: Theme.of(context).primaryColorLight,
+                        fontSize: 14),
                   ),
                 ),
                 Container(

@@ -93,10 +93,8 @@ class SingleColumnExpressionPreview extends StatelessWidget
                 border: expression.type != 'PhotoForm' &&
                         expression.type != 'ShortForm'
                     ? Border.all(
-                        color: Theme.of(context).dividerColor,
-                        width: .55)
+                        color: Theme.of(context).dividerColor, width: .5)
                     : Border.all(width: 0, color: Colors.transparent),
-                // borderRadius: BorderRadius.circular(9),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
