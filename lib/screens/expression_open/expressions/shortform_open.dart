@@ -21,7 +21,7 @@ class ShortformOpen extends StatelessWidget {
         ),
       ),
       constraints: BoxConstraints(
-        minHeight: MediaQuery.of(context).size.height * .3,
+        minHeight: MediaQuery.of(context).size.width * (2 / 3),
       ),
       alignment: Alignment.center,
       padding: const EdgeInsets.symmetric(
@@ -32,7 +32,7 @@ class ShortformOpen extends StatelessWidget {
         expression.expressionData.body,
         textAlign: TextAlign.center,
         style: const TextStyle(
-          fontSize: 22.0,
+          fontSize: 20.0,
           fontWeight: FontWeight.w700,
           color: Colors.white,
         ),

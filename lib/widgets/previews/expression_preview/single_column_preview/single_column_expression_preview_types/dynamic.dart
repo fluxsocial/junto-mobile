@@ -12,7 +12,7 @@ class DynamicPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(15),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
       width: MediaQuery.of(context).size.width,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,7 +50,7 @@ class DynamicPreview extends StatelessWidget {
         style: TextStyle(
           height: 1.5,
           color: Theme.of(context).primaryColor,
-          fontSize: 15,
+          fontSize: 17,
         ),
       );
     } else {
