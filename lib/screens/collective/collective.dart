@@ -186,9 +186,9 @@ class JuntoCollectiveState extends State<JuntoCollective>
           contentBuilder: (BuildContext context) => GestureDetector(
             onPanUpdate: (DragUpdateDetails details) {
               //on swiping from right to left
-              if (details.delta.dx < 6) {
-                Provider.of<MenuController>(context, listen: false).open();
-              }
+              // if (details.delta.dx < 6) {
+              //   Provider.of<MenuController>(context, listen: false).open();
+              // }
             },
             child: Scaffold(
               resizeToAvoidBottomInset: false,

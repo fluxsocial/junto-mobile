@@ -20,11 +20,10 @@ class JuntoDrawer extends StatefulWidget {
 class JuntoDrawerState extends State<JuntoDrawer> {
   String _userAddress;
   String _userFollowPerspectiveId;
+  String _currentTheme;
 
   @override
-  void initState() {
-    super.initState();
-
+  void didChangeDependencies() {
     getUserInformation();
   }
 
@@ -34,7 +33,20 @@ class JuntoDrawerState extends State<JuntoDrawer> {
     setState(() {
       _userAddress = prefs.getString('user_id');
       _userFollowPerspectiveId = prefs.getString('user_follow_perspective_id');
+      _currentTheme = prefs.getString('current-theme');
     });
+  }
+
+  String _displayBackground() {
+    if (_currentTheme == 'rainbow') {
+      return 'assets/images/junto-mobile__themes--rainbow.png';
+    } else if (_currentTheme == 'aqueous') {
+      return 'assets/images/junto-mobile__themes--aqueous.png';
+    } else if (_currentTheme == 'royal') {
+      return 'assets/images/junto-mobile__themes--royal.png';
+    } else {
+      return 'assets/images/junto-mobile__themes--rainbow.png';
+    }
   }
 
   @override
@@ -51,9 +63,7 @@ class JuntoDrawerState extends State<JuntoDrawer> {
           Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
-            child: Image.asset(
-                'assets/images/junto-mobile__themes--rainbow.png',
-                fit: BoxFit.cover),
+            child: Image.asset(_displayBackground(), fit: BoxFit.cover),
           ),
           Container(
             padding: EdgeInsets.only(
@@ -170,7 +180,8 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                         Navigator.push(
                           context,
                           CupertinoPageRoute<Widget>(
-                            builder: (BuildContext context) => JuntoThemes(),
+                            builder: (BuildContext context) =>
+                                JuntoThemes(refreshData: getUserInformation),
                           ),
                         );
                       },
