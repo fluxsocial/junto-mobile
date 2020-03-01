@@ -11,6 +11,8 @@ import 'package:junto_beta_mobile/screens/create/create_templates/shortform.dart
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/zoom_scaffold.dart';
+import 'package:provider/provider.dart';
 
 class JuntoCreate extends StatefulWidget {
   const JuntoCreate({
@@ -31,7 +33,8 @@ class JuntoCreate extends StatefulWidget {
   }
 }
 
-class JuntoCreateState extends State<JuntoCreate> {
+class JuntoCreateState extends State<JuntoCreate>
+    with TickerProviderStateMixin {
   String _expressionType = 'LongForm';
   String _expressionTypeDisplay = 'dynamic';
   bool _expressionCenterVisible = true;
@@ -53,6 +56,8 @@ class JuntoCreateState extends State<JuntoCreate> {
   GlobalKey<CreatePhotoState> _photoFormKey;
   GlobalKey<CreateEventState> _eventKey;
 
+  MenuController menuController;
+
   @override
   void initState() {
     super.initState();
@@ -61,6 +66,10 @@ class JuntoCreateState extends State<JuntoCreate> {
     _shortFormKey = GlobalKey<CreateShortformState>();
     _photoFormKey = GlobalKey<CreatePhotoState>();
     _eventKey = GlobalKey<CreateEventState>();
+
+    menuController = MenuController(
+      vsync: this,
+    )..addListener(() => setState(() {}));
   }
 
   @override
@@ -365,75 +374,85 @@ class JuntoCreateState extends State<JuntoCreate> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Scaffold(
-          resizeToAvoidBottomPadding: true,
-          appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(45),
-            child: AppBar(
-              automaticallyImplyLeading: false,
-              brightness: Brightness.light,
-              actions: <Widget>[Container()],
-              iconTheme: const IconThemeData(color: JuntoPalette.juntoGrey),
-              elevation: 0,
-              titleSpacing: 0,
-              title: Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: JuntoStyles.horizontalPadding),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        _currentIcon,
-                        const SizedBox(width: 7.5),
-                        Text(_expressionTypeDisplay,
-                            style: Theme.of(context).textTheme.caption)
-                      ],
+    return ChangeNotifierProvider.value(
+      value: menuController,
+      child: ZoomScaffold(
+        menuScreen: JuntoDrawer(),
+        contentScreen: Layout(
+          contentBuilder: (BuildContext context) => Stack(
+            children: <Widget>[
+              Scaffold(
+                resizeToAvoidBottomPadding: true,
+                appBar: PreferredSize(
+                  preferredSize: const Size.fromHeight(45),
+                  child: AppBar(
+                    automaticallyImplyLeading: false,
+                    brightness: Brightness.light,
+                    actions: <Widget>[Container()],
+                    iconTheme:
+                        const IconThemeData(color: JuntoPalette.juntoGrey),
+                    elevation: 0,
+                    titleSpacing: 0,
+                    title: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: JuntoStyles.horizontalPadding),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              _currentIcon,
+                              const SizedBox(width: 7.5),
+                              Text(_expressionTypeDisplay,
+                                  style: Theme.of(context).textTheme.caption)
+                            ],
+                          ),
+                          GestureDetector(
+                            onTap: _onNextClick,
+                            child: Text('next',
+                                style: Theme.of(context).textTheme.caption),
+                          )
+                        ],
+                      ),
                     ),
-                    GestureDetector(
-                      onTap: _onNextClick,
-                      child: Text('next',
-                          style: Theme.of(context).textTheme.caption),
-                    )
+                  ),
+                ),
+                endDrawer: JuntoDrawer(),
+                floatingActionButton: _bottomNavVisible &&
+                        MediaQuery.of(context).viewInsets.bottom == 0
+                    ? Padding(
+                        padding: const EdgeInsets.only(bottom: 25),
+                        child: BottomNav(
+                          actionsVisible: false,
+                          screen: 'create',
+                          onTap: () {
+                            setState(() {
+                              _expressionCenterVisible = true;
+                            });
+                          },
+                        ),
+                      )
+                    : const SizedBox(),
+                floatingActionButtonLocation:
+                    FloatingActionButtonLocation.centerDocked,
+                body: Column(
+                  children: <Widget>[
+                    _buildTemplate(),
                   ],
                 ),
               ),
-            ),
-          ),
-          endDrawer: JuntoDrawer(),
-          floatingActionButton:
-              _bottomNavVisible && MediaQuery.of(context).viewInsets.bottom == 0
-                  ? Padding(
-                      padding: const EdgeInsets.only(bottom: 25),
-                      child: BottomNav(
-                        actionsVisible: false,
-                        screen: 'create',
-                        onTap: () {
-                          setState(() {
-                            _expressionCenterVisible = true;
-                          });
-                        },
-                      ),
-                    )
-                  : const SizedBox(),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
-          body: Column(
-            children: <Widget>[
-              _buildTemplate(),
+              AnimatedOpacity(
+                duration: const Duration(milliseconds: 300),
+                opacity: _expressionCenterVisible ? 1.0 : 0.0,
+                child: _expressionCenterVisible
+                    ? _expressionCenter()
+                    : const SizedBox(),
+              )
             ],
           ),
         ),
-        AnimatedOpacity(
-          duration: const Duration(milliseconds: 300),
-          opacity: _expressionCenterVisible ? 1.0 : 0.0,
-          child:
-              _expressionCenterVisible ? _expressionCenter() : const SizedBox(),
-        )
-      ],
+      ),
     );
   }
 }
