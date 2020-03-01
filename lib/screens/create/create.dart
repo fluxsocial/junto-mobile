@@ -300,61 +300,63 @@ class JuntoCreateState extends State<JuntoCreate> {
               width: MediaQuery.of(context).size.width,
               fit: BoxFit.cover),
         ),
-        Container(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              const SizedBox(),
-              Column(
-                children: <Widget>[
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 25, horizontal: 25),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        _selectExpression('dynamic'),
-                        _selectExpression('shortform'),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 25, horizontal: 25),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        _selectExpression('photo'),
-                        _selectExpression('event'),
-                      ],
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      if (_activated) {
-                        setState(() {
-                          _expressionCenterVisible = false;
-                        });
-                      } else {
-                        Navigator.pop(context);
-                      }
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      margin: const EdgeInsets.symmetric(vertical: 25),
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.white, width: 1.2),
-                        borderRadius: BorderRadius.circular(1000),
+        SafeArea(
+          child: Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                const SizedBox(),
+                Column(
+                  children: <Widget>[
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 25, horizontal: 25),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          _selectExpression('dynamic'),
+                          _selectExpression('shortform'),
+                        ],
                       ),
-                      child:
-                          Icon(CustomIcons.back, size: 17, color: Colors.white),
                     ),
-                  ),
-                ],
-              )
-            ],
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 25, horizontal: 25),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          _selectExpression('photo'),
+                          _selectExpression('event'),
+                        ],
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        if (_activated) {
+                          setState(() {
+                            _expressionCenterVisible = false;
+                          });
+                        } else {
+                          Navigator.pop(context);
+                        }
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        margin: const EdgeInsets.symmetric(vertical: 25),
+                        height: 50,
+                        width: 50,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.white, width: 1.2),
+                          borderRadius: BorderRadius.circular(1000),
+                        ),
+                        child: Icon(CustomIcons.back,
+                            size: 17, color: Colors.white),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ],
