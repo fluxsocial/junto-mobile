@@ -4,6 +4,8 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
+import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/zoom_scaffold.dart';
 
 class BottomNav extends StatelessWidget {
   const BottomNav(
@@ -101,7 +103,7 @@ class BottomNav extends StatelessWidget {
           Expanded(
             child: GestureDetector(
               onTap: () {
-                Scaffold.of(context).openEndDrawer();
+                Provider.of<MenuController>(context, listen: false).toggle();
               },
               child: Container(
                   alignment: Alignment.center,

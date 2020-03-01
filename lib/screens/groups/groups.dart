@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/groups_actions.dart';
@@ -85,7 +84,7 @@ class JuntoGroupsState extends State<JuntoGroups> with HideFab, ListDistinct {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      endDrawer: const JuntoDrawer(screen: 'Groups', icon: CustomIcons.groups),
+      endDrawer: JuntoDrawer(),
       body: Stack(
         children: <Widget>[
           AnimatedOpacity(

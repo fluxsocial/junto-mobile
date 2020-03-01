@@ -13,13 +13,14 @@ import 'package:junto_beta_mobile/screens/den/den_sliver_appbar.dart';
 import 'package:junto_beta_mobile/widgets/appbar/den_appbar.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/custom_listview.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_edit_den.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/zoom_scaffold.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 
 /// Displays the user's DEN or "profile screen"
 class JuntoDen extends StatefulWidget {
@@ -27,7 +28,10 @@ class JuntoDen extends StatefulWidget {
   State<StatefulWidget> createState() => JuntoDenState();
 }
 
-class JuntoDenState extends State<JuntoDen> with HideFab {
+class JuntoDenState extends State<JuntoDen>
+    with HideFab, TickerProviderStateMixin {
+  MenuController menuController;
+
   final List<String> _tabs = <String>['About', 'Expressions'];
   UserRepo _userProvider;
   String _userAddress;
@@ -45,6 +49,9 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
   void initState() {
     super.initState();
     _denController = ScrollController();
+    menuController = MenuController(
+      vsync: this,
+    )..addListener(() => setState(() {}));
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _denController.addListener(_onScrollingHasChanged);
@@ -59,7 +66,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    _userProvider = Provider.of<UserRepo>(context);
+    _userProvider = Provider.of<UserRepo>(context, listen: false);
     getUserInformation();
   }
 
@@ -68,6 +75,7 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
     super.dispose();
     _denController.removeListener(_onScrollingHasChanged);
     _denController.dispose();
+    menuController.dispose();
   }
 
   void _onScrollingHasChanged() {
@@ -94,93 +102,104 @@ class JuntoDenState extends State<JuntoDen> with HideFab {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _userProfile != null
-          ? DenAppbar(heading: _userProfile.user.username)
-          : const PreferredSize(
-              preferredSize: Size.fromHeight(45),
-              child: SizedBox(),
-            ),
-      floatingActionButton: ValueListenableBuilder<bool>(
-        valueListenable: _isVisible,
-        builder: (
-          BuildContext context,
-          bool visible,
-          Widget child,
-        ) {
-          return AnimatedOpacity(
-              duration: const Duration(milliseconds: 300),
-              opacity: visible ? 1.0 : 0.0,
-              child: child);
-        },
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 25),
-          child: BottomNav(
-              actionsVisible: false,
-              screen: 'den',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute<Widget>(
-                    builder: (BuildContext context) => JuntoEditDen(),
+    return ChangeNotifierProvider<MenuController>.value(
+      value: menuController,
+      child: ZoomScaffold(
+        menuScreen: JuntoDrawer(),
+        contentScreen: Layout(
+          contentBuilder: (BuildContext context) => Scaffold(
+            appBar: _userProfile != null
+                ? DenAppbar(heading: _userProfile.user.username)
+                : const PreferredSize(
+                    preferredSize: Size.fromHeight(45),
+                    child: SizedBox(),
                   ),
-                );
-              }),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      endDrawer: const JuntoDrawer(screen: 'Den', icon: CustomIcons.create),
-      body: _userProfile != null
-          ? DefaultTabController(
-              length: _tabs.length,
-              child: NestedScrollView(
-                controller: _denController,
-                physics: const ClampingScrollPhysics(),
-                headerSliverBuilder:
-                    (BuildContext context, bool innerBoxIsScrolled) {
-                  return <Widget>[
-                    JuntoDenSliverAppbar(
-                      name: _userProfile.user.name,
-                      currentTheme: _currentTheme,
-                    ),
-                    SliverPersistentHeader(
-                      delegate: JuntoAppBarDelegate(
-                        TabBar(
-                          labelPadding: const EdgeInsets.all(0),
-                          isScrollable: true,
-                          labelColor: Theme.of(context).primaryColorDark,
-                          labelStyle: Theme.of(context).textTheme.subtitle1,
-                          indicatorWeight: 0.0001,
-                          tabs: <Widget>[
-                            for (String name in _tabs)
-                              Container(
-                                margin: const EdgeInsets.only(right: 24),
-                                color: Theme.of(context).colorScheme.background,
-                                child: Tab(
-                                  text: name,
-                                ),
+            floatingActionButton: ValueListenableBuilder<bool>(
+              valueListenable: _isVisible,
+              builder: (
+                BuildContext context,
+                bool visible,
+                Widget child,
+              ) {
+                return AnimatedOpacity(
+                    duration: const Duration(milliseconds: 300),
+                    opacity: visible ? 1.0 : 0.0,
+                    child: child);
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 25),
+                child: BottomNav(
+                    actionsVisible: false,
+                    screen: 'den',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute<Widget>(
+                          builder: (BuildContext context) => JuntoEditDen(),
+                        ),
+                      );
+                    }),
+              ),
+            ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
+            body: _userProfile != null
+                ? DefaultTabController(
+                    length: _tabs.length,
+                    child: NestedScrollView(
+                      controller: _denController,
+                      physics: const ClampingScrollPhysics(),
+                      headerSliverBuilder:
+                          (BuildContext context, bool innerBoxIsScrolled) {
+                        return <Widget>[
+                          JuntoDenSliverAppbar(
+                            name: _userProfile.user.name,
+                            currentTheme: _currentTheme,
+                          ),
+                          SliverPersistentHeader(
+                            delegate: JuntoAppBarDelegate(
+                              TabBar(
+                                labelPadding: const EdgeInsets.all(0),
+                                isScrollable: true,
+                                labelColor: Theme.of(context).primaryColorDark,
+                                labelStyle:
+                                    Theme.of(context).textTheme.subtitle1,
+                                indicatorWeight: 0.0001,
+                                tabs: <Widget>[
+                                  for (String name in _tabs)
+                                    Container(
+                                      margin: const EdgeInsets.only(right: 24),
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .background,
+                                      child: Tab(
+                                        text: name,
+                                      ),
+                                    ),
+                                ],
                               ),
+                            ),
+                            pinned: true,
+                          ),
+                        ];
+                      },
+                      body: SafeArea(
+                        child: TabBarView(
+                          children: <Widget>[
+                            _buildAbout(context),
+                            // public expressions of user
+                            _buildUserExpressions(),
                           ],
                         ),
                       ),
-                      pinned: true,
                     ),
-                  ];
-                },
-                body: SafeArea(
-                  child: TabBarView(
-                    children: <Widget>[
-                      _buildAbout(context),
-                      // public expressions of user
-                      _buildUserExpressions(),
-                    ],
+                  )
+                : Center(
+                    child: JuntoProgressIndicator(),
                   ),
-                ),
-              ),
-            )
-          : Center(
-              child: JuntoProgressIndicator(),
-            ),
+          ),
+        ),
+      ),
     );
   }
 

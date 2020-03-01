@@ -403,8 +403,7 @@ class JuntoCreateState extends State<JuntoCreate> {
               ),
             ),
           ),
-          endDrawer:
-              const JuntoDrawer(screen: 'Create', icon: CustomIcons.create),
+          endDrawer: JuntoDrawer(),
           floatingActionButton:
               _bottomNavVisible && MediaQuery.of(context).viewInsets.bottom == 0
                   ? Padding(
