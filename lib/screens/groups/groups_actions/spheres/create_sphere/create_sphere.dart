@@ -274,7 +274,7 @@ class CreateSphereState extends State<CreateSphere> {
               ),
             if (_currentIndex == 0)
               Text(
-                'Create Sphere',
+                'Create Circle',
                 style: Theme.of(context).textTheme.subtitle1,
               ),
             if (_currentIndex == 2)

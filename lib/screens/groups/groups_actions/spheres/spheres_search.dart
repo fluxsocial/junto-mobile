@@ -127,28 +127,6 @@ class _SpheresSearchState extends State<SpheresSearch> {
                   textInputAction: TextInputAction.search,
                 ),
               ),
-              const SizedBox(width: 15),
-              GestureDetector(
-                onTap: () {
-                  if (_textEditingController.text != '') {
-                    _textEditingController.text = '';
-                    onTextChange('');
-                  }
-                },
-                child: Container(
-                  padding: const EdgeInsets.only(
-                      left: 10, right: 15, top: 10, bottom: 10),
-                  color: Colors.transparent,
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    'X',
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                        color: Theme.of(context).primaryColorLight),
-                  ),
-                ),
-              ),
             ],
           ),
         ),

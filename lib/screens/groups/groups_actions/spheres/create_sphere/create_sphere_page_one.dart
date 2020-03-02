@@ -194,7 +194,7 @@ class _CreateSpherePageOneState extends State<CreateSpherePageOne> {
                   null,
               decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: 'Name of sphere',
+                  hintText: 'Name of circle ',
                   hintStyle: Theme.of(context).textTheme.subtitle1),
               cursorColor: JuntoPalette.juntoGrey,
               cursorWidth: 2,
@@ -237,7 +237,7 @@ class _CreateSpherePageOneState extends State<CreateSpherePageOne> {
               controller: widget.sphereDescriptionController,
               decoration: InputDecoration(
                 border: InputBorder.none,
-                hintText: 'About sphere',
+                hintText: 'About',
                 hintStyle: Theme.of(context).textTheme.caption,
                 counterStyle: const TextStyle(
                   fontSize: 12,
