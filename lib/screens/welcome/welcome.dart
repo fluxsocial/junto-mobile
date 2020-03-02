@@ -250,7 +250,7 @@ class WelcomeState extends State<Welcome> {
     );
   }
 
-  Future<bool> _willPop() async {
+  Future<bool> _animateOnBackPress() async {
     if (_currentIndex >= 1) {
       print(_currentIndex);
       _welcomeController.animateToPage(
@@ -289,7 +289,7 @@ class WelcomeState extends State<Welcome> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: _willPop,
+      onWillPop: _animateOnBackPress,
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         body: Stack(children: <Widget>[
