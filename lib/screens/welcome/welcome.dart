@@ -19,6 +19,8 @@ import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'widgets/welcome_background.dart';
+
 class Welcome extends StatefulWidget {
   static Route<dynamic> route() {
     return MaterialPageRoute<dynamic>(
@@ -263,29 +265,6 @@ class WelcomeState extends State<Welcome> {
     return true;
   }
 
-  Widget _setBackground() {
-    String imageAsset;
-    print(_currentTheme);
-
-    if (_currentTheme == 'aqueous' || _currentTheme == 'aqueous-night') {
-      imageAsset = 'assets/images/junto-mobile__themes--aqueous.png';
-    } else if (_currentTheme == 'royal' || _currentTheme == 'royal-night') {
-      imageAsset = 'assets/images/junto-mobile__themes--royal.png';
-    } else if (_currentTheme == 'rainbow' || _currentTheme == 'rainbow-night') {
-      imageAsset = 'assets/images/junto-mobile__themes--rainbow.png';
-    } else {
-      imageAsset = 'assets/images/junto-mobile__themes--rainbow.png';
-    }
-
-    return Image.asset(
-      imageAsset,
-      key: ValueKey<String>(imageAsset),
-      fit: BoxFit.cover,
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -294,12 +273,7 @@ class WelcomeState extends State<Welcome> {
         // setting this to true casues white background to be shown during keyboard opening
         resizeToAvoidBottomInset: false,
         body: Stack(children: <Widget>[
-          Container(
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 300),
-              child: _setBackground(),
-            ),
-          ),
+          WelcomeBackground(currentTheme: _currentTheme),
           PageView(
             onPageChanged: (int int) {
               setState(() {
