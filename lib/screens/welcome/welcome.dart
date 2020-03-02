@@ -33,7 +33,7 @@ class Welcome extends StatefulWidget {
 }
 
 class WelcomeState extends State<Welcome> {
-  String _currentTheme = 'rainbow';
+  String _currentTheme;
   String _userAddress;
 
   PageController _welcomeController;
@@ -67,9 +67,23 @@ class WelcomeState extends State<Welcome> {
     });
   }
 
+  Future<void> getTheme() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final theme = prefs.getString('current-theme');
+
+    setState(() {
+      if (theme == null) {
+        _currentTheme = 'rainbow';
+      } else {
+        _currentTheme = theme;
+      }
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    getTheme();
 
     signUpAboutKey = GlobalKey<SignUpAboutState>();
     signUpPhotosKey = GlobalKey<SignUpPhotosState>();
@@ -251,17 +265,16 @@ class WelcomeState extends State<Welcome> {
 
   Widget _setBackground() {
     String imageAsset;
+    print(_currentTheme);
 
-    if (_currentTheme == 'aqueous') {
+    if (_currentTheme == 'aqueous' || _currentTheme == 'aqueous-night') {
       imageAsset = 'assets/images/junto-mobile__themes--aqueous.png';
-    } else if (_currentTheme == 'royal') {
+    } else if (_currentTheme == 'royal' || _currentTheme == 'royal-night') {
       imageAsset = 'assets/images/junto-mobile__themes--royal.png';
-    } else if (_currentTheme == 'night') {
-      imageAsset = 'assets/images/junto-mobile__themes--night.png';
-    } else if (_currentTheme == 'rainbow') {
+    } else if (_currentTheme == 'rainbow' || _currentTheme == 'rainbow-night') {
       imageAsset = 'assets/images/junto-mobile__themes--rainbow.png';
     } else {
-      imageAsset = 'assets/images/junto-mobile__themes--aqueous.png';
+      imageAsset = 'assets/images/junto-mobile__themes--rainbow.png';
     }
 
     return Image.asset(
