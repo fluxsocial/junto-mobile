@@ -30,7 +30,7 @@ dependencies:
   path_provider: 1.6.1
   flutter_slidable: 0.5.4  
   package_info: 0.4.0+14
-
+  keyboard_avoider: ^0.1.2
 
 dev_dependencies:
   flutter_test:
