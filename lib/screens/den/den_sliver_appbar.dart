@@ -10,14 +10,12 @@ class JuntoDenSliverAppbar extends StatelessWidget {
   final String currentTheme;
 
   String _getBackgroundImageAsset() {
-    if (currentTheme == 'rainbow') {
+    if (currentTheme == 'rainbow' || currentTheme == 'rainbow-night') {
       return 'assets/images/junto-mobile__themes--rainbow.png';
-    } else if (currentTheme == 'aqueous') {
+    } else if (currentTheme == 'aqueous' || currentTheme == 'aqueous-night') {
       return 'assets/images/junto-mobile__themes--aqueous.png';
-    } else if (currentTheme == 'royal') {
+    } else if (currentTheme == 'royal' || currentTheme == 'royal-night') {
       return 'assets/images/junto-mobile__themes--royal.png';
-    } else if (currentTheme == 'night') {
-      return 'assets/images/junto-mobile__themes--night.png';
     } else {
       return 'assets/images/junto-mobile__themes--rainbow.png';
     }

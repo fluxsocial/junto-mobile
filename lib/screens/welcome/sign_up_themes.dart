@@ -19,10 +19,6 @@ class SignUpThemes extends StatelessWidget {
       Provider.of<JuntoThemesProvider>(context, listen: false)
           .setTheme('royal');
       toggleTheme('royal');
-    } else if (theme == 'NIGHT') {
-      Provider.of<JuntoThemesProvider>(context, listen: false)
-          .setTheme('night');
-      toggleTheme('night');
     } else if (theme == 'RAINBOW') {
       Provider.of<JuntoThemesProvider>(context, listen: false)
           .setTheme('rainbow');
@@ -37,7 +33,7 @@ class SignUpThemes extends StatelessWidget {
       },
       child: Container(
         color: Colors.transparent,
-        margin: const EdgeInsets.only(right: 25, left: 25),
+        margin: const EdgeInsets.only(right: 32, left: 32),
         child: Column(
           children: <Widget>[
             Container(
@@ -112,7 +108,6 @@ class SignUpThemes extends StatelessWidget {
                   _displayThemeSelector('RAINBOW', context),
                   _displayThemeSelector('AQUEOUS', context),
                   _displayThemeSelector('ROYAL', context),
-                  _displayThemeSelector('NIGHT', context),
                 ],
               ),
             )
