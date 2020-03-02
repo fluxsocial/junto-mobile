@@ -6,11 +6,10 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_in.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_about.dart';
-import 'package:junto_beta_mobile/screens/welcome/sign_up_name.dart';
+import 'package:junto_beta_mobile/screens/welcome/sign_up_text_field.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_photos.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_register.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_themes.dart';
-import 'package:junto_beta_mobile/screens/welcome/sign_up_username.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_verify.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_welcome.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
@@ -94,8 +93,19 @@ class WelcomeState extends State<Welcome> {
     signUpVerifyKey = GlobalKey<SignUpVerifyState>();
 
     _currentIndex = 0;
-    _welcomeController = PageController(keepPage: true);
+    _welcomeController = PageController(
+      keepPage: true,
+      //0.99 forces it to build next page
+      viewportFraction: 0.99,
+    );
     _signInController = PageController(keepPage: true);
+  }
+
+  @override
+  void dispose() {
+    _welcomeController.dispose();
+    _signInController.dispose();
+    super.dispose();
   }
 
   Future<void> _nextSignUpPage() async {
@@ -119,8 +129,8 @@ class WelcomeState extends State<Welcome> {
       }
       // transition to next page of sign up flow
       _welcomeController.nextPage(
-        curve: Curves.easeIn,
-        duration: const Duration(milliseconds: 400),
+        curve: Curves.decelerate,
+        duration: const Duration(milliseconds: 600),
       );
     } on JuntoException catch (error) {
       JuntoDialog.showJuntoDialog(
@@ -257,123 +267,146 @@ class WelcomeState extends State<Welcome> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: _animateOnBackPress,
-      child: Scaffold(
-        // setting this to true casues white background to be shown during keyboard opening
-        resizeToAvoidBottomInset: false,
-        body: Stack(children: <Widget>[
-          WelcomeBackground(currentTheme: _currentTheme),
-          PageView(
-            onPageChanged: (int int) {
-              setState(() {
-                _currentIndex = int;
-              });
-              print(_currentIndex);
-            },
-            controller: _welcomeController,
-            scrollDirection: Axis.vertical,
-            physics: const NeverScrollableScrollPhysics(),
-            children: <Widget>[
-              PageKeepAlive(
-                child: PageView(
-                  controller: _signInController,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: <Widget>[
-                    PageKeepAlive(
-                      child: WelcomeMain(
-                        onSignIn: _onSignIn,
-                        onSignUp: _onSignUp,
-                      ),
-                    ),
-                    PageKeepAlive(child: SignIn(_signInController))
-                  ],
-                ),
-              ),
-              PageKeepAlive(
-                child: SignUpName(
-                  onNamePressed: (String value) => name = value,
-                  onSubmit: () => _nextSignUpPage(),
-                ),
-              ),
-              PageKeepAlive(
-                child: SignUpUsername(
-                  onUsernameChange: (String value) => username = value,
-                ),
-              ),
-              PageKeepAlive(
-                child: SignUpThemes(toggleTheme: _toggleTheme),
-              ),
-              PageKeepAlive(
-                child: SignUpAbout(key: signUpAboutKey),
-              ),
-              PageKeepAlive(
-                child: SignUpPhotos(key: signUpPhotosKey),
-              ),
-              PageKeepAlive(
-                child: SignUpRegister(key: signUpRegisterKey),
-              ),
-              PageKeepAlive(
-                child: SignUpVerify(
-                    key: signUpVerifyKey, handleSignUp: _handleSignUp),
-              )
-            ],
-          ),
-          _currentIndex != 0 && MediaQuery.of(context).viewInsets.bottom == 0
-              ? Positioned(
-                  bottom: MediaQuery.of(context).size.height * .05,
-                  right: 20,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Scaffold(
+          // setting this to true casues white background to be shown during keyboard opening
+          resizeToAvoidBottomInset: false,
+          body: Stack(children: <Widget>[
+            WelcomeBackground(currentTheme: _currentTheme),
+            PageView(
+              onPageChanged: (int int) {
+                setState(() {
+                  _currentIndex = int;
+                });
+                print(_currentIndex);
+              },
+              controller: _welcomeController,
+              scrollDirection: Axis.vertical,
+              physics: const NeverScrollableScrollPhysics(),
+              children: <Widget>[
+                PageKeepAlive(
+                  child: PageView(
+                    controller: _signInController,
+                    physics: const NeverScrollableScrollPhysics(),
                     children: <Widget>[
-                      Container(
-                        child: GestureDetector(
-                          onTap: () {
-                            _welcomeController.previousPage(
-                              curve: Curves.easeIn,
-                              duration: const Duration(milliseconds: 400),
-                            );
-                          },
-                          child: Container(
-                            height: 36,
-                            width: 36,
-                            color: Colors.transparent,
-                            child: Icon(
-                              Icons.keyboard_arrow_up,
-                              color: Colors.white30,
-                              size: 36,
+                      PageKeepAlive(
+                        child: WelcomeMain(
+                          onSignIn: _onSignIn,
+                          onSignUp: _onSignUp,
+                        ),
+                      ),
+                      PageKeepAlive(child: SignIn(_signInController))
+                    ],
+                  ),
+                ),
+                PageKeepAlive(
+                  // 1
+                  child: SignUpTextField(
+                    onValueChanged: (String value) => name = value,
+                    onSubmit: () async {
+                      FocusScope.of(context).nextFocus();
+                      await _nextSignUpPage();
+                    },
+                    maxLength: 36,
+                    hint: 'My name is...',
+                    label: 'FULL NAME',
+                    title: 'Hey, what\'s your name?',
+                  ),
+                ),
+                PageKeepAlive(
+                  // 2
+                  child: SignUpTextField(
+                    onValueChanged: (String value) => username = value,
+                    onSubmit: () async {
+                      FocusScope.of(context).unfocus();
+                      await _nextSignUpPage();
+                    },
+                    maxLength: 22,
+                    hint: 'I\'ll go by...',
+                    label: 'USERNAME',
+                    title: 'Choose a unique username!',
+                  ),
+                ),
+                PageKeepAlive(
+                  // 3
+                  child: SignUpThemes(toggleTheme: _toggleTheme),
+                ),
+                PageKeepAlive(
+                  // 4
+                  child: SignUpAbout(key: signUpAboutKey),
+                ),
+                PageKeepAlive(
+                  child: SignUpPhotos(key: signUpPhotosKey),
+                ),
+                PageKeepAlive(
+                  child: SignUpRegister(key: signUpRegisterKey),
+                ),
+                PageKeepAlive(
+                  child: SignUpVerify(
+                      key: signUpVerifyKey, handleSignUp: _handleSignUp),
+                )
+              ],
+            ),
+            _currentIndex != 0 && MediaQuery.of(context).viewInsets.bottom == 0
+                ? Positioned(
+                    bottom: MediaQuery.of(context).size.height * .05,
+                    right: 20,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          child: GestureDetector(
+                            onTap: () {
+                              _welcomeController.previousPage(
+                                curve: Curves.easeIn,
+                                duration: const Duration(milliseconds: 400),
+                              );
+                            },
+                            child: Container(
+                              height: 36,
+                              width: 36,
+                              color: Colors.transparent,
+                              child: Icon(
+                                Icons.keyboard_arrow_up,
+                                color: Colors.white30,
+                                size: 36,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 20),
-                      _currentIndex == 7
-                          ? const SizedBox()
-                          : GestureDetector(
-                              onTap: () {
-                                _nextSignUpPage();
-                              },
-                              child: Container(
-                                height: 36,
-                                width: 36,
-                                color: Colors.transparent,
-                                child: const Icon(Icons.keyboard_arrow_down,
-                                    color: Colors.white, size: 36),
+                        const SizedBox(height: 20),
+                        _currentIndex == 7
+                            ? const SizedBox()
+                            : GestureDetector(
+                                onTap: () {
+                                  _nextSignUpPage();
+                                },
+                                child: Container(
+                                  height: 36,
+                                  width: 36,
+                                  color: Colors.transparent,
+                                  child: const Icon(Icons.keyboard_arrow_down,
+                                      color: Colors.white, size: 36),
+                                ),
                               ),
-                            ),
-                    ],
-                  ),
-                )
-              : const SizedBox(),
-          _currentIndex != 0
-              ? Positioned(
-                  top: MediaQuery.of(context).size.height * .08,
-                  left: 20,
-                  child: Image.asset(
-                      'assets/images/junto-mobile__logo--white.png',
-                      height: 45),
-                )
-              : const SizedBox(),
-        ]),
+                      ],
+                    ),
+                  )
+                : const SizedBox(),
+            _currentIndex != 0
+                ? Positioned(
+                    top: MediaQuery.of(context).size.height * .08,
+                    left: 20,
+                    child: Image.asset(
+                        'assets/images/junto-mobile__logo--white.png',
+                        height: 45),
+                  )
+                : const SizedBox(),
+          ]),
+        ),
       ),
     );
   }
@@ -381,11 +414,7 @@ class WelcomeState extends State<Welcome> {
   Future<bool> _animateOnBackPress() async {
     if (_currentIndex >= 1) {
       print(_currentIndex);
-      _welcomeController.animateToPage(
-        _currentIndex - 1,
-        duration: kThemeAnimationDuration,
-        curve: Curves.decelerate,
-      );
+      _previousSignUpPage();
       return false;
     } else if (_signInController.page > 0) {
       _signInController.animateToPage(
@@ -396,6 +425,14 @@ class WelcomeState extends State<Welcome> {
       return false;
     }
     return true;
+  }
+
+  void _previousSignUpPage() {
+    _welcomeController.animateToPage(
+      _currentIndex - 1,
+      duration: kThemeAnimationDuration,
+      curve: Curves.decelerate,
+    );
   }
 
   void _onSignUp() {
