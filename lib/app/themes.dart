@@ -294,6 +294,300 @@ class JuntoThemes {
     ),
   );
 
+  // Rainbow Theme
+  ThemeData rainbowNight = ThemeData(
+    fontFamily: 'Avenir',
+    brightness: Brightness.dark,
+    primaryColor: const Color(0xfff0f0f0),
+    primaryColorDark: const Color(0xffffffff),
+    primaryColorLight: const Color(0xff999999),
+    dividerColor: const Color(0xff555555),
+    backgroundColor: const Color(0xff333333),
+    accentColor: const Color(0xFF4687A2),
+    colorScheme: const ColorScheme(
+      // Junto purple
+      primary: Color(0xff8E8098),
+      primaryVariant: Color(0xff285FA7),
+      // Junto blue
+      secondary: Color(0xFF307FAA),
+      secondaryVariant: Color(0xFF4687A2),
+
+      surface: Color(0xff393939),
+      background: Color(0xff333333),
+      error: Color(0xff333333),
+      onPrimary: Colors.white,
+      onSecondary: Colors.white,
+      onBackground: Color(0xff333333),
+      onError: Color(0xff333333),
+      onSurface: Color(0xff333333),
+      brightness: Brightness.dark,
+    ),
+    scaffoldBackgroundColor: const Color(0xff333333),
+    appBarTheme: const AppBarTheme(
+      color: Color(0xff333333),
+      elevation: 0,
+      textTheme: TextTheme(
+        bodyText2: TextStyle(
+          color: Colors.white,
+          fontSize: 15,
+          fontWeight: FontWeight.w600,
+          letterSpacing: 1.02,
+        ),
+      ),
+      iconTheme: IconThemeData(
+        color: Colors.white,
+        size: 22,
+      ),
+    ),
+    bottomAppBarColor: Colors.blue,
+    textTheme: const TextTheme(
+      headline4: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.w700,
+        color: Colors.white,
+      ),
+      headline6: TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.w700,
+        color: Colors.white,
+      ),
+      headline5: TextStyle(
+        fontSize: 17,
+        color: Colors.white,
+        fontWeight: FontWeight.w600,
+      ),
+      // used for user and sphere handles
+      subtitle1: TextStyle(
+        fontSize: 15,
+        color: Colors.white,
+        fontWeight: FontWeight.w700,
+      ),
+      subtitle2: TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w700,
+        color: Colors.white,
+      ),
+      bodyText2: TextStyle(
+        fontSize: 13,
+        color: Color(0xfffbfbfb),
+        fontWeight: FontWeight.w500,
+      ),
+      bodyText1: TextStyle(
+        color: Color(0xfff0f0f0),
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+      ),
+      caption: TextStyle(
+        fontSize: 16,
+        height: 1.4,
+        fontWeight: FontWeight.w500,
+        color: Color(0xfff0f0f0),
+      ),
+      overline: TextStyle(
+        fontSize: 12,
+        color: Color(0xffeeeeee),
+        fontWeight: FontWeight.w600,
+        letterSpacing: .5,
+      ),
+    ),
+  );
+
+  // Aqueous Night Theme
+  ThemeData aqueousNight = ThemeData(
+    fontFamily: 'Avenir',
+    brightness: Brightness.dark,
+    primaryColor: const Color(0xfff0f0f0),
+    primaryColorDark: const Color(0xffffffff),
+    primaryColorLight: const Color(0xff999999),
+    dividerColor: const Color(0xff555555),
+    backgroundColor: const Color(0xff333333),
+    accentColor: const Color(0xFF2E4F78),
+    colorScheme: const ColorScheme(
+      // Dark blue
+      primary: Color(0xFF1A2F54),
+      primaryVariant: Color(0xFF2E4F78),
+
+      // Light Blue
+      secondary: Color(0xff2B5583),
+      secondaryVariant: Color(0xff2B5583),
+
+      surface: Color(0xff393939),
+      background: Color(0xff333333),
+      error: Color(0xff333333),
+      onPrimary: Colors.white,
+      onSecondary: Colors.white,
+      onBackground: Color(0xff333333),
+      onError: Color(0xff333333),
+      onSurface: Color(0xff333333),
+      brightness: Brightness.dark,
+    ),
+    scaffoldBackgroundColor: const Color(0xff333333),
+    appBarTheme: const AppBarTheme(
+      color: Color(0xff333333),
+      elevation: 0,
+      textTheme: TextTheme(
+        bodyText2: TextStyle(
+          color: Colors.white,
+          fontSize: 15,
+          fontWeight: FontWeight.w600,
+          letterSpacing: 1.02,
+        ),
+      ),
+      iconTheme: IconThemeData(
+        color: Colors.white,
+        size: 22,
+      ),
+    ),
+    bottomAppBarColor: Colors.blue,
+    textTheme: const TextTheme(
+      headline4: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.w700,
+        color: Colors.white,
+      ),
+      headline6: TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.w700,
+        color: Colors.white,
+      ),
+      headline5: TextStyle(
+        fontSize: 17,
+        color: Colors.white,
+        fontWeight: FontWeight.w600,
+      ),
+      // used for user and sphere handles
+      subtitle1: TextStyle(
+        fontSize: 15,
+        color: Colors.white,
+        fontWeight: FontWeight.w700,
+      ),
+      subtitle2: TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w700,
+        color: Colors.white,
+      ),
+      bodyText2: TextStyle(
+        fontSize: 13,
+        color: Color(0xfffbfbfb),
+        fontWeight: FontWeight.w500,
+      ),
+      bodyText1: TextStyle(
+        color: Color(0xfff0f0f0),
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+      ),
+      caption: TextStyle(
+        fontSize: 16,
+        height: 1.4,
+        fontWeight: FontWeight.w500,
+        color: Color(0xfff0f0f0),
+      ),
+      overline: TextStyle(
+        fontSize: 12,
+        color: Color(0xffeeeeee),
+        fontWeight: FontWeight.w600,
+        letterSpacing: .5,
+      ),
+    ),
+  );
+
+  // Royal Theme
+  ThemeData royalNight = ThemeData(
+    fontFamily: 'Avenir',
+    brightness: Brightness.dark,
+    primaryColor: const Color(0xfff0f0f0),
+    primaryColorDark: const Color(0xffffffff),
+    primaryColorLight: const Color(0xff999999),
+    dividerColor: const Color(0xff555555),
+    backgroundColor: const Color(0xff333333),
+    accentColor: const Color(0xFF7C5C97),
+    colorScheme: const ColorScheme(
+      // Junto purple
+      primary: Color(0xff6F51A8),
+      primaryVariant: Color(0xFF7C5C97),
+      // Junto gold
+      secondary: Color(0xFFE8B974),
+      secondaryVariant: Color(0xFFE8B974),
+      surface: Color(0xff393939),
+      background: Color(0xff333333),
+      error: Color(0xff333333),
+      onPrimary: Colors.white,
+      onSecondary: Colors.white,
+      onBackground: Color(0xff333333),
+      onError: Color(0xff333333),
+      onSurface: Color(0xff333333),
+      brightness: Brightness.dark,
+    ),
+    scaffoldBackgroundColor: const Color(0xff333333),
+    appBarTheme: const AppBarTheme(
+      color: Color(0xff333333),
+      elevation: 0,
+      textTheme: TextTheme(
+        bodyText2: TextStyle(
+          color: Colors.white,
+          fontSize: 15,
+          fontWeight: FontWeight.w600,
+          letterSpacing: 1.02,
+        ),
+      ),
+      iconTheme: IconThemeData(
+        color: Colors.white,
+        size: 22,
+      ),
+    ),
+    bottomAppBarColor: Colors.blue,
+    textTheme: const TextTheme(
+      headline4: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.w700,
+        color: Colors.white,
+      ),
+      headline6: TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.w700,
+        color: Colors.white,
+      ),
+      headline5: TextStyle(
+        fontSize: 17,
+        color: Colors.white,
+        fontWeight: FontWeight.w600,
+      ),
+      // used for user and sphere handles
+      subtitle1: TextStyle(
+        fontSize: 15,
+        color: Colors.white,
+        fontWeight: FontWeight.w700,
+      ),
+      subtitle2: TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w700,
+        color: Colors.white,
+      ),
+      bodyText2: TextStyle(
+        fontSize: 13,
+        color: Color(0xfffbfbfb),
+        fontWeight: FontWeight.w500,
+      ),
+      bodyText1: TextStyle(
+        color: Color(0xfff0f0f0),
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+      ),
+      caption: TextStyle(
+        fontSize: 16,
+        height: 1.4,
+        fontWeight: FontWeight.w500,
+        color: Color(0xfff0f0f0),
+      ),
+      overline: TextStyle(
+        fontSize: 12,
+        color: Color(0xffeeeeee),
+        fontWeight: FontWeight.w600,
+        letterSpacing: .5,
+      ),
+    ),
+  );
+
 // Night Theme
   ThemeData night = ThemeData(
     brightness: Brightness.dark,

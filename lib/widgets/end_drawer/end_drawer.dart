@@ -25,10 +25,13 @@ class JuntoDrawerState extends State<JuntoDrawer> {
   String _userAddress;
   UserData _userProfile;
   String _userFollowPerspectiveId;
-  String _currentTheme;
+  String _currentTheme = 'rainbow';
+  bool _nightMode;
 
   @override
-  void didChangeDependencies() {
+  void initState() {
+    super.initState();
+
     getUserInformation();
   }
 
@@ -42,15 +45,16 @@ class JuntoDrawerState extends State<JuntoDrawer> {
       _userProfile = UserData.fromMap(decodedUserData);
       _userFollowPerspectiveId = prefs.getString('user_follow_perspective_id');
       _currentTheme = prefs.getString('current-theme');
+      _nightMode = prefs.getBool('night-mode');
     });
   }
 
   String _displayBackground() {
-    if (_currentTheme == 'rainbow') {
+    if (_currentTheme == 'rainbow' || _currentTheme == 'rainbow-night') {
       return 'assets/images/junto-mobile__themes--rainbow.png';
-    } else if (_currentTheme == 'aqueous') {
+    } else if (_currentTheme == 'aqueous' || _currentTheme == 'aqueous-night') {
       return 'assets/images/junto-mobile__themes--aqueous.png';
-    } else if (_currentTheme == 'royal') {
+    } else if (_currentTheme == 'royal' || _currentTheme == 'royal-night') {
       return 'assets/images/junto-mobile__themes--royal.png';
     } else {
       return 'assets/images/junto-mobile__themes--rainbow.png';
@@ -240,8 +244,10 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                         Navigator.push(
                           context,
                           CupertinoPageRoute<Widget>(
-                            builder: (BuildContext context) =>
-                                JuntoThemes(refreshData: getUserInformation),
+                            builder: (BuildContext context) => JuntoThemes(
+                                refreshData: getUserInformation,
+                                currentTheme: _currentTheme,
+                                nightMode: _nightMode),
                           ),
                         );
                       },
