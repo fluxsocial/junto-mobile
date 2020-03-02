@@ -39,4 +39,6 @@ class CustomIcons {
   static const IconData den = IconData(0xe902, fontFamily: 'j_home_two');
   static const IconData twocolumn = IconData(0xe903, fontFamily: 'j_home_two');
   static const IconData singlecolumn = IconData(0xe904, fontFamily: 'j_home_two');
+  static const IconData infinity = IconData(0xe90a, fontFamily: 'j_home_two');
+
 }

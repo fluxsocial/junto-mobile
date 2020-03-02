@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
@@ -210,9 +211,9 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                         width: 60,
                         alignment: Alignment.centerLeft,
                         child: Icon(
-                          Icons.favorite,
+                          CustomIcons.infinity,
                           color: Colors.white,
-                          size: 24,
+                          size: 9,
                         ),
                       ),
                       title: 'Relations',
@@ -231,14 +232,13 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                     ),
                     JuntoDrawerItem(
                       icon: Container(
-                        width: 60,
-                        alignment: Alignment.centerLeft,
-                        child: Icon(
-                          Icons.favorite,
-                          color: Colors.white,
-                          size: 24,
-                        ),
-                      ),
+                          width: 60,
+                          alignment: Alignment.centerLeft,
+                          child: Icon(
+                            Icons.favorite,
+                            color: Colors.white,
+                            size: 24,
+                          )),
                       title: 'Themes',
                       onTap: () async {
                         Navigator.push(
