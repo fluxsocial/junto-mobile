@@ -10,6 +10,7 @@ class SignUpTextField extends StatelessWidget {
     this.textCapitalization = TextCapitalization.words,
     this.keyboardType = TextInputType.text,
     this.maxLines = 1,
+    this.obscureText = false,
   }) : super(key: key);
 
   final TextEditingController valueController;
@@ -19,6 +20,7 @@ class SignUpTextField extends StatelessWidget {
   final TextInputType keyboardType;
   final TextCapitalization textCapitalization;
   final int maxLines;
+  final bool obscureText;
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +54,7 @@ class SignUpTextField extends StatelessWidget {
       onSubmitted: (_) {
         onSubmit();
       },
+      obscureText: obscureText,
     );
   }
 }

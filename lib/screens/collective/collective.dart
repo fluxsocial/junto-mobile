@@ -239,7 +239,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
                           duration: const Duration(milliseconds: 300),
                           opacity: value ? 0.0 : 1.0,
                           child: Visibility(
-                            visible: value ? false : true,
+                            visible: !value,
                             child: _buildPerspectiveFeed(),
                           ),
                         ),
