@@ -6,7 +6,6 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_in.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_about.dart';
-import 'package:junto_beta_mobile/screens/welcome/sign_up_text_field.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_photos.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_register.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_themes.dart';
@@ -18,6 +17,7 @@ import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'widgets/sign_up_text_field_wrapper.dart';
 import 'widgets/welcome_background.dart';
 import 'widgets/welcome_main.dart';
 
@@ -303,7 +303,7 @@ class WelcomeState extends State<Welcome> {
                 ),
                 PageKeepAlive(
                   // 1
-                  child: SignUpTextField(
+                  child: SignUpTextFieldWrapper(
                     onValueChanged: (String value) => name = value,
                     onSubmit: () async {
                       FocusScope.of(context).nextFocus();
@@ -317,7 +317,7 @@ class WelcomeState extends State<Welcome> {
                 ),
                 PageKeepAlive(
                   // 2
-                  child: SignUpTextField(
+                  child: SignUpTextFieldWrapper(
                     onValueChanged: (String value) => username = value,
                     onSubmit: () async {
                       FocusScope.of(context).unfocus();
