@@ -291,7 +291,8 @@ class WelcomeState extends State<Welcome> {
     return WillPopScope(
       onWillPop: _animateOnBackPress,
       child: Scaffold(
-        resizeToAvoidBottomInset: true,
+        // setting this to true casues white background to be shown during keyboard opening
+        resizeToAvoidBottomInset: false,
         body: Stack(children: <Widget>[
           Container(
             child: AnimatedSwitcher(
