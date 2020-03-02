@@ -20,6 +20,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'widgets/welcome_background.dart';
+import 'widgets/welcome_main.dart';
 
 class Welcome extends StatefulWidget {
   static Route<dynamic> route() {
@@ -290,7 +291,12 @@ class WelcomeState extends State<Welcome> {
                   controller: _signInController,
                   physics: const NeverScrollableScrollPhysics(),
                   children: <Widget>[
-                    PageKeepAlive(child: _welcomeMain(context)),
+                    PageKeepAlive(
+                      child: WelcomeMain(
+                        onSignIn: _onSignIn,
+                        onSignUp: _onSignUp,
+                      ),
+                    ),
                     PageKeepAlive(child: SignIn(_signInController))
                   ],
                 ),
@@ -384,99 +390,22 @@ class WelcomeState extends State<Welcome> {
     );
   }
 
-  Widget _welcomeMain(BuildContext context) {
-    return Container(
-      color: Colors.transparent,
-      width: MediaQuery.of(context).size.width,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Column(children: <Widget>[
-            Container(
-              margin: const EdgeInsets.only(top: 120, bottom: 30),
-              child: Image.asset(
-                'assets/images/junto-mobile__logo--white.png',
-                height: 69,
-              ),
-            ),
-            Container(
-              child: const Text(
-                'JUNTO',
-                style: TextStyle(
-                  letterSpacing: 3.6,
-                  color: Colors.white,
-                  fontSize: 45,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
-          ]),
-          Column(
-            children: <Widget>[
-              Container(
-                margin: const EdgeInsets.only(bottom: 30),
-                child: GestureDetector(
-                  onTap: () {
-                    _welcomeController.nextPage(
-                      curve: Curves.easeIn,
-                      duration: const Duration(milliseconds: 400),
-                    );
-                    Future<void>.delayed(const Duration(milliseconds: 400), () {
-                      setState(() {
-                        _currentIndex = 1;
-                      });
-                    });
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 20,
-                    ),
-                    margin: const EdgeInsets.symmetric(horizontal: 40),
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).accentColor,
-                        borderRadius: BorderRadius.circular(1000),
-                        boxShadow: <BoxShadow>[
-                          BoxShadow(
-                              color: const Color(0xff222222).withOpacity(.2),
-                              offset: const Offset(0.0, 5.0),
-                              blurRadius: 9),
-                        ]),
-                    child: const Text(
-                      'WELCOME TO THE PACK',
-                      style: TextStyle(
-                          letterSpacing: 1.2,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 14),
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(bottom: 120),
-                child: GestureDetector(
-                  onTap: () {
-                    _signInController.nextPage(
-                      curve: Curves.easeIn,
-                      duration: const Duration(milliseconds: 300),
-                    );
-                  },
-                  child: const Text(
-                    'SIGN IN',
-                    style: TextStyle(
-                        letterSpacing: 1.2,
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700),
-                  ),
-                ),
-              ),
-            ],
-          )
-        ],
-      ),
+  void _onSignUp() {
+    _welcomeController.nextPage(
+      curve: Curves.easeIn,
+      duration: const Duration(milliseconds: 400),
+    );
+    Future<void>.delayed(const Duration(milliseconds: 400), () {
+      setState(() {
+        _currentIndex = 1;
+      });
+    });
+  }
+
+  void _onSignIn() {
+    _signInController.nextPage(
+      curve: Curves.easeIn,
+      duration: const Duration(milliseconds: 300),
     );
   }
 }
