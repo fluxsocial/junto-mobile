@@ -17,6 +17,7 @@ import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'widgets/sign_up_arrows.dart';
 import 'widgets/sign_up_text_field_wrapper.dart';
 import 'widgets/welcome_background.dart';
 import 'widgets/welcome_main.dart';
@@ -350,50 +351,12 @@ class WelcomeState extends State<Welcome> {
               ],
             ),
             _currentIndex != 0 && MediaQuery.of(context).viewInsets.bottom == 0
-                ? Positioned(
-                    bottom: MediaQuery.of(context).size.height * .05,
-                    right: 20,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          child: GestureDetector(
-                            onTap: () {
-                              _welcomeController.previousPage(
-                                curve: Curves.easeIn,
-                                duration: const Duration(milliseconds: 400),
-                              );
-                            },
-                            child: Container(
-                              height: 36,
-                              width: 36,
-                              color: Colors.transparent,
-                              child: Icon(
-                                Icons.keyboard_arrow_up,
-                                color: Colors.white30,
-                                size: 36,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        _currentIndex == 7
-                            ? const SizedBox()
-                            : GestureDetector(
-                                onTap: () {
-                                  _nextSignUpPage();
-                                },
-                                child: Container(
-                                  height: 36,
-                                  width: 36,
-                                  color: Colors.transparent,
-                                  child: const Icon(Icons.keyboard_arrow_down,
-                                      color: Colors.white, size: 36),
-                                ),
-                              ),
-                      ],
-                    ),
+                ? SignUpArrows(
+                    welcomeController: _welcomeController,
+                    currentIndex: _currentIndex,
+                    onTap: () {
+                      _nextSignUpPage();
+                    },
                   )
                 : const SizedBox(),
             _currentIndex != 0
