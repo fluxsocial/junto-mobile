@@ -69,7 +69,7 @@ class WelcomeState extends State<Welcome> {
 
   Future<void> getTheme() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final theme = prefs.getString('current-theme');
+    final String theme = prefs.getString('current-theme');
 
     setState(() {
       if (theme == null) {
