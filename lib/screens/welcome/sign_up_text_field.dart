@@ -1,41 +1,49 @@
 import 'package:flutter/material.dart';
 
-class SignUpName extends StatefulWidget {
-  const SignUpName({
+class SignUpTextField extends StatefulWidget {
+  const SignUpTextField({
     Key key,
-    @required this.onNamePressed,
+    @required this.onValueChanged,
     @required this.onSubmit,
+    @required this.maxLength,
+    @required this.hint,
+    @required this.label,
+    @required this.title,
   }) : super(key: key);
 
   /// Called when the user enters a value in the textfield.
   /// Value will always be the latest value of `TextController.text.value`.
-  final ValueChanged<String> onNamePressed;
+  final ValueChanged<String> onValueChanged;
   final VoidCallback onSubmit;
+  final int maxLength;
+  final String hint;
+  final String label;
+  final String title;
 
   @override
   State<StatefulWidget> createState() {
-    return SignUpNameState();
+    return SignUpTextFieldState();
   }
 }
 
-class SignUpNameState extends State<SignUpName> {
-  TextEditingController nameController;
+class SignUpTextFieldState extends State<SignUpTextField> {
+  TextEditingController valueController;
 
   @override
   void initState() {
     super.initState();
-    nameController = TextEditingController();
-    nameController.addListener(returnDetails);
+    valueController = TextEditingController();
+    valueController.addListener(returnDetails);
   }
 
   @override
   void dispose() {
-    nameController.removeListener(returnDetails);
-    nameController.dispose();
+    valueController.removeListener(returnDetails);
+    valueController.dispose();
     super.dispose();
   }
 
-  void returnDetails() => widget.onNamePressed(nameController.value.text);
+  void returnDetails() => widget.onValueChanged(valueController.value.text);
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +60,8 @@ class SignUpNameState extends State<SignUpName> {
               margin: EdgeInsets.only(
                 bottom: MediaQuery.of(context).size.height * .24,
               ),
-              child: const Text(
-                'Hey, what\'s your name?',
+              child: Text(
+                widget.title,
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 24,
@@ -63,55 +71,56 @@ class SignUpNameState extends State<SignUpName> {
             Container(
               child: Column(
                 children: <Widget>[
-                  Container(
-                    child: TextField(
-                      controller: nameController,
-                      cursorColor: Colors.white70,
-                      decoration: InputDecoration(
-                        enabledBorder: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                        labelStyle: TextStyle(color: Colors.green),
-                        hintText: 'My name is...',
-                        hintStyle: const TextStyle(
-                          color: Colors.white70,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        fillColor: Colors.white,
-                      ),
-                      textCapitalization: TextCapitalization.words,
-                      style: const TextStyle(
-                        color: Colors.white,
+                  TextField(
+                    controller: valueController,
+                    cursorColor: Colors.white70,
+                    decoration: InputDecoration(
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      labelStyle: TextStyle(color: Colors.green),
+                      hintText: widget.hint,
+                      hintStyle: const TextStyle(
+                        color: Colors.white70,
                         fontSize: 20,
                         fontWeight: FontWeight.w500,
                       ),
-                      textInputAction: TextInputAction.next,
-                      onSubmitted: (_) {
-                        FocusScope.of(context).nextFocus();
-                        widget.onSubmit();
-                      },
+                      fillColor: Colors.white,
+                      //disabling the native counter
+                      counter: Container(),
                     ),
+                    textCapitalization: TextCapitalization.words,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    maxLength: widget.maxLength,
+                    textInputAction: TextInputAction.next,
+                    onSubmitted: (_) {
+                      widget.onSubmit();
+                    },
                   ),
                   const SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      const Text(
-                        'FULL NAME',
-                        style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400),
+                      Text(
+                        widget.label,
+                        style: const TextStyle(
+                          color: Colors.white70,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
                       ValueListenableBuilder<TextEditingValue>(
-                        valueListenable: nameController,
+                        valueListenable: valueController,
                         builder: (
                           BuildContext context,
                           TextEditingValue value,
                           _,
                         ) {
                           return Text(
-                            '${value.text.length}/36',
+                            '${value.text.length}/${widget.maxLength}',
                             style: const TextStyle(
                               color: Colors.white70,
                               fontSize: 14,
