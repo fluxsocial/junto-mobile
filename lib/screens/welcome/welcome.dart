@@ -291,6 +291,7 @@ class WelcomeState extends State<Welcome> {
               PageKeepAlive(
                 child: SignUpName(
                   onNamePressed: (String value) => name = value,
+                  onSubmit: () => _nextSignUpPage(),
                 ),
               ),
               PageKeepAlive(

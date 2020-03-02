@@ -4,11 +4,13 @@ class SignUpName extends StatefulWidget {
   const SignUpName({
     Key key,
     @required this.onNamePressed,
+    @required this.onSubmit,
   }) : super(key: key);
 
   /// Called when the user enters a value in the textfield.
   /// Value will always be the latest value of `TextController.text.value`.
   final ValueChanged<String> onNamePressed;
+  final VoidCallback onSubmit;
 
   @override
   State<StatefulWidget> createState() {
@@ -77,11 +79,17 @@ class SignUpNameState extends State<SignUpName> {
                         ),
                         fillColor: Colors.white,
                       ),
+                      textCapitalization: TextCapitalization.words,
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 20,
                         fontWeight: FontWeight.w500,
                       ),
+                      textInputAction: TextInputAction.next,
+                      onSubmitted: (_) {
+                        FocusScope.of(context).nextFocus();
+                        widget.onSubmit();
+                      },
                     ),
                   ),
                   const SizedBox(height: 10),
