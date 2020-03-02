@@ -5,7 +5,7 @@ UserProfile kUserProfile = const UserProfile(
   address: '123e4567-e89b-23s3-a256-426655440000',
   bio: 'Hi there, this is a mock user profile',
   name: 'Testy',
-  profilePicture: <String>['assets/images/junto-mobile__mockprofpic--one.png'],
+  profilePicture: <String>[''],
   username: 'mcTesty',
   verified: false,
   website: <String>['https://www.twitter.com/Nash0x7E2'],
@@ -22,14 +22,14 @@ UserData kUserData = UserData(
   connectionPerspective: kPerspectives[1],
 );
 
-CentralizedDen kPublicDen = CentralizedDen(
+Den kPublicDen = Den(
   creator: kUserProfile.address,
   privacy: 'Public',
   isDefault: false,
   name: 'Mock Public Den',
   address: '123123-34345345-23422423',
 );
-CentralizedDen kPrivateDen = CentralizedDen(
+Den kPrivateDen = Den(
   creator: kUserProfile.address,
   privacy: 'Private',
   isDefault: false,
@@ -52,7 +52,7 @@ Comment kComment = Comment(
   context: 'collective',
   createdAt: DateTime.now(),
   creator: kUserProfile,
-  expressionData: CentralizedLongFormExpression(
+  expressionData: LongFormExpression(
     title: 'Mocking',
     body: 'Expressions',
   ),
@@ -67,24 +67,21 @@ Resonation kResonation = Resonation(
   linkType: 'Resonation',
 );
 
-CentralizedExpressionResponse kExpressionResponse =
-    CentralizedExpressionResponse(
+ExpressionResponse kExpressionResponse = ExpressionResponse(
   address: '123e4567-e89b-12d3-a456-426655440000',
   numberComments: 1,
   context: 'collective',
   createdAt: DateTime.now(),
   creator: kUserProfile,
-  expressionData:
-      CentralizedLongFormExpression(title: 'Mocking', body: 'Expressions'),
+  expressionData: LongFormExpression(title: 'Mocking', body: 'Expressions'),
   numberResonations: 0,
   privacy: 'Public',
   resonations: <UserProfile>[],
   type: 'LongForm',
 );
 
-List<CentralizedExpressionResponse> kSampleExpressions =
-    <CentralizedExpressionResponse>[
-  CentralizedExpressionResponse(
+List<ExpressionResponse> kSampleExpressions = <ExpressionResponse>[
+  ExpressionResponse(
     address: '0xfee32zokie8',
     type: 'LongForm',
     numberComments: 1,
@@ -93,7 +90,7 @@ List<CentralizedExpressionResponse> kSampleExpressions =
     creator: const UserProfile(
       bio: 'hellooo',
       name: 'Eric',
-      profilePicture: <String>['assets/images/junto-mobile__eric.png'],
+      profilePicture: <String>[''],
       username: 'sunyata',
       verified: true,
       website: <String>['https://www.twitter.com/Junto'],
@@ -101,13 +98,13 @@ List<CentralizedExpressionResponse> kSampleExpressions =
       gender: <String>[],
       address: 'ajdsbasbd-4234jdsf-dfmbjs',
     ),
-    expressionData: CentralizedLongFormExpression(
+    expressionData: LongFormExpression(
       title: 'Dynamic form is in motion!',
       body: "Hey! Eric here. We're currently working with a London-based dev "
           "agency called DevAngels to build out our dynamic, rich text editor. Soon, you'll be able to create short or longform expressions that contain text, links, images complemented with features such as bullet points, horiozntal lines, bold and italic font, and much more. This should be done in the next 1 or 2 weeks so stay tuned!",
     ),
   ),
-  CentralizedExpressionResponse(
+  ExpressionResponse(
     address: '0xfee32zokie8',
     type: 'ShortForm',
     numberComments: 1,
@@ -115,7 +112,7 @@ List<CentralizedExpressionResponse> kSampleExpressions =
     createdAt: DateTime.now(),
     creator: const UserProfile(
       name: 'Dora',
-      profilePicture: <String>['assets/images/junto-mobile__dora.png'],
+      profilePicture: <String>[''],
       bio: 'hellooo',
       username: 'wingedmessenger',
       verified: true,
@@ -124,13 +121,13 @@ List<CentralizedExpressionResponse> kSampleExpressions =
       gender: <String>[],
       address: 'testing-address',
     ),
-    expressionData: CentralizedShortFormExpression(
-      background: [],
+    expressionData: ShortFormExpression(
+      background: <String>[],
       body: ' Have you heard of Paradym sound healing meditation? Join us for '
           'a transformational session this Friday!',
     ),
   ),
-  CentralizedExpressionResponse(
+  ExpressionResponse(
     address: '0xfee32zokie8',
     type: 'PhotoForm',
     numberComments: 1,
@@ -138,7 +135,7 @@ List<CentralizedExpressionResponse> kSampleExpressions =
     createdAt: DateTime.now(),
     creator: const UserProfile(
       name: 'Josh',
-      profilePicture: <String>['assets/images/junto-mobile__josh.png'],
+      profilePicture: <String>[''],
       bio: 'hellooo',
       address: 'parent-address',
       verified: true,
@@ -147,12 +144,12 @@ List<CentralizedExpressionResponse> kSampleExpressions =
       location: <String>['Somewhere on Earth'],
       gender: <String>[],
     ),
-    expressionData: CentralizedPhotoFormExpression(
-      image: 'assets/images/junto-mobile__photo--one.png',
+    expressionData: PhotoFormExpression(
+      image: '',
       caption: 'Catching some waves in New Polzeath!',
     ),
   ),
-  CentralizedExpressionResponse(
+  ExpressionResponse(
     address: '0xfee32zokie8',
     type: 'EventForm',
     numberComments: 1,
@@ -162,22 +159,22 @@ List<CentralizedExpressionResponse> kSampleExpressions =
       address: 'parent-address',
       bio: "I'm Drea.",
       name: 'Drea',
-      profilePicture: <String>['assets/images/junto-mobile__drea.png'],
+      profilePicture: <String>[''],
       verified: true,
       username: 'DMONEY',
       website: <String>['https://www.twitter.com/Junto'],
       location: <String>['Somewhere on Earth'],
       gender: <String>[],
     ),
-    expressionData: CentralizedEventFormExpression(
+    expressionData: EventFormExpression(
         title: 'Junto Presents: Jazz and Draw',
         // location: 'The Assemblage',
         // startTime: 'Sun, Sep 15, 3:00PM',
-        photo: 'assets/images/junto-mobile__event--one.png',
+        photo: '',
         description:
             "Join us for a splendiferous afternoon of paint-splattering fun! We'll be syncing our movements to your favorite blues while creating beautiful masterpieces together. All are invited!"),
   ),
-  CentralizedExpressionResponse(
+  ExpressionResponse(
     address: '0xfee32zokie8',
     type: 'LongForm',
     numberComments: 1,
@@ -187,14 +184,14 @@ List<CentralizedExpressionResponse> kSampleExpressions =
       address: '0vefoiwiafjvkbr32r243r5',
       bio: 'hellooo',
       name: 'Nash',
-      profilePicture: <String>['assets/images/junto-mobile__nash.png'],
+      profilePicture: <String>[''],
       verified: true,
       username: 'Nash',
       website: <String>['https://www.twitter.com/Junto'],
       location: <String>['Somewhere on Earth'],
       gender: <String>[],
     ),
-    expressionData: CentralizedLongFormExpression(
+    expressionData: LongFormExpression(
       // title: 'Welcome to Junto!',
       title: '',
       body: "Hey! I'm Nash. Over the past few weeks, I've been working with"
@@ -203,7 +200,7 @@ List<CentralizedExpressionResponse> kSampleExpressions =
           "government of Trinidad and Tobago (where i'm from) and I'm stoked to say we won first place! Anyway, really looking forward to watching this g,o live. Can't wait to meet you all!",
     ),
   ),
-  CentralizedExpressionResponse(
+  ExpressionResponse(
     address: '0xfee32zokie8',
     type: 'PhotoForm',
     numberComments: 1,
@@ -212,7 +209,7 @@ List<CentralizedExpressionResponse> kSampleExpressions =
     creator: const UserProfile(
       address: '0vefoiwiafjvkbr32r243r5',
       name: 'Yaz',
-      profilePicture: <String>['assets/images/junto-mobile__yaz.png'],
+      profilePicture: <String>[''],
       bio: 'hellooo',
       website: <String>['https://www.twitter.com/Junto'],
       location: <String>['Somewhere on Earth'],
@@ -220,12 +217,12 @@ List<CentralizedExpressionResponse> kSampleExpressions =
       verified: true,
       username: 'yaz',
     ),
-    expressionData: CentralizedPhotoFormExpression(
-      image: 'assets/images/junto-mobile__photo--two.png',
+    expressionData: PhotoFormExpression(
+      image: '',
       caption: 'Hi, Yaz here!',
     ),
   ),
-  CentralizedExpressionResponse(
+  ExpressionResponse(
     address: '0xfee32zokie8',
     type: 'LongForm',
     numberComments: 1,
@@ -237,18 +234,18 @@ List<CentralizedExpressionResponse> kSampleExpressions =
       location: <String>['Somewhere on Earth'],
       gender: <String>[],
       name: 'Tomis',
-      profilePicture: <String>['assets/images/junto-mobile__tomis.png'],
+      profilePicture: <String>[''],
       verified: true,
       bio: 'hellooo',
       username: 'tomis',
     ),
-    expressionData: CentralizedLongFormExpression(
+    expressionData: LongFormExpression(
       title: 'The funny story about my name...',
       body: "A question I get all the time is, 'Is that your real name?' "
           "Well, I'm glad you asked. You see, it was a hot afternoon in Lexington, Kentucky. Feeling hangry, I swung by the closest Subway shop and...",
     ),
   ),
-  CentralizedExpressionResponse(
+  ExpressionResponse(
     address: '0xfee32zokie8',
     type: 'EventForm',
     numberComments: 1,
@@ -261,15 +258,15 @@ List<CentralizedExpressionResponse> kSampleExpressions =
       gender: <String>[],
       bio: "I'm Leif.",
       name: 'Leif',
-      profilePicture: <String>['assets/images/junto-mobile__leif.png'],
+      profilePicture: <String>[''],
       verified: true,
       username: 'leifthelion',
     ),
-    expressionData: CentralizedEventFormExpression(
+    expressionData: EventFormExpression(
         title: 'Happiness is Your True Nature',
         // location: 'within',
         // startTime: 'ANYTIME',
-        photo: 'assets/images/junto-mobile__event--two.png',
+        photo: '',
         description:
             "Now, you may not be as muscular as this stud. But let me tell you - You. Are. Beautiful. Everything you need is within, so come book an appointmnet with Happy Leif and we're guarantee you some Happy Photos ;)"),
   ),
@@ -277,7 +274,7 @@ List<CentralizedExpressionResponse> kSampleExpressions =
 
 List<Group> kGroups = <Group>[
   Group(
-    address: 'assets/images/junto-mobile__eric.png',
+    address: '',
     createdAt: DateTime.now(),
     creator: 'mock-group-creator',
     incomingCreator: const SlimUserResponse(
@@ -292,7 +289,7 @@ List<Group> kGroups = <Group>[
     groupData: GroupDataPack(name: 'Yang Gang'),
   ),
   Group(
-    address: 'assets/images/junto-mobile__riley.png',
+    address: '',
     createdAt: DateTime.now(),
     creator: 'mock-group-creator',
     incomingCreator: const SlimUserResponse(
@@ -307,7 +304,7 @@ List<Group> kGroups = <Group>[
     groupData: GroupDataPack(name: 'Wags'),
   ),
   Group(
-    address: 'assets/images/junto-mobile__josh.png',
+    address: '',
     createdAt: DateTime.now(),
     creator: 'mock-group-creator',
     incomingCreator: const SlimUserResponse(
@@ -322,7 +319,7 @@ List<Group> kGroups = <Group>[
     groupData: GroupDataPack(name: 'The Way'),
   ),
   Group(
-    address: 'assets/images/junto-mobile__yaz.png',
+    address: '',
     createdAt: DateTime.now(),
     creator: 'mock-group-creator',
     incomingCreator: const SlimUserResponse(
@@ -337,7 +334,7 @@ List<Group> kGroups = <Group>[
     groupData: GroupDataPack(name: 'Jasmine Flowers'),
   ),
   Group(
-    address: 'assets/images/junto-mobile__tomis.png',
+    address: '',
     createdAt: DateTime.now(),
     creator: 'mock-group-creator',
     incomingCreator: const SlimUserResponse(
@@ -352,7 +349,7 @@ List<Group> kGroups = <Group>[
     groupData: GroupDataPack(name: 'Self-Directed AF'),
   ),
   Group(
-    address: 'assets/images/junto-mobile__nash.png',
+    address: '',
     createdAt: DateTime.now(),
     creator: 'mock-group-creator',
     incomingCreator: const SlimUserResponse(
@@ -367,7 +364,7 @@ List<Group> kGroups = <Group>[
     groupData: GroupDataPack(name: 'Nash Flash'),
   ),
   Group(
-    address: 'assets/images/junto-mobile__drea.png',
+    address: '',
     createdAt: DateTime.now(),
     creator: 'mock-group-creator',
     incomingCreator: const SlimUserResponse(
@@ -382,7 +379,7 @@ List<Group> kGroups = <Group>[
     groupData: GroupDataPack(name: 'Greene House'),
   ),
   Group(
-    address: 'assets/images/junto-mobile__dora.png',
+    address: '',
     createdAt: DateTime.now(),
     creator: 'mock-group-creator',
     incomingCreator: const SlimUserResponse(
@@ -397,7 +394,7 @@ List<Group> kGroups = <Group>[
     groupData: GroupDataPack(name: 'The Spaceship'),
   ),
   Group(
-    address: 'assets/images/junto-mobile__kevin.png',
+    address: '',
     createdAt: DateTime.now(),
     creator: 'mock-group-creator',
     incomingCreator: const SlimUserResponse(
@@ -412,7 +409,7 @@ List<Group> kGroups = <Group>[
     groupData: GroupDataPack(name: 'Yangsters'),
   ),
   Group(
-    address: 'assets/images/junto-mobile__ekene.png',
+    address: '',
     createdAt: DateTime.now(),
     creator: 'mock-group-creator',
     incomingCreator: const SlimUserResponse(
@@ -427,7 +424,7 @@ List<Group> kGroups = <Group>[
     groupData: GroupDataPack(name: 'FlatTops'),
   ),
   Group(
-    address: 'assets/images/junto-mobile__david.png',
+    address: '',
     createdAt: DateTime.now(),
     creator: 'mock-group-creator',
     incomingCreator: const SlimUserResponse(
@@ -493,7 +490,7 @@ List<UserProfile> kUsers = <UserProfile>[
     address: '123e4567-e89b-23s3-a256-426655440000',
     bio: 'Hi there, this is a mock user profile',
     name: 'Testy',
-    profilePicture: <String>['assets/images/junto-mobile__junto.png'],
+    profilePicture: <String>[''],
     username: 'mcTesty',
     verified: false,
     website: <String>['https://www.twitter.com/Nash0x7E2'],
@@ -504,7 +501,7 @@ List<UserProfile> kUsers = <UserProfile>[
     address: '223e4567-e89b-23s3-a256-426655440000',
     bio: 'Dreaaaaa',
     name: 'Drea',
-    profilePicture: <String>['assets/images/junto-mobile__junto.png'],
+    profilePicture: <String>[''],
     username: 'DMONEY',
     verified: false,
     website: <String>['https://www.twitter.com/JUNTO'],
@@ -515,7 +512,7 @@ List<UserProfile> kUsers = <UserProfile>[
     address: '323e4567-e89b-23s3-a256-426655440000',
     bio: 'Ericccccc',
     name: 'Eric Yang',
-    profilePicture: <String>['assets/images/junto-mobile__junto.png'],
+    profilePicture: <String>[''],
     username: 'sunyata',
     verified: false,
     website: <String>['https://www.twitter.com/JUNTO'],
@@ -530,8 +527,8 @@ List<Users> kGroupUsers = <Users>[
   Users(user: kUsers[2], permissionLevel: 'Member'),
 ];
 
-List<CentralizedPerspective> kPerspectives = <CentralizedPerspective>[
-  CentralizedPerspective(
+List<PerspectiveModel> kPerspectives = <PerspectiveModel>[
+  PerspectiveModel(
     creator: kUserProfile.address,
     about: 'Mock Perspective One',
     createdAt: DateTime(2019, 06, 06),
@@ -539,7 +536,7 @@ List<CentralizedPerspective> kPerspectives = <CentralizedPerspective>[
     name: 'Mock One',
     address: '123123-3452345-234234',
   ),
-  CentralizedPerspective(
+  PerspectiveModel(
     creator: kGroupUsers[1].user.address,
     about: 'Mock Perspective Two',
     createdAt: DateTime(2019, 06, 07),
@@ -547,7 +544,7 @@ List<CentralizedPerspective> kPerspectives = <CentralizedPerspective>[
     name: 'Mock Two',
     address: '223123-3452345-234234',
   ),
-  CentralizedPerspective(
+  PerspectiveModel(
     creator: kUserProfile.address,
     about: 'Mock Perspective Three',
     createdAt: DateTime(2019, 06, 08),

@@ -6,18 +6,21 @@ class JuntoThemesProvider with ChangeNotifier {
   JuntoThemesProvider(this.currentTheme);
 
   static final Map<String, ThemeData> _themes = <String, ThemeData>{
-    'light-indigo': JuntoThemes().juntoLightIndigo,
-    'night-indigo': JuntoThemes().juntoNight,
-    'light-royal': JuntoThemes().juntoLightRoyal
+    'rainbow': JuntoThemes().rainbow,
+    'aqueous': JuntoThemes().aqueous,
+    'royal': JuntoThemes().royal,
+    'rainbow-night': JuntoThemes().rainbowNight,
+    'aqueous-night': JuntoThemes().aqueousNight,
+    'royal-night': JuntoThemes().royalNight,
   };
 
   static Future<ThemeData> loadDefault() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String currentTheme = prefs.getString('current-theme');
-    if (currentTheme != null && currentTheme.isNotEmpty) {
-      return _themes[currentTheme];
+    final String _currentTheme = prefs.getString('current-theme');
+    if (_currentTheme != null && _currentTheme.isNotEmpty) {
+      return _themes[_currentTheme];
     }
-    return _themes['light-indigo'];
+    return _themes['rainbow'];
   }
 
   ThemeData currentTheme;

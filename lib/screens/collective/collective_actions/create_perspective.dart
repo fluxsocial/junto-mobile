@@ -1,20 +1,21 @@
 import 'package:async/async.dart' show AsyncMemoizer;
-
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/utils/form-validation.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart'
     show JuntoException;
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
-import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/widgets/tab_bar.dart';
-import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview_select.dart';
+import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:junto_beta_mobile/widgets/tab_bar.dart';
+import 'package:provider/provider.dart';
 
 class CreatePerspective extends StatefulWidget {
   const CreatePerspective({this.refreshPerspectives});
+
   final Function refreshPerspectives;
 
   @override
@@ -27,10 +28,10 @@ class CreatePerspectiveState extends State<CreatePerspective> {
   TextEditingController _nameController;
   TextEditingController _aboutController;
   PageController _pageController;
-
+  GlobalKey<FormState> _formKey;
   int _currentIndex = 0;
   final List<String> _tabs = <String>['Subscriptions', 'Connections'];
-  List<String> _perspectiveMembers = <String>[];
+  final List<String> _perspectiveMembers = <String>[];
 
   @override
   void initState() {
@@ -38,16 +39,44 @@ class CreatePerspectiveState extends State<CreatePerspective> {
     _nameController = TextEditingController();
     _aboutController = TextEditingController();
     _pageController = PageController(initialPage: 0);
+    _formKey = GlobalKey<FormState>();
   }
 
-  final AsyncMemoizer _memoizer = AsyncMemoizer();
+  @override
+  void dispose() {
+    _formKey = null;
+    super.dispose();
+  }
 
-  Future getUserRelationships() async {
+  final AsyncMemoizer<Map<String, dynamic>> _memoizer =
+      AsyncMemoizer<Map<String, dynamic>>();
+
+  Future<Map<String, dynamic>> getUserRelationships() async {
     return _memoizer.runOnce(
       () => Provider.of<UserRepo>(context, listen: false).userRelations(),
     );
   }
 
+// Checks the name and about fields before moving on to the next page.
+  void _canCreatePerspective() {
+    if (_formKey.currentState.validate()) {
+      _pageController.nextPage(
+        curve: Curves.easeIn,
+        duration: const Duration(milliseconds: 300),
+      );
+    } else {
+      JuntoDialog.showJuntoDialog(
+        context,
+        'Please ensure all fields are filled',
+        <Widget>[
+          DialogBack(),
+        ],
+      );
+    }
+  }
+
+// Extracts the name and about text then tries creating a perspective while the
+// Junto loader is shown.
   Future<void> _createPerspective() async {
     final String name = _nameController.value.text;
     final String about = _aboutController.value.text;
@@ -126,50 +155,43 @@ class CreatePerspectiveState extends State<CreatePerspective> {
                     child: Icon(CustomIcons.back, size: 20),
                   ),
                 ),
-                _currentIndex == 0
-                    ? Text('New Perspective',
-                        style: Theme.of(context).textTheme.subtitle1)
-                    : const SizedBox(),
-                _currentIndex == 1
-                    ? GestureDetector(
-                        onTap: () {
-                          _createPerspective();
-                        },
-                        child: Container(
-                          height: 45,
-                          width: 45,
-                          color: Colors.transparent,
-                          alignment: Alignment.centerRight,
-                          child: Text(
-                            'create',
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w700,
-                                color: Theme.of(context).primaryColor),
-                          ),
-                        ),
-                      )
-                    : GestureDetector(
-                        onTap: () {
-                          _pageController.nextPage(
-                            curve: Curves.easeIn,
-                            duration: const Duration(milliseconds: 300),
-                          );
-                        },
-                        child: Container(
-                          height: 45,
-                          width: 45,
-                          color: Colors.transparent,
-                          alignment: Alignment.centerRight,
-                          child: Text(
-                            'next',
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w700,
-                                color: Theme.of(context).primaryColor),
-                          ),
-                        ),
+                if (_currentIndex == 0)
+                  Text('New Perspective',
+                      style: Theme.of(context).textTheme.subtitle1),
+                if (_currentIndex == 1)
+                  GestureDetector(
+                    onTap: _createPerspective,
+                    child: Container(
+                      height: 45,
+                      width: 45,
+                      color: Colors.transparent,
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        'create',
+                        style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
+                            color: Theme.of(context).primaryColor),
                       ),
+                    ),
+                  ),
+                if (_currentIndex != 1)
+                  GestureDetector(
+                    onTap: _canCreatePerspective,
+                    child: Container(
+                      height: 45,
+                      width: 45,
+                      color: Colors.transparent,
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        'next',
+                        style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
+                            color: Theme.of(context).primaryColor),
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),
@@ -187,15 +209,20 @@ class CreatePerspectiveState extends State<CreatePerspective> {
           Column(
             children: <Widget>[
               Expanded(
-                child: ListView(
-                  children: <Widget>[
-                    const SizedBox(height: 10),
-                    _buildPerspectiveTextField(
-                        name: 'Name Perspective', controller: _nameController),
-                    const SizedBox(height: 10),
-                    _buildPerspectiveTextField(
-                        name: 'About', controller: _aboutController),
-                  ],
+                child: Form(
+                  key: _formKey,
+                  child: ListView(
+                    children: <Widget>[
+                      const SizedBox(height: 10),
+                      _buildPerspectiveTextField(
+                          name: 'Name Perspective',
+                          controller: _nameController),
+                      const SizedBox(height: 10),
+                      _buildPerspectiveTextField(
+                          name: 'About', controller: _aboutController),
+                    ],
+                  ),
+                  autovalidate: true,
                 ),
               ),
             ],
@@ -231,9 +258,12 @@ class CreatePerspectiveState extends State<CreatePerspective> {
                   ),
                 ];
               },
-              body: FutureBuilder(
+              body: FutureBuilder<Map<String, dynamic>>(
                 future: getUserRelationships(),
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                builder: (
+                  BuildContext context,
+                  AsyncSnapshot<Map<String, dynamic>> snapshot,
+                ) {
                   if (snapshot.hasData) {
                     // get list of connections
                     final List<UserProfile> _connectionsMembers =
@@ -268,9 +298,9 @@ class CreatePerspectiveState extends State<CreatePerspective> {
                         // connections
                         ListView(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
-                          children: _connectionsMembers
-                              .map(
-                                (dynamic connection) => MemberPreviewSelect(
+                          children: <Widget>[
+                            for (UserProfile connection in _connectionsMembers)
+                              MemberPreviewSelect(
                                   profile: connection,
                                   onSelect: () {
                                     _perspectiveMembers.add(connection.address);
@@ -278,10 +308,8 @@ class CreatePerspectiveState extends State<CreatePerspective> {
                                   onDeselect: () {
                                     _perspectiveMembers
                                         .remove(connection.address);
-                                  },
-                                ),
-                              )
-                              .toList(),
+                                  }),
+                          ],
                         ),
                       ],
                     );
@@ -308,16 +336,10 @@ class CreatePerspectiveState extends State<CreatePerspective> {
                   return TabBarView(
                     children: <Widget>[
                       Center(
-                        child: Transform.translate(
-                          offset: const Offset(0.0, -50),
-                          child: JuntoProgressIndicator(),
-                        ),
+                        child: JuntoProgressIndicator(),
                       ),
                       Center(
-                        child: Transform.translate(
-                          offset: const Offset(0.0, -50),
-                          child: JuntoProgressIndicator(),
-                        ),
+                        child: JuntoProgressIndicator(),
                       ),
                     ],
                   );
@@ -335,7 +357,9 @@ class CreatePerspectiveState extends State<CreatePerspective> {
     return Container(
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: TextField(
+      child: TextFormField(
+        key: UniqueKey(),
+        validator: Validator.validateNonEmpty,
         controller: controller,
         buildCounter: (
           BuildContext context, {

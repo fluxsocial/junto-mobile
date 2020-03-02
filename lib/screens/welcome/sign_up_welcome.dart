@@ -4,6 +4,7 @@ import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 
 /// Agreements screen shown to the user following registration
 class SignUpAgreements extends StatelessWidget {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
@@ -156,7 +157,7 @@ class SignUpAgreements extends StatelessWidget {
                   ),
                 ),
               ),
-              Spacer(),
+              const Spacer(),
             ],
           ),
         ),

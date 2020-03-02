@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_appbar.dart';
-import 'package:junto_beta_mobile/screens/expression_open/expression_open_top.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_bottom.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open_context.dart';
+import 'package:junto_beta_mobile/screens/expression_open/expression_open_top.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/event_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/longform_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/photo_open.dart';
@@ -20,7 +20,7 @@ import 'package:provider/provider.dart';
 class ExpressionOpen extends StatefulWidget {
   const ExpressionOpen(this.expression, this.userAddress, this.allowComments);
 
-  final CentralizedExpressionResponse expression;
+  final ExpressionResponse expression;
   final String userAddress;
   final bool allowComments;
 
@@ -91,6 +91,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
   }
 
   // Bring the focus back to the TextField
+  // ignore: unused_element
   void _focusTextField() {
     FocusScope.of(context).requestFocus(_focusNode);
   }
@@ -115,7 +116,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
             .postCommentExpression(
           widget.expression.address,
           'LongForm',
-          CentralizedLongFormExpression(
+          LongFormExpression(
             title: 'Expression Comment',
             body: commentController.value.text,
           ).toMap(),
@@ -220,6 +221,8 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                                         onTap: _showComments,
                                         child: Container(
                                           color: Colors.transparent,
+                                          margin: EdgeInsets.only(
+                                              bottom: commentsVisible ? 0 : 15),
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 10, vertical: 15),
                                           child: Row(
@@ -229,14 +232,14 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                                                 style: TextStyle(
                                                     color: Theme.of(context)
                                                         .primaryColorLight,
-                                                    fontSize: 12,
+                                                    fontSize: 14,
                                                     fontWeight:
                                                         FontWeight.w600),
                                               ),
                                               const SizedBox(width: 5),
                                               if (!commentsVisible)
                                                 Icon(Icons.keyboard_arrow_down,
-                                                    size: 14,
+                                                    size: 15,
                                                     color: Theme.of(context)
                                                         .primaryColorLight),
                                               if (commentsVisible)
@@ -388,7 +391,7 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
       child: Container(
         padding: const EdgeInsets.symmetric(
           horizontal: 10,
-          vertical: 10,
+          vertical: 20,
         ),
         decoration: BoxDecoration(
           border: Border(

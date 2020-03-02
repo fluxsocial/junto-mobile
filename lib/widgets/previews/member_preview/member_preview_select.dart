@@ -1,7 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 
 class MemberPreviewSelect extends StatefulWidget {
   const MemberPreviewSelect(
@@ -44,17 +43,15 @@ class MemberPreviewSelectState extends State<MemberPreviewSelect> {
                               end: Alignment.topRight,
                               stops: const <double>[0.3, 0.9],
                               colors: <Color>[
-                                Theme.of(context).colorScheme.secondary,
                                 Theme.of(context).colorScheme.primary,
+                                Theme.of(context).colorScheme.secondary,
                               ],
                             ),
                             borderRadius: BorderRadius.circular(100),
                           ),
-                          child: Icon(
-                            CustomIcons.spheres,
-                            color: Theme.of(context).colorScheme.onPrimary,
-                            size: 17,
-                          ),
+                          child: Image.asset(
+                              'assets/images/junto-mobile__logo--white.png',
+                              height: 15),
                         );
                       }),
                 )
@@ -68,8 +65,8 @@ class MemberPreviewSelectState extends State<MemberPreviewSelect> {
                       end: Alignment.topRight,
                       stops: const <double>[0.3, 0.9],
                       colors: <Color>[
+                        Theme.of(context).colorScheme.primary,
                         Theme.of(context).colorScheme.secondary,
-                        Theme.of(context).colorScheme.primary
                       ],
                     ),
                     borderRadius: BorderRadius.circular(100),

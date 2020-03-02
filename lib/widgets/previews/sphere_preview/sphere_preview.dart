@@ -27,8 +27,8 @@ class SpherePreview extends StatelessWidget {
                       end: Alignment.topRight,
                       stops: const <double>[0.3, 0.9],
                       colors: <Color>[
-                        Theme.of(context).colorScheme.secondary,
-                        Theme.of(context).colorScheme.primary,
+                                Theme.of(context).colorScheme.primary,
+                                Theme.of(context).colorScheme.secondary,
                       ],
                     ),
                     borderRadius: BorderRadius.circular(100),
@@ -56,8 +56,8 @@ class SpherePreview extends StatelessWidget {
                               end: Alignment.topRight,
                               stops: const <double>[0.3, 0.9],
                               colors: <Color>[
-                                Theme.of(context).colorScheme.secondary,
                                 Theme.of(context).colorScheme.primary,
+                                Theme.of(context).colorScheme.secondary,
                               ],
                             ),
                             borderRadius: BorderRadius.circular(100),
@@ -73,9 +73,7 @@ class SpherePreview extends StatelessWidget {
           const SizedBox(width: 10),
           Expanded(
             child: Container(
-              padding: const EdgeInsets.symmetric(
-                vertical: 20,
-              ),
+              padding: const EdgeInsets.symmetric(vertical: 15),
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(

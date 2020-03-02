@@ -61,15 +61,15 @@ abstract class CollectiveService {
 /// CollectiveProvider.
 abstract class ExpressionService {
   /// Creates an expression on the server.
-  /// Method requires [CentralizedExpression] as it's only arg.
-  Future<CentralizedExpressionResponse> createExpression(
-    CentralizedExpression expression,
+  /// Method requires [ExpressionModel] as it's only arg.
+  Future<ExpressionResponse> createExpression(
+    ExpressionModel expression,
   );
 
   Future<String> createPhoto(bool isPrivate, String fileType, File file);
 
-  /// Returns a [CentralizedExpressionResponse] for the given address.
-  Future<CentralizedExpressionResponse> getExpression(
+  /// Returns a [ExpressionResponse] for the given address.
+  Future<ExpressionResponse> getExpression(
     String expressionAddress,
   );
 
@@ -81,7 +81,7 @@ abstract class ExpressionService {
 
   /// Allows the user to comment under the supplied expression.
   /// [parentAddress], [type] and [data] must be passed.
-  Future<CentralizedExpressionResponse> postCommentExpression(
+  Future<ExpressionResponse> postCommentExpression(
     String parentAddress,
     String type,
     Map<String, dynamic> data,
@@ -98,16 +98,16 @@ abstract class ExpressionService {
     String expressionAddress,
   );
 
-  Future<List<CentralizedExpressionResponse>> queryExpression(
+  Future<List<ExpressionResponse>> queryExpression(
       ExpressionQueryParams params);
 
   /// Returns a [QueryExpressionResults] containing a list of results which
   /// satisfies the query.
-  Future<QueryResults<CentralizedExpressionResponse>> getCollectiveExpressions(
+  Future<QueryResults<ExpressionResponse>> getCollectiveExpressions(
       Map<String, String> params);
 
   /// Returns mock expression data.
-  List<CentralizedExpressionResponse> get collectiveExpressions;
+  List<ExpressionResponse> get collectiveExpressions;
 
   Future<void> deleteExpression(String expressionAddress);
 
@@ -128,7 +128,7 @@ abstract class GroupService {
   List<Sphere> get spheres;
 
   /// Allows an authenticated user to create a sphere.
-  Future<CentralizedSphereResponse> createSphere(CentralizedSphere sphere);
+  Future<SphereResponse> createSphere(SphereModel sphere);
 
   /// Returns a [Group] for the given address
   Future<Group> getGroup(String groupAddress);
@@ -145,7 +145,7 @@ abstract class GroupService {
   /// to perform this action.
   Future<void> removeGroupMember(String groupAddress, String userAddress);
 
-  Future<List<CentralizedExpressionResponse>> getGroupExpressions(
+  Future<List<ExpressionResponse>> getGroupExpressions(
       String groupAddress, GroupExpressionQueryParams params);
 
   /// Allows for updating a group. The parameter [group] must not be null.
@@ -158,12 +158,12 @@ enum QueryType { address, email, username }
 
 abstract class UserService {
   /// Allows the user to create a [Perspective] on the server.
-  Future<CentralizedPerspective> createPerspective(Perspective perspective);
+  Future<PerspectiveModel> createPerspective(Perspective perspective);
 
   /// Allows the user to delete a [Perspective] .
   Future<void> deletePerspective(String perspective);
 
-  Future<CentralizedPerspective> updatePerspective(
+  Future<PerspectiveModel> updatePerspective(
     String perspectiveAddress,
     Map<String, String> perspectiveBody,
   );
@@ -174,21 +174,20 @@ abstract class UserService {
   /// Returns the [UserProfile] for the given [QueryType]
   Future<UserProfile> queryUser(String param, QueryType queryType);
 
-  /// Returns a [CentralizedPerspective] containing a list of `user`s who are
+  /// Returns a [PerspectiveModel] containing a list of `user`s who are
   /// apart of the given perspective.
-  Future<List<CentralizedPerspective>> getUserPerspective(String userAddress);
+  Future<List<PerspectiveModel>> getUserPerspective(String userAddress);
 
   /// Returns a list of users in a group. Note: The return type of this
-  /// function is [CentralizedPerspective] since the response sent back from
+  /// function is [PerspectiveModel] since the response sent back from
   /// the server is identical to [getUserPerspective]
   Future<UserGroupsResponse> getUserGroups(String userAddress);
 
   /// Currently under development server-side.
-  Future<List<CentralizedExpressionResponse>> getUsersResonations(
-      String userAddress);
+  Future<List<ExpressionResponse>> getUsersResonations(String userAddress);
 
   /// Placeholder for now, currently under development server-side.
-  Future<List<CentralizedExpressionResponse>> getUsersExpressions(
+  Future<List<ExpressionResponse>> getUsersExpressions(
     String userAddress,
   );
 
@@ -196,7 +195,7 @@ abstract class UserService {
   Future<UserData> readLocalUser();
 
   /// Returns a list of perspectives owned by the given user
-  Future<List<CentralizedPerspective>> userPerspectives(String userAddress);
+  Future<List<PerspectiveModel>> userPerspectives(String userAddress);
 
   Future<UserProfile> createPerspectiveUserEntry(
     String userAddress,
@@ -228,7 +227,7 @@ abstract class UserService {
   Future<void> respondToConnection(String userAddress, bool response);
 
   /// Gets a list of pending user connections
-  Future userRelations();
+  Future<Map<String, dynamic>> userRelations();
 
   /// Gets a list of pending user connections
   Future<List<UserProfile>> connectedUsers(String userAddress);

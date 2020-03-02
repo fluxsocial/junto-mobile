@@ -7,8 +7,7 @@ import 'package:junto_beta_mobile/models/user_model.dart';
 
 class MockUserService implements UserService {
   @override
-  Future<CentralizedPerspective> createPerspective(
-      Perspective perspective) async {
+  Future<PerspectiveModel> createPerspective(Perspective perspective) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     return kPerspectives.first;
   }
@@ -59,21 +58,20 @@ class MockUserService implements UserService {
   }
 
   @override
-  Future<List<CentralizedPerspective>> getUserPerspective(
-      String userAddress) async {
+  Future<List<PerspectiveModel>> getUserPerspective(String userAddress) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     return kPerspectives;
   }
 
   @override
-  Future<List<CentralizedExpressionResponse>> getUsersExpressions(
+  Future<List<ExpressionResponse>> getUsersExpressions(
       String userAddress) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     return kSampleExpressions;
   }
 
   @override
-  Future<List<CentralizedExpressionResponse>> getUsersResonations(
+  Future<List<ExpressionResponse>> getUsersResonations(
       String userAddress) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     return kSampleExpressions.reversed.toList();
@@ -92,8 +90,7 @@ class MockUserService implements UserService {
   }
 
   @override
-  Future<List<CentralizedPerspective>> userPerspectives(
-      String userAddress) async {
+  Future<List<PerspectiveModel>> userPerspectives(String userAddress) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     return kPerspectives;
   }
@@ -104,9 +101,9 @@ class MockUserService implements UserService {
   }
 
   @override
-  Future userRelations() async {
+  Future<Map<String, dynamic>> userRelations() async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
-    return {};
+    return <String, dynamic>{};
   }
 
   @override
@@ -115,7 +112,6 @@ class MockUserService implements UserService {
     return kUsers;
   }
 
-  @override
   Future<List<UserProfile>> pendingConnections(String userAddress) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     return kUsers;
@@ -135,7 +131,7 @@ class MockUserService implements UserService {
   Future<Map<String, dynamic>> isRelated(
       String userAddress, String targetAddress) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
-    return {};
+    return <String, dynamic>{};
   }
 
   @override
@@ -164,7 +160,7 @@ class MockUserService implements UserService {
   }
 
   @override
-  Future<CentralizedPerspective> updatePerspective(
+  Future<PerspectiveModel> updatePerspective(
     String perspectiveAddress,
     Map<String, String> perspectiveBody,
   ) async {

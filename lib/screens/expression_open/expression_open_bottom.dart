@@ -9,7 +9,7 @@ import 'package:junto_beta_mobile/widgets/utils/date_parsing.dart';
 class ExpressionOpenBottom extends StatelessWidget {
   const ExpressionOpenBottom(this.expression, this.openExpressionContext);
 
-  final CentralizedExpressionResponse expression;
+  final ExpressionResponse expression;
   final Function openExpressionContext;
 
   @override
@@ -71,14 +71,6 @@ class ExpressionOpenBottom extends StatelessWidget {
                         size: 15, color: Theme.of(context).primaryColorLight),
                   ),
                 )
-
-                // Container(
-                //   color: Colors.transparent,
-                //   height: 33,
-                //   width: 33,
-                //   child: Icon(CustomIcons.comment,
-                //       size: 15, color: Theme.of(context).primaryColorLight),
-                // ),
               ],
             ),
           )

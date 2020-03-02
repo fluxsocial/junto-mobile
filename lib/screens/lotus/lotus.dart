@@ -1,14 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
 import 'package:junto_beta_mobile/screens/groups/groups.dart';
-import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/pack_open.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class JuntoLotus extends StatefulWidget {
@@ -23,9 +23,7 @@ class JuntoLotus extends StatefulWidget {
   final String address;
 
   @override
-  State<StatefulWidget> createState() {
-    return JuntoLotusState();
-  }
+  State<StatefulWidget> createState() => JuntoLotusState();
 }
 
 class JuntoLotusState extends State<JuntoLotus> {
@@ -40,8 +38,9 @@ class JuntoLotusState extends State<JuntoLotus> {
     );
   }
 
-  String _userAddress;
   UserData _userProfile;
+  String _currentTheme;
+  String backgroundImageAsset;
 
   @override
   void initState() {
@@ -52,12 +51,16 @@ class JuntoLotusState extends State<JuntoLotus> {
 
   Future<void> getUserInformation() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final Map<String, dynamic> decodedUserData =
-        jsonDecode(prefs.getString('user_data'));
+    final Map<String, dynamic> decodedUserData = jsonDecode(
+      prefs.getString('user_data'),
+    );
 
+    print(
+      prefs.getString('current-theme'),
+    );
     setState(() {
-      _userAddress = prefs.getString('user_id');
       _userProfile = UserData.fromMap(decodedUserData);
+      _currentTheme = prefs.getString('current-theme');
     });
   }
 
@@ -78,6 +81,7 @@ class JuntoLotusState extends State<JuntoLotus> {
               channels: const <String>[],
               address: widget.address,
               expressionContext: widget.expressionContext,
+              expressionCenterBackground: backgroundImageAsset,
             );
           } else {
             return JuntoCollective();
@@ -101,6 +105,29 @@ class JuntoLotusState extends State<JuntoLotus> {
     );
   }
 
+  Widget _setBackground() {
+    setState(() {
+      if (_currentTheme == 'aqueous' || _currentTheme == 'aqueous-night') {
+        backgroundImageAsset =
+            'assets/images/junto-mobile__themes--aqueous.png';
+      } else if (_currentTheme == 'royal' || _currentTheme == 'royal-night') {
+        backgroundImageAsset = 'assets/images/junto-mobile__themes--royal.png';
+      } else if (_currentTheme == 'rainbow' ||
+          _currentTheme == 'rainbow-night') {
+        backgroundImageAsset =
+            'assets/images/junto-mobile__themes--rainbow.png';
+      } else {
+        backgroundImageAsset =
+            'assets/images/junto-mobile__themes--rainbow.png';
+      }
+    });
+
+    return Image.asset(
+      backgroundImageAsset,
+      fit: BoxFit.cover,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,17 +135,7 @@ class JuntoLotusState extends State<JuntoLotus> {
         Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.bottomLeft,
-              end: Alignment.topRight,
-              stops: const <double>[0.2, 0.9],
-              colors: <Color>[
-                Theme.of(context).colorScheme.secondaryVariant,
-                Theme.of(context).colorScheme.primaryVariant
-              ],
-            ),
-          ),
+          child: _setBackground(),
         ),
         Container(
           height: MediaQuery.of(context).size.height,
@@ -200,7 +217,7 @@ class JuntoLotusState extends State<JuntoLotus> {
                                 ),
                                 const SizedBox(height: 10),
                                 const Text(
-                                  'DISCOVER',
+                                  'COLLECTIVE',
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 14,
@@ -230,7 +247,7 @@ class JuntoLotusState extends State<JuntoLotus> {
                                 ),
                                 SizedBox(height: 10),
                                 Text(
-                                  'CONNECT',
+                                  'GROUPS',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 14,

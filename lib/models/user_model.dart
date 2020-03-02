@@ -286,29 +286,27 @@ class UserData {
 
   factory UserData.fromMap(Map<String, dynamic> map) {
     return UserData(
-      privateDen: map['private_den'] != null
-          ? CentralizedDen.fromMap(map['private_den'])
-          : null,
-      publicDen: map['public_den'] != null
-          ? CentralizedDen.fromMap(map['public_den'])
-          : null,
+      privateDen:
+          map['private_den'] != null ? Den.fromMap(map['private_den']) : null,
+      publicDen:
+          map['public_den'] != null ? Den.fromMap(map['public_den']) : null,
       pack: CentralizedPack.fromMap(map['pack']),
       user: UserProfile.fromMap(map['user']),
-      userPerspective: CentralizedPerspective.fromMap(
+      userPerspective: PerspectiveModel.fromMap(
         map['user_perspective'],
       ),
-      connectionPerspective: CentralizedPerspective.fromMap(
+      connectionPerspective: PerspectiveModel.fromMap(
         map['connection_perspective'],
       ),
     );
   }
 
-  final CentralizedDen privateDen;
-  final CentralizedDen publicDen;
+  final Den privateDen;
+  final Den publicDen;
   final CentralizedPack pack;
   final UserProfile user;
-  final CentralizedPerspective userPerspective;
-  final CentralizedPerspective connectionPerspective;
+  final PerspectiveModel userPerspective;
+  final PerspectiveModel connectionPerspective;
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{

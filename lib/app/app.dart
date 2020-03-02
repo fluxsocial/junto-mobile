@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
@@ -32,7 +33,8 @@ class JuntoAppState extends State<JuntoApp> {
     return MultiProvider(
       providers: <SingleChildWidget>[
         ChangeNotifierProvider<JuntoThemesProvider>(
-          create: (_) => JuntoThemesProvider(backend.currentTheme),
+          create: (BuildContext context) =>
+              JuntoThemesProvider(backend.currentTheme),
         ),
         Provider<SearchService>.value(value: backend.searchRepo),
         Provider<AuthRepo>.value(value: backend.authRepo),
@@ -60,17 +62,25 @@ class MaterialAppWithTheme extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final JuntoThemesProvider theme = Provider.of<JuntoThemesProvider>(context);
-    return MaterialApp(
-      home: loggedIn
-          ? const JuntoLotus(
-              address: null,
-              expressionContext: ExpressionContext.Collective,
-            )
-          : Welcome(),
-      title: 'JUNTO Alpha',
-      debugShowCheckedModeBanner: false,
-      theme: theme.getTheme(),
+    return Consumer<JuntoThemesProvider>(
+      builder: (BuildContext context, JuntoThemesProvider theme, _) {
+        if (theme.currentTheme != null) {
+          theme.currentTheme.brightness == Brightness.dark
+              ? SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light)
+              : SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+        }
+        return MaterialApp(
+          home: loggedIn
+              ? const JuntoLotus(
+                  address: null,
+                  expressionContext: ExpressionContext.Collective,
+                )
+              : Welcome(),
+          title: 'JUNTO Alpha',
+          debugShowCheckedModeBanner: false,
+          theme: theme.getTheme(),
+        );
+      },
     );
   }
 }

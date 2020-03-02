@@ -58,7 +58,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
   String _currentExpressionContextDescription = 'shared to the public of Junto';
 
   String _address;
-  CentralizedExpression _expression;
+  ExpressionModel _expression;
   String _groupHandle = 'shared to a specific group';
   final ValueNotifier<List<String>> _channels = ValueNotifier<List<String>>(
     <String>[],
@@ -120,9 +120,9 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
           widget.expression['image'],
         );
         JuntoLoader.hide();
-        _expression = CentralizedExpression(
+        _expression = ExpressionModel(
           type: widget.expressionType,
-          expressionData: CentralizedPhotoFormExpression(
+          expressionData: PhotoFormExpression(
             image: _photoKey,
             caption: widget.expression['caption'],
           ).toMap(),
@@ -143,9 +143,9 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
           JuntoLoader.hide();
           eventPhoto = _eventPhotoKey;
         }
-        _expression = CentralizedExpression(
+        _expression = ExpressionModel(
           type: widget.expressionType,
-          expressionData: CentralizedEventFormExpression(
+          expressionData: EventFormExpression(
               photo: eventPhoto,
               description: widget.expression['description'],
               title: widget.expression['title'],
@@ -158,7 +158,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
           context: _expressionContext,
         );
       } else {
-        _expression = CentralizedExpression(
+        _expression = ExpressionModel(
           type: widget.expressionType,
           expressionData: widget.expression.toMap(),
           context: _expressionContext,
@@ -322,8 +322,10 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
               child: Row(
                 children: <Widget>[
-                  Text('# add channels',
-                      style: Theme.of(context).textTheme.caption),
+                  Text(
+                    '# add channels',
+                    style: Theme.of(context).textTheme.caption,
+                  ),
                 ],
               ),
             ),
@@ -346,7 +348,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         });
       };
       _expressionContextIcon = Transform.translate(
-        offset: const Offset(-10.0, 0.0),
+        offset: const Offset(-10, 0),
         child: Icon(CustomIcons.collective,
             color: _currentExpressionContext == expressionContext
                 ? Colors.white
@@ -443,30 +445,31 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         _setExpressionContextDescription();
       },
       child: Container(
-          height: 50,
-          width: 50,
-          margin: const EdgeInsets.only(right: 15),
-          decoration: BoxDecoration(
-            gradient: _currentExpressionContext == expressionContext
-                ? LinearGradient(
-                    begin: Alignment.bottomLeft,
-                    end: Alignment.topRight,
-                    stops: const <double>[0.2, 0.9],
-                    colors: <Color>[
-                      Theme.of(context).colorScheme.secondary,
-                      Theme.of(context).colorScheme.primary
-                    ],
-                  )
-                : null,
-            borderRadius: const BorderRadius.all(
-              Radius.circular(1000),
-            ),
-            border: _currentExpressionContext == expressionContext
-                ? null
-                : Border.all(color: Theme.of(context).primaryColor, width: 1.5),
+        height: 50,
+        width: 50,
+        margin: const EdgeInsets.only(right: 15),
+        decoration: BoxDecoration(
+          gradient: _currentExpressionContext == expressionContext
+              ? LinearGradient(
+                  begin: Alignment.bottomLeft,
+                  end: Alignment.topRight,
+                  stops: const <double>[0.2, 0.9],
+                  colors: <Color>[
+                    Theme.of(context).colorScheme.primary,
+                    Theme.of(context).colorScheme.secondary,
+                  ],
+                )
+              : null,
+          borderRadius: const BorderRadius.all(
+            Radius.circular(1000),
           ),
-          alignment: Alignment.center,
-          child: _expressionContextIcon),
+          border: _currentExpressionContext == expressionContext
+              ? null
+              : Border.all(color: Theme.of(context).primaryColor, width: 1.5),
+        ),
+        alignment: Alignment.center,
+        child: _expressionContextIcon,
+      ),
     );
   }
 

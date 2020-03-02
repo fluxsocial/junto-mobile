@@ -2,12 +2,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class JuntoDenSliverAppbar extends StatelessWidget {
-  const JuntoDenSliverAppbar({
-    Key key,
-    @required this.name,
-  }) : super(key: key);
+  const JuntoDenSliverAppbar(
+      {Key key, @required this.name, @required this.currentTheme})
+      : super(key: key);
 
   final String name;
+  final String currentTheme;
+
+  String _getBackgroundImageAsset() {
+    if (currentTheme == 'rainbow' || currentTheme == 'rainbow-night') {
+      return 'assets/images/junto-mobile__themes--rainbow.png';
+    } else if (currentTheme == 'aqueous' || currentTheme == 'aqueous-night') {
+      return 'assets/images/junto-mobile__themes--aqueous.png';
+    } else if (currentTheme == 'royal' || currentTheme == 'royal-night') {
+      return 'assets/images/junto-mobile__themes--royal.png';
+    } else {
+      return 'assets/images/junto-mobile__themes--rainbow.png';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,46 +32,50 @@ class JuntoDenSliverAppbar extends StatelessWidget {
       pinned: false,
       flexibleSpace: FlexibleSpaceBar(
         collapseMode: CollapseMode.pin,
-        background: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        background: Stack(
           children: <Widget>[
             Container(
               height: MediaQuery.of(context).size.height * .24,
-              padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-              alignment: Alignment.bottomLeft,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.bottomLeft,
-                  end: Alignment.topRight,
-                  stops: const <double>[0.2, 0.9],
-                  colors: <Color>[
-                    Theme.of(context).colorScheme.secondaryVariant,
-                    Theme.of(context).accentColor,
-                  ],
-                ),
+              width: MediaQuery.of(context).size.width,
+              child: Image.asset(
+                _getBackgroundImageAsset(),
+                height: MediaQuery.of(context).size.height * .24,
+                width: MediaQuery.of(context).size.width,
+                fit: BoxFit.cover,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  const SizedBox(),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  height: MediaQuery.of(context).size.height * .24,
+                  padding:
+                      const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                  alignment: Alignment.bottomLeft,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Flexible(
-                        child: Text(
-                          name,
-                          style: const TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
+                      const SizedBox(),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          Flexible(
+                            child: Text(
+                              name,
+                              style: const TextStyle(
+                                fontSize: 28,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                     ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ],
         ),

@@ -128,7 +128,7 @@ class SignUpVerifyState extends State<SignUpVerify> {
               ),
             ),
           ),
-          Spacer(),
+          const Spacer(),
         ],
       ),
     );

@@ -60,39 +60,10 @@ class PackDrawer extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              ClipOval(
-                                child: Image.asset(
-                                  'assets/images/junto-mobile__eric.png',
-                                  height: 28.0,
-                                  width: 28.0,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              const SizedBox(width: 5),
-                              ClipOval(
-                                child: Image.asset(
-                                  'assets/images/junto-mobile__riley.png',
-                                  height: 28.0,
-                                  width: 28.0,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              const SizedBox(width: 5),
-                              ClipOval(
-                                child: Image.asset(
-                                  'assets/images/junto-mobile__josh.png',
-                                  height: 28.0,
-                                  width: 28.0,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ],
-                          ),
+                          const Spacer(),
                           const SizedBox(height: 5),
-                          const Text(
-                            '50 pack members',
+                          Text(
+                            '${pack.members}',
                             style: TextStyle(
                                 fontWeight: FontWeight.w700, fontSize: 14),
                           ),

@@ -7,9 +7,8 @@ import 'package:flutter/rendering.dart';
 import 'package:junto_beta_mobile/backend/repositories/group_repo.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/pack_open_appbar.dart';
-import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/pack_open_public.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
-import 'package:junto_beta_mobile/widgets/previews/expression_preview/expression_preview.dart';
+import 'package:junto_beta_mobile/widgets/previews/expression_preview/two_column_preview/two_column_expression_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -35,7 +34,6 @@ class PackOpenState extends State<PackOpen> {
 
   // Controller for PageView
   PageController controller;
-  int _currentIndex = 0;
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
 
   @override
@@ -45,8 +43,8 @@ class PackOpenState extends State<PackOpen> {
     getUserInformation();
   }
 
-  final AsyncMemoizer<List<CentralizedExpressionResponse>> _memoizer =
-      AsyncMemoizer<List<CentralizedExpressionResponse>>();
+  final AsyncMemoizer<List<ExpressionResponse>> _memoizer =
+      AsyncMemoizer<List<ExpressionResponse>>();
 
   Future<void> getUserInformation() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -59,7 +57,7 @@ class PackOpenState extends State<PackOpen> {
     });
   }
 
-  Future<List<CentralizedExpressionResponse>> getPackExpressions() async {
+  Future<List<ExpressionResponse>> getPackExpressions() async {
     return _memoizer.runOnce(
       () => Provider.of<GroupRepo>(context).getGroupExpressions(
         _userProfile.pack.address,
@@ -156,22 +154,15 @@ class PackOpenState extends State<PackOpen> {
             // ),
             Expanded(
               child: PageView(
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 controller: controller,
-                onPageChanged: (int index) {
-                  setState(
-                    () {
-                      _currentIndex = index;
-                    },
-                  );
-                },
+                onPageChanged: (int index) {},
                 children: <Widget>[
                   if (_userProfile != null)
-                    FutureBuilder<List<CentralizedExpressionResponse>>(
+                    FutureBuilder<List<ExpressionResponse>>(
                       future: getPackExpressions(),
                       builder: (BuildContext context,
-                          AsyncSnapshot<List<CentralizedExpressionResponse>>
-                              snapshot) {
+                          AsyncSnapshot<List<ExpressionResponse>> snapshot) {
                         if (snapshot.hasError) {
                           return Center(
                             child: Transform.translate(
@@ -207,7 +198,7 @@ class PackOpenState extends State<PackOpen> {
                                             if (index == snapshot.data.length)
                                               const SizedBox()
                                             else if (index.isEven)
-                                              ExpressionPreview(
+                                              TwoColumnExpressionPreview(
                                                 expression:
                                                     snapshot.data[index],
                                                 userAddress: _userAddress,
@@ -233,7 +224,7 @@ class PackOpenState extends State<PackOpen> {
                                             if (index == snapshot.data.length)
                                               const SizedBox()
                                             else if (index.isOdd)
-                                              ExpressionPreview(
+                                              TwoColumnExpressionPreview(
                                                 expression:
                                                     snapshot.data[index],
                                                 userAddress: _userAddress,

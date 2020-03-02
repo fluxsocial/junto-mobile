@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
 
 class ShortformOpen extends StatelessWidget {
   const ShortformOpen(this.expression);
 
-  final CentralizedExpressionResponse expression;
+  final ExpressionResponse expression;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,18 +21,18 @@ class ShortformOpen extends StatelessWidget {
         ),
       ),
       constraints: BoxConstraints(
-        minHeight: MediaQuery.of(context).size.width,
+        minHeight: MediaQuery.of(context).size.width * (2 / 3),
       ),
       alignment: Alignment.center,
       padding: const EdgeInsets.symmetric(
         horizontal: 25.0,
-        vertical: 25.0,
+        vertical: 50.0,
       ),
       child: Text(
         expression.expressionData.body,
         textAlign: TextAlign.center,
         style: const TextStyle(
-          fontSize: 24.0,
+          fontSize: 20.0,
           fontWeight: FontWeight.w700,
           color: Colors.white,
         ),

@@ -18,13 +18,13 @@ class ExpressionActionItems extends StatelessWidget {
     this.userAddress,
   });
 
-  final CentralizedExpressionResponse expression;
+  final ExpressionResponse expression;
   final String userAddress;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-          color: Theme.of(context).colorScheme.background,
+      color: Theme.of(context).colorScheme.background,
       child: Container(
         height: MediaQuery.of(context).size.height * .4,
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -183,16 +183,18 @@ class ExpressionActionItems extends StatelessWidget {
 class _AddEventMembers extends StatefulWidget {
   const _AddEventMembers({Key key, this.expressionResponse}) : super(key: key);
 
-  static Route<dynamic> route(
-      CentralizedExpressionResponse expressionResponse) {
-    return MaterialPageRoute<dynamic>(builder: (BuildContext context) {
-      return _AddEventMembers(
-        expressionResponse: expressionResponse,
-      );
-    });
+  // ignore: unused_element
+  static Route<dynamic> route(ExpressionResponse expressionResponse) {
+    return MaterialPageRoute<dynamic>(
+      builder: (BuildContext context) {
+        return _AddEventMembers(
+          expressionResponse: expressionResponse,
+        );
+      },
+    );
   }
 
-  final CentralizedExpressionResponse expressionResponse;
+  final ExpressionResponse expressionResponse;
 
   @override
   __AddEventMembersState createState() => __AddEventMembersState();
@@ -385,9 +387,9 @@ class _SearchAppbar extends StatelessWidget implements PreferredSizeWidget {
         color: Theme.of(context).appBarTheme.color,
         child: Row(
           children: <Widget>[
-            Align(
+            const Align(
               alignment: Alignment.centerLeft,
-              child: const BackButton(),
+              child: BackButton(),
             ),
             const Spacer(),
             Align(

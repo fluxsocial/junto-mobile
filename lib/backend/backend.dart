@@ -66,14 +66,13 @@ class Backend {
     final GroupService groupService = MockSphere();
     final SearchService searchService = MockSearch();
     return Backend._(
-      authRepo: AuthRepo(authService),
-      userRepo: UserRepo(userService, null),
-      collectiveProvider: null,
-      groupsProvider: GroupRepo(groupService),
-      expressionRepo: ExpressionRepo(expressionService),
-      searchRepo: SearchRepo(searchService),
-      currentTheme: JuntoThemes().juntoLightIndigo,
-    );
+        authRepo: AuthRepo(authService),
+        userRepo: UserRepo(userService, null),
+        collectiveProvider: null,
+        groupsProvider: GroupRepo(groupService),
+        expressionRepo: ExpressionRepo(expressionService),
+        searchRepo: SearchRepo(searchService),
+        currentTheme: JuntoThemes().aqueous);
   }
 
   final SearchRepo searchRepo;
@@ -83,5 +82,5 @@ class Backend {
   final GroupRepo groupsProvider;
   final ExpressionRepo expressionRepo;
   final NotificationRepo notificationRepo;
-  final ThemeData currentTheme;
+  final ThemeData   currentTheme;
 }

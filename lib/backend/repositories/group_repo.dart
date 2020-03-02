@@ -6,7 +6,7 @@ class GroupRepo {
 
   final GroupService _groupService;
 
-  Future<CentralizedSphereResponse> createSphere(CentralizedSphere sphere) {
+  Future<SphereResponse> createSphere(SphereModel sphere) {
     return _groupService.createSphere(sphere);
   }
 
@@ -34,7 +34,7 @@ class GroupRepo {
     return _groupService.removeGroupMember(groupAddress, userAddress);
   }
 
-  Future<List<CentralizedExpressionResponse>> getGroupExpressions(
+  Future<List<ExpressionResponse>> getGroupExpressions(
       String groupAddress, GroupExpressionQueryParams params) {
     return _groupService.getGroupExpressions(groupAddress, params);
   }

@@ -55,8 +55,8 @@ class CreateEventState extends State<CreateEvent> with DateParser {
       'photo': imageFile,
       'title': titleController.value.text,
       'location': locationController.text,
-      'startTime': DateTime.now().toUtc().toIso8601String(),
-      'endTime': DateTime.now().toUtc().toIso8601String(),
+      'start_time': DateTime.now().toUtc().toIso8601String(),
+      'end_time': DateTime.now().toUtc().toIso8601String(),
       'facilitators': <String>[],
       'members': <String>[]
     };
@@ -161,6 +161,7 @@ class CreateEventState extends State<CreateEvent> with DateParser {
     return Expanded(
       child: Form(
         key: widget.formKey,
+        autovalidate: true,
         child: Column(
           children: <Widget>[
             Expanded(
@@ -246,8 +247,9 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                         ]),
                   const SizedBox(height: 10),
                   Container(
-                    child: TextField(
+                    child: TextFormField(
                       controller: startDateController,
+                      validator: Validator.validateNonEmpty,
                       buildCounter: (
                         BuildContext context, {
                         int currentLength,
@@ -269,8 +271,9 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                   ),
                   const SizedBox(height: 10),
                   Container(
-                    child: TextField(
+                    child: TextFormField(
                       controller: endDateController,
+                      validator: Validator.validateNonEmpty,
                       buildCounter: (
                         BuildContext context, {
                         int currentLength,
@@ -292,8 +295,9 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                   ),
                   const SizedBox(height: 10),
                   Container(
-                    child: TextField(
+                    child: TextFormField(
                       controller: locationController,
+                      validator: Validator.validateNonEmpty,
                       buildCounter: (
                         BuildContext context, {
                         int currentLength,
@@ -315,8 +319,9 @@ class CreateEventState extends State<CreateEvent> with DateParser {
                   ),
                   const SizedBox(height: 10),
                   Container(
-                    child: TextField(
+                    child: TextFormField(
                       controller: detailsController,
+                      validator: Validator.validateNonEmpty,
                       buildCounter: (
                         BuildContext context, {
                         int currentLength,
