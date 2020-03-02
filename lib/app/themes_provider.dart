@@ -8,8 +8,10 @@ class JuntoThemesProvider with ChangeNotifier {
   static final Map<String, ThemeData> _themes = <String, ThemeData>{
     'rainbow': JuntoThemes().rainbow,
     'aqueous': JuntoThemes().aqueous,
-    'night': JuntoThemes().night,
-    'royal': JuntoThemes().royal
+    'royal': JuntoThemes().royal,
+    'rainbow-night': JuntoThemes().rainbowNight,
+    'aqueous-night': JuntoThemes().aqueousNight,
+    'royal-night': JuntoThemes().royalNight,
   };
 
   static Future<ThemeData> loadDefault() async {
