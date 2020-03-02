@@ -7,12 +7,18 @@ class SignUpTextField extends StatelessWidget {
     @required this.hint,
     @required this.maxLength,
     @required this.onSubmit,
+    this.textCapitalization = TextCapitalization.words,
+    this.keyboardType = TextInputType.text,
+    this.maxLines = 1,
   }) : super(key: key);
 
   final TextEditingController valueController;
   final String hint;
   final int maxLength;
   final VoidCallback onSubmit;
+  final TextInputType keyboardType;
+  final TextCapitalization textCapitalization;
+  final int maxLines;
 
   @override
   Widget build(BuildContext context) {
@@ -33,14 +39,16 @@ class SignUpTextField extends StatelessWidget {
         //disabling the native counter
         counter: Container(),
       ),
-      textCapitalization: TextCapitalization.words,
       style: const TextStyle(
         color: Colors.white,
         fontSize: 20,
         fontWeight: FontWeight.w500,
       ),
+      maxLines: maxLines,
       maxLength: maxLength,
+      textCapitalization: textCapitalization,
       textInputAction: TextInputAction.next,
+      keyboardType: keyboardType,
       onSubmitted: (_) {
         onSubmit();
       },

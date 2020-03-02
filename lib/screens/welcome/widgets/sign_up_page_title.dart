@@ -11,9 +11,6 @@ class SignUpPageTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(
-        bottom: MediaQuery.of(context).size.height * .24,
-      ),
       child: Text(
         title,
         style: TextStyle(

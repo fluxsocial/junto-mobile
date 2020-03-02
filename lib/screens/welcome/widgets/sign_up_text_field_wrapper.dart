@@ -51,33 +51,32 @@ class SignUpTextFieldWrapperState extends State<SignUpTextFieldWrapper> {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return Container(
       color: Colors.transparent,
       width: MediaQuery.of(context).size.width,
       child: Container(
-        margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * .16),
+        margin: EdgeInsets.only(top: size.height * .16),
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             SignUpPageTitle(title: widget.title),
-            Container(
-              child: Column(
-                children: <Widget>[
-                  SignUpTextField(
-                    valueController: valueController,
-                    onSubmit: widget.onSubmit,
-                    hint: widget.hint,
-                    maxLength: widget.maxLength,
-                  ),
-                  const SizedBox(height: 10),
-                  SignUpTextFieldLabelAndCounter(
-                    label: widget.label,
-                    maxLength: widget.maxLength,
-                    valueController: valueController,
-                  )
-                ],
-              ),
+            SizedBox(height: size.height * 0.24),
+            Column(
+              children: <Widget>[
+                SignUpTextField(
+                  valueController: valueController,
+                  onSubmit: widget.onSubmit,
+                  hint: widget.hint,
+                  maxLength: widget.maxLength,
+                ),
+                SignUpTextFieldLabelAndCounter(
+                  label: widget.label,
+                  maxLength: widget.maxLength,
+                  valueController: valueController,
+                )
+              ],
             ),
           ],
         ),
