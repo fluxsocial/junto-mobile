@@ -253,19 +253,6 @@ class WelcomeState extends State<Welcome> {
     );
   }
 
-  Future<bool> _animateOnBackPress() async {
-    if (_currentIndex >= 1) {
-      print(_currentIndex);
-      _welcomeController.animateToPage(
-        _currentIndex - 1,
-        duration: kThemeAnimationDuration,
-        curve: Curves.decelerate,
-      );
-      return false;
-    }
-    return true;
-  }
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -388,6 +375,26 @@ class WelcomeState extends State<Welcome> {
         ]),
       ),
     );
+  }
+
+  Future<bool> _animateOnBackPress() async {
+    if (_currentIndex >= 1) {
+      print(_currentIndex);
+      _welcomeController.animateToPage(
+        _currentIndex - 1,
+        duration: kThemeAnimationDuration,
+        curve: Curves.decelerate,
+      );
+      return false;
+    } else if (_signInController.page > 0) {
+      _signInController.animateToPage(
+        0,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.decelerate,
+      );
+      return false;
+    }
+    return true;
   }
 
   void _onSignUp() {
