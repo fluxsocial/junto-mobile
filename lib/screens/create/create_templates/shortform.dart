@@ -93,7 +93,7 @@ class CreateShortformState extends State<CreateShortform> {
           ),
           Expanded(
             child: Form(
-              autovalidate: true,
+              autovalidate: false,
               child: ListView(
                 padding: const EdgeInsets.all(0),
                 children: <Widget>[

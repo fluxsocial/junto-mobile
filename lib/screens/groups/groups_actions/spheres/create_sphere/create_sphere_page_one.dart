@@ -127,7 +127,7 @@ class _CreateSpherePageOneState extends State<CreateSpherePageOne> {
   Widget build(BuildContext context) {
     return Form(
       key: widget.formKey,
-      autovalidate: true,
+      autovalidate: false,
       child: ListView(
         children: <Widget>[
           if (imageFile == null)

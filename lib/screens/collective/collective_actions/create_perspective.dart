@@ -222,7 +222,7 @@ class CreatePerspectiveState extends State<CreatePerspective> {
                           name: 'About', controller: _aboutController),
                     ],
                   ),
-                  autovalidate: true,
+                  autovalidate: false,
                 ),
               ),
             ],
