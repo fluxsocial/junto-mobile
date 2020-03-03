@@ -64,29 +64,10 @@ class WelcomeState extends State<Welcome> {
   GlobalKey<SignUpRegisterState> signUpRegisterKey;
   GlobalKey<SignUpVerifyState> signUpVerifyKey;
 
-  void _toggleTheme(String theme) {
-    setState(() {
-      _currentTheme = theme;
-    });
-  }
-
-  Future<void> getTheme() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String theme = prefs.getString('current-theme');
-
-    setState(() {
-      if (theme == null) {
-        _currentTheme = 'rainbow';
-      } else {
-        _currentTheme = theme;
-      }
-    });
-  }
-
   @override
   void initState() {
     super.initState();
-    getTheme();
+    _getTheme();
 
     signUpAboutKey = GlobalKey<SignUpAboutState>();
     signUpPhotosKey = GlobalKey<SignUpPhotosState>();
@@ -274,99 +255,119 @@ class WelcomeState extends State<Welcome> {
         child: Scaffold(
           // setting this to true casues white background to be shown during keyboard opening
           resizeToAvoidBottomInset: false,
-          body: Stack(children: <Widget>[
-            WelcomeBackground(currentTheme: _currentTheme),
-            PageView(
-              onPageChanged: onPageChanged,
-              controller: _welcomeController,
-              scrollDirection: Axis.vertical,
-              physics: const NeverScrollableScrollPhysics(),
-              children: <Widget>[
-                PageKeepAlive(
-                  child: PageView(
-                    controller: _signInController,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: <Widget>[
-                      PageKeepAlive(
-                        child: WelcomeMain(
-                          onSignIn: _onSignIn,
-                          onSignUp: _onSignUp,
+          body: Stack(
+            children: <Widget>[
+              WelcomeBackground(currentTheme: _currentTheme),
+              PageView(
+                onPageChanged: onPageChanged,
+                controller: _welcomeController,
+                scrollDirection: Axis.vertical,
+                physics: const NeverScrollableScrollPhysics(),
+                children: <Widget>[
+                  PageKeepAlive(
+                    child: PageView(
+                      controller: _signInController,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: <Widget>[
+                        PageKeepAlive(
+                          child: WelcomeMain(
+                            onSignIn: _onSignIn,
+                            onSignUp: _onSignUp,
+                          ),
                         ),
-                      ),
-                      PageKeepAlive(child: SignIn(_signInController))
-                    ],
+                        PageKeepAlive(child: SignIn(_signInController))
+                      ],
+                    ),
                   ),
-                ),
-                PageKeepAlive(
-                  // 1
-                  child: SignUpTextFieldWrapper(
-                    onValueChanged: (String value) => name = value,
-                    onSubmit: () async {
-                      FocusScope.of(context).nextFocus();
-                      await _nextSignUpPage();
-                    },
-                    maxLength: 36,
-                    hint: 'My name is...',
-                    label: 'FULL NAME',
-                    title: 'Hey, what\'s your name?',
+                  PageKeepAlive(
+                    // 1
+                    child: SignUpTextFieldWrapper(
+                      onValueChanged: (String value) => name = value,
+                      onSubmit: () async {
+                        FocusScope.of(context).nextFocus();
+                        await _nextSignUpPage();
+                      },
+                      maxLength: 36,
+                      hint: 'My name is...',
+                      label: 'FULL NAME',
+                      title: 'Hey, what\'s your name?',
+                    ),
                   ),
-                ),
-                PageKeepAlive(
-                  // 2
-                  child: SignUpTextFieldWrapper(
-                    onValueChanged: (String value) => username = value,
-                    onSubmit: () async {
-                      FocusScope.of(context).unfocus();
-                      await _nextSignUpPage();
-                    },
-                    maxLength: 22,
-                    hint: 'I\'ll go by...',
-                    label: 'USERNAME',
-                    title: 'Choose a unique username!',
+                  PageKeepAlive(
+                    // 2
+                    child: SignUpTextFieldWrapper(
+                      onValueChanged: (String value) => username = value,
+                      onSubmit: () async {
+                        FocusScope.of(context).unfocus();
+                        await _nextSignUpPage();
+                      },
+                      maxLength: 22,
+                      hint: 'I\'ll go by...',
+                      label: 'USERNAME',
+                      title: 'Choose a unique username!',
+                    ),
                   ),
-                ),
-                PageKeepAlive(
-                  // 3
-                  child: SignUpThemes(toggleTheme: _toggleTheme),
-                ),
-                PageKeepAlive(
-                  // 4
-                  child: SignUpAbout(key: signUpAboutKey),
-                ),
-                PageKeepAlive(
-                  child: SignUpPhotos(key: signUpPhotosKey),
-                ),
-                PageKeepAlive(
-                  child: SignUpRegister(key: signUpRegisterKey),
-                ),
-                PageKeepAlive(
-                  child: SignUpVerify(
-                      key: signUpVerifyKey, handleSignUp: _handleSignUp),
-                )
-              ],
-            ),
-            _currentIndex != 0 && MediaQuery.of(context).viewInsets.bottom == 0
-                ? SignUpArrows(
-                    welcomeController: _welcomeController,
-                    currentIndex: _currentIndex,
-                    onTap: () {
-                      _nextSignUpPage();
-                    },
+                  PageKeepAlive(
+                    // 3
+                    child: SignUpThemes(toggleTheme: _toggleTheme),
+                  ),
+                  PageKeepAlive(
+                    // 4
+                    child: SignUpAbout(key: signUpAboutKey),
+                  ),
+                  PageKeepAlive(
+                    child: SignUpPhotos(key: signUpPhotosKey),
+                  ),
+                  PageKeepAlive(
+                    child: SignUpRegister(key: signUpRegisterKey),
+                  ),
+                  PageKeepAlive(
+                    child: SignUpVerify(
+                        key: signUpVerifyKey, handleSignUp: _handleSignUp),
                   )
-                : const SizedBox(),
-            _currentIndex != 0
-                ? Positioned(
-                    top: MediaQuery.of(context).size.height * .08,
-                    left: 20,
-                    child: Image.asset(
-                        'assets/images/junto-mobile__logo--white.png',
-                        height: 45),
-                  )
-                : const SizedBox(),
-          ]),
+                ],
+              ),
+              if (_currentIndex != 0 &&
+                  MediaQuery.of(context).viewInsets.bottom == 0)
+                SignUpArrows(
+                  welcomeController: _welcomeController,
+                  currentIndex: _currentIndex,
+                  onTap: () {
+                    _nextSignUpPage();
+                  },
+                ),
+              if (_currentIndex != 0)
+                Positioned(
+                  top: MediaQuery.of(context).size.height * .08,
+                  left: 20,
+                  child: Image.asset(
+                      'assets/images/junto-mobile__logo--white.png',
+                      height: 45),
+                ),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  void _toggleTheme(String theme) {
+    setState(() {
+      _currentTheme = theme;
+    });
+  }
+
+  Future<void> _getTheme() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String theme = prefs.getString('current-theme');
+
+    setState(() {
+      if (theme == null) {
+        _currentTheme = 'rainbow';
+      } else {
+        _currentTheme = theme;
+      }
+    });
   }
 
   void onPageChanged(int index) {
