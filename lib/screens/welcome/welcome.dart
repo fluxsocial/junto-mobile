@@ -90,39 +90,6 @@ class WelcomeState extends State<Welcome> {
     super.dispose();
   }
 
-  Future<void> _nextSignUpPage() async {
-    try {
-      if (_currentIndex == 4) {
-        final AboutPageModel _aboutPageModel =
-            signUpAboutKey.currentState.returnDetails();
-        bio = _aboutPageModel.bio;
-        location = _aboutPageModel.location;
-        gender = _aboutPageModel.gender;
-        website = _aboutPageModel.website;
-      } else if (_currentIndex == 5) {
-        profilePictures = signUpPhotosKey.currentState.returnDetails();
-        print(profilePictures);
-      } else if (_currentIndex == 6) {
-        email = signUpRegisterKey.currentState.returnDetails()['email'];
-        password = signUpRegisterKey.currentState.returnDetails()['password'];
-        confirmPassword =
-            signUpRegisterKey.currentState.returnDetails()['confirmPassword'];
-        await Provider.of<AuthRepo>(context, listen: false).verifyEmail(email);
-      }
-      // transition to next page of sign up flow
-      _welcomeController.nextPage(
-        curve: Curves.decelerate,
-        duration: const Duration(milliseconds: 600),
-      );
-    } on JuntoException catch (error) {
-      JuntoDialog.showJuntoDialog(
-        context,
-        error.message,
-        <Widget>[DialogBack()],
-      );
-    }
-  }
-
   Future<void> _handleSignUp() async {
     setState(() {
       verificationCode = signUpVerifyKey.currentState.returnDetails();
@@ -349,6 +316,39 @@ class WelcomeState extends State<Welcome> {
         ),
       ),
     );
+  }
+
+  Future<void> _nextSignUpPage() async {
+    try {
+      if (_currentIndex == 4) {
+        final AboutPageModel _aboutPageModel =
+            signUpAboutKey.currentState.returnDetails();
+        bio = _aboutPageModel.bio;
+        location = _aboutPageModel.location;
+        gender = _aboutPageModel.gender;
+        website = _aboutPageModel.website;
+      } else if (_currentIndex == 5) {
+        profilePictures = signUpPhotosKey.currentState.returnDetails();
+        print(profilePictures);
+      } else if (_currentIndex == 6) {
+        email = signUpRegisterKey.currentState.returnDetails()['email'];
+        password = signUpRegisterKey.currentState.returnDetails()['password'];
+        confirmPassword =
+            signUpRegisterKey.currentState.returnDetails()['confirmPassword'];
+        await Provider.of<AuthRepo>(context, listen: false).verifyEmail(email);
+      }
+      // transition to next page of sign up flow
+      _welcomeController.nextPage(
+        curve: Curves.decelerate,
+        duration: const Duration(milliseconds: 600),
+      );
+    } on JuntoException catch (error) {
+      JuntoDialog.showJuntoDialog(
+        context,
+        error.message,
+        <Widget>[DialogBack()],
+      );
+    }
   }
 
   void _toggleTheme(String theme) {
