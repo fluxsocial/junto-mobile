@@ -42,33 +42,44 @@ class WelcomeMain extends StatelessWidget {
           ]),
           Column(
             children: <Widget>[
-              Container(
-                margin: const EdgeInsets.only(bottom: 30),
-                child: GestureDetector(
-                  onTap: _onSignUp,
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 30,
+                  left: 30,
+                  right: 30,
+                ),
+                child: Container(
                   child: Container(
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 20,
-                    ),
-                    margin: const EdgeInsets.symmetric(horizontal: 40),
-                    width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
-                        color: Theme.of(context).accentColor,
-                        borderRadius: BorderRadius.circular(1000),
-                        boxShadow: <BoxShadow>[
-                          BoxShadow(
-                              color: const Color(0xff222222).withOpacity(.2),
-                              offset: const Offset(0.0, 5.0),
-                              blurRadius: 9),
-                        ]),
-                    child: const Text(
-                      'WELCOME TO THE PACK',
-                      style: TextStyle(
-                          letterSpacing: 1.2,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 14),
+                      borderRadius: BorderRadius.circular(40.0),
+                      boxShadow: <BoxShadow>[
+                        BoxShadow(
+                          color: const Color(0xff222222).withOpacity(.2),
+                          offset: const Offset(0.0, 5.0),
+                          blurRadius: 9,
+                        ),
+                      ],
+                    ),
+                    child: FlatButton(
+                      color: Theme.of(context).accentColor,
+                      onPressed: _onSignUp,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(40.0)),
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 20.0,
+                          horizontal: 30.0,
+                        ),
+                        child: Text(
+                          'WELCOME TO THE PACK',
+                          style: TextStyle(
+                            letterSpacing: 1.2,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),

@@ -26,7 +26,7 @@ class AcceptButton extends StatelessWidget {
             40.0,
           ),
         ),
-        child: OutlineButton(
+        child: FlatButton(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(40.0)),
           onPressed: () async {
