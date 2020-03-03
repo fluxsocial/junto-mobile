@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_page_title.dart';
-
-import 'widgets/sign_up_text_field.dart';
+import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field.dart';
 
 class SignUpRegister extends StatefulWidget {
   const SignUpRegister({Key key}) : super(key: key);
