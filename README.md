@@ -21,9 +21,41 @@ storeFile=file-location
 
 ## Flavors support
 
-Junto app has one additional flavor called `tst` that's being buildt on CI and deployed to testers.
+Junto app has additional flavors called `tst` and `prod`.
 
-To run this flavor just pass `--flavor tst` to `flutter run`.
+To run this flavor call:
+
+```
+flutter run --flavor tst
+```
+
+You can also add launch configuration to VS Code:
+
+```json
+"configurations": [
+{
+    "name": "Flutter Tst",
+    "request": "launch",
+    "type": "dart",
+    "flutterMode": "debug",
+    "program": "lib/main.dart",
+    "args": [
+        "--flavor",
+        "tst"
+    ],
+},
+{
+    "name": "Flutter Prod",
+    "request": "launch",
+    "type": "dart",
+    "flutterMode": "debug",
+    "program": "lib/main.dart",
+    "args": [
+        "--flavor",
+        "prod"
+    ],
+},
+```
 
 ## Junto Error Codes 
 | Error Code  | Message  | Cause  |  
