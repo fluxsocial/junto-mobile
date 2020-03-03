@@ -6,6 +6,7 @@ import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:junto_beta_mobile/widgets/buttons/call_to_action.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -180,36 +181,12 @@ class _SignInState extends State<SignIn> {
                   ),
                 ),
                 const SizedBox(height: 50),
-                GestureDetector(
-                  onTap: () {
+                CallToActionButton(
+                  onSignUp: () {
                     _handleSignIn(context);
                   },
-                  child: Container(
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 20,
-                    ),
-                    margin: const EdgeInsets.symmetric(horizontal: 20),
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).accentColor,
-                        borderRadius: BorderRadius.circular(1000),
-                        boxShadow: <BoxShadow>[
-                          BoxShadow(
-                              color: const Color(0xff222222).withOpacity(.2),
-                              offset: const Offset(0.0, 5.0),
-                              blurRadius: 9),
-                        ]),
-                    child: const Text(
-                      'SIGN IN',
-                      style: TextStyle(
-                          letterSpacing: 1.2,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 14),
-                    ),
-                  ),
-                )
+                  title: 'SIGN IN',
+                ),
               ],
             ),
           )
