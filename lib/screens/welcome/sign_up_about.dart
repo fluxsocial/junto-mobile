@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:keyboard_avoider/keyboard_avoider.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_page_title.dart';
+import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field.dart';
+import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field_counter.dart';
 
 class SignUpAbout extends StatefulWidget {
   const SignUpAbout({Key key}) : super(key: key);
@@ -15,10 +19,12 @@ class SignUpAboutState extends State<SignUpAbout> {
   TextEditingController locationController;
   TextEditingController genderController;
   TextEditingController websiteController;
+  ScrollController scrollController;
 
   @override
   void initState() {
     super.initState();
+    scrollController = ScrollController();
     bioController = TextEditingController();
     locationController = TextEditingController();
     genderController = TextEditingController();
@@ -31,6 +37,7 @@ class SignUpAboutState extends State<SignUpAbout> {
     locationController.dispose();
     genderController.dispose();
     websiteController.dispose();
+    scrollController.dispose();
     super.dispose();
   }
 
@@ -52,167 +59,82 @@ class SignUpAboutState extends State<SignUpAbout> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Container(
-              child: const Text(
-                'Feel free to share more about yourself (optional)',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w700),
-              ),
+            const SignUpPageTitle(
+              title: 'Feel free to share more about yourself (optional)',
             ),
-            Expanded(
-              child: ListView(
-                children: <Widget>[
-                  Container(
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          child: TextField(
-                            controller: bioController,
-                            textInputAction: TextInputAction.newline,
-                            maxLines: null,
-                            cursorColor: Colors.white70,
-                            decoration: const InputDecoration(
-                              enabledBorder: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              hintText: 'Short or long bio',
-                              hintStyle: TextStyle(
-                                color: Colors.white70,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              fillColor: Colors.white,
-                            ),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            const Text(
-                              'ABOUT',
-                              style: TextStyle(
-                                  color: Colors.white70,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w400),
-                            ),
-                            ValueListenableBuilder<TextEditingValue>(
-                                valueListenable: bioController,
-                                builder: (
-                                  BuildContext context,
-                                  TextEditingValue value,
-                                  _,
-                                ) {
-                                  return Text(
-                                    bioController.value.text.length.toString() +
-                                        '${value.text.length}/1000',
-                                    style: const TextStyle(
-                                      color: Colors.white70,
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  );
-                                }),
-                          ],
-                        )
-                      ],
-                    ),
+            Flexible(
+              child: KeyboardAvoider(
+                autoScroll: true,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      const SizedBox(height: 30),
+                      SignUpTextField(
+                        valueController: bioController,
+                        onSubmit: () {
+                          FocusScope.of(context).nextFocus();
+                        },
+                        hint: 'Short or long bio',
+                        maxLength: 50,
+                        textCapitalization: TextCapitalization.sentences,
+                        maxLines: null,
+                      ),
+                      SignUpTextFieldLabelAndCounter(
+                        label: 'ABOUT',
+                        maxLength: 1000,
+                        valueController: bioController,
+                        compact: true,
+                      ),
+                      const SizedBox(height: 40),
+                      SignUpTextField(
+                        valueController: locationController,
+                        onSubmit: () {
+                          FocusScope.of(context).nextFocus();
+                        },
+                        hint: 'Where do you live?',
+                        maxLength: 100,
+                      ),
+                      SignUpTextFieldLabelAndCounter(
+                        label: 'LOCATION',
+                        maxLength: 100,
+                        valueController: locationController,
+                        compact: true,
+                      ),
+                      const SizedBox(height: 40),
+                      SignUpTextField(
+                        valueController: genderController,
+                        onSubmit: () {
+                          FocusScope.of(context).nextFocus();
+                        },
+                        hint: 'Your gender',
+                        maxLength: 50,
+                      ),
+                      SignUpTextFieldLabelAndCounter(
+                        label: 'GENDER',
+                        maxLength: null,
+                        valueController: locationController,
+                        compact: true,
+                      ),
+                      const SizedBox(height: 30),
+                      SignUpTextField(
+                        valueController: websiteController,
+                        onSubmit: () {
+                          FocusScope.of(context).unfocus();
+                        },
+                        hint: 'Website',
+                        maxLength: 50,
+                        keyboardType: TextInputType.url,
+                        textCapitalization: TextCapitalization.none,
+                      ),
+                      SignUpTextFieldLabelAndCounter(
+                        label: 'WEBSITE',
+                        maxLength: null,
+                        valueController: locationController,
+                        compact: true,
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 50),
-                  Container(
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          child: TextField(
-                            controller: locationController,
-                            cursorColor: Colors.white70,
-                            decoration: const InputDecoration(
-                              enabledBorder: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              hintText: 'Location',
-                              hintStyle: TextStyle(
-                                color: Colors.white70,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              fillColor: Colors.white,
-                            ),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 50),
-                  Container(
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          child: TextField(
-                            controller: genderController,
-                            cursorColor: Colors.white70,
-                            decoration: const InputDecoration(
-                              enabledBorder: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              hintText: 'Gender',
-                              hintStyle: TextStyle(
-                                color: Colors.white70,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              fillColor: Colors.white,
-                            ),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 50),
-                  Container(
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          child: TextField(
-                            controller: websiteController,
-                            cursorColor: Colors.white70,
-                            decoration: const InputDecoration(
-                              enabledBorder: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              hintText: 'Website',
-                              hintStyle: TextStyle(
-                                color: Colors.white70,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              fillColor: Colors.white,
-                            ),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 50),
-                ],
+                ),
               ),
             ),
           ],

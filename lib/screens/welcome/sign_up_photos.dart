@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_page_title.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 
 class SignUpPhotos extends StatefulWidget {
@@ -34,9 +35,6 @@ class SignUpPhotosState extends State<SignUpPhotos> {
       },
       child: Container(
         color: Colors.transparent,
-        // margin: const EdgeInsets.only(
-        //   right: 20,
-        // ),
         child: Column(
           children: <Widget>[
             Container(
@@ -73,10 +71,13 @@ class SignUpPhotosState extends State<SignUpPhotos> {
       }
       return;
     }
-    final File cropped =
-        await ImageCroppingDialog.show(context, image, aspectRatios: <String>[
-      '1:1',
-    ]);
+    final File cropped = await ImageCroppingDialog.show(
+      context,
+      image,
+      aspectRatios: <String>[
+        '1:1',
+      ],
+    );
     Navigator.of(context).focusScopeNode.unfocus();
     if (cropped == null) {
       if (profilePictureNumber == 1) {
@@ -103,15 +104,7 @@ class SignUpPhotosState extends State<SignUpPhotos> {
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Container(
-                child: const Text(
-                  'Add a profile picture',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w700),
-                ),
-              ),
+              const SignUpPageTitle(title: 'Add a profile picture'),
               const SizedBox(height: 140),
               Expanded(
                 child: Center(

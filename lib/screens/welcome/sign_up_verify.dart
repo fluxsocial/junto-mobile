@@ -33,8 +33,9 @@ class SignUpVerifyState extends State<SignUpVerify> {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return Container(
-      margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * .16),
+      margin: EdgeInsets.only(top: size.height * .16),
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,16 +44,17 @@ class SignUpVerifyState extends State<SignUpVerify> {
             child: const Text(
               'Final step :)',
               style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w700),
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
-          SizedBox(height: MediaQuery.of(context).size.height * .17),
+          SizedBox(height: size.height * .17),
           Expanded(
             flex: 3,
             child: Container(
-              width: MediaQuery.of(context).size.width,
+              width: size.width,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
@@ -107,24 +109,26 @@ class SignUpVerifyState extends State<SignUpVerify> {
                 vertical: 20,
               ),
               margin: const EdgeInsets.symmetric(horizontal: 40),
-              width: MediaQuery.of(context).size.width,
+              width: size.width,
               decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.secondaryVariant,
-                  borderRadius: BorderRadius.circular(1000),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                        color:
-                            Theme.of(context).primaryColorDark.withOpacity(.12),
-                        offset: const Offset(0.0, 6.0),
-                        blurRadius: 9),
-                  ]),
+                color: Theme.of(context).colorScheme.secondaryVariant,
+                borderRadius: BorderRadius.circular(1000),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                    color: Theme.of(context).primaryColorDark.withOpacity(.12),
+                    offset: const Offset(0.0, 6.0),
+                    blurRadius: 9,
+                  ),
+                ],
+              ),
               child: const Text(
                 'LET\'S GO!',
                 style: TextStyle(
-                    letterSpacing: 1.2,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 14),
+                  letterSpacing: 1.2,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 14,
+                ),
               ),
             ),
           ),

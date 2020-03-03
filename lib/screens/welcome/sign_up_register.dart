@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_page_title.dart';
+import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field.dart';
 
 class SignUpRegister extends StatefulWidget {
   const SignUpRegister({Key key}) : super(key: key);
@@ -49,111 +51,44 @@ class SignUpRegisterState extends State<SignUpRegister> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Container(
-              child: const Text(
-                'Almost done!',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w700),
-              ),
-            ),
+            const SignUpPageTitle(title: 'Almost done!'),
             Expanded(
               child: ListView(
                 children: <Widget>[
-                  Container(
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          child: TextField(
-                            controller: emailController,
-                            textInputAction: TextInputAction.done,
-                            maxLines: null,
-                            cursorColor: Colors.white70,
-                            decoration: const InputDecoration(
-                              enabledBorder: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              hintText: 'Email',
-                              hintStyle: TextStyle(
-                                color: Colors.white70,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              fillColor: Colors.white,
-                            ),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                  SignUpTextField(
+                    valueController: emailController,
+                    onSubmit: () {
+                      FocusScope.of(context).nextFocus();
+                    },
+                    hint: 'Email',
+                    maxLength: 1000,
+                    textCapitalization: TextCapitalization.none,
+                    keyboardType: TextInputType.emailAddress,
                   ),
                   const SizedBox(height: 50),
-                  Container(
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          child: TextField(
-                            controller: passwordController,
-                            cursorColor: Colors.white70,
-                            textInputAction: TextInputAction.done,
-                            obscureText: true,
-                            decoration: const InputDecoration(
-                              enabledBorder: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              hintText: 'Password',
-                              hintStyle: TextStyle(
-                                color: Colors.white70,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              fillColor: Colors.white,
-                            ),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                  SignUpTextField(
+                    valueController: passwordController,
+                    onSubmit: () {
+                      FocusScope.of(context).nextFocus();
+                    },
+                    hint: 'Password',
+                    maxLength: 1000,
+                    textCapitalization: TextCapitalization.none,
+                    keyboardType: TextInputType.emailAddress,
+                    obscureText: true,
                   ),
                   const SizedBox(height: 50),
-                  Container(
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          child: TextField(
-                            controller: confirmPasswordController,
-                            cursorColor: Colors.white70,
-                            obscureText: true,
-                            textInputAction: TextInputAction.done,
-                            decoration: const InputDecoration(
-                              enabledBorder: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              hintText: 'Confirm password',
-                              hintStyle: TextStyle(
-                                color: Colors.white70,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              fillColor: Colors.white,
-                            ),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                  SignUpTextField(
+                    valueController: confirmPasswordController,
+                    onSubmit: () {
+                      FocusScope.of(context).unfocus();
+                    },
+                    hint: 'Confirm Password',
+                    maxLength: 1000,
+                    textCapitalization: TextCapitalization.none,
+                    keyboardType: TextInputType.emailAddress,
+                    obscureText: true,
                   ),
-                  const SizedBox(height: 50),
                 ],
               ),
             )
