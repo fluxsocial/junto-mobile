@@ -75,7 +75,7 @@ class SignUpAboutState extends State<SignUpAbout> {
                           FocusScope.of(context).nextFocus();
                         },
                         hint: 'Short or long bio',
-                        maxLength: 1000,
+                        maxLength: 50,
                         textCapitalization: TextCapitalization.sentences,
                         maxLines: null,
                       ),
