@@ -44,9 +44,10 @@ class SignUpVerifyState extends State<SignUpVerify> {
             child: const Text(
               'Final step :)',
               style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w700),
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
           SizedBox(height: size.height * .17),
@@ -110,22 +111,24 @@ class SignUpVerifyState extends State<SignUpVerify> {
               margin: const EdgeInsets.symmetric(horizontal: 40),
               width: size.width,
               decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.secondaryVariant,
-                  borderRadius: BorderRadius.circular(1000),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                        color:
-                            Theme.of(context).primaryColorDark.withOpacity(.12),
-                        offset: const Offset(0.0, 6.0),
-                        blurRadius: 9),
-                  ]),
+                color: Theme.of(context).colorScheme.secondaryVariant,
+                borderRadius: BorderRadius.circular(1000),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                    color: Theme.of(context).primaryColorDark.withOpacity(.12),
+                    offset: const Offset(0.0, 6.0),
+                    blurRadius: 9,
+                  ),
+                ],
+              ),
               child: const Text(
                 'LET\'S GO!',
                 style: TextStyle(
-                    letterSpacing: 1.2,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 14),
+                  letterSpacing: 1.2,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 14,
+                ),
               ),
             ),
           ),
