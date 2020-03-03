@@ -45,21 +45,20 @@ class SignUpArrows extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-          _currentIndex == 7
-              ? const SizedBox()
-              : GestureDetector(
-                  onTap: _onTap,
-                  child: Container(
-                    height: 36,
-                    width: 36,
-                    color: Colors.transparent,
-                    child: const Icon(
-                      Icons.keyboard_arrow_down,
-                      color: Colors.white,
-                      size: 36,
-                    ),
-                  ),
+          if (_currentIndex != 7)
+            GestureDetector(
+              onTap: _onTap,
+              child: Container(
+                height: 36,
+                width: 36,
+                color: Colors.transparent,
+                child: const Icon(
+                  Icons.keyboard_arrow_down,
+                  color: Colors.white,
+                  size: 36,
                 ),
+              ),
+            ),
         ],
       ),
     );
