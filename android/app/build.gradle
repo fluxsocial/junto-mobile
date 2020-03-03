@@ -60,6 +60,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    flavorDimensions "flavor-type"
+
+    productFlavors {
+        tst {
+            dimension "flavor-type"
+            applicationIdSuffix ".tst"
+        }
+    }
 }
 
 flutter {
