@@ -277,12 +277,7 @@ class WelcomeState extends State<Welcome> {
           body: Stack(children: <Widget>[
             WelcomeBackground(currentTheme: _currentTheme),
             PageView(
-              onPageChanged: (int int) {
-                setState(() {
-                  _currentIndex = int;
-                });
-                print(_currentIndex);
-              },
+              onPageChanged: onPageChanged,
               controller: _welcomeController,
               scrollDirection: Axis.vertical,
               physics: const NeverScrollableScrollPhysics(),
@@ -372,6 +367,13 @@ class WelcomeState extends State<Welcome> {
         ),
       ),
     );
+  }
+
+  void onPageChanged(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+    print(_currentIndex);
   }
 
   Future<bool> _animateOnBackPress() async {
