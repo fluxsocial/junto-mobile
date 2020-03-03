@@ -54,6 +54,7 @@ class SignUpTextField extends StatelessWidget {
       onSubmitted: (_) {
         onSubmit();
       },
+      keyboardAppearance: Theme.of(context).brightness,
       obscureText: obscureText,
     );
   }
