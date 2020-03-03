@@ -19,6 +19,12 @@ storeFile=file-location
 ```
 3) Congratulations! You should now be able to build the project in debug. Feel free to inspect our code and contribute to the project. PRs are welcome!
 
+## Flavors support
+
+Junto app has one additional flavor called `tst` that's being buildt on CI and deployed to testers.
+
+To run this flavor just pass `--flavor tst` to `flutter run`.
+
 ## Junto Error Codes 
 | Error Code  | Message  | Cause  |  
 |---|---|---|
