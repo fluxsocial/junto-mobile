@@ -4,6 +4,7 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
+import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/buttons/call_to_action.dart';
@@ -43,6 +44,10 @@ class _SignInState extends State<SignIn> {
   Future<void> _handleSignIn(BuildContext context) async {
     final String email = _emailController.value.text;
     final String password = _passwordController.value.text;
+    if (email.isEmpty || password.isEmpty) {
+      _showValidationError();
+      return;
+    }
     final UserAuthLoginDetails loginDetails =
         UserAuthLoginDetails(email: email, password: password);
     JuntoLoader.showLoader(context);
@@ -80,7 +85,6 @@ class _SignInState extends State<SignIn> {
       );
     } catch (error) {
       print(error);
-      JuntoLoader.hide();
       JuntoDialog.showJuntoDialog(
           context,
           'Unable to login user. Please recheck your '
@@ -121,64 +125,27 @@ class _SignInState extends State<SignIn> {
             child: ListView(
               children: <Widget>[
                 SizedBox(height: MediaQuery.of(context).size.height * .2),
-                Container(
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        child: TextField(
-                          controller: _emailController,
-                          cursorColor: Colors.white70,
-                          decoration: InputDecoration(
-                            enabledBorder: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            labelStyle: TextStyle(color: Colors.green),
-                            hintText: 'Email',
-                            hintStyle: const TextStyle(
-                              color: Colors.white70,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            fillColor: Colors.white,
-                          ),
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                SignUpTextField(
+                  hint: 'Email',
+                  maxLength: 100,
+                  onSubmit: () {
+                    FocusScope.of(context).nextFocus();
+                  },
+                  valueController: _emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  textCapitalization: TextCapitalization.none,
                 ),
                 const SizedBox(height: 25),
-                Container(
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        child: TextField(
-                          controller: _passwordController,
-                          cursorColor: Colors.white70,
-                          decoration: InputDecoration(
-                            enabledBorder: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            labelStyle: TextStyle(color: Colors.green),
-                            hintText: 'Password',
-                            hintStyle: const TextStyle(
-                              color: Colors.white70,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            fillColor: Colors.white,
-                          ),
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                SignUpTextField(
+                  hint: 'Password',
+                  maxLength: 100,
+                  onSubmit: () {
+                    FocusScope.of(context).unfocus();
+                  },
+                  obscureText: true,
+                  valueController: _passwordController,
+                  keyboardType: TextInputType.visiblePassword,
+                  textCapitalization: TextCapitalization.none,
                 ),
                 const SizedBox(height: 50),
                 CallToActionButton(
@@ -193,5 +160,15 @@ class _SignInState extends State<SignIn> {
         ],
       ),
     );
+  }
+
+  void _showValidationError() {
+    JuntoDialog.showJuntoDialog(
+        context, 'Email or password is missing', <Widget>[
+      FlatButton(
+        onPressed: () => Navigator.of(context).pop(),
+        child: const Text('OK'),
+      ),
+    ]);
   }
 }
