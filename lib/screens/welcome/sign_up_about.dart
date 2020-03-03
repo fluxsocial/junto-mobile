@@ -81,7 +81,7 @@ class SignUpAboutState extends State<SignUpAbout> {
                       ),
                       SignUpTextFieldLabelAndCounter(
                         label: 'ABOUT',
-                        maxLength: 1000,
+                        maxLength: 50,
                         valueController: bioController,
                         compact: true,
                       ),
