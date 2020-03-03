@@ -68,6 +68,10 @@ android {
             dimension "flavor-type"
             applicationIdSuffix ".tst"
         }
+        prod {
+            dimension "flavor-type"
+            applicationIdSuffix ""
+        }
     }
 }
 
