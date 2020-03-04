@@ -1,4 +1,3 @@
-import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,12 +10,11 @@ import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_o
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
-import 'package:junto_beta_mobile/widgets/previews/expression_preview/two_column_preview/two_column_expression_preview.dart';
-import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:junto_beta_mobile/widgets/group_expressions.dart';
 
 class SphereOpen extends StatefulWidget {
   const SphereOpen({
@@ -66,22 +64,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     });
   }
 
-  final AsyncMemoizer<List<ExpressionResponse>> _memoizer =
-      AsyncMemoizer<List<ExpressionResponse>>();
-
-  Future<List<ExpressionResponse>> _getGroupExpressions() async {
-    return _memoizer.runOnce(
-      () => Provider.of<GroupRepo>(context, listen: false).getGroupExpressions(
-        widget.group.address,
-        GroupExpressionQueryParams(
-            creatorExpressions: true,
-            directExpressions: true,
-            directExpressionPaginationPosition: 0,
-            creatorExpressionsPaginationPosition: 0),
-      ),
-    );
-  }
-
   Future<void> _getMembers() async {
     try {
       JuntoLoader.showLoader(context);
@@ -116,7 +98,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     }
   }
 
-  final List<String> _tabs = <String>['About', 'Discussion'];
+  final List<String> _tabs = <String>['ABOUT', 'EXPRESSIONS'];
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +116,11 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
           body: TabBarView(
             children: <Widget>[
               _buildAboutView(),
-              if (widget.group.address != null) _buildExpressionView(),
+              if (widget.group.address != null)
+                GroupExpressions(
+                  group: widget.group,
+                  userAddress: _userAddress,
+                )
             ],
           ),
           physics: const ClampingScrollPhysics(),
@@ -221,10 +207,16 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                     tabs: <Widget>[
                       for (String name in _tabs)
                         Container(
-                          margin: const EdgeInsets.only(right: 24),
+                          margin: const EdgeInsets.only(right: 20),
                           color: Theme.of(context).colorScheme.background,
                           child: Tab(
-                            text: name,
+                            child: Text(
+                              name,
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w700,
+                                  color: Theme.of(context).primaryColor),
+                            ),
                           ),
                         ),
                     ],
@@ -272,7 +264,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text('Bio / Purpose',
-                  style: Theme.of(context).textTheme.headline6),
+                  style: Theme.of(context).textTheme.subtitle2),
               const SizedBox(height: 10),
               Text(widget.group.groupData.description,
                   style: Theme.of(context).textTheme.caption)
@@ -280,88 +272,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildExpressionView() {
-    return FutureBuilder<List<ExpressionResponse>>(
-      future: _getGroupExpressions(),
-      builder: (BuildContext context,
-          AsyncSnapshot<List<ExpressionResponse>> snapshot) {
-        if (snapshot.hasError) {
-          return Center(
-            child: Transform.translate(
-              offset: const Offset(0.0, -50),
-              child: const Text('Hmm, something is up'),
-            ),
-          );
-        }
-        if (snapshot.hasData) {
-          return ListView(
-            padding: const EdgeInsets.all(0),
-            children: <Widget>[
-              Container(
-                color: Theme.of(context).backgroundColor,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      width: MediaQuery.of(context).size.width * .5,
-                      padding: const EdgeInsets.only(
-                        top: 10,
-                        left: 10,
-                        right: 5,
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          for (int index = 0;
-                              index < snapshot.data.length + 1;
-                              index++)
-                            if (index == snapshot.data.length)
-                              const SizedBox()
-                            else if (index.isEven)
-                              TwoColumnExpressionPreview(
-                                expression: snapshot.data[index],
-                                userAddress: _userAddress,
-                              )
-                        ],
-                      ),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * .5,
-                      padding: const EdgeInsets.only(
-                        top: 10,
-                        left: 5,
-                        right: 10,
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          for (int index = 0;
-                              index < snapshot.data.length + 1;
-                              index++)
-                            if (index == snapshot.data.length)
-                              const SizedBox()
-                            else if (index.isOdd)
-                              TwoColumnExpressionPreview(
-                                expression: snapshot.data[index],
-                                userAddress: _userAddress,
-                              )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          );
-        }
-        return Center(
-          child: JuntoProgressIndicator(),
-        );
-      },
     );
   }
 }

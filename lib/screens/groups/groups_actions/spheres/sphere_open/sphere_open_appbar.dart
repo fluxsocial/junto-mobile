@@ -26,28 +26,6 @@ class SphereOpenAppbar extends StatelessWidget {
               children: <Widget>[
                 Icon(CustomIcons.spheres,
                     color: Theme.of(context).primaryColor, size: 20),
-                // Container(
-                //   alignment: Alignment.center,
-                //   height: 32.0,
-                //   width: 32.0,
-                //   decoration: BoxDecoration(
-                //     gradient: const LinearGradient(
-                //       begin: Alignment.bottomLeft,
-                //       end: Alignment.topRight,
-                //       stops: <double>[0.3, 0.9],
-                //       colors: <Color>[
-                //         JuntoPalette.juntoSecondary,
-                //         JuntoPalette.juntoPrimary,
-                //       ],
-                //     ),
-                //     borderRadius: BorderRadius.circular(100),
-                //   ),
-                //   child: const Icon(
-                //     CustomIcons.spheres,
-                //     color: Colors.white,
-                //     size: 14,
-                //   ),
-                // ),
                 const SizedBox(width: 10),
                 Container(
                   margin: const EdgeInsets.only(right: 5),
