@@ -6,9 +6,9 @@ import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/spheres.
 
 class JuntoGroupsActions extends StatefulWidget {
   const JuntoGroupsActions({
+    @required this.changeGroup,
+    @required this.spheresVisible,
     this.userProfile,
-    this.changeGroup,
-    this.spheresVisible,
   });
 
   final UserData userProfile;
@@ -20,130 +20,145 @@ class JuntoGroupsActions extends StatefulWidget {
 }
 
 class JuntoGroupsActionsState extends State<JuntoGroupsActions> {
-  bool spheresVisible;
+  ValueNotifier<bool> _spheresVisible;
 
   @override
   void initState() {
     super.initState();
-    spheresVisible = widget.spheresVisible;
+    _spheresVisible = ValueNotifier<bool>(widget.spheresVisible);
+  }
+
+  @override
+  void didUpdateWidget(JuntoGroupsActions oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.spheresVisible != _spheresVisible.value) {
+      _spheresVisible.value = widget.spheresVisible;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20,
-          ),
-          color: Theme.of(context).backgroundColor,
-          height: MediaQuery.of(context).size.height - 90,
-          child: Stack(
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 20,
+      ),
+      color: Theme.of(context).backgroundColor,
+      height: MediaQuery.of(context).size.height - 90,
+      child: ValueListenableBuilder<bool>(
+        valueListenable: _spheresVisible,
+        builder: (BuildContext context, bool snapshot, _) {
+          return Stack(
             children: <Widget>[
-              spheresVisible
-                  ? Spheres(changeGroup: widget.changeGroup)
-                  : Packs(
-                      userProfile: widget.userProfile,
-                      changeGroup: widget.changeGroup,
-                    ),
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                  height: 60,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Theme.of(context).backgroundColor,
-                      border: Border.all(
-                          color: Theme.of(context).dividerColor, width: .75)),
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(
-                              () {
-                                spheresVisible = false;
-                              },
-                            );
-                          },
-                          child: Container(
-                            color: Colors.transparent,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(
-                                  CustomIcons.packs,
-                                  size: 20,
-                                  color: spheresVisible
-                                      ? Theme.of(context).primaryColorLight
-                                      : Theme.of(context).primaryColorDark,
-                                ),
-                                const SizedBox(height: 7),
-                                Text(
-                                  'PACKS',
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w500,
-                                    color: spheresVisible
-                                        ? Theme.of(context).primaryColorLight
-                                        : Theme.of(context).primaryColorDark,
-                                    decoration: TextDecoration.none,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(
-                              () {
-                                spheresVisible = true;
-                              },
-                            );
-                          },
-                          child: Container(
-                            color: Colors.transparent,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(
-                                  CustomIcons.spheres,
-                                  size: 20,
-                                  color: spheresVisible
-                                      ? Theme.of(context).primaryColorDark
-                                      : Theme.of(context).primaryColorLight,
-                                ),
-                                const SizedBox(height: 7),
-                                Text(
-                                  'CIRCLES',
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w500,
-                                    color: spheresVisible
-                                        ? Theme.of(context).primaryColorDark
-                                        : Theme.of(context).primaryColorLight,
-                                    decoration: TextDecoration.none,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+              if (snapshot) Spheres(changeGroup: widget.changeGroup),
+              if (!snapshot)
+                Packs(
+                  userProfile: widget.userProfile,
+                  changeGroup: widget.changeGroup,
                 ),
-              )
+              Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: OverlayMenu(spheresVisible: _spheresVisible)),
             ],
-          ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class OverlayMenu extends StatelessWidget {
+  const OverlayMenu({
+    Key key,
+    @required this.spheresVisible,
+  }) : super(key: key);
+  final ValueNotifier<bool> spheresVisible;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 60,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Theme.of(context).backgroundColor,
+        border: Border.all(
+          color: Theme.of(context).dividerColor,
+          width: .75,
         ),
-      ],
+      ),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: GestureDetector(
+              onTap: () {
+                spheresVisible.value = false;
+              },
+              child: Container(
+                color: Colors.transparent,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(
+                      CustomIcons.packs,
+                      size: 20,
+                      color: spheresVisible.value
+                          ? Theme.of(context).primaryColorLight
+                          : Theme.of(context).primaryColorDark,
+                    ),
+                    const SizedBox(height: 7),
+                    Text(
+                      'PACKS',
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w500,
+                        color: spheresVisible.value
+                            ? Theme.of(context).primaryColorLight
+                            : Theme.of(context).primaryColorDark,
+                        decoration: TextDecoration.none,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: GestureDetector(
+              onTap: () => spheresVisible.value = true,
+              child: Container(
+                color: Colors.transparent,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Expanded(
+                      child: Icon(
+                        CustomIcons.spheres,
+                        size: 20,
+                        color: spheresVisible.value
+                            ? Theme.of(context).primaryColorDark
+                            : Theme.of(context).primaryColorLight,
+                      ),
+                    ),
+                    const SizedBox(height: 7),
+                    Text(
+                      'CIRCLES',
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w500,
+                        color: spheresVisible.value
+                            ? Theme.of(context).primaryColorDark
+                            : Theme.of(context).primaryColorLight,
+                        decoration: TextDecoration.none,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
