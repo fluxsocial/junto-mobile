@@ -9,7 +9,7 @@ import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_o
 import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_open/sphere_open_members.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
-import 'package:junto_beta_mobile/widgets/member_avatar.dart';
+import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/group_expressions.dart';
