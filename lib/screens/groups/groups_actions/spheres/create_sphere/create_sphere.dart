@@ -140,7 +140,7 @@ class CreateSphereState extends State<CreateSphere> {
     }
   }
 
-  void _sphereAddMember(UserProfile member) {
+  void sphereAddMember(UserProfile member) {
     _sphereMembers.add(member.address);
   }
 
@@ -347,7 +347,7 @@ class CreateSphereState extends State<CreateSphere> {
                   ),
                   CreateSpherePageTwo(
                     future: getUserRelationships(),
-                    addMember: _sphereAddMember,
+                    addMember: sphereAddMember,
                     removeMember: _sphereRemoveMember,
                     tabs: _tabs,
                   ),
