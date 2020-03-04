@@ -459,33 +459,6 @@ class _MemberDenAppbarState extends State<_MemberDenAppbar> {
                 ),
               ),
             ),
-            // Positioned(
-            //   top: MediaQuery.of(context).size.height * .2 + 5,
-            //   right: 10,
-            //   child: GestureDetector(
-            //     onTap: () {
-            //       widget.toggleMemberRelationships();
-            //     },
-            //     child: Container(
-            //       padding:
-            //           const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            //       decoration: BoxDecoration(
-            //         border: Border.all(
-            //             color: Theme.of(context).primaryColor, width: 1.5),
-            //         borderRadius: BorderRadius.circular(25),
-            //       ),
-            //       child: Row(
-            //         children: <Widget>[
-            //           const SizedBox(width: 14),
-            //           _displayRelationshipIndicator(context),
-            //           const SizedBox(width: 2),
-            //           Icon(Icons.keyboard_arrow_down,
-            //               size: 12, color: Theme.of(context).primaryColor)
-            //         ],
-            //       ),
-            //     ),
-            //   ),
-            // ),
           ],
         ),
       ),
