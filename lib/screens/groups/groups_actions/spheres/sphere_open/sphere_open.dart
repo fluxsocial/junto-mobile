@@ -7,11 +7,9 @@ import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_open/sphere_open_appbar.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_open/sphere_open_members.dart';
-import 'package:junto_beta_mobile/utils/junto_dialog.dart';
-import 'package:junto_beta_mobile/utils/junto_exception.dart';
-import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
+import 'package:junto_beta_mobile/widgets/member_avatar.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/group_expressions.dart';
@@ -33,10 +31,9 @@ class SphereOpen extends StatefulWidget {
 class SphereOpenState extends State<SphereOpen> with HideFab {
   final GlobalKey<SphereOpenState> _keyFlexibleSpace =
       GlobalKey<SphereOpenState>();
+
   String _userAddress;
-
   double _flexibleHeightSpace;
-
   final List<String> _tabs = <String>['ABOUT', 'EXPRESSIONS'];
 
   void _getFlexibleSpaceSize(_) {
@@ -71,9 +68,8 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   }
 
   Future<List<Users>> _getMembers() async {
-    return Provider.of<GroupRepo>(context, listen: false).getGroupMembers(
-      widget.group.address,
-    );
+    return Provider.of<GroupRepo>(context, listen: false)
+        .getGroupMembers(widget.group.address);
   }
 
   @override
@@ -158,19 +154,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                               child: Text(widget.group.groupData.name,
                                   style: Theme.of(context).textTheme.headline4),
                             ),
-                            const SizedBox(width: 15),
-                            Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Theme.of(context).primaryColor,
-                                    width: 1.5),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 5),
-                              alignment: Alignment.center,
-                              child: const Text('join circle'),
-                            )
                           ],
                         ),
                       ),
@@ -262,79 +245,9 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                           child: Row(children: <Widget>[
                             for (Users user in snapshot.data)
                               if (snapshot.data.indexOf(user) < 7)
-                                user.user.profilePicture.isNotEmpty
-                                    ? Container(
-                                        margin: const EdgeInsets.only(right: 5),
-                                        child: ClipOval(
-                                          child: CachedNetworkImage(
-                                            imageUrl:
-                                                user.user.profilePicture[0],
-                                            height: 28,
-                                            width: 28,
-                                            fit: BoxFit.cover,
-                                            placeholder: (BuildContext context,
-                                                String _) {
-                                              return Container(
-                                                alignment: Alignment.center,
-                                                height: 28.0,
-                                                width: 28.0,
-                                                decoration: BoxDecoration(
-                                                  gradient: LinearGradient(
-                                                    begin: Alignment.bottomLeft,
-                                                    end: Alignment.topRight,
-                                                    stops: const <double>[
-                                                      0.3,
-                                                      0.9
-                                                    ],
-                                                    colors: <Color>[
-                                                      Theme.of(context)
-                                                          .colorScheme
-                                                          .primary,
-                                                      Theme.of(context)
-                                                          .colorScheme
-                                                          .secondary,
-                                                    ],
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          100),
-                                                ),
-                                                child: Image.asset(
-                                                  'assets/images/junto-mobile__logo--white.png',
-                                                  height: 17,
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                      )
-                                    : Container(
-                                        alignment: Alignment.center,
-                                        height: 28.0,
-                                        width: 28.0,
-                                        margin: const EdgeInsets.only(right: 5),
-                                        decoration: BoxDecoration(
-                                          gradient: LinearGradient(
-                                            begin: Alignment.bottomLeft,
-                                            end: Alignment.topRight,
-                                            stops: const <double>[0.3, 0.9],
-                                            colors: <Color>[
-                                              Theme.of(context)
-                                                  .colorScheme
-                                                  .primary,
-                                              Theme.of(context)
-                                                  .colorScheme
-                                                  .secondary,
-                                            ],
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(100),
-                                        ),
-                                        child: Image.asset(
-                                          'assets/images/junto-mobile__logo--white.png',
-                                          height: 12,
-                                        ),
-                                      )
+                                MemberAvatar(
+                                    profilePicture: user.user.profilePicture,
+                                    diameter: 28),
                           ]),
                         ),
                         Container(
