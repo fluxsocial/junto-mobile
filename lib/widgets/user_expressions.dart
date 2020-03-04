@@ -90,20 +90,20 @@ class _UserExpressionsState extends State<UserExpressions> {
                           Row(
                             children: <Widget>[
                               GestureDetector(
-                                  onTap: () {
-                                    _switchColumnView('two');
-                                  },
+                                  onTap: () => _switchColumnView('two'),
                                   child: Container(
                                       child: Icon(CustomIcons.twocolumn,
                                           size: 20))),
                               const SizedBox(width: 10),
                               GestureDetector(
-                                  onTap: () {
-                                    _switchColumnView('single');
-                                  },
-                                  child: Container(
-                                      child: Icon(CustomIcons.singlecolumn,
-                                          size: 20))),
+                                onTap: () {
+                                  _switchColumnView('single');
+                                },
+                                child: Container(
+                                  child:
+                                      Icon(CustomIcons.singlecolumn, size: 20),
+                                ),
+                              ),
                             ],
                           )
                         ],
