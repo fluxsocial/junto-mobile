@@ -61,7 +61,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
 
   Future<void> getUserInformation() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-
     setState(() {
       _userAddress = prefs.getString('user_id');
     });
