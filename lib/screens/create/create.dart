@@ -179,7 +179,7 @@ class JuntoCreateState extends State<JuntoCreate>
       case 'EventForm':
         return formKey.currentState.validate();
         break;
-      case 'PhotoFrom':
+      case 'PhotoForm':
         return true;
         break;
       default:
