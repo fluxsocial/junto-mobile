@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
@@ -92,70 +92,11 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                 Column(
                   children: <Widget>[
                     JuntoDrawerItem(
-                      icon: _userProfile != null &&
-                              _userProfile.user.profilePicture.isNotEmpty
-                          ? Container(
-                              margin: const EdgeInsets.only(right: 32),
-                              child: ClipOval(
-                                child: CachedNetworkImage(
-                                  imageUrl: _userProfile.user.profilePicture[0],
-                                  height: 28,
-                                  width: 28,
-                                  fit: BoxFit.cover,
-                                  placeholder:
-                                      (BuildContext context, String _) {
-                                    return Container(
-                                      alignment: Alignment.center,
-                                      height: 28.0,
-                                      width: 28.0,
-                                      decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                          begin: Alignment.bottomLeft,
-                                          end: Alignment.topRight,
-                                          stops: const <double>[0.3, 0.9],
-                                          colors: <Color>[
-                                            Theme.of(context)
-                                                .colorScheme
-                                                .primary,
-                                            Theme.of(context)
-                                                .colorScheme
-                                                .secondary,
-                                          ],
-                                        ),
-                                        borderRadius:
-                                            BorderRadius.circular(100),
-                                      ),
-                                      child: Image.asset(
-                                        'assets/images/junto-mobile__logo--white.png',
-                                        height: 17,
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                            )
-                          : Container(
-                              alignment: Alignment.center,
-                              height: 28.0,
-                              width: 28.0,
-                              margin: const EdgeInsets.only(right: 32),
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.bottomLeft,
-                                  end: Alignment.topRight,
-                                  stops: const <double>[0.3, 0.9],
-                                  colors: <Color>[
-                                    Theme.of(context).colorScheme.primary,
-                                    Theme.of(context).colorScheme.secondary,
-                                  ],
-                                ),
-                                borderRadius: BorderRadius.circular(100),
-                              ),
-                              child: Image.asset(
-                                'assets/images/junto-mobile__logo--white.png',
-                                height: 12,
-                              ),
-                            ),
+                      icon: _userProfile != null
+                          ? MemberAvatar(
+                              profilePicture: _userProfile.user.profilePicture,
+                              diameter: 28)
+                          : const SizedBox(),
                       title: 'My Den',
                       onTap: () {
                         Navigator.of(context).push(
