@@ -73,23 +73,12 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
                 children: <Widget>[
                   Container(
                     height: MediaQuery.of(context).size.height * .2,
-                    padding:
-                        const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-                    alignment: Alignment.bottomLeft,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
-                        stops: const <double>[0.1, 0.9],
-                        colors: <Color>[
-                          Theme.of(context).colorScheme.secondaryVariant,
-                          Theme.of(context).colorScheme.primaryVariant,
-                        ],
-                      ),
-                      border: Border(
-                        bottom: BorderSide(
-                            color: Theme.of(context).dividerColor, width: .75),
-                      ),
+                    width: MediaQuery.of(context).size.width,
+                    child: Image.asset(
+                      _getBackgroundImageAsset(),
+                      height: MediaQuery.of(context).size.height * .2,
+                      width: MediaQuery.of(context).size.width,
+                      fit: BoxFit.cover,
                     ),
                   ),
                   Container(

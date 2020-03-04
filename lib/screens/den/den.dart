@@ -30,8 +30,6 @@ class JuntoDen extends StatefulWidget {
 class JuntoDenState extends State<JuntoDen>
     with HideFab, TickerProviderStateMixin {
   final List<String> _tabs = <String>['ABOUT', 'EXPRESSIONS'];
-  UserRepo _userProvider;
-  String _userAddress;
   UserData _userProfile;
   String _currentTheme;
 
@@ -39,9 +37,6 @@ class JuntoDenState extends State<JuntoDen>
 
   ScrollController _denController;
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
-  final AsyncMemoizer<List<ExpressionResponse>> _memoizer =
-      AsyncMemoizer<List<ExpressionResponse>>();
-
   MenuController menuController;
 
   @override
@@ -64,8 +59,6 @@ class JuntoDenState extends State<JuntoDen>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
-    _userProvider = Provider.of<UserRepo>(context, listen: false);
     getUserInformation();
   }
 
@@ -87,16 +80,9 @@ class JuntoDenState extends State<JuntoDen>
         jsonDecode(prefs.getString('user_data'));
 
     setState(() {
-      _userAddress = prefs.getString('user_id');
       _userProfile = UserData.fromMap(decodedUserData);
       _currentTheme = prefs.getString('current-theme');
     });
-  }
-
-  Future<List<ExpressionResponse>> getUsersExpressions() async {
-    return _memoizer.runOnce(
-      () => _userProvider.getUsersExpressions(_userAddress),
-    );
   }
 
   @override
@@ -209,35 +195,6 @@ class JuntoDenState extends State<JuntoDen>
           ),
         ),
       ),
-    );
-  }
-
-  /// Loads the user's personal expressions
-  FutureBuilder<List<ExpressionResponse>> _buildUserExpressions() {
-    return FutureBuilder<List<ExpressionResponse>>(
-      future: getUsersExpressions(),
-      builder: (BuildContext context,
-          AsyncSnapshot<List<ExpressionResponse>> snapshot) {
-        if (snapshot.hasError) {
-          return const Center(
-            child: Text('Hmm, something is up with our server'),
-          );
-        }
-        if (snapshot.hasData) {
-          return Container(
-            color: Theme.of(context).colorScheme.background,
-            child: TwoColumnListView(
-              data: snapshot.data,
-              userAddress: _userAddress,
-              privacyLayer: 'Public',
-              showComments: false,
-            ),
-          );
-        }
-        return Center(
-          child: JuntoProgressIndicator(),
-        );
-      },
     );
   }
 

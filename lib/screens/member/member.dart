@@ -305,10 +305,13 @@ class _MemberDenAppbarState extends State<_MemberDenAppbar> {
   final GlobalKey<_MemberDenAppbarState> _keyFlexibleSpace =
       GlobalKey<_MemberDenAppbarState>();
 
+  String _currentTheme;
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback(_getFlexibleSpaceSize);
+    getCurrentTheme();
   }
 
   double _flexibleHeightSpace;
@@ -322,6 +325,25 @@ class _MemberDenAppbarState extends State<_MemberDenAppbar> {
     setState(() {
       _flexibleHeightSpace = heightFlexibleSpace;
     });
+  }
+
+  Future<void> getCurrentTheme() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _currentTheme = prefs.getString('current-theme');
+    });
+  }
+
+  String _getBackgroundImageAsset() {
+    if (_currentTheme == 'rainbow' || _currentTheme == 'rainbow-night') {
+      return 'assets/images/junto-mobile__themes--rainbow.png';
+    } else if (_currentTheme == 'aqueous' || _currentTheme == 'aqueous-night') {
+      return 'assets/images/junto-mobile__themes--aqueous.png';
+    } else if (_currentTheme == 'royal' || _currentTheme == 'royal-night') {
+      return 'assets/images/junto-mobile__themes--royal.png';
+    } else {
+      return 'assets/images/junto-mobile__themes--rainbow.png';
+    }
   }
 
   Widget _displayRelationshipIndicator(BuildContext context) {
@@ -359,23 +381,12 @@ class _MemberDenAppbarState extends State<_MemberDenAppbar> {
                 children: <Widget>[
                   Container(
                     height: MediaQuery.of(context).size.height * .2,
-                    padding:
-                        const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-                    alignment: Alignment.bottomLeft,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
-                        stops: const <double>[0.1, 0.9],
-                        colors: <Color>[
-                          Theme.of(context).colorScheme.secondaryVariant,
-                          Theme.of(context).colorScheme.primaryVariant,
-                        ],
-                      ),
-                      border: Border(
-                        bottom: BorderSide(
-                            color: Theme.of(context).dividerColor, width: .75),
-                      ),
+                    width: MediaQuery.of(context).size.width,
+                    child: Image.asset(
+                      _getBackgroundImageAsset(),
+                      height: MediaQuery.of(context).size.height * .2,
+                      width: MediaQuery.of(context).size.width,
+                      fit: BoxFit.cover,
                     ),
                   ),
                   Container(
