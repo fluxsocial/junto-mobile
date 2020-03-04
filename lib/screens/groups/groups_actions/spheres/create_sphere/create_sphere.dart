@@ -130,13 +130,7 @@ class CreateSphereState extends State<CreateSphere> {
         duration: const Duration(milliseconds: 300),
       );
     } else {
-      JuntoDialog.showJuntoDialog(
-        context,
-        'Please ensure all fields are filled',
-        <Widget>[
-          DialogBack(),
-        ],
-      );
+      return;
     }
   }
 
@@ -167,10 +161,16 @@ class CreateSphereState extends State<CreateSphere> {
       child: Container(
         decoration: BoxDecoration(
           border: Border(
-            bottom: BorderSide(color: Theme.of(context).dividerColor, width: 1),
+            bottom: BorderSide(
+              color: Theme.of(context).dividerColor,
+              width: 1,
+            ),
           ),
         ),
-        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+        padding: const EdgeInsets.symmetric(
+          vertical: 15,
+          horizontal: 10,
+        ),
         child: InkWell(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -187,8 +187,10 @@ class CreateSphereState extends State<CreateSphere> {
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    Text(privacyDescription,
-                        style: Theme.of(context).textTheme.bodyText1)
+                    Text(
+                      privacyDescription,
+                      style: Theme.of(context).textTheme.bodyText1,
+                    )
                   ],
                 ),
               ),
@@ -198,14 +200,15 @@ class CreateSphereState extends State<CreateSphere> {
                 width: 22,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                      colors: _currentPrivacy == privacyLayer
-                          ? <Color>[
-                              Theme.of(context).colorScheme.secondary,
-                              Theme.of(context).colorScheme.primary
-                            ]
-                          : <Color>[Colors.white, Colors.white],
-                      begin: Alignment.bottomLeft,
-                      end: Alignment.topRight),
+                    colors: _currentPrivacy == privacyLayer
+                        ? <Color>[
+                            Theme.of(context).colorScheme.secondary,
+                            Theme.of(context).colorScheme.primary
+                          ]
+                        : <Color>[Colors.white, Colors.white],
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
+                  ),
                   border: Border.all(
                     color: Theme.of(context).dividerColor,
                     width: 2,
@@ -251,7 +254,9 @@ class CreateSphereState extends State<CreateSphere> {
                 onTap: () {
                   createSphereController.previousPage(
                     curve: Curves.easeIn,
-                    duration: const Duration(milliseconds: 300),
+                    duration: const Duration(
+                      milliseconds: 300,
+                    ),
                   );
                 },
                 child: Container(
@@ -259,14 +264,17 @@ class CreateSphereState extends State<CreateSphere> {
                   color: Colors.transparent,
                   width: 60,
                   alignment: Alignment.centerLeft,
-                  child: Icon(CustomIcons.back,
-                      size: 17, color: Theme.of(context).primaryColorDark),
+                  child: Icon(
+                    CustomIcons.back,
+                    size: 17,
+                    color: Theme.of(context).primaryColorDark,
+                  ),
                 ),
               ),
             if (_currentIndex == 0)
               Text(
                 'Create Circle',
-                style: Theme.of(context).textTheme.subtitle1,
+                style: Theme.of(context).textTheme.headline6,
               ),
             if (_currentIndex == 2)
               GestureDetector(
@@ -276,8 +284,10 @@ class CreateSphereState extends State<CreateSphere> {
                   padding: const EdgeInsets.only(right: 10),
                   width: 60,
                   alignment: Alignment.centerRight,
-                  child: Text('create',
-                      style: Theme.of(context).textTheme.caption),
+                  child: Text(
+                    'create',
+                    style: Theme.of(context).textTheme.caption,
+                  ),
                 ),
               ),
             if (_currentIndex != 2)
@@ -298,8 +308,10 @@ class CreateSphereState extends State<CreateSphere> {
                   padding: const EdgeInsets.only(right: 10),
                   width: 48,
                   alignment: Alignment.centerRight,
-                  child:
-                      Text('next', style: Theme.of(context).textTheme.caption),
+                  child: Text(
+                    'next',
+                    style: Theme.of(context).textTheme.caption,
+                  ),
                 ),
               )
           ],
@@ -309,7 +321,9 @@ class CreateSphereState extends State<CreateSphere> {
         preferredSize: const Size.fromHeight(.75),
         child: Container(
           height: .75,
-          decoration: BoxDecoration(color: Theme.of(context).dividerColor),
+          decoration: BoxDecoration(
+            color: Theme.of(context).dividerColor,
+          ),
         ),
       ),
     );

@@ -152,27 +152,38 @@ class _CreateSpherePageOneState extends State<CreateSpherePageOne> {
                 width: MediaQuery.of(context).size.width,
                 height: (MediaQuery.of(context).size.width / 3) * 2,
                 color: Theme.of(context).dividerColor,
-                child: Image.file(imageFile, fit: BoxFit.cover),
+                child: Image.file(
+                  imageFile,
+                  fit: BoxFit.cover,
+                ),
               ),
               GestureDetector(
                 onTap: _openChangePhotoModal,
                 child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 15,
+                    horizontal: 10,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.transparent,
                     border: Border(
                       bottom: BorderSide(
-                          color: Theme.of(context).dividerColor, width: .75),
+                        color: Theme.of(context).dividerColor,
+                        width: .75,
+                      ),
                     ),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text('Change photo',
-                          style: Theme.of(context).textTheme.caption),
-                      Icon(Icons.keyboard_arrow_right,
-                          color: Theme.of(context).primaryColorLight)
+                      Text(
+                        'Change Photo',
+                        style: Theme.of(context).textTheme.caption,
+                      ),
+                      Icon(
+                        Icons.keyboard_arrow_right,
+                        color: Theme.of(context).primaryColorLight,
+                      )
                     ],
                   ),
                 ),
@@ -181,6 +192,14 @@ class _CreateSpherePageOneState extends State<CreateSpherePageOne> {
           const SizedBox(height: 10),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: Theme.of(context).dividerColor,
+                  width: .75,
+                ),
+              ),
+            ),
             width: MediaQuery.of(context).size.width,
             child: TextFormField(
               validator: Validator.validateNonEmpty,
@@ -193,20 +212,29 @@ class _CreateSpherePageOneState extends State<CreateSpherePageOne> {
               }) =>
                   null,
               decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'Name of circle ',
-                  hintStyle: Theme.of(context).textTheme.subtitle1),
+                border: InputBorder.none,
+                hintText: 'Circle Name*',
+                hintStyle: Theme.of(context).textTheme.caption,
+              ),
               cursorColor: JuntoPalette.juntoGrey,
               cursorWidth: 2,
               maxLines: null,
               maxLength: 140,
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.caption,
               textInputAction: TextInputAction.done,
             ),
           ),
           const SizedBox(height: 10),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: Theme.of(context).dividerColor,
+                  width: .75,
+                ),
+              ),
+            ),
             child: TextFormField(
               validator: Validator.validateNonEmpty,
               controller: widget.sphereHandleController,
@@ -218,9 +246,10 @@ class _CreateSpherePageOneState extends State<CreateSpherePageOne> {
               }) =>
                   null,
               decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'Unique username',
-                  hintStyle: Theme.of(context).textTheme.caption),
+                border: InputBorder.none,
+                hintText: 'Unique Username*',
+                hintStyle: Theme.of(context).textTheme.caption,
+              ),
               cursorColor: Theme.of(context).primaryColorDark,
               cursorWidth: 2,
               maxLines: null,
@@ -232,17 +261,28 @@ class _CreateSpherePageOneState extends State<CreateSpherePageOne> {
           const SizedBox(height: 10),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: Theme.of(context).dividerColor,
+                  width: .75,
+                ),
+              ),
+            ),
             child: TextFormField(
+              buildCounter: (
+                BuildContext context, {
+                int currentLength,
+                int maxLength,
+                bool isFocused,
+              }) =>
+                  null,
               validator: Validator.validateNonEmpty,
               controller: widget.sphereDescriptionController,
               decoration: InputDecoration(
                 border: InputBorder.none,
-                hintText: 'About',
+                hintText: 'Bio / Purpose*',
                 hintStyle: Theme.of(context).textTheme.caption,
-                counterStyle: const TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                ),
               ),
               cursorColor: Theme.of(context).primaryColorDark,
               cursorWidth: 2,

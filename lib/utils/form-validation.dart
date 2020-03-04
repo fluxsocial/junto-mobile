@@ -1,7 +1,7 @@
 class Validator {
   static String validateNonEmpty(String value) {
     if (value == null || value.isEmpty) {
-      return 'This field cannot be left blank';
+      return 'Please fill this in';
     } else {
       return null;
     }
