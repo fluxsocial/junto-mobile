@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
@@ -15,6 +14,7 @@ import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/user_expressions.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:junto_beta_mobile/widgets/member_avatar.dart';
 
 class JuntoMember extends StatefulWidget {
   const JuntoMember({
@@ -440,54 +440,10 @@ class _MemberDenAppbarState extends State<_MemberDenAppbar> {
               top: MediaQuery.of(context).size.height * .2 - 30,
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: widget.profile.profilePicture.isNotEmpty
-                    ? ClipOval(
-                        child: Container(
-                          height: 60,
-                          width: 60,
-                          child: CachedNetworkImage(
-                            placeholder: (BuildContext context, String _) {
-                              return Container(
-                                height: 60,
-                                width: 60,
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    begin: Alignment.bottomLeft,
-                                    end: Alignment.topRight,
-                                    stops: const <double>[0.2, 0.9],
-                                    colors: <Color>[
-                                      Theme.of(context).colorScheme.secondary,
-                                      Theme.of(context).colorScheme.primary
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                            imageUrl: widget.profile.profilePicture[0],
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      )
-                    : Container(
-                        alignment: Alignment.center,
-                        height: 60.0,
-                        width: 60.0,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.bottomLeft,
-                            end: Alignment.topRight,
-                            stops: const <double>[0.3, 0.9],
-                            colors: <Color>[
-                              Theme.of(context).colorScheme.primary,
-                              Theme.of(context).colorScheme.secondary,
-                            ],
-                          ),
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        child: Image.asset(
-                            'assets/images/junto-mobile__logo--white.png',
-                            height: 20),
-                      ),
+                child: MemberAvatar(
+                  diameter: 60,
+                  profilePicture: widget.profile.profilePicture,
+                ),
               ),
             ),
           ],
