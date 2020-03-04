@@ -1,8 +1,7 @@
 import 'dart:convert';
 
 import 'package:async/async.dart' show AsyncMemoizer;
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:junto_beta_mobile/widgets/user_expressions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
@@ -195,7 +194,10 @@ class JuntoDenState extends State<JuntoDen>
                           children: <Widget>[
                             _buildAbout(context),
                             // public expressions of user
-                            _buildUserExpressions(),
+                            UserExpressions(
+                              privacy: 'Public',
+                              userProfile: _userProfile.user,
+                            )
                           ],
                         ),
                       ),

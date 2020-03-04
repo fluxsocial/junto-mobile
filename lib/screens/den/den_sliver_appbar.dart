@@ -109,20 +109,6 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
                                   color: Theme.of(context).primaryColor),
                             ),
                           ),
-                          const SizedBox(width: 15),
-                          GestureDetector(
-                            onTap: () {},
-                            child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 5),
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Theme.of(context).primaryColor,
-                                      width: 1.5),
-                                  borderRadius: BorderRadius.circular(25),
-                                ),
-                                child: Text('edit')),
-                          ),
                         ]),
                   ),
                 ],
