@@ -30,7 +30,7 @@ class JuntoDen extends StatefulWidget {
 
 class JuntoDenState extends State<JuntoDen>
     with HideFab, TickerProviderStateMixin {
-  final List<String> _tabs = <String>['About', 'Expressions'];
+  final List<String> _tabs = <String>['ABOUT', 'EXPRESSIONS'];
   UserRepo _userProvider;
   String _userAddress;
   UserData _userProfile;
@@ -153,7 +153,7 @@ class JuntoDenState extends State<JuntoDen>
                           (BuildContext context, bool innerBoxIsScrolled) {
                         return <Widget>[
                           JuntoDenSliverAppbar(
-                            name: _userProfile.user.name,
+                            profile: _userProfile,
                             currentTheme: _currentTheme,
                           ),
                           SliverPersistentHeader(
@@ -168,12 +168,19 @@ class JuntoDenState extends State<JuntoDen>
                                 tabs: <Widget>[
                                   for (String name in _tabs)
                                     Container(
-                                      margin: const EdgeInsets.only(right: 24),
+                                      margin: const EdgeInsets.only(right: 20),
                                       color: Theme.of(context)
                                           .colorScheme
                                           .background,
                                       child: Tab(
-                                        text: name,
+                                        child: Text(
+                                          name,
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w700,
+                                              color: Theme.of(context)
+                                                  .primaryColor),
+                                        ),
                                       ),
                                     ),
                                 ],
@@ -267,10 +274,6 @@ class JuntoDenState extends State<JuntoDen>
             ],
           ),
         ),
-        if (_userProfile.user.profilePicture.isNotEmpty)
-          _displayProfilePictures(
-            _userProfile.user.profilePicture,
-          ),
         Container(
           child: Text(
             _userProfile.user.bio,
@@ -305,43 +308,5 @@ class JuntoDenState extends State<JuntoDen>
     } else {
       return const SizedBox();
     }
-  }
-
-  Widget _displayProfilePictures(List<String> profilePictures) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 15),
-      child: CarouselSlider(
-        viewportFraction: 1.0,
-        height: MediaQuery.of(context).size.width - 20,
-        enableInfiniteScroll: false,
-        items: <Widget>[
-          Container(
-            padding: const EdgeInsets.only(right: 10),
-            width: MediaQuery.of(context).size.width,
-            child: CachedNetworkImage(
-              placeholder: (BuildContext context, String _) {
-                return Container(
-                  height: 120,
-                  width: 120,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.bottomLeft,
-                      end: Alignment.topRight,
-                      stops: const <double>[0.2, 0.9],
-                      colors: <Color>[
-                        Theme.of(context).colorScheme.secondary,
-                        Theme.of(context).colorScheme.primary
-                      ],
-                    ),
-                  ),
-                );
-              },
-              imageUrl: profilePictures[0],
-              fit: BoxFit.cover,
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }
