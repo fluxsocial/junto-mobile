@@ -16,9 +16,7 @@ class JuntoGroupsActions extends StatefulWidget {
   final bool spheresVisible;
 
   @override
-  State<StatefulWidget> createState() {
-    return JuntoGroupsActionsState();
-  }
+  State<StatefulWidget> createState() => JuntoGroupsActionsState();
 }
 
 class JuntoGroupsActionsState extends State<JuntoGroupsActions> {
@@ -41,36 +39,39 @@ class JuntoGroupsActionsState extends State<JuntoGroupsActions> {
           ),
           color: Theme.of(context).backgroundColor,
           height: MediaQuery.of(context).size.height - 90,
-          child: Stack(children: <Widget>[
-            spheresVisible
-                ? Spheres(changeGroup: widget.changeGroup)
-                : Packs(
-                    userProfile: widget.userProfile,
-                    changeGroup: widget.changeGroup,
-                  ),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Container(
-                height: 60,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Theme.of(context).backgroundColor,
-                    border: Border.all(
-                        color: Theme.of(context).dividerColor, width: .75)),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            spheresVisible = false;
-                          });
-                        },
-                        child: Container(
-                          color: Colors.transparent,
-                          child: Column(
+          child: Stack(
+            children: <Widget>[
+              spheresVisible
+                  ? Spheres(changeGroup: widget.changeGroup)
+                  : Packs(
+                      userProfile: widget.userProfile,
+                      changeGroup: widget.changeGroup,
+                    ),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  height: 60,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Theme.of(context).backgroundColor,
+                      border: Border.all(
+                          color: Theme.of(context).dividerColor, width: .75)),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(
+                              () {
+                                spheresVisible = false;
+                              },
+                            );
+                          },
+                          child: Container(
+                            color: Colors.transparent,
+                            child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Icon(
@@ -92,20 +93,23 @@ class JuntoGroupsActionsState extends State<JuntoGroupsActions> {
                                     decoration: TextDecoration.none,
                                   ),
                                 )
-                              ]),
+                              ],
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            spheresVisible = true;
-                          });
-                        },
-                        child: Container(
-                          color: Colors.transparent,
-                          child: Column(
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(
+                              () {
+                                spheresVisible = true;
+                              },
+                            );
+                          },
+                          child: Container(
+                            color: Colors.transparent,
+                            child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Icon(
@@ -116,24 +120,28 @@ class JuntoGroupsActionsState extends State<JuntoGroupsActions> {
                                       : Theme.of(context).primaryColorLight,
                                 ),
                                 const SizedBox(height: 7),
-                                Text('CIRCLES',
-                                    style: TextStyle(
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.w500,
-                                        color: spheresVisible
-                                            ? Theme.of(context).primaryColorDark
-                                            : Theme.of(context)
-                                                .primaryColorLight,
-                                        decoration: TextDecoration.none))
-                              ]),
+                                Text(
+                                  'CIRCLES',
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w500,
+                                    color: spheresVisible
+                                        ? Theme.of(context).primaryColorDark
+                                        : Theme.of(context).primaryColorLight,
+                                    decoration: TextDecoration.none,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            )
-          ]),
+              )
+            ],
+          ),
         ),
       ],
     );
