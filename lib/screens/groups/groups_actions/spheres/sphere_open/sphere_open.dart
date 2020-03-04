@@ -14,7 +14,7 @@ import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:junto_beta_mobile/widgets/group_expressions.dart';
+import 'package:junto_beta_mobile/widgets/custom_feeds/group_expressions.dart';
 
 class SphereOpen extends StatefulWidget {
   const SphereOpen({

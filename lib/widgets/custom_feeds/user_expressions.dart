@@ -5,41 +5,42 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/widgets/custom_listview.dart';
+import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
 
 /// Linear list of expressions created by the given [userProfile].
-class GroupExpressions extends StatefulWidget {
-  const GroupExpressions({
+class UserExpressions extends StatefulWidget {
+  const UserExpressions({
     Key key,
-    @required this.group,
-    @required this.userAddress,
+    @required this.userProfile,
+    @required this.privacy,
   }) : super(key: key);
 
-  /// Group
-  final Group group;
-  final String userAddress;
+  /// [UserProfile] of the user
+  final UserProfile userProfile;
+
+  /// Either Public or Private;
+  final String privacy;
 
   @override
-  _GroupExpressionsState createState() => _GroupExpressionsState();
+  _UserExpressionsState createState() => _UserExpressionsState();
 }
 
-class _GroupExpressionsState extends State<GroupExpressions> {
-  bool twoColumnView = true;
-
-  final AsyncMemoizer<List<ExpressionResponse>> _memoizer =
+class _UserExpressionsState extends State<UserExpressions> {
+  UserRepo _userProvider;
+  AsyncMemoizer<List<ExpressionResponse>> memoizer =
       AsyncMemoizer<List<ExpressionResponse>>();
 
-  Future<List<ExpressionResponse>> _getGroupExpressions() async {
-    return _memoizer.runOnce(
-      () => Provider.of<GroupRepo>(context, listen: false).getGroupExpressions(
-        widget.group.address,
-        GroupExpressionQueryParams(
-            creatorExpressions: true,
-            directExpressions: true,
-            directExpressionPaginationPosition: 0,
-            creatorExpressionsPaginationPosition: 0),
-      ),
-    );
+  bool twoColumnView = true;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _userProvider = Provider.of<UserRepo>(context);
+  }
+
+  Future<List<ExpressionResponse>> getExpressions() {
+    return memoizer.runOnce(
+        () => _userProvider.getUsersExpressions(widget.userProfile.address));
   }
 
   void _switchColumnView(String columnType) {
@@ -56,7 +57,7 @@ class _GroupExpressionsState extends State<GroupExpressions> {
   Widget build(BuildContext context) {
     // public expressions of user
     return FutureBuilder<List<ExpressionResponse>>(
-      future: _getGroupExpressions(),
+      future: getExpressions(),
       builder: (
         BuildContext context,
         AsyncSnapshot<List<ExpressionResponse>> snapshot,
@@ -90,12 +91,10 @@ class _GroupExpressionsState extends State<GroupExpressions> {
                             Row(
                               children: <Widget>[
                                 GestureDetector(
-                                  onTap: () => _switchColumnView('two'),
-                                  child: Container(
-                                    child:
-                                        Icon(CustomIcons.twocolumn, size: 20),
-                                  ),
-                                ),
+                                    onTap: () => _switchColumnView('two'),
+                                    child: Container(
+                                        child: Icon(CustomIcons.twocolumn,
+                                            size: 20))),
                                 const SizedBox(width: 10),
                                 GestureDetector(
                                   onTap: () {
@@ -119,13 +118,13 @@ class _GroupExpressionsState extends State<GroupExpressions> {
                               : CrossFadeState.showSecond,
                           duration: const Duration(milliseconds: 200),
                           firstChild: TwoColumnListView(
-                            userAddress: widget.userAddress,
+                            userAddress: widget.userProfile.address,
                             data: snapshot.data,
                             privacyLayer: 'Public',
                             showComments: false,
                           ),
                           secondChild: SingleColumnListView(
-                            userAddress: widget.userAddress,
+                            userAddress: widget.userProfile.address,
                             data: snapshot.data,
                             privacyLayer: 'Public',
                             showComments: false,

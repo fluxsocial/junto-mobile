@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
@@ -13,7 +12,7 @@ import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/member/member_appbar.dart';
 import 'package:junto_beta_mobile/screens/member/member_relationships.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
-import 'package:junto_beta_mobile/widgets/user_expressions.dart';
+import 'package:junto_beta_mobile/widgets/custom_feeds/user_expressions.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
