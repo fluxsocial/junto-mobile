@@ -153,14 +153,6 @@ class CreateSphereState extends State<CreateSphere> {
       children: <Widget>[
         _spherePrivacy('Public',
             'Anyone can join this sphere, read its expressions and share to it'),
-        // _spherePrivacy(
-        //     'Shared',
-        //     'Only members can read expressions '
-        //         'and share to it. Facilitators can invite members or accept their request to join.'),
-        // _spherePrivacy(
-        //     'Private',
-        //     'Members must be invited into this sphere. This sphere is only searchable by members.'
-        //         ' Only members can read expressions '),
       ],
     );
   }

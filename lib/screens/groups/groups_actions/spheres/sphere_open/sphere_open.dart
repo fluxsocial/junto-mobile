@@ -34,6 +34,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   final GlobalKey<SphereOpenState> _keyFlexibleSpace =
       GlobalKey<SphereOpenState>();
   String _userAddress;
+
   double _flexibleHeightSpace;
 
   final List<String> _tabs = <String>['ABOUT', 'EXPRESSIONS'];
@@ -69,38 +70,10 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     });
   }
 
-  Future<void> _getMembers() async {
-    try {
-      JuntoLoader.showLoader(context);
-      final List<Users> _members =
-          await Provider.of<GroupRepo>(context, listen: false).getGroupMembers(
-        widget.group.address,
-      );
-      JuntoLoader.hide();
-      Navigator.push(
-        context,
-        CupertinoPageRoute<dynamic>(
-          builder: (BuildContext context) {
-            return SphereOpenMembers(
-              group: widget.group,
-              users: _members,
-            );
-          },
-        ),
-      );
-    } on JuntoException catch (error) {
-      JuntoLoader.hide();
-      JuntoDialog.showJuntoDialog(
-        context,
-        error.message,
-        <Widget>[
-          FlatButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Ok'),
-          )
-        ],
-      );
-    }
+  Future<List<Users>> _getMembers() async {
+    return Provider.of<GroupRepo>(context, listen: false).getGroupMembers(
+      widget.group.address,
+    );
   }
 
   @override
@@ -197,7 +170,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                                   horizontal: 10, vertical: 5),
                               alignment: Alignment.center,
                               child: const Text('join circle'),
-                            ),
+                            )
                           ],
                         ),
                       ),
@@ -249,30 +222,135 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     return ListView(
       physics: const ClampingScrollPhysics(),
       children: <Widget>[
-        GestureDetector(
-          onTap: () => _getMembers(),
-          child: Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: JuntoStyles.horizontalPadding,
-              vertical: 15,
-            ),
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-              border: Border(
-                bottom: BorderSide(
-                  color: Theme.of(context).dividerColor,
-                  width: .75,
-                ),
-              ),
-            ),
-            child: Container(
-              child: Text(
-                'Members',
-                style: Theme.of(context).textTheme.subtitle2,
-              ),
-            ),
-          ),
-        ),
+        FutureBuilder<List<Users>>(
+            future: _getMembers(),
+            builder:
+                (BuildContext context, AsyncSnapshot<List<Users>> snapshot) {
+              if (snapshot.hasData) {
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute<dynamic>(
+                        builder: (BuildContext context) => SphereOpenMembers(
+                          group: widget.group,
+                          users: snapshot.data,
+                        ),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: JuntoStyles.horizontalPadding,
+                      vertical: 15,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Theme.of(context).dividerColor,
+                          width: .75,
+                        ),
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          color: Colors.transparent,
+                          margin: const EdgeInsets.only(bottom: 10),
+                          child: Row(children: <Widget>[
+                            for (Users user in snapshot.data)
+                              if (snapshot.data.indexOf(user) < 7)
+                                user.user.profilePicture.isNotEmpty
+                                    ? Container(
+                                        margin: const EdgeInsets.only(right: 5),
+                                        child: ClipOval(
+                                          child: CachedNetworkImage(
+                                            imageUrl:
+                                                user.user.profilePicture[0],
+                                            height: 28,
+                                            width: 28,
+                                            fit: BoxFit.cover,
+                                            placeholder: (BuildContext context,
+                                                String _) {
+                                              return Container(
+                                                alignment: Alignment.center,
+                                                height: 28.0,
+                                                width: 28.0,
+                                                decoration: BoxDecoration(
+                                                  gradient: LinearGradient(
+                                                    begin: Alignment.bottomLeft,
+                                                    end: Alignment.topRight,
+                                                    stops: const <double>[
+                                                      0.3,
+                                                      0.9
+                                                    ],
+                                                    colors: <Color>[
+                                                      Theme.of(context)
+                                                          .colorScheme
+                                                          .primary,
+                                                      Theme.of(context)
+                                                          .colorScheme
+                                                          .secondary,
+                                                    ],
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          100),
+                                                ),
+                                                child: Image.asset(
+                                                  'assets/images/junto-mobile__logo--white.png',
+                                                  height: 17,
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      )
+                                    : Container(
+                                        alignment: Alignment.center,
+                                        height: 28.0,
+                                        width: 28.0,
+                                        margin: const EdgeInsets.only(right: 5),
+                                        decoration: BoxDecoration(
+                                          gradient: LinearGradient(
+                                            begin: Alignment.bottomLeft,
+                                            end: Alignment.topRight,
+                                            stops: const <double>[0.3, 0.9],
+                                            colors: <Color>[
+                                              Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
+                                              Theme.of(context)
+                                                  .colorScheme
+                                                  .secondary,
+                                            ],
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(100),
+                                        ),
+                                        child: Image.asset(
+                                          'assets/images/junto-mobile__logo--white.png',
+                                          height: 12,
+                                        ),
+                                      )
+                          ]),
+                        ),
+                        Container(
+                          child: Text(
+                            snapshot.data.length.toString() + ' Members',
+                            style: Theme.of(context).textTheme.subtitle2,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              } else {
+                return const SizedBox();
+              }
+            }),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child: Column(
