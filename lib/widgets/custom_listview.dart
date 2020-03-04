@@ -21,6 +21,8 @@ class TwoColumnListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
+      shrinkWrap: true,
+      physics: const ClampingScrollPhysics(),
       children: <Widget>[
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -166,6 +168,8 @@ class SingleColumnListView extends StatelessWidget {
     return Container(
       color: Theme.of(context).backgroundColor,
       child: ListView(
+        shrinkWrap: true,
+        physics: const ClampingScrollPhysics(),
         children: <Widget>[
           for (int index = 0; index < data.length + 1; index++)
             if (index == data.length)
