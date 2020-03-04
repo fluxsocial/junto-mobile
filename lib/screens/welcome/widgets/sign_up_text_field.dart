@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class SignUpTextField extends StatelessWidget {
+class SignUpTextField extends StatefulWidget {
   const SignUpTextField({
     Key key,
     @required this.valueController,
@@ -23,15 +23,23 @@ class SignUpTextField extends StatelessWidget {
   final bool obscureText;
 
   @override
+  _SignUpTextFieldState createState() => _SignUpTextFieldState();
+}
+
+class _SignUpTextFieldState extends State<SignUpTextField> {
+  bool temporarilyVisible = false;
+
+  @override
   Widget build(BuildContext context) {
     return TextField(
-      controller: valueController,
+      controller: widget.valueController,
       cursorColor: Colors.white70,
       decoration: InputDecoration(
         enabledBorder: InputBorder.none,
         focusedBorder: InputBorder.none,
         labelStyle: TextStyle(color: Colors.green),
-        hintText: hint,
+        hintText: widget.hint,
+        suffix: _visibilityIconIfObscured(),
         hintStyle: const TextStyle(
           color: Colors.white70,
           fontSize: 20,
@@ -46,16 +54,35 @@ class SignUpTextField extends StatelessWidget {
         fontSize: 20,
         fontWeight: FontWeight.w500,
       ),
-      maxLines: maxLines,
-      maxLength: maxLength,
-      textCapitalization: textCapitalization,
+      maxLines: widget.maxLines,
+      maxLength: widget.maxLength,
+      textCapitalization: widget.textCapitalization,
       textInputAction: TextInputAction.next,
-      keyboardType: keyboardType,
+      keyboardType: widget.obscureText
+          ? TextInputType.visiblePassword
+          : widget.keyboardType,
       onSubmitted: (_) {
-        onSubmit();
+        widget.onSubmit();
       },
       keyboardAppearance: Theme.of(context).brightness,
-      obscureText: obscureText,
+      obscureText: widget.obscureText && !temporarilyVisible,
     );
+  }
+
+  /// this will be visible only when focus is on or some text is inside
+  Widget _visibilityIconIfObscured() {
+    return widget.obscureText
+        ? IconButton(
+            icon: Icon(
+              temporarilyVisible ? Icons.visibility_off : Icons.visibility,
+              color: Colors.white70,
+            ),
+            onPressed: () {
+              setState(() {
+                temporarilyVisible = !temporarilyVisible;
+              });
+            },
+          )
+        : null;
   }
 }
