@@ -62,15 +62,30 @@ class JuntoDrawerState extends State<JuntoDrawer> {
     }
   }
 
+  void _navigateToScreen(Widget screen) {
+    Navigator.of(context).push(FadeRoute<dynamic>(child: screen));
+    return;
+  }
+
+  Future<void> _logout() async {
+    await Provider.of<AuthRepo>(
+      context,
+      listen: false,
+    ).logoutUser();
+    _navigateToScreen(Welcome());
+  }
+
+  void onPanUpdate(DragUpdateDetails details) {
+    //on swiping from left to right
+    if (details.delta.dx < 6) {
+      Provider.of<MenuController>(context, listen: false).toggle();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onPanUpdate: (DragUpdateDetails details) {
-        //on swiping from left to right
-        if (details.delta.dx < 6) {
-          Provider.of<MenuController>(context, listen: false).toggle();
-        }
-      },
+      onPanUpdate: onPanUpdate,
       child: Stack(
         children: <Widget>[
           Container(
