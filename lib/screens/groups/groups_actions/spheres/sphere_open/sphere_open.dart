@@ -33,17 +33,10 @@ class SphereOpen extends StatefulWidget {
 class SphereOpenState extends State<SphereOpen> with HideFab {
   final GlobalKey<SphereOpenState> _keyFlexibleSpace =
       GlobalKey<SphereOpenState>();
-
   String _userAddress;
-
-  @override
-  void initState() {
-    super.initState();
-    print(widget.group.address);
-    WidgetsBinding.instance.addPostFrameCallback(_getFlexibleSpaceSize);
-  }
-
   double _flexibleHeightSpace;
+
+  final List<String> _tabs = <String>['ABOUT', 'EXPRESSIONS'];
 
   void _getFlexibleSpaceSize(_) {
     final RenderBox renderBoxFlexibleSpace =
@@ -54,6 +47,18 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     setState(() {
       _flexibleHeightSpace = heightFlexibleSpace;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback(_getFlexibleSpaceSize);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    getUserInformation();
   }
 
   Future<void> getUserInformation() async {
@@ -97,8 +102,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
       );
     }
   }
-
-  final List<String> _tabs = <String>['ABOUT', 'EXPRESSIONS'];
 
   @override
   Widget build(BuildContext context) {
@@ -178,10 +181,22 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Container(
-                              width: MediaQuery.of(context).size.width * .7,
+                            Flexible(
                               child: Text(widget.group.groupData.name,
                                   style: Theme.of(context).textTheme.headline4),
+                            ),
+                            const SizedBox(width: 15),
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Theme.of(context).primaryColor,
+                                    width: 1.5),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              alignment: Alignment.center,
+                              child: const Text('join circle'),
                             ),
                           ],
                         ),
