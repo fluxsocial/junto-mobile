@@ -65,31 +65,36 @@ class CreateLongformState extends State<CreateLongform> {
               children: <Widget>[
                 Container(
                   child: TextField(
-                      controller: _titleController,
-                      textInputAction: TextInputAction.done,
-                      decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'write a title (optional)',
-                          hintStyle: Theme.of(context).textTheme.headline6),
-                      cursorColor: JuntoPalette.juntoGrey,
-                      cursorWidth: 2,
-                      maxLines: null,
-                      style: Theme.of(context).textTheme.headline6),
+                    controller: _titleController,
+                    textInputAction: TextInputAction.done,
+                    decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Write a title (optional)',
+                        hintStyle: Theme.of(context).textTheme.headline6),
+                    cursorColor: JuntoPalette.juntoGrey,
+                    cursorWidth: 2,
+                    maxLines: null,
+                    style: Theme.of(context).textTheme.headline6,
+                    keyboardAppearance: Theme.of(context).brightness,
+                  ),
                 ),
                 Container(
                   constraints: BoxConstraints(
                     minHeight: MediaQuery.of(context).size.height * .7,
                   ),
                   child: TextField(
-                      controller: _bodyController,
-                      textInputAction: TextInputAction.done,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                      ),
-                      cursorColor: Theme.of(context).primaryColorLight,
-                      cursorWidth: 2,
-                      maxLines: null,
-                      style: Theme.of(context).textTheme.caption),
+                    controller: _bodyController,
+                    textInputAction: TextInputAction.done,
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'Start typing...',
+                    ),
+                    cursorColor: Theme.of(context).primaryColorLight,
+                    cursorWidth: 2,
+                    maxLines: null,
+                    style: Theme.of(context).textTheme.caption,
+                    keyboardAppearance: Theme.of(context).brightness,
+                  ),
                 ),
               ],
             ),
