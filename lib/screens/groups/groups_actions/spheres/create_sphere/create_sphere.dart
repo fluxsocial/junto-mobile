@@ -85,7 +85,6 @@ class CreateSphereState extends State<CreateSphere> {
     try {
       await Provider.of<GroupRepo>(context, listen: false).createSphere(sphere);
       JuntoLoader.hide();
-      widget.refreshSpheres();
       Navigator.pop(context);
     } on JuntoException catch (error) {
       JuntoLoader.hide();

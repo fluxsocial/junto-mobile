@@ -1,20 +1,53 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
-class JuntoDenSliverAppbar extends StatelessWidget {
+class JuntoDenSliverAppbar extends StatefulWidget {
   const JuntoDenSliverAppbar(
-      {Key key, @required this.name, @required this.currentTheme})
+      {Key key, @required this.profile, @required this.currentTheme})
       : super(key: key);
 
-  final String name;
+  final UserData profile;
   final String currentTheme;
 
+  @override
+  State<StatefulWidget> createState() {
+    return JuntoDenSliverAppbarState();
+  }
+}
+
+class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
+  double _flexibleHeightSpace;
+  final GlobalKey<JuntoDenSliverAppbarState> _keyFlexibleSpace =
+      GlobalKey<JuntoDenSliverAppbarState>();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback(_getFlexibleSpaceSize);
+  }
+
+  void _getFlexibleSpaceSize(_) {
+    final RenderBox renderBoxFlexibleSpace =
+        _keyFlexibleSpace.currentContext.findRenderObject();
+    final Size sizeFlexibleSpace = renderBoxFlexibleSpace.size;
+    final double heightFlexibleSpace = sizeFlexibleSpace.height;
+
+    setState(() {
+      _flexibleHeightSpace = heightFlexibleSpace;
+    });
+  }
+
   String _getBackgroundImageAsset() {
-    if (currentTheme == 'rainbow' || currentTheme == 'rainbow-night') {
+    if (widget.currentTheme == 'rainbow' ||
+        widget.currentTheme == 'rainbow-night') {
       return 'assets/images/junto-mobile__themes--rainbow.png';
-    } else if (currentTheme == 'aqueous' || currentTheme == 'aqueous-night') {
+    } else if (widget.currentTheme == 'aqueous' ||
+        widget.currentTheme == 'aqueous-night') {
       return 'assets/images/junto-mobile__themes--aqueous.png';
-    } else if (currentTheme == 'royal' || currentTheme == 'royal-night') {
+    } else if (widget.currentTheme == 'royal' ||
+        widget.currentTheme == 'royal-night') {
       return 'assets/images/junto-mobile__themes--royal.png';
     } else {
       return 'assets/images/junto-mobile__themes--rainbow.png';
@@ -35,52 +68,106 @@ class JuntoDenSliverAppbar extends StatelessWidget {
         background: Stack(
           children: <Widget>[
             Container(
-              height: MediaQuery.of(context).size.height * .24,
-              width: MediaQuery.of(context).size.width,
-              child: Image.asset(
-                _getBackgroundImageAsset(),
-                height: MediaQuery.of(context).size.height * .24,
-                width: MediaQuery.of(context).size.width,
-                fit: BoxFit.cover,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    height: MediaQuery.of(context).size.height * .2,
+                    width: MediaQuery.of(context).size.width,
+                    child: Image.asset(
+                      _getBackgroundImageAsset(),
+                      height: MediaQuery.of(context).size.height * .2,
+                      width: MediaQuery.of(context).size.width,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Container(
+                    key: _keyFlexibleSpace,
+                    margin: const EdgeInsets.only(top: 30),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Flexible(
+                          child: Text(
+                            widget.profile.user.name,
+                            style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.w700,
+                                color: Theme.of(context).primaryColor),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  height: MediaQuery.of(context).size.height * .24,
-                  padding:
-                      const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-                  alignment: Alignment.bottomLeft,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      const SizedBox(),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          Flexible(
-                            child: Text(
-                              name,
-                              style: const TextStyle(
-                                fontSize: 28,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,
+            Positioned(
+              top: MediaQuery.of(context).size.height * .2 - 30,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: widget.profile.user.profilePicture.isNotEmpty
+                    ? ClipOval(
+                        child: CachedNetworkImage(
+                          imageUrl: widget.profile.user.profilePicture[0],
+                          height: 60,
+                          width: 60,
+                          fit: BoxFit.cover,
+                          placeholder: (BuildContext context, String _) {
+                            return Container(
+                              alignment: Alignment.center,
+                              height: 60.0,
+                              width: 60.0,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.bottomLeft,
+                                  end: Alignment.topRight,
+                                  stops: const <double>[0.3, 0.9],
+                                  colors: <Color>[
+                                    Theme.of(context).colorScheme.primary,
+                                    Theme.of(context).colorScheme.secondary,
+                                  ],
+                                ),
+                                borderRadius: BorderRadius.circular(100),
                               ),
-                            ),
+                              child: Image.asset(
+                                'assets/images/junto-mobile__logo--white.png',
+                                height: 17,
+                              ),
+                            );
+                          },
+                        ),
+                      )
+                    : Container(
+                        alignment: Alignment.center,
+                        height: 60.0,
+                        width: 60.0,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.bottomLeft,
+                            end: Alignment.topRight,
+                            stops: const <double>[0.3, 0.9],
+                            colors: <Color>[
+                              Theme.of(context).colorScheme.primary,
+                              Theme.of(context).colorScheme.secondary,
+                            ],
                           ),
-                        ],
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        child: Image.asset(
+                            'assets/images/junto-mobile__logo--white.png',
+                            height: 20),
                       ),
-                    ],
-                  ),
-                ),
-              ],
+              ),
             ),
           ],
         ),
       ),
-      expandedHeight: MediaQuery.of(context).size.height * .24,
+      expandedHeight: _flexibleHeightSpace == null
+          ? 1000
+          : _flexibleHeightSpace + MediaQuery.of(context).size.height * .2,
       forceElevated: false,
     );
   }

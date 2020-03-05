@@ -23,7 +23,12 @@ class JuntoAppBarDelegate extends SliverPersistentHeaderDelegate {
         ),
       ),
       width: MediaQuery.of(context).size.width,
-      child: _tabBar,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          _tabBar,
+        ],
+      ),
     );
   }
 

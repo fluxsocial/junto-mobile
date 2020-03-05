@@ -108,11 +108,15 @@ class _SignInState extends State<SignIn> {
         children: <Widget>[
           const SizedBox(height: 70),
           GestureDetector(
+            behavior: HitTestBehavior.opaque,
             onTap: () {
               widget.signInController.previousPage(
                 curve: Curves.easeIn,
                 duration: const Duration(milliseconds: 300),
               );
+              if (FocusScope.of(context).hasFocus) {
+                FocusScope.of(context).unfocus();
+              }
             },
             child: Container(
               width: 38,
