@@ -41,3 +41,26 @@ class JuntoDrawerItem extends StatelessWidget {
     );
   }
 }
+
+class JuntoDrawerIcon extends StatelessWidget {
+  const JuntoDrawerIcon({
+    Key key,
+    @required this.icon,
+    this.size = 24.0,
+  }) : super(key: key);
+  final IconData icon;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 60,
+      alignment: Alignment.centerLeft,
+      child: Icon(
+        icon,
+        color: Colors.white,
+        size: size,
+      ),
+    );
+  }
+}
