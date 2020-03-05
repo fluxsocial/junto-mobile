@@ -6,10 +6,9 @@ import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_open/sphere_open_appbar.dart';
-import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_open/sphere_open_members.dart';
+import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_open/sphere_open_about.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
-import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/group_expressions.dart';
@@ -86,7 +85,10 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
         child: NestedScrollView(
           body: TabBarView(
             children: <Widget>[
-              _buildAboutView(),
+              SphereOpenAbout(
+                getMembers: _getMembers(),
+                group: widget.group,
+              ),
               if (widget.group.address != null)
                 GroupExpressions(
                   group: widget.group,
@@ -95,13 +97,21 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
             ],
           ),
           physics: const ClampingScrollPhysics(),
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          headerSliverBuilder: (
+            BuildContext context,
+            bool innerBoxIsScrolled,
+          ) {
             return <Widget>[
               SliverAppBar(
                 brightness: Brightness.light,
                 automaticallyImplyLeading: false,
                 primary: false,
-                actions: const <Widget>[SizedBox(height: 0, width: 0)],
+                actions: const <Widget>[
+                  SizedBox(
+                    height: 0,
+                    width: 0,
+                  ),
+                ],
                 backgroundColor: Theme.of(context).colorScheme.background,
                 pinned: false,
                 flexibleSpace: FlexibleSpaceBar(
@@ -123,10 +133,11 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                                 ),
                               ),
                               alignment: Alignment.center,
-                              child: Icon(CustomIcons.spheres,
-                                  size: 60,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary),
+                              child: Icon(
+                                CustomIcons.spheres,
+                                size: 60,
+                                color: Theme.of(context).colorScheme.onPrimary,
+                              ),
                             )
                           : CachedNetworkImage(
                               imageUrl: widget.group.groupData.photo,
@@ -134,10 +145,11 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                               height: MediaQuery.of(context).size.height * .3,
                               placeholder: (BuildContext context, String _) {
                                 return Container(
-                                    color: Theme.of(context).dividerColor,
-                                    width: MediaQuery.of(context).size.width,
-                                    height: MediaQuery.of(context).size.height *
-                                        .3);
+                                  color: Theme.of(context).dividerColor,
+                                  width: MediaQuery.of(context).size.width,
+                                  height:
+                                      MediaQuery.of(context).size.height * .3,
+                                );
                               },
                               fit: BoxFit.cover),
                       Container(
@@ -150,8 +162,10 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Flexible(
-                              child: Text(widget.group.groupData.name,
-                                  style: Theme.of(context).textTheme.headline4),
+                              child: Text(
+                                widget.group.groupData.name,
+                                style: Theme.of(context).textTheme.headline4,
+                              ),
                             ),
                           ],
                         ),
@@ -183,9 +197,10 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                             child: Text(
                               name,
                               style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w700,
-                                  color: Theme.of(context).primaryColor),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                                color: Theme.of(context).primaryColor,
+                              ),
                             ),
                           ),
                         ),
@@ -197,86 +212,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
           },
         ),
       ),
-    );
-  }
-
-  Widget _buildAboutView() {
-    return ListView(
-      physics: const ClampingScrollPhysics(),
-      children: <Widget>[
-        FutureBuilder<List<Users>>(
-            future: _getMembers(),
-            builder:
-                (BuildContext context, AsyncSnapshot<List<Users>> snapshot) {
-              if (snapshot.hasData) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute<dynamic>(
-                        builder: (BuildContext context) => SphereOpenMembers(
-                          group: widget.group,
-                          users: snapshot.data,
-                        ),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: JuntoStyles.horizontalPadding,
-                      vertical: 15,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Theme.of(context).dividerColor,
-                          width: .75,
-                        ),
-                      ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          color: Colors.transparent,
-                          margin: const EdgeInsets.only(bottom: 10),
-                          child: Row(children: <Widget>[
-                            for (Users user in snapshot.data)
-                              if (snapshot.data.indexOf(user) < 7)
-                                MemberAvatar(
-                                    profilePicture: user.user.profilePicture,
-                                    diameter: 28),
-                          ]),
-                        ),
-                        Container(
-                          child: Text(
-                            snapshot.data.length.toString() + ' Members',
-                            style: Theme.of(context).textTheme.subtitle2,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              } else {
-                return const SizedBox();
-              }
-            }),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text('Bio / Purpose',
-                  style: Theme.of(context).textTheme.subtitle2),
-              const SizedBox(height: 10),
-              Text(widget.group.groupData.description,
-                  style: Theme.of(context).textTheme.caption)
-            ],
-          ),
-        ),
-      ],
     );
   }
 }
