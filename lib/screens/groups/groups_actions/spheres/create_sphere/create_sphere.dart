@@ -125,6 +125,9 @@ class CreateSphereState extends State<CreateSphere> {
 
   void _validateSphereCreation() {
     if (_formKey.currentState.validate()) {
+      if (FocusScope.of(context).hasFocus) {
+        FocusScope.of(context).unfocus();
+      }
       createSphereController.nextPage(
         curve: Curves.easeIn,
         duration: const Duration(milliseconds: 300),
@@ -290,17 +293,7 @@ class CreateSphereState extends State<CreateSphere> {
               ),
             if (_currentIndex != 2)
               GestureDetector(
-                onTap: () {
-                  if (_currentIndex == 0) {
-                    setState(() {
-                      sphereName = sphereNameController.value.text;
-                      sphereHandle = sphereHandleController.value.text;
-                      sphereDescription =
-                          sphereDescriptionController.value.text;
-                    });
-                  }
-                  _validateSphereCreation();
-                },
+                onTap: _onNextPress,
                 child: Container(
                   color: Colors.transparent,
                   padding: const EdgeInsets.only(right: 10),
@@ -321,6 +314,23 @@ class CreateSphereState extends State<CreateSphere> {
         ),
       ),
     );
+  }
+
+  void _onNextPress() {
+    if (_currentIndex == 0) {
+      setState(() {
+        sphereName = sphereNameController.value.text;
+        sphereHandle = sphereHandleController.value.text;
+        sphereDescription = sphereDescriptionController.value.text;
+      });
+      _validateSphereCreation();
+      return;
+    }
+    createSphereController.nextPage(
+      curve: Curves.easeIn,
+      duration: const Duration(milliseconds: 300),
+    );
+    return;
   }
 
   @override
