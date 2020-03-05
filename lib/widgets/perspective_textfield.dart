@@ -19,14 +19,8 @@ class PerspectiveTextField extends StatelessWidget {
         key: UniqueKey(),
         validator: Validator.validateNonEmpty,
         controller: controller,
-        buildCounter: (
-          BuildContext context, {
-          int currentLength,
-          int maxLength,
-          bool isFocused,
-        }) =>
-            null,
         decoration: InputDecoration(
+          counter: Container(),
           contentPadding: const EdgeInsets.all(0),
           border: InputBorder.none,
           hintText: name,
