@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+/// By setting [obscureText] to `true` you'll get 
+/// a fancy eye icon to toggle the visibility of the obscured text
 class SignUpTextField extends StatefulWidget {
   const SignUpTextField({
     Key key,
@@ -27,7 +29,9 @@ class SignUpTextField extends StatefulWidget {
 }
 
 class _SignUpTextFieldState extends State<SignUpTextField> {
-  bool temporarilyVisible = false;
+  /// This is used to toggle visiblity of 
+  /// the eye icon when text is obscured
+  bool _temporarilyVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +69,7 @@ class _SignUpTextFieldState extends State<SignUpTextField> {
         widget.onSubmit();
       },
       keyboardAppearance: Theme.of(context).brightness,
-      obscureText: widget.obscureText && !temporarilyVisible,
+      obscureText: widget.obscureText && !_temporarilyVisible,
     );
   }
 
@@ -74,12 +78,12 @@ class _SignUpTextFieldState extends State<SignUpTextField> {
     return widget.obscureText
         ? IconButton(
             icon: Icon(
-              temporarilyVisible ? Icons.visibility_off : Icons.visibility,
+              _temporarilyVisible ? Icons.visibility_off : Icons.visibility,
               color: Colors.white70,
             ),
             onPressed: () {
               setState(() {
-                temporarilyVisible = !temporarilyVisible;
+                _temporarilyVisible = !_temporarilyVisible;
               });
             },
           )
