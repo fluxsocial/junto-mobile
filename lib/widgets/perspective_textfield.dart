@@ -12,6 +12,7 @@ class PerspectiveTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return Container(
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -19,6 +20,7 @@ class PerspectiveTextField extends StatelessWidget {
         key: UniqueKey(),
         validator: Validator.validateNonEmpty,
         controller: controller,
+        keyboardAppearance: theme.brightness,
         decoration: InputDecoration(
           counter: Container(),
           contentPadding: const EdgeInsets.all(0),
