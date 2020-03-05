@@ -112,27 +112,14 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                   onTap: () => _navigateToScreen(JuntoDen()),
                 ),
                 JuntoDrawerItem(
-                  icon: Container(
-                    width: 60,
-                    alignment: Alignment.centerLeft,
-                    child: Icon(
-                      Icons.search,
-                      color: Colors.white,
-                      size: 24,
-                    ),
-                  ),
+                  icon: JuntoDrawerIcon(icon: Icons.search),
                   title: 'Search',
                   onTap: () => _navigateToScreen(const GlobalSearch()),
                 ),
                 JuntoDrawerItem(
-                  icon: Container(
-                    width: 60,
-                    alignment: Alignment.centerLeft,
-                    child: Icon(
-                      CustomIcons.infinity,
-                      color: Colors.white,
-                      size: 9,
-                    ),
+                  icon: JuntoDrawerIcon(
+                    icon: CustomIcons.infinity,
+                    size: 9.0,
                   ),
                   title: 'Relations',
                   onTap: () => _navigateToScreen(
@@ -143,15 +130,7 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                   ),
                 ),
                 JuntoDrawerItem(
-                  icon: Container(
-                    width: 60,
-                    alignment: Alignment.centerLeft,
-                    child: Icon(
-                      Icons.favorite,
-                      color: Colors.white,
-                      size: 24,
-                    ),
-                  ),
+                  icon: const JuntoDrawerIcon(icon: Icons.favorite),
                   title: 'Themes',
                   onTap: () => _navigateToScreen(
                     JuntoThemes(
@@ -162,15 +141,7 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                   ),
                 ),
                 JuntoDrawerItem(
-                  icon: Container(
-                    width: 60,
-                    alignment: Alignment.centerLeft,
-                    child: Icon(
-                      Icons.settings,
-                      color: Colors.white,
-                      size: 24,
-                    ),
-                  ),
+                  icon: const JuntoDrawerIcon(icon: Icons.settings),
                   title: 'Log Out',
                   onTap: _logout,
                 ),
