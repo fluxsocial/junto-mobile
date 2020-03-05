@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-class SignUpTextField extends StatelessWidget {
+/// By setting [obscureText] to `true` you'll get
+/// a fancy eye icon to toggle the visibility of the obscured text
+class SignUpTextField extends StatefulWidget {
   const SignUpTextField({
     Key key,
     @required this.valueController,
@@ -23,15 +25,25 @@ class SignUpTextField extends StatelessWidget {
   final bool obscureText;
 
   @override
+  _SignUpTextFieldState createState() => _SignUpTextFieldState();
+}
+
+class _SignUpTextFieldState extends State<SignUpTextField> {
+  /// This is used to toggle visiblity of
+  /// the eye icon when text is obscured
+  bool _temporarilyVisible = false;
+
+  @override
   Widget build(BuildContext context) {
     return TextField(
-      controller: valueController,
+      controller: widget.valueController,
       cursorColor: Colors.white70,
       decoration: InputDecoration(
         enabledBorder: InputBorder.none,
         focusedBorder: InputBorder.none,
         labelStyle: TextStyle(color: Colors.green),
-        hintText: hint,
+        hintText: widget.hint,
+        suffix: _visibilityIconIfObscured(),
         hintStyle: const TextStyle(
           color: Colors.white70,
           fontSize: 20,
@@ -46,16 +58,38 @@ class SignUpTextField extends StatelessWidget {
         fontSize: 20,
         fontWeight: FontWeight.w500,
       ),
-      maxLines: maxLines,
-      maxLength: maxLength,
-      textCapitalization: textCapitalization,
+      maxLines: widget.maxLines,
+      maxLength: widget.maxLength,
+      textCapitalization: widget.textCapitalization,
       textInputAction: TextInputAction.next,
-      keyboardType: keyboardType,
+      keyboardType: widget.obscureText
+          ? TextInputType.visiblePassword
+          : widget.keyboardType,
       onSubmitted: (_) {
-        onSubmit();
+        widget.onSubmit();
       },
       keyboardAppearance: Theme.of(context).brightness,
-      obscureText: obscureText,
+      obscureText: widget.obscureText && !_temporarilyVisible,
     );
+  }
+
+  /// The eye icon is visible only when focus is on
+  /// or some text is inside the TextField
+  Widget _visibilityIconIfObscured() {
+    if (widget.obscureText) {
+      return IconButton(
+        icon: Icon(
+          _temporarilyVisible ? Icons.visibility_off : Icons.visibility,
+          color: Colors.white70,
+        ),
+        onPressed: () {
+          setState(() {
+            _temporarilyVisible = !_temporarilyVisible;
+          });
+        },
+      );
+    } else {
+      return null;
+    }
   }
 }
