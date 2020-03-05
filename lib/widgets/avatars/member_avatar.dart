@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:junto_beta_mobile/widgets/avatars/member_avatar_placeholder.dart';
 
 class MemberAvatar extends StatelessWidget {
   const MemberAvatar({this.profilePicture, this.diameter});
@@ -19,52 +20,15 @@ class MemberAvatar extends StatelessWidget {
                 width: diameter,
                 fit: BoxFit.cover,
                 placeholder: (BuildContext context, String _) {
-                  return Container(
-                    alignment: Alignment.center,
-                    height: diameter,
-                    width: diameter,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.bottomLeft,
-                        end: Alignment.topRight,
-                        stops: const <double>[0.3, 0.9],
-                        colors: <Color>[
-                          Theme.of(context).colorScheme.primary,
-                          Theme.of(context).colorScheme.secondary,
-                        ],
-                      ),
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    child: Image.asset(
-                      'assets/images/junto-mobile__logo--white.png',
-                      height: diameter / 3,
-                    ),
+                  return MemberAvatarPlaceholder(
+                    diameter: diameter,
                   );
                 },
               ),
             ),
           )
-        : Container(
-            alignment: Alignment.center,
-            height: diameter,
-            width: diameter,
-            margin: const EdgeInsets.only(right: 5),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.bottomLeft,
-                end: Alignment.topRight,
-                stops: const <double>[0.3, 0.9],
-                colors: <Color>[
-                  Theme.of(context).colorScheme.primary,
-                  Theme.of(context).colorScheme.secondary,
-                ],
-              ),
-              borderRadius: BorderRadius.circular(100),
-            ),
-            child: Image.asset(
-              'assets/images/junto-mobile__logo--white.png',
-              height: diameter / 3,
-            ),
+        : MemberAvatarPlaceholder(
+            diameter: diameter,
           );
   }
 }

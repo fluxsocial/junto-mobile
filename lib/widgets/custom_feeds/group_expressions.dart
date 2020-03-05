@@ -34,10 +34,11 @@ class _GroupExpressionsState extends State<GroupExpressions> {
       () => Provider.of<GroupRepo>(context, listen: false).getGroupExpressions(
         widget.group.address,
         GroupExpressionQueryParams(
-            creatorExpressions: true,
-            directExpressions: true,
-            directExpressionPaginationPosition: 0,
-            creatorExpressionsPaginationPosition: 0),
+          creatorExpressions: true,
+          directExpressions: true,
+          directExpressionPaginationPosition: 0,
+          creatorExpressionsPaginationPosition: 0,
+        ),
       ),
     );
   }
@@ -64,8 +65,13 @@ class _GroupExpressionsState extends State<GroupExpressions> {
         if (snapshot.hasError) {
           return Center(
             child: Transform.translate(
-              offset: const Offset(0.0, -50),
-              child: const Text('Hmm, something is up with our server'),
+              offset: const Offset(
+                0.0,
+                -50,
+              ),
+              child: const Text(
+                'Hmm, something is up with our server',
+              ),
             ),
           );
         }
@@ -80,30 +86,39 @@ class _GroupExpressionsState extends State<GroupExpressions> {
                     if (snapshot.data.isNotEmpty)
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 15),
+                          horizontal: 10,
+                          vertical: 15,
+                        ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Image.asset(
-                                'assets/images/junto-mobile__filter.png',
-                                height: 17),
+                              'assets/images/junto-mobile__filter.png',
+                              height: 17,
+                            ),
                             Row(
                               children: <Widget>[
                                 GestureDetector(
                                   onTap: () => _switchColumnView('two'),
                                   child: Container(
-                                    child:
-                                        Icon(CustomIcons.twocolumn, size: 20),
+                                    child: Icon(
+                                      CustomIcons.twocolumn,
+                                      size: 20,
+                                    ),
                                   ),
                                 ),
-                                const SizedBox(width: 10),
+                                const SizedBox(
+                                  width: 10,
+                                ),
                                 GestureDetector(
                                   onTap: () {
                                     _switchColumnView('single');
                                   },
                                   child: Container(
-                                    child: Icon(CustomIcons.singlecolumn,
-                                        size: 20),
+                                    child: Icon(
+                                      CustomIcons.singlecolumn,
+                                      size: 20,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -117,7 +132,9 @@ class _GroupExpressionsState extends State<GroupExpressions> {
                           crossFadeState: twoColumnView
                               ? CrossFadeState.showFirst
                               : CrossFadeState.showSecond,
-                          duration: const Duration(milliseconds: 200),
+                          duration: const Duration(
+                            milliseconds: 200,
+                          ),
                           firstChild: TwoColumnListView(
                             userAddress: widget.userAddress,
                             data: snapshot.data,
