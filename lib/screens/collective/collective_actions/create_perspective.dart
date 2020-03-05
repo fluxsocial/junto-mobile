@@ -282,14 +282,11 @@ class CreatePerspectiveState extends State<CreatePerspective> {
                               .map(
                                 (dynamic connection) => MemberPreviewSelect(
                                   profile: connection,
-                                  onSelect: () {
-                                    _perspectiveMembers.add(connection.address);
+                                  onSelect: (UserProfile user) {
+                                    _perspectiveMembers.add(user.address);
                                   },
-                                  onDeselect: () {
-                                    _perspectiveMembers
-                                        .indexWhere(connection.addres);
-                                    _perspectiveMembers
-                                        .remove(connection.address);
+                                  onDeselect: (UserProfile user) {
+                                    _perspectiveMembers.remove(user.address);
                                   },
                                 ),
                               )
@@ -302,12 +299,11 @@ class CreatePerspectiveState extends State<CreatePerspective> {
                             for (UserProfile connection in _connectionsMembers)
                               MemberPreviewSelect(
                                   profile: connection,
-                                  onSelect: () {
-                                    _perspectiveMembers.add(connection.address);
+                                  onSelect: (UserProfile user) {
+                                    _perspectiveMembers.add(user.address);
                                   },
-                                  onDeselect: () {
-                                    _perspectiveMembers
-                                        .remove(connection.address);
+                                  onDeselect: (UserProfile user) {
+                                    _perspectiveMembers.remove(user.address);
                                   }),
                           ],
                         ),
