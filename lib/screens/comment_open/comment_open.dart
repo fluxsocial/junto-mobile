@@ -31,9 +31,10 @@ class CommentOpen extends StatelessWidget {
                   child: Text(
                     'in response to ' + parent.creator.name,
                     style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: Theme.of(context).primaryColorLight,
-                        fontSize: 14),
+                      fontWeight: FontWeight.w600,
+                      color: Theme.of(context).primaryColorLight,
+                      fontSize: 14,
+                    ),
                   ),
                 ),
                 Container(
@@ -48,9 +49,9 @@ class CommentOpen extends StatelessWidget {
                           color: Colors.transparent,
                           child: Row(children: <Widget>[
                             MemberAvatar(
-                                profilePicture:
-                                    comment.expression.creator.profilePicture,
-                                diameter: 45),
+                              profilePicture: comment.creator.profilePicture,
+                              diameter: 45,
+                            ),
                             const SizedBox(width: 10),
 
                             // profile name and handle
@@ -58,14 +59,16 @@ class CommentOpen extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  Text(comment.creator.username,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .subtitle1),
-                                  Text(comment.creator.name,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1),
+                                  Text(
+                                    comment.creator.username,
+                                    style:
+                                        Theme.of(context).textTheme.subtitle1,
+                                  ),
+                                  Text(
+                                    comment.creator.name,
+                                    style:
+                                        Theme.of(context).textTheme.bodyText1,
+                                  ),
                                 ],
                               ),
                             ),
@@ -78,9 +81,10 @@ class CommentOpen extends StatelessWidget {
                             context: context,
                             builder: (BuildContext context) =>
                                 CommentActionItems(
-                                    comment: comment,
-                                    userAddress: userAddress,
-                                    source: 'open'),
+                              comment: comment,
+                              userAddress: userAddress,
+                              source: 'open',
+                            ),
                           );
                         },
                         child: Container(
@@ -107,9 +111,10 @@ class CommentOpen extends StatelessWidget {
                           comment.expressionData.body,
                           textAlign: TextAlign.start,
                           style: TextStyle(
-                              fontSize: 17,
-                              color: Theme.of(context).primaryColor,
-                              fontWeight: FontWeight.w500),
+                            fontSize: 17,
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                     ],
@@ -118,7 +123,8 @@ class CommentOpen extends StatelessWidget {
                 Container(
                   margin: const EdgeInsets.only(top: 7.5),
                   padding: const EdgeInsets.symmetric(
-                      horizontal: JuntoStyles.horizontalPadding),
+                    horizontal: JuntoStyles.horizontalPadding,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -129,10 +135,13 @@ class CommentOpen extends StatelessWidget {
                           children: <Widget>[
                             Container(
                               child: Text(
-                                  parseDate(context, comment.createdAt)
-                                      .toLowerCase(),
-                                  textAlign: TextAlign.start,
-                                  style: Theme.of(context).textTheme.overline),
+                                parseDate(
+                                  context,
+                                  comment.createdAt,
+                                ).toLowerCase(),
+                                textAlign: TextAlign.start,
+                                style: Theme.of(context).textTheme.overline,
+                              ),
                             )
                           ],
                         ),

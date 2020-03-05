@@ -37,7 +37,7 @@ class MemberAvatar extends StatelessWidget {
                     ),
                     child: Image.asset(
                       'assets/images/junto-mobile__logo--white.png',
-                      height: 17,
+                      height: diameter / 3,
                     ),
                   );
                 },
@@ -63,7 +63,7 @@ class MemberAvatar extends StatelessWidget {
             ),
             child: Image.asset(
               'assets/images/junto-mobile__logo--white.png',
-              height: 12,
+              height: diameter / 3,
             ),
           );
   }
