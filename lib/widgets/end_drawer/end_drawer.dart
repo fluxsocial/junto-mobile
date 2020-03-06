@@ -13,7 +13,7 @@ import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/en
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_themes.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/zoom_scaffold.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
-import 'package:junto_beta_mobile/widgets/user_avatar_widget.dart';
+import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -105,8 +105,8 @@ class JuntoDrawerState extends State<JuntoDrawer> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 JuntoDrawerItem(
-                  icon: JuntoUserAvatar(
-                    user: _userProfile?.user,
+                  icon: MemberPreview(
+                    profile: _userProfile?.user,
                   ),
                   title: 'My Den',
                   onTap: () => _navigateToScreen(JuntoDen()),

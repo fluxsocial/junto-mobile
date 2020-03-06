@@ -9,7 +9,10 @@ import 'package:junto_beta_mobile/utils/utils.dart';
 /// If this value is not specified and left null, the user will be redirected to
 /// the user "Den".
 class MemberPreview extends StatelessWidget with MemberValidation {
-  const MemberPreview({Key key, this.profile}) : super(key: key);
+  const MemberPreview({
+    Key key,
+    @required this.profile,
+  }) : super(key: key);
 
   final UserProfile profile;
 
