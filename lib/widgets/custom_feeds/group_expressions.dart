@@ -26,20 +26,18 @@ class GroupExpressions extends StatefulWidget {
 class _GroupExpressionsState extends State<GroupExpressions> {
   bool twoColumnView = true;
 
-  final AsyncMemoizer<List<ExpressionResponse>> _memoizer =
-      AsyncMemoizer<List<ExpressionResponse>>();
+  final AsyncMemoizer<QueryResults<ExpressionResponse>> _memoizer =
+      AsyncMemoizer<QueryResults<ExpressionResponse>>();
 
-  Future<List<ExpressionResponse>> _getGroupExpressions() async {
+  Future<QueryResults<ExpressionResponse>> _getGroupExpressions() async {
+    final Map<String, String> _params = <String, String>{
+      'context': widget.group.address,
+      'context_type': 'Group',
+      'pagination_position': '0',
+    };
     return _memoizer.runOnce(
-      () => Provider.of<GroupRepo>(context, listen: false).getGroupExpressions(
-        widget.group.address,
-        GroupExpressionQueryParams(
-          creatorExpressions: true,
-          directExpressions: true,
-          directExpressionPaginationPosition: 0,
-          creatorExpressionsPaginationPosition: 0,
-        ),
-      ),
+      () => Provider.of<ExpressionRepo>(context, listen: false)
+          .getCollectiveExpressions(_params),
     );
   }
 
@@ -56,11 +54,11 @@ class _GroupExpressionsState extends State<GroupExpressions> {
   @override
   Widget build(BuildContext context) {
     // public expressions of user
-    return FutureBuilder<List<ExpressionResponse>>(
+    return FutureBuilder<QueryResults<ExpressionResponse>>(
       future: _getGroupExpressions(),
       builder: (
         BuildContext context,
-        AsyncSnapshot<List<ExpressionResponse>> snapshot,
+        AsyncSnapshot<QueryResults<ExpressionResponse>> snapshot,
       ) {
         if (snapshot.hasError) {
           return Center(
@@ -83,7 +81,7 @@ class _GroupExpressionsState extends State<GroupExpressions> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    if (snapshot.data.isNotEmpty)
+                    if (snapshot.data.results.isNotEmpty)
                       Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 10,
@@ -137,13 +135,13 @@ class _GroupExpressionsState extends State<GroupExpressions> {
                           ),
                           firstChild: TwoColumnListView(
                             userAddress: widget.userAddress,
-                            data: snapshot.data,
+                            data: snapshot.data.results,
                             privacyLayer: 'Public',
                             showComments: false,
                           ),
                           secondChild: SingleColumnListView(
                             userAddress: widget.userAddress,
-                            data: snapshot.data,
+                            data: snapshot.data.results,
                             privacyLayer: 'Public',
                             showComments: false,
                           ),

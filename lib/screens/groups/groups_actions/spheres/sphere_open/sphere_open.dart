@@ -66,10 +66,12 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
 
   Future<void> getUserInformation() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final Map<String, dynamic> decodedUserData =
-        jsonDecode(prefs.getString('user_data'));
+    final Map<String, dynamic> decodedUserData = jsonDecode(
+      prefs.getString('user_data'),
+    );
     setState(() {
       _userAddress = prefs.getString('user_id');
+      _userProfile = UserData.fromMap(decodedUserData);
     });
 
     final Map<String, dynamic> _relationToGroup =
@@ -78,7 +80,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     setState(() {
       relationToGroup = _relationToGroup;
     });
-    print(relationToGroup);
   }
 
   Future<List<Users>> _getMembers() async {
