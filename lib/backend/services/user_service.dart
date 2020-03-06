@@ -107,6 +107,7 @@ class UserServiceCentralized implements UserService {
     );
     final Map<String, dynamic> _responseMap =
         JuntoHttp.handleResponse(response);
+        print(_responseMap);
     return UserGroupsResponse.fromMap(_responseMap);
   }
 

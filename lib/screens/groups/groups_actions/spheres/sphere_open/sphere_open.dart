@@ -1,6 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
@@ -32,12 +35,11 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
       GlobalKey<SphereOpenState>();
 
   String _userAddress;
+  UserData _userProfile;
   double _flexibleHeightSpace;
   final List<String> _tabs = <String>['ABOUT', 'EXPRESSIONS'];
 
-  bool isCreator;
-  bool isFacilitator;
-  bool isMember;
+  Map<String, dynamic> relationToGroup;
 
   void _getFlexibleSpaceSize(_) {
     final RenderBox renderBoxFlexibleSpace =
@@ -64,6 +66,8 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
 
   Future<void> getUserInformation() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final Map<String, dynamic> decodedUserData =
+        jsonDecode(prefs.getString('user_data'));
     setState(() {
       _userAddress = prefs.getString('user_id');
     });
@@ -71,10 +75,10 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     final Map<String, dynamic> _relationToGroup =
         await Provider.of<GroupRepo>(context, listen: false)
             .getRelationToGroup(widget.group.address, _userAddress);
-
-    isCreator = _relationToGroup['creator'];
-    isFacilitator = _relationToGroup['facilitator'];
-    isMember = _relationToGroup['member'];
+    setState(() {
+      relationToGroup = _relationToGroup;
+    });
+    print(relationToGroup);
   }
 
   Future<List<Users>> _getMembers() async {
@@ -90,6 +94,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
         preferredSize: const Size.fromHeight(45),
         child: SphereOpenAppbar(
           group: widget.group,
+          relationToGroup: relationToGroup,
         ),
       ),
       body: DefaultTabController(
@@ -179,6 +184,12 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                                 style: Theme.of(context).textTheme.headline4,
                               ),
                             ),
+                            relationToGroup != null &&
+                                    !relationToGroup['creator'] &&
+                                    !relationToGroup['member'] &&
+                                    !relationToGroup['facilitator']
+                                ? _joinGroup()
+                                : const SizedBox(),
                           ],
                         ),
                       ),
@@ -222,6 +233,38 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
               )
             ];
           },
+        ),
+      ),
+    );
+  }
+
+  Widget _joinGroup() {
+    return GestureDetector(
+      onTap: () {
+        Provider.of<GroupRepo>(context, listen: false).addGroupMember(
+          widget.group.address,
+          <UserProfile>[_userProfile.user],
+          'Member',
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 15,
+          vertical: 5,
+        ),
+        margin: const EdgeInsets.only(left: 10),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.secondary,
+          borderRadius: BorderRadius.circular(50),
+        ),
+        child: Text(
+          'JOiN',
+          style: TextStyle(
+            fontSize: 10,
+            fontWeight: FontWeight.w700,
+            color: Colors.white,
+            letterSpacing: 1.4,
+          ),
         ),
       ),
     );
