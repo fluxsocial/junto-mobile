@@ -41,7 +41,7 @@ class MockSphere with ChangeNotifier implements GroupService {
   }
 
   @override
-  Future<Map<String, bool>> getRelationToGroup(
+  Future<Map<String, dynamic>> getRelationToGroup(
       String groupAddress, String userAddress) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     return {};

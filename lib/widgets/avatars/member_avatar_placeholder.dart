@@ -10,7 +10,6 @@ class MemberAvatarPlaceholder extends StatelessWidget {
       alignment: Alignment.center,
       height: diameter,
       width: diameter,
-      margin: const EdgeInsets.only(right: 5),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.bottomLeft,

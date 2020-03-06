@@ -12,7 +12,6 @@ class MemberAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     return profilePicture.isNotEmpty
         ? Container(
-            margin: const EdgeInsets.only(right: 5),
             child: ClipOval(
               child: CachedNetworkImage(
                 imageUrl: profilePicture[0],

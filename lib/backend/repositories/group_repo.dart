@@ -18,7 +18,7 @@ class GroupRepo {
     return _groupService.getGroup(groupAddress);
   }
 
-  Future<Map<String, bool>> getRelationToGroup(
+  Future<Map<String, dynamic>> getRelationToGroup(
       String groupAddress, String userAddress) {
     return _groupService.getRelationToGroup(groupAddress, userAddress);
   }

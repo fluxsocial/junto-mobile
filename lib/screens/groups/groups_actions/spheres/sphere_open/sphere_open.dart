@@ -35,6 +35,10 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   double _flexibleHeightSpace;
   final List<String> _tabs = <String>['ABOUT', 'EXPRESSIONS'];
 
+  bool isCreator;
+  bool isFacilitator;
+  bool isMember;
+
   void _getFlexibleSpaceSize(_) {
     final RenderBox renderBoxFlexibleSpace =
         _keyFlexibleSpace.currentContext.findRenderObject();
@@ -64,8 +68,13 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
       _userAddress = prefs.getString('user_id');
     });
 
-    Provider.of<GroupRepo>(context, listen: false)
-        .getRelationToGroup(widget.group.address, _userAddress);
+    final Map<String, dynamic> _relationToGroup =
+        await Provider.of<GroupRepo>(context, listen: false)
+            .getRelationToGroup(widget.group.address, _userAddress);
+
+    isCreator = _relationToGroup['creator'];
+    isFacilitator = _relationToGroup['facilitator'];
+    isMember = _relationToGroup['member'];
   }
 
   Future<List<Users>> _getMembers() async {

@@ -44,10 +44,11 @@ class GroupServiceCentralized implements GroupService {
   }
 
   @override
-  Future<Map<String, bool>> getRelationToGroup(
+  Future<Map<String, dynamic>> getRelationToGroup(
       String groupAddress, String userAddress) async {
-    final http.Response _serverResponse =
-        await client.postWithoutEncoding('/groups/$groupAddress/$userAddress');
+    final http.Response _serverResponse = await client
+        .postWithoutEncoding('/groups/$groupAddress/members/$userAddress');
+
     final Map<String, dynamic> _data =
         JuntoHttp.handleResponse(_serverResponse);
     return _data;
