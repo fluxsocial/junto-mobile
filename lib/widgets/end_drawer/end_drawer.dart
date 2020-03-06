@@ -93,9 +93,13 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                   children: <Widget>[
                     JuntoDrawerItem(
                       icon: _userProfile != null
-                          ? MemberAvatar(
-                              profilePicture: _userProfile.user.profilePicture,
-                              diameter: 28)
+                          ? Container(
+                              margin: const EdgeInsets.only(right: 32),
+                              child: MemberAvatar(
+                                  profilePicture:
+                                      _userProfile.user.profilePicture,
+                                  diameter: 28),
+                            )
                           : const SizedBox(),
                       title: 'My Den',
                       onTap: () {
