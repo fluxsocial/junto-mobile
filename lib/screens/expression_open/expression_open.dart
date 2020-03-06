@@ -228,7 +228,9 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                                           child: Row(
                                             children: <Widget>[
                                               Text(
-                                                'Show replies',
+                                                commentsVisible
+                                                    ? 'Hide replies'
+                                                    : 'Show replies (${snapshot.data.results.length})',
                                                 style: TextStyle(
                                                     color: Theme.of(context)
                                                         .primaryColorLight,
@@ -431,6 +433,7 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
                         cursorWidth: 2,
                         style: Theme.of(context).textTheme.caption,
                         textInputAction: TextInputAction.newline,
+                        keyboardAppearance: Theme.of(context).brightness,
                       ),
                     ),
                   ],

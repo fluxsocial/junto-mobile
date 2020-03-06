@@ -24,14 +24,14 @@ class JuntoRules extends StatelessWidget {
             const SizedBox(height: 25),
             Container(
               child: Text(
-                '2. Accept everyone else\'s experience as valid, even if it doesn\'t look like yours',
+                "2. Accept everyone else's experience as valid, even if it doesn't look like yours",
                 style: Theme.of(context).textTheme.headline5,
               ),
             ),
             const SizedBox(height: 25),
             Container(
               child: Text(
-                '3. Expresson yourself freely. Be real and hold space for authenticity.',
+                '3. Express yourself freely. Be real and hold space for authenticity.',
                 style: Theme.of(context).textTheme.headline5,
               ),
             ),

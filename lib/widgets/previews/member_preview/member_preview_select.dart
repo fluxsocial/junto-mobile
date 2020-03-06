@@ -8,8 +8,8 @@ class MemberPreviewSelect extends StatefulWidget {
       : super(key: key);
 
   final UserProfile profile;
-  final Function onSelect;
-  final Function onDeselect;
+  final ValueChanged<UserProfile> onSelect;
+  final ValueChanged<UserProfile> onDeselect;
   @override
   State<StatefulWidget> createState() {
     return MemberPreviewSelectState();
@@ -64,7 +64,7 @@ class MemberPreviewSelectState extends State<MemberPreviewSelect> {
                             setState(() {
                               _isSelected = false;
                             });
-                            widget.onDeselect();
+                            widget.onDeselect(widget.profile);
                           },
                           child: Container(
                             height: 28,
@@ -97,7 +97,7 @@ class MemberPreviewSelectState extends State<MemberPreviewSelect> {
                               _isSelected = true;
                             });
 
-                            widget.onSelect();
+                            widget.onSelect(widget.profile);
                           },
                           child: Container(
                             height: 28,

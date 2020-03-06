@@ -95,7 +95,6 @@ class CreateShortformState extends State<CreateShortform> {
             child: Form(
               autovalidate: false,
               child: ListView(
-                padding: const EdgeInsets.all(0),
                 children: <Widget>[
                   Container(
                     padding: const EdgeInsets.symmetric(
@@ -120,6 +119,7 @@ class CreateShortformState extends State<CreateShortform> {
                       ),
                     ),
                     child: TextFormField(
+                      autofocus: true,
                       validator: Validator.validateNonEmpty,
                       controller: _bodyController,
                       buildCounter: (
@@ -131,6 +131,7 @@ class CreateShortformState extends State<CreateShortform> {
                           null,
                       decoration: InputDecoration(
                         hintMaxLines: 25,
+                        hintText: 'Tap here to start typing',
                         hintStyle: TextStyle(
                           color: Colors.white.withOpacity(0.5),
                           fontSize: 24,
@@ -148,6 +149,7 @@ class CreateShortformState extends State<CreateShortform> {
                       maxLength: 220,
                       textAlign: TextAlign.center,
                       textInputAction: TextInputAction.done,
+                      keyboardAppearance: Theme.of(context).brightness,
                     ),
                   )
                 ],
