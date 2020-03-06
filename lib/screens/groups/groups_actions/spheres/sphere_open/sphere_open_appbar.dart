@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_open/sphere_open_action_items.dart';
+import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_open/sphere_open_action_items/creator_action_items.dart';
 
 class SphereOpenAppbar extends StatelessWidget {
-  const SphereOpenAppbar({Key key, @required this.group}) : super(key: key);
+  const SphereOpenAppbar(
+      {Key key, @required this.group, @required this.relationToGroup})
+      : super(key: key);
 
   final Group group;
+  final Map<String, dynamic> relationToGroup;
 
   @override
   Widget build(BuildContext context) {
@@ -26,28 +29,6 @@ class SphereOpenAppbar extends StatelessWidget {
               children: <Widget>[
                 Icon(CustomIcons.spheres,
                     color: Theme.of(context).primaryColor, size: 20),
-                // Container(
-                //   alignment: Alignment.center,
-                //   height: 32.0,
-                //   width: 32.0,
-                //   decoration: BoxDecoration(
-                //     gradient: const LinearGradient(
-                //       begin: Alignment.bottomLeft,
-                //       end: Alignment.topRight,
-                //       stops: <double>[0.3, 0.9],
-                //       colors: <Color>[
-                //         JuntoPalette.juntoSecondary,
-                //         JuntoPalette.juntoPrimary,
-                //       ],
-                //     ),
-                //     borderRadius: BorderRadius.circular(100),
-                //   ),
-                //   child: const Icon(
-                //     CustomIcons.spheres,
-                //     color: Colors.white,
-                //     size: 14,
-                //   ),
-                // ),
                 const SizedBox(width: 10),
                 Container(
                   margin: const EdgeInsets.only(right: 5),
@@ -71,10 +52,12 @@ class SphereOpenAppbar extends StatelessWidget {
                 GestureDetector(
                   onTap: () {
                     showModalBottomSheet(
-                      context: context,
-                      builder: (BuildContext context) =>
-                          SphereOpenActionItems(sphere: group),
-                    );
+                        context: context,
+                        builder: (BuildContext context) {
+                          return relationToGroup['creator']
+                              ? OwnerActionItems(sphere: group)
+                              : const SizedBox();
+                        });
                   },
                   child: Container(
                     width: 38,

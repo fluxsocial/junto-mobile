@@ -250,7 +250,8 @@ class SpheresState extends State<Spheres> with ListDistinct {
                                 child: Transform.translate(
                                   offset: const Offset(0.0, -50),
                                   child: const Text(
-                                      'Hmm, something is up with our server'),
+                                    'Hmm, something is up with our server',
+                                  ),
                                 ),
                               ),
                             );
@@ -259,11 +260,14 @@ class SpheresState extends State<Spheres> with ListDistinct {
                             final List<Group> ownedGroups = snapshot.data.owned;
                             final List<Group> associatedGroups =
                                 snapshot.data.associated;
-                            final List<Group> userSpheres =
-                                distinct<Group>(ownedGroups, associatedGroups)
-                                    .where((Group group) =>
-                                        group.groupType == 'Sphere')
-                                    .toList();
+
+                            final List<Group> userSpheres = distinct<Group>(
+                              ownedGroups,
+                              associatedGroups,
+                            )
+                                .where((Group group) =>
+                                    group.groupType == 'Sphere')
+                                .toList();
 
                             return Expanded(
                                 child: ListView(

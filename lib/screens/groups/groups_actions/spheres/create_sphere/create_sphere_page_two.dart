@@ -70,8 +70,12 @@ class CreateSpherePageTwo extends StatelessWidget {
                       for (UserProfile member in _followingMembers)
                         MemberPreviewSelect(
                           profile: member,
-                          onSelect: addMember,
-                          onDeselect: removeMember,
+                          onSelect: () {
+                            addMember(member);
+                          },
+                          onDeselect: () {
+                            removeMember(member);
+                          },
                         ),
                     ],
                   ),
@@ -82,8 +86,12 @@ class CreateSpherePageTwo extends StatelessWidget {
                       for (UserProfile connection in _connectionsMembers)
                         MemberPreviewSelect(
                           profile: connection,
-                          onSelect: addMember,
-                          onDeselect: removeMember,
+                          onSelect: () {
+                            addMember(connection);
+                          },
+                          onDeselect: () {
+                            removeMember(connection);
+                          },
                         ),
                     ],
                   ),

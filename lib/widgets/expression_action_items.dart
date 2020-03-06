@@ -126,25 +126,7 @@ class ExpressionActionItems extends StatelessWidget {
             ],
           ),
         ),
-        // if (expression.expressionData is CentralizedEventFormExpression)
-        //   ListTile(
-        //     onTap: () => Navigator.push(
-        //       context,
-        //       _AddEventMembers.route(
-        //         expression,
-        //       ),
-        //     ),
-        //     contentPadding:
-        //         const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
-        //     title: Row(
-        //       children: <Widget>[
-        //         Text(
-        //           'Add member to event',
-        //           style: Theme.of(context).textTheme.headline5,
-        //         ),
-        //       ],
-        //     ),
-        //   ),
+
       ],
     );
   }

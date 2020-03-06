@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
@@ -9,6 +8,7 @@ import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 
 class RelationshipRequest extends StatelessWidget {
   const RelationshipRequest(this.user, this.onAction);
@@ -86,60 +86,7 @@ class RelationshipRequest extends StatelessWidget {
           children: <Widget>[
             Row(
               children: <Widget>[
-                if (user.profilePicture.isNotEmpty)
-                  ClipOval(
-                    child: CachedNetworkImage(
-                      imageUrl: user.profilePicture[0],
-                      height: 45,
-                      width: 45,
-                      fit: BoxFit.cover,
-                      placeholder: (BuildContext context, String _) {
-                        return Container(
-                          alignment: Alignment.center,
-                          height: 45.0,
-                          width: 45.0,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.bottomLeft,
-                              end: Alignment.topRight,
-                              stops: const <double>[0.3, 0.9],
-                              colors: <Color>[
-                                Theme.of(context).colorScheme.secondary,
-                                Theme.of(context).colorScheme.primary,
-                              ],
-                            ),
-                            borderRadius: BorderRadius.circular(100),
-                          ),
-                          child: Image.asset(
-                            'assets/images/junto-mobile__logo--white.png',
-                            height: 17,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                if (user.profilePicture.isEmpty)
-                  Container(
-                    alignment: Alignment.center,
-                    height: 45.0,
-                    width: 45.0,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.bottomLeft,
-                        end: Alignment.topRight,
-                        stops: const <double>[0.3, 0.9],
-                        colors: <Color>[
-                          Theme.of(context).colorScheme.secondary,
-                          Theme.of(context).colorScheme.primary
-                        ],
-                      ),
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    child: Image.asset(
-                      'assets/images/junto-mobile__logo--white.png',
-                      height: 15,
-                    ),
-                  ),
+                MemberAvatar(profilePicture: user.profilePicture, diameter: 45),
                 Container(
                   width: MediaQuery.of(context).size.width - 75,
                   padding: const EdgeInsets.symmetric(

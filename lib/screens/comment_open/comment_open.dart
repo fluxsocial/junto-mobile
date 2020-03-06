@@ -4,7 +4,7 @@ import 'package:junto_beta_mobile/app/styles.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/comment_open/comment_open_appbar.dart';
 import 'package:junto_beta_mobile/widgets/comment_action_items.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:junto_beta_mobile/widgets/utils/date_parsing.dart';
 
 class CommentOpen extends StatelessWidget {
@@ -31,9 +31,10 @@ class CommentOpen extends StatelessWidget {
                   child: Text(
                     'in response to ' + parent.creator.name,
                     style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: Theme.of(context).primaryColorLight,
-                        fontSize: 14),
+                      fontWeight: FontWeight.w600,
+                      color: Theme.of(context).primaryColorLight,
+                      fontSize: 14,
+                    ),
                   ),
                 ),
                 Container(
@@ -47,67 +48,10 @@ class CommentOpen extends StatelessWidget {
                         child: Container(
                           color: Colors.transparent,
                           child: Row(children: <Widget>[
-                            comment.creator.profilePicture.isNotEmpty
-                                ? ClipOval(
-                                    child: CachedNetworkImage(
-                                        imageUrl:
-                                            comment.creator.profilePicture[0],
-                                        height: 45,
-                                        width: 45,
-                                        fit: BoxFit.cover,
-                                        placeholder:
-                                            (BuildContext context, String _) {
-                                          return Container(
-                                            alignment: Alignment.center,
-                                            height: 45.0,
-                                            width: 45.0,
-                                            decoration: BoxDecoration(
-                                              gradient: LinearGradient(
-                                                begin: Alignment.bottomLeft,
-                                                end: Alignment.topRight,
-                                                stops: const <double>[0.3, 0.9],
-                                                colors: <Color>[
-                                                  Theme.of(context)
-                                                      .colorScheme
-                                                      .secondary,
-                                                  Theme.of(context)
-                                                      .colorScheme
-                                                      .primary,
-                                                ],
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                            ),
-                                            child: Image.asset(
-                                                'assets/images/junto-mobile__logo--white.png',
-                                                height: 17),
-                                          );
-                                        }),
-                                  )
-                                :
-                                // profile picture
-                                Container(
-                                    alignment: Alignment.center,
-                                    height: 45.0,
-                                    width: 45.0,
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        begin: Alignment.bottomLeft,
-                                        end: Alignment.topRight,
-                                        stops: const <double>[0.3, 0.9],
-                                        colors: <Color>[
-                                          Theme.of(context)
-                                              .colorScheme
-                                              .secondary,
-                                          Theme.of(context).colorScheme.primary,
-                                        ],
-                                      ),
-                                      borderRadius: BorderRadius.circular(100),
-                                    ),
-                                    child: Image.asset(
-                                        'assets/images/junto-mobile__logo--white.png',
-                                        height: 17),
-                                  ),
+                            MemberAvatar(
+                              profilePicture: comment.creator.profilePicture,
+                              diameter: 45,
+                            ),
                             const SizedBox(width: 10),
 
                             // profile name and handle
@@ -115,14 +59,16 @@ class CommentOpen extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  Text(comment.creator.username,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .subtitle1),
-                                  Text(comment.creator.name,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1),
+                                  Text(
+                                    comment.creator.username,
+                                    style:
+                                        Theme.of(context).textTheme.subtitle1,
+                                  ),
+                                  Text(
+                                    comment.creator.name,
+                                    style:
+                                        Theme.of(context).textTheme.bodyText1,
+                                  ),
                                 ],
                               ),
                             ),
@@ -135,9 +81,10 @@ class CommentOpen extends StatelessWidget {
                             context: context,
                             builder: (BuildContext context) =>
                                 CommentActionItems(
-                                    comment: comment,
-                                    userAddress: userAddress,
-                                    source: 'open'),
+                              comment: comment,
+                              userAddress: userAddress,
+                              source: 'open',
+                            ),
                           );
                         },
                         child: Container(
@@ -164,9 +111,10 @@ class CommentOpen extends StatelessWidget {
                           comment.expressionData.body,
                           textAlign: TextAlign.start,
                           style: TextStyle(
-                              fontSize: 17,
-                              color: Theme.of(context).primaryColor,
-                              fontWeight: FontWeight.w500),
+                            fontSize: 17,
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                     ],
@@ -175,7 +123,8 @@ class CommentOpen extends StatelessWidget {
                 Container(
                   margin: const EdgeInsets.only(top: 7.5),
                   padding: const EdgeInsets.symmetric(
-                      horizontal: JuntoStyles.horizontalPadding),
+                    horizontal: JuntoStyles.horizontalPadding,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -186,10 +135,13 @@ class CommentOpen extends StatelessWidget {
                           children: <Widget>[
                             Container(
                               child: Text(
-                                  parseDate(context, comment.createdAt)
-                                      .toLowerCase(),
-                                  textAlign: TextAlign.start,
-                                  style: Theme.of(context).textTheme.overline),
+                                parseDate(
+                                  context,
+                                  comment.createdAt,
+                                ).toLowerCase(),
+                                textAlign: TextAlign.start,
+                                style: Theme.of(context).textTheme.overline,
+                              ),
                             )
                           ],
                         ),
