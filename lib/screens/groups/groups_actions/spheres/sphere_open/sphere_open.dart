@@ -63,6 +63,9 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     setState(() {
       _userAddress = prefs.getString('user_id');
     });
+
+    Provider.of<GroupRepo>(context, listen: false)
+        .getRelationToGroup(widget.group.address, _userAddress);
   }
 
   Future<List<Users>> _getMembers() async {

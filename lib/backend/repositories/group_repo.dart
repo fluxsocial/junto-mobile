@@ -14,6 +14,11 @@ class GroupRepo {
     return _groupService.getGroup(groupAddress);
   }
 
+  Future<Map<String, bool>> getRelationToGroup(
+      String groupAddress, String userAddress) {
+    return _groupService.getRelationToGroup(groupAddress, userAddress);
+  }
+
   Future<List<Users>> getGroupMembers(String groupAddress) {
     return _groupService.getGroupMembers(groupAddress);
   }

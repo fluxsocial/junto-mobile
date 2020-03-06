@@ -133,6 +133,9 @@ abstract class GroupService {
   /// Returns a [Group] for the given address
   Future<Group> getGroup(String groupAddress);
 
+  Future<Map<String, bool>> getRelationToGroup(
+      String groupAddress, String userAddress);
+
   /// Returns a list of users in a group along with with their permission
   /// level.
   Future<List<Users>> getGroupMembers(String groupAddress);
