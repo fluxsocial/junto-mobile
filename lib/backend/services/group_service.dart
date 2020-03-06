@@ -27,6 +27,14 @@ class GroupServiceCentralized implements GroupService {
   }
 
   @override
+  Future<void> deleteGroup(String groupAddress) async {
+    final http.Response _serverResponse = await client.delete(
+      '/groups/$groupAddress',
+    );
+    print(_serverResponse.statusCode);
+  }
+
+  @override
   Future<Group> getGroup(String groupAddress) async {
     final http.Response _serverResponse =
         await client.get('/groups/$groupAddress');

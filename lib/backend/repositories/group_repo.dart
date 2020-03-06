@@ -10,6 +10,10 @@ class GroupRepo {
     return _groupService.createSphere(sphere);
   }
 
+  Future<void> deleteGroup(String groupAddress) {
+    return _groupService.deleteGroup(groupAddress);
+  }
+
   Future<Group> getGroup(String groupAddress) {
     return _groupService.getGroup(groupAddress);
   }

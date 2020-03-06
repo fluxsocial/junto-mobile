@@ -130,6 +130,8 @@ abstract class GroupService {
   /// Allows an authenticated user to create a sphere.
   Future<SphereResponse> createSphere(SphereModel sphere);
 
+  Future<void> deleteGroup(String groupAddress);
+
   /// Returns a [Group] for the given address
   Future<Group> getGroup(String groupAddress);
 
