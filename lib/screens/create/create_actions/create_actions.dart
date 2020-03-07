@@ -16,6 +16,7 @@ import 'package:junto_beta_mobile/screens/groups/groups.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
+import 'package:junto_beta_mobile/widgets/user_feedback.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -210,50 +211,13 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         _address,
       );
       JuntoLoader.hide();
-      JuntoDialog.showJuntoDialog(
+      await showFeedback(
         context,
-        'Expression Created!',
-        <Widget>[
-          FlatButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                PageRouteBuilder<dynamic>(
-                  pageBuilder: (
-                    BuildContext context,
-                    Animation<double> animation,
-                    Animation<double> secondaryAnimation,
-                  ) {
-                    if (_currentExpressionContext == 'Collective') {
-                      return JuntoCollective();
-                    } else if (_currentExpressionContext == 'My Pack') {
-                      return JuntoGroups(initialGroup: _address);
-                    } else if (_currentExpressionContext == 'Sphere') {
-                      return JuntoGroups(initialGroup: _address);
-                    } else {
-                      return JuntoDen();
-                    }
-                  },
-                  transitionsBuilder: (
-                    BuildContext context,
-                    Animation<double> animation,
-                    Animation<double> secondaryAnimation,
-                    Widget child,
-                  ) {
-                    return FadeTransition(
-                      opacity: animation,
-                      child: child,
-                    );
-                  },
-                  transitionDuration: const Duration(
-                    milliseconds: 300,
-                  ),
-                ),
-              );
-            },
-            child: const Text('Ok'),
-          )
-        ],
+        message: 'Expression created 🎉',
+        color: Theme.of(context).colorScheme.primaryVariant,
+        fontColor: Colors.white,
       );
+      _postCreateAction();
     } catch (error) {
       JuntoLoader.hide();
       JuntoDialog.showJuntoDialog(
