@@ -5,7 +5,8 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 Future<void> showFeedback(
   final BuildContext context, {
   @required final String message,
-  final Color color = Colors.white,
+  Color color = Colors.white,
+  Color fontColor = Colors.black,
   Duration duration = const Duration(milliseconds: 300),
 }) async {
   showGeneralDialog(
@@ -24,30 +25,32 @@ Future<void> showFeedback(
             left: 48.0,
             right: 48.0,
             child: _FeedbackBody(
-              message: message,
-              controller: animation,
-              backgroundColor: color,
-            ),
+                message: message,
+                controller: animation,
+                backgroundColor: color,
+                fontColor: fontColor),
           ),
         ],
       );
     },
   );
-  await Future<void>.delayed(const Duration(milliseconds: 1200) + duration);
+  await Future<void>.delayed(const Duration(milliseconds: 750) + duration);
   Navigator.of(context).pop();
 }
 
 class _FeedbackBody extends StatelessWidget {
-  const _FeedbackBody({
-    Key key,
-    @required Animation<double> controller,
-    @required this.backgroundColor,
-    @required this.message,
-  })  : _controller = controller,
+  const _FeedbackBody(
+      {Key key,
+      @required Animation<double> controller,
+      @required this.backgroundColor,
+      @required this.message,
+      @required this.fontColor})
+      : _controller = controller,
         super(key: key);
 
   final Animation<double> _controller;
   final Color backgroundColor;
+  final Color fontColor;
   final String message;
 
   @override
@@ -61,7 +64,7 @@ class _FeedbackBody extends StatelessWidget {
             sizeFactor: _controller,
             child: Material(
               borderRadius: BorderRadius.circular(8.0 * _controller.value),
-              color: Theme.of(context).scaffoldBackgroundColor,
+              color: backgroundColor,
               child: child,
             ),
           ),
@@ -85,8 +88,9 @@ class _FeedbackBody extends StatelessWidget {
               child: Text(
                 message,
                 overflow: TextOverflow.fade,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 16.0,
+                  color: fontColor,
                   fontWeight: FontWeight.w600,
                 ),
               ),
