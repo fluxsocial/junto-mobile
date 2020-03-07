@@ -104,13 +104,14 @@ class JuntoDrawerState extends State<JuntoDrawer> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                JuntoDrawerItem(
-                  icon: MemberPreview(
-                    profile: _userProfile?.user,
+                if (_userProfile?.user != null)
+                  JuntoDrawerItem(
+                    icon: MemberPreview(
+                      profile: _userProfile?.user,
+                    ),
+                    title: 'My Den',
+                    onTap: () => _navigateToScreen(JuntoDen()),
                   ),
-                  title: 'My Den',
-                  onTap: () => _navigateToScreen(JuntoDen()),
-                ),
                 JuntoDrawerItem(
                   icon: JuntoDrawerIcon(icon: Icons.search),
                   title: 'Search',

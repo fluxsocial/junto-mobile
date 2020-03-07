@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
+import 'package:junto_beta_mobile/widgets/avatars/member_avatar_placeholder.dart';
 
 /// Render a list tile showing the user's profile image.
 /// Contains a callback [onUserTap] triggered when the user is selected.
@@ -24,36 +25,36 @@ class MemberPreview extends StatelessWidget with MemberValidation {
         color: Theme.of(context).colorScheme.background,
         child: Row(
           children: <Widget>[
-            MemberAvatar(
-              diameter: 45,
-              profilePicture: profile.profilePicture,
-            ),
+            if (profile != null)
+              MemberAvatar(
+                diameter: 45,
+                profilePicture: profile.profilePicture,
+              ),
+            if (profile == null) const MemberAvatarPlaceholder(),
             const SizedBox(width: 10),
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 15),
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      width: .5,
-                      color: Theme.of(context).dividerColor,
-                    ),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 15),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    width: .5,
+                    color: Theme.of(context).dividerColor,
                   ),
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      profile.username,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    profile.username,
+                    textAlign: TextAlign.start,
+                    style: Theme.of(context).textTheme.subtitle1,
+                  ),
+                  Text(profile.name,
                       textAlign: TextAlign.start,
-                      style: Theme.of(context).textTheme.subtitle1,
-                    ),
-                    Text(profile.name,
-                        textAlign: TextAlign.start,
-                        style: Theme.of(context).textTheme.bodyText1)
-                  ],
-                ),
+                      style: Theme.of(context).textTheme.bodyText1)
+                ],
               ),
             )
           ],
