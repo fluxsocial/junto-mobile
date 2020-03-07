@@ -13,9 +13,7 @@ class Pack {
   final String packImage;
 
   static List<Pack> fetchAll() {
-    return <Pack>[
-
-    ];
+    return <Pack>[];
   }
 }
 
@@ -61,7 +59,7 @@ class PackResponse {
       }
     };
   }
-} 
+}
 
 class CentralizedPack with RFC3339 {
   CentralizedPack({

@@ -40,7 +40,7 @@ class MemberAppbar extends StatelessWidget {
                 style: Theme.of(context).textTheme.subtitle1,
               ),
               const SizedBox(width: 42),
-              // GestureDetector( 
+              // GestureDetector(
               //   onTap: () {
               //     showModalBottomSheet(
               //       context: context,

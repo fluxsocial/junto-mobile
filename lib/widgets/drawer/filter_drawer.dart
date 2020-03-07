@@ -3,12 +3,13 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/drawer/channel_preview.dart';
+import 'package:provider/provider.dart';
 
 class FilterDrawer extends StatefulWidget {
   const FilterDrawer({this.filterByChannel, this.channels, this.resetChannels});
+
   final ValueChanged<Channel> filterByChannel;
   final List<String> channels;
   final Function resetChannels;

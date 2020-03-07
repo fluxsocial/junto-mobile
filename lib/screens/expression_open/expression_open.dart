@@ -314,6 +314,7 @@ class ExpressionContextChannelPreview extends StatelessWidget {
   const ExpressionContextChannelPreview(this.channel);
 
   final String channel;
+
   @override
   Widget build(BuildContext context) {
     return Container(

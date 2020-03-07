@@ -1,6 +1,6 @@
-import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 
 class MemberPreviewSelect extends StatefulWidget {
   const MemberPreviewSelect(
@@ -10,6 +10,7 @@ class MemberPreviewSelect extends StatefulWidget {
   final UserProfile profile;
   final ValueChanged<UserProfile> onSelect;
   final ValueChanged<UserProfile> onDeselect;
+
   @override
   State<StatefulWidget> createState() {
     return MemberPreviewSelectState();

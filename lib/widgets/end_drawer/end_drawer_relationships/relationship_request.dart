@@ -7,8 +7,8 @@ import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
-import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
+import 'package:provider/provider.dart';
 
 class RelationshipRequest extends StatelessWidget {
   const RelationshipRequest(this.user, this.onAction);

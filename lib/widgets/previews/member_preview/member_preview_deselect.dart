@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 
 class MemberPreviewDeselect extends StatelessWidget {
   const MemberPreviewDeselect({Key key, this.profile, this.onDeselect})
@@ -9,6 +9,7 @@ class MemberPreviewDeselect extends StatelessWidget {
 
   final UserProfile profile;
   final dynamic onDeselect;
+
   @override
   Widget build(BuildContext context) {
     return Container(
