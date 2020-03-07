@@ -30,28 +30,14 @@ class SingleColumnExpressionPreview extends StatelessWidget
       onTap: () {
         // pending - create conditional statement that renders ExpressionOpenCreated if
         // the expression was created by the user. Otherwise display ExpressionOpen
-
         if (expression.type == 'PhotoForm') {
           Navigator.of(context).push(
-            PageRouteBuilder<ExpressionOpen>(
-              pageBuilder: (
-                BuildContext context,
-                Animation<double> animation,
-                Animation<double> secondaryAnimation,
-              ) {
-                return ExpressionOpen(expression, userAddress, allowComments);
-              },
-              transitionsBuilder: (
-                BuildContext context,
-                Animation<double> animation,
-                Animation<double> secondaryAnimation,
-                Widget child,
-              ) {
-                return FadeTransition(
-                  opacity: animation,
-                  child: child,
-                );
-              },
+            FadeRoute<void>(
+              child: ExpressionOpen(
+                expression,
+                userAddress,
+                allowComments,
+              ),
             ),
           );
         } else {

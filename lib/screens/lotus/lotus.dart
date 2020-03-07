@@ -64,64 +64,49 @@ class JuntoLotusState extends State<JuntoLotus> {
     });
   }
 
-  dynamic _navigateTo(String screen) {
-    Navigator.of(context).push(
-      PageRouteBuilder<dynamic>(
-        pageBuilder: (
-          BuildContext context,
-          Animation<double> animation,
-          Animation<double> secondaryAnimation,
-        ) {
-          if (screen == 'Collective') {
-            return JuntoCollective();
-          } else if (screen == 'Groups') {
-            return JuntoGroups(initialGroup: _userProfile.pack.address);
-          } else if (screen == 'Create') {
-            return JuntoCreate(
-              channels: const <String>[],
-              address: widget.address,
-              expressionContext: widget.expressionContext,
-              expressionCenterBackground: backgroundImageAsset,
-            );
-          } else {
-            return JuntoCollective();
-          }
-        },
-        transitionsBuilder: (
-          BuildContext context,
-          Animation<double> animation,
-          Animation<double> secondaryAnimation,
-          Widget child,
-        ) {
-          return FadeTransition(
-            opacity: animation,
-            child: child,
-          );
-        },
-        transitionDuration: const Duration(
-          milliseconds: 300,
-        ),
-      ),
+  /// Replaces the current route with [Screen] and disposes of the previous
+  /// routes
+  void _navigateTo(String screen) {
+    Widget child;
+    if (screen == 'Collective') {
+      child = JuntoCollective();
+    } else if (screen == 'Groups') {
+      child = JuntoGroups(initialGroup: _userProfile.pack.address);
+    } else if (screen == 'Create') {
+      child = JuntoCreate(
+        channels: const <String>[],
+        address: widget.address,
+        expressionContext: widget.expressionContext,
+        expressionCenterBackground: backgroundImageAsset,
+      );
+    } else {
+      child = JuntoCollective();
+    }
+    Navigator.of(context).pushReplacement(
+      FadeRoute<void>(child: child),
     );
+    return;
   }
 
   Widget _setBackground() {
-    setState(() {
-      if (_currentTheme == 'aqueous' || _currentTheme == 'aqueous-night') {
-        backgroundImageAsset =
-            'assets/images/junto-mobile__themes--aqueous.png';
-      } else if (_currentTheme == 'royal' || _currentTheme == 'royal-night') {
-        backgroundImageAsset = 'assets/images/junto-mobile__themes--royal.png';
-      } else if (_currentTheme == 'rainbow' ||
-          _currentTheme == 'rainbow-night') {
-        backgroundImageAsset =
-            'assets/images/junto-mobile__themes--rainbow.png';
-      } else {
-        backgroundImageAsset =
-            'assets/images/junto-mobile__themes--rainbow.png';
-      }
-    });
-
+    setState(
+      () {
+        if (_currentTheme == 'aqueous' || _currentTheme == 'aqueous-night') {
+          backgroundImageAsset =
+              'assets/images/junto-mobile__themes--aqueous.png';
+        } else if (_currentTheme == 'royal' || _currentTheme == 'royal-night') {
+          backgroundImageAsset =
+              'assets/images/junto-mobile__themes--royal.png';
+        } else if (_currentTheme == 'rainbow' ||
+            _currentTheme == 'rainbow-night') {
+          backgroundImageAsset =
+              'assets/images/junto-mobile__themes--rainbow.png';
+        } else {
+          backgroundImageAsset =
+              'assets/images/junto-mobile__themes--rainbow.png';
+        }
+      },
+    );
     return Image.asset(
       backgroundImageAsset,
       fit: BoxFit.cover,

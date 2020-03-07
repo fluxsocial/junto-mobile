@@ -104,28 +104,8 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                       title: 'My Den',
                       onTap: () {
                         Navigator.of(context).push(
-                          PageRouteBuilder<dynamic>(
-                            pageBuilder: (
-                              BuildContext context,
-                              Animation<double> animation,
-                              Animation<double> secondaryAnimation,
-                            ) {
-                              return JuntoDen();
-                            },
-                            transitionsBuilder: (
-                              BuildContext context,
-                              Animation<double> animation,
-                              Animation<double> secondaryAnimation,
-                              Widget child,
-                            ) {
-                              return FadeTransition(
-                                opacity: animation,
-                                child: child,
-                              );
-                            },
-                            transitionDuration: const Duration(
-                              milliseconds: 300,
-                            ),
+                          FadeRoute<void>(
+                            child: JuntoDen(),
                           ),
                         );
                       },
@@ -211,31 +191,13 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                   ),
                   title: 'Log Out',
                   onTap: () async {
-                    await Provider.of<AuthRepo>(context, listen: false)
-                        .logoutUser();
+                    await Provider.of<AuthRepo>(
+                      context,
+                      listen: false,
+                    ).logoutUser();
                     Navigator.of(context).pushReplacement(
-                      PageRouteBuilder<dynamic>(
-                        pageBuilder: (
-                          BuildContext context,
-                          Animation<double> animation,
-                          Animation<double> secondaryAnimation,
-                        ) {
-                          return Welcome();
-                        },
-                        transitionsBuilder: (
-                          BuildContext context,
-                          Animation<double> animation,
-                          Animation<double> secondaryAnimation,
-                          Widget child,
-                        ) {
-                          return FadeTransition(
-                            opacity: animation,
-                            child: child,
-                          );
-                        },
-                        transitionDuration: const Duration(
-                          milliseconds: 400,
-                        ),
+                      FadeRoute<void>(
+                        child: Welcome(),
                       ),
                     );
                   },

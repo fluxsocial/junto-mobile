@@ -42,47 +42,29 @@ class BottomNav extends StatelessWidget {
             child: GestureDetector(
               onTap: onTap,
               child: Container(
-                  width: 60,
-                  height: 50,
-                  color: Colors.transparent,
-                  alignment: Alignment.center,
-                  child: RotatedBox(
-                    quarterTurns: actionsVisible ? 2 : 0,
-                    child: Image.asset(
-                        'assets/images/junto-mobile__double-up-arrow.png',
-                        height: 14,
-                        color: Theme.of(context).primaryColor),
-                  )),
+                width: 60,
+                height: 50,
+                color: Colors.transparent,
+                alignment: Alignment.center,
+                child: RotatedBox(
+                  quarterTurns: actionsVisible ? 2 : 0,
+                  child: Image.asset(
+                    'assets/images/junto-mobile__double-up-arrow.png',
+                    height: 14,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
+              ),
             ),
           ),
           Expanded(
             child: GestureDetector(
               onTap: () {
                 Navigator.of(context).push(
-                  PageRouteBuilder<dynamic>(
-                    pageBuilder: (
-                      BuildContext context,
-                      Animation<double> animation,
-                      Animation<double> secondaryAnimation,
-                    ) {
-                      return const JuntoLotus(
-                        address: null,
-                        expressionContext: ExpressionContext.Collective,
-                      );
-                    },
-                    transitionsBuilder: (
-                      BuildContext context,
-                      Animation<double> animation,
-                      Animation<double> secondaryAnimation,
-                      Widget child,
-                    ) {
-                      return FadeTransition(
-                        opacity: animation,
-                        child: child,
-                      );
-                    },
-                    transitionDuration: const Duration(
-                      milliseconds: 300,
+                  FadeRoute<void>(
+                    child: const JuntoLotus(
+                      address: null,
+                      expressionContext: ExpressionContext.Collective,
                     ),
                   ),
                 );

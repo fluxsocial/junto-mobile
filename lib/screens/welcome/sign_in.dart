@@ -56,30 +56,10 @@ class _SignInState extends State<SignIn> {
           .loginUser(loginDetails);
       JuntoLoader.hide();
       Navigator.of(context).pushReplacement(
-        PageRouteBuilder<dynamic>(
-          pageBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-          ) {
-            return const JuntoLotus(
-              address: null,
-              expressionContext: ExpressionContext.Collective,
-            );
-          },
-          transitionsBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-            Widget child,
-          ) {
-            return FadeTransition(
-              opacity: animation,
-              child: child,
-            );
-          },
-          transitionDuration: const Duration(
-            milliseconds: 1000,
+        FadeRoute<void>(
+          child: const JuntoLotus(
+            address: null,
+            expressionContext: ExpressionContext.Collective,
           ),
         ),
       );

@@ -167,36 +167,13 @@ class JuntoEditDenState extends State<JuntoEditDen> {
 
     // update user
     try {
-      await Provider.of<UserRepo>(context, listen: false)
-          .updateUser(_newProfileBody, _userAddress);
-      JuntoLoader.hide();
-      Navigator.of(context).push(
-        PageRouteBuilder<dynamic>(
-          pageBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-          ) {
-            return JuntoDen();
-          },
-          transitionsBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-            Widget child,
-          ) {
-            return FadeTransition(
-              opacity: animation,
-              child: child,
-            );
-          },
-          transitionDuration: const Duration(
-            milliseconds: 300,
-          ),
-        ),
+      await Provider.of<UserRepo>(context, listen: false).updateUser(
+        _newProfileBody,
+        _userAddress,
       );
+      JuntoLoader.hide();
+      Navigator.of(context).pushReplacement(FadeRoute<void>(child: JuntoDen()));
     } catch (error) {
-      print(error);
       JuntoLoader.hide();
     }
   }
