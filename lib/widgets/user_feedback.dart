@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 
 /// Shows Non intrusive feedback widget.
+/// The properties [context], [message] must be supplied and not null.
+/// The values [color] and [fontColor] both default to [Colors.white] and
+/// [Colors.black]. This widget has a default duration of `300` milliseconds for
+/// animating and an interval of `750` + [duration] until it is removed.
 Future<void> showFeedback(
   final BuildContext context, {
   @required final String message,
@@ -25,10 +29,11 @@ Future<void> showFeedback(
             left: 48.0,
             right: 48.0,
             child: _FeedbackBody(
-                message: message,
-                controller: animation,
-                backgroundColor: color,
-                fontColor: fontColor),
+              message: message,
+              controller: animation,
+              backgroundColor: color,
+              fontColor: fontColor,
+            ),
           ),
         ],
       );
@@ -71,7 +76,10 @@ class _FeedbackBody extends StatelessWidget {
         );
       },
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 24.0,
+          vertical: 10.0,
+        ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
