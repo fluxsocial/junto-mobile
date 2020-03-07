@@ -29,8 +29,9 @@ mixin ListDistinct {
     for (final T item in listTwo) {
       if (_newList.contains(item)) {
         _newList.remove(item);
+      } else {
+        _newList.add(item);
       }
-      _newList.add(item);
     }
     return _newList;
   }
