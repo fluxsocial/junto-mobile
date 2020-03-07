@@ -12,6 +12,10 @@ import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/end_drawer_relationships.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_themes.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/zoom_scaffold.dart';
+import 'package:junto_beta_mobile/widgets/fade_route.dart';
+import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/zoom_scaffold.dart';
 
@@ -89,46 +93,29 @@ class JuntoDrawerState extends State<JuntoDrawer> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    JuntoDrawerItem(
-                      icon: _userProfile != null
-                          ? Container(
-                              margin: const EdgeInsets.only(right: 32),
-                              child: MemberAvatar(
-                                  profilePicture:
-                                      _userProfile.user.profilePicture,
-                                  diameter: 28),
-                            )
-                          : const SizedBox(),
-                      title: 'My Den',
-                      onTap: () {
-                        Navigator.of(context).push(
-                          PageRouteBuilder<dynamic>(
-                            pageBuilder: (
-                              BuildContext context,
-                              Animation<double> animation,
-                              Animation<double> secondaryAnimation,
-                            ) {
-                              return JuntoDen();
-                            },
-                            transitionsBuilder: (
-                              BuildContext context,
-                              Animation<double> animation,
-                              Animation<double> secondaryAnimation,
-                              Widget child,
-                            ) {
-                              return FadeTransition(
-                                opacity: animation,
-                                child: child,
-                              );
-                            },
-                            transitionDuration: const Duration(
-                              milliseconds: 300,
-                            ),
-                          ),
-                        );
-                      },
+                JuntoDrawerItem(
+                  icon: MemberPreview(
+                    profile: _userProfile?.user,
+                  ),
+                  title: 'My Den',
+                  onTap: () => _navigateToScreen(JuntoDen()),
+                ),
+                JuntoDrawerItem(
+                  icon: JuntoDrawerIcon(icon: Icons.search),
+                  title: 'Search',
+                  onTap: () => _navigateToScreen(const GlobalSearch()),
+                ),
+                JuntoDrawerItem(
+                  icon: JuntoDrawerIcon(
+                    icon: CustomIcons.infinity,
+                    size: 9.0,
+                  ),
+                  title: 'Relations',
+                  onTap: () => _navigateToScreen(
+                    JuntoRelationships(
+                      _userAddress,
+                      _userFollowPerspectiveId,
+
                     ),
                     JuntoDrawerItem(
                       icon: Container(
