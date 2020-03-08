@@ -70,7 +70,6 @@ class _EditGroupState extends State<EditGroup> {
 
     // check if user uploaded profile pictures
     if (groupPicture != null && groupPicture.isNotEmpty) {
-      // instantiate list to store photo keys retrieve from /s3
       try {
         final String key =
             await Provider.of<ExpressionRepo>(context, listen: false)
