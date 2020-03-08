@@ -56,6 +56,7 @@ class OwnerActionItems extends StatelessWidget {
                 ListTile(
                   contentPadding: const EdgeInsets.all(0),
                   onTap: () {
+                    Navigator.pop(context);
                     Navigator.push(
                       context,
                       EditGroup.route(sphere),
