@@ -27,13 +27,18 @@ class SphereOpenAppbar extends StatelessWidget {
           children: <Widget>[
             Row(
               children: <Widget>[
-                Icon(CustomIcons.spheres,
-                    color: Theme.of(context).primaryColor, size: 20),
+                Icon(
+                  CustomIcons.spheres,
+                  color: Theme.of(context).primaryColor,
+                  size: 20,
+                ),
                 const SizedBox(width: 10),
                 Container(
                   margin: const EdgeInsets.only(right: 5),
-                  child: Text('s/' + group.groupData.sphereHandle,
-                      style: Theme.of(context).textTheme.subtitle1),
+                  child: Text(
+                    's/' + group.groupData.sphereHandle,
+                    style: Theme.of(context).textTheme.subtitle1,
+                  ),
                 ),
               ],
             ),
@@ -45,8 +50,11 @@ class SphereOpenAppbar extends StatelessWidget {
                     width: 38,
                     color: Colors.transparent,
                     alignment: Alignment.centerRight,
-                    child: Icon(CustomIcons.moon,
-                        size: 22, color: Theme.of(context).primaryColor),
+                    child: Icon(
+                      CustomIcons.moon,
+                      size: 22,
+                      color: Theme.of(context).primaryColor,
+                    ),
                   ),
                 ),
                 GestureDetector(
