@@ -1,16 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:junto_beta_mobile/backend/repositories/group_repo.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/pack_open_appbar.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
-import 'package:junto_beta_mobile/widgets/previews/expression_preview/two_column_preview/two_column_expression_preview.dart';
-import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
-import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/widgets/custom_feeds/group_expressions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PackOpen extends StatefulWidget {
@@ -43,9 +39,6 @@ class PackOpenState extends State<PackOpen> {
     getUserInformation();
   }
 
-  final AsyncMemoizer<List<ExpressionResponse>> _memoizer =
-      AsyncMemoizer<List<ExpressionResponse>>();
-
   Future<void> getUserInformation() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final Map<String, dynamic> decodedUserData =
@@ -55,19 +48,6 @@ class PackOpenState extends State<PackOpen> {
       _userAddress = prefs.getString('user_id');
       _userProfile = UserData.fromMap(decodedUserData);
     });
-  }
-
-  Future<List<ExpressionResponse>> getPackExpressions() async {
-    return _memoizer.runOnce(
-      () => Provider.of<GroupRepo>(context).getGroupExpressions(
-        _userProfile.pack.address,
-        GroupExpressionQueryParams(
-            creatorExpressions: true,
-            directExpressions: true,
-            directExpressionPaginationPosition: 0,
-            creatorExpressionsPaginationPosition: 0),
-      ),
-    );
   }
 
   @override
@@ -158,94 +138,10 @@ class PackOpenState extends State<PackOpen> {
                 controller: controller,
                 onPageChanged: (int index) {},
                 children: <Widget>[
-                  if (_userProfile != null)
-                    FutureBuilder<List<ExpressionResponse>>(
-                      future: getPackExpressions(),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<List<ExpressionResponse>> snapshot) {
-                        if (snapshot.hasError) {
-                          return Center(
-                            child: Transform.translate(
-                              offset: const Offset(0.0, -50),
-                              child: const Text('Hmm, something is up'),
-                            ),
-                          );
-                        }
-                        if (snapshot.hasData) {
-                          return ListView(
-                            children: <Widget>[
-                              Container(
-                                color: Theme.of(context).backgroundColor,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          .5,
-                                      padding: const EdgeInsets.only(
-                                        top: 10,
-                                        left: 10,
-                                        right: 5,
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: <Widget>[
-                                          for (int index = 0;
-                                              index < snapshot.data.length + 1;
-                                              index++)
-                                            if (index == snapshot.data.length)
-                                              const SizedBox()
-                                            else if (index.isEven)
-                                              TwoColumnExpressionPreview(
-                                                expression:
-                                                    snapshot.data[index],
-                                                userAddress: _userAddress,
-                                              )
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          .5,
-                                      padding: const EdgeInsets.only(
-                                        top: 10,
-                                        left: 5,
-                                        right: 10,
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: <Widget>[
-                                          for (int index = 0;
-                                              index < snapshot.data.length + 1;
-                                              index++)
-                                            if (index == snapshot.data.length)
-                                              const SizedBox()
-                                            else if (index.isOdd)
-                                              TwoColumnExpressionPreview(
-                                                expression:
-                                                    snapshot.data[index],
-                                                userAddress: _userAddress,
-                                              )
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          );
-                        }
-                        return Center(
-                          child: Transform.translate(
-                            offset: const Offset(0.0, -50),
-                            child: JuntoProgressIndicator(),
-                          ),
-                        );
-                      },
-                    ),
+                  GroupExpressions(
+                    group: widget.pack,
+                    userAddress: _userAddress,
+                  )
                 ],
               ),
             ),

@@ -73,6 +73,7 @@ class _GroupExpressionsState extends State<GroupExpressions> {
             ),
           );
         }
+
         if (snapshot.hasData) {
           return Container(
             color: Theme.of(context).colorScheme.background,

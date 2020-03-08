@@ -193,6 +193,7 @@ class PacksState extends State<Packs> with ListDistinct {
                             final List<Group> ownedGroups = snapshot.data.owned;
                             final List<Group> associatedGroups =
                                 snapshot.data.associated;
+
                             final List<Group> userPacks = distinct<Group>(
                                     ownedGroups, associatedGroups)
                                 .where(
