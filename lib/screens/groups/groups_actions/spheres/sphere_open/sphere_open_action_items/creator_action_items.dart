@@ -133,6 +133,7 @@ class _EditGroupInfoState extends State<EditGroupInfo> {
   TextEditingController _descriptionController;
   File imageFile;
   List<File> groupPicture = <File>[];
+  String _photoKey = '';
 
   GroupDataSphere get _groupData => widget.sphere.groupData;
 
@@ -159,12 +160,33 @@ class _EditGroupInfoState extends State<EditGroupInfo> {
     final GroupRepo _repo = Provider.of<GroupRepo>(context, listen: false);
     final String name = _nameController.text;
     final String desc = _descriptionController.text;
+
+    // check if user uploaded profile pictures
+    if (groupPicture != null && groupPicture.isNotEmpty) {
+      // instantiate list to store photo keys retrieve from /s3
+      try {
+        final String key =
+            await Provider.of<ExpressionRepo>(context, listen: false)
+                .createPhoto(
+          false,
+          '.png',
+          groupPicture[0],
+        );
+        setState(() {
+          _photoKey = key;
+        });
+      } catch (error) {
+        print(error);
+        JuntoLoader.hide();
+      }
+    }
+
     final Group updatedGroup = widget.sphere.copyWith(
       groupData: GroupDataSphere(
         name: name,
         description: desc,
         principles: '',
-        photo: _groupData.photo,
+        photo: _photoKey,
         sphereHandle: _groupData.sphereHandle,
       ),
     );
