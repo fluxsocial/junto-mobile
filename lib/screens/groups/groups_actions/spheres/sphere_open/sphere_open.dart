@@ -96,6 +96,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
         child: SphereOpenAppbar(
           group: widget.group,
           relationToGroup: relationToGroup,
+          userAddress: _userAddress
         ),
       ),
       body: DefaultTabController(
