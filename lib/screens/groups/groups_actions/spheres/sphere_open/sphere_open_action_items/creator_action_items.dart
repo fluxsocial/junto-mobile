@@ -188,7 +188,6 @@ class _EditGroupInfoState extends State<EditGroupInfo> {
   Future<void> _onPickPressed() async {
     final File image = await ImagePicker.pickImage(source: ImageSource.gallery);
     if (image == null) {
-      setState(() => imageFile = null);
       return;
     }
     final File cropped =
@@ -196,14 +195,12 @@ class _EditGroupInfoState extends State<EditGroupInfo> {
       '3:2',
     ]);
     if (cropped == null) {
-      setState(() => imageFile = null);
       return;
     }
     setState(() {
       imageFile = cropped;
       groupPicture.add(imageFile);
     });
-    print(imageFile);
   }
 
   Widget _displayCurrentProfilePicture() {
