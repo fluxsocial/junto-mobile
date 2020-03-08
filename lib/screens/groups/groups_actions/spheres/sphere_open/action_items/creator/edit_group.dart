@@ -14,101 +14,8 @@ import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 import 'package:junto_beta_mobile/widgets/avatars/group_avatar_placeholder.dart';
 import 'package:junto_beta_mobile/widgets/avatars/group_avatar.dart';
 
-// This component is used in ExpressionPreview and ExpressionOpen
-// as the 'more' icon is pressed to view the action items
-// available for each expression
-class OwnerActionItems extends StatelessWidget {
-  const OwnerActionItems({
-    Key key,
-    @required this.sphere,
-  }) : super(key: key);
-
-  final Group sphere;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.transparent,
-      child: Container(
-        height: MediaQuery.of(context).size.height * .4,
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(10),
-            topRight: Radius.circular(10),
-          ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      height: 5,
-                      width: MediaQuery.of(context).size.width * .1,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).dividerColor,
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                    ),
-                  ],
-                ),
-                ListTile(
-                  contentPadding: const EdgeInsets.all(0),
-                  onTap: () {
-                    Navigator.push(context, EditGroupInfo.route(sphere));
-                  },
-                  title: Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.edit,
-                        size: 17,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      const SizedBox(width: 15),
-                      Text(
-                        'Edit Sphere',
-                        style: Theme.of(context).textTheme.headline5,
-                      ),
-                    ],
-                  ),
-                ),
-                ListTile(
-                  contentPadding: const EdgeInsets.all(0),
-                  onTap: () {
-                    Provider.of<GroupRepo>(context, listen: false)
-                        .deleteGroup(sphere.address);
-                  },
-                  title: Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.delete,
-                        size: 17,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      const SizedBox(width: 15),
-                      Text('Delete Circle',
-                          style: Theme.of(context).textTheme.headline5),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class EditGroupInfo extends StatefulWidget {
-  const EditGroupInfo({
+class EditGroup extends StatefulWidget {
+  const EditGroup({
     Key key,
     @required this.sphere,
   }) : super(key: key);
@@ -118,17 +25,17 @@ class EditGroupInfo extends StatefulWidget {
     return MaterialPageRoute<dynamic>(builder: (
       BuildContext context,
     ) {
-      return EditGroupInfo(
+      return EditGroup(
         sphere: sphere,
       );
     });
   }
 
   @override
-  _EditGroupInfoState createState() => _EditGroupInfoState();
+  _EditGroupState createState() => _EditGroupState();
 }
 
-class _EditGroupInfoState extends State<EditGroupInfo> {
+class _EditGroupState extends State<EditGroup> {
   TextEditingController _nameController;
   TextEditingController _descriptionController;
   File imageFile;
@@ -229,6 +136,7 @@ class _EditGroupInfoState extends State<EditGroupInfo> {
     if (_groupData != null &&
         _groupData.photo.isNotEmpty &&
         imageFile == null) {
+      print('returning group avatar');
       return GroupAvatar(
         diameter: 45,
         profilePicture: _groupData.photo,
@@ -278,12 +186,24 @@ class _EditGroupInfoState extends State<EditGroupInfo> {
                   ),
                 ),
                 Container(
-                  child: Text('Edit Circle',
-                      style: Theme.of(context).textTheme.subtitle1),
+                  child: Text(
+                    'Edit Circle',
+                    style: Theme.of(context).textTheme.subtitle1,
+                  ),
                 ),
                 GestureDetector(
                   onTap: () {
-                    _updateGroup();
+                    if (_nameController.text != '' &&
+                        _descriptionController.text != '') {
+                      if (imageFile == null &&
+                          _nameController.text == _groupData.name &&
+                          _descriptionController.text ==
+                              _groupData.description) {
+                        return;
+                      } else {
+                        _updateGroup();
+                      }
+                    }
                   },
                   child: Container(
                     padding: const EdgeInsets.only(right: 10),
@@ -291,8 +211,10 @@ class _EditGroupInfoState extends State<EditGroupInfo> {
                     color: Colors.transparent,
                     width: 42,
                     height: 42,
-                    child: Text('Save',
-                        style: Theme.of(context).textTheme.bodyText1),
+                    child: Text(
+                      'Save',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
                   ),
                 )
               ],
@@ -305,7 +227,9 @@ class _EditGroupInfoState extends State<EditGroupInfo> {
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
-                      color: Theme.of(context).dividerColor, width: .75),
+                    color: Theme.of(context).dividerColor,
+                    width: .75,
+                  ),
                 ),
               ),
             ),
@@ -375,7 +299,7 @@ class _EditGroupInfoState extends State<EditGroupInfo> {
                         controller: _descriptionController,
                         decoration: const InputDecoration(
                           border: InputBorder.none,
-                          hintText: 'Short/Long Bio',
+                          hintText: 'Bio / Purpose',
                         ),
                         maxLines: null,
                         style: Theme.of(context).textTheme.bodyText1,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_open/sphere_open_action_items/creator_action_items.dart';
+import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_open/action_items/creator/action_items.dart';
 
 class SphereOpenAppbar extends StatelessWidget {
   const SphereOpenAppbar(
