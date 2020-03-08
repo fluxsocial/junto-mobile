@@ -3,13 +3,18 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_open/action_items/creator/action_items.dart';
+import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_open/action_items/member/action_items.dart';
 
 class SphereOpenAppbar extends StatelessWidget {
   const SphereOpenAppbar(
-      {Key key, @required this.group, @required this.relationToGroup})
+      {Key key,
+      @required this.group,
+      @required this.relationToGroup,
+      @required this.userAddress})
       : super(key: key);
 
   final Group group;
+  final String userAddress;
   final Map<String, dynamic> relationToGroup;
 
   @override
@@ -64,7 +69,10 @@ class SphereOpenAppbar extends StatelessWidget {
                         builder: (BuildContext context) {
                           return relationToGroup['creator']
                               ? OwnerActionItems(sphere: group)
-                              : const SizedBox();
+                              : MemberActionItems(
+                                  sphere: group,
+                                  userAddress: userAddress,
+                                );
                         });
                   },
                   child: Container(
