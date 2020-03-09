@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 
 class PackOpenAppbar extends StatelessWidget {
   const PackOpenAppbar({
@@ -19,14 +19,15 @@ class PackOpenAppbar extends StatelessWidget {
       automaticallyImplyLeading: false,
       actions: <Widget>[Container()],
       brightness: Brightness.light,
-      iconTheme: const IconThemeData(color: JuntoPalette.juntoSleek),
       elevation: 0,
       titleSpacing: 0,
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(.75),
         child: Container(
           height: .75,
-          decoration: BoxDecoration(color: Theme.of(context).dividerColor),
+          decoration: BoxDecoration(
+            color: Theme.of(context).dividerColor,
+          ),
         ),
       ),
       title: Container(
@@ -34,17 +35,25 @@ class PackOpenAppbar extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Row(
-              children: <Widget>[
-                if (userProfile != null)
-                  Text(
-                    pack.address == userProfile.pack.address
-                        ? 'My Pack'
-                        : pack.groupData.name,
-                    style: Theme.of(context).textTheme.headline6,
+            userProfile != null
+                ? Row(
+                    children: <Widget>[
+                      MemberAvatar(
+                        diameter: 28,
+                        profilePicture: pack.address == userProfile.pack.address
+                            ? userProfile.user.profilePicture
+                            : pack.creator['profile_picture'],
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        pack.address == userProfile.pack.address
+                            ? 'My Pack'
+                            : pack.groupData.name,
+                        style: Theme.of(context).textTheme.headline6,
+                      )
+                    ],
                   )
-              ],
-            ),
+                : const SizedBox(),
             Row(
               children: <Widget>[
                 GestureDetector(
@@ -53,8 +62,11 @@ class PackOpenAppbar extends StatelessWidget {
                     width: 38,
                     color: Colors.transparent,
                     alignment: Alignment.centerRight,
-                    child: Icon(CustomIcons.moon,
-                        size: 22, color: Theme.of(context).primaryColor),
+                    child: Icon(
+                      CustomIcons.moon,
+                      size: 22,
+                      color: Theme.of(context).primaryColor,
+                    ),
                   ),
                 ),
                 GestureDetector(
@@ -63,8 +75,11 @@ class PackOpenAppbar extends StatelessWidget {
                     width: 38,
                     alignment: Alignment.centerRight,
                     color: Colors.transparent,
-                    child: Icon(CustomIcons.morevertical,
-                        size: 22, color: Theme.of(context).primaryColor),
+                    child: Icon(
+                      CustomIcons.morevertical,
+                      size: 22,
+                      color: Theme.of(context).primaryColor,
+                    ),
                   ),
                 ),
               ],
