@@ -344,7 +344,10 @@ class JuntoCollectiveState extends State<JuntoCollective>
     });
     actionsVisible.value = false;
     _expressionCompleter.value = getCollectiveExpressions(
-        contextType: 'Collective', paginationPos: 0, channels: _channels);
+      contextType: 'Collective',
+      paginationPos: 0,
+      channels: _channels,
+    );
   }
 
 // Switch between perspectives; used in perspectives side drawer.
