@@ -8,6 +8,7 @@ import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/group_expressions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:junto_beta_mobile/widgets/drawer/filter_drawer.dart';
 
 class PackOpen extends StatefulWidget {
   const PackOpen({
@@ -41,7 +42,7 @@ class PackOpenState extends State<PackOpen> {
 
   Future<void> getUserInformation() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final Map<String, dynamic> decodedUserData = await jsonDecode(
+    final Map<String, dynamic> decodedUserData = jsonDecode(
       prefs.getString('user_data'),
     );
 
@@ -151,14 +152,20 @@ class PackOpenState extends State<PackOpen> {
                 },
                 children: <Widget>[
                   GroupExpressions(
-                      group: widget.pack,
-                      userAddress: _userAddress,
-                      expressionsPrivacy: 'Public'),
-                  GroupExpressions(
                     group: widget.pack,
                     userAddress: _userAddress,
-                    expressionsPrivacy: 'Private',
+                    expressionsPrivacy: 'Public',
+                    openFilterDrawer: () {
+                      Scaffold.of(context).openDrawer();
+                    },
                   ),
+                  GroupExpressions(
+                      group: widget.pack,
+                      userAddress: _userAddress,
+                      expressionsPrivacy: 'Private',
+                      openFilterDrawer: () {
+                        Scaffold.of(context).openDrawer();
+                      }),
                 ],
               ),
             ),

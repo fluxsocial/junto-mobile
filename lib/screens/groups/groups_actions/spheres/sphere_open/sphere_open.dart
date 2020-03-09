@@ -87,6 +87,10 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
         .getGroupMembers(widget.group.address);
   }
 
+  void openFilterDrawer() {
+    Scaffold.of(context).openDrawer();
+  }
+
   @override
   Widget build(BuildContext context) {
     print(widget.group.address);
@@ -112,6 +116,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                   group: widget.group,
                   userAddress: _userAddress,
                   expressionsPrivacy: 'Public',
+                  openFilterDrawer: openFilterDrawer,
                 )
             ],
           ),
