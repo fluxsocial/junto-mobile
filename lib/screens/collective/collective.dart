@@ -301,9 +301,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
                       delegate: CollectiveAppBar(
                           expandedHeight: 135,
                           appbarTitle: _appbarTitle,
-                          openFilterDrawer: () {
-                            _toggleFilterDrawer();
-                          },
+                          openFilterDrawer: _toggleFilterDrawer,
                           twoColumnView: twoColumnView,
                           switchColumnView: _switchColumnView),
                       pinned: false,
