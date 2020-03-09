@@ -252,7 +252,6 @@ class WelcomeState extends State<Welcome> {
                       onValueChanged: (String value) => name = value,
                       onSubmit: () async {
                         FocusScope.of(context).nextFocus();
-                        await _nextSignUpPage();
                       },
                       maxLength: 36,
                       hint: 'My name is...',
