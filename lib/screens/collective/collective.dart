@@ -225,9 +225,10 @@ class JuntoCollectiveState extends State<JuntoCollective>
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.centerDocked,
               drawer: FilterDrawer(
-                  filterByChannel: _filterByChannel,
-                  channels: _channels,
-                  resetChannels: _resetChannels),
+                filterByChannel: _filterByChannel,
+                channels: _channels,
+                resetChannels: _resetChannels,
+              ),
 
               // dynamically render body
               body: ValueListenableBuilder<bool>(

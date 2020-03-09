@@ -9,17 +9,19 @@ import 'package:provider/provider.dart';
 
 /// Linear list of expressions created by the given [userProfile].
 class GroupExpressions extends StatefulWidget {
-  const GroupExpressions(
-      {Key key,
-      @required this.group,
-      @required this.userAddress,
-      @required this.expressionsPrivacy})
-      : super(key: key);
+  const GroupExpressions({
+    Key key,
+    @required this.group,
+    @required this.userAddress,
+    @required this.expressionsPrivacy,
+    @required this.openFilterDrawer,
+  }) : super(key: key);
 
   /// Group
   final Group group;
   final String userAddress;
   final String expressionsPrivacy;
+  final Function openFilterDrawer;
 
   @override
   _GroupExpressionsState createState() => _GroupExpressionsState();
@@ -93,9 +95,16 @@ class _GroupExpressionsState extends State<GroupExpressions> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Image.asset(
-                              'assets/images/junto-mobile__filter.png',
-                              height: 17,
+                            GestureDetector(
+                              onTap: () {
+                                widget.openFilterDrawer();
+                              },
+                              child: Container(
+                                child: Image.asset(
+                                  'assets/images/junto-mobile__filter.png',
+                                  height: 17,
+                                ),
+                              ),
                             ),
                             Row(
                               children: <Widget>[

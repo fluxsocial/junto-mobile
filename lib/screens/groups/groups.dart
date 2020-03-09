@@ -11,6 +11,7 @@ import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/zoom_scaffold.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/widgets/drawer/filter_drawer.dart';
 
 // This screen displays groups a member belongs two. Currently, there are two types of
 // groups: spheres (communities) and packs (agent-centric communities)
@@ -94,6 +95,9 @@ class JuntoGroupsState extends State<JuntoGroups>
                       }
                     }),
               ),
+            ),
+            drawer: const FilterDrawer(
+              channels: <String>[],
             ),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,
