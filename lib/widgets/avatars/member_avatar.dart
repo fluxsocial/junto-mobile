@@ -5,7 +5,7 @@ import 'package:junto_beta_mobile/widgets/avatars/member_avatar_placeholder.dart
 class MemberAvatar extends StatelessWidget {
   const MemberAvatar({this.profilePicture, this.diameter});
 
-  final List<String> profilePicture;
+  final List<dynamic> profilePicture;
   final double diameter;
 
   @override

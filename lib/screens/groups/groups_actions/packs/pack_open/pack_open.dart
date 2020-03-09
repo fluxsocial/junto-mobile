@@ -24,9 +24,9 @@ class PackOpen extends StatefulWidget {
 }
 
 class PackOpenState extends State<PackOpen> {
-  //ignore:unused_field
   String _userAddress;
   UserData _userProfile;
+  int _currentIndex = 0;
 
   // Controller for PageView
   PageController controller;
@@ -41,8 +41,9 @@ class PackOpenState extends State<PackOpen> {
 
   Future<void> getUserInformation() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final Map<String, dynamic> decodedUserData =
-        jsonDecode(prefs.getString('user_data'));
+    final Map<String, dynamic> decodedUserData = await jsonDecode(
+      prefs.getString('user_data'),
+    );
 
     setState(() {
       _userAddress = prefs.getString('user_id');
@@ -63,7 +64,10 @@ class PackOpenState extends State<PackOpen> {
       child: Scaffold(
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(45),
-          child: PackOpenAppbar(pack: widget.pack, userProfile: _userProfile),
+          child: PackOpenAppbar(
+            pack: widget.pack,
+            userProfile: _userProfile,
+          ),
         ),
         floatingActionButton: ValueListenableBuilder<bool>(
           valueListenable: _isVisible,
@@ -86,11 +90,16 @@ class PackOpenState extends State<PackOpen> {
         body: Column(
           children: <Widget>[
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+              padding: const EdgeInsets.symmetric(
+                vertical: 15,
+                horizontal: 10,
+              ),
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
-                      color: Theme.of(context).dividerColor, width: .75),
+                    color: Theme.of(context).dividerColor,
+                    width: .75,
+                  ),
                 ),
               ),
               child: Row(
@@ -104,9 +113,9 @@ class PackOpenState extends State<PackOpen> {
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w700,
-                          // color: _currentIndex == 0
-                          //     ? Theme.of(context).primaryColor
-                          //     : Theme.of(context).primaryColorLight,
+                          color: _currentIndex == 0
+                              ? Theme.of(context).primaryColor
+                              : Theme.of(context).primaryColorLight,
                         ),
                       ),
                     ),
@@ -123,9 +132,9 @@ class PackOpenState extends State<PackOpen> {
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w700,
-                            // color: _currentIndex == 1
-                            //     ? Theme.of(context).primaryColor
-                            //     : Theme.of(context).primaryColorLight,
+                            color: _currentIndex == 1
+                                ? Theme.of(context).primaryColor
+                                : Theme.of(context).primaryColorLight,
                           ),
                         )),
                   ),
@@ -136,7 +145,11 @@ class PackOpenState extends State<PackOpen> {
               child: PageView(
                 // physics: const NeverScrollableScrollPhysics(),
                 controller: controller,
-                onPageChanged: (int index) {},
+                onPageChanged: (int index) {
+                  setState(() {
+                    _currentIndex = index;
+                  });
+                },
                 children: <Widget>[
                   GroupExpressions(
                     group: widget.pack,

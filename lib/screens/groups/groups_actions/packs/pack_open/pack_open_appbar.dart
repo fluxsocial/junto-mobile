@@ -36,12 +36,13 @@ class PackOpenAppbar extends StatelessWidget {
           children: <Widget>[
             Row(
               children: <Widget>[
-                Text(
-                  pack.address == userProfile.pack.address
-                      ? 'My Pack'
-                      : pack.groupData.name,
-                  style: Theme.of(context).textTheme.headline6,
-                )
+                if (userProfile != null)
+                  Text(
+                    pack.address == userProfile.pack.address
+                        ? 'My Pack'
+                        : pack.groupData.name,
+                    style: Theme.of(context).textTheme.headline6,
+                  )
               ],
             ),
             Row(
