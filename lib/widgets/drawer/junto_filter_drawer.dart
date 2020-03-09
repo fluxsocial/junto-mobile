@@ -12,14 +12,7 @@ typedef JuntoDrawerCallback = void Function(bool isOpened);
 
 /// Signature for when a pointer that is in contact with the screen and moves to the right or left
 /// values between 1 and 0
-typedef JuntoDragUpdateCallback = void Function(
-    double value, JuntoDrawerDirection direction);
-
-/// The possible position of a [JuntoFilterDrawer].
-enum JuntoDrawerDirection {
-  start,
-  end,
-}
+typedef JuntoDragUpdateCallback = void Function(double value);
 
 /// Animation type of a [JuntoFilterDrawer].
 enum InnerDrawerAnimation {
@@ -93,15 +86,10 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
 
   double _initWidth = _kWidth;
   Orientation _orientation = Orientation.portrait;
-  JuntoDrawerDirection _position;
 
   @override
   void initState() {
     _updateWidth();
-
-    _position = widget.drawer != null
-        ? JuntoDrawerDirection.start
-        : JuntoDrawerDirection.end;
 
     _controller = AnimationController(
         value: 1,
@@ -125,7 +113,7 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
     });
 
     if (widget.onDragUpdate != null && _controller.value < 1) {
-      widget.onDragUpdate(1 - _controller.value, _position);
+      widget.onDragUpdate(1 - _controller.value); //, _position);
     }
   }
 
@@ -203,15 +191,9 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
   void _move(DragUpdateDetails details) {
     double delta = details.primaryDelta / _width;
 
-    if (delta > 0 && _controller.value == 1 && widget.drawer != null)
-      _position = JuntoDrawerDirection.start;
-    else if (delta < 0 && _controller.value == 1)
-      _position = JuntoDrawerDirection.end;
-
     final double left = widget.offset.left;
-    final double right = widget.offset.right;
 
-    double offset = _position == JuntoDrawerDirection.start ? left : right;
+    double offset = left;
 
     double ee = 1;
     if (offset <= 0.2)
@@ -222,17 +204,9 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
       ee = 1.05;
     }
 
-    offset = 1 -
-        pow(offset / ee,
-            1 / 2); //(num.parse(pow(offset/2,1/3).toStringAsFixed(1)));
+    offset = 1 - pow(offset / ee, 1 / 2);
+    delta = -delta;
 
-    switch (_position) {
-      case JuntoDrawerDirection.end:
-        break;
-      case JuntoDrawerDirection.start:
-        delta = -delta;
-        break;
-    }
     switch (Directionality.of(context)) {
       case TextDirection.rtl:
         _controller.value -= delta + (delta * offset);
@@ -255,13 +229,8 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
     if (details.velocity.pixelsPerSecond.dx.abs() >= _kMinFlingVelocity) {
       double visualVelocity = details.velocity.pixelsPerSecond.dx / _width;
 
-      switch (_position) {
-        case JuntoDrawerDirection.end:
-          break;
-        case JuntoDrawerDirection.start:
-          visualVelocity = -visualVelocity;
-          break;
-      }
+      visualVelocity = -visualVelocity;
+
       switch (Directionality.of(context)) {
         case TextDirection.rtl:
           _controller.fling(velocity: -visualVelocity);
@@ -277,28 +246,22 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
     }
   }
 
-  void open({JuntoDrawerDirection direction}) {
+  void open() {
     FocusScope.of(context).unfocus();
-    if (direction != null) {
-      _position = direction;
-    }
+
     _controller.fling(velocity: -1);
   }
 
-  void close({JuntoDrawerDirection direction}) {
+  void close() {
     FocusScope.of(context).unfocus();
-    if (direction != null) {
-      _position = direction;
-    }
+
     _controller.fling(velocity: 1);
   }
 
   /// Open or Close JuntoDrawer
-  void toggle({JuntoDrawerDirection direction}) {
+  void toggle() {
     FocusScope.of(context).unfocus();
-    if (direction != null) {
-      _position = direction;
-    }
+
     if (_previouslyOpened) {
       _controller.fling(velocity: 1);
     } else {
@@ -310,24 +273,12 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
 
   /// Outer Alignment
   AlignmentDirectional get _drawerOuterAlignment {
-    switch (_position) {
-      case JuntoDrawerDirection.start:
-        return AlignmentDirectional.centerEnd;
-      case JuntoDrawerDirection.end:
-        return AlignmentDirectional.centerStart;
-    }
-    return null;
+    return AlignmentDirectional.centerEnd;
   }
 
   /// Inner Alignment
   AlignmentDirectional get _drawerInnerAlignment {
-    switch (_position) {
-      case JuntoDrawerDirection.start:
-        return AlignmentDirectional.centerStart;
-      case JuntoDrawerDirection.end:
-        return AlignmentDirectional.centerEnd;
-    }
-    return null;
+    return AlignmentDirectional.centerStart;
   }
 
   InnerDrawerAnimation get _animationType {
@@ -379,12 +330,11 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
   /// Trigger Area
   Widget _trigger(AlignmentDirectional alignment, Widget child) {
     assert(alignment != null);
-    final bool drawerIsStart = _position == JuntoDrawerDirection.start;
     final EdgeInsets padding = MediaQuery.of(context).padding;
-    double dragAreaWidth = drawerIsStart ? padding.left : padding.right;
+    double dragAreaWidth = padding.left;
 
     if (Directionality.of(context) == TextDirection.rtl)
-      dragAreaWidth = drawerIsStart ? padding.right : padding.left;
+      dragAreaWidth = padding.right;
     dragAreaWidth = max(dragAreaWidth, _kEdgeDragWidth);
 
     if (_controller.status == AnimationStatus.completed &&
@@ -398,7 +348,7 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
       return null;
   }
 
-  ///Disable the scaffolding tap when the drawer is open
+  /// Disable the scaffolding tap when the drawer is open
   Widget _invisibleCover() {
     final Container container = Container(
       color: Colors.transparent,
@@ -474,7 +424,6 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
 
     /// wFactor depends of offset and is used by the second Align that contains the Scaffold
     final double offset = 0.5 - _offset * 0.5;
-    //final double offset = 1 - _offset * 1;
     final double wFactor = (_controller.value * (1 - offset)) + offset;
 
     return Stack(
