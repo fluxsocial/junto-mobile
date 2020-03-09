@@ -34,7 +34,9 @@ class PackPreview extends StatelessWidget {
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
-                      width: .5, color: Theme.of(context).dividerColor),
+                    width: .5,
+                    color: Theme.of(context).dividerColor,
+                  ),
                 ),
               ),
               child: Column(

@@ -143,7 +143,6 @@ class PackOpenState extends State<PackOpen> {
             ),
             Expanded(
               child: PageView(
-                // physics: const NeverScrollableScrollPhysics(),
                 controller: controller,
                 onPageChanged: (int index) {
                   setState(() {
@@ -152,10 +151,9 @@ class PackOpenState extends State<PackOpen> {
                 },
                 children: <Widget>[
                   GroupExpressions(
-                    group: widget.pack,
-                    userAddress: _userAddress,
-                    expressionsPrivacy: 'Public'
-                  ),
+                      group: widget.pack,
+                      userAddress: _userAddress,
+                      expressionsPrivacy: 'Public'),
                   GroupExpressions(
                     group: widget.pack,
                     userAddress: _userAddress,
