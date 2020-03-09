@@ -115,7 +115,10 @@ class PacksState extends State<Packs> with ListDistinct {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text('Packs', style: Theme.of(context).textTheme.headline4),
-                const SizedBox(width: 38, height: 38)
+                const SizedBox(
+                  width: 38,
+                  height: 38,
+                )
               ],
             ),
           ),
@@ -126,20 +129,23 @@ class PacksState extends State<Packs> with ListDistinct {
               children: <Widget>[
                 GestureDetector(
                   onTap: () {
-                    packsPageController.animateToPage(0,
-                        duration: const Duration(milliseconds: 200),
-                        curve: Curves.easeIn);
+                    packsPageController.animateToPage(
+                      0,
+                      duration: const Duration(milliseconds: 200),
+                      curve: Curves.easeIn,
+                    );
                   },
                   child: Container(
                     child: Text(
                       'My Packs',
                       style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          color: _currentIndex == 0
-                              ? Theme.of(context).primaryColorDark
-                              : Theme.of(context).primaryColorLight,
-                          decoration: TextDecoration.none),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: _currentIndex == 0
+                            ? Theme.of(context).primaryColorDark
+                            : Theme.of(context).primaryColorLight,
+                        decoration: TextDecoration.none,
+                      ),
                     ),
                   ),
                 ),
@@ -154,12 +160,13 @@ class PacksState extends State<Packs> with ListDistinct {
                     child: Text(
                       'Requests',
                       style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          color: _currentIndex == 1
-                              ? Theme.of(context).primaryColorDark
-                              : Theme.of(context).primaryColorLight,
-                          decoration: TextDecoration.none),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: _currentIndex == 1
+                            ? Theme.of(context).primaryColorDark
+                            : Theme.of(context).primaryColorLight,
+                        decoration: TextDecoration.none,
+                      ),
                     ),
                   ),
                 )
