@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 
 // This class renders a pack preview (usually shown in a list of packs)
 class PackPreview extends StatelessWidget {
@@ -21,54 +22,12 @@ class PackPreview extends StatelessWidget {
       color: Colors.transparent,
       child: Row(
         children: <Widget>[
-          group.address == ''
-              ? Container(
-                  alignment: Alignment.center,
-                  height: 45.0,
-                  width: 45.0,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.bottomLeft,
-                      end: Alignment.topRight,
-                      stops: const <double>[0.3, 0.9],
-                      colors: <Color>[
-                        Theme.of(context).colorScheme.primary,
-                        Theme.of(context).colorScheme.secondary,
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                  child: Transform.translate(
-                    offset: const Offset(-1.0, 0),
-                    child: Icon(
-                      CustomIcons.packs,
-                      color: Theme.of(context).colorScheme.onPrimary,
-                      size: 15,
-                    ),
-                  ),
-                )
-              : Container(
-                  alignment: Alignment.center,
-                  height: 45.0,
-                  width: 45.0,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.bottomLeft,
-                      end: Alignment.topRight,
-                      stops: const <double>[0.3, 0.9],
-                      colors: <Color>[
-                        Theme.of(context).colorScheme.primary,
-                        Theme.of(context).colorScheme.secondary,
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                  child: Icon(
-                    CustomIcons.packs,
-                    color: Theme.of(context).colorScheme.onPrimary,
-                    size: 15,
-                  ),
-                ),
+          MemberAvatar(
+            diameter: 45,
+            profilePicture: group.address == userProfile.pack.address
+                ? userProfile.user.profilePicture
+                : group.creator['profile_picture'],
+          ),
           const SizedBox(width: 10),
           Expanded(
             child: Container(

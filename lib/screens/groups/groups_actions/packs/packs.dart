@@ -262,8 +262,9 @@ class PacksState extends State<Packs> with ListDistinct {
                                     in snapshot.data.groupJoinNotifications)
                                   if (packRequest.groupType == 'Pack')
                                     PackRequest(
-                                        pack: packRequest,
-                                        refreshGroups: refreshGroupsAndRequests)
+                                      pack: packRequest,
+                                      refreshGroups: refreshGroupsAndRequests,
+                                    )
                               ],
                             ));
                           }
