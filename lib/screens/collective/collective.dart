@@ -12,7 +12,8 @@ import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/widgets/appbar/collective_appbar.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
-import 'package:junto_beta_mobile/widgets/drawer/filter_drawer.dart';
+import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
+import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/zoom_scaffold.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
@@ -39,6 +40,9 @@ class JuntoCollectiveState extends State<JuntoCollective>
   // Global key to uniquely identify Junto Collective
   final GlobalKey<ScaffoldState> _juntoCollectiveKey =
       GlobalKey<ScaffoldState>();
+
+  final GlobalKey<JuntoFilterDrawerState> _filterDrawerKey =
+      GlobalKey<JuntoFilterDrawerState>();
 
   // Completer which controls expressions querying.
   final ValueNotifier<Future<QueryResults<ExpressionResponse>>>
@@ -190,74 +194,76 @@ class JuntoCollectiveState extends State<JuntoCollective>
               //   Provider.of<MenuController>(context, listen: false).open();
               // }
             },
-            child: Scaffold(
-              resizeToAvoidBottomInset: false,
-              key: _juntoCollectiveKey,
-              floatingActionButton: ValueListenableBuilder<bool>(
-                valueListenable: _isVisible,
-                builder: (BuildContext context, bool visible, Widget child) {
-                  return AnimatedOpacity(
-                      duration: const Duration(milliseconds: 300),
-                      opacity: visible ? 1.0 : 0.0,
-                      child: child);
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 25),
-                  child: ValueListenableBuilder<bool>(
-                    valueListenable: actionsVisible,
-                    builder: (BuildContext context, bool value, _) {
-                      return BottomNav(
-                        screen: 'collective',
-                        userProfile: _userProfile,
-                        actionsVisible: value,
-                        onTap: () {
-                          if (value) {
-                            actionsVisible.value = false;
-                          } else {
-                            actionsVisible.value = true;
-                          }
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ),
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerDocked,
-              drawer: FilterDrawer(
+            child: JuntoFilterDrawer(
+              key: _filterDrawerKey,
+              drawer: FilterDrawerContent(
                 filterByChannel: _filterByChannel,
                 channels: _channels,
                 resetChannels: _resetChannels,
               ),
-
-              // dynamically render body
-              body: ValueListenableBuilder<bool>(
-                  valueListenable: actionsVisible,
-                  builder: (BuildContext context, bool value, _) {
-                    return Stack(
-                      children: <Widget>[
-                        AnimatedOpacity(
-                          duration: const Duration(milliseconds: 300),
-                          opacity: value ? 0.0 : 1.0,
-                          child: Visibility(
-                            visible: !value,
-                            child: _buildPerspectiveFeed(),
-                          ),
-                        ),
-                        AnimatedOpacity(
-                          duration: const Duration(milliseconds: 300),
-                          opacity: value ? 1.0 : 0.0,
-                          child: Visibility(
-                            visible: value,
-                            child: JuntoCollectiveActions(
-                              userProfile: _userProfile,
-                              changePerspective: _changePerspective,
+              scaffold: Scaffold(
+                resizeToAvoidBottomInset: false,
+                key: _juntoCollectiveKey,
+                floatingActionButton: ValueListenableBuilder<bool>(
+                  valueListenable: _isVisible,
+                  builder: (BuildContext context, bool visible, Widget child) {
+                    return AnimatedOpacity(
+                        duration: const Duration(milliseconds: 300),
+                        opacity: visible ? 1.0 : 0.0,
+                        child: child);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 25),
+                    child: ValueListenableBuilder<bool>(
+                      valueListenable: actionsVisible,
+                      builder: (BuildContext context, bool value, _) {
+                        return BottomNav(
+                          screen: 'collective',
+                          userProfile: _userProfile,
+                          actionsVisible: value,
+                          onTap: () {
+                            if (value) {
+                              actionsVisible.value = false;
+                            } else {
+                              actionsVisible.value = true;
+                            }
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                floatingActionButtonLocation:
+                    FloatingActionButtonLocation.centerDocked,
+                // dynamically render body
+                body: ValueListenableBuilder<bool>(
+                    valueListenable: actionsVisible,
+                    builder: (BuildContext context, bool value, _) {
+                      return Stack(
+                        children: <Widget>[
+                          AnimatedOpacity(
+                            duration: const Duration(milliseconds: 300),
+                            opacity: value ? 0.0 : 1.0,
+                            child: Visibility(
+                              visible: !value,
+                              child: _buildPerspectiveFeed(),
                             ),
                           ),
-                        ),
-                      ],
-                    );
-                  }),
+                          AnimatedOpacity(
+                            duration: const Duration(milliseconds: 300),
+                            opacity: value ? 1.0 : 0.0,
+                            child: Visibility(
+                              visible: value,
+                              child: JuntoCollectiveActions(
+                                userProfile: _userProfile,
+                                changePerspective: _changePerspective,
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    }),
+              ),
             ),
           ),
         ),
@@ -296,7 +302,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
                           expandedHeight: 135,
                           appbarTitle: _appbarTitle,
                           openFilterDrawer: () {
-                            Scaffold.of(context).openDrawer();
+                            _toggleFilterDrawer();
                           },
                           twoColumnView: twoColumnView,
                           switchColumnView: _switchColumnView),
@@ -332,6 +338,11 @@ class JuntoCollectiveState extends State<JuntoCollective>
         },
       ),
     );
+  }
+
+  void _toggleFilterDrawer() {
+    FocusScope.of(context).unfocus();
+    _filterDrawerKey.currentState.toggle();
   }
 
   void _filterByChannel(Channel channel) {
