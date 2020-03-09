@@ -20,9 +20,10 @@ class Group {
 
   factory Group.fromMap(Map<String, dynamic> json) => Group(
         address: json['address'],
-        creator: json['creator'] is Map
-            ? SlimUserResponse.fromMap(json['creator']).address
-            : json['creator'],
+        creator: json['creator'],
+        // is Map
+        //     ? SlimUserResponse.fromMap(json['creator']).address
+        //     : json['creator'],
 //        incomingCreator: SlimUserResponse.fromMap(json['creator']),
         createdAt: RFC3339.parseRfc3339(json['created_at']),
         privacy: json['privacy'],
@@ -37,7 +38,7 @@ class Group {
   /// Address of the group on the server
   final String address;
 
-  final String creator;
+  final dynamic creator;
 
   /// [SlimUserResponse] of the group's creator.
   final SlimUserResponse incomingCreator;
@@ -96,7 +97,7 @@ class Group {
 
   Group copyWith({
     String address,
-    String creator,
+    dynamic creator,
     DateTime createdAt,
     String privacy,
     String groupType,

@@ -2,12 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/group_model.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 
 // This class renders a pack preview (usually shown in a list of packs)
 class PackPreview extends StatelessWidget {
-  const PackPreview({Key key, @required this.group}) : super(key: key);
+  const PackPreview({
+    Key key,
+    @required this.group,
+    @required this.userProfile,
+  }) : super(key: key);
 
   final Group group;
+  final UserData userProfile;
 
   @override
   Widget build(BuildContext context) {
@@ -77,12 +83,20 @@ class PackPreview extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(group.groupData.name,
-                      textAlign: TextAlign.start,
-                      style: Theme.of(context).textTheme.subtitle1),
-                  Text('username',
-                      textAlign: TextAlign.start,
-                      style: Theme.of(context).textTheme.bodyText1),
+                  Text(
+                    group.address == userProfile.pack.address
+                        ? 'My Pack'
+                        : group.creator['name'] + "'s Pack",
+                    textAlign: TextAlign.start,
+                    style: Theme.of(context).textTheme.subtitle1,
+                  ),
+                  Text(
+                    group.address == userProfile.pack.address
+                        ? userProfile.user.username
+                        : group.creator['username'],
+                    textAlign: TextAlign.start,
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
                 ],
               ),
             ),

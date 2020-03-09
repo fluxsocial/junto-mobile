@@ -4,9 +4,14 @@ import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 class PackOpenAppbar extends StatelessWidget {
-  const PackOpenAppbar({Key key, @required this.pack}) : super(key: key);
+  const PackOpenAppbar({
+    Key key,
+    @required this.pack,
+    @required this.userProfile,
+  }) : super(key: key);
 
   final Group pack;
+  final UserData userProfile;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +37,9 @@ class PackOpenAppbar extends StatelessWidget {
             Row(
               children: <Widget>[
                 Text(
-                  pack.groupData.name,
+                  pack.address == userProfile.pack.address
+                      ? 'My Pack'
+                      : pack.groupData.name,
                   style: Theme.of(context).textTheme.headline6,
                 )
               ],
