@@ -63,7 +63,7 @@ class PackOpenState extends State<PackOpen> {
       child: Scaffold(
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(45),
-          child: PackOpenAppbar(pack: widget.pack),
+          child: PackOpenAppbar(pack: widget.pack, userProfile: _userProfile),
         ),
         floatingActionButton: ValueListenableBuilder<bool>(
           valueListenable: _isVisible,
@@ -85,63 +85,67 @@ class PackOpenState extends State<PackOpen> {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body: Column(
           children: <Widget>[
-            // Container(
-            //   padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-            //   decoration: BoxDecoration(
-            //     border: Border(
-            //       bottom: BorderSide(
-            //           color: Theme.of(context).dividerColor, width: .75),
-            //     ),
-            //   ),
-            //   child: Row(
-            //     children: <Widget>[
-            //       GestureDetector(
-            //         onTap: () => controller.jumpToPage(0),
-            //         child: Container(
-            //           color: Colors.transparent,
-            //           child: Text(
-            //             'Public',
-            //             style: TextStyle(
-            //               fontSize: 15,
-            //               fontWeight: FontWeight.w700,
-            //               color: _currentIndex == 0
-            //                   ? Theme.of(context).primaryColor
-            //                   : Theme.of(context).primaryColorLight,
-            //             ),
-            //           ),
-            //         ),
-            //       ),
-            //       const SizedBox(width: 25),
-            //       GestureDetector(
-            //         onTap: () {
-            //           controller.jumpToPage(1);
-            //         },
-            //         child: Container(
-            //             color: Colors.transparent,
-            //             child: Text(
-            //               'Private',
-            //               style: TextStyle(
-            //                 fontSize: 15,
-            //                 fontWeight: FontWeight.w700,
-            //                 color: _currentIndex == 1
-            //                     ? Theme.of(context).primaryColor
-            //                     : Theme.of(context).primaryColorLight,
-            //               ),
-            //             )),
-            //       ),
-            //     ],
-            //   ),
-            // ),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                      color: Theme.of(context).dividerColor, width: .75),
+                ),
+              ),
+              child: Row(
+                children: <Widget>[
+                  GestureDetector(
+                    onTap: () => controller.jumpToPage(0),
+                    child: Container(
+                      color: Colors.transparent,
+                      child: Text(
+                        'PACK',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          // color: _currentIndex == 0
+                          //     ? Theme.of(context).primaryColor
+                          //     : Theme.of(context).primaryColorLight,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                  GestureDetector(
+                    onTap: () {
+                      controller.jumpToPage(1);
+                    },
+                    child: Container(
+                        color: Colors.transparent,
+                        child: Text(
+                          'PRIVATE',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                            // color: _currentIndex == 1
+                            //     ? Theme.of(context).primaryColor
+                            //     : Theme.of(context).primaryColorLight,
+                          ),
+                        )),
+                  ),
+                ],
+              ),
+            ),
             Expanded(
               child: PageView(
-                physics: const NeverScrollableScrollPhysics(),
+                // physics: const NeverScrollableScrollPhysics(),
                 controller: controller,
                 onPageChanged: (int index) {},
                 children: <Widget>[
                   GroupExpressions(
                     group: widget.pack,
                     userAddress: _userAddress,
-                  )
+                  ),
+                  GroupExpressions(
+                    group: widget.pack,
+                    userAddress: _userAddress,
+                  ),
                 ],
               ),
             ),

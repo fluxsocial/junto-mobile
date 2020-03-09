@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,7 @@ class Packs extends StatefulWidget {
 
 class PacksState extends State<Packs> with ListDistinct {
   String _userAddress;
+  UserData _userProfile;
   UserRepo _userProvider;
   NotificationRepo _notificationProvider;
 
@@ -57,8 +59,11 @@ class PacksState extends State<Packs> with ListDistinct {
 
   Future<void> getUserInformation() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final Map<String, dynamic> decodedUserData =
+        jsonDecode(prefs.getString('user_data'));
     setState(() {
       _userAddress = prefs.getString('user_id');
+      _userProfile = UserData.fromMap(decodedUserData);
     });
   }
 
@@ -211,6 +216,7 @@ class PacksState extends State<Packs> with ListDistinct {
                                     },
                                     child: PackPreview(
                                       group: group,
+                                      userProfile: _userProfile,
                                     ),
                                   )
                               ],
