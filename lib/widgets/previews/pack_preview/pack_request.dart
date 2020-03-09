@@ -11,6 +11,7 @@ class PackRequest extends StatelessWidget {
 
   final Group pack;
   final Function refreshGroups;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

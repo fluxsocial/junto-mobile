@@ -11,6 +11,7 @@ class SphereRequest extends StatelessWidget {
 
   final Group sphere;
   final Function refreshGroups;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

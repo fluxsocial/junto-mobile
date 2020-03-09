@@ -7,8 +7,10 @@ import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 
 class SphereOpenAbout extends StatelessWidget {
   const SphereOpenAbout({this.getMembers, this.group});
+
   final Future<List<Users>> getMembers;
   final Group group;
+
   @override
   Widget build(BuildContext context) {
     return ListView(

@@ -45,7 +45,8 @@ class ImageCroppingDialog extends StatefulWidget {
 }
 
 class _ImageCroppingDialogState extends State<ImageCroppingDialog> {
-  final GlobalKey<ImageCropperState> _imageCropperKey = GlobalKey<ImageCropperState>();
+  final GlobalKey<ImageCropperState> _imageCropperKey =
+      GlobalKey<ImageCropperState>();
   bool _processing = false;
   ui.Image _image;
 
@@ -76,7 +77,8 @@ class _ImageCroppingDialogState extends State<ImageCroppingDialog> {
     final ui.PictureRecorder recorder = ui.PictureRecorder();
     final Canvas canvas = Canvas(recorder);
 
-    final Rect clipRect = _calculateAspectRect(state._widgetSize, state._realSelectedAspectRatio);
+    final Rect clipRect =
+        _calculateAspectRect(state._widgetSize, state._realSelectedAspectRatio);
     canvas.save();
     canvas.clipRect(Rect.fromLTWH(0.0, 0.0, clipRect.width, clipRect.height));
     canvas.translate(-clipRect.left, -clipRect.top);
@@ -90,11 +92,15 @@ class _ImageCroppingDialogState extends State<ImageCroppingDialog> {
     canvas.restore();
 
     final ui.Picture picture = recorder.endRecording();
-    final ui.Image outputImage = await picture.toImage(clipRect.width.toInt(), clipRect.height.toInt());
-    final ByteData bytes = await outputImage.toByteData(format: ui.ImageByteFormat.png);
+    final ui.Image outputImage =
+        await picture.toImage(clipRect.width.toInt(), clipRect.height.toInt());
+    final ByteData bytes =
+        await outputImage.toByteData(format: ui.ImageByteFormat.png);
 
-    final String outputName = '${p.basenameWithoutExtension(widget.sourceFile.path)}.png';
-    final String outputPath = p.join((await pp.getTemporaryDirectory()).path, outputName);
+    final String outputName =
+        '${p.basenameWithoutExtension(widget.sourceFile.path)}.png';
+    final String outputPath =
+        p.join((await pp.getTemporaryDirectory()).path, outputName);
     final File outputFile = File(outputPath);
     await outputFile.writeAsBytes(bytes.buffer.asUint8List());
 
@@ -133,11 +139,14 @@ class _ImageCroppingDialogState extends State<ImageCroppingDialog> {
           ),
           AnimatedContainer(
             duration: kThemeAnimationDuration,
-            color: _processing ? Colors.black.withOpacity(0.8) : Colors.transparent,
+            color: _processing
+                ? Colors.black.withOpacity(0.8)
+                : Colors.transparent,
             child: _processing
                 ? const Center(
                     child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Color(0xB3FFFFFF)),
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(Color(0xB3FFFFFF)),
                     ),
                   )
                 : const SizedBox(),
@@ -162,7 +171,8 @@ class ImageCropper extends StatefulWidget {
   ImageCropperState createState() => ImageCropperState();
 }
 
-class ImageCropperState extends State<ImageCropper> with TickerProviderStateMixin {
+class ImageCropperState extends State<ImageCropper>
+    with TickerProviderStateMixin {
   final ValueNotifier<Matrix4> _matrix = ValueNotifier<Matrix4>(null);
   AnimationController _aspectController;
   Animation<double> _aspectAnimation;
@@ -178,13 +188,15 @@ class ImageCropperState extends State<ImageCropper> with TickerProviderStateMixi
   double _realSelectedAspectRatio;
 
   Rect get _imageRect {
-    return Rect.fromLTWH(0.0, 0.0, widget.image.width.toDouble(), widget.image.height.toDouble());
+    return Rect.fromLTWH(0.0, 0.0, widget.image.width.toDouble(),
+        widget.image.height.toDouble());
   }
 
   Rect get _croppedImageRect {
     return Rect.fromLTWH(
       (_widgetSize.width - (widget.image.width * _scale)) / 2.0 + _position.dx,
-      (_widgetSize.height - (widget.image.height * _scale)) / 2.0 + _position.dy,
+      (_widgetSize.height - (widget.image.height * _scale)) / 2.0 +
+          _position.dy,
       widget.image.width * _scale,
       widget.image.height * _scale,
     );
@@ -193,8 +205,10 @@ class ImageCropperState extends State<ImageCropper> with TickerProviderStateMixi
   @override
   void initState() {
     super.initState();
-    _aspectController = AnimationController(duration: kThemeAnimationDuration, vsync: this);
-    _matrixController = AnimationController(duration: kThemeAnimationDuration, vsync: this);
+    _aspectController =
+        AnimationController(duration: kThemeAnimationDuration, vsync: this);
+    _matrixController =
+        AnimationController(duration: kThemeAnimationDuration, vsync: this);
     _matrixController.addListener(_onAnimateMatrix);
     _position = Offset.zero;
     _scale = 1.0;
@@ -261,7 +275,8 @@ class ImageCropperState extends State<ImageCropper> with TickerProviderStateMixi
     final double end = realAspectRatio;
     _selectedAspectRatio = aspectRatio;
     _realSelectedAspectRatio = realAspectRatio;
-    _aspectAnimation = Tween<double>(begin: begin, end: end).animate(_aspectController);
+    _aspectAnimation =
+        Tween<double>(begin: begin, end: end).animate(_aspectController);
     _aspectController.forward(from: 0.0);
     _maybeAnimateScale(true);
   }
@@ -272,7 +287,8 @@ class ImageCropperState extends State<ImageCropper> with TickerProviderStateMixi
     }
 
     final Rect rect = _croppedImageRect;
-    final Rect box = _calculateAspectRect(_widgetSize, _realSelectedAspectRatio);
+    final Rect box =
+        _calculateAspectRect(_widgetSize, _realSelectedAspectRatio);
     double scale = _scale;
     double posX = _position.dx;
     double posY = _position.dy;
@@ -289,8 +305,11 @@ class ImageCropperState extends State<ImageCropper> with TickerProviderStateMixi
 
     if (scale != _scale || posX != _position.dx || posY != _position.dy) {
       if (animate) {
-        _scaleAnimation = Tween<double>(begin: _scale, end: scale).animate(_matrixController);
-        _positionAnimation = Tween<Offset>(begin: _position, end: Offset(posX, posY)).animate(_matrixController);
+        _scaleAnimation =
+            Tween<double>(begin: _scale, end: scale).animate(_matrixController);
+        _positionAnimation =
+            Tween<Offset>(begin: _position, end: Offset(posX, posY))
+                .animate(_matrixController);
         _matrixController.forward(from: 0.0);
       } else {
         _position = Offset.zero;
@@ -373,7 +392,9 @@ class _AspectRatioPainter extends CustomPainter {
         assert(strokeColor != null),
         assert(strokeWidth != null),
         assert(overlayColor != null),
-        super(repaint: Listenable.merge(<Listenable>[aspectAnimation, imageMatrix]));
+        super(
+            repaint:
+                Listenable.merge(<Listenable>[aspectAnimation, imageMatrix]));
 
   final Animation<double> aspectAnimation;
   final Color strokeColor;
@@ -398,7 +419,8 @@ class _AspectRatioPainter extends CustomPainter {
       canvas.restore();
     }
 
-    canvas.saveLayer(bounds, Paint()..color = Color.fromRGBO(0, 0, 0, strokeColor.opacity));
+    canvas.saveLayer(
+        bounds, Paint()..color = Color.fromRGBO(0, 0, 0, strokeColor.opacity));
 
     final Paint strokePaint = Paint()
       ..style = PaintingStyle.stroke
@@ -412,12 +434,14 @@ class _AspectRatioPainter extends CustomPainter {
 
     final double hSpace = strokeRect.height * (1.0 / 3.0);
     for (double y = strokeRect.top; y <= strokeRect.bottom; y += hSpace) {
-      canvas.drawLine(Offset(strokeRect.left, y), Offset(strokeRect.right, y), strokePaint);
+      canvas.drawLine(
+          Offset(strokeRect.left, y), Offset(strokeRect.right, y), strokePaint);
     }
 
     final double wSpace = strokeRect.width * (1.0 / 3.0);
     for (double x = strokeRect.left; x <= strokeRect.right; x += wSpace) {
-      canvas.drawLine(Offset(x, strokeRect.top), Offset(x, strokeRect.bottom), strokePaint);
+      canvas.drawLine(
+          Offset(x, strokeRect.top), Offset(x, strokeRect.bottom), strokePaint);
     }
 
     canvas.restore();
@@ -456,7 +480,8 @@ class _AspectRatioButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final double realAspectRatio = _convertAspectRatio(aspectRatio);
-    final Color foreground = selected ? theme.primaryColorDark : theme.primaryColorLight;
+    final Color foreground =
+        selected ? theme.primaryColorDark : theme.primaryColorLight;
     return AspectRatio(
       aspectRatio: 1.0,
       child: Material(

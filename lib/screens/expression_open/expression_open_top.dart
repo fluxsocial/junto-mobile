@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
-import 'package:junto_beta_mobile/widgets/expression_action_items.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
+import 'package:junto_beta_mobile/widgets/expression_action_items.dart';
 
 class ExpressionOpenTop extends StatelessWidget with MemberValidation {
   const ExpressionOpenTop({Key key, this.expression, this.userAddress})

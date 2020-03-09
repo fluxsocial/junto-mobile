@@ -16,6 +16,7 @@ import 'package:junto_beta_mobile/screens/groups/groups.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
+import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/user_feedback.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -107,39 +108,17 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
   }
 
   void _postCreateAction() {
-    Navigator.of(context).pushAndRemoveUntil(
-        PageRouteBuilder<dynamic>(
-          pageBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-          ) {
-            if (_currentExpressionContext == 'Collective') {
-              return JuntoCollective();
-            } else if (_currentExpressionContext == 'My Pack') {
-              return JuntoGroups(initialGroup: _address);
-            } else if (_currentExpressionContext == 'Sphere') {
-              return JuntoGroups(initialGroup: _address);
-            } else {
-              return JuntoDen();
-            }
-          },
-          transitionsBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-            Widget child,
-          ) {
-            return FadeTransition(
-              opacity: animation,
-              child: child,
-            );
-          },
-          transitionDuration: const Duration(
-            milliseconds: 300,
-          ),
-        ),
-        (_) => false);
+    Widget child;
+    if (_currentExpressionContext == 'Collective') {
+      child = JuntoCollective();
+    } else if (_currentExpressionContext == 'My Pack') {
+      child = JuntoGroups(initialGroup: _address);
+    } else if (_currentExpressionContext == 'Sphere') {
+      child = JuntoGroups(initialGroup: _address);
+    } else {
+      child = JuntoDen();
+    }
+    Navigator.of(context).pushReplacement(FadeRoute<void>(child: child));
   }
 
   Future<void> _createExpression() async {

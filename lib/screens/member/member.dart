@@ -10,11 +10,11 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/member/member_appbar.dart';
 import 'package:junto_beta_mobile/screens/member/member_relationships.dart';
-import 'package:junto_beta_mobile/widgets/tab_bar.dart';
+import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/user_expressions.dart';
+import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 
 class JuntoMember extends StatefulWidget {
   const JuntoMember({

@@ -1,19 +1,20 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
+import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/global_search/global_search.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
+import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/end_drawer_relationships.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_themes.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/zoom_scaffold.dart';
+import 'package:junto_beta_mobile/widgets/fade_route.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class JuntoDrawer extends StatefulWidget {
   @override
@@ -104,28 +105,8 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                       title: 'My Den',
                       onTap: () {
                         Navigator.of(context).push(
-                          PageRouteBuilder<dynamic>(
-                            pageBuilder: (
-                              BuildContext context,
-                              Animation<double> animation,
-                              Animation<double> secondaryAnimation,
-                            ) {
-                              return JuntoDen();
-                            },
-                            transitionsBuilder: (
-                              BuildContext context,
-                              Animation<double> animation,
-                              Animation<double> secondaryAnimation,
-                              Widget child,
-                            ) {
-                              return FadeTransition(
-                                opacity: animation,
-                                child: child,
-                              );
-                            },
-                            transitionDuration: const Duration(
-                              milliseconds: 300,
-                            ),
+                          FadeRoute<void>(
+                            child: JuntoDen(),
                           ),
                         );
                       },
@@ -189,10 +170,13 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                         Navigator.push(
                           context,
                           CupertinoPageRoute<Widget>(
-                            builder: (BuildContext context) => JuntoThemes(
+                            builder: (BuildContext context) {
+                              return JuntoThemes(
                                 refreshData: getUserInformation,
                                 currentTheme: _currentTheme,
-                                nightMode: _nightMode),
+                                nightMode: _nightMode,
+                              );
+                            },
                           ),
                         );
                       },
@@ -211,31 +195,13 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                   ),
                   title: 'Log Out',
                   onTap: () async {
-                    await Provider.of<AuthRepo>(context, listen: false)
-                        .logoutUser();
+                    await Provider.of<AuthRepo>(
+                      context,
+                      listen: false,
+                    ).logoutUser();
                     Navigator.of(context).pushReplacement(
-                      PageRouteBuilder<dynamic>(
-                        pageBuilder: (
-                          BuildContext context,
-                          Animation<double> animation,
-                          Animation<double> secondaryAnimation,
-                        ) {
-                          return Welcome();
-                        },
-                        transitionsBuilder: (
-                          BuildContext context,
-                          Animation<double> animation,
-                          Animation<double> secondaryAnimation,
-                          Widget child,
-                        ) {
-                          return FadeTransition(
-                            opacity: animation,
-                            child: child,
-                          );
-                        },
-                        transitionDuration: const Duration(
-                          milliseconds: 400,
-                        ),
+                      FadeRoute<void>(
+                        child: Welcome(),
                       ),
                     );
                   },

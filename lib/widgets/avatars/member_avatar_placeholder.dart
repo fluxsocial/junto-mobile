@@ -4,6 +4,7 @@ class MemberAvatarPlaceholder extends StatelessWidget {
   const MemberAvatarPlaceholder({this.diameter});
 
   final double diameter;
+
   @override
   Widget build(BuildContext context) {
     return Container(

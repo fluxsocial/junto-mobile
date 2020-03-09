@@ -6,6 +6,7 @@ class ZoomScaffold extends StatefulWidget {
     this.menuScreen,
     this.contentScreen,
   });
+
   final Widget menuScreen;
   final Layout contentScreen;
 
@@ -101,6 +102,7 @@ class ZoomScaffoldMenuController extends StatefulWidget {
   const ZoomScaffoldMenuController({
     this.builder,
   });
+
   final ZoomScaffoldBuilder builder;
 
   @override
@@ -125,6 +127,7 @@ class Layout {
   Layout({
     this.contentBuilder,
   });
+
   final WidgetBuilder contentBuilder;
 }
 

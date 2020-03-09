@@ -5,8 +5,9 @@ import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expression_open.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/expression_action_items.dart';
-import 'package:junto_beta_mobile/widgets/previews/expression_preview/single_column_preview/single_column_expression_preview_types/event.dart';
+import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/single_column_preview/single_column_expression_preview_types/dynamic.dart';
+import 'package:junto_beta_mobile/widgets/previews/expression_preview/single_column_preview/single_column_expression_preview_types/event.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/single_column_preview/single_column_expression_preview_types/photo.dart';
 import 'package:junto_beta_mobile/widgets/previews/expression_preview/single_column_preview/single_column_expression_preview_types/shortform.dart';
 
@@ -30,28 +31,14 @@ class SingleColumnExpressionPreview extends StatelessWidget
       onTap: () {
         // pending - create conditional statement that renders ExpressionOpenCreated if
         // the expression was created by the user. Otherwise display ExpressionOpen
-
         if (expression.type == 'PhotoForm') {
           Navigator.of(context).push(
-            PageRouteBuilder<ExpressionOpen>(
-              pageBuilder: (
-                BuildContext context,
-                Animation<double> animation,
-                Animation<double> secondaryAnimation,
-              ) {
-                return ExpressionOpen(expression, userAddress, allowComments);
-              },
-              transitionsBuilder: (
-                BuildContext context,
-                Animation<double> animation,
-                Animation<double> secondaryAnimation,
-                Widget child,
-              ) {
-                return FadeTransition(
-                  opacity: animation,
-                  child: child,
-                );
-              },
+            FadeRoute<void>(
+              child: ExpressionOpen(
+                expression,
+                userAddress,
+                allowComments,
+              ),
             ),
           );
         } else {

@@ -140,7 +140,6 @@ class OverlayMenu extends StatelessWidget {
                             : Theme.of(context).primaryColorLight,
                       ),
                     ),
-
                     const SizedBox(height: 7),
                     Text(
                       'CIRCLES',

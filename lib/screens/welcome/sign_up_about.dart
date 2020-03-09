@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:keyboard_avoider/keyboard_avoider.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_page_title.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field_counter.dart';
+import 'package:keyboard_avoider/keyboard_avoider.dart';
 
 class SignUpAbout extends StatefulWidget {
   const SignUpAbout({Key key}) : super(key: key);

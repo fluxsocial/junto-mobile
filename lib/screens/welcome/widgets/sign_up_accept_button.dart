@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
+import 'package:junto_beta_mobile/widgets/fade_route.dart';
 
 class AcceptButton extends StatelessWidget {
   const AcceptButton({
@@ -27,34 +28,15 @@ class AcceptButton extends StatelessWidget {
           ),
         ),
         child: FlatButton(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(40.0)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(40.0),
+          ),
           onPressed: () async {
             Navigator.of(context).pushReplacement(
-              PageRouteBuilder<dynamic>(
-                pageBuilder: (
-                  BuildContext context,
-                  Animation<double> animation,
-                  Animation<double> secondaryAnimation,
-                ) {
-                  return const JuntoLotus(
-                    address: null,
-                    expressionContext: ExpressionContext.Collective,
-                  );
-                },
-                transitionsBuilder: (
-                  BuildContext context,
-                  Animation<double> animation,
-                  Animation<double> secondaryAnimation,
-                  Widget child,
-                ) {
-                  return FadeTransition(
-                    opacity: animation,
-                    child: child,
-                  );
-                },
-                transitionDuration: const Duration(
-                  milliseconds: 1000,
+              FadeRoute<void>(
+                child: const JuntoLotus(
+                  address: null,
+                  expressionContext: ExpressionContext.Collective,
                 ),
               ),
             );
