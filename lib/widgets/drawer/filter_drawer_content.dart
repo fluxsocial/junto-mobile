@@ -7,18 +7,19 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/drawer/channel_preview.dart';
 import 'package:provider/provider.dart';
 
-class FilterDrawer extends StatefulWidget {
-  const FilterDrawer({this.filterByChannel, this.channels, this.resetChannels});
+class FilterDrawerContent extends StatefulWidget {
+  const FilterDrawerContent(
+      {this.filterByChannel, this.channels, this.resetChannels});
 
   final ValueChanged<Channel> filterByChannel;
   final List<String> channels;
   final Function resetChannels;
 
   @override
-  _FilterDrawerState createState() => _FilterDrawerState();
+  _FilterDrawerContentState createState() => _FilterDrawerContentState();
 }
 
-class _FilterDrawerState extends State<FilterDrawer> {
+class _FilterDrawerContentState extends State<FilterDrawerContent> {
   TextEditingController textEditingController;
   SearchRepo _searchRepo;
   List<Channel> channels;
