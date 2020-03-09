@@ -9,15 +9,17 @@ import 'package:provider/provider.dart';
 
 /// Linear list of expressions created by the given [userProfile].
 class GroupExpressions extends StatefulWidget {
-  const GroupExpressions({
-    Key key,
-    @required this.group,
-    @required this.userAddress,
-  }) : super(key: key);
+  const GroupExpressions(
+      {Key key,
+      @required this.group,
+      @required this.userAddress,
+      @required this.expressionsPrivacy})
+      : super(key: key);
 
   /// Group
   final Group group;
   final String userAddress;
+  final String expressionsPrivacy;
 
   @override
   _GroupExpressionsState createState() => _GroupExpressionsState();
@@ -137,13 +139,13 @@ class _GroupExpressionsState extends State<GroupExpressions> {
                           firstChild: TwoColumnListView(
                             userAddress: widget.userAddress,
                             data: snapshot.data.results,
-                            privacyLayer: 'Public',
+                            privacyLayer: widget.expressionsPrivacy,
                             showComments: false,
                           ),
                           secondChild: SingleColumnListView(
                             userAddress: widget.userAddress,
                             data: snapshot.data.results,
-                            privacyLayer: 'Public',
+                            privacyLayer: widget.expressionsPrivacy,
                             showComments: false,
                           ),
                         )),

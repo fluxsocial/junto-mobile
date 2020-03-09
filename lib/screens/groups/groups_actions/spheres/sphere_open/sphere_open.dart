@@ -94,10 +94,9 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(45),
         child: SphereOpenAppbar(
-          group: widget.group,
-          relationToGroup: relationToGroup,
-          userAddress: _userAddress
-        ),
+            group: widget.group,
+            relationToGroup: relationToGroup,
+            userAddress: _userAddress),
       ),
       body: DefaultTabController(
         length: _tabs.length,
@@ -112,6 +111,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                 GroupExpressions(
                   group: widget.group,
                   userAddress: _userAddress,
+                  expressionsPrivacy: 'Public',
                 )
             ],
           ),

@@ -154,10 +154,12 @@ class PackOpenState extends State<PackOpen> {
                   GroupExpressions(
                     group: widget.pack,
                     userAddress: _userAddress,
+                    expressionsPrivacy: 'Public'
                   ),
                   GroupExpressions(
                     group: widget.pack,
                     userAddress: _userAddress,
+                    expressionsPrivacy: 'Private',
                   ),
                 ],
               ),
