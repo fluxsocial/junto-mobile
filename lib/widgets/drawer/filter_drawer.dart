@@ -7,8 +7,6 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/drawer/channel_preview.dart';
 import 'package:provider/provider.dart';
 
-import 'custom_drawer.dart';
-
 class FilterDrawer extends StatefulWidget {
   const FilterDrawer({this.filterByChannel, this.channels, this.resetChannels});
 
@@ -20,32 +18,25 @@ class FilterDrawer extends StatefulWidget {
   _FilterDrawerState createState() => _FilterDrawerState();
 }
 
-extension GlobalKeyEx on GlobalKey {
-  Rect get globalPaintBounds {
-    final renderObject = currentContext?.findRenderObject();
-    var translation = renderObject?.getTransformTo(null)?.getTranslation();
-    if (translation != null && renderObject.paintBounds != null) {
-      return renderObject.paintBounds
-          .shift(Offset(translation.x, translation.y));
-    } else {
-      return null;
-    }
-  }
-}
-
 class _FilterDrawerState extends State<FilterDrawer> {
   TextEditingController textEditingController;
   SearchRepo _searchRepo;
-  String query;
-  Timer _timer;
-
-  GlobalKey<CustomDrawerControllerState> drawerKey =
-      GlobalKey<CustomDrawerControllerState>();
+  List<Channel> channels;
 
   @override
   void initState() {
     super.initState();
-    textEditingController = TextEditingController();
+    textEditingController = TextEditingController()
+      ..addListener(_onSearchChanged);
+  }
+
+  Future<void> _onSearchChanged() async {
+    final QueryResults<Channel> newChannels =
+        await _searchRepo.searchChannel(textEditingController.text);
+    setState(() {
+      print(channels);
+      channels = newChannels.results;
+    });
   }
 
   @override
@@ -56,199 +47,262 @@ class _FilterDrawerState extends State<FilterDrawer> {
 
   @override
   void dispose() {
-    super.dispose();
     textEditingController.dispose();
-  }
-
-  void _onTextChange(String value) {
-    if (_timer != null) {
-      _timer.cancel();
-    }
-    _timer = Timer(
-      const Duration(milliseconds: 300),
-      () => _updateQuery(
-        value,
-      ),
-    );
-  }
-
-  void _updateQuery(String value) {
-    setState(() {
-      query = value;
-    });
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      color: Theme.of(context).primaryColorDark,
       width: MediaQuery.of(context).size.width * .93,
-      child: CustomDrawer(
-        key: drawerKey,
-        elevation: 0,
-        child: Container(
-          decoration: const BoxDecoration(
-            color: Color(0xff333333),
-          ),
-          child: LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints constraints) {
-              return SafeArea(
-                child: GestureDetector(
-                  onTap: () => FocusScope.of(context).unfocus(),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Expanded(
-                              child: TextField(
-                                controller: textEditingController,
-                                decoration: InputDecoration(
-                                  contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 4.0,
-                                    horizontal: 12.0,
-                                  ),
-                                  counter: Container(),
-                                  hintText: 'Filter by channel',
-                                  border: InputBorder.none,
-                                  hintStyle: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w500,
-                                    color: Theme.of(context).primaryColorLight,
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    borderSide:
-                                        BorderSide(color: Colors.black26),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    borderSide:
-                                        BorderSide(color: Colors.white24),
-                                  ),
-                                ),
-                                onChanged: _onTextChange,
-                                cursorColor: Colors.white,
-                                cursorWidth: 1,
-                                maxLines: 1,
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.white),
-                                maxLength: 80,
-                                textInputAction: TextInputAction.done,
-                                keyboardAppearance:
-                                    Theme.of(context).brightness,
-                              ),
-                            ),
-                          ],
-                        ),
+      child: SafeArea(
+        child: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Flexible(
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: FitlerDrawerTextField(
+                        textEditingController: textEditingController,
                       ),
-                      widget.channels.isNotEmpty
-                          ? Container(
-                              margin: const EdgeInsets.only(
-                                  left: 10, top: 15, bottom: 15),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 15, vertical: 10),
-                              decoration: BoxDecoration(
-                                  color: const Color(0xff555555),
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Text(
-                                widget.channels[0],
-                                style: const TextStyle(
-                                    fontSize: 14, color: Colors.white),
-                              ),
-                            )
-                          : const SizedBox(),
+                    ),
+                    if (widget.channels.isNotEmpty)
+                      SelectedChannel(channels: widget.channels),
+                    if (channels != null)
                       Expanded(
-                        child: FutureBuilder<QueryResults<Channel>>(
-                          future: _searchRepo.searchChannel(query),
-                          builder: (
-                            BuildContext context,
-                            AsyncSnapshot<QueryResults<Channel>> snapshot,
-                          ) {
-                            if (snapshot.hasData && !snapshot.hasError) {
-                              return ListView.builder(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 0),
-                                itemCount: snapshot.data.results.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  final Channel item =
-                                      snapshot.data.results[index];
+                        child: ListView.builder(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 0),
+                          itemCount: channels.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            final Channel item = channels[index];
 
-                                  return InkWell(
-                                    onTap: () {
-                                      widget.filterByChannel(item);
-                                      Navigator.pop(context);
-                                    },
-                                    child: FilterDrawerChannelPreview(
-                                      channel: item,
-                                    ),
-                                  );
-                                },
-                              );
-                            }
-                            if (snapshot.hasError) {
-                              return Container(
-                                child: Center(
-                                  child: Text(
-                                    snapshot.error.toString(),
-                                  ),
-                                ),
-                              );
-                            }
-                            return Container(
-                              child: const Center(
-                                child: CircularProgressIndicator(),
+                            return InkWell(
+                              onTap: () {
+                                widget.filterByChannel(item);
+                                Navigator.pop(context);
+                              },
+                              child: FilterDrawerChannelPreview(
+                                channel: item,
                               ),
                             );
                           },
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          widget.resetChannels();
-                        },
-                        child: Container(
-                          height: 50,
-                          width: MediaQuery.of(context).size.width,
-                          margin: const EdgeInsets.only(
-                            left: 20,
-                            right: 20,
-                            bottom: 25,
-                          ),
-                          decoration: BoxDecoration(
-                            color: const Color(0xff3F3F3F),
-                            borderRadius: BorderRadius.circular(100),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Container(
-                                alignment: Alignment.center,
-                                child: const Text(
-                                  'RESET',
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.white,
-                                      letterSpacing: 1.7),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
+                  ],
                 ),
-              );
-            },
+              ),
+              ResetFilterButton(onTap: widget.resetChannels)
+            ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class SelectedChannel extends StatelessWidget {
+  const SelectedChannel({
+    Key key,
+    @required this.channels,
+  }) : super(key: key);
+
+  final List<String> channels;
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: AlignmentDirectional.topStart,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Selected channel',
+              style: TextStyle(color: Theme.of(context).primaryColorLight),
+            ),
+          ),
+          Wrap(
+            alignment: WrapAlignment.start,
+            direction: Axis.horizontal,
+            children: channels
+                .map(
+                  (String e) => SelectedChannelChip(channel: e),
+                )
+                .toList(),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class SelectedChannelChip extends StatelessWidget {
+  const SelectedChannelChip({
+    Key key,
+    @required this.channel,
+  }) : super(key: key);
+
+  final String channel;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        decoration: BoxDecoration(
+            color: Theme.of(context).primaryColor,
+            borderRadius: BorderRadius.circular(10)),
+        child: Text(
+          channel,
+          style: const TextStyle(fontSize: 14, color: Colors.white),
+        ),
+      ),
+    );
+  }
+}
+
+class ResetFilterButton extends StatelessWidget {
+  const ResetFilterButton({
+    Key key,
+    @required this.onTap,
+  }) : super(key: key);
+
+  final Function onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
+      child: FlatButton(
+        color: Theme.of(context).primaryColor,
+        onPressed: onTap,
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(40.0)),
+        child: const Padding(
+          padding: EdgeInsets.symmetric(vertical: 16.0),
+          child: Text(
+            'RESET',
+            style: TextStyle(
+              letterSpacing: 1.7,
+              color: Colors.white,
+              fontWeight: FontWeight.w700,
+              fontSize: 14,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class FitlerDrawerTextField extends StatelessWidget {
+  const FitlerDrawerTextField({
+    Key key,
+    @required this.textEditingController,
+  }) : super(key: key);
+
+  final TextEditingController textEditingController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        const FilterLogo(),
+        Flexible(
+          child: TextField(
+            controller: textEditingController,
+            decoration: InputDecoration(
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 12.0,
+              ),
+              counter: Container(),
+              hintText: 'Filter by channel',
+              border: InputBorder.none,
+              hintStyle: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: Theme.of(context).primaryColorLight,
+              ),
+              filled: true,
+              fillColor: Theme.of(context).primaryColor,
+              suffixIcon: ClearIcon(controller: textEditingController),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide(color: Colors.black26),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide(color: Colors.white24),
+              ),
+            ),
+            cursorColor: Colors.white,
+            cursorWidth: 1,
+            maxLines: 1,
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+              color: Colors.white,
+            ),
+            maxLength: 80,
+            textInputAction: TextInputAction.done,
+            keyboardAppearance: Theme.of(context).brightness,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class FilterLogo extends StatelessWidget {
+  const FilterLogo({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(
+        bottom: 8.0,
+        right: 8.0,
+      ),
+      child: Container(
+        child: Image.asset(
+          'assets/images/junto-mobile__logo--white.png',
+          height: 24,
+        ),
+      ),
+    );
+  }
+}
+
+class ClearIcon extends StatelessWidget {
+  const ClearIcon({
+    Key key,
+    @required this.controller,
+  }) : super(key: key);
+
+  final TextEditingController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      color: Colors.white54,
+      icon: Icon(
+        Icons.clear,
+      ),
+      onPressed: () {
+        controller.clear();
+      },
     );
   }
 }
