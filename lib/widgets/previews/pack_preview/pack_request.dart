@@ -5,12 +5,18 @@ import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 
 class PackRequest extends StatelessWidget {
-  const PackRequest({this.pack, this.refreshGroups});
+  const PackRequest({
+    this.pack,
+    this.refreshGroups,
+    @required this.userProfile,
+  });
 
   final Group pack;
   final Function refreshGroups;
+  final UserData userProfile;
 
   @override
   Widget build(BuildContext context) {
@@ -40,23 +46,12 @@ class PackRequest extends StatelessWidget {
         color: Theme.of(context).colorScheme.background,
         child: Row(
           children: <Widget>[
-            Container(
-                alignment: Alignment.center,
-                height: 45.0,
-                width: 45.0,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.bottomLeft,
-                    end: Alignment.topRight,
-                    stops: const <double>[0.3, 0.9],
-                    colors: <Color>[
-                      Theme.of(context).colorScheme.primary,
-                      Theme.of(context).colorScheme.secondary,
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(100),
-                ),
-                child: Icon(CustomIcons.packs, size: 15, color: Colors.white)),
+            MemberAvatar(
+              diameter: 45,
+              profilePicture: pack.address == userProfile.pack.address
+                  ? userProfile.user.profilePicture
+                  : pack.creator['profile_picture'],
+            ),
             const SizedBox(width: 10),
             Expanded(
               child: Container(
@@ -79,13 +74,19 @@ class PackRequest extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          pack.groupData.name,
+                          pack.address == userProfile.pack.address
+                              ? 'My Pack'
+                              : pack.creator['name'] + "'s Pack",
                           textAlign: TextAlign.start,
                           style: Theme.of(context).textTheme.subtitle1,
                         ),
-                        Text('username',
-                            textAlign: TextAlign.start,
-                            style: Theme.of(context).textTheme.bodyText1)
+                        Text(
+                          pack.address == userProfile.pack.address
+                              ? userProfile.user.username
+                              : pack.creator['username'],
+                          textAlign: TextAlign.start,
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
                       ],
                     ),
                     Row(
@@ -114,9 +115,11 @@ class PackRequest extends StatelessWidget {
                             ),
                             height: 38,
                             width: 38,
-                            child: Icon(CustomIcons.check,
-                                size: 20,
-                                color: Theme.of(context).primaryColor),
+                            child: Icon(
+                              CustomIcons.check,
+                              size: 20,
+                              color: Theme.of(context).primaryColor,
+                            ),
                           ),
                         ),
                         const SizedBox(width: 10),
@@ -139,14 +142,17 @@ class PackRequest extends StatelessWidget {
                               color: Colors.transparent,
                               borderRadius: BorderRadius.circular(100),
                               border: Border.all(
-                                  color: Theme.of(context).primaryColor,
-                                  width: 1),
+                                color: Theme.of(context).primaryColor,
+                                width: 1,
+                              ),
                             ),
                             height: 38,
                             width: 38,
-                            child: Icon(CustomIcons.cancel,
-                                size: 20,
-                                color: Theme.of(context).primaryColor),
+                            child: Icon(
+                              CustomIcons.cancel,
+                              size: 20,
+                              color: Theme.of(context).primaryColor,
+                            ),
                           ),
                         ),
                       ],
