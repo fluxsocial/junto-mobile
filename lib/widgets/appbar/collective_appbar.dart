@@ -85,53 +85,60 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                     color: Theme.of(context).dividerColor, width: .75),
               ),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                GestureDetector(
-                  onTap: () {
-                    openFilterDrawer();
-                  },
-                  child: Container(
-                    child: Image.asset('assets/images/junto-mobile__filter.png',
-                        height: 17, color: Theme.of(context).primaryColor),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 2.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Semantics(
+                    button: true,
+                    hint: 'Open filters drawer',
+                    child: GestureDetector(
+                      onTap: openFilterDrawer,
+                      child: Container(
+                        child: Image.asset(
+                            'assets/images/junto-mobile__filter.png',
+                            height: 17,
+                            color: Theme.of(context).primaryColor),
+                      ),
+                    ),
                   ),
-                ),
-                Row(
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: () {
-                        switchColumnView('two');
-                      },
-                      child: Container(
-                        color: Colors.transparent,
-                        alignment: Alignment.centerRight,
-                        width: 38,
-                        child: Icon(CustomIcons.twocolumn,
-                            size: 20,
-                            color: twoColumnView
-                                ? Theme.of(context).primaryColorDark
-                                : Theme.of(context).primaryColorLight),
+                  Row(
+                    children: <Widget>[
+                      GestureDetector(
+                        onTap: () {
+                          switchColumnView('two');
+                        },
+                        child: Container(
+                          color: Colors.transparent,
+                          alignment: Alignment.centerRight,
+                          width: 38,
+                          child: Icon(CustomIcons.twocolumn,
+                              size: 20,
+                              color: twoColumnView
+                                  ? Theme.of(context).primaryColorDark
+                                  : Theme.of(context).primaryColorLight),
+                        ),
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        switchColumnView('single');
-                      },
-                      child: Container(
-                        color: Colors.transparent,
-                        alignment: Alignment.centerRight,
-                        width: 38,
-                        child: Icon(CustomIcons.singlecolumn,
-                            size: 20,
-                            color: twoColumnView
-                                ? Theme.of(context).primaryColorLight
-                                : Theme.of(context).primaryColorDark),
+                      GestureDetector(
+                        onTap: () {
+                          switchColumnView('single');
+                        },
+                        child: Container(
+                          color: Colors.transparent,
+                          alignment: Alignment.centerRight,
+                          width: 38,
+                          child: Icon(CustomIcons.singlecolumn,
+                              size: 20,
+                              color: twoColumnView
+                                  ? Theme.of(context).primaryColorLight
+                                  : Theme.of(context).primaryColorDark),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
           )
         ],
