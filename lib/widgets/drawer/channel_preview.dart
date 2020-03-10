@@ -55,7 +55,7 @@ class FilterDrawerChannelPreview extends StatelessWidget {
                   Text(
                     channel.name,
                     textAlign: TextAlign.start,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 17,
                       color: Colors.white,
                       fontWeight: FontWeight.w700,

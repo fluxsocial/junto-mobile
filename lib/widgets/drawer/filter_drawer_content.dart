@@ -86,20 +86,25 @@ class _FilterDrawerContentState extends State<FilterDrawerContent> {
                       Expanded(
                         child: ListView.builder(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 0),
+                            horizontal: 10,
+                            vertical: 0,
+                          ),
                           itemCount: channels.length,
                           itemBuilder: (BuildContext context, int index) {
                             final Channel item = channels[index];
-
-                            return InkWell(
-                              onTap: () {
-                                widget.filterByChannel(item);
-                                Navigator.pop(context);
-                              },
-                              child: FilterDrawerChannelPreview(
-                                channel: item,
-                              ),
-                            );
+                            if (item != null) {
+                              return InkWell(
+                                onTap: () {
+                                  widget.filterByChannel(item);
+                                  Navigator.pop(context);
+                                },
+                                child: FilterDrawerChannelPreview(
+                                  channel: item,
+                                ),
+                              );
+                            } else {
+                              return Container();
+                            }
                           },
                         ),
                       ),
