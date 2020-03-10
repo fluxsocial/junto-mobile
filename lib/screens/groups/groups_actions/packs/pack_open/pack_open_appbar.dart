@@ -70,7 +70,87 @@ class PackOpenAppbar extends StatelessWidget {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (BuildContext context) => Container(
+                        color: const Color(0xff737373),
+                        child: Container(
+                          height: MediaQuery.of(context).size.height * .4,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 10),
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10),
+                            ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Container(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Container(
+                                          height: 5,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              .1,
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xffeeeeee),
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 10),
+                                    ListTile(
+                                      contentPadding: const EdgeInsets.all(0),
+                                      title: Row(
+                                        children: <Widget>[
+                                          Text(
+                                            '',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline5,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    ListTile(
+                                      contentPadding: const EdgeInsets.all(0),
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                      },
+                                      title: Row(
+                                        children: <Widget>[
+                                          Text(
+                                            '',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline5,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
                   child: Container(
                     width: 38,
                     alignment: Alignment.centerRight,

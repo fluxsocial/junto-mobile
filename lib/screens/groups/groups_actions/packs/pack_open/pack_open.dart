@@ -57,6 +57,28 @@ class PackOpenState extends State<PackOpen> {
     controller.dispose();
   }
 
+  Widget _buildTab(String name, int index) {
+    return GestureDetector(
+      onTap: () {
+        controller.jumpToPage(index);
+      },
+      child: Container(
+        color: Colors.transparent,
+        margin: const EdgeInsets.only(right: 20),
+        child: Text(
+          name.toUpperCase(),
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w700,
+            color: _currentIndex == index
+                ? Theme.of(context).primaryColor
+                : Theme.of(context).primaryColorLight,
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -104,40 +126,9 @@ class PackOpenState extends State<PackOpen> {
               ),
               child: Row(
                 children: <Widget>[
-                  GestureDetector(
-                    onTap: () => controller.jumpToPage(0),
-                    child: Container(
-                      color: Colors.transparent,
-                      child: Text(
-                        'PACK',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w700,
-                          color: _currentIndex == 0
-                              ? Theme.of(context).primaryColor
-                              : Theme.of(context).primaryColorLight,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 20),
-                  GestureDetector(
-                    onTap: () {
-                      controller.jumpToPage(1);
-                    },
-                    child: Container(
-                        color: Colors.transparent,
-                        child: Text(
-                          'PRIVATE',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w700,
-                            color: _currentIndex == 1
-                                ? Theme.of(context).primaryColor
-                                : Theme.of(context).primaryColorLight,
-                          ),
-                        )),
-                  ),
+                  _buildTab('Pack', 0),
+                  _buildTab('Private', 1),
+                  _buildTab('Members', 2)
                 ],
               ),
             ),
