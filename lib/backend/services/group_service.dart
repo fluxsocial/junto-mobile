@@ -71,6 +71,8 @@ class GroupServiceCentralized implements GroupService {
       '/groups/$groupAddress/members',
       body: <dynamic>[_postBody],
     );
+    print(_serverResponse.body);
+    print(_serverResponse.statusCode);
     if (_serverResponse.statusCode != 200) {
       JuntoHttp.handleResponse(_serverResponse);
     }

@@ -156,6 +156,7 @@ class PackOpenState extends State<PackOpen> {
                       openFilterDrawer: () {
                         Scaffold.of(context).openDrawer();
                       }),
+                  const SizedBox()
                 ],
               ),
             ),
