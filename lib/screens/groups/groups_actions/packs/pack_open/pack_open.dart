@@ -5,9 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/pack_open_appbar.dart';
+import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/pack_members.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/group_expressions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/backend/repositories.dart';
 
 class PackOpen extends StatefulWidget {
   const PackOpen({
@@ -28,9 +31,17 @@ class PackOpenState extends State<PackOpen> {
   UserData _userProfile;
   int _currentIndex = 0;
 
+  Future<List<Users>> getPackMembers;
+
   // Controller for PageView
   PageController controller;
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    getPackMembers = Provider.of<GroupRepo>(context, listen: false)
+        .getGroupMembers(widget.pack.address);
+  }
 
   @override
   void initState() {
@@ -156,7 +167,7 @@ class PackOpenState extends State<PackOpen> {
                       openFilterDrawer: () {
                         Scaffold.of(context).openDrawer();
                       }),
-                  const SizedBox()
+                  PackOpenMembers(getPackMembers: getPackMembers)
                 ],
               ),
             ),
