@@ -34,7 +34,7 @@ class JuntoFilterDrawer extends StatefulWidget {
     @required this.scaffold,
     this.offset = const IDOffset.horizontal(0.8),
     this.borderRadius = 0,
-    this.onTapClose = true,
+    this.onTapClose = false,
     this.swipe = true,
     this.duration,
     this.animationType = InnerDrawerAnimation.static,
@@ -213,6 +213,7 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
         break;
       case TextDirection.ltr:
         _controller.value += delta + (delta * offset);
+        print('$offset $ee ${_controller.value}');
         break;
     }
 
