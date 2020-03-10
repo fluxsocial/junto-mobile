@@ -6,6 +6,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
+import 'package:junto_beta_mobile/screens/member/member.dart';
 
 class PackRequest extends StatelessWidget {
   const PackRequest({
@@ -22,23 +23,26 @@ class PackRequest extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        // FIXME:ERIC - waiting on API to return creator address and info
+        // FIXME:Nash - can you take a look?
 
         // JuntoLoader.showLoader(context);
         // try {
         //   final UserData packOwnerUserData =
         //       await Provider.of<UserRepo>(context, listen: false)
-        //           .getUser(pack.creator);
+        //           .getUser(pack.creator['address']);
+        //   print('hello');
         //   JuntoLoader.hide();
         //   Navigator.push(
         //     context,
         //     CupertinoPageRoute<dynamic>(
-        //       builder: (BuildContext context) =>
-        //           JuntoMember(profile: packOwnerUserData.user),
+        //       builder: (BuildContext context) => JuntoMember(
+        //         profile: packOwnerUserData.user,
+        //       ),
         //     ),
         //   );
         // } catch (error) {
         //   print(error);
+        //   print('yo');
         //   JuntoLoader.hide();
         // }
       },
