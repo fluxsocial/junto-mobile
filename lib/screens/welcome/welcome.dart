@@ -218,7 +218,11 @@ class WelcomeState extends State<Welcome> {
       onWillPop: _animateOnBackPress,
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
-        onTap: () => FocusScope.of(context).unfocus(),
+        onTap: () {
+          if (FocusScope.of(context).hasFocus) {
+            FocusScope.of(context).unfocus();
+          }
+        },
         child: Scaffold(
           // setting this to true casues white background to be shown during keyboard opening
           resizeToAvoidBottomInset: false,
@@ -264,7 +268,9 @@ class WelcomeState extends State<Welcome> {
                     child: SignUpTextFieldWrapper(
                       onValueChanged: (String value) => username = value,
                       onSubmit: () async {
-                        FocusScope.of(context).unfocus();
+                        if (FocusScope.of(context).hasFocus) {
+                          FocusScope.of(context).unfocus();
+                        }
                         await _nextSignUpPage();
                       },
                       maxLength: 22,

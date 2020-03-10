@@ -247,20 +247,26 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
   }
 
   void open() {
-    FocusScope.of(context).unfocus();
+    if (FocusScope.of(context).hasFocus) {
+      FocusScope.of(context).unfocus();
+    }
 
     _controller.fling(velocity: -1);
   }
 
   void close() {
-    FocusScope.of(context).unfocus();
+    if (FocusScope.of(context).hasFocus) {
+      FocusScope.of(context).unfocus();
+    }
 
     _controller.fling(velocity: 1);
   }
 
   /// Open or Close JuntoDrawer
   void toggle() {
-    FocusScope.of(context).unfocus();
+    if (FocusScope.of(context).hasFocus) {
+      FocusScope.of(context).unfocus();
+    }
 
     if (_previouslyOpened) {
       _controller.fling(velocity: 1);

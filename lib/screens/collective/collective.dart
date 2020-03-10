@@ -339,7 +339,9 @@ class JuntoCollectiveState extends State<JuntoCollective>
   }
 
   void _toggleFilterDrawer() {
-    FocusScope.of(context).unfocus();
+    if (FocusScope.of(context).hasFocus) {
+      FocusScope.of(context).unfocus();
+    }
     _filterDrawerKey.currentState.toggle();
   }
 
