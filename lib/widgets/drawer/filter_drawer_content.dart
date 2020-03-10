@@ -8,8 +8,11 @@ import 'package:junto_beta_mobile/widgets/drawer/channel_preview.dart';
 import 'package:provider/provider.dart';
 
 class FilterDrawerContent extends StatefulWidget {
-  const FilterDrawerContent(
-      {this.filterByChannel, this.channels, this.resetChannels});
+  const FilterDrawerContent({
+    @required this.filterByChannel,
+    @required this.channels,
+    @required this.resetChannels,
+  });
 
   final ValueChanged<Channel> filterByChannel;
   final List<String> channels;
