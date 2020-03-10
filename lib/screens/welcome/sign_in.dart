@@ -6,6 +6,7 @@ import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
+import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/buttons/call_to_action.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
@@ -64,8 +65,9 @@ class _SignInState extends State<SignIn> {
           ),
         ),
       );
-    } catch (error) {
-      print(error);
+    } on JuntoException catch (error) {
+      JuntoLoader.hide();
+      debugPrint('Error during signing in. Error code: ${error.errorCode}');
       JuntoDialog.showJuntoDialog(
           context,
           'Unable to login user. Please recheck your '
@@ -76,6 +78,8 @@ class _SignInState extends State<SignIn> {
               child: const Text('OK'),
             ),
           ]);
+    } catch (e, s) {
+      debugPrint('Unknown error during sign in: $e, $s');
     }
   }
 

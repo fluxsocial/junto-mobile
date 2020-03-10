@@ -13,7 +13,7 @@ class SignUpPageTitle extends StatelessWidget {
     return Container(
       child: Text(
         title,
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.white,
           fontSize: 24,
           fontWeight: FontWeight.w700,

@@ -16,7 +16,7 @@ class SignUpTextFieldLabelAndCounter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final style = TextStyle(
+    final TextStyle style = TextStyle(
       color: Colors.white70,
       fontSize: compact ? 10 : 14,
       fontWeight: FontWeight.w400,
