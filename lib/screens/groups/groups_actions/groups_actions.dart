@@ -131,14 +131,12 @@ class OverlayMenu extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Expanded(
-                      child: Icon(
-                        CustomIcons.spheres,
-                        size: 20,
-                        color: spheresVisible.value
-                            ? Theme.of(context).primaryColorDark
-                            : Theme.of(context).primaryColorLight,
-                      ),
+                    Icon(
+                      CustomIcons.spheres,
+                      size: 20,
+                      color: spheresVisible.value
+                          ? Theme.of(context).primaryColorDark
+                          : Theme.of(context).primaryColorLight,
                     ),
                     const SizedBox(height: 7),
                     Text(
