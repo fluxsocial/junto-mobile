@@ -143,14 +143,13 @@ class SelectedChannel extends StatelessWidget {
             ),
           ),
           Wrap(
-            alignment: WrapAlignment.start,
-            direction: Axis.horizontal,
-            children: channels
-                .map(
+              alignment: WrapAlignment.start,
+              direction: Axis.horizontal,
+              children: [
+                ...channels.map(
                   (String e) => SelectedChannelChip(channel: e),
                 )
-                .toList(),
-          )
+              ])
         ],
       ),
     );
