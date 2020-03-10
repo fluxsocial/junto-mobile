@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
+import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/pack_open_action_items.dart';
 
 class PackOpenAppbar extends StatelessWidget {
   const PackOpenAppbar({
@@ -69,99 +70,29 @@ class PackOpenAppbar extends StatelessWidget {
                     ),
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (BuildContext context) => Container(
-                        color: const Color(0xff737373),
-                        child: Container(
-                          height: MediaQuery.of(context).size.height * .4,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 10),
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              topRight: Radius.circular(10),
+                userProfile != null && userProfile.pack.address != pack.address
+                    ? GestureDetector(
+                        onTap: () {
+                          showModalBottomSheet(
+                            context: context,
+                            builder: (BuildContext context) => Container(
+                              color: const Color(0xff737373),
+                              child: PackOpenActionItems(pack: pack),
                             ),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Container(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        Container(
-                                          height: 5,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              .1,
-                                          decoration: BoxDecoration(
-                                            color: const Color(0xffeeeeee),
-                                            borderRadius:
-                                                BorderRadius.circular(100),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 10),
-                                    ListTile(
-                                      contentPadding: const EdgeInsets.all(0),
-                                      title: Row(
-                                        children: <Widget>[
-                                          Text(
-                                            '',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline5,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    ListTile(
-                                      contentPadding: const EdgeInsets.all(0),
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                      },
-                                      title: Row(
-                                        children: <Widget>[
-                                          Text(
-                                            '',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline5,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
+                          );
+                        },
+                        child: Container(
+                          width: 38,
+                          alignment: Alignment.centerRight,
+                          color: Colors.transparent,
+                          child: Icon(
+                            CustomIcons.morevertical,
+                            size: 22,
+                            color: Theme.of(context).primaryColor,
                           ),
                         ),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    width: 38,
-                    alignment: Alignment.centerRight,
-                    color: Colors.transparent,
-                    child: Icon(
-                      CustomIcons.morevertical,
-                      size: 22,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ),
-                ),
+                      )
+                    : const SizedBox(),
               ],
             )
           ],
