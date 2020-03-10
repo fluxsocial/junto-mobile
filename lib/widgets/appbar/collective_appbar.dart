@@ -21,7 +21,6 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
-      // height: 85,
       height: 135,
       child: Column(
         children: <Widget>[

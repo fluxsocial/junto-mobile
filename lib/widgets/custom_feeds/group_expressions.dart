@@ -86,7 +86,9 @@ class _GroupExpressionsState extends State<GroupExpressions> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    if (snapshot.data.results.isNotEmpty)
+                    if (snapshot.data.results.isNotEmpty &&
+                        snapshot.data.results[0].privacy ==
+                            widget.expressionsPrivacy)
                       Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 10,
