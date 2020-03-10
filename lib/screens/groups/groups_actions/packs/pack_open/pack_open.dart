@@ -29,12 +29,10 @@ class PackOpen extends StatefulWidget {
 class PackOpenState extends State<PackOpen> {
   String _userAddress;
   UserData _userProfile;
-  int _currentIndex = 0;
+  final List<String> _tabs = <String>['Pack', 'Private', 'Members'];
 
   Future<List<Users>> getPackMembers;
 
-  // Controller for PageView
-  PageController controller;
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
   @override
   void didChangeDependencies() {
@@ -46,7 +44,6 @@ class PackOpenState extends State<PackOpen> {
   @override
   void initState() {
     super.initState();
-    controller = PageController(initialPage: 0);
     getUserInformation();
   }
 
@@ -63,64 +60,37 @@ class PackOpenState extends State<PackOpen> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-    controller.dispose();
-  }
-
-  Widget _buildTab(String name, int index) {
-    return GestureDetector(
-      onTap: () {
-        controller.jumpToPage(index);
-      },
-      child: Container(
-        color: Colors.transparent,
-        margin: const EdgeInsets.only(right: 20),
-        child: Text(
-          name.toUpperCase(),
-          style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w700,
-            color: _currentIndex == index
-                ? Theme.of(context).primaryColor
-                : Theme.of(context).primaryColorLight,
-          ),
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(45),
+        child: PackOpenAppbar(
+          pack: widget.pack,
+          userProfile: _userProfile,
         ),
       ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(45),
-          child: PackOpenAppbar(
-            pack: widget.pack,
-            userProfile: _userProfile,
-          ),
+      floatingActionButton: ValueListenableBuilder<bool>(
+        valueListenable: _isVisible,
+        builder: (BuildContext context, bool visible, Widget child) {
+          return AnimatedOpacity(
+              duration: const Duration(milliseconds: 300),
+              opacity: visible ? 1.0 : 0.0,
+              child: child);
+        },
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 25),
+          child: BottomNav(
+              actionsVisible: false,
+              screen: 'collective',
+              userProfile: _userProfile,
+              onTap: () {}),
         ),
-        floatingActionButton: ValueListenableBuilder<bool>(
-          valueListenable: _isVisible,
-          builder: (BuildContext context, bool visible, Widget child) {
-            return AnimatedOpacity(
-                duration: const Duration(milliseconds: 300),
-                opacity: visible ? 1.0 : 0.0,
-                child: child);
-          },
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 25),
-            child: BottomNav(
-                actionsVisible: false,
-                screen: 'collective',
-                userProfile: _userProfile,
-                onTap: () {}),
-          ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        body: Column(
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      body: DefaultTabController(
+        length: _tabs.length,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
               padding: const EdgeInsets.symmetric(
@@ -135,22 +105,31 @@ class PackOpenState extends State<PackOpen> {
                   ),
                 ),
               ),
-              child: Row(
-                children: <Widget>[
-                  _buildTab('Pack', 0),
-                  _buildTab('Private', 1),
-                  _buildTab('Members', 2)
+              child: TabBar(
+                labelPadding: const EdgeInsets.all(0),
+                isScrollable: true,
+                labelColor: Theme.of(context).primaryColorDark,
+                unselectedLabelColor: Theme.of(context).primaryColorLight,
+                labelStyle: Theme.of(context).textTheme.subtitle1,
+                indicatorWeight: 0.0001,
+                tabs: <Widget>[
+                  for (String name in _tabs)
+                    Container(
+                      color: Colors.transparent,
+                      margin: const EdgeInsets.only(right: 20),
+                      child: Text(
+                        name.toUpperCase(),
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),
             Expanded(
-              child: PageView(
-                controller: controller,
-                onPageChanged: (int index) {
-                  setState(() {
-                    _currentIndex = index;
-                  });
-                },
+              child: TabBarView(
                 children: <Widget>[
                   GroupExpressions(
                     group: widget.pack,
