@@ -49,11 +49,14 @@ class UserServiceCentralized implements UserService {
 
   @override
   Future<UserData> getUser(String userAddress) async {
+    print(userAddress);
     final http.Response _serverResponse =
         await client.get('/users/$userAddress');
+
     final Map<String, dynamic> _resultMap =
         JuntoHttp.handleResponse(_serverResponse);
     final UserData _userData = UserData.fromMap(_resultMap);
+    print(_userData);
     return _userData;
   }
 
