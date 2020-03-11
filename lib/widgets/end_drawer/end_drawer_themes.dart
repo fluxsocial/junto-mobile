@@ -34,21 +34,21 @@ class JuntoThemesState extends State<JuntoThemes> {
   }
 
   Widget _themeSelector(BuildContext context, String theme) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _currentTheme = theme;
-          print(theme);
-        });
-        if (_nightMode) {}
-        Provider.of<JuntoThemesProvider>(context, listen: false)
-            .setTheme(_nightMode ? theme + '-night' : theme);
-        widget.refreshData();
-      },
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 15),
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height * .15,
+    return Container(
+      margin: const EdgeInsets.only(bottom: 15),
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height * .15,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(10),
+        onTap: () {
+          setState(() {
+            _currentTheme = theme;
+          });
+          if (_nightMode) {}
+          Provider.of<JuntoThemesProvider>(context, listen: false)
+              .setTheme(_nightMode ? theme + '-night' : theme);
+          widget.refreshData();
+        },
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10),
           child: Stack(
@@ -65,10 +65,11 @@ class JuntoThemesState extends State<JuntoThemes> {
                 child: Text(
                   theme.toUpperCase(),
                   style: const TextStyle(
-                      fontSize: 14,
-                      letterSpacing: 1.7,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white),
+                    fontSize: 14,
+                    letterSpacing: 1.7,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
                 ),
               )
             ],
