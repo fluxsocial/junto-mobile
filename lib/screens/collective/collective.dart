@@ -55,7 +55,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
 
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
   ScrollController _collectiveController;
-  String _appbarTitle = 'JUNTO';
+  ValueNotifier<String> _appbarTitle = ValueNotifier<String>('JUNTO');
   final List<String> _channels = <String>[];
   ValueNotifier<bool> actionsVisible = ValueNotifier<bool>(false);
   bool twoColumnView = true;
@@ -197,15 +197,13 @@ class JuntoCollectiveState extends State<JuntoCollective>
 // Switch between perspectives; used in perspectives side drawer.
   void _changePerspective(PerspectiveModel perspective) {
     if (perspective.name == 'JUNTO') {
-      setState(() {
-        _appbarTitle = 'JUNTO';
-      });
+      _appbarTitle.value = 'JUNTO';
+
       _expressionCompleter.value = getCollectiveExpressions(
           contextType: 'Collective', paginationPos: 0, channels: _channels);
     } else if (perspective.name == 'Connections') {
-      setState(() {
-        _appbarTitle = 'Connections';
-      });
+      _appbarTitle.value = 'Connections';
+
       _expressionCompleter.value = getCollectiveExpressions(
         paginationPos: 0,
         contextType: 'ConnectPerspective',
@@ -215,9 +213,9 @@ class JuntoCollectiveState extends State<JuntoCollective>
       setState(() {
         if (perspective.name ==
             _userProfile.user.name + "'s Follow Perspective") {
-          _appbarTitle = 'Subscriptions';
+          _appbarTitle.value = 'Subscriptions';
         } else {
-          _appbarTitle = perspective.name;
+          _appbarTitle.value = perspective.name;
         }
       });
       _expressionCompleter.value = getCollectiveExpressions(
@@ -243,7 +241,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
       if (_channels.isEmpty) {
         _channels.add(channel.name);
       } else {
-        _channels[0] = channel.name;
+        _channels.first = channel.name;
       }
     });
     actionsVisible.value = false;

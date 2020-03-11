@@ -37,7 +37,7 @@ class ExpressionFeed extends StatelessWidget {
   final ValueNotifier<Future<QueryResults<ExpressionResponse>>>
       expressionCompleter;
   final ScrollController collectiveController;
-  final String appbarTitle;
+  final ValueNotifier<String> appbarTitle;
   final VoidCallback toggleFilterDrawer;
   final bool twoColumnView;
   final ValueChanged<String> switchColumnView;
@@ -70,16 +70,25 @@ class ExpressionFeed extends StatelessWidget {
                 return CustomScrollView(
                   controller: collectiveController,
                   slivers: <Widget>[
-                    SliverPersistentHeader(
-                      delegate: CollectiveAppBar(
-                        expandedHeight: 135,
-                        appbarTitle: appbarTitle,
-                        openFilterDrawer: toggleFilterDrawer,
-                        twoColumnView: twoColumnView,
-                        switchColumnView: switchColumnView,
-                      ),
-                      pinned: false,
-                      floating: true,
+                    ValueListenableBuilder<String>(
+                      valueListenable: appbarTitle,
+                      builder: (
+                        BuildContext context,
+                        String value,
+                        Widget child,
+                      ) {
+                        return SliverPersistentHeader(
+                          delegate: CollectiveAppBar(
+                            expandedHeight: 135,
+                            appbarTitle: value,
+                            openFilterDrawer: toggleFilterDrawer,
+                            twoColumnView: twoColumnView,
+                            switchColumnView: switchColumnView,
+                          ),
+                          pinned: false,
+                          floating: true,
+                        );
+                      },
                     ),
                     SliverList(
                       delegate: SliverChildListDelegate(<Widget>[
