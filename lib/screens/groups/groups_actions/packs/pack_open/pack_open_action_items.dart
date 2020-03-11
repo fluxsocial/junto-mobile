@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 
