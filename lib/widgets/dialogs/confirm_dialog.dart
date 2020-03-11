@@ -46,7 +46,14 @@ class ConfirmDialog extends StatelessWidget {
                         Navigator.pop(context);
                       },
                       child: Container(
-                        color: Colors.transparent,
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          border: Border(
+                            right: BorderSide(
+                                color: Theme.of(context).dividerColor,
+                                width: 1),
+                          ),
+                        ),
                         alignment: Alignment.center,
                         child: Text(
                           'NO',
