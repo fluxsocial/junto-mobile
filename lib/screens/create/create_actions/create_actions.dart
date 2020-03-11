@@ -408,13 +408,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
             );
           }
           if (userSpheres.isEmpty) {
-            JuntoDialog.showJuntoDialog(
-              context,
-              'You are not apart of any spheres',
-              <Widget>[
-                DialogBack(),
-              ],
-            );
+            showFeedback(context, message: 'You are not apart of any spheres');
             setState(() {
               _currentExpressionContext = 'Collective';
             });
