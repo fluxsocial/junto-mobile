@@ -6,6 +6,8 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:junto_beta_mobile/widgets/custom_feeds/filter_column_row.dart';
 
 /// Linear list of expressions created by the given [userProfile].
 class UserExpressions extends StatefulWidget {
@@ -32,6 +34,16 @@ class _UserExpressionsState extends State<UserExpressions> {
 
   bool twoColumnView = true;
 
+  Future<void> getUserInformation() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      if (prefs.getBool('two-column-view') != null) {
+        twoColumnView = prefs.getBool('two-column-view');
+      }
+    });
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -43,14 +55,24 @@ class _UserExpressionsState extends State<UserExpressions> {
         () => _userProvider.getUsersExpressions(widget.userProfile.address));
   }
 
-  void _switchColumnView(String columnType) {
+  Future<void> _switchColumnView(String columnType) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
     setState(() {
       if (columnType == 'two') {
         twoColumnView = true;
+        prefs.setBool('two-column-view', true);
       } else if (columnType == 'single') {
         twoColumnView = false;
+        prefs.setBool('two-column-view', false);
       }
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUserInformation();
   }
 
   @override
@@ -79,36 +101,9 @@ class _UserExpressionsState extends State<UserExpressions> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     if (snapshot.data.isNotEmpty)
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 15),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Image.asset(
-                                'assets/images/junto-mobile__filter.png',
-                                height: 17),
-                            Row(
-                              children: <Widget>[
-                                GestureDetector(
-                                    onTap: () => _switchColumnView('two'),
-                                    child: Container(
-                                        child: Icon(CustomIcons.twocolumn,
-                                            size: 20))),
-                                const SizedBox(width: 10),
-                                GestureDetector(
-                                  onTap: () {
-                                    _switchColumnView('single');
-                                  },
-                                  child: Container(
-                                    child: Icon(CustomIcons.singlecolumn,
-                                        size: 20),
-                                  ),
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
+                      FilterColumnRow(
+                        twoColumnView: twoColumnView,
+                        switchColumnView: _switchColumnView,
                       ),
                     Container(
                         color: Theme.of(context).colorScheme.background,
