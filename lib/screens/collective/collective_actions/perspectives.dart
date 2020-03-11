@@ -18,7 +18,7 @@ class JuntoPerspectives extends StatefulWidget {
   const JuntoPerspectives({this.userProfile, this.changePerspective});
 
   final UserData userProfile;
-  final Function changePerspective;
+  final ValueChanged<PerspectiveModel> changePerspective;
 
   @override
   State<StatefulWidget> createState() {

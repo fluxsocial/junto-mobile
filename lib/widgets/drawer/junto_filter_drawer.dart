@@ -2,8 +2,9 @@
 // https://github.com/Dn-a/flutter_inner_drawer
 
 import 'dart:math';
-import 'package:flutter/material.dart';
+
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 /// Signature for the callback that's called when a [JuntoFilterDrawer] is
@@ -213,7 +214,6 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
         break;
       case TextDirection.ltr:
         _controller.value += delta + (delta * offset);
-        print('$offset $ee ${_controller.value}');
         break;
     }
 
