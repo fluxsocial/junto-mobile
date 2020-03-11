@@ -215,13 +215,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
     actionsVisible.value = false;
   }
 
-  void _toggleFilterDrawer() {
-    if (FocusScope.of(context).hasFocus) {
-      FocusScope.of(context).unfocus();
-    }
-    _filterDrawerKey.currentState.toggle();
-  }
-
   void _filterByChannel(Channel channel) {
     setState(() {
       if (_channels.isEmpty) {
@@ -241,38 +234,35 @@ class JuntoCollectiveState extends State<JuntoCollective>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GestureDetector(
-        child: JuntoFilterDrawer(
-          key: _filterDrawerKey,
-          drawer: FilterDrawerContent(
-            filterByChannel: _filterByChannel,
-            channels: _channels,
-            resetChannels: _resetChannels,
+      body: JuntoFilterDrawer(
+        key: _filterDrawerKey,
+        drawer: FilterDrawerContent(
+          filterByChannel: _filterByChannel,
+          channels: _channels,
+          resetChannels: _resetChannels,
+        ),
+        scaffold: Scaffold(
+          key: _juntoCollectiveKey,
+          floatingActionButton: CollectiveActionButton(
+            userProfile: _userProfile,
+            actionsVisible: actionsVisible,
+            isVisible: _isVisible,
           ),
-          scaffold: Scaffold(
-            key: _juntoCollectiveKey,
-            floatingActionButton: CollectiveActionButton(
-              userProfile: _userProfile,
-              actionsVisible: actionsVisible,
-              isVisible: _isVisible,
-            ),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerDocked,
-            body: Navigator(
-              key: _navKey,
-              onGenerateRoute: (RouteSettings settings) {
-                return FadeRoute<void>(
-                  child: ExpressionFeed(
-                    refreshData: refreshData,
-                    expressionCompleter: _expressionCompleter,
-                    collectiveController: _collectiveController,
-                    appbarTitle: _appbarTitle,
-                    toggleFilterDrawer: _toggleFilterDrawer,
-                    userAddress: _userAddress,
-                  ),
-                );
-              },
-            ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          body: Navigator(
+            key: _navKey,
+            onGenerateRoute: (RouteSettings settings) {
+              return FadeRoute<void>(
+                child: ExpressionFeed(
+                  refreshData: refreshData,
+                  expressionCompleter: _expressionCompleter,
+                  collectiveController: _collectiveController,
+                  appbarTitle: _appbarTitle,
+                  userAddress: _userAddress,
+                ),
+              );
+            },
           ),
         ),
       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/appbar/collective_appbar.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
+import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 
 /// Homepage feed containing a List of expression for the given perspective.
@@ -20,20 +21,17 @@ class ExpressionFeed extends StatefulWidget {
     @required this.expressionCompleter,
     @required this.collectiveController,
     @required this.appbarTitle,
-    @required this.toggleFilterDrawer,
     @required this.userAddress,
   })  : assert(refreshData != null),
         assert(expressionCompleter != null),
         assert(collectiveController != null),
         assert(appbarTitle != null),
-        assert(toggleFilterDrawer != null),
         super(key: key);
   final VoidCallback refreshData;
   final ValueNotifier<Future<QueryResults<ExpressionResponse>>>
       expressionCompleter;
   final ScrollController collectiveController;
   final ValueNotifier<String> appbarTitle;
-  final VoidCallback toggleFilterDrawer;
   final String userAddress;
 
   @override
@@ -92,7 +90,8 @@ class _ExpressionFeedState extends State<ExpressionFeed> {
                           delegate: CollectiveAppBar(
                             expandedHeight: 135,
                             appbarTitle: value,
-                            openFilterDrawer: widget.toggleFilterDrawer,
+                            openFilterDrawer: () =>
+                                JuntoFilterDrawerState.of(context).toggle(),
                             twoColumnView: twoColumnView,
                             switchColumnView: _switchColumnView,
                           ),
