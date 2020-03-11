@@ -80,6 +80,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
     setState(() {
       relationToGroup = _relationToGroup;
     });
+    print(relationToGroup);
   }
 
   Future<List<Users>> _getMembers() async {
@@ -93,7 +94,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.group.address);
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(45),

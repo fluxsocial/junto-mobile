@@ -22,7 +22,7 @@ class MemberActionItems extends StatelessWidget {
     return Container(
       color: Colors.transparent,
       child: Container(
-        height: MediaQuery.of(context).size.height * .4,
+        height: MediaQuery.of(context).size.height * .3,
         padding: const EdgeInsets.symmetric(
           horizontal: 15,
           vertical: 10,
