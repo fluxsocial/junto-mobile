@@ -7,15 +7,16 @@ import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_actions/collective_actions.dart';
-import 'package:junto_beta_mobile/screens/collective/collective_fab.dart';
-import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
+import 'package:junto_beta_mobile/widgets/appbar/collective_appbar.dart';
+import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
+import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
 import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/zoom_scaffold.dart';
-import 'package:junto_beta_mobile/widgets/fade_route.dart';
+import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -24,7 +25,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 class JuntoCollective extends StatefulWidget {
   static Route<dynamic> route() {
     return MaterialPageRoute<dynamic>(
-      builder: (BuildContext context) => JuntoCollective(),
+      builder: (BuildContext context) {
+        return JuntoCollective();
+      },
     );
   }
 
@@ -34,73 +37,36 @@ class JuntoCollective extends StatefulWidget {
 
 class JuntoCollectiveState extends State<JuntoCollective>
     with HideFab, SingleTickerProviderStateMixin {
-  GlobalKey<NavigatorState> _navKey;
+  // Global key to uniquely identify Junto Collective
+  final GlobalKey<ScaffoldState> _juntoCollectiveKey =
+      GlobalKey<ScaffoldState>();
 
-  GlobalKey<ScaffoldState> _juntoCollectiveKey;
+  final GlobalKey<JuntoFilterDrawerState> _filterDrawerKey =
+      GlobalKey<JuntoFilterDrawerState>();
 
-  GlobalKey<JuntoFilterDrawerState> _filterDrawerKey;
-
+  // Completer which controls expressions querying.
   final ValueNotifier<Future<QueryResults<ExpressionResponse>>>
       _expressionCompleter =
       ValueNotifier<Future<QueryResults<ExpressionResponse>>>(null);
 
-  MenuController menuController;
   ExpressionRepo _expressionProvider;
-  ScrollController _collectiveController;
+
   String _userAddress;
   UserData _userProfile;
 
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
-  final ValueNotifier<String> _appbarTitle = ValueNotifier<String>('JUNTO');
+  ScrollController _collectiveController;
+  String _appbarTitle = 'JUNTO';
   final List<String> _channels = <String>[];
   ValueNotifier<bool> actionsVisible = ValueNotifier<bool>(false);
+  bool twoColumnView = true;
+
+  MenuController menuController;
 
   @override
   void initState() {
     super.initState();
-    _navKey = GlobalKey<NavigatorState>();
-    _filterDrawerKey = GlobalKey<JuntoFilterDrawerState>();
-    _juntoCollectiveKey = GlobalKey<ScaffoldState>();
     _collectiveController = ScrollController();
-    _addPostFrameCallback();
-    getUserInformation();
-    menuController = MenuController(
-      vsync: this,
-    )..addListener(() => setState(() {}));
-    actionsVisible.addListener(actionListener);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _collectiveController.removeListener(_onScrollingHasChanged);
-    _collectiveController.dispose();
-    menuController.dispose();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    refreshData();
-  }
-
-  void actionListener() {
-    if (actionsVisible.value) {
-      _navKey.currentState.push(
-        FadeRoute<void>(
-          child: JuntoCollectiveActions(
-            userProfile: _userProfile,
-            changePerspective: _changePerspective,
-          ),
-        ),
-      );
-    }
-    if (!actionsVisible.value) {
-      _navKey.currentState.pop();
-    }
-  }
-
-  void _addPostFrameCallback() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _collectiveController.addListener(_onScrollingHasChanged);
       if (_collectiveController.hasClients)
@@ -108,6 +74,17 @@ class JuntoCollectiveState extends State<JuntoCollective>
           _onScrollingHasChanged,
         );
     });
+    getUserInformation();
+
+    menuController = MenuController(
+      vsync: this,
+    )..addListener(() => setState(() {}));
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    refreshData();
   }
 
   Future<void> refreshData() async {
@@ -393,17 +370,18 @@ class JuntoCollectiveState extends State<JuntoCollective>
     );
   }
 
-
 // Switch between perspectives; used in perspectives side drawer.
   void _changePerspective(PerspectiveModel perspective) {
     if (perspective.name == 'JUNTO') {
-      _appbarTitle.value = 'JUNTO';
-
+      setState(() {
+        _appbarTitle = 'JUNTO';
+      });
       _expressionCompleter.value = getCollectiveExpressions(
           contextType: 'Collective', paginationPos: 0, channels: _channels);
     } else if (perspective.name == 'Connections') {
-      _appbarTitle.value = 'Connections';
-
+      setState(() {
+        _appbarTitle = 'Connections';
+      });
       _expressionCompleter.value = getCollectiveExpressions(
         paginationPos: 0,
         contextType: 'ConnectPerspective',
@@ -413,9 +391,9 @@ class JuntoCollectiveState extends State<JuntoCollective>
       setState(() {
         if (perspective.name ==
             _userProfile.user.name + "'s Follow Perspective") {
-          _appbarTitle.value = 'Subscriptions';
+          _appbarTitle = 'Subscriptions';
         } else {
-          _appbarTitle.value = perspective.name;
+          _appbarTitle = perspective.name;
         }
       });
       _expressionCompleter.value = getCollectiveExpressions(
@@ -427,78 +405,5 @@ class JuntoCollectiveState extends State<JuntoCollective>
       );
     }
     actionsVisible.value = false;
-  }
-
-  void _toggleFilterDrawer() {
-    if (FocusScope.of(context).hasFocus) {
-      FocusScope.of(context).unfocus();
-    }
-    _filterDrawerKey.currentState.toggle();
-  }
-
-  void _filterByChannel(Channel channel) {
-    setState(() {
-      if (_channels.isEmpty) {
-        _channels.add(channel.name);
-      } else {
-        _channels.first = channel.name;
-      }
-    });
-    actionsVisible.value = false;
-    _expressionCompleter.value = getCollectiveExpressions(
-      contextType: 'Collective',
-      paginationPos: 0,
-      channels: _channels,
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider<MenuController>.value(
-      value: menuController,
-      child: ZoomScaffold(
-        menuScreen: JuntoDrawer(),
-        contentScreen: Layout(
-          contentBuilder: (BuildContext context) {
-            return GestureDetector(
-              child: JuntoFilterDrawer(
-                key: _filterDrawerKey,
-                drawer: FilterDrawerContent(
-                  filterByChannel: _filterByChannel,
-                  channels: _channels,
-                  resetChannels: _resetChannels,
-                ),
-                scaffold: Scaffold(
-                  resizeToAvoidBottomInset: false,
-                  key: _juntoCollectiveKey,
-                  floatingActionButton: CollectiveActionButton(
-                    userProfile: _userProfile,
-                    actionsVisible: actionsVisible,
-                    isVisible: _isVisible,
-                  ),
-                  floatingActionButtonLocation:
-                      FloatingActionButtonLocation.centerDocked,
-                  body: Navigator(
-                    key: _navKey,
-                    onGenerateRoute: (RouteSettings settings) {
-                      return FadeRoute<void>(
-                        child: ExpressionFeed(
-                          refreshData: refreshData,
-                          expressionCompleter: _expressionCompleter,
-                          collectiveController: _collectiveController,
-                          appbarTitle: _appbarTitle,
-                          toggleFilterDrawer: _toggleFilterDrawer,
-                          userAddress: _userAddress,
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ),
-            );
-          },
-        ),
-      ),
-    );
   }
 }
