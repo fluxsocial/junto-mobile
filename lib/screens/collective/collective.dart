@@ -7,16 +7,14 @@ import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_actions/collective_actions.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
-import 'package:junto_beta_mobile/widgets/appbar/collective_appbar.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
-import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
 import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/zoom_scaffold.dart';
-import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -79,6 +77,14 @@ class JuntoCollectiveState extends State<JuntoCollective>
     menuController = MenuController(
       vsync: this,
     )..addListener(() => setState(() {}));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _collectiveController.removeListener(_onScrollingHasChanged);
+    _collectiveController.dispose();
+    menuController.dispose();
   }
 
   @override
@@ -284,32 +290,42 @@ class JuntoCollectiveState extends State<JuntoCollective>
                     FloatingActionButtonLocation.centerDocked,
                 // dynamically render body
                 body: ValueListenableBuilder<bool>(
-                    valueListenable: actionsVisible,
-                    builder: (BuildContext context, bool value, _) {
-                      return Stack(
-                        children: <Widget>[
-                          AnimatedOpacity(
-                            duration: const Duration(milliseconds: 300),
-                            opacity: value ? 0.0 : 1.0,
-                            child: Visibility(
-                              visible: !value,
-                              child: _buildPerspectiveFeed(),
+                  valueListenable: actionsVisible,
+                  builder: (BuildContext context, bool value, _) {
+                    return Stack(
+                      children: <Widget>[
+                        AnimatedOpacity(
+                          duration: const Duration(milliseconds: 300),
+                          opacity: value ? 0.0 : 1.0,
+                          child: Visibility(
+                            visible: !value,
+                            child: ExpressionFeed(
+                              refreshData: refreshData,
+                              expressionCompleter: _expressionCompleter,
+                              collectiveController: _collectiveController,
+                              appbarTitle: _appbarTitle,
+                              toggleFilterDrawer: _toggleFilterDrawer,
+                              twoColumnView: twoColumnView,
+                              switchColumnView: _switchColumnView,
+                              userAddress: _userAddress,
                             ),
                           ),
-                          AnimatedOpacity(
-                            duration: const Duration(milliseconds: 300),
-                            opacity: value ? 1.0 : 0.0,
-                            child: Visibility(
-                              visible: value,
-                              child: JuntoCollectiveActions(
-                                userProfile: _userProfile,
-                                changePerspective: _changePerspective,
-                              ),
+                        ),
+                        AnimatedOpacity(
+                          duration: const Duration(milliseconds: 300),
+                          opacity: value ? 1.0 : 0.0,
+                          child: Visibility(
+                            visible: value,
+                            child: JuntoCollectiveActions(
+                              userProfile: _userProfile,
+                              changePerspective: _changePerspective,
                             ),
                           ),
-                        ],
-                      );
-                    }),
+                        ),
+                      ],
+                    );
+                  },
+                ),
               ),
             ),
           ),
