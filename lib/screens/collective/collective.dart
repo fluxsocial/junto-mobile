@@ -167,21 +167,68 @@ class JuntoCollectiveState extends State<JuntoCollective>
     });
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    _collectiveController.removeListener(_onScrollingHasChanged);
-    _collectiveController.dispose();
-    menuController.dispose();
+// Switch between perspectives; used in perspectives side drawer.
+  void _changePerspective(PerspectiveModel perspective) {
+    if (perspective.name == 'JUNTO') {
+      setState(() {
+        _appbarTitle = 'JUNTO';
+      });
+      _expressionCompleter.value = getCollectiveExpressions(
+          contextType: 'Collective', paginationPos: 0, channels: _channels);
+    } else if (perspective.name == 'Connections') {
+      setState(() {
+        _appbarTitle = 'Connections';
+      });
+      _expressionCompleter.value = getCollectiveExpressions(
+        paginationPos: 0,
+        contextType: 'ConnectPerspective',
+        dos: 0,
+      );
+    } else {
+      setState(() {
+        if (perspective.name ==
+            _userProfile.user.name + "'s Follow Perspective") {
+          _appbarTitle = 'Subscriptions';
+        } else {
+          _appbarTitle = perspective.name;
+        }
+      });
+      _expressionCompleter.value = getCollectiveExpressions(
+        paginationPos: 0,
+        contextString: perspective.address,
+        contextType: 'FollowPerspective',
+        dos: null,
+        channels: _channels,
+      );
+    }
+    actionsVisible.value = false;
+  }
+
+  void _toggleFilterDrawer() {
+    if (FocusScope.of(context).hasFocus) {
+      FocusScope.of(context).unfocus();
+    }
+    _filterDrawerKey.currentState.toggle();
+  }
+
+  void _filterByChannel(Channel channel) {
+    setState(() {
+      if (_channels.isEmpty) {
+        _channels.add(channel.name);
+      } else {
+        _channels[0] = channel.name;
+      }
+    });
+    actionsVisible.value = false;
+    _expressionCompleter.value = getCollectiveExpressions(
+      contextType: 'Collective',
+      paginationPos: 0,
+      channels: _channels,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return _buildCollectivePage(context);
-  }
-
-  // Renders the collective screen within a scaffold.
-  Widget _buildCollectivePage(BuildContext context) {
     return ChangeNotifierProvider<MenuController>.value(
       value: menuController,
       child: ZoomScaffold(
