@@ -71,21 +71,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
     menuController = MenuController(
       vsync: this,
     )..addListener(() => setState(() {}));
-    actionsVisible.addListener(() {
-      if (actionsVisible.value) {
-        _navKey.currentState.push(
-          FadeRoute<void>(
-            child: JuntoCollectiveActions(
-              userProfile: _userProfile,
-              changePerspective: _changePerspective,
-            ),
-          ),
-        );
-      }
-      if (!actionsVisible.value) {
-        _navKey.currentState.pop();
-      }
-    });
+    actionsVisible.addListener(actionListener);
   }
 
   @override
@@ -100,6 +86,22 @@ class JuntoCollectiveState extends State<JuntoCollective>
   void didChangeDependencies() {
     super.didChangeDependencies();
     refreshData();
+  }
+
+  void actionListener() {
+    if (actionsVisible.value) {
+      _navKey.currentState.push(
+        FadeRoute<void>(
+          child: JuntoCollectiveActions(
+            userProfile: _userProfile,
+            changePerspective: _changePerspective,
+          ),
+        ),
+      );
+    }
+    if (!actionsVisible.value) {
+      _navKey.currentState.pop();
+    }
   }
 
   void _addPostFrameCallback() {
