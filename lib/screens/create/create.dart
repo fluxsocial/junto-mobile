@@ -23,35 +23,6 @@ class JuntoCreate extends StatelessWidget {
   final ExpressionContext expressionContext;
   final String expressionCenterBackground;
 
-// Validates the expression before pushing to `CreateActions`
-  // void _onNextClick() {
-  //   if (_expressionValid(_expressionType)) {
-  //     final dynamic expression = getExpression();
-  //     Navigator.push(
-  //       context,
-  //       MaterialPageRoute<dynamic>(
-  //         builder: (BuildContext context) {
-  //           return CreateActions(
-  //             expressionType: _expressionType,
-  //             address: widget.address,
-  //             expressionContext: widget.expressionContext,
-  //             expression: expression,
-  //           );
-  //         },
-  //       ),
-  //     );
-  //   } else {
-  //     JuntoDialog.showJuntoDialog(
-  //       context,
-  //       'Please ensure all required fields are filled.',
-  //       <Widget>[
-  //         DialogBack(),
-  //       ],
-  //     );
-  //     return;
-  //   }
-  // }
-
   void _navigateTo(BuildContext context, ExpressionType expression) {
     switch (expression) {
       case ExpressionType.dynamic:
