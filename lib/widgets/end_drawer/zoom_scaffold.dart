@@ -121,7 +121,9 @@ class ZoomScaffoldMenuControllerState
 }
 
 typedef Widget ZoomScaffoldBuilder(
-    BuildContext context, MenuController menuController);
+  BuildContext context,
+  MenuController menuController,
+);
 
 class Layout {
   Layout({
