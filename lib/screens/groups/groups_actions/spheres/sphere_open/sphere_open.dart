@@ -227,7 +227,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                           child: Tab(
                             child: Text(
                               name,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w700,
                               ),
