@@ -15,6 +15,7 @@ import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/previews/comment_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:junto_beta_mobile/widgets/user_feedback.dart';
 import 'package:provider/provider.dart';
 
 class ExpressionOpen extends StatefulWidget {
@@ -131,20 +132,12 @@ class ExpressionOpenState extends State<ExpressionOpen> {
         );
         commentController.clear();
         JuntoLoader.hide();
-        JuntoDialog.showJuntoDialog(
-          context,
-          'Comment Created',
-          <Widget>[
-            FlatButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Ok'),
-            ),
-          ],
-        );
+        showFeedback(context, message: 'Comment Created');
+        await _refreshComments();
+        _openComments();
       } catch (error) {
         debugPrint('Error posting comment $error');
         JuntoLoader.hide();
-
         JuntoDialog.showJuntoDialog(
           context,
           'Error posting comment',
