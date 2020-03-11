@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 
+/// Floating action button used by [JuntoCollective]. Controls the switching
+/// between [ExpressionFeed] and Perspective screens.
 class CollectiveActionButton extends StatelessWidget {
   const CollectiveActionButton({
     Key key,
-    this.isVisible,
-    this.actionsVisible,
-    this.userProfile,
+    @required this.isVisible,
+    @required this.actionsVisible,
+    @required this.userProfile,
   }) : super(key: key);
   final ValueNotifier<bool> isVisible;
   final ValueNotifier<bool> actionsVisible;
