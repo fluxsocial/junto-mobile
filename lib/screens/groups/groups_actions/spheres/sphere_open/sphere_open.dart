@@ -216,6 +216,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                     labelPadding: const EdgeInsets.all(0),
                     isScrollable: true,
                     labelColor: Theme.of(context).primaryColorDark,
+                    unselectedLabelColor: Theme.of(context).primaryColorLight,
                     labelStyle: Theme.of(context).textTheme.subtitle1,
                     indicatorWeight: 0.0001,
                     tabs: <Widget>[
@@ -229,7 +230,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w700,
-                                color: Theme.of(context).primaryColor,
                               ),
                             ),
                           ),
