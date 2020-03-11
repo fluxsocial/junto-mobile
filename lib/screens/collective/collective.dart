@@ -34,37 +34,33 @@ class JuntoCollective extends StatefulWidget {
 
 class JuntoCollectiveState extends State<JuntoCollective>
     with HideFab, SingleTickerProviderStateMixin {
-  final GlobalKey<NavigatorState> _navKey = GlobalKey<NavigatorState>();
+  GlobalKey<NavigatorState> _navKey;
 
-  // Global key to uniquely identify Junto Collective
-  final GlobalKey<ScaffoldState> _juntoCollectiveKey =
-      GlobalKey<ScaffoldState>();
+  GlobalKey<ScaffoldState> _juntoCollectiveKey;
 
-  final GlobalKey<JuntoFilterDrawerState> _filterDrawerKey =
-      GlobalKey<JuntoFilterDrawerState>();
+  GlobalKey<JuntoFilterDrawerState> _filterDrawerKey;
 
-  // Completer which controls expressions querying.
   final ValueNotifier<Future<QueryResults<ExpressionResponse>>>
       _expressionCompleter =
       ValueNotifier<Future<QueryResults<ExpressionResponse>>>(null);
 
+  MenuController menuController;
   ExpressionRepo _expressionProvider;
-
+  ScrollController _collectiveController;
   String _userAddress;
   UserData _userProfile;
 
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
-  ScrollController _collectiveController;
-  ValueNotifier<String> _appbarTitle = ValueNotifier<String>('JUNTO');
+  final ValueNotifier<String> _appbarTitle = ValueNotifier<String>('JUNTO');
   final List<String> _channels = <String>[];
   ValueNotifier<bool> actionsVisible = ValueNotifier<bool>(false);
-  bool twoColumnView = true;
-
-  MenuController menuController;
 
   @override
   void initState() {
     super.initState();
+    _navKey = GlobalKey<NavigatorState>();
+    _filterDrawerKey = GlobalKey<JuntoFilterDrawerState>();
+    _juntoCollectiveKey = GlobalKey<ScaffoldState>();
     _collectiveController = ScrollController();
     _addPostFrameCallback();
     getUserInformation();
@@ -184,16 +180,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
     Navigator.pop(context);
   }
 
-  void _switchColumnView(String columnType) {
-    setState(() {
-      if (columnType == 'two') {
-        twoColumnView = true;
-      } else if (columnType == 'single') {
-        twoColumnView = false;
-      }
-    });
-  }
-
 // Switch between perspectives; used in perspectives side drawer.
   void _changePerspective(PerspectiveModel perspective) {
     if (perspective.name == 'JUNTO') {
@@ -288,8 +274,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
                           collectiveController: _collectiveController,
                           appbarTitle: _appbarTitle,
                           toggleFilterDrawer: _toggleFilterDrawer,
-                          twoColumnView: twoColumnView,
-                          switchColumnView: _switchColumnView,
                           userAddress: _userAddress,
                         ),
                       );

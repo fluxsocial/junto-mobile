@@ -12,9 +12,8 @@ import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 ///  - [appbarTitle]
 ///  - [toggleFilterDrawer]
 ///  - [twoColumnView]
-///  - [switchColumnView]
 ///  - [userAddress]
-class ExpressionFeed extends StatelessWidget {
+class ExpressionFeed extends StatefulWidget {
   const ExpressionFeed({
     Key key,
     @required this.refreshData,
@@ -22,16 +21,12 @@ class ExpressionFeed extends StatelessWidget {
     @required this.collectiveController,
     @required this.appbarTitle,
     @required this.toggleFilterDrawer,
-    @required this.twoColumnView,
-    @required this.switchColumnView,
     @required this.userAddress,
   })  : assert(refreshData != null),
         assert(expressionCompleter != null),
         assert(collectiveController != null),
         assert(appbarTitle != null),
         assert(toggleFilterDrawer != null),
-        assert(twoColumnView != null),
-        assert(switchColumnView != null),
         super(key: key);
   final VoidCallback refreshData;
   final ValueNotifier<Future<QueryResults<ExpressionResponse>>>
@@ -39,16 +34,32 @@ class ExpressionFeed extends StatelessWidget {
   final ScrollController collectiveController;
   final ValueNotifier<String> appbarTitle;
   final VoidCallback toggleFilterDrawer;
-  final bool twoColumnView;
-  final ValueChanged<String> switchColumnView;
   final String userAddress;
+
+  @override
+  _ExpressionFeedState createState() => _ExpressionFeedState();
+}
+
+class _ExpressionFeedState extends State<ExpressionFeed> {
+  bool twoColumnView = false;
+
+  /// Changes the list view from two column layout to single
+  void _switchColumnView(String columnType) {
+    setState(() {
+      if (columnType == 'two') {
+        twoColumnView = true;
+      } else if (columnType == 'single') {
+        twoColumnView = false;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: refreshData,
+      onRefresh: widget.refreshData,
       child: ValueListenableBuilder<Future<QueryResults<ExpressionResponse>>>(
-        valueListenable: expressionCompleter,
+        valueListenable: widget.expressionCompleter,
         builder: (
           BuildContext context,
           Future<QueryResults<ExpressionResponse>> value,
@@ -68,10 +79,10 @@ class ExpressionFeed extends StatelessWidget {
               }
               if (snapshot.hasData) {
                 return CustomScrollView(
-                  controller: collectiveController,
+                  controller: widget.collectiveController,
                   slivers: <Widget>[
                     ValueListenableBuilder<String>(
-                      valueListenable: appbarTitle,
+                      valueListenable: widget.appbarTitle,
                       builder: (
                         BuildContext context,
                         String value,
@@ -81,9 +92,9 @@ class ExpressionFeed extends StatelessWidget {
                           delegate: CollectiveAppBar(
                             expandedHeight: 135,
                             appbarTitle: value,
-                            openFilterDrawer: toggleFilterDrawer,
+                            openFilterDrawer: widget.toggleFilterDrawer,
                             twoColumnView: twoColumnView,
-                            switchColumnView: switchColumnView,
+                            switchColumnView: _switchColumnView,
                           ),
                           pinned: false,
                           floating: true,
@@ -97,12 +108,13 @@ class ExpressionFeed extends StatelessWidget {
                               ? CrossFadeState.showFirst
                               : CrossFadeState.showSecond,
                           duration: const Duration(milliseconds: 300),
+                          firstCurve: Curves.easeInOut,
                           firstChild: TwoColumnSliverListView(
-                            userAddress: userAddress,
+                            userAddress: widget.userAddress,
                             data: snapshot.data.results,
                           ),
                           secondChild: SingleColumnSliverListView(
-                            userAddress: userAddress,
+                            userAddress: widget.userAddress,
                             data: snapshot.data.results,
                           ),
                         )
