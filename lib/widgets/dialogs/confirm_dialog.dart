@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 
 class ConfirmDialog extends StatelessWidget {
-  const ConfirmDialog({this.confirmationText, this.confirm, this.deny});
+  const ConfirmDialog({this.confirmationText, this.confirm});
   final String confirmationText;
   final Function confirm;
-  final Function deny;
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +42,11 @@ class ConfirmDialog extends StatelessWidget {
                 children: <Widget>[
                   Expanded(
                     child: GestureDetector(
-                      onTap: () => deny,
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
                       child: Container(
+                        color: Colors.transparent,
                         alignment: Alignment.center,
                         child: Text(
                           'NO',
@@ -60,8 +61,11 @@ class ConfirmDialog extends StatelessWidget {
                   ),
                   Expanded(
                     child: GestureDetector(
-                      onTap: () => confirm,
+                      onTap: () {
+                        confirm();
+                      },
                       child: Container(
+                        color: Colors.transparent,
                         alignment: Alignment.center,
                         child: Text(
                           'YES',

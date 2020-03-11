@@ -17,6 +17,15 @@ class OwnerActionItems extends StatelessWidget {
 
   final Group sphere;
 
+  Future<void> deleteCircle(BuildContext context) async {
+    try {
+      Provider.of<GroupRepo>(context, listen: false)
+          .deleteGroup(sphere.address);
+    } catch (error) {
+      print(error);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -86,13 +95,12 @@ class OwnerActionItems extends StatelessWidget {
                         Navigator.pop(context);
                         showDialog(
                           context: context,
-                          builder: (context) => ConfirmDialog(
-                              confirmationText:
-                                  'Are you sure you want to delete this circle?'),
+                          builder: (BuildContext context) => ConfirmDialog(
+                            confirm: deleteCircle,
+                            confirmationText:
+                                'Are you sure you want to delete this circle?',
+                          ),
                         );
-
-                        // Provider.of<GroupRepo>(context, listen: false)
-                        //     .deleteGroup(sphere.address);
                       },
                       title: Row(
                         children: <Widget>[
