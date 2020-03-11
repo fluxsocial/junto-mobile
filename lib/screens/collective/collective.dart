@@ -162,7 +162,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
     Navigator.pop(context);
   }
 
-  _switchColumnView(String columnType) async {
+  Future<void> _switchColumnView(String columnType) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     setState(() {

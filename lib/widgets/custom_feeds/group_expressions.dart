@@ -6,6 +6,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Linear list of expressions created by the given [userProfile].
 class GroupExpressions extends StatefulWidget {
@@ -45,14 +46,34 @@ class _GroupExpressionsState extends State<GroupExpressions> {
     );
   }
 
-  void _switchColumnView(String columnType) {
+  Future<void> _switchColumnView(String columnType) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
     setState(() {
       if (columnType == 'two') {
         twoColumnView = true;
+        prefs.setBool('two-column-view', true);
       } else if (columnType == 'single') {
         twoColumnView = false;
+        prefs.setBool('two-column-view', false);
       }
     });
+  }
+
+  Future<void> getUserInformation() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      if (prefs.getBool('two-column-view') != null) {
+        twoColumnView = prefs.getBool('two-column-view');
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUserInformation();
   }
 
   @override
