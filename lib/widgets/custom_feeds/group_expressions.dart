@@ -137,6 +137,9 @@ class _GroupExpressionsState extends State<GroupExpressions> {
                                     child: Icon(
                                       CustomIcons.twocolumn,
                                       size: 20,
+                                      color: twoColumnView
+                                          ? Theme.of(context).primaryColor
+                                          : Theme.of(context).primaryColorLight,
                                     ),
                                   ),
                                 ),
@@ -151,6 +154,9 @@ class _GroupExpressionsState extends State<GroupExpressions> {
                                     child: Icon(
                                       CustomIcons.singlecolumn,
                                       size: 20,
+                                      color: twoColumnView
+                                          ? Theme.of(context).primaryColorLight
+                                          : Theme.of(context).primaryColor,
                                     ),
                                   ),
                                 ),
