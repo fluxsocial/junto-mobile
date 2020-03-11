@@ -101,11 +101,16 @@ class JuntoCollectiveState extends State<JuntoCollective>
 
   Future<void> getUserInformation() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final Map<String, dynamic> decodedUserData =
-        jsonDecode(prefs.getString('user_data'));
+    final Map<String, dynamic> decodedUserData = jsonDecode(
+      prefs.getString('user_data'),
+    );
+
     setState(() {
       _userAddress = prefs.getString('user_id');
       _userProfile = UserData.fromMap(decodedUserData);
+      if (prefs.getBool('two-column-view') != null) {
+        twoColumnView = prefs.getBool('two-column-view');
+      }
     });
   }
 
@@ -157,12 +162,16 @@ class JuntoCollectiveState extends State<JuntoCollective>
     Navigator.pop(context);
   }
 
-  void _switchColumnView(String columnType) {
+  _switchColumnView(String columnType) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
     setState(() {
       if (columnType == 'two') {
         twoColumnView = true;
+        prefs.setBool('two-column-view', true);
       } else if (columnType == 'single') {
         twoColumnView = false;
+        prefs.setBool('two-column-view', false);
       }
     });
   }
