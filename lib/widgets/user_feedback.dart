@@ -9,8 +9,8 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 Future<void> showFeedback(
   final BuildContext context, {
   @required final String message,
-  Color color = Colors.white,
-  Color fontColor = Colors.black,
+  Color color,
+  Color fontColor,
   Duration duration = const Duration(milliseconds: 300),
 }) async {
   showGeneralDialog(
@@ -31,15 +31,16 @@ Future<void> showFeedback(
             child: _FeedbackBody(
               message: message,
               controller: animation,
-              backgroundColor: color,
-              fontColor: fontColor,
+              backgroundColor:
+                  color ?? Theme.of(context).colorScheme.primaryVariant,
+              fontColor: fontColor ?? Colors.white,
             ),
           ),
         ],
       );
     },
   );
-  await Future<void>.delayed(const Duration(milliseconds: 750) + duration);
+  await Future<void>.delayed(const Duration(milliseconds: 730) + duration);
   Navigator.of(context).pop();
 }
 
@@ -85,10 +86,10 @@ class _FeedbackBody extends StatelessWidget {
           children: <Widget>[
             Container(
               width: 24,
-              child: const Icon(
+              child: Icon(
                 CustomIcons.create,
                 size: 18,
-                color: Colors.black,
+                color: fontColor,
               ),
             ),
             const SizedBox(width: 24.0),
