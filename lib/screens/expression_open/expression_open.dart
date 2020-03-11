@@ -96,15 +96,23 @@ class ExpressionOpenState extends State<ExpressionOpen> {
     FocusScope.of(context).requestFocus(_focusNode);
   }
 
+  void _openComments() {
+    setState(() {
+      commentsVisible = true;
+    });
+  }
+
+  void _closeComment() {
+    setState(() {
+      commentsVisible = false;
+    });
+  }
+
   void _showComments() {
     if (commentsVisible == false) {
-      setState(() {
-        commentsVisible = true;
-      });
+      _openComments();
     } else if (commentsVisible == true) {
-      setState(() {
-        commentsVisible = false;
-      });
+      _closeComment();
     }
   }
 
