@@ -74,7 +74,7 @@ class CreateSphereState extends State<CreateSphere> {
     final SphereModel sphere = SphereModel(
       name: sphereName,
       description: sphereDescription,
-      facilitators: <String>[userAddress],
+      facilitators: <String>[],
       photo: sphereImageKey,
       members: _sphereMembers,
       principles: '',
@@ -149,7 +149,7 @@ class CreateSphereState extends State<CreateSphere> {
     return ListView(
       children: <Widget>[
         _spherePrivacy('Public',
-            'Anyone can join this sphere, read its expressions and share to it'),
+            'Anyone can join this circle, read its expressions, and share to it'),
       ],
     );
   }
@@ -166,7 +166,7 @@ class CreateSphereState extends State<CreateSphere> {
           border: Border(
             bottom: BorderSide(
               color: Theme.of(context).dividerColor,
-              width: 1,
+              width: .75,
             ),
           ),
         ),
@@ -178,8 +178,7 @@ class CreateSphereState extends State<CreateSphere> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Container(
-                width: MediaQuery.of(context).size.width * .75,
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -197,6 +196,7 @@ class CreateSphereState extends State<CreateSphere> {
                   ],
                 ),
               ),
+              const SizedBox(width: 10),
               AnimatedContainer(
                 duration: kThemeChangeDuration,
                 height: 22,
@@ -213,7 +213,7 @@ class CreateSphereState extends State<CreateSphere> {
                     end: Alignment.topRight,
                   ),
                   border: Border.all(
-                    color: Theme.of(context).dividerColor,
+                    color: Theme.of(context).backgroundColor,
                     width: 2,
                   ),
                   borderRadius: BorderRadius.circular(25),
@@ -277,7 +277,7 @@ class CreateSphereState extends State<CreateSphere> {
             if (_currentIndex == 0)
               Text(
                 'Create Circle',
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.subtitle1,
               ),
             if (_currentIndex == 2)
               GestureDetector(
