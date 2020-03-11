@@ -7,10 +7,10 @@ import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_actions/collective_actions.dart';
+import 'package:junto_beta_mobile/screens/collective/collective_fab.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
-import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
@@ -65,15 +65,8 @@ class JuntoCollectiveState extends State<JuntoCollective>
   void initState() {
     super.initState();
     _collectiveController = ScrollController();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _collectiveController.addListener(_onScrollingHasChanged);
-      if (_collectiveController.hasClients)
-        _collectiveController.position.isScrollingNotifier.addListener(
-          _onScrollingHasChanged,
-        );
-    });
+    _addPostFrameCallback();
     getUserInformation();
-
     menuController = MenuController(
       vsync: this,
     )..addListener(() => setState(() {}));
@@ -91,6 +84,16 @@ class JuntoCollectiveState extends State<JuntoCollective>
   void didChangeDependencies() {
     super.didChangeDependencies();
     refreshData();
+  }
+
+  void _addPostFrameCallback() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _collectiveController.addListener(_onScrollingHasChanged);
+      if (_collectiveController.hasClients)
+        _collectiveController.position.isScrollingNotifier.addListener(
+          _onScrollingHasChanged,
+        );
+    });
   }
 
   Future<void> refreshData() async {
@@ -240,95 +243,66 @@ class JuntoCollectiveState extends State<JuntoCollective>
       child: ZoomScaffold(
         menuScreen: JuntoDrawer(),
         contentScreen: Layout(
-          contentBuilder: (BuildContext context) => GestureDetector(
-            onPanUpdate: (DragUpdateDetails details) {
-              //on swiping from right to left
-              // if (details.delta.dx < 6) {
-              //   Provider.of<MenuController>(context, listen: false).open();
-              // }
-            },
-            child: JuntoFilterDrawer(
-              key: _filterDrawerKey,
-              drawer: FilterDrawerContent(
-                filterByChannel: _filterByChannel,
-                channels: _channels,
-                resetChannels: _resetChannels,
-              ),
-              scaffold: Scaffold(
-                resizeToAvoidBottomInset: false,
-                key: _juntoCollectiveKey,
-                floatingActionButton: ValueListenableBuilder<bool>(
-                  valueListenable: _isVisible,
-                  builder: (BuildContext context, bool visible, Widget child) {
-                    return AnimatedOpacity(
-                        duration: const Duration(milliseconds: 300),
-                        opacity: visible ? 1.0 : 0.0,
-                        child: child);
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 25),
-                    child: ValueListenableBuilder<bool>(
-                      valueListenable: actionsVisible,
-                      builder: (BuildContext context, bool value, _) {
-                        return BottomNav(
-                          screen: 'collective',
-                          userProfile: _userProfile,
-                          actionsVisible: value,
-                          onTap: () {
-                            if (value) {
-                              actionsVisible.value = false;
-                            } else {
-                              actionsVisible.value = true;
-                            }
-                          },
-                        );
-                      },
-                    ),
+          contentBuilder: (BuildContext context) {
+            return GestureDetector(
+              child: JuntoFilterDrawer(
+                key: _filterDrawerKey,
+                drawer: FilterDrawerContent(
+                  filterByChannel: _filterByChannel,
+                  channels: _channels,
+                  resetChannels: _resetChannels,
+                ),
+                scaffold: Scaffold(
+                  resizeToAvoidBottomInset: false,
+                  key: _juntoCollectiveKey,
+                  floatingActionButton: CollectiveActionButton(
+                    userProfile: _userProfile,
+                    actionsVisible: actionsVisible,
+                    isVisible: _isVisible,
+                  ),
+                  floatingActionButtonLocation:
+                      FloatingActionButtonLocation.centerDocked,
+                  body: ValueListenableBuilder<bool>(
+                    valueListenable: actionsVisible,
+                    builder: (BuildContext context, bool value, _) {
+                      return Stack(
+                        children: <Widget>[
+                          AnimatedOpacity(
+                            duration: const Duration(milliseconds: 300),
+                            opacity: value ? 0.0 : 1.0,
+                            child: Visibility(
+                              visible: !value,
+                              child: ExpressionFeed(
+                                refreshData: refreshData,
+                                expressionCompleter: _expressionCompleter,
+                                collectiveController: _collectiveController,
+                                appbarTitle: _appbarTitle,
+                                toggleFilterDrawer: _toggleFilterDrawer,
+                                twoColumnView: twoColumnView,
+                                switchColumnView: _switchColumnView,
+                                userAddress: _userAddress,
+                              ),
+                            ),
+                          ),
+                          AnimatedOpacity(
+                            duration: const Duration(milliseconds: 300),
+                            opacity: value ? 1.0 : 0.0,
+                            child: Visibility(
+                              visible: value,
+                              child: JuntoCollectiveActions(
+                                userProfile: _userProfile,
+                                changePerspective: _changePerspective,
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
                   ),
                 ),
-                floatingActionButtonLocation:
-                    FloatingActionButtonLocation.centerDocked,
-                // dynamically render body
-                body: ValueListenableBuilder<bool>(
-                  valueListenable: actionsVisible,
-                  builder: (BuildContext context, bool value, _) {
-                    return Stack(
-                      children: <Widget>[
-                        AnimatedOpacity(
-                          duration: const Duration(milliseconds: 300),
-                          opacity: value ? 0.0 : 1.0,
-                          child: Visibility(
-                            visible: !value,
-                            child: ExpressionFeed(
-                              refreshData: refreshData,
-                              expressionCompleter: _expressionCompleter,
-                              collectiveController: _collectiveController,
-                              appbarTitle: _appbarTitle,
-                              toggleFilterDrawer: _toggleFilterDrawer,
-                              twoColumnView: twoColumnView,
-                              switchColumnView: _switchColumnView,
-                              userAddress: _userAddress,
-                            ),
-                          ),
-                        ),
-                        AnimatedOpacity(
-                          duration: const Duration(milliseconds: 300),
-                          opacity: value ? 1.0 : 0.0,
-                          child: Visibility(
-                            visible: value,
-                            child: JuntoCollectiveActions(
-                              userProfile: _userProfile,
-                              changePerspective: _changePerspective,
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
               ),
-            ),
-          ),
+            );
+          },
         ),
       ),
     );
