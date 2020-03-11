@@ -64,6 +64,56 @@ class JuntoGroupsState extends State<JuntoGroups>
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      floatingActionButton: ValueListenableBuilder<bool>(
+        valueListenable: _isVisible,
+        builder: (BuildContext context, bool visible, Widget child) {
+          return AnimatedOpacity(
+            duration: const Duration(milliseconds: 300),
+            opacity: visible ? 1.0 : 0.0,
+            child: child,
+          );
+        },
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 25),
+          child: BottomNav(
+              actionsVisible: actionsVisible,
+              screen: 'groups',
+              onTap: () {
+                if (actionsVisible) {
+                  setState(() {
+                    actionsVisible = false;
+                  });
+                } else {
+                  setState(() {
+                    actionsVisible = true;
+                  });
+                }
+              }),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      body: Stack(
+        children: <Widget>[
+          AnimatedOpacity(
+              duration: const Duration(milliseconds: 300),
+              opacity: actionsVisible ? 0.0 : 1.0,
+              child: _currentGroup),
+          AnimatedOpacity(
+            duration: const Duration(milliseconds: 300),
+            opacity: actionsVisible ? 1.0 : 0.0,
+            child: Visibility(
+              visible: actionsVisible,
+              child: JuntoGroupsActions(
+                changeGroup: _changeGroup,
+                spheresVisible: spheresVisible,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+
     return ChangeNotifierProvider<MenuController>.value(
       value: menuController,
       child: ZoomScaffold(
@@ -96,9 +146,6 @@ class JuntoGroupsState extends State<JuntoGroups>
                       }
                     }),
               ),
-            ),
-            drawer: FilterDrawerContent(
-              channels: <String>[],
             ),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,

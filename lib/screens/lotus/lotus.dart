@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/screens.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
@@ -36,6 +37,7 @@ class JuntoLotusState extends State<JuntoLotus> {
           expressionContext: ExpressionContext.Collective,
         );
       },
+      settings: const RouteSettings(name: 'JuntoLotus'),
     );
   }
 
@@ -65,26 +67,27 @@ class JuntoLotusState extends State<JuntoLotus> {
     });
   }
 
-  /// Replaces the current route with [Screen] and disposes of the previous
-  /// routes
-  void _navigateTo(String screen) {
+  /// Pushes new page onto the stack
+  /// Allows to go back from the new page
+  /// This way Lotus is always in the root of the app
+  void _navigateTo(Screen screen) {
     Widget child;
-    if (screen == 'Collective') {
+    if (screen == Screen.collective) {
       child = JuntoCollective();
-    } else if (screen == 'Groups') {
+    } else if (screen == Screen.groups) {
       child = JuntoGroups(initialGroup: _userProfile.pack.address);
-    } else if (screen == 'Create') {
+    } else if (screen == Screen.create) {
       child = JuntoCreate(
         channels: const <String>[],
         address: widget.address,
         expressionContext: widget.expressionContext,
         expressionCenterBackground: backgroundImageAsset,
       );
-    } else {
+    } else if (screen == Screen.lotus) {
       child = JuntoCollective();
     }
-    Navigator.of(context).pushReplacement(
-      FadeRoute<void>(child: child),
+    Navigator.of(context).push(
+      FadeRoute<void>(child: child, name: child.runtimeType.toString()),
     );
     return;
   }
@@ -140,7 +143,7 @@ class JuntoLotusState extends State<JuntoLotus> {
                       children: <Widget>[
                         GestureDetector(
                           onTap: () {
-                            _navigateTo('Create');
+                            _navigateTo(Screen.create);
                           },
                           child: Container(
                             height: 80,
@@ -183,7 +186,7 @@ class JuntoLotusState extends State<JuntoLotus> {
                       children: <Widget>[
                         GestureDetector(
                           onTap: () {
-                            _navigateTo('Collective');
+                            _navigateTo(Screen.collective);
                           },
                           child: Container(
                             color: Colors.transparent,
@@ -216,7 +219,7 @@ class JuntoLotusState extends State<JuntoLotus> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            _navigateTo('Groups');
+                            _navigateTo(Screen.groups);
                           },
                           child: Container(
                             alignment: Alignment.center,
@@ -256,11 +259,7 @@ class JuntoLotusState extends State<JuntoLotus> {
                       children: <Widget>[
                         GestureDetector(
                           onTap: () {
-                            if (ModalRoute.of(context).isFirst) {
-                              _navigateTo('Back');
-                            } else {
-                              Navigator.pop(context);
-                            }
+                            _navigateTo(Screen.lotus);
                           },
                           child: Container(
                             height: 80,

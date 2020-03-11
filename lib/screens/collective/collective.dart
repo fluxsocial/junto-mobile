@@ -13,7 +13,6 @@ import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/zoom_scaffold.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
@@ -92,6 +91,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
             userProfile: _userProfile,
             changePerspective: _changePerspective,
           ),
+          name: 'collective_actions',
         ),
       );
     }
@@ -240,49 +240,40 @@ class JuntoCollectiveState extends State<JuntoCollective>
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<MenuController>.value(
-      value: menuController,
-      child: ZoomScaffold(
-        menuScreen: JuntoDrawer(),
-        contentScreen: Layout(
-          contentBuilder: (BuildContext context) {
-            return GestureDetector(
-              child: JuntoFilterDrawer(
-                key: _filterDrawerKey,
-                drawer: FilterDrawerContent(
-                  filterByChannel: _filterByChannel,
-                  channels: _channels,
-                  resetChannels: _resetChannels,
-                ),
-                scaffold: Scaffold(
-                  resizeToAvoidBottomInset: false,
-                  key: _juntoCollectiveKey,
-                  floatingActionButton: CollectiveActionButton(
-                    userProfile: _userProfile,
-                    actionsVisible: actionsVisible,
-                    isVisible: _isVisible,
+    return Scaffold(
+      body: GestureDetector(
+        child: JuntoFilterDrawer(
+          key: _filterDrawerKey,
+          drawer: FilterDrawerContent(
+            filterByChannel: _filterByChannel,
+            channels: _channels,
+            resetChannels: _resetChannels,
+          ),
+          scaffold: Scaffold(
+            key: _juntoCollectiveKey,
+            floatingActionButton: CollectiveActionButton(
+              userProfile: _userProfile,
+              actionsVisible: actionsVisible,
+              isVisible: _isVisible,
+            ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
+            body: Navigator(
+              key: _navKey,
+              onGenerateRoute: (RouteSettings settings) {
+                return FadeRoute<void>(
+                  child: ExpressionFeed(
+                    refreshData: refreshData,
+                    expressionCompleter: _expressionCompleter,
+                    collectiveController: _collectiveController,
+                    appbarTitle: _appbarTitle,
+                    toggleFilterDrawer: _toggleFilterDrawer,
+                    userAddress: _userAddress,
                   ),
-                  floatingActionButtonLocation:
-                      FloatingActionButtonLocation.centerDocked,
-                  body: Navigator(
-                    key: _navKey,
-                    onGenerateRoute: (RouteSettings settings) {
-                      return FadeRoute<void>(
-                        child: ExpressionFeed(
-                          refreshData: refreshData,
-                          expressionCompleter: _expressionCompleter,
-                          collectiveController: _collectiveController,
-                          appbarTitle: _appbarTitle,
-                          toggleFilterDrawer: _toggleFilterDrawer,
-                          userAddress: _userAddress,
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ),
-            );
-          },
+                );
+              },
+            ),
+          ),
         ),
       ),
     );
