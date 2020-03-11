@@ -10,7 +10,6 @@ class FilterDrawerChannelPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.transparent,
       child: Row(
         children: <Widget>[
           Container(
@@ -56,7 +55,7 @@ class FilterDrawerChannelPreview extends StatelessWidget {
                   Text(
                     channel.name,
                     textAlign: TextAlign.start,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 17,
                       color: Colors.white,
                       fontWeight: FontWeight.w700,

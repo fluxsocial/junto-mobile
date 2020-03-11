@@ -416,4 +416,7 @@ class Channel with RFC3339 {
       'created_at': createdAt.toIso8601String(),
     };
   }
+
+  @override
+  String toString() => name;
 }

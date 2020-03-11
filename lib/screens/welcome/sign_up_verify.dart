@@ -70,6 +70,8 @@ class SignUpVerifyState extends State<SignUpVerify> {
                     }) =>
                         null,
                     textInputAction: TextInputAction.done,
+                    keyboardType: TextInputType.number,
+                    keyboardAppearance: Theme.of(context).brightness,
                     maxLines: null,
                     cursorColor: Colors.white70,
                     decoration: const InputDecoration(

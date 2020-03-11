@@ -13,6 +13,7 @@ class SignUpTextField extends StatefulWidget {
     this.keyboardType = TextInputType.text,
     this.maxLines = 1,
     this.obscureText = false,
+    this.focusNode,
   }) : super(key: key);
 
   final TextEditingController valueController;
@@ -23,6 +24,7 @@ class SignUpTextField extends StatefulWidget {
   final TextCapitalization textCapitalization;
   final int maxLines;
   final bool obscureText;
+  final FocusNode focusNode;
 
   @override
   _SignUpTextFieldState createState() => _SignUpTextFieldState();
@@ -38,12 +40,14 @@ class _SignUpTextFieldState extends State<SignUpTextField> {
     return TextField(
       controller: widget.valueController,
       cursorColor: Colors.white70,
+      focusNode: widget.focusNode,
       decoration: InputDecoration(
         enabledBorder: InputBorder.none,
         focusedBorder: InputBorder.none,
         labelStyle: TextStyle(color: Colors.green),
         hintText: widget.hint,
         suffix: _visibilityIconIfObscured(),
+
         hintStyle: const TextStyle(
           color: Colors.white70,
           fontSize: 20,
@@ -78,6 +82,7 @@ class _SignUpTextFieldState extends State<SignUpTextField> {
   Widget _visibilityIconIfObscured() {
     if (widget.obscureText) {
       return IconButton(
+        tooltip: 'Show/hide password',
         icon: Icon(
           _temporarilyVisible ? Icons.visibility_off : Icons.visibility,
           color: Colors.white70,
