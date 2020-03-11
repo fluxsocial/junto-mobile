@@ -82,7 +82,7 @@ class BottomNav extends StatelessWidget {
           Expanded(
             child: GestureDetector(
               onTap: () {
-                Provider.of<MenuController>(context, listen: false).toggle();
+                // Provider.of<MenuController>(context, listen: false).toggle();
               },
               child: Container(
                 alignment: Alignment.center,
