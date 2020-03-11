@@ -1,6 +1,5 @@
 import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
