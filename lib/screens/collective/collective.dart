@@ -15,6 +15,7 @@ import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/zoom_scaffold.dart';
+import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,9 +24,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class JuntoCollective extends StatefulWidget {
   static Route<dynamic> route() {
     return MaterialPageRoute<dynamic>(
-      builder: (BuildContext context) {
-        return JuntoCollective();
-      },
+      builder: (BuildContext context) => JuntoCollective(),
     );
   }
 
@@ -35,6 +34,8 @@ class JuntoCollective extends StatefulWidget {
 
 class JuntoCollectiveState extends State<JuntoCollective>
     with HideFab, SingleTickerProviderStateMixin {
+  final GlobalKey<NavigatorState> _navKey = GlobalKey<NavigatorState>();
+
   // Global key to uniquely identify Junto Collective
   final GlobalKey<ScaffoldState> _juntoCollectiveKey =
       GlobalKey<ScaffoldState>();
@@ -70,6 +71,21 @@ class JuntoCollectiveState extends State<JuntoCollective>
     menuController = MenuController(
       vsync: this,
     )..addListener(() => setState(() {}));
+    actionsVisible.addListener(() {
+      if (actionsVisible.value) {
+        _navKey.currentState.push(
+          FadeRoute<void>(
+            child: JuntoCollectiveActions(
+              userProfile: _userProfile,
+              changePerspective: _changePerspective,
+            ),
+          ),
+        );
+      }
+      if (!actionsVisible.value) {
+        _navKey.currentState.pop();
+      }
+    });
   }
 
   @override
@@ -262,40 +278,20 @@ class JuntoCollectiveState extends State<JuntoCollective>
                   ),
                   floatingActionButtonLocation:
                       FloatingActionButtonLocation.centerDocked,
-                  body: ValueListenableBuilder<bool>(
-                    valueListenable: actionsVisible,
-                    builder: (BuildContext context, bool value, _) {
-                      return Stack(
-                        children: <Widget>[
-                          AnimatedOpacity(
-                            duration: const Duration(milliseconds: 300),
-                            opacity: value ? 0.0 : 1.0,
-                            child: Visibility(
-                              visible: !value,
-                              child: ExpressionFeed(
-                                refreshData: refreshData,
-                                expressionCompleter: _expressionCompleter,
-                                collectiveController: _collectiveController,
-                                appbarTitle: _appbarTitle,
-                                toggleFilterDrawer: _toggleFilterDrawer,
-                                twoColumnView: twoColumnView,
-                                switchColumnView: _switchColumnView,
-                                userAddress: _userAddress,
-                              ),
-                            ),
-                          ),
-                          AnimatedOpacity(
-                            duration: const Duration(milliseconds: 300),
-                            opacity: value ? 1.0 : 0.0,
-                            child: Visibility(
-                              visible: value,
-                              child: JuntoCollectiveActions(
-                                userProfile: _userProfile,
-                                changePerspective: _changePerspective,
-                              ),
-                            ),
-                          ),
-                        ],
+                  body: Navigator(
+                    key: _navKey,
+                    onGenerateRoute: (RouteSettings settings) {
+                      return FadeRoute<void>(
+                        child: ExpressionFeed(
+                          refreshData: refreshData,
+                          expressionCompleter: _expressionCompleter,
+                          collectiveController: _collectiveController,
+                          appbarTitle: _appbarTitle,
+                          toggleFilterDrawer: _toggleFilterDrawer,
+                          twoColumnView: twoColumnView,
+                          switchColumnView: _switchColumnView,
+                          userAddress: _userAddress,
+                        ),
                       );
                     },
                   ),
