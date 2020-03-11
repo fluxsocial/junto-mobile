@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 class ConfirmDialog extends StatelessWidget {
-  const ConfirmDialog({this.confirmationText, this.confirm});
+  const ConfirmDialog({this.context, this.confirmationText, this.confirm});
+
+  final BuildContext context;
   final String confirmationText;
   final Function confirm;
 
@@ -69,7 +71,7 @@ class ConfirmDialog extends StatelessWidget {
                   Expanded(
                     child: GestureDetector(
                       onTap: () {
-                        confirm();
+                        confirm(context);
                       },
                       child: Container(
                         color: Colors.transparent,

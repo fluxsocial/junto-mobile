@@ -24,6 +24,7 @@ class OwnerActionItems extends StatelessWidget {
     } catch (error) {
       print(error);
     }
+    Navigator.pop(context);
   }
 
   @override
@@ -87,6 +88,7 @@ class OwnerActionItems extends StatelessWidget {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) => ConfirmDialog(
+                        context: context,
                         confirm: deleteCircle,
                         confirmationText:
                             'Are you sure you want to delete this circle?',
