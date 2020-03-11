@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -24,6 +23,7 @@ class JuntoThemesState extends State<JuntoThemes> {
 
   @override
   void initState() {
+    print(widget.nightMode);
     super.initState();
     _currentTheme = widget.currentTheme;
     if (widget.nightMode == null) {
@@ -34,21 +34,21 @@ class JuntoThemesState extends State<JuntoThemes> {
   }
 
   Widget _themeSelector(BuildContext context, String theme) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _currentTheme = theme;
-          print(theme);
-        });
-        if (_nightMode) {}
-        Provider.of<JuntoThemesProvider>(context, listen: false)
-            .setTheme(_nightMode ? theme + '-night' : theme);
-        widget.refreshData();
-      },
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 15),
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height * .15,
+    return Container(
+      margin: const EdgeInsets.only(bottom: 15),
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height * .15,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(10),
+        onTap: () {
+          setState(() {
+            _currentTheme = theme;
+          });
+          Provider.of<JuntoThemesProvider>(context, listen: false)
+              .setTheme(_nightMode ? theme + '-night' : theme);
+
+          widget.refreshData();
+        },
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10),
           child: Stack(
@@ -65,10 +65,11 @@ class JuntoThemesState extends State<JuntoThemes> {
                 child: Text(
                   theme.toUpperCase(),
                   style: const TextStyle(
-                      fontSize: 14,
-                      letterSpacing: 1.7,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white),
+                    fontSize: 14,
+                    letterSpacing: 1.7,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
                 ),
               )
             ],
@@ -85,8 +86,8 @@ class JuntoThemesState extends State<JuntoThemes> {
         preferredSize: const Size.fromHeight(45),
         child: AppBar(
           automaticallyImplyLeading: false,
-          brightness: Brightness.light,
-          iconTheme: const IconThemeData(color: JuntoPalette.juntoSleek),
+          backgroundColor: Theme.of(context).backgroundColor,
+          iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
           elevation: 0,
           titleSpacing: 0,
           title: Container(
@@ -94,7 +95,9 @@ class JuntoThemesState extends State<JuntoThemes> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 GestureDetector(
-                  onTap: () => Navigator.pop(context),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
                   child: Container(
                     padding: const EdgeInsets.only(left: 10),
                     width: 42,
@@ -108,7 +111,10 @@ class JuntoThemesState extends State<JuntoThemes> {
                     ),
                   ),
                 ),
-                Text('Themes', style: Theme.of(context).textTheme.subtitle1),
+                Text(
+                  'Themes',
+                  style: Theme.of(context).textTheme.subtitle1,
+                ),
                 const SizedBox(width: 42)
               ],
             ),
@@ -120,7 +126,9 @@ class JuntoThemesState extends State<JuntoThemes> {
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
-                      color: Theme.of(context).dividerColor, width: .75),
+                    color: Theme.of(context).dividerColor,
+                    width: .75,
+                  ),
                 ),
               ),
             ),
@@ -130,11 +138,16 @@ class JuntoThemesState extends State<JuntoThemes> {
       body: Column(
         children: <Widget>[
           Container(
-            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            padding: const EdgeInsets.symmetric(
+              vertical: 5,
+              horizontal: 10,
+            ),
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                    color: Theme.of(context).dividerColor, width: .75),
+                  color: Theme.of(context).dividerColor,
+                  width: .75,
+                ),
               ),
             ),
             child: Row(
@@ -143,36 +156,42 @@ class JuntoThemesState extends State<JuntoThemes> {
                   Text(
                     _nightMode ? 'Night' : 'Light',
                     style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w500,
-                        color: Theme.of(context).primaryColor),
+                      fontSize: 17,
+                      fontWeight: FontWeight.w600,
+                      color: Theme.of(context).primaryColor,
+                    ),
                   ),
                   Transform.scale(
                     scale: .8,
                     child: Switch.adaptive(
-                        value: _nightMode,
-                        onChanged: (bool value) async {
-                          setState(() {
-                            _nightMode = value;
-                          });
-                          String theme;
-                          final SharedPreferences prefs =
-                              await SharedPreferences.getInstance();
+                      value: _nightMode,
+                      onChanged: (bool value) async {
+                        setState(() {
+                          print(value);
+                          _nightMode = value;
+                        });
+                        String theme;
+                        final SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
 
-                          if (value) {
-                            theme = _currentTheme + '-night';
-                            prefs.setBool('night-mode', true);
-                          } else if (!value) {
-                            theme = _currentTheme;
-                            print(theme);
-                            prefs.setBool('night-mode', false);
+                        if (value) {
+                          theme = _currentTheme + '-night';
+                        } else if (!value) {
+                          print('yoo');
+                          theme = _currentTheme;
+                          if (theme.contains('-night')) {
+                            theme = theme.replaceRange(
+                                theme.length - 6, theme.length, '');
                           }
-                          Provider.of<JuntoThemesProvider>(context,
-                                  listen: false)
-                              .setTheme(theme);
-                          widget.refreshData();
-                        },
-                        activeColor: Theme.of(context).dividerColor),
+                        }
+                        Provider.of<JuntoThemesProvider>(context, listen: false)
+                            .setTheme(theme);
+                        prefs.setBool('night-mode', value);
+
+                        widget.refreshData();
+                      },
+                      activeColor: Theme.of(context).dividerColor,
+                    ),
                   )
                 ]),
           ),

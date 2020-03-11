@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_open/action_items/creator/edit_group.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 
 // This component is used in ExpressionPreview and ExpressionOpen
 // as the 'more' icon is pressed to view the action items
@@ -16,28 +17,30 @@ class OwnerActionItems extends StatelessWidget {
 
   final Group sphere;
 
+  Future<void> deleteCircle(BuildContext context) async {
+    try {
+      Provider.of<GroupRepo>(context, listen: false)
+          .deleteGroup(sphere.address);
+    } catch (error) {
+      print(error);
+    }
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.transparent,
-      child: Container(
-        height: MediaQuery.of(context).size.height * .4,
-        padding: const EdgeInsets.symmetric(
-          horizontal: 15,
-          vertical: 10,
-        ),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(10),
-            topRight: Radius.circular(10),
-          ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Column(
+      height: MediaQuery.of(context).size.height * .4,
+      padding: const EdgeInsets.symmetric(
+        horizontal: 15,
+        vertical: 10,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Container(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Row(
@@ -53,6 +56,7 @@ class OwnerActionItems extends StatelessWidget {
                     ),
                   ],
                 ),
+                const SizedBox(height: 10),
                 ListTile(
                   contentPadding: const EdgeInsets.all(0),
                   onTap: () {
@@ -80,8 +84,16 @@ class OwnerActionItems extends StatelessWidget {
                 ListTile(
                   contentPadding: const EdgeInsets.all(0),
                   onTap: () {
-                    Provider.of<GroupRepo>(context, listen: false)
-                        .deleteGroup(sphere.address);
+                    Navigator.pop(context);
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) => ConfirmDialog(
+                        context: context,
+                        confirm: deleteCircle,
+                        confirmationText:
+                            'Are you sure you want to delete this circle?',
+                      ),
+                    );
                   },
                   title: Row(
                     children: <Widget>[
@@ -100,8 +112,8 @@ class OwnerActionItems extends StatelessWidget {
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

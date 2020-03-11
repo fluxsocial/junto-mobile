@@ -9,6 +9,7 @@ import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:junto_beta_mobile/widgets/user_feedback.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -113,12 +114,8 @@ class MemberRelationships extends StatelessWidget {
       await userProvider.connectUser(memberProfile.address);
       refreshRelations();
       JuntoLoader.hide();
-      JuntoDialog.showJuntoDialog(context, 'Connection Sent', <Widget>[
-        FlatButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Ok'),
-        )
-      ]);
+      await showFeedback(context, message: 'Connection Sent!');
+      Navigator.pop(context);
     } on JuntoException catch (error) {
       JuntoLoader.hide();
       JuntoDialog.showJuntoDialog(
@@ -171,12 +168,8 @@ class MemberRelationships extends StatelessWidget {
           userProfile.pack.address, <UserProfile>[memberProfile], 'Member');
       refreshRelations();
       JuntoLoader.hide();
-      JuntoDialog.showJuntoDialog(context, 'Invited to Pack', <Widget>[
-        FlatButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Ok'),
-        )
-      ]);
+      await showFeedback(context, message: 'Invited to Pack');
+      Navigator.pop(context);
     } on JuntoException catch (error) {
       JuntoLoader.hide();
       if (error.message.contains('does not exist or is already a group member'))

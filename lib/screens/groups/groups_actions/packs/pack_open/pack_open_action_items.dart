@@ -1,20 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 
 class PackOpenActionItems extends StatelessWidget {
-  const PackOpenActionItems({@required this.pack});
+  const PackOpenActionItems({@required this.pack, this.userProfile});
 
   final Group pack;
+  final UserData userProfile;
+
+  Future<void> leavePack(BuildContext context) async {
+    try {
+      await Provider.of<GroupRepo>(context, listen: false).removeGroupMember(
+        pack.address,
+        userProfile.user.address,
+      );
+    } catch (error) {
+      print(error);
+    }
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * .4,
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      height: MediaQuery.of(context).size.height * .3,
+      padding: const EdgeInsets.symmetric(
+        horizontal: 15,
+        vertical: 10,
+      ),
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
@@ -37,7 +53,7 @@ class PackOpenActionItems extends StatelessWidget {
                       height: 5,
                       width: MediaQuery.of(context).size.width * .1,
                       decoration: BoxDecoration(
-                        color: const Color(0xffeeeeee),
+                        color: Theme.of(context).dividerColor,
                         borderRadius: BorderRadius.circular(100),
                       ),
                     ),
@@ -47,12 +63,15 @@ class PackOpenActionItems extends StatelessWidget {
                 ListTile(
                   contentPadding: const EdgeInsets.all(0),
                   onTap: () async {
-                    print(pack.creator['address']);
                     Navigator.pop(context);
-                    await Provider.of<GroupRepo>(context, listen: false)
-                        .removeGroupMember(
-                      pack.address,
-                      pack.creator['address'],
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) => ConfirmDialog(
+                        context: context,
+                        confirm: leavePack,
+                        confirmationText:
+                            'Are you sure you want to leave this pack?',
+                      ),
                     );
                   },
                   title: Row(

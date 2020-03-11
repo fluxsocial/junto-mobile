@@ -48,6 +48,7 @@ class JuntoDrawerState extends State<JuntoDrawer> {
       _userFollowPerspectiveId = prefs.getString('user_follow_perspective_id');
       _currentTheme = prefs.getString('current-theme');
       _nightMode = prefs.getBool('night-mode');
+      print(_nightMode);
     });
   }
 

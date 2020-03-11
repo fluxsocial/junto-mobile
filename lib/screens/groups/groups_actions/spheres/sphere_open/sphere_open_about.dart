@@ -56,9 +56,12 @@ class SphereOpenAbout extends StatelessWidget {
                           child: Row(children: <Widget>[
                             for (Users user in snapshot.data)
                               if (snapshot.data.indexOf(user) < 7)
-                                MemberAvatar(
-                                  profilePicture: user.user.profilePicture,
-                                  diameter: 28,
+                                Container(
+                                  margin: const EdgeInsets.only(right: 10),
+                                  child: MemberAvatar(
+                                    profilePicture: user.user.profilePicture,
+                                    diameter: 28,
+                                  ),
                                 ),
                           ]),
                         ),

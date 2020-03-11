@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/screens/collective/perspectives'
-    '/create_perspective/create_perspective.dart' show SelectedUsers;
+import 'package:junto_beta_mobile/screens/collective/perspectives/create_perspective.dart'
+    show SelectedUsers;
 import 'package:junto_beta_mobile/widgets/user_preview.dart';
 import 'package:provider/provider.dart';
 
