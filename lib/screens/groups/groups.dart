@@ -9,6 +9,7 @@ import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/zoom_scaffold.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
@@ -67,12 +68,13 @@ class JuntoGroupsState extends State<JuntoGroups>
     return Scaffold(
       body: JuntoFilterDrawer(
         key: _filterDrawerKey,
-        drawer: FilterDrawerContent(
+        leftDrawer: FilterDrawerContent(
           //todo(dominikroszkowski): implement these
           filterByChannel: (_) {},
           channels: [],
           resetChannels: () {},
         ),
+        rightMenu: JuntoDrawer(),
         scaffold: Scaffold(
           floatingActionButton: ValueListenableBuilder<bool>(
             valueListenable: _isVisible,
@@ -87,7 +89,6 @@ class JuntoGroupsState extends State<JuntoGroups>
               padding: const EdgeInsets.only(bottom: 25),
               child: BottomNav(
                   actionsVisible: actionsVisible,
-                  screen: 'groups',
                   onLeftButtonTap: () {
                     if (actionsVisible) {
                       setState(() {

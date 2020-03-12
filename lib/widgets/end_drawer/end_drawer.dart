@@ -11,7 +11,6 @@ import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/end_drawer_relationships.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_themes.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/zoom_scaffold.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -69,9 +68,9 @@ class JuntoDrawerState extends State<JuntoDrawer> {
     return GestureDetector(
       onPanUpdate: (DragUpdateDetails details) {
         //on swiping from left to right
-        if (details.delta.dx < 6) {
-          Provider.of<MenuController>(context, listen: false).toggle();
-        }
+        // if (details.delta.dx < 6) {
+        //   Provider.of<MenuController>(context, listen: false).toggle();
+        // }
       },
       child: Stack(
         children: <Widget>[
@@ -82,10 +81,11 @@ class JuntoDrawerState extends State<JuntoDrawer> {
           ),
           Container(
             padding: EdgeInsets.only(
-                top: MediaQuery.of(context).size.height * .2,
-                left: 80,
-                bottom: MediaQuery.of(context).size.height * .2,
-                right: 32),
+              top: MediaQuery.of(context).size.height * .2,
+              left: 80,
+              bottom: MediaQuery.of(context).size.height * .2,
+              right: 32,
+            ),
             color: Colors.transparent,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -236,20 +236,18 @@ class JuntoDrawerItem extends StatelessWidget {
         color: Colors.transparent,
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Row(
-              children: <Widget>[
-                icon,
-                Text(
-                  title,
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white),
-                  textAlign: TextAlign.right,
+            icon,
+            Flexible(
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
                 ),
-              ],
+                textAlign: TextAlign.right,
+              ),
             ),
           ],
         ),

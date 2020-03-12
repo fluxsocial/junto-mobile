@@ -82,8 +82,6 @@ class PackOpenState extends State<PackOpen> {
           padding: const EdgeInsets.only(bottom: 25),
           child: BottomNav(
             actionsVisible: false,
-            screen: 'collective',
-            userProfile: _userProfile,
             onLeftButtonTap: () {},
           ),
         ),

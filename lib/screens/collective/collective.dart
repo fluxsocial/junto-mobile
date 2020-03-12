@@ -13,6 +13,7 @@ import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
@@ -195,11 +196,12 @@ class JuntoCollectiveState extends State<JuntoCollective>
     return Scaffold(
       body: JuntoFilterDrawer(
         key: _filterDrawerKey,
-        drawer: FilterDrawerContent(
+        leftDrawer: FilterDrawerContent(
           filterByChannel: _filterByChannel,
           channels: _channels,
           resetChannels: _resetChannels,
         ),
+        rightMenu: JuntoDrawer(),
         scaffold: Scaffold(
           key: _juntoCollectiveKey,
           floatingActionButton: CollectiveActionButton(
