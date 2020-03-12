@@ -128,112 +128,101 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
   }
 
   Future<void> _createExpression() async {
-    await showFeedback(
-      context,
-      icon: Container(
-        margin: const EdgeInsets.only(
-          right: 20,
-        ),
-        child: Icon(
+    // set expression context
+    _setExpressionContext();
+
+    try {
+      if (widget.expressionType == ExpressionType.photo) {
+        JuntoLoader.showLoader(context);
+        final String _photoKey =
+            await Provider.of<ExpressionRepo>(context, listen: false)
+                .createPhoto(
+          true,
+          '.png',
+          widget.expression['image'],
+        );
+        JuntoLoader.hide();
+        _expression = ExpressionModel(
+          type: widget.expressionType.modelName(),
+          expressionData: PhotoFormExpression(
+            image: _photoKey,
+            caption: widget.expression['caption'],
+          ).toMap(),
+          context: _expressionContext,
+          channels: channel,
+        );
+      } else if (widget.expressionType == ExpressionType.event) {
+        String eventPhoto = '';
+        if (widget.expression['photo'] != null) {
+          JuntoLoader.showLoader(context);
+          final String _eventPhotoKey =
+              await Provider.of<ExpressionRepo>(context, listen: false)
+                  .createPhoto(
+            true,
+            '.png',
+            widget.expression['photo'],
+          );
+          JuntoLoader.hide();
+          eventPhoto = _eventPhotoKey;
+        }
+        _expression = ExpressionModel(
+          type: widget.expressionType.modelName(),
+          expressionData: EventFormExpression(
+              photo: eventPhoto,
+              description: widget.expression['description'],
+              title: widget.expression['title'],
+              location: widget.expression['location'],
+              startTime: widget.expression['start_time'],
+              endTime: widget.expression['end_time'],
+              facilitators: <String>[],
+              members: <String>[]).toMap(),
+          channels: channel,
+          context: _expressionContext,
+        );
+      } else {
+        _expression = ExpressionModel(
+          type: widget.expressionType.modelName(),
+          expressionData: widget.expression.toMap(),
+          context: _expressionContext,
+          channels: channel,
+        );
+        print(_expression.expressionData);
+      }
+      JuntoLoader.showLoader(context);
+      await Provider.of<ExpressionRepo>(context, listen: false)
+          .createExpression(
+        _expression,
+        _expression.context,
+        _address,
+      );
+      JuntoLoader.hide();
+
+      await showFeedback(
+        context,
+        icon: Icon(
           CustomIcons.create,
           size: 17,
           color: Theme.of(context).primaryColor,
         ),
-      ),
-      message: 'Expression Created!',
-      color: Theme.of(context).backgroundColor,
-      fontColor: Theme.of(context).primaryColor,
-    );
-    // // set expression context
-    // _setExpressionContext();
+        message: 'Expression Created!',
+      );
 
-    // try {
-    //   if (widget.expressionType == ExpressionType.photo) {
-    //     JuntoLoader.showLoader(context);
-    //     final String _photoKey =
-    //         await Provider.of<ExpressionRepo>(context, listen: false)
-    //             .createPhoto(
-    //       true,
-    //       '.png',
-    //       widget.expression['image'],
-    //     );
-    //     JuntoLoader.hide();
-    //     _expression = ExpressionModel(
-    //       type: widget.expressionType.modelName(),
-    //       expressionData: PhotoFormExpression(
-    //         image: _photoKey,
-    //         caption: widget.expression['caption'],
-    //       ).toMap(),
-    //       context: _expressionContext,
-    //       channels: channel,
-    //     );
-    //   } else if (widget.expressionType == ExpressionType.event) {
-    //     String eventPhoto = '';
-    //     if (widget.expression['photo'] != null) {
-    //       JuntoLoader.showLoader(context);
-    //       final String _eventPhotoKey =
-    //           await Provider.of<ExpressionRepo>(context, listen: false)
-    //               .createPhoto(
-    //         true,
-    //         '.png',
-    //         widget.expression['photo'],
-    //       );
-    //       JuntoLoader.hide();
-    //       eventPhoto = _eventPhotoKey;
-    //     }
-    //     _expression = ExpressionModel(
-    //       type: widget.expressionType.modelName(),
-    //       expressionData: EventFormExpression(
-    //           photo: eventPhoto,
-    //           description: widget.expression['description'],
-    //           title: widget.expression['title'],
-    //           location: widget.expression['location'],
-    //           startTime: widget.expression['start_time'],
-    //           endTime: widget.expression['end_time'],
-    //           facilitators: <String>[],
-    //           members: <String>[]).toMap(),
-    //       channels: channel,
-    //       context: _expressionContext,
-    //     );
-    //   } else {
-    //     _expression = ExpressionModel(
-    //       type: widget.expressionType.modelName(),
-    //       expressionData: widget.expression.toMap(),
-    //       context: _expressionContext,
-    //       channels: channel,
-    //     );
-    //     print(_expression.expressionData);
-    //   }
-    //   JuntoLoader.showLoader(context);
-    //   await Provider.of<ExpressionRepo>(context, listen: false)
-    //       .createExpression(
-    //     _expression,
-    //     _expression.context,
-    //     _address,
-    //   );
-    //   JuntoLoader.hide();
-    //   await showFeedback(
-    //     context,
-    //     message: 'Expression created 🎉',
-    //     color: Theme.of(context).backgroundColor,
-    //     fontColor: Theme.of(context).primaryColor,
-    //   );
-    //   _postCreateAction();
-    // } catch (error) {
-    //   JuntoLoader.hide();
-    //   JuntoDialog.showJuntoDialog(
-    //     context,
-    //     'Something went wrong',
-    //     <Widget>[
-    //       FlatButton(
-    //         onPressed: () {
-    //           Navigator.pop(context);
-    //         },
-    //         child: const Text('Ok'),
-    //       )
-    //     ],
-    //   );
-    // }
+      _postCreateAction();
+    } catch (error) {
+      JuntoLoader.hide();
+      JuntoDialog.showJuntoDialog(
+        context,
+        'Something went wrong',
+        <Widget>[
+          FlatButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('Ok'),
+          )
+        ],
+      );
+    }
   }
 
   void _setExpressionContext() {

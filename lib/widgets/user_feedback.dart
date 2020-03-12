@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 
 /// Shows Non intrusive feedback widget.
 /// The properties [context], [message] must be supplied and not null.
@@ -8,10 +7,8 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 /// animating and an interval of `750` + [duration] until it is removed.
 Future<void> showFeedback(
   final BuildContext context, {
-  Widget icon,
+  @required Widget icon,
   @required final String message,
-  @required Color color,
-  @required Color fontColor,
   Duration duration = const Duration(milliseconds: 300),
 }) async {
   showGeneralDialog(
@@ -33,8 +30,6 @@ Future<void> showFeedback(
               icon: icon,
               message: message,
               controller: animation,
-              backgroundColor: color,
-              fontColor: fontColor,
             ),
           ),
         ],
@@ -49,16 +44,12 @@ class _FeedbackBody extends StatelessWidget {
   const _FeedbackBody({
     Key key,
     @required Animation<double> controller,
-    @required this.backgroundColor,
     @required this.message,
-    @required this.fontColor,
     this.icon,
   })  : _controller = controller,
         super(key: key);
 
   final Animation<double> _controller;
-  final Color backgroundColor;
-  final Color fontColor;
   final String message;
   final Widget icon;
 
@@ -74,7 +65,7 @@ class _FeedbackBody extends StatelessWidget {
           ),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
-              color: backgroundColor,
+              color: Theme.of(context).backgroundColor,
               boxShadow: <BoxShadow>[
                 BoxShadow(
                   color: Theme.of(context).dividerColor,
@@ -94,13 +85,19 @@ class _FeedbackBody extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          if (icon != null) icon,
+          if (icon != null)
+            Container(
+              margin: const EdgeInsets.only(
+                right: 20,
+              ),
+              child: icon,
+            ),
           Text(
             message,
             overflow: TextOverflow.fade,
             style: TextStyle(
               fontSize: 17.0,
-              color: fontColor,
+              color: Theme.of(context).primaryColor,
               fontWeight: FontWeight.w600,
               decoration: TextDecoration.none,
             ),

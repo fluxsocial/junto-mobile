@@ -132,7 +132,13 @@ class ExpressionOpenState extends State<ExpressionOpen> {
         );
         commentController.clear();
         JuntoLoader.hide();
-        showFeedback(context, message: 'Comment Created');
+        showFeedback(context,
+            icon: Icon(
+              CustomIcons.create,
+              size: 17,
+              color: Theme.of(context).primaryColor,
+            ),
+            message: 'Comment Created');
         await _refreshComments();
         _openComments();
       } catch (error) {
