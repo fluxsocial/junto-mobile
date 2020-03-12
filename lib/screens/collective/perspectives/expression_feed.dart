@@ -111,6 +111,7 @@ class _ExpressionFeedState extends State<ExpressionFeed> {
                           secondChild: SingleColumnSliverListView(
                             userAddress: widget.userAddress,
                             data: snapshot.data.results,
+                            privacyLayer: 'Public',
                           ),
                         )
                       ]),

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/drawer/channel_preview.dart';
 import 'package:provider/provider.dart';
@@ -67,52 +68,53 @@ class _FilterDrawerContentState extends State<FilterDrawerContent> {
               FocusScope.of(context).unfocus();
             }
           },
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Flexible(
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: FitlerDrawerTextField(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 10,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                const FilterLogo(),
+                Flexible(
+                  child: Column(
+                    children: <Widget>[
+                      FilterDrawerTextField(
                         textEditingController: textEditingController,
                       ),
-                    ),
-                    if (widget.channels.isNotEmpty)
-                      SelectedChannel(channels: widget.channels),
-                    if (channels != null)
-                      Expanded(
-                        child: ListView.builder(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 0,
+                      if (widget.channels.isNotEmpty)
+                        SelectedChannel(channels: widget.channels),
+                      if (channels != null)
+                        Expanded(
+                          child: ListView.builder(
+                            padding: const EdgeInsets.all(0),
+                            itemCount: channels.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              final Channel item = channels[index];
+                              if (item != null) {
+                                return InkWell(
+                                  onTap: () {
+                                    widget.filterByChannel(item);
+                                    textEditingController.clear();
+                                    Navigator.pop(context);
+                                  },
+                                  child: FilterDrawerChannelPreview(
+                                    channel: item,
+                                  ),
+                                );
+                              } else {
+                                return Container();
+                              }
+                            },
                           ),
-                          itemCount: channels.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            final Channel item = channels[index];
-                            if (item != null) {
-                              return InkWell(
-                                onTap: () {
-                                  widget.filterByChannel(item);
-                                  Navigator.pop(context);
-                                },
-                                child: FilterDrawerChannelPreview(
-                                  channel: item,
-                                ),
-                              );
-                            } else {
-                              return Container();
-                            }
-                          },
                         ),
-                      ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              ResetFilterButton(onTap: widget.resetChannels)
-            ],
+                ResetFilterButton(onTap: widget.resetChannels)
+              ],
+            ),
           ),
         ),
       ),
@@ -132,26 +134,14 @@ class SelectedChannel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Align(
       alignment: AlignmentDirectional.topStart,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              'Selected channel',
-              style: TextStyle(color: Theme.of(context).primaryColorLight),
-            ),
-          ),
-          Wrap(
-              alignment: WrapAlignment.start,
-              direction: Axis.horizontal,
-              children: [
-                ...channels.map(
-                  (String e) => SelectedChannelChip(channel: e),
-                )
-              ])
-        ],
-      ),
+      child: Wrap(
+          alignment: WrapAlignment.start,
+          direction: Axis.horizontal,
+          children: <SelectedChannelChip>[
+            ...channels.map(
+              (String e) => SelectedChannelChip(channel: e),
+            )
+          ]),
     );
   }
 }
@@ -166,17 +156,16 @@ class SelectedChannelChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 8),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-        decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor,
-            borderRadius: BorderRadius.circular(10)),
-        child: Text(
-          channel,
-          style: const TextStyle(fontSize: 14, color: Colors.white),
-        ),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+      margin: const EdgeInsets.only(top: 15),
+      decoration: BoxDecoration(
+        color: Theme.of(context).primaryColor,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Text(
+        channel,
+        style: const TextStyle(fontSize: 12, color: Colors.white),
       ),
     );
   }
@@ -193,21 +182,25 @@ class ResetFilterButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
-      child: FlatButton(
-        color: Theme.of(context).primaryColor,
-        onPressed: onTap,
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(40.0)),
-        child: const Padding(
-          padding: EdgeInsets.symmetric(vertical: 16.0),
-          child: Text(
-            'RESET',
-            style: TextStyle(
-              letterSpacing: 1.7,
-              color: Colors.white,
-              fontWeight: FontWeight.w700,
-              fontSize: 14,
+      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 16.0),
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        child: FlatButton(
+          color: Theme.of(context).primaryColor,
+          onPressed: onTap,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(40.0),
+          ),
+          child: const Padding(
+            padding: EdgeInsets.symmetric(vertical: 16.0),
+            child: Text(
+              'RESET',
+              style: TextStyle(
+                letterSpacing: 1.7,
+                color: Colors.white,
+                fontWeight: FontWeight.w700,
+                fontSize: 14,
+              ),
             ),
           ),
         ),
@@ -216,8 +209,8 @@ class ResetFilterButton extends StatelessWidget {
   }
 }
 
-class FitlerDrawerTextField extends StatelessWidget {
-  const FitlerDrawerTextField({
+class FilterDrawerTextField extends StatelessWidget {
+  const FilterDrawerTextField({
     Key key,
     @required this.textEditingController,
   }) : super(key: key);
@@ -226,51 +219,59 @@ class FitlerDrawerTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        const FilterLogo(),
-        Flexible(
-          child: TextField(
-            controller: textEditingController,
-            decoration: InputDecoration(
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 12.0,
-              ),
-              counter: Container(),
-              hintText: 'Filter by channel',
-              border: InputBorder.none,
-              hintStyle: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-                color: Theme.of(context).primaryColorLight,
-              ),
-              filled: true,
-              fillColor: Theme.of(context).primaryColor,
-              suffixIcon: ClearIcon(controller: textEditingController),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8.0),
-                borderSide: BorderSide(color: Colors.black26),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8.0),
-                borderSide: BorderSide(color: Colors.white24),
-              ),
-            ),
-            cursorColor: Colors.white,
-            cursorWidth: 1,
-            maxLines: 1,
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-              color: Colors.white,
-            ),
-            maxLength: 80,
-            textInputAction: TextInputAction.done,
-            keyboardAppearance: Theme.of(context).brightness,
+    return Container(
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: Color(0xff444444),
+            width: .75,
           ),
         ),
-      ],
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Expanded(
+            child: TextField(
+              controller: textEditingController,
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.all(0),
+                border: InputBorder.none,
+                counter: Container(),
+                hintText: 'Filter by channel',
+                hintStyle: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w500,
+                  color: const Color(0xff999999),
+                ),
+              ),
+              cursorColor: Colors.white,
+              cursorWidth: 1,
+              maxLines: 1,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: Colors.white,
+              ),
+              maxLength: 80,
+              textInputAction: TextInputAction.done,
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              textEditingController.clear();
+            },
+            child: Container(
+              padding: const EdgeInsets.only(left: 15),
+              child: Icon(
+                CustomIcons.cancel,
+                size: 24,
+                color: const Color(0xff999999),
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }
@@ -282,39 +283,16 @@ class FilterLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        bottom: 8.0,
-        right: 8.0,
+    return Container(
+      height: 45,
+      child: Row(
+        children: <Widget>[
+          Image.asset(
+            'assets/images/junto-mobile__logo--white.png',
+            height: 24,
+          ),
+        ],
       ),
-      child: Container(
-        child: Image.asset(
-          'assets/images/junto-mobile__logo--white.png',
-          height: 24,
-        ),
-      ),
-    );
-  }
-}
-
-class ClearIcon extends StatelessWidget {
-  const ClearIcon({
-    Key key,
-    @required this.controller,
-  }) : super(key: key);
-
-  final TextEditingController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      color: Colors.white54,
-      icon: Icon(
-        Icons.clear,
-      ),
-      onPressed: () {
-        controller.clear();
-      },
     );
   }
 }
