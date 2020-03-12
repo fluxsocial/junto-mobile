@@ -412,27 +412,6 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
     }
   }
 
-  /// Trigger Area
-  Widget _trigger(AlignmentDirectional alignment, Widget child) {
-    assert(alignment != null);
-    final EdgeInsets padding = MediaQuery.of(context).padding;
-    double dragAreaWidth = padding.left;
-
-    if (Directionality.of(context) == TextDirection.rtl)
-      dragAreaWidth = padding.right;
-    dragAreaWidth = max(dragAreaWidth, _kEdgeDragWidth);
-
-    if (_controller.status == AnimationStatus.completed &&
-        _swipe &&
-        child != null)
-      return Align(
-        alignment: alignment,
-        child: Container(color: Colors.transparent, width: dragAreaWidth),
-      );
-    else
-      return null;
-  }
-
   /// Disable the scaffolding tap when the drawer is open
   Widget _invisibleCover() {
     final Container container = Container(
@@ -558,7 +537,6 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
                         ),
                       )),
                 ),
-                _trigger(AlignmentDirectional.centerStart, widget.leftDrawer),
               ].where((Widget a) => a != null).toList(),
             ),
           ),
