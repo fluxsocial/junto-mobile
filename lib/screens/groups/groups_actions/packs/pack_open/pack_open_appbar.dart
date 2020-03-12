@@ -77,7 +77,10 @@ class PackOpenAppbar extends StatelessWidget {
                             context: context,
                             builder: (BuildContext context) => Container(
                               color: const Color(0xff737373),
-                              child: PackOpenActionItems(pack: pack),
+                              child: PackOpenActionItems(
+                                pack: pack,
+                                userProfile: userProfile,
+                              ),
                             ),
                           );
                         },

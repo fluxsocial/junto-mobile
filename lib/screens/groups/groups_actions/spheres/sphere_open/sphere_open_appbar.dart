@@ -66,6 +66,9 @@ class SphereOpenAppbar extends StatelessWidget {
                 GestureDetector(
                   onTap: () {
                     showModalBottomSheet(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
                         context: context,
                         builder: (BuildContext context) {
                           return relationToGroup['creator']
