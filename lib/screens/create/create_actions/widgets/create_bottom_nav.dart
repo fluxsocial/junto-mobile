@@ -12,10 +12,7 @@ class CreateBottomNav extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 25),
       child: BottomNav(
         actionsVisible: false,
-        screen: 'create',
-        onLeftButtonTap: () {
-          Navigator.pop(context);
-        },
+        onLeftButtonTap: () => Navigator.pop(context),
       ),
     );
   }

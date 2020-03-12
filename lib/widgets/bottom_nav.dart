@@ -1,21 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 
 class BottomNav extends StatelessWidget {
   const BottomNav({
-    this.screen,
     this.onLeftButtonTap,
-    this.userProfile,
     @required this.actionsVisible,
   });
 
-  //todo: this isn't used - maybe remove?
-  final String screen;
   final VoidCallback onLeftButtonTap;
-  //todo: this isn't used - maybe remove?
-  final UserData userProfile;
   final bool actionsVisible;
 
   @override
@@ -79,10 +73,7 @@ class BottomNav extends StatelessWidget {
           ),
           Expanded(
             child: GestureDetector(
-              onTap: () {
-                //todo: replace with new implementation
-                // Provider.of<MenuController>(context, listen: false).toggle();
-              },
+              onTap: () => JuntoFilterDrawer.of(context).toggleRightMenu(),
               child: Container(
                 alignment: Alignment.center,
                 width: 60,

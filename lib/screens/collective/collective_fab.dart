@@ -34,8 +34,6 @@ class CollectiveActionButton extends StatelessWidget {
           valueListenable: actionsVisible,
           builder: (BuildContext context, bool value, _) {
             return BottomNav(
-              screen: 'collective',
-              userProfile: userProfile,
               actionsVisible: value,
               onLeftButtonTap: onTap,
             );

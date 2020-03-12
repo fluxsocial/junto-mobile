@@ -64,13 +64,14 @@ class _FeedbackBody extends StatelessWidget {
     return AnimatedBuilder(
       animation: _controller,
       builder: (BuildContext context, Widget child) {
-        return FadeTransition(
-          opacity: Tween<double>(begin: 0.5, end: 1.00).animate(_controller),
+        return Material(
+          borderRadius: BorderRadius.circular(8.0),
+          color: backgroundColor,
           child: SizeTransition(
             sizeFactor: _controller,
-            child: Material(
-              borderRadius: BorderRadius.circular(8.0 * _controller.value),
-              color: backgroundColor,
+            child: FadeTransition(
+              opacity:
+                  Tween<double>(begin: 0.5, end: 1.00).animate(_controller),
               child: child,
             ),
           ),

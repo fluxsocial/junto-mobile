@@ -13,6 +13,7 @@ import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_o
 import 'package:junto_beta_mobile/widgets/custom_feeds/group_expressions.dart';
 import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
@@ -94,12 +95,13 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   Widget build(BuildContext context) {
     return Scaffold(
       body: JuntoFilterDrawer(
-        drawer: FilterDrawerContent(
+        leftDrawer: FilterDrawerContent(
           //todo(dominikroszkowski): implement these
           filterByChannel: (_) {},
           channels: [],
           resetChannels: () {},
         ),
+        rightMenu: JuntoDrawer(),
         scaffold: Scaffold(
           appBar: PreferredSize(
             preferredSize: const Size.fromHeight(45),
