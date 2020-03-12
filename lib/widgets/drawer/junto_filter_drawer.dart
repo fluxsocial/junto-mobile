@@ -104,8 +104,6 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
     with SingleTickerProviderStateMixin {
   final ColorTween _color =
       ColorTween(begin: Colors.transparent, end: Colors.black54);
-  final ColorTween _scaffoldColor =
-      ColorTween(begin: Colors.black54, end: Colors.transparent);
 
   double _initWidth = _kWidth;
   Orientation _orientation = Orientation.portrait;
@@ -442,12 +440,6 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
         borderRadius: BorderRadius.circular(
           widget.borderRadius * (1 - _controller.value),
         ),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-            color: Colors.black.withOpacity(0.5),
-            blurRadius: 5,
-          )
-        ],
       ),
       child: widget.borderRadius != 0
           ? ClipRRect(
@@ -529,7 +521,12 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
                             children: <Widget>[
                               _scaffold(),
                               _DarkScaffoldOverlay(
-                                scaffoldColor: _scaffoldColor,
+                                scaffoldColor: ColorTween(
+                                  begin: Theme.of(context)
+                                      .backgroundColor
+                                      .withOpacity(.5),
+                                  end: Colors.transparent,
+                                ),
                                 controller: _controller,
                               ),
                             ],
