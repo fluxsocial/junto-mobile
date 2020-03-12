@@ -3,15 +3,19 @@ import 'package:flutter/material.dart';
 /// Custom route configured using Junto's fade animation.
 /// [child] must not be null.
 class FadeRoute<T> extends PageRoute<T> {
-  FadeRoute({@required this.child});
+  FadeRoute({@required this.child, this.name});
 
   final Widget child;
+  final String name;
 
   @override
   Color get barrierColor => null;
 
   @override
   String get barrierLabel => null;
+
+  @override
+  RouteSettings get settings => super.settings.copyWith(name: name);
 
   @override
   Widget buildPage(

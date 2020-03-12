@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/widgets/appbar/filter_drawer_button.dart';
 
 class FilterColumnRow extends StatelessWidget {
   const FilterColumnRow({this.switchColumnView, this.twoColumnView});
@@ -13,7 +14,8 @@ class FilterColumnRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Image.asset('assets/images/junto-mobile__filter.png', height: 17),
+          //todo: add some animation/splash
+          const FilterDrawerButton(),
           Row(
             children: <Widget>[
               GestureDetector(

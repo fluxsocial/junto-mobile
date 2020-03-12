@@ -1,23 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/backend/backend.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/zoom_scaffold.dart';
-import 'package:junto_beta_mobile/widgets/fade_route.dart';
-import 'package:provider/provider.dart';
+import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 
 class BottomNav extends StatelessWidget {
-  const BottomNav(
-      {this.screen,
-      this.onTap,
-      this.userProfile,
-      @required this.actionsVisible});
+  const BottomNav({
+    this.onLeftButtonTap,
+    @required this.actionsVisible,
+  });
 
-  final String screen;
-  final VoidCallback onTap;
-  final UserData userProfile;
+  final VoidCallback onLeftButtonTap;
   final bool actionsVisible;
 
   @override
@@ -41,7 +33,7 @@ class BottomNav extends StatelessWidget {
         children: <Widget>[
           Expanded(
             child: GestureDetector(
-              onTap: onTap,
+              onTap: onLeftButtonTap,
               child: Container(
                 width: 60,
                 height: 50,
@@ -61,14 +53,7 @@ class BottomNav extends StatelessWidget {
           Expanded(
             child: GestureDetector(
               onTap: () {
-                Navigator.of(context).push(
-                  FadeRoute<void>(
-                    child: const JuntoLotus(
-                      address: null,
-                      expressionContext: ExpressionContext.Collective,
-                    ),
-                  ),
-                );
+                Navigator.of(context).pop();
               },
               child: Container(
                 alignment: Alignment.center,
@@ -88,9 +73,7 @@ class BottomNav extends StatelessWidget {
           ),
           Expanded(
             child: GestureDetector(
-              onTap: () {
-                Provider.of<MenuController>(context, listen: false).toggle();
-              },
+              onTap: () => JuntoFilterDrawer.of(context).toggleRightMenu(),
               child: Container(
                 alignment: Alignment.center,
                 width: 60,

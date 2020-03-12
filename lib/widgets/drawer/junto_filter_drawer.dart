@@ -13,13 +13,19 @@ typedef JuntoDrawerCallback = void Function(bool isOpened);
 
 /// Signature for when a pointer that is in contact with the screen and moves to the right or left
 /// values between 1 and 0
-typedef JuntoDragUpdateCallback = void Function(double value);
+typedef JuntoDragUpdateCallback = void Function(
+    double value, DrawerPosition position);
 
 /// Animation type of a [JuntoFilterDrawer].
 enum InnerDrawerAnimation {
   static,
   linear,
   quadratic,
+}
+
+enum DrawerPosition {
+  start,
+  end,
 }
 
 //width before initState
@@ -31,8 +37,9 @@ const Duration _kBaseSettleDuration = Duration(milliseconds: 246);
 class JuntoFilterDrawer extends StatefulWidget {
   const JuntoFilterDrawer({
     GlobalKey key,
-    @required this.drawer,
+    @required this.leftDrawer,
     @required this.scaffold,
+    @required this.rightMenu,
     this.offset = const IDOffset.horizontal(0.8),
     this.borderRadius = 0,
     this.onTapClose = false,
@@ -45,10 +52,13 @@ class JuntoFilterDrawer extends StatefulWidget {
         super(key: key);
 
   /// Left child
-  final Widget drawer;
+  final Widget leftDrawer;
 
   /// A Scaffold is generally used but you are free to use other widgets
   final Widget scaffold;
+
+  /// Menu shown on the right of the app
+  final Widget rightMenu;
 
   /// When the [JuntoFilterDrawer] is open, it's possible to set the offset of each of the four cardinal directions
   final IDOffset offset;
@@ -76,6 +86,18 @@ class JuntoFilterDrawer extends StatefulWidget {
 
   @override
   JuntoFilterDrawerState createState() => JuntoFilterDrawerState();
+
+  static JuntoFilterDrawerState of(BuildContext context,
+      {bool nullOk = false}) {
+    assert(nullOk != null);
+    assert(context != null);
+    final JuntoFilterDrawerState result =
+        context.findAncestorStateOfType<JuntoFilterDrawerState>();
+    if (nullOk || result != null) {
+      return result;
+    }
+    return null;
+  }
 }
 
 class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
@@ -87,10 +109,14 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
 
   double _initWidth = _kWidth;
   Orientation _orientation = Orientation.portrait;
+  DrawerPosition _position;
 
   @override
   void initState() {
     _updateWidth();
+
+    _position =
+        widget.leftDrawer != null ? DrawerPosition.start : DrawerPosition.end;
 
     _controller = AnimationController(
         value: 1,
@@ -114,7 +140,7 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
     });
 
     if (widget.onDragUpdate != null && _controller.value < 1) {
-      widget.onDragUpdate(1 - _controller.value); //, _position);
+      widget.onDragUpdate(1 - _controller.value, _position);
     }
   }
 
@@ -161,7 +187,7 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
 
   void _handleHistoryEntryRemoved() {
     _historyEntry = null;
-    close();
+    _close();
   }
 
   AnimationController _controller;
@@ -192,9 +218,17 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
   void _move(DragUpdateDetails details) {
     double delta = details.primaryDelta / _width;
 
-    final double left = widget.offset.left;
+    if (delta > 0 && _controller.value == 1 && widget.leftDrawer != null)
+      _position = DrawerPosition.start;
+    else if (delta < 0 && _controller.value == 1 && widget.rightMenu != null)
+      _position = DrawerPosition.end;
 
-    double offset = left;
+    final double left =
+        widget.offset != null ? widget.offset.left : widget.leftDrawer;
+    final double right =
+        widget.offset != null ? widget.offset.right : widget.rightMenu;
+
+    double offset = _position == DrawerPosition.start ? left : right;
 
     double ee = 1;
     if (offset <= 0.2)
@@ -206,7 +240,13 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
     }
 
     offset = 1 - pow(offset / ee, 1 / 2);
-    delta = -delta;
+    switch (_position) {
+      case DrawerPosition.end:
+        break;
+      case DrawerPosition.start:
+        delta = -delta;
+        break;
+    }
 
     switch (Directionality.of(context)) {
       case TextDirection.rtl:
@@ -230,7 +270,13 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
     if (details.velocity.pixelsPerSecond.dx.abs() >= _kMinFlingVelocity) {
       double visualVelocity = details.velocity.pixelsPerSecond.dx / _width;
 
-      visualVelocity = -visualVelocity;
+      switch (_position) {
+        case DrawerPosition.end:
+          break;
+        case DrawerPosition.start:
+          visualVelocity = -visualVelocity;
+          break;
+      }
 
       switch (Directionality.of(context)) {
         case TextDirection.rtl:
@@ -241,38 +287,54 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
           break;
       }
     } else if (_controller.value < 0.5) {
-      open();
+      _open();
     } else {
-      close();
+      _close();
     }
   }
 
-  void open() {
+  void _open({DrawerPosition direction}) {
     if (FocusScope.of(context).hasFocus) {
       FocusScope.of(context).unfocus();
     }
-
+    if (direction != null) _position = direction;
     _controller.fling(velocity: -1);
   }
 
-  void close() {
+  void _close({DrawerPosition direction}) {
     if (FocusScope.of(context).hasFocus) {
       FocusScope.of(context).unfocus();
     }
-
+    if (direction != null) _position = direction;
     _controller.fling(velocity: 1);
   }
 
   /// Open or Close JuntoDrawer
-  void toggle() {
+  void toggle({DrawerPosition direction}) {
+    if (FocusScope.of(context).hasFocus) {
+      FocusScope.of(context).unfocus();
+    }
+    if (direction != null) _position = direction;
+    if (_previouslyOpened) {
+      _close(direction: DrawerPosition.start);
+      // _controller.fling(velocity: 1);
+    } else {
+      _open(direction: DrawerPosition.start);
+      // _controller.fling(velocity: -1);
+    }
+  }
+
+  void toggleRightMenu() {
     if (FocusScope.of(context).hasFocus) {
       FocusScope.of(context).unfocus();
     }
 
     if (_previouslyOpened) {
-      _controller.fling(velocity: 1);
+      // _controller.fling(velocity: 1);
+      _close(direction: DrawerPosition.end);
     } else {
-      _controller.fling(velocity: -1);
+      // _controller.fling(velocity: -1);
+      _open(direction: DrawerPosition.end);
     }
   }
 
@@ -280,12 +342,24 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
 
   /// Outer Alignment
   AlignmentDirectional get _drawerOuterAlignment {
-    return AlignmentDirectional.centerEnd;
+    switch (_position) {
+      case DrawerPosition.start:
+        return AlignmentDirectional.centerEnd;
+      case DrawerPosition.end:
+        return AlignmentDirectional.centerStart;
+    }
+    return null;
   }
 
   /// Inner Alignment
   AlignmentDirectional get _drawerInnerAlignment {
-    return AlignmentDirectional.centerStart;
+    switch (_position) {
+      case DrawerPosition.start:
+        return AlignmentDirectional.centerStart;
+      case DrawerPosition.end:
+        return AlignmentDirectional.centerEnd;
+    }
+    return null;
   }
 
   InnerDrawerAnimation get _animationType {
@@ -310,10 +384,14 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
 
   /// return widget with specific animation
   Widget _animatedChild() {
+    final Widget child = _position == DrawerPosition.start
+        ? widget.leftDrawer
+        : widget.rightMenu;
+
     final Widget container = Container(
       width: _width - _widthWithOffset,
       height: MediaQuery.of(context).size.height,
-      child: widget.drawer,
+      child: child,
     );
 
     switch (_animationType) {
@@ -334,27 +412,6 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
     }
   }
 
-  /// Trigger Area
-  Widget _trigger(AlignmentDirectional alignment, Widget child) {
-    assert(alignment != null);
-    final EdgeInsets padding = MediaQuery.of(context).padding;
-    double dragAreaWidth = padding.left;
-
-    if (Directionality.of(context) == TextDirection.rtl)
-      dragAreaWidth = padding.right;
-    dragAreaWidth = max(dragAreaWidth, _kEdgeDragWidth);
-
-    if (_controller.status == AnimationStatus.completed &&
-        _swipe &&
-        child != null)
-      return Align(
-        alignment: alignment,
-        child: Container(color: Colors.transparent, width: dragAreaWidth),
-      );
-    else
-      return null;
-  }
-
   /// Disable the scaffolding tap when the drawer is open
   Widget _invisibleCover() {
     final Container container = Container(
@@ -365,7 +422,7 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
         child: GestureDetector(
           // On Android, the back button is used to dismiss a modal.
           excludeFromSemantics: defaultTargetPlatform == TargetPlatform.android,
-          onTap: widget.onTapClose || !_swipe ? close : null,
+          onTap: widget.onTapClose || !_swipe ? _close : null,
           child: Semantics(
             label: MaterialLocalizations.of(context)?.modalBarrierDismissLabel,
             child: container,
@@ -480,7 +537,6 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
                         ),
                       )),
                 ),
-                _trigger(AlignmentDirectional.centerStart, widget.drawer),
               ].where((Widget a) => a != null).toList(),
             ),
           ),

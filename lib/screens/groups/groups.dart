@@ -30,9 +30,10 @@ class JuntoGroups extends StatefulWidget {
 class JuntoGroupsState extends State<JuntoGroups>
     with HideFab, ListDistinct, TickerProviderStateMixin {
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
+  GlobalKey<JuntoFilterDrawerState> _filterDrawerKey;
 
   bool actionsVisible = false;
-  dynamic _currentGroup;
+  Widget _currentGroup;
   bool spheresVisible = false;
 
   MenuController menuController;
@@ -64,63 +65,64 @@ class JuntoGroupsState extends State<JuntoGroups>
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<MenuController>.value(
-      value: menuController,
-      child: ZoomScaffold(
-        menuScreen: JuntoDrawer(),
-        contentScreen: Layout(
-          contentBuilder: (BuildContext context) => Scaffold(
-            floatingActionButton: ValueListenableBuilder<bool>(
-              valueListenable: _isVisible,
-              builder: (BuildContext context, bool visible, Widget child) {
-                return AnimatedOpacity(
-                  duration: const Duration(milliseconds: 300),
-                  opacity: visible ? 1.0 : 0.0,
-                  child: child,
-                );
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 25),
-                child: BottomNav(
-                    actionsVisible: actionsVisible,
-                    screen: 'groups',
-                    onTap: () {
-                      if (actionsVisible) {
-                        setState(() {
-                          actionsVisible = false;
-                        });
-                      } else {
-                        setState(() {
-                          actionsVisible = true;
-                        });
-                      }
-                    }),
+    return Scaffold(
+      body: JuntoFilterDrawer(
+        key: _filterDrawerKey,
+        leftDrawer: FilterDrawerContent(
+          //todo(dominikroszkowski): implement these
+          filterByChannel: (_) {},
+          channels: [],
+          resetChannels: () {},
+        ),
+        rightMenu: JuntoDrawer(),
+        scaffold: Scaffold(
+          floatingActionButton: ValueListenableBuilder<bool>(
+            valueListenable: _isVisible,
+            builder: (BuildContext context, bool visible, Widget child) {
+              return AnimatedOpacity(
+                duration: const Duration(milliseconds: 300),
+                opacity: visible ? 1.0 : 0.0,
+                child: child,
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 25),
+              child: BottomNav(
+                  actionsVisible: actionsVisible,
+                  onLeftButtonTap: () {
+                    if (actionsVisible) {
+                      setState(() {
+                        actionsVisible = false;
+                      });
+                    } else {
+                      setState(() {
+                        actionsVisible = true;
+                      });
+                    }
+                  }),
+            ),
+          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          body: Stack(
+            children: <Widget>[
+              AnimatedOpacity(
+                duration: const Duration(milliseconds: 300),
+                opacity: actionsVisible ? 0.0 : 1.0,
+                child: _currentGroup,
               ),
-            ),
-            drawer: FilterDrawerContent(
-              channels: <String>[],
-            ),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerDocked,
-            body: Stack(
-              children: <Widget>[
-                AnimatedOpacity(
-                    duration: const Duration(milliseconds: 300),
-                    opacity: actionsVisible ? 0.0 : 1.0,
-                    child: _currentGroup),
-                AnimatedOpacity(
-                  duration: const Duration(milliseconds: 300),
-                  opacity: actionsVisible ? 1.0 : 0.0,
-                  child: Visibility(
-                    visible: actionsVisible,
-                    child: JuntoGroupsActions(
-                      changeGroup: _changeGroup,
-                      spheresVisible: spheresVisible,
-                    ),
+              AnimatedOpacity(
+                duration: const Duration(milliseconds: 300),
+                opacity: actionsVisible ? 1.0 : 0.0,
+                child: Visibility(
+                  visible: actionsVisible,
+                  child: JuntoGroupsActions(
+                    changeGroup: _changeGroup,
+                    spheresVisible: spheresVisible,
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

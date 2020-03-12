@@ -73,17 +73,17 @@ class PackOpenState extends State<PackOpen> {
         valueListenable: _isVisible,
         builder: (BuildContext context, bool visible, Widget child) {
           return AnimatedOpacity(
-              duration: const Duration(milliseconds: 300),
-              opacity: visible ? 1.0 : 0.0,
-              child: child);
+            duration: const Duration(milliseconds: 300),
+            opacity: visible ? 1.0 : 0.0,
+            child: child,
+          );
         },
         child: Padding(
           padding: const EdgeInsets.only(bottom: 25),
           child: BottomNav(
-              actionsVisible: false,
-              screen: 'collective',
-              userProfile: _userProfile,
-              onTap: () {}),
+            actionsVisible: false,
+            onLeftButtonTap: () {},
+          ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -135,17 +135,12 @@ class PackOpenState extends State<PackOpen> {
                     group: widget.pack,
                     userAddress: _userAddress,
                     expressionsPrivacy: 'Public',
-                    openFilterDrawer: () {
-                      Scaffold.of(context).openDrawer();
-                    },
                   ),
                   GroupExpressions(
-                      group: widget.pack,
-                      userAddress: _userAddress,
-                      expressionsPrivacy: 'Private',
-                      openFilterDrawer: () {
-                        Scaffold.of(context).openDrawer();
-                      }),
+                    group: widget.pack,
+                    userAddress: _userAddress,
+                    expressionsPrivacy: 'Private',
+                  ),
                   PackOpenMembers(getPackMembers: getPackMembers)
                 ],
               ),

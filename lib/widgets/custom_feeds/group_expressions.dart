@@ -15,14 +15,12 @@ class GroupExpressions extends StatefulWidget {
     @required this.group,
     @required this.userAddress,
     @required this.expressionsPrivacy,
-    @required this.openFilterDrawer,
   }) : super(key: key);
 
   /// Group
   final Group group;
   final String userAddress;
   final String expressionsPrivacy;
-  final Function openFilterDrawer;
 
   @override
   _GroupExpressionsState createState() => _GroupExpressionsState();

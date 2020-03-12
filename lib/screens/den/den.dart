@@ -112,8 +112,7 @@ class JuntoDenState extends State<JuntoDen>
                 padding: const EdgeInsets.only(bottom: 25),
                 child: BottomNav(
                     actionsVisible: false,
-                    screen: 'den',
-                    onTap: () {
+                    onLeftButtonTap: () {
                       Navigator.push(
                         context,
                         CupertinoPageRoute<Widget>(
