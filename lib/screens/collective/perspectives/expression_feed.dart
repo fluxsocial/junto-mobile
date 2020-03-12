@@ -11,8 +11,6 @@ import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 ///  - [expressionCompleter]
 ///  - [collectiveController]
 ///  - [appbarTitle]
-///  - [toggleFilterDrawer]
-///  - [twoColumnView]
 ///  - [userAddress]
 class ExpressionFeed extends StatefulWidget {
   const ExpressionFeed({
@@ -90,8 +88,6 @@ class _ExpressionFeedState extends State<ExpressionFeed> {
                           delegate: CollectiveAppBar(
                             expandedHeight: 135,
                             appbarTitle: value,
-                            openFilterDrawer: () =>
-                                JuntoFilterDrawerState.of(context).toggle(),
                             twoColumnView: twoColumnView,
                             switchColumnView: _switchColumnView,
                           ),

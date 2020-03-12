@@ -1,19 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/widgets/appbar/filter_drawer_button.dart';
+import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 
 // Junto app bar used in collective screen.
 class CollectiveAppBar extends SliverPersistentHeaderDelegate {
   CollectiveAppBar(
       {@required this.expandedHeight,
       this.appbarTitle,
-      this.openFilterDrawer,
       this.twoColumnView,
       this.switchColumnView});
 
   final double expandedHeight;
   final String appbarTitle;
-  final Function openFilterDrawer;
   final bool twoColumnView;
   final Function switchColumnView;
 
@@ -90,19 +90,7 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Semantics(
-                    button: true,
-                    hint: 'Open filters drawer',
-                    child: GestureDetector(
-                      onTap: openFilterDrawer,
-                      child: Container(
-                        child: Image.asset(
-                            'assets/images/junto-mobile__filter.png',
-                            height: 17,
-                            color: Theme.of(context).primaryColor),
-                      ),
-                    ),
-                  ),
+                  const FilterDrawerButton(),
                   Row(
                     children: <Widget>[
                       GestureDetector(

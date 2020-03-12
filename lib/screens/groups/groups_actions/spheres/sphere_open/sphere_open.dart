@@ -122,8 +122,6 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                       group: widget.group,
                       userAddress: _userAddress,
                       expressionsPrivacy: 'Public',
-                      openFilterDrawer: () =>
-                          JuntoFilterDrawerState.of(context).toggle(),
                     )
                 ],
               ),

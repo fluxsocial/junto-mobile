@@ -32,7 +32,7 @@ class JuntoGroupsState extends State<JuntoGroups>
   GlobalKey<JuntoFilterDrawerState> _filterDrawerKey;
 
   bool actionsVisible = false;
-  dynamic _currentGroup;
+  Widget _currentGroup;
   bool spheresVisible = false;
 
   MenuController menuController;

@@ -8,7 +8,6 @@ import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/
 import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/pack_members.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/group_expressions.dart';
-import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
@@ -74,17 +73,19 @@ class PackOpenState extends State<PackOpen> {
         valueListenable: _isVisible,
         builder: (BuildContext context, bool visible, Widget child) {
           return AnimatedOpacity(
-              duration: const Duration(milliseconds: 300),
-              opacity: visible ? 1.0 : 0.0,
-              child: child);
+            duration: const Duration(milliseconds: 300),
+            opacity: visible ? 1.0 : 0.0,
+            child: child,
+          );
         },
         child: Padding(
           padding: const EdgeInsets.only(bottom: 25),
           child: BottomNav(
-              actionsVisible: false,
-              screen: 'collective',
-              userProfile: _userProfile,
-              onLeftButtonTap: () {}),
+            actionsVisible: false,
+            screen: 'collective',
+            userProfile: _userProfile,
+            onLeftButtonTap: () {},
+          ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -136,15 +137,11 @@ class PackOpenState extends State<PackOpen> {
                     group: widget.pack,
                     userAddress: _userAddress,
                     expressionsPrivacy: 'Public',
-                    openFilterDrawer: () =>
-                        JuntoFilterDrawerState.of(context).toggle(),
                   ),
                   GroupExpressions(
                     group: widget.pack,
                     userAddress: _userAddress,
                     expressionsPrivacy: 'Private',
-                    openFilterDrawer: () =>
-                        JuntoFilterDrawerState.of(context).toggle(),
                   ),
                   PackOpenMembers(getPackMembers: getPackMembers)
                 ],

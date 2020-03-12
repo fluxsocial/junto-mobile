@@ -76,6 +76,18 @@ class JuntoFilterDrawer extends StatefulWidget {
 
   @override
   JuntoFilterDrawerState createState() => JuntoFilterDrawerState();
+
+  static JuntoFilterDrawerState of(BuildContext context,
+      {bool nullOk = false}) {
+    assert(nullOk != null);
+    assert(context != null);
+    final JuntoFilterDrawerState result =
+        context.findAncestorStateOfType<JuntoFilterDrawerState>();
+    if (nullOk || result != null) {
+      return result;
+    }
+    return null;
+  }
 }
 
 class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
@@ -487,16 +499,6 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
         ),
       ],
     );
-  }
-
-  static JuntoFilterDrawerState of(BuildContext context,
-      {bool nullOk = false}) {
-    assert(nullOk != null);
-    assert(context != null);
-    final JuntoFilterDrawerState result =
-        context.findAncestorStateOfType<JuntoFilterDrawerState>();
-    if (nullOk || result != null) return result;
-    return null;
   }
 }
 
