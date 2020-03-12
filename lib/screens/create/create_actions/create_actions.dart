@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/expressions.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
@@ -32,7 +33,7 @@ class CreateActions extends StatefulWidget {
 
   /// Represents the type of expression being created. Possible values include
   /// "LongForm", "ShortForm", "EventForm", etc
-  final String expressionType;
+  final ExpressionType expressionType;
 
   /// This represents the Expression's context. Please see [ExpressionContext]
   final ExpressionContext expressionContext;
@@ -118,7 +119,12 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
     } else {
       child = JuntoDen();
     }
-    Navigator.of(context).pushReplacement(FadeRoute<void>(child: child));
+    Navigator.of(context).pushAndRemoveUntil(
+      FadeRoute<void>(child: child),
+      (Route<dynamic> route) {
+        return route.isFirst;
+      },
+    );
   }
 
   Future<void> _createExpression() async {
@@ -126,7 +132,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
     _setExpressionContext();
 
     try {
-      if (widget.expressionType == 'PhotoForm') {
+      if (widget.expressionType == ExpressionType.photo) {
         JuntoLoader.showLoader(context);
         final String _photoKey =
             await Provider.of<ExpressionRepo>(context, listen: false)
@@ -137,7 +143,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         );
         JuntoLoader.hide();
         _expression = ExpressionModel(
-          type: widget.expressionType,
+          type: widget.expressionType.modelName(),
           expressionData: PhotoFormExpression(
             image: _photoKey,
             caption: widget.expression['caption'],
@@ -145,7 +151,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
           context: _expressionContext,
           channels: channel,
         );
-      } else if (widget.expressionType == 'EventForm') {
+      } else if (widget.expressionType == ExpressionType.event) {
         String eventPhoto = '';
         if (widget.expression['photo'] != null) {
           JuntoLoader.showLoader(context);
@@ -160,7 +166,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
           eventPhoto = _eventPhotoKey;
         }
         _expression = ExpressionModel(
-          type: widget.expressionType,
+          type: widget.expressionType.modelName(),
           expressionData: EventFormExpression(
               photo: eventPhoto,
               description: widget.expression['description'],
@@ -175,7 +181,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         );
       } else {
         _expression = ExpressionModel(
-          type: widget.expressionType,
+          type: widget.expressionType.modelName(),
           expressionData: widget.expression.toMap(),
           context: _expressionContext,
           channels: channel,

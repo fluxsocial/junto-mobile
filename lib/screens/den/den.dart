@@ -113,7 +113,7 @@ class JuntoDenState extends State<JuntoDen>
                 child: BottomNav(
                     actionsVisible: false,
                     screen: 'den',
-                    onTap: () {
+                    onLeftButtonTap: () {
                       Navigator.push(
                         context,
                         CupertinoPageRoute<Widget>(

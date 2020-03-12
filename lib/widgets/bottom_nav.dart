@@ -1,22 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/zoom_scaffold.dart';
-import 'package:junto_beta_mobile/widgets/fade_route.dart';
-import 'package:provider/provider.dart';
 
 class BottomNav extends StatelessWidget {
-  const BottomNav(
-      {this.screen,
-      this.onTap,
-      this.userProfile,
-      @required this.actionsVisible});
+  const BottomNav({
+    this.screen,
+    this.onLeftButtonTap,
+    this.userProfile,
+    @required this.actionsVisible,
+  });
 
+  //todo: this isn't used - maybe remove?
   final String screen;
-  final VoidCallback onTap;
+  final VoidCallback onLeftButtonTap;
+  //todo: this isn't used - maybe remove?
   final UserData userProfile;
   final bool actionsVisible;
 
@@ -41,7 +39,7 @@ class BottomNav extends StatelessWidget {
         children: <Widget>[
           Expanded(
             child: GestureDetector(
-              onTap: onTap,
+              onTap: onLeftButtonTap,
               child: Container(
                 width: 60,
                 height: 50,
@@ -61,14 +59,7 @@ class BottomNav extends StatelessWidget {
           Expanded(
             child: GestureDetector(
               onTap: () {
-                Navigator.of(context).push(
-                  FadeRoute<void>(
-                    child: const JuntoLotus(
-                      address: null,
-                      expressionContext: ExpressionContext.Collective,
-                    ),
-                  ),
-                );
+                Navigator.of(context).pop();
               },
               child: Container(
                 alignment: Alignment.center,
@@ -89,7 +80,8 @@ class BottomNav extends StatelessWidget {
           Expanded(
             child: GestureDetector(
               onTap: () {
-                Provider.of<MenuController>(context, listen: false).toggle();
+                //todo: replace with new implementation
+                // Provider.of<MenuController>(context, listen: false).toggle();
               },
               child: Container(
                 alignment: Alignment.center,
