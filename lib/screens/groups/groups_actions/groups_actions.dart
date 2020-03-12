@@ -56,10 +56,11 @@ class JuntoGroupsActionsState extends State<JuntoGroupsActions> {
                   changeGroup: widget.changeGroup,
                 ),
               Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: OverlayMenu(spheresVisible: _spheresVisible)),
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: OverlayMenu(spheresVisible: _spheresVisible),
+              ),
             ],
           );
         },
