@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 /// animating and an interval of `750` + [duration] until it is removed.
 Future<void> showFeedback(
   final BuildContext context, {
-  @required Widget icon,
+  Widget icon,
   @required final String message,
   Duration duration = const Duration(milliseconds: 300),
 }) async {
