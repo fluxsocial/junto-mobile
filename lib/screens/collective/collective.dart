@@ -330,6 +330,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
                           secondChild: SingleColumnSliverListView(
                             userAddress: _userAddress,
                             data: snapshot.data.results,
+                            privacyLayer: 'Public',
                           ),
                         )
                       ]),
