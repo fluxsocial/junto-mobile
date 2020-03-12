@@ -13,7 +13,7 @@ class CreateBottomNav extends StatelessWidget {
       child: BottomNav(
         actionsVisible: false,
         screen: 'create',
-        onTap: () {
+        onLeftButtonTap: () {
           Navigator.pop(context);
         },
       ),

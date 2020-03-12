@@ -88,7 +88,7 @@ class JuntoGroupsState extends State<JuntoGroups>
               child: BottomNav(
                   actionsVisible: actionsVisible,
                   screen: 'groups',
-                  onTap: () {
+                  onLeftButtonTap: () {
                     if (actionsVisible) {
                       setState(() {
                         actionsVisible = false;

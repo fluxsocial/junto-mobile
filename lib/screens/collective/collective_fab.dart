@@ -10,18 +10,12 @@ class CollectiveActionButton extends StatelessWidget {
     @required this.isVisible,
     @required this.actionsVisible,
     @required this.userProfile,
+    @required this.onTap,
   }) : super(key: key);
   final ValueNotifier<bool> isVisible;
   final ValueNotifier<bool> actionsVisible;
   final UserData userProfile;
-
-  void _onAction(final bool value) {
-    if (value) {
-      actionsVisible.value = false;
-    } else {
-      actionsVisible.value = true;
-    }
-  }
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +37,7 @@ class CollectiveActionButton extends StatelessWidget {
               screen: 'collective',
               userProfile: userProfile,
               actionsVisible: value,
-              onTap: () => _onAction(value),
+              onLeftButtonTap: onTap,
             );
           },
         ),

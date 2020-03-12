@@ -84,7 +84,7 @@ class PackOpenState extends State<PackOpen> {
               actionsVisible: false,
               screen: 'collective',
               userProfile: _userProfile,
-              onTap: () {}),
+              onLeftButtonTap: () {}),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
