@@ -8,9 +8,10 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 /// animating and an interval of `750` + [duration] until it is removed.
 Future<void> showFeedback(
   final BuildContext context, {
+  Widget icon,
   @required final String message,
-  Color color,
-  Color fontColor,
+  @required Color color,
+  @required Color fontColor,
   Duration duration = const Duration(milliseconds: 300),
 }) async {
   showGeneralDialog(
@@ -26,14 +27,14 @@ Future<void> showFeedback(
         children: <Widget>[
           Positioned(
             bottom: MediaQuery.of(context).padding.bottom + 12.0,
-            left: 48.0,
-            right: 48.0,
+            left: 24.0,
+            right: 24.0,
             child: _FeedbackBody(
+              icon: icon,
               message: message,
               controller: animation,
-              backgroundColor:
-                  color ?? Theme.of(context).colorScheme.primaryVariant,
-              fontColor: fontColor ?? Colors.white,
+              backgroundColor: color,
+              fontColor: fontColor,
             ),
           ),
         ],
@@ -45,28 +46,41 @@ Future<void> showFeedback(
 }
 
 class _FeedbackBody extends StatelessWidget {
-  const _FeedbackBody(
-      {Key key,
-      @required Animation<double> controller,
-      @required this.backgroundColor,
-      @required this.message,
-      @required this.fontColor})
-      : _controller = controller,
+  const _FeedbackBody({
+    Key key,
+    @required Animation<double> controller,
+    @required this.backgroundColor,
+    @required this.message,
+    @required this.fontColor,
+    this.icon,
+  })  : _controller = controller,
         super(key: key);
 
   final Animation<double> _controller;
   final Color backgroundColor;
   final Color fontColor;
   final String message;
+  final Widget icon;
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _controller,
       builder: (BuildContext context, Widget child) {
-        return Material(
-          borderRadius: BorderRadius.circular(8.0),
-          color: backgroundColor,
+        return Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 10,
+            vertical: 15,
+          ),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+              color: backgroundColor,
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                  color: Theme.of(context).dividerColor,
+                  blurRadius: 6,
+                ),
+              ]),
           child: SizeTransition(
             sizeFactor: _controller,
             child: FadeTransition(
@@ -77,36 +91,21 @@ class _FeedbackBody extends StatelessWidget {
           ),
         );
       },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 24.0,
-          vertical: 10.0,
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Container(
-              width: 24,
-              child: Icon(
-                CustomIcons.create,
-                size: 18,
-                color: fontColor,
-              ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          if (icon != null) icon,
+          Text(
+            message,
+            overflow: TextOverflow.fade,
+            style: TextStyle(
+              fontSize: 17.0,
+              color: fontColor,
+              fontWeight: FontWeight.w600,
+              decoration: TextDecoration.none,
             ),
-            const SizedBox(width: 24.0),
-            Expanded(
-              child: Text(
-                message,
-                overflow: TextOverflow.fade,
-                style: TextStyle(
-                  fontSize: 16.0,
-                  color: fontColor,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
