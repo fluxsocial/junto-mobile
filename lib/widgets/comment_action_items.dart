@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
-import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:provider/provider.dart';
 
 // This component is used in CommentPreview
@@ -81,21 +81,14 @@ class CommentActionItems extends StatelessWidget {
                 Navigator.pop(context);
               }
             } catch (error) {
-              print(error);
               print(error.message);
               Navigator.pop(context);
               JuntoLoader.hide();
-              JuntoDialog.showJuntoDialog(
-                context,
-                'Sorry, something went wrong',
-                <Widget>[
-                  FlatButton(
-                    onPressed: () async {
-                      Navigator.pop(context);
-                    },
-                    child: const Text('Ok'),
-                  )
-                ],
+              showDialog(
+                context: context,
+                builder: (BuildContext context) => const SingleActionDialog(
+                  dialogText: 'Hmm, something went wrong.',
+                ),
               );
             }
           },

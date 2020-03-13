@@ -10,6 +10,7 @@ import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -51,13 +52,12 @@ class MemberRelationships extends StatelessWidget {
       JuntoLoader.hide();
     } on JuntoException catch (error) {
       JuntoLoader.hide();
-      JuntoDialog.showJuntoDialog(
-          context, 'Error occured ${error?.message}', <Widget>[
-        FlatButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Ok'),
-        )
-      ]);
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => const SingleActionDialog(
+          dialogText: 'Hmm, something went wrong.',
+        ),
+      );
     }
   }
 
@@ -88,13 +88,12 @@ class MemberRelationships extends StatelessWidget {
             Navigator.pop(context);
           } on JuntoException catch (error) {
             JuntoLoader.hide();
-            JuntoDialog.showJuntoDialog(
-                context, 'Error occured ${error?.message}', <Widget>[
-              FlatButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('Ok'),
-              )
-            ]);
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => const SingleActionDialog(
+                dialogText: 'Hmm, something went wrong.',
+              ),
+            );
           }
         },
         child: const Text('Yes'),
@@ -118,13 +117,12 @@ class MemberRelationships extends StatelessWidget {
       Navigator.pop(context);
     } on JuntoException catch (error) {
       JuntoLoader.hide();
-      JuntoDialog.showJuntoDialog(
-          context, 'Error occured ${error?.message}', <Widget>[
-        FlatButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Ok'),
-        )
-      ]);
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => const SingleActionDialog(
+          dialogText: 'Hmm, something went wrong.',
+        ),
+      );
     }
   }
 
@@ -140,13 +138,12 @@ class MemberRelationships extends StatelessWidget {
             JuntoLoader.hide();
           } on JuntoException catch (error) {
             JuntoLoader.hide();
-            JuntoDialog.showJuntoDialog(
-                context, 'Error occured ${error?.message}', <Widget>[
-              FlatButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('Ok'),
-              )
-            ]);
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => const SingleActionDialog(
+                dialogText: 'Hmm, something went wrong.',
+              ),
+            );
           }
           Navigator.pop(context);
         },
@@ -173,27 +170,19 @@ class MemberRelationships extends StatelessWidget {
     } on JuntoException catch (error) {
       JuntoLoader.hide();
       if (error.message.contains('does not exist or is already a group member'))
-        JuntoDialog.showJuntoDialog(
-          context,
-          'Connection already sent',
-          <Widget>[
-            FlatButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Ok'),
-            )
-          ],
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => const SingleActionDialog(
+            dialogText: 'Already sent a connection.',
+          ),
         );
       if (!error.message
           .contains('does not exist or is already a group member'))
-        JuntoDialog.showJuntoDialog(
-          context,
-          '${error.message}',
-          <Widget>[
-            FlatButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Ok'),
-            )
-          ],
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => SingleActionDialog(
+            dialogText: error.message,
+          ),
         );
     }
   }

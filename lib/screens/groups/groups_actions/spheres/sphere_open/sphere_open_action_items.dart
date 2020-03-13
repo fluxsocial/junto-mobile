@@ -183,12 +183,11 @@ class _EditGroupInfoState extends State<EditGroupInfo> {
       Navigator.pop(context);
     } on JuntoException catch (error) {
       JuntoLoader.hide();
-      JuntoDialog.showJuntoDialog(
-        context,
-        error.message,
-        <Widget>[
-          DialogBack(),
-        ],
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => const SingleActionDialog(
+          dialogText: 'Hmm, something went wrong.',
+        ),
       );
     }
   }

@@ -11,7 +11,7 @@ import 'package:junto_beta_mobile/screens/expression_open/expressions/event_open
 import 'package:junto_beta_mobile/screens/expression_open/expressions/longform_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/photo_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/shortform_open.dart';
-import 'package:junto_beta_mobile/utils/junto_dialog.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/previews/comment_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
@@ -144,15 +144,11 @@ class ExpressionOpenState extends State<ExpressionOpen> {
       } catch (error) {
         debugPrint('Error posting comment $error');
         JuntoLoader.hide();
-        JuntoDialog.showJuntoDialog(
-          context,
-          'Error posting comment',
-          <Widget>[
-            FlatButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Ok'),
-            ),
-          ],
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => const SingleActionDialog(
+            dialogText: 'Hmm, something went wrong.',
+          ),
         );
       }
     } else {

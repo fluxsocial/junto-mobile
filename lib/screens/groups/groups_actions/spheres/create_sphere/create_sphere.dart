@@ -8,7 +8,7 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/create_sphere/create_sphere_page_one.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/create_sphere/create_sphere_page_two.dart';
-import 'package:junto_beta_mobile/utils/junto_dialog.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
@@ -88,12 +88,11 @@ class CreateSphereState extends State<CreateSphere> {
       Navigator.pop(context);
     } on JuntoException catch (error) {
       JuntoLoader.hide();
-      JuntoDialog.showJuntoDialog(
-        context,
-        error.message,
-        <Widget>[
-          DialogBack(),
-        ],
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => SingleActionDialog(
+          dialogText: error.message,
+        ),
       );
     }
   }

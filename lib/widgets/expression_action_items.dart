@@ -11,6 +11,7 @@ import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:provider/provider.dart';
 
 class ExpressionActionItems extends StatelessWidget {
@@ -90,21 +91,13 @@ class ExpressionActionItems extends StatelessWidget {
                       Navigator.pop(context);
                       Navigator.pop(context);
                     } catch (error) {
-                      print(error);
-                      print(error.message);
                       Navigator.pop(context);
                       JuntoLoader.hide();
-                      JuntoDialog.showJuntoDialog(
-                        context,
-                        'Sorry, something went wrong',
-                        <Widget>[
-                          FlatButton(
-                            onPressed: () async {
-                              Navigator.pop(context);
-                            },
-                            child: const Text('Ok'),
-                          )
-                        ],
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) => SingleActionDialog(
+                          dialogText: error.message,
+                        ),
                       );
                     }
                   },
@@ -227,12 +220,11 @@ class __AddEventMembersState extends State<_AddEventMembers>
       Navigator.pop(context);
     } catch (error) {
       JuntoLoader.hide();
-      JuntoDialog.showJuntoDialog(
-        context,
-        error.message,
-        <Widget>[
-          DialogBack(),
-        ],
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => SingleActionDialog(
+          dialogText: error.message,
+        ),
       );
     }
   }

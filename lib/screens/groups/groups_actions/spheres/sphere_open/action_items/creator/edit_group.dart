@@ -12,6 +12,7 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 import 'package:junto_beta_mobile/widgets/avatars/group_avatar_placeholder.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/avatars/group_avatar.dart';
 
 class EditGroup extends StatefulWidget {
@@ -103,12 +104,11 @@ class _EditGroupState extends State<EditGroup> {
       Navigator.pop(context);
     } on JuntoException catch (error) {
       JuntoLoader.hide();
-      JuntoDialog.showJuntoDialog(
-        context,
-        error.message,
-        <Widget>[
-          DialogBack(),
-        ],
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => const SingleActionDialog(
+          dialogText: 'Hmm, something went wrong.',
+        ),
       );
     }
   }

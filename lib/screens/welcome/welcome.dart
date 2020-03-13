@@ -11,7 +11,7 @@ import 'package:junto_beta_mobile/screens/welcome/sign_up_register.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_themes.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_verify.dart';
 import 'package:junto_beta_mobile/screens/welcome/sign_up_welcome.dart';
-import 'package:junto_beta_mobile/utils/junto_dialog.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
@@ -348,10 +348,11 @@ class WelcomeState extends State<Welcome> {
         duration: const Duration(milliseconds: 600),
       );
     } on JuntoException catch (error) {
-      JuntoDialog.showJuntoDialog(
-        context,
-        error.message,
-        <Widget>[DialogBack()],
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => SingleActionDialog(
+          dialogText: error.message,
+        ),
       );
     }
   }

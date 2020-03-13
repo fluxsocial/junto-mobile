@@ -5,7 +5,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field.dart';
-import 'package:junto_beta_mobile/utils/junto_dialog.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/buttons/call_to_action.dart';
@@ -68,16 +68,13 @@ class _SignInState extends State<SignIn> {
     } on JuntoException catch (error) {
       JuntoLoader.hide();
       debugPrint('Error during signing in. Error code: ${error.errorCode}');
-      JuntoDialog.showJuntoDialog(
-          context,
-          'Unable to login user. Please recheck your '
-          'account.',
-          <Widget>[
-            FlatButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('OK'),
-            ),
-          ]);
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => const SingleActionDialog(
+          dialogText:
+              'Unable to login. Please double check your login credentials.',
+        ),
+      );
     } catch (e, s) {
       debugPrint('Unknown error during sign in: $e, $s');
     }
@@ -152,12 +149,11 @@ class _SignInState extends State<SignIn> {
   }
 
   void _showValidationError() {
-    JuntoDialog.showJuntoDialog(
-        context, 'Email or password is missing', <Widget>[
-      FlatButton(
-        onPressed: () => Navigator.of(context).pop(),
-        child: const Text('OK'),
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => const SingleActionDialog(
+        dialogText: 'Wrong email or password.',
       ),
-    ]);
+    );
   }
 }
