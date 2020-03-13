@@ -5,7 +5,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_expression_scaffold.dart';
 import 'package:junto_beta_mobile/utils/form-validation.dart';
-import 'package:junto_beta_mobile/utils/junto_dialog.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/utils/hex_color.dart';
 
 /// Allows the user to create a short form expression.
@@ -98,13 +98,11 @@ class CreateShortformState extends State<CreateShortform> {
         ),
       );
     } else {
-      //todo: replace with less intrusive form
-      JuntoDialog.showJuntoDialog(
-        context,
-        'Please ensure all required fields are filled.',
-        <Widget>[
-          DialogBack(),
-        ],
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => const SingleActionDialog(
+          dialogText: "Please make sure the text field isn't blank",
+        ),
       );
       return;
     }

@@ -91,17 +91,11 @@ class CreatePerspectiveState extends State<CreatePerspective> {
       print(error);
       print(stacktrace);
       JuntoLoader.hide();
-      JuntoDialog.showJuntoDialog(
-        context,
-        error.message,
-        <Widget>[
-          FlatButton(
-            onPressed: () {
-              return Navigator.pop(context);
-            },
-            child: const Text('Ok'),
-          ),
-        ],
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => SingleActionDialog(
+          dialogText: error.message,
+        ),
       );
     }
   }

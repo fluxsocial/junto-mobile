@@ -6,7 +6,7 @@ class ConfirmDialog extends StatelessWidget {
 
   final BuildContext context;
   final String confirmationText;
-  final Function confirm;
+  final dynamic confirm;
 
   @override
   Widget build(BuildContext context) {

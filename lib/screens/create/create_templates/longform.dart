@@ -6,6 +6,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_expression_scaffold.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 
 class CreateLongform extends StatefulWidget {
   const CreateLongform({Key key, this.expressionContext, this.address})
@@ -72,13 +73,10 @@ class CreateLongformState extends State<CreateLongform> {
         ),
       );
     } else {
-      //todo: replace with less intrusive form
-      JuntoDialog.showJuntoDialog(
-        context,
-        'Please ensure all required fields are filled.',
-        <Widget>[
-          DialogBack(),
-        ],
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => const SingleActionDialog(
+            dialogText: 'Please fill in the required fields.'),
       );
     }
   }

@@ -7,7 +7,8 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_actions/create_perspective.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_actions/edit_perspective.dart';
-import 'package:junto_beta_mobile/utils/junto_dialog.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart'
     show JuntoException;
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
@@ -55,12 +56,11 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
           .getUserPerspective(_userAddress);
     } on JuntoException catch (error) {
       debugPrint('error fethcing perspectives ${error.errorCode}');
-      JuntoDialog.showJuntoDialog(
-        context,
-        error.message,
-        <Widget>[
-          DialogBack(),
-        ],
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => SingleActionDialog(
+          dialogText: error.message,
+        ),
       );
       return null;
     }
@@ -73,8 +73,27 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
         getPerspectives = _fetchUserPerspectives(_userAddress);
       });
     } on JuntoException catch (error) {
-      JuntoDialog.showJuntoDialog(
-          context, error.message, <Widget>[DialogBack()]);
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => SingleActionDialog(
+          dialogText: error.message,
+        ),
+      );
+    }
+  }
+
+  Future<void> _deletePerspective(perspective) async {
+    print(perspective);
+    try {
+      JuntoLoader.showLoader(context);
+      await Provider.of<UserRepo>(context, listen: false)
+          .deletePerspective(perspective.address);
+      _refreshPerspectives();
+      JuntoLoader.hide();
+      Navigator.pop(context);
+    } catch (error) {
+      print(error);
+      JuntoLoader.hide();
     }
   }
 
@@ -220,25 +239,16 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
               color: Colors.red,
               iconWidget: Icon(Icons.delete, size: 15, color: Colors.white),
               onTap: () async {
-                JuntoDialog.showJuntoDialog(context, 'Are you sure?', <Widget>[
-                  FlatButton(
-                    onPressed: () async {
-                      Navigator.pop(context);
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) => ConfirmDialog(
+                    confirmationText:
+                        'Are you sure you want to delete this perspective?',
+                    confirm: () {
+                      _deletePerspective(perspective);
                     },
-                    child: const Text('No'),
                   ),
-                  FlatButton(
-                    onPressed: () async {
-                      JuntoLoader.showLoader(context);
-                      await Provider.of<UserRepo>(context, listen: false)
-                          .deletePerspective(perspective.address);
-                      _refreshPerspectives();
-                      JuntoLoader.hide();
-                      Navigator.pop(context);
-                    },
-                    child: const Text('Yes'),
-                  ),
-                ]);
+                );
               }),
         ],
         key: Key(perspective.address),
