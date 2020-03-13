@@ -4,12 +4,12 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_actions/perspective_body.dart';
-import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart'
     show JuntoException;
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/perspective_textfield.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:provider/provider.dart';
 
 class CreatePerspective extends StatefulWidget {
@@ -62,12 +62,10 @@ class CreatePerspectiveState extends State<CreatePerspective> {
         duration: const Duration(milliseconds: 300),
       );
     } else {
-      JuntoDialog.showJuntoDialog(
-        context,
-        'Please ensure all fields are filled',
-        <Widget>[
-          DialogBack(),
-        ],
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => const SingleActionDialog(
+            dialogText: 'Please fill in all the fields.'),
       );
     }
   }
