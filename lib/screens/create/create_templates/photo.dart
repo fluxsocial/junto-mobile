@@ -7,7 +7,7 @@ import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_expression_scaffold.dart';
-import 'package:junto_beta_mobile/utils/junto_dialog.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 
 /// Create using photo form
@@ -112,12 +112,11 @@ class CreatePhotoState extends State<CreatePhoto> {
         ),
       );
     } else {
-      JuntoDialog.showJuntoDialog(
-        context,
-        'Please ensure that you added photo',
-        <Widget>[
-          DialogBack(),
-        ],
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => const SingleActionDialog(
+          dialogText: 'Please add a photo.',
+        ),
       );
       return;
     }

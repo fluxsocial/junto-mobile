@@ -9,7 +9,7 @@ import 'package:junto_beta_mobile/backend/repositories/expression_repo.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/widgets/create_expression_scaffold.dart';
 import 'package:junto_beta_mobile/utils/form-validation.dart';
-import 'package:junto_beta_mobile/utils/junto_dialog.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/image_cropper.dart';
 import 'package:junto_beta_mobile/widgets/image_widgets.dart';
@@ -115,12 +115,11 @@ class CreateEventState extends State<CreateEvent> with DateParser {
         ),
       );
     } else {
-      JuntoDialog.showJuntoDialog(
-        context,
-        'Please ensure all required fields are filled.',
-        <Widget>[
-          DialogBack(),
-        ],
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => const SingleActionDialog(
+          dialogText: 'Please fill in the required fields.',
+        ),
       );
       return;
     }

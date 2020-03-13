@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/utils/junto_dialog.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
@@ -10,7 +10,8 @@ import 'package:provider/provider.dart';
 class NotificationScreen extends StatefulWidget {
   static Route<dynamic> route() {
     return MaterialPageRoute<dynamic>(
-        builder: (BuildContext context) => NotificationScreen());
+      builder: (BuildContext context) => NotificationScreen(),
+    );
   }
 
   @override
@@ -52,12 +53,11 @@ class _NotificationScreenState extends State<NotificationScreen>
       setState(() {});
     } on JuntoException catch (error) {
       JuntoLoader.hide();
-      JuntoDialog.showJuntoDialog(
-        context,
-        error.message,
-        <Widget>[
-          DialogBack(),
-        ],
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => const SingleActionDialog(
+          dialogText: 'Hmm, something went wrong.',
+        ),
       );
     }
   }
@@ -70,8 +70,12 @@ class _NotificationScreenState extends State<NotificationScreen>
       setState(() {});
     } on JuntoException catch (error) {
       JuntoLoader.hide();
-      JuntoDialog.showJuntoDialog(
-          context, error.message, <Widget>[DialogBack()]);
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => const SingleActionDialog(
+          dialogText: 'Hmm, something went wrong.',
+        ),
+      );
     }
   }
 
@@ -83,12 +87,11 @@ class _NotificationScreenState extends State<NotificationScreen>
       setState(() {});
     } on JuntoException catch (error) {
       JuntoLoader.hide();
-      JuntoDialog.showJuntoDialog(
-        context,
-        error.message,
-        <Widget>[
-          DialogBack(),
-        ],
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => const SingleActionDialog(
+          dialogText: 'Hmm, something went wrong.',
+        ),
       );
     }
   }
@@ -101,12 +104,11 @@ class _NotificationScreenState extends State<NotificationScreen>
       setState(() {});
     } on JuntoException catch (error) {
       JuntoLoader.hide();
-      JuntoDialog.showJuntoDialog(
-        context,
-        error.message,
-        <Widget>[
-          DialogBack(),
-        ],
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => const SingleActionDialog(
+          dialogText: 'Hmm, something went wrong.',
+        ),
       );
     }
   }

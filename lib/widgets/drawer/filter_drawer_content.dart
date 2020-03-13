@@ -59,7 +59,7 @@ class _FilterDrawerContentState extends State<FilterDrawerContent> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Theme.of(context).primaryColorDark,
+      color: const Color(0xff2A2A2A),
       width: MediaQuery.of(context).size.width * .93,
       child: SafeArea(
         child: GestureDetector(
@@ -186,7 +186,7 @@ class ResetFilterButton extends StatelessWidget {
       child: Container(
         width: MediaQuery.of(context).size.width,
         child: FlatButton(
-          color: Theme.of(context).primaryColor,
+          color: const Color(0xff444444),
           onPressed: onTap,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(40.0),

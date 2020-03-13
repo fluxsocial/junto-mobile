@@ -14,11 +14,11 @@ import 'package:junto_beta_mobile/screens/create/create_actions/create_actions_a
 import 'package:junto_beta_mobile/screens/create/create_actions/sphere_select_modal.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/groups/groups.dart';
-import 'package:junto_beta_mobile/utils/junto_dialog.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
-import 'package:junto_beta_mobile/widgets/user_feedback.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -196,26 +196,25 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         _address,
       );
       JuntoLoader.hide();
+
       await showFeedback(
         context,
-        message: 'Expression created 🎉',
-        color: Theme.of(context).colorScheme.primaryVariant,
-        fontColor: Colors.white,
+        icon: Icon(
+          CustomIcons.create,
+          size: 17,
+          color: Theme.of(context).primaryColor,
+        ),
+        message: 'Expression Created!',
       );
+
       _postCreateAction();
     } catch (error) {
       JuntoLoader.hide();
-      JuntoDialog.showJuntoDialog(
-        context,
-        'Something went wrong',
-        <Widget>[
-          FlatButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text('Ok'),
-          )
-        ],
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => SingleActionDialog(
+          dialogText: error.message,
+        ),
       );
     }
   }

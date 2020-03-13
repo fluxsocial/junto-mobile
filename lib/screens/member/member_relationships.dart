@@ -9,7 +9,9 @@ import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
-import 'package:junto_beta_mobile/widgets/user_feedback.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -50,62 +52,44 @@ class MemberRelationships extends StatelessWidget {
 
       JuntoLoader.hide();
     } on JuntoException catch (error) {
+      print(error.message);
       JuntoLoader.hide();
-      JuntoDialog.showJuntoDialog(
-          context, 'Error occured ${error?.message}', <Widget>[
-        FlatButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Ok'),
-        )
-      ]);
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => const SingleActionDialog(
+          dialogText: 'Hmm, something went wrong.',
+        ),
+      );
     }
   }
 
   Future<void> _unsubscribeToUser(BuildContext context) async {
-    JuntoDialog.showJuntoDialog(
-        context, 'Are you sure you want to unsubscribe?', <Widget>[
-      FlatButton(
-        onPressed: () async {
-          JuntoLoader.showLoader(context);
-          try {
-            // get address of follow perspective
-            final SharedPreferences prefs =
-                await SharedPreferences.getInstance();
-            final Map<String, dynamic> decodedUserData =
-                jsonDecode(prefs.getString('user_data'));
-            final UserData userProfile = UserData.fromMap(decodedUserData);
-            // add member to follow perspective
-            await userProvider.deleteUsersFromPerspective(
-              <Map<String, String>>[
-                <String, String>{'user_address': memberProfile.address}
-              ],
-              userProfile.userPerspective.address,
-            );
-
-            refreshRelations();
-
-            JuntoLoader.hide();
-            Navigator.pop(context);
-          } on JuntoException catch (error) {
-            JuntoLoader.hide();
-            JuntoDialog.showJuntoDialog(
-                context, 'Error occured ${error?.message}', <Widget>[
-              FlatButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('Ok'),
-              )
-            ]);
-          }
-        },
-        child: const Text('Yes'),
-      ),
-      FlatButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        child: const Text('No'),
-      ),
-    ]);
+    JuntoLoader.showLoader(context);
+    try {
+      // get address of follow perspective
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final Map<String, dynamic> decodedUserData =
+          jsonDecode(prefs.getString('user_data'));
+      final UserData userProfile = UserData.fromMap(decodedUserData);
+      // add member to follow perspective
+      await userProvider.deleteUsersFromPerspective(
+        <Map<String, String>>[
+          <String, String>{'user_address': memberProfile.address}
+        ],
+        userProfile.userPerspective.address,
+      );
+      refreshRelations();
+      JuntoLoader.hide();
+      Navigator.pop(context);
+    } on JuntoException catch (error) {
+      JuntoLoader.hide();
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => const SingleActionDialog(
+          dialogText: 'Hmm, something went wrong.',
+        ),
+      );
+    }
   }
 
   Future<void> _connectWithUser(BuildContext context) async {
@@ -118,13 +102,12 @@ class MemberRelationships extends StatelessWidget {
       Navigator.pop(context);
     } on JuntoException catch (error) {
       JuntoLoader.hide();
-      JuntoDialog.showJuntoDialog(
-          context, 'Error occured ${error?.message}', <Widget>[
-        FlatButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Ok'),
-        )
-      ]);
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => const SingleActionDialog(
+          dialogText: 'Hmm, something went wrong.',
+        ),
+      );
     }
   }
 
@@ -140,13 +123,12 @@ class MemberRelationships extends StatelessWidget {
             JuntoLoader.hide();
           } on JuntoException catch (error) {
             JuntoLoader.hide();
-            JuntoDialog.showJuntoDialog(
-                context, 'Error occured ${error?.message}', <Widget>[
-              FlatButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('Ok'),
-              )
-            ]);
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => const SingleActionDialog(
+                dialogText: 'Hmm, something went wrong.',
+              ),
+            );
           }
           Navigator.pop(context);
         },
@@ -173,27 +155,19 @@ class MemberRelationships extends StatelessWidget {
     } on JuntoException catch (error) {
       JuntoLoader.hide();
       if (error.message.contains('does not exist or is already a group member'))
-        JuntoDialog.showJuntoDialog(
-          context,
-          'Connection already sent',
-          <Widget>[
-            FlatButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Ok'),
-            )
-          ],
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => const SingleActionDialog(
+            dialogText: 'Already sent a connection.',
+          ),
         );
       if (!error.message
           .contains('does not exist or is already a group member'))
-        JuntoDialog.showJuntoDialog(
-          context,
-          '${error.message}',
-          <Widget>[
-            FlatButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Ok'),
-            )
-          ],
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => SingleActionDialog(
+            dialogText: error.message,
+          ),
         );
     }
   }
@@ -393,7 +367,14 @@ class MemberRelationships extends StatelessWidget {
       children: <Widget>[
         GestureDetector(
           onTap: () {
-            _unsubscribeToUser(context);
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => ConfirmDialog(
+                context: context,
+                confirm: _unsubscribeToUser,
+                confirmationText: 'Are you sure you want to unsubscribe?',
+              ),
+            );
           },
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 20),
