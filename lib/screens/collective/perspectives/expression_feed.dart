@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/appbar/collective_appbar.dart';
@@ -13,7 +12,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 ///  - [expressionCompleter]
 ///  - [collectiveController]
 ///  - [appbarTitle]
-///  - [userAddress]
 class ExpressionFeed extends StatefulWidget {
   const ExpressionFeed({
     Key key,

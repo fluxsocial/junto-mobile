@@ -8,6 +8,7 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/screens/member/member_about.dart';
 import 'package:junto_beta_mobile/screens/member/member_appbar.dart';
 import 'package:junto_beta_mobile/screens/member/member_relationships.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
@@ -166,44 +167,11 @@ class _JuntoMemberState extends State<JuntoMember> {
               },
               body: TabBarView(
                 children: <Widget>[
-                  ListView(
-                    physics: const ClampingScrollPhysics(),
-                    shrinkWrap: true,
-                    padding: const EdgeInsets.only(left: 10),
-                    children: <Widget>[
-                      const SizedBox(height: 5),
-                      Container(
-                        padding: const EdgeInsets.only(top: 5, bottom: 5),
-                        child: Column(
-                          children: <Widget>[
-                            if (widget.profile.gender.isNotEmpty &&
-                                widget.profile.gender[0].isNotEmpty)
-                              _ProfileDetails(
-                                iconData: CustomIcons.gender,
-                                item: widget.profile.gender,
-                              ),
-                            if (widget.profile.location.isNotEmpty &&
-                                widget.profile.location[0].isNotEmpty)
-                              _ProfileDetails(
-                                imageUri:
-                                    'assets/images/junto-mobile__location.png',
-                                item: widget.profile.location,
-                              ),
-                            if (widget.profile.website.isNotEmpty &&
-                                widget.profile.website[0].isNotEmpty)
-                              _ProfileDetails(
-                                imageUri:
-                                    'assets/images/junto-mobile__link.png',
-                                item: widget.profile.website,
-                              )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        child: Text(widget.profile.bio,
-                            style: Theme.of(context).textTheme.caption),
-                      ),
-                    ],
+                  JuntoMemberAbout(
+                    gender: widget.profile.gender,
+                    location: widget.profile.location,
+                    website: widget.profile.website,
+                    bio: widget.profile.bio,
                   ),
                   UserExpressions(
                     privacy: 'Public',
@@ -220,62 +188,18 @@ class _JuntoMemberState extends State<JuntoMember> {
           child: Visibility(
             visible: memberRelationshipsVisible,
             child: MemberRelationships(
-                isFollowing: isFollowing,
-                isConnected: isConnected,
-                isPending: isPending,
-                userProvider: userProvider,
-                memberProfile: widget.profile,
-                userProfile: _userProfile,
-                toggleMemberRelationships: toggleMemberRelationships,
-                refreshRelations: refreshRelations),
+              isFollowing: isFollowing,
+              isConnected: isConnected,
+              isPending: isPending,
+              userProvider: userProvider,
+              memberProfile: widget.profile,
+              userProfile: _userProfile,
+              toggleMemberRelationships: toggleMemberRelationships,
+              refreshRelations: refreshRelations,
+            ),
           ),
         ),
       ],
-    );
-  }
-}
-
-/// Used to display the user's location, gender and website. Image and Icon data
-/// cannot be supplied at the same time.
-class _ProfileDetails extends StatelessWidget {
-  const _ProfileDetails({
-    Key key,
-    @required this.item,
-    this.iconData,
-    this.imageUri,
-  }) : super(key: key);
-
-  final List<String> item;
-  final IconData iconData;
-  final String imageUri;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      child: Row(
-        children: <Widget>[
-          if (imageUri != null)
-            Image.asset(
-              imageUri,
-              height: 15,
-              color: Theme.of(context).primaryColor,
-            ),
-          if (iconData != null)
-            Icon(CustomIcons.gender,
-                size: 17, color: Theme.of(context).primaryColor),
-          const SizedBox(width: 5),
-          Text(
-            item[0],
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-                color: Theme.of(context).primaryColor,
-                fontSize: 15,
-                fontWeight: FontWeight.w600),
-          ),
-        ],
-      ),
     );
   }
 }
