@@ -221,7 +221,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
                   expressionCompleter: _expressionCompleter,
                   collectiveController: _collectiveController,
                   appbarTitle: _appbarTitle,
-                  userAddress: _userAddress,
                 ),
               );
             },
