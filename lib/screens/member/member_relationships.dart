@@ -198,6 +198,7 @@ class MemberRelationships extends StatelessWidget {
         buildContext: buildContext,
         subscribeToUser: subscribeToUser,
         connectWithUser: connectWithUser,
+        inviteToPack: inviteToPack,
       );
     } else if (isFollowing && !isConnected && !isPending) {
       return SubscribedActionItems(
@@ -220,6 +221,7 @@ class MemberRelationships extends StatelessWidget {
       buildContext: buildContext,
       subscribeToUser: subscribeToUser,
       connectWithUser: connectWithUser,
+      inviteToPack: inviteToPack,
     );
   }
 }

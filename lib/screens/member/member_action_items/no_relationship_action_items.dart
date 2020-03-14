@@ -20,7 +20,7 @@ class NoRelationshipActionItems extends StatelessWidget {
       children: <Widget>[
         GestureDetector(
           onTap: () {
-            subscribeToUser();
+            subscribeToUser(buildContext);
           },
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 20),
@@ -59,7 +59,7 @@ class NoRelationshipActionItems extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            connectWithUser();
+            connectWithUser(buildContext);
           },
           child: Container(
             decoration: BoxDecoration(
@@ -96,7 +96,9 @@ class NoRelationshipActionItems extends StatelessWidget {
           ),
         ),
         GestureDetector(
-          onTap: () {},
+          onTap: () {
+            inviteToPack(buildContext);
+          },
           child: Container(
             decoration: BoxDecoration(
               color: Colors.transparent,
