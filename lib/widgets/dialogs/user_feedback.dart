@@ -13,8 +13,9 @@ Future<void> showFeedback(
 }) async {
   showGeneralDialog(
     context: context,
-    barrierDismissible: false,
+    barrierDismissible: true,
     transitionDuration: duration,
+    barrierLabel: 'User feedback: $message',
     pageBuilder: (
       BuildContext context,
       Animation<double> animation,
@@ -37,7 +38,7 @@ Future<void> showFeedback(
     },
   );
   await Future<void>.delayed(const Duration(milliseconds: 730) + duration);
-  Navigator.of(context).pop();
+  Navigator.pop(context);
 }
 
 class _FeedbackBody extends StatelessWidget {
