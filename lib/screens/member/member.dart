@@ -78,7 +78,7 @@ class _JuntoMemberState extends State<JuntoMember> {
     await userProvider
         .isRelated(_userAddress, widget.profile.address)
         .then((Map<String, dynamic> result) {
-          print(result);
+      print(result);
       setState(() {
         isConnected = result['is_connected'];
         isFollowing = result['is_following'];

@@ -7,6 +7,7 @@ class ConnectedActionItems extends StatelessWidget {
     this.buildContext,
     this.isFollowing,
     this.isPending,
+    this.isConnected,
     this.subscribeToUser,
     this.unsubscribeToUser,
     this.disconnectWithUser,
@@ -16,6 +17,7 @@ class ConnectedActionItems extends StatelessWidget {
   final BuildContext buildContext;
   final bool isFollowing;
   final bool isPending;
+  final bool isConnected;
   final Function subscribeToUser;
   final Function unsubscribeToUser;
   final Function disconnectWithUser;
@@ -23,6 +25,7 @@ class ConnectedActionItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('Connected Action Items');
     return Column(
       children: <Widget>[
         GestureDetector(
@@ -133,7 +136,7 @@ class ConnectedActionItems extends StatelessWidget {
                 Container(
                   padding:
                       const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                  decoration: isPending
+                  decoration: isPending || isConnected
                       ? BoxDecoration(
                           border: Border.all(
                               color: Theme.of(context).backgroundColor,
@@ -155,7 +158,7 @@ class ConnectedActionItems extends StatelessWidget {
                               width: 1.2),
                           borderRadius: BorderRadius.circular(5),
                         ),
-                  child: isPending
+                  child: isPending || isConnected
                       ? Icon(Icons.check, size: 15, color: Colors.white)
                       : Icon(Icons.add,
                           size: 15, color: Theme.of(context).primaryColor),

@@ -212,6 +212,7 @@ class MemberRelationships extends StatelessWidget {
         disconnectWithUser: disconnectWithUser,
         inviteToPack: inviteToPack,
         isPending: isPending,
+        isConnected: isConnected,
         isFollowing: isFollowing,
       );
     }
