@@ -7,16 +7,12 @@ class NoRelationshipActionItems extends StatelessWidget {
     this.subscribeToUser,
     this.connectWithUser,
     this.inviteToPack,
-    this.userProfile,
-    this.memberProfile,
   });
 
   final BuildContext buildContext;
-  final userProfile;
-  final memberProfile;
-  final subscribeToUser;
-  final connectWithUser;
-  final inviteToPack;
+  final Function subscribeToUser;
+  final Function connectWithUser;
+  final Function inviteToPack;
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +22,6 @@ class NoRelationshipActionItems extends StatelessWidget {
           onTap: () {
             subscribeToUser(
               buildContext: buildContext,
-              userAddress: userProfile.user.address,
-              memberAddress: memberProfile.address,
             );
           },
           child: Container(
@@ -69,7 +63,6 @@ class NoRelationshipActionItems extends StatelessWidget {
           onTap: () {
             connectWithUser(
               buildContext: buildContext,
-              memberAddress: memberProfile.address,
             );
           },
           child: Container(

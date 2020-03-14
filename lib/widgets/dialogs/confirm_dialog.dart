@@ -72,6 +72,7 @@ class ConfirmDialog extends StatelessWidget {
                     child: GestureDetector(
                       onTap: () {
                         confirm(buildContext);
+                        Navigator.pop(context);
                       },
                       child: Container(
                         color: Colors.transparent,

@@ -5,8 +5,6 @@ import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 class SubscribedActionItems extends StatelessWidget {
   const SubscribedActionItems({
     this.buildContext,
-    this.userProfile,
-    this.memberProfile,
     this.unsubscribeToUser,
     this.connectWithUser,
     this.inviteToPack,
@@ -14,11 +12,10 @@ class SubscribedActionItems extends StatelessWidget {
   });
 
   final BuildContext buildContext;
-  final userProfile;
-  final memberProfile;
-  final unsubscribeToUser;
-  final connectWithUser;
-  final inviteToPack;
+
+  final Function unsubscribeToUser;
+  final Function connectWithUser;
+  final Function inviteToPack;
   final bool isPending;
 
   @override

@@ -8,9 +8,9 @@ class ConnectedActionItems extends StatelessWidget {
     this.inviteToPack,
   });
 
-  final subscribeToUser;
-  final connectWithUser;
-  final inviteToPack;
+  final Future<void> subscribeToUser;
+  final Future<void> connectWithUser;
+  final Future<void> inviteToPack;
 
   @override
   Widget build(BuildContext context) {

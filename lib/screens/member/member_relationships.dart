@@ -40,7 +40,6 @@ class MemberRelationships extends StatelessWidget {
 
   Future<void> subscribeToUser({
     BuildContext buildContext,
-    String memberAddress,
   }) async {
     JuntoLoader.showLoader(buildContext);
     try {
@@ -63,7 +62,6 @@ class MemberRelationships extends StatelessWidget {
 
   Future<void> connectWithUser({
     BuildContext buildContext,
-    String memberAddress,
   }) async {
     JuntoLoader.showLoader(buildContext);
 
@@ -162,7 +160,6 @@ class MemberRelationships extends StatelessWidget {
       );
       refreshRelations();
       JuntoLoader.hide();
-      Navigator.pop(buildContext);
     } on JuntoException catch (error) {
       JuntoLoader.hide();
       showDialog(
@@ -235,14 +232,10 @@ class MemberRelationships extends StatelessWidget {
         buildContext: context,
         subscribeToUser: subscribeToUser,
         connectWithUser: connectWithUser,
-        userProfile: userProfile,
-        memberProfile: memberProfile,
       );
     } else if (isFollowing && !isConnected) {
       return SubscribedActionItems(
         buildContext: context,
-        userProfile: userProfile,
-        memberProfile: memberProfile,
         isPending: isPending,
         unsubscribeToUser: unsubscribeToUser,
       );
