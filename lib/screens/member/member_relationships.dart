@@ -38,9 +38,8 @@ class MemberRelationships extends StatelessWidget {
   final UserData userProfile;
   final UserRepo userProvider;
 
-  subscribeToUser({
+  Future<void> subscribeToUser({
     BuildContext buildContext,
-    String userAddress,
     String memberAddress,
   }) async {
     JuntoLoader.showLoader(buildContext);
@@ -48,9 +47,7 @@ class MemberRelationships extends StatelessWidget {
       // add member to follow perspective
       await userProvider.addUsersToPerspective(
           userProfile.userPerspective.address, <String>[memberProfile.address]);
-
       refreshRelations();
-
       JuntoLoader.hide();
     } on JuntoException catch (error) {
       print(error.message);
@@ -64,47 +61,27 @@ class MemberRelationships extends StatelessWidget {
     }
   }
 
-  Future<void> _unsubscribeToUser(BuildContext context) async {
-    JuntoLoader.showLoader(context);
-    try {
-      // get address of follow perspective
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final Map<String, dynamic> decodedUserData =
-          jsonDecode(prefs.getString('user_data'));
-      final UserData userProfile = UserData.fromMap(decodedUserData);
-      // add member to follow perspective
-      await userProvider.deleteUsersFromPerspective(
-        <Map<String, String>>[
-          <String, String>{'user_address': memberProfile.address}
-        ],
-        userProfile.userPerspective.address,
-      );
-      refreshRelations();
-      JuntoLoader.hide();
-      Navigator.pop(context);
-    } on JuntoException catch (error) {
-      JuntoLoader.hide();
-      showDialog(
-        context: context,
-        builder: (BuildContext context) => const SingleActionDialog(
-          dialogText: 'Hmm, something went wrong.',
-        ),
-      );
-    }
-  }
+  Future<void> connectWithUser({
+    BuildContext buildContext,
+    String memberAddress,
+  }) async {
+    JuntoLoader.showLoader(buildContext);
 
-  Future<void> _connectWithUser(BuildContext context) async {
-    JuntoLoader.showLoader(context);
+    // subscribe to user if not already following
+    if (!isFollowing) {
+      await userProvider.addUsersToPerspective(
+          userProfile.userPerspective.address, <String>[memberProfile.address]);
+    }
     try {
       await userProvider.connectUser(memberProfile.address);
       refreshRelations();
       JuntoLoader.hide();
-      await showFeedback(context, message: 'Connection Sent!');
-      Navigator.pop(context);
+      await showFeedback(buildContext, message: 'Connection Sent!');
     } on JuntoException catch (error) {
+      print(error);
       JuntoLoader.hide();
       showDialog(
-        context: context,
+        context: buildContext,
         builder: (BuildContext context) => const SingleActionDialog(
           dialogText: 'Hmm, something went wrong.',
         ),
@@ -173,6 +150,36 @@ class MemberRelationships extends StatelessWidget {
     }
   }
 
+  // unsubscribe
+  Future<void> _unsubscribeToUser(BuildContext context) async {
+    JuntoLoader.showLoader(context);
+    try {
+      // get address of follow perspective
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final Map<String, dynamic> decodedUserData =
+          jsonDecode(prefs.getString('user_data'));
+      final UserData userProfile = UserData.fromMap(decodedUserData);
+      // add member to follow perspective
+      await userProvider.deleteUsersFromPerspective(
+        <Map<String, String>>[
+          <String, String>{'user_address': memberProfile.address}
+        ],
+        userProfile.userPerspective.address,
+      );
+      refreshRelations();
+      JuntoLoader.hide();
+      Navigator.pop(context);
+    } on JuntoException catch (error) {
+      JuntoLoader.hide();
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => const SingleActionDialog(
+          dialogText: 'Hmm, something went wrong.',
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -233,6 +240,7 @@ class MemberRelationships extends StatelessWidget {
       return NoRelationshipActionItems(
         buildContext: context,
         subscribeToUser: subscribeToUser,
+        connectWithUser: connectWithUser,
         userProfile: userProfile,
         memberProfile: memberProfile,
       );

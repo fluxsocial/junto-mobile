@@ -66,7 +66,12 @@ class NoRelationshipActionItems extends StatelessWidget {
           ),
         ),
         GestureDetector(
-          onTap: () {},
+          onTap: () {
+            connectWithUser(
+              buildContext: buildContext,
+              memberAddress: memberProfile.address,
+            );
+          },
           child: Container(
             decoration: BoxDecoration(
               border: Border(
