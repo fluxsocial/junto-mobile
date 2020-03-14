@@ -166,12 +166,10 @@ class ExpressionServiceCentralized implements ExpressionService {
   @override
   Future<QueryResults<ExpressionResponse>> getCollectiveExpressions(
       Map<String, String> params) async {
-    print(params);
     final http.Response response = await client.get(
       '/expressions',
       queryParams: params,
     );
-    print(response.statusCode);
     final dynamic results = JuntoHttp.handleResponse(response);
     if (results != null && results is Map<dynamic, dynamic>) {
       return QueryResults<ExpressionResponse>(
@@ -182,8 +180,7 @@ class ExpressionServiceCentralized implements ExpressionService {
         lastTimestamp: results['last_timestamp'],
       );
     }
-    //FIXME(Nash+Josh): The server response for a dos query does not follow the format for standard "Collective" query.
-    // Both should return data using the same "query" format.
+
     if (results != null && results is List<dynamic>) {
       return QueryResults<ExpressionResponse>(
         results: <ExpressionResponse>[
