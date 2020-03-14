@@ -3,14 +3,14 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/pack_open_appbar.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/pack_members.dart';
+import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/pack_open_appbar.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/group_expressions.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
-import 'package:junto_beta_mobile/backend/repositories.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PackOpen extends StatefulWidget {
   const PackOpen({
@@ -34,6 +34,7 @@ class PackOpenState extends State<PackOpen> {
   Future<List<Users>> getPackMembers;
 
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -132,16 +133,20 @@ class PackOpenState extends State<PackOpen> {
               child: TabBarView(
                 children: <Widget>[
                   GroupExpressions(
+                    key: UniqueKey(),
                     group: widget.pack,
                     userAddress: _userAddress,
                     expressionsPrivacy: 'Public',
                   ),
                   GroupExpressions(
+                    key: UniqueKey(),
                     group: widget.pack,
                     userAddress: _userAddress,
                     expressionsPrivacy: 'Private',
                   ),
-                  PackOpenMembers(getPackMembers: getPackMembers)
+                  PackOpenMembers(
+                    getPackMembers: getPackMembers,
+                  )
                 ],
               ),
             ),
