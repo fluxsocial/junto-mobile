@@ -397,9 +397,11 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
     return SafeArea(
       top: false,
       child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 10,
-          vertical: 20,
+        padding: const EdgeInsets.only(
+          left: 10,
+          right: 10,
+          top: 14.0,
+          bottom: 46.0,
         ),
         decoration: BoxDecoration(
           border: Border(
