@@ -13,8 +13,9 @@ Future<void> showFeedback(
 }) async {
   showGeneralDialog(
     context: context,
-    barrierDismissible: false,
+    barrierDismissible: true,
     transitionDuration: duration,
+    barrierLabel: 'User feedback: $message',
     pageBuilder: (
       BuildContext context,
       Animation<double> animation,

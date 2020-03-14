@@ -11,11 +11,11 @@ import 'package:junto_beta_mobile/screens/expression_open/expressions/event_open
 import 'package:junto_beta_mobile/screens/expression_open/expressions/longform_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/photo_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/shortform_open.dart';
-import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:junto_beta_mobile/widgets/previews/comment_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
-import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:provider/provider.dart';
 
 class ExpressionOpen extends StatefulWidget {
@@ -132,13 +132,15 @@ class ExpressionOpenState extends State<ExpressionOpen> {
         );
         commentController.clear();
         JuntoLoader.hide();
-        showFeedback(context,
-            icon: Icon(
-              CustomIcons.create,
-              size: 17,
-              color: Theme.of(context).primaryColor,
-            ),
-            message: 'Comment Created');
+        await showFeedback(
+          context,
+          icon: Icon(
+            CustomIcons.create,
+            size: 17,
+            color: Theme.of(context).primaryColor,
+          ),
+          message: 'Comment Created',
+        );
         await _refreshComments();
         _openComments();
       } catch (error) {
