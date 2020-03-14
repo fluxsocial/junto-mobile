@@ -3,11 +3,17 @@ import 'package:flutter/material.dart';
 
 class NoRelationshipActionItems extends StatelessWidget {
   const NoRelationshipActionItems({
+    this.buildContext,
     this.subscribeToUser,
     this.connectWithUser,
     this.inviteToPack,
+    this.userProfile,
+    this.memberProfile,
   });
 
+  final BuildContext buildContext;
+  final userProfile;
+  final memberProfile;
   final subscribeToUser;
   final connectWithUser;
   final inviteToPack;
@@ -17,7 +23,13 @@ class NoRelationshipActionItems extends StatelessWidget {
     return Column(
       children: <Widget>[
         GestureDetector(
-          onTap: () {},
+          onTap: () {
+            subscribeToUser(
+              buildContext: buildContext,
+              userAddress: userProfile.user.address,
+              memberAddress: memberProfile.address,
+            );
+          },
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 20),
             decoration: BoxDecoration(

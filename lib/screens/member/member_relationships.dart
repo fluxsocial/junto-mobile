@@ -38,15 +38,13 @@ class MemberRelationships extends StatelessWidget {
   final UserData userProfile;
   final UserRepo userProvider;
 
-  Future<void> _subscribeToUser(BuildContext context) async {
-    print('subscribing to user');
-    JuntoLoader.showLoader(context);
+  subscribeToUser({
+    BuildContext buildContext,
+    String userAddress,
+    String memberAddress,
+  }) async {
+    JuntoLoader.showLoader(buildContext);
     try {
-      // get address of follow perspective
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final Map<String, dynamic> decodedUserData =
-          jsonDecode(prefs.getString('user_data'));
-      final UserData userProfile = UserData.fromMap(decodedUserData);
       // add member to follow perspective
       await userProvider.addUsersToPerspective(
           userProfile.userPerspective.address, <String>[memberProfile.address]);
@@ -58,7 +56,7 @@ class MemberRelationships extends StatelessWidget {
       print(error.message);
       JuntoLoader.hide();
       showDialog(
-        context: context,
+        context: buildContext,
         builder: (BuildContext context) => const SingleActionDialog(
           dialogText: 'Hmm, something went wrong.',
         ),
@@ -232,9 +230,14 @@ class MemberRelationships extends StatelessWidget {
 
   Widget _displayActionItems(BuildContext context) {
     if (!isFollowing && !isConnected && !isPending) {
-      return NoRelationshipActionItems();
+      return NoRelationshipActionItems(
+        buildContext: context,
+        subscribeToUser: subscribeToUser,
+        userProfile: userProfile,
+        memberProfile: memberProfile,
+      );
     } else if (isFollowing && !isConnected) {
-      return SubscribedActionItems();
+      return SubscribedActionItems(isPending: isPending);
     } else if (isFollowing && isConnected) {
       return ConnectedActionItems();
     }
