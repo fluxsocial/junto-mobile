@@ -10,7 +10,6 @@ import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/zoom_scaffold.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
 
@@ -36,16 +35,10 @@ class JuntoGroupsState extends State<JuntoGroups>
   Widget _currentGroup;
   bool spheresVisible = false;
 
-  MenuController menuController;
-
   @override
   void initState() {
     super.initState();
     getUserInformation();
-
-    menuController = MenuController(
-      vsync: this,
-    )..addListener(() => setState(() {}));
   }
 
   Future<void> getUserInformation() async {
