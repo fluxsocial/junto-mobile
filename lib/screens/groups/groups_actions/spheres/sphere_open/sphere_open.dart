@@ -11,9 +11,6 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_open/sphere_open_about.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_open/sphere_open_appbar.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/group_expressions.dart';
-import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
-import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
@@ -115,6 +112,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                   group: widget.group,
                   userAddress: _userAddress,
                   expressionsPrivacy: 'Public',
+                  shouldRefresh: ValueNotifier<bool>(true),
                 )
             ],
           ),

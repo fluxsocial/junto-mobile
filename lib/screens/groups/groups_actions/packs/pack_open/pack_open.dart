@@ -30,6 +30,8 @@ class PackOpenState extends State<PackOpen> {
   final List<String> _tabs = <String>['Pack', 'Private', 'Members'];
 
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
+  final ValueNotifier<bool> _shouldRefreshPublic = ValueNotifier<bool>(true);
+  final ValueNotifier<bool> _shouldRefreshPack = ValueNotifier<bool>(true);
 
   @override
   void initState() {
@@ -122,16 +124,17 @@ class PackOpenState extends State<PackOpen> {
               child: TabBarView(
                 children: <Widget>[
                   GroupExpressions(
-                    key: UniqueKey(),
-                    group: widget.pack,
-                    userAddress: _userAddress,
-                    expressionsPrivacy: 'Public',
-                  ),
+                      key: const PageStorageKey<String>('public-pack'),
+                      group: widget.pack,
+                      userAddress: _userAddress,
+                      expressionsPrivacy: 'Public',
+                      shouldRefresh: _shouldRefreshPublic),
                   GroupExpressions(
-                    key: UniqueKey(),
+                    key: const PageStorageKey<String>('private-pack'),
                     group: widget.pack,
                     userAddress: _userAddress,
                     expressionsPrivacy: 'Private',
+                    shouldRefresh: _shouldRefreshPack,
                   ),
                   PackOpenMembers(
                     key: UniqueKey(),
