@@ -41,19 +41,16 @@ class MemberRelationships extends StatelessWidget {
   Future<void> subscribeToUser({
     BuildContext buildContext,
   }) async {
-    JuntoLoader.showLoader(buildContext);
     try {
       // add member to follow perspective
       await userProvider.addUsersToPerspective(
           userProfile.userPerspective.address, <String>[memberProfile.address]);
       refreshRelations();
-      JuntoLoader.hide();
     } on JuntoException catch (error) {
-      print(error.message);
-      JuntoLoader.hide();
+      print(error);
       showDialog(
         context: buildContext,
-        builder: (BuildContext context) => const SingleActionDialog(
+        builder: (BuildContext buildContext) => const SingleActionDialog(
           dialogText: 'Hmm, something went wrong.',
         ),
       );
@@ -63,8 +60,6 @@ class MemberRelationships extends StatelessWidget {
   Future<void> connectWithUser({
     BuildContext buildContext,
   }) async {
-    JuntoLoader.showLoader(buildContext);
-
     // subscribe to user if not already following
     if (!isFollowing) {
       await userProvider.addUsersToPerspective(
@@ -73,14 +68,11 @@ class MemberRelationships extends StatelessWidget {
     try {
       await userProvider.connectUser(memberProfile.address);
       refreshRelations();
-      JuntoLoader.hide();
-      await showFeedback(buildContext, message: 'Connection Sent!');
     } on JuntoException catch (error) {
       print(error);
-      JuntoLoader.hide();
       showDialog(
         context: buildContext,
-        builder: (BuildContext context) => const SingleActionDialog(
+        builder: (BuildContext buildContext) => const SingleActionDialog(
           dialogText: 'Hmm, something went wrong.',
         ),
       );
@@ -93,12 +85,9 @@ class MemberRelationships extends StatelessWidget {
       FlatButton(
         onPressed: () async {
           try {
-            JuntoLoader.showLoader(context);
             await userProvider.removeUserConnection(memberProfile.address);
             refreshRelations();
-            JuntoLoader.hide();
           } on JuntoException catch (error) {
-            JuntoLoader.hide();
             showDialog(
               context: context,
               builder: (BuildContext context) => const SingleActionDialog(
@@ -150,7 +139,6 @@ class MemberRelationships extends StatelessWidget {
 
   // unsubscribe
   Future<void> unsubscribeToUser(BuildContext buildContext) async {
-    JuntoLoader.showLoader(buildContext);
     try {
       await userProvider.deleteUsersFromPerspective(
         <Map<String, String>>[
@@ -159,12 +147,10 @@ class MemberRelationships extends StatelessWidget {
         userProfile.userPerspective.address,
       );
       refreshRelations();
-      JuntoLoader.hide();
     } on JuntoException catch (error) {
-      JuntoLoader.hide();
       showDialog(
         context: buildContext,
-        builder: (BuildContext context) => const SingleActionDialog(
+        builder: (BuildContext buildContext) => const SingleActionDialog(
           dialogText: 'Hmm, something went wrong.',
         ),
       );
@@ -226,16 +212,16 @@ class MemberRelationships extends StatelessWidget {
     );
   }
 
-  Widget _displayActionItems(BuildContext context) {
+  Widget _displayActionItems(BuildContext buildContext) {
     if (!isFollowing && !isConnected && !isPending) {
       return NoRelationshipActionItems(
-        buildContext: context,
+        buildContext: buildContext,
         subscribeToUser: subscribeToUser,
         connectWithUser: connectWithUser,
       );
     } else if (isFollowing && !isConnected) {
       return SubscribedActionItems(
-        buildContext: context,
+        buildContext: buildContext,
         isPending: isPending,
         unsubscribeToUser: unsubscribeToUser,
       );
