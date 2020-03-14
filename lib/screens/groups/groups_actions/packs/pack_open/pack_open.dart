@@ -145,6 +145,7 @@ class PackOpenState extends State<PackOpen> {
                     expressionsPrivacy: 'Private',
                   ),
                   PackOpenMembers(
+                    key: UniqueKey(),
                     getPackMembers: getPackMembers,
                   )
                 ],
