@@ -1,23 +1,43 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 
 class ConnectedActionItems extends StatelessWidget {
   const ConnectedActionItems({
+    this.buildContext,
+    this.isFollowing,
+    this.isPending,
     this.subscribeToUser,
-    this.connectWithUser,
+    this.unsubscribeToUser,
+    this.disconnectWithUser,
     this.inviteToPack,
   });
 
-  final Future<void> subscribeToUser;
-  final Future<void> connectWithUser;
-  final Future<void> inviteToPack;
+  final BuildContext buildContext;
+  final bool isFollowing;
+  final bool isPending;
+  final Function subscribeToUser;
+  final Function unsubscribeToUser;
+  final Function disconnectWithUser;
+  final Function inviteToPack;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
         GestureDetector(
-          onTap: () {},
+          onTap: () {
+            isFollowing
+                ? showDialog(
+                    context: context,
+                    builder: (BuildContext context) => ConfirmDialog(
+                      buildContext: buildContext,
+                      confirmationText: 'Are you sure you want to unsubscribe?',
+                      confirm: unsubscribeToUser,
+                    ),
+                  )
+                : subscribeToUser(buildContext);
+          },
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 20),
             decoration: BoxDecoration(
@@ -31,7 +51,7 @@ class ConnectedActionItems extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  'SUBSCRIBED',
+                  isFollowing ? 'SUBSCRIBED' : 'SUBSCRIBE',
                   style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
@@ -42,28 +62,38 @@ class ConnectedActionItems extends StatelessWidget {
                 Container(
                   padding:
                       const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                        color: Theme.of(context).backgroundColor, width: 1.2),
-                    borderRadius: BorderRadius.circular(5),
-                    gradient: LinearGradient(
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                      stops: const <double>[0.1, 0.9],
-                      colors: <Color>[
-                        Theme.of(context).colorScheme.secondary,
-                        Theme.of(context).colorScheme.primary
-                      ],
-                    ),
-                  ),
-                  child: Icon(Icons.check, size: 15, color: Colors.white),
+                  decoration: isFollowing
+                      ? BoxDecoration(
+                          border: Border.all(
+                              color: Theme.of(context).backgroundColor,
+                              width: 1.2),
+                          borderRadius: BorderRadius.circular(5),
+                          gradient: LinearGradient(
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            stops: const <double>[0.1, 0.9],
+                            colors: <Color>[
+                              Theme.of(context).colorScheme.secondary,
+                              Theme.of(context).colorScheme.primary
+                            ],
+                          ),
+                        )
+                      : BoxDecoration(
+                          border: Border.all(
+                              color: Theme.of(context).primaryColor,
+                              width: 1.2),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                  child: isFollowing
+                      ? Icon(Icons.check, size: 15, color: Colors.white)
+                      : Icon(Icons.add,
+                          size: 15, color: Theme.of(context).primaryColor),
                 )
               ],
             ),
           ),
         ),
         GestureDetector(
-          onTap: () {},
           child: Container(
             decoration: BoxDecoration(
               border: Border(
@@ -75,33 +105,56 @@ class ConnectedActionItems extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text(
-                  'CONNECTED',
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: Theme.of(context).primaryColor,
-                      decoration: TextDecoration.none,
-                      letterSpacing: 1.2),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      'CONNECT',
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                          color: Theme.of(context).primaryColor,
+                          decoration: TextDecoration.none,
+                          letterSpacing: 1.2),
+                    ),
+                    isPending
+                        ? Container(
+                            margin: const EdgeInsets.only(top: 2.5),
+                            child: Text('PENDING',
+                                style: Theme.of(context).textTheme.overline))
+                        : const SizedBox()
+                  ],
                 ),
                 Container(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          color: Theme.of(context).backgroundColor, width: 1.2),
-                      borderRadius: BorderRadius.circular(5),
-                      gradient: LinearGradient(
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
-                        stops: const <double>[0.1, 0.9],
-                        colors: <Color>[
-                          Theme.of(context).colorScheme.secondary,
-                          Theme.of(context).colorScheme.primary
-                        ],
-                      ),
-                    ),
-                    child: Icon(Icons.check, size: 15, color: Colors.white))
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                  decoration: isPending
+                      ? BoxDecoration(
+                          border: Border.all(
+                              color: Theme.of(context).backgroundColor,
+                              width: 1.2),
+                          borderRadius: BorderRadius.circular(5),
+                          gradient: LinearGradient(
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            stops: const <double>[0.1, 0.9],
+                            colors: <Color>[
+                              Theme.of(context).colorScheme.secondary,
+                              Theme.of(context).colorScheme.primary
+                            ],
+                          ),
+                        )
+                      : BoxDecoration(
+                          border: Border.all(
+                              color: Theme.of(context).primaryColor,
+                              width: 1.2),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                  child: isPending
+                      ? Icon(Icons.check, size: 15, color: Colors.white)
+                      : Icon(Icons.add,
+                          size: 15, color: Theme.of(context).primaryColor),
+                )
               ],
             ),
           ),

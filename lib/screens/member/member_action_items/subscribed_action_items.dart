@@ -8,15 +8,12 @@ class SubscribedActionItems extends StatelessWidget {
     this.unsubscribeToUser,
     this.connectWithUser,
     this.inviteToPack,
-    this.isPending,
   });
 
   final BuildContext buildContext;
-
   final Function unsubscribeToUser;
   final Function connectWithUser;
   final Function inviteToPack;
-  final bool isPending;
 
   @override
   Widget build(BuildContext context) {
@@ -101,42 +98,21 @@ class SubscribedActionItems extends StatelessWidget {
                           decoration: TextDecoration.none,
                           letterSpacing: 1.2),
                     ),
-                    isPending
-                        ? Container(
-                            margin: const EdgeInsets.only(top: 2.5),
-                            child: Text('PENDING',
-                                style: Theme.of(context).textTheme.overline))
-                        : const SizedBox()
                   ],
                 ),
                 Container(
                   padding:
                       const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                  decoration: isPending
-                      ? BoxDecoration(
-                          border: Border.all(
-                              color: Theme.of(context).backgroundColor,
-                              width: 1.2),
-                          borderRadius: BorderRadius.circular(5),
-                          gradient: LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            stops: const <double>[0.1, 0.9],
-                            colors: <Color>[
-                              Theme.of(context).colorScheme.secondary,
-                              Theme.of(context).colorScheme.primary
-                            ],
-                          ),
-                        )
-                      : BoxDecoration(
-                          border: Border.all(
-                              color: Theme.of(context).primaryColor,
-                              width: 1.2),
-                          borderRadius: BorderRadius.circular(5)),
-                  child: isPending
-                      ? Icon(Icons.check, size: 15, color: Colors.white)
-                      : Icon(Icons.add,
-                          size: 15, color: Theme.of(context).primaryColor),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        color: Theme.of(context).primaryColor, width: 1.2),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Icon(
+                    Icons.add,
+                    size: 15,
+                    color: Theme.of(context).primaryColor,
+                  ),
                 )
               ],
             ),
@@ -148,7 +124,9 @@ class SubscribedActionItems extends StatelessWidget {
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                    color: Theme.of(context).dividerColor, width: .5),
+                  color: Theme.of(context).dividerColor,
+                  width: .5,
+                ),
               ),
             ),
             padding: const EdgeInsets.symmetric(vertical: 20),

@@ -18,7 +18,8 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MemberRelationships extends StatelessWidget {
-  const MemberRelationships({
+  MemberRelationships({
+    Key key,
     this.isFollowing,
     this.isConnected,
     this.isPending,
@@ -27,7 +28,7 @@ class MemberRelationships extends StatelessWidget {
     this.toggleMemberRelationships,
     this.memberProfile,
     this.refreshRelations,
-  });
+  }) : super(key: key);
 
   final bool isFollowing;
   final bool isConnected;
@@ -38,19 +39,17 @@ class MemberRelationships extends StatelessWidget {
   final UserData userProfile;
   final UserRepo userProvider;
 
-  Future<void> subscribeToUser({
-    BuildContext buildContext,
-  }) async {
+  Future<void> subscribeToUser(BuildContext buildContext) async {
     try {
       // add member to follow perspective
       await userProvider.addUsersToPerspective(
           userProfile.userPerspective.address, <String>[memberProfile.address]);
       refreshRelations();
     } on JuntoException catch (error) {
-      print(error);
+      print(error.message);
       showDialog(
         context: buildContext,
-        builder: (BuildContext buildContext) => const SingleActionDialog(
+        builder: (BuildContext context) => const SingleActionDialog(
           dialogText: 'Hmm, something went wrong.',
         ),
       );
@@ -79,7 +78,7 @@ class MemberRelationships extends StatelessWidget {
     }
   }
 
-  Future<void> _disconnectWithUser(BuildContext context) async {
+  Future<void> disconnectWithUser(BuildContext context) async {
     JuntoDialog.showJuntoDialog(
         context, 'Are you sure you want to disconnect?', <Widget>[
       FlatButton(
@@ -108,7 +107,7 @@ class MemberRelationships extends StatelessWidget {
     ]);
   }
 
-  Future<void> _inviteToPack(BuildContext context) async {
+  Future<void> inviteToPack(BuildContext context) async {
     JuntoLoader.showLoader(context);
     try {
       await Provider.of<GroupRepo>(context, listen: false).addGroupMember(
@@ -219,15 +218,26 @@ class MemberRelationships extends StatelessWidget {
         subscribeToUser: subscribeToUser,
         connectWithUser: connectWithUser,
       );
-    } else if (isFollowing && !isConnected) {
+    } else if (isFollowing && !isConnected && !isPending) {
       return SubscribedActionItems(
         buildContext: buildContext,
-        isPending: isPending,
         unsubscribeToUser: unsubscribeToUser,
       );
-    } else if (isFollowing && isConnected) {
-      return ConnectedActionItems();
+    } else if (isConnected || isPending) {
+      return ConnectedActionItems(
+        buildContext: buildContext,
+        subscribeToUser: subscribeToUser,
+        unsubscribeToUser: unsubscribeToUser,
+        disconnectWithUser: disconnectWithUser,
+        inviteToPack: inviteToPack,
+        isPending: isPending,
+        isFollowing: isFollowing,
+      );
     }
-    return NoRelationshipActionItems();
+    return NoRelationshipActionItems(
+      buildContext: buildContext,
+      subscribeToUser: subscribeToUser,
+      connectWithUser: connectWithUser,
+    );
   }
 }
