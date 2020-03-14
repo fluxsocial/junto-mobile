@@ -100,7 +100,7 @@ class ExpressionActionItems extends StatelessWidget {
             showDialog(
               context: context,
               builder: (BuildContext context) => ConfirmDialog(
-                context: context,
+                buildContext: context,
                 confirm: _deleteExpression,
                 confirmationText:
                     'Are you sure you want to delete this expression?',

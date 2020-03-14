@@ -88,7 +88,7 @@ class OwnerActionItems extends StatelessWidget {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) => ConfirmDialog(
-                        context: context,
+                        buildContext: context,
                         confirm: deleteCircle,
                         confirmationText:
                             'Are you sure you want to delete this circle?',

@@ -4,13 +4,19 @@ import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 
 class SubscribedActionItems extends StatelessWidget {
   const SubscribedActionItems({
-    this.subscribeToUser,
+    this.buildContext,
+    this.userProfile,
+    this.memberProfile,
+    this.unsubscribeToUser,
     this.connectWithUser,
     this.inviteToPack,
     this.isPending,
   });
 
-  final subscribeToUser;
+  final BuildContext buildContext;
+  final userProfile;
+  final memberProfile;
+  final unsubscribeToUser;
   final connectWithUser;
   final inviteToPack;
   final bool isPending;
@@ -24,8 +30,9 @@ class SubscribedActionItems extends StatelessWidget {
             showDialog(
               context: context,
               builder: (BuildContext context) => ConfirmDialog(
-                context: context,
+                buildContext: buildContext,
                 confirmationText: 'Are you sure you want to unsubscribe?',
+                confirm: unsubscribeToUser,
               ),
             );
           },
