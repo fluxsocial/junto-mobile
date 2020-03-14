@@ -38,7 +38,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
   UserData _userProfile;
   double _flexibleHeightSpace;
   final List<String> _tabs = <String>['ABOUT', 'EXPRESSIONS'];
-
+  final ValueNotifier<bool> shouldRefresh = ValueNotifier<bool>(true);
   Map<String, dynamic> relationToGroup;
 
   void _getFlexibleSpaceSize(_) {
@@ -109,10 +109,11 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
               ),
               if (widget.group.address != null)
                 GroupExpressions(
+                  key: ValueKey<String>(widget.group.address),
                   group: widget.group,
                   userAddress: _userAddress,
                   expressionsPrivacy: 'Public',
-                  shouldRefresh: ValueNotifier<bool>(true),
+                  shouldRefresh: shouldRefresh,
                 )
             ],
           ),
