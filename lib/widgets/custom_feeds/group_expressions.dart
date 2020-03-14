@@ -1,9 +1,8 @@
-import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/widgets/custom_feeds/filter_column_row.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
+import 'package:junto_beta_mobile/widgets/custom_feeds/filter_column_row.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,12 +14,14 @@ class GroupExpressions extends StatefulWidget {
     @required this.group,
     @required this.userAddress,
     @required this.expressionsPrivacy,
+    @required this.shouldRefresh,
   }) : super(key: key);
 
   /// Group
   final Group group;
   final String userAddress;
   final String expressionsPrivacy;
+  final ValueNotifier<bool> shouldRefresh;
 
   @override
   _GroupExpressionsState createState() => _GroupExpressionsState();
@@ -29,19 +30,39 @@ class GroupExpressions extends StatefulWidget {
 class _GroupExpressionsState extends State<GroupExpressions> {
   bool twoColumnView = true;
 
-  final AsyncMemoizer<QueryResults<ExpressionResponse>> _memoizer =
-      AsyncMemoizer<QueryResults<ExpressionResponse>>();
+  @override
+  void initState() {
+    super.initState();
+    getUserInformation();
+  }
 
+  /// Fetches the pack's expression and aches the result
   Future<QueryResults<ExpressionResponse>> _getGroupExpressions() async {
-    final Map<String, String> _params = <String, String>{
-      'context': widget.group.address,
-      'context_type': 'Group',
-      'pagination_position': '0',
-    };
-    return _memoizer.runOnce(
-      () => Provider.of<ExpressionRepo>(context, listen: false)
-          .getCollectiveExpressions(_params),
-    );
+    if (widget.shouldRefresh.value) {
+      final Map<String, String> _params = <String, String>{
+        'context': widget.group.address,
+        'context_type': 'Group',
+        'pagination_position': '0',
+      };
+      widget.shouldRefresh.value = false;
+      final QueryResults<ExpressionResponse> results =
+          await Provider.of<ExpressionRepo>(
+        context,
+        listen: false,
+      ).getPackExpressions(
+        _params,
+      );
+      // Rebuild UI with results
+      setState(() {});
+      return results;
+    } else {
+      return Provider.of<ExpressionRepo>(context).cachedResults;
+    }
+  }
+
+  Future<void> _onRefresh() async {
+    widget.shouldRefresh.value = true;
+    _getGroupExpressions();
   }
 
   Future<void> _switchColumnView(String columnType) async {
@@ -60,7 +81,6 @@ class _GroupExpressionsState extends State<GroupExpressions> {
 
   Future<void> getUserInformation() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-
     setState(() {
       if (prefs.getBool('two-column-view') != null) {
         twoColumnView = prefs.getBool('two-column-view');
@@ -69,14 +89,7 @@ class _GroupExpressionsState extends State<GroupExpressions> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    getUserInformation();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    // public expressions of user
     return FutureBuilder<QueryResults<ExpressionResponse>>(
       future: _getGroupExpressions(),
       builder: (
@@ -100,52 +113,52 @@ class _GroupExpressionsState extends State<GroupExpressions> {
         if (snapshot.hasData) {
           return Container(
             color: Theme.of(context).colorScheme.background,
-            child: ListView(
-              children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    if (snapshot.data.results.isNotEmpty &&
-                        snapshot.data.results[0].privacy ==
-                            widget.expressionsPrivacy)
-                      FilterColumnRow(
-                        twoColumnView: twoColumnView,
-                        switchColumnView: _switchColumnView,
+            child: RefreshIndicator(
+              onRefresh: _onRefresh,
+              child: ListView(
+                children: <Widget>[
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      if (snapshot.data.results.isNotEmpty &&
+                          snapshot.data.results[0].privacy ==
+                              widget.expressionsPrivacy)
+                        FilterColumnRow(
+                          twoColumnView: twoColumnView,
+                          switchColumnView: _switchColumnView,
+                        ),
+                      Container(
+                        color: Theme.of(context).colorScheme.background,
+                        child: AnimatedCrossFade(
+                          crossFadeState: twoColumnView
+                              ? CrossFadeState.showFirst
+                              : CrossFadeState.showSecond,
+                          duration: const Duration(
+                            milliseconds: 200,
+                          ),
+                          firstChild: TwoColumnListView(
+                            userAddress: widget.userAddress,
+                            data: snapshot.data.results,
+                            privacyLayer: widget.expressionsPrivacy,
+                            showComments: false,
+                          ),
+                          secondChild: SingleColumnListView(
+                            userAddress: widget.userAddress,
+                            data: snapshot.data.results,
+                            privacyLayer: widget.expressionsPrivacy,
+                            showComments: false,
+                          ),
+                        ),
                       ),
-                    Container(
-                      color: Theme.of(context).colorScheme.background,
-                      child: AnimatedCrossFade(
-                        crossFadeState: twoColumnView
-                            ? CrossFadeState.showFirst
-                            : CrossFadeState.showSecond,
-                        duration: const Duration(
-                          milliseconds: 200,
-                        ),
-                        firstChild: TwoColumnListView(
-                          userAddress: widget.userAddress,
-                          data: snapshot.data.results,
-                          privacyLayer: widget.expressionsPrivacy,
-                          showComments: false,
-                        ),
-                        secondChild: SingleColumnListView(
-                          userAddress: widget.userAddress,
-                          data: snapshot.data.results,
-                          privacyLayer: widget.expressionsPrivacy,
-                          showComments: false,
-                        ),
-                      ),
-                    ),
-                  ],
-                )
-              ],
+                    ],
+                  )
+                ],
+              ),
             ),
           );
         }
         return Center(
-          child: Transform.translate(
-            offset: const Offset(0.0, -50),
-            child: JuntoProgressIndicator(),
-          ),
+          child: JuntoProgressIndicator(),
         );
       },
     );
