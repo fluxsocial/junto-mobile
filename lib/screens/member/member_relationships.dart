@@ -78,49 +78,30 @@ class MemberRelationships extends StatelessWidget {
     }
   }
 
-  Future<void> disconnectWithUser(BuildContext context) async {
-    JuntoDialog.showJuntoDialog(
-        context, 'Are you sure you want to disconnect?', <Widget>[
-      FlatButton(
-        onPressed: () async {
-          try {
-            await userProvider.removeUserConnection(memberProfile.address);
-            refreshRelations();
-          } on JuntoException catch (error) {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) => const SingleActionDialog(
-                dialogText: 'Hmm, something went wrong.',
-              ),
-            );
-          }
-          Navigator.pop(context);
-        },
-        child: const Text('Yes'),
-      ),
-      FlatButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        child: const Text('No'),
-      ),
-    ]);
+  Future<void> disconnectWithUser(BuildContext buildContext) async {
+    try {
+      await userProvider.removeUserConnection(memberProfile.address);
+      refreshRelations();
+    } on JuntoException catch (error) {
+      print(error.message);
+      showDialog(
+        context: buildContext,
+        builder: (BuildContext context) => const SingleActionDialog(
+          dialogText: 'Hmm, something went wrong.',
+        ),
+      );
+    }
   }
 
-  Future<void> inviteToPack(BuildContext context) async {
-    JuntoLoader.showLoader(context);
+  Future<void> inviteToPack(BuildContext buildContext) async {
     try {
-      await Provider.of<GroupRepo>(context, listen: false).addGroupMember(
+      await Provider.of<GroupRepo>(buildContext, listen: false).addGroupMember(
           userProfile.pack.address, <UserProfile>[memberProfile], 'Member');
       refreshRelations();
-      JuntoLoader.hide();
-      await showFeedback(context, message: 'Invited to Pack');
-      Navigator.pop(context);
     } on JuntoException catch (error) {
-      JuntoLoader.hide();
       if (error.message.contains('does not exist or is already a group member'))
         showDialog(
-          context: context,
+          context: buildContext,
           builder: (BuildContext context) => const SingleActionDialog(
             dialogText: 'Already sent a connection.',
           ),
@@ -128,7 +109,7 @@ class MemberRelationships extends StatelessWidget {
       if (!error.message
           .contains('does not exist or is already a group member'))
         showDialog(
-          context: context,
+          context: buildContext,
           builder: (BuildContext context) => SingleActionDialog(
             dialogText: error.message,
           ),

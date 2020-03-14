@@ -94,6 +94,11 @@ class ConnectedActionItems extends StatelessWidget {
           ),
         ),
         GestureDetector(
+          onTap: () {
+            if (!isPending) {
+              disconnectWithUser(buildContext);
+            }
+          },
           child: Container(
             decoration: BoxDecoration(
               border: Border(
@@ -109,7 +114,7 @@ class ConnectedActionItems extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      'CONNECT',
+                      isPending ? 'CONNECT' : 'CONNECTED',
                       style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
@@ -160,7 +165,9 @@ class ConnectedActionItems extends StatelessWidget {
           ),
         ),
         GestureDetector(
-          onTap: () {},
+          onTap: () {
+            inviteToPack(buildContext);
+          },
           child: Container(
             decoration: BoxDecoration(
               border: Border(
