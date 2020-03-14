@@ -37,7 +37,7 @@ Future<void> showFeedback(
     },
   );
   await Future<void>.delayed(const Duration(milliseconds: 730) + duration);
-  Navigator.of(context).pop();
+  Navigator.pop(context);
 }
 
 class _FeedbackBody extends StatelessWidget {

@@ -1,9 +1,10 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/appbar/collective_appbar.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
-import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Homepage feed containing a List of expression for the given perspective.
 /// The following parameters must be supplied:
@@ -11,7 +12,6 @@ import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 ///  - [expressionCompleter]
 ///  - [collectiveController]
 ///  - [appbarTitle]
-///  - [userAddress]
 class ExpressionFeed extends StatefulWidget {
   const ExpressionFeed({
     Key key,
@@ -19,7 +19,6 @@ class ExpressionFeed extends StatefulWidget {
     @required this.expressionCompleter,
     @required this.collectiveController,
     @required this.appbarTitle,
-    @required this.userAddress,
   })  : assert(refreshData != null),
         assert(expressionCompleter != null),
         assert(collectiveController != null),
@@ -30,7 +29,6 @@ class ExpressionFeed extends StatefulWidget {
       expressionCompleter;
   final ScrollController collectiveController;
   final ValueNotifier<String> appbarTitle;
-  final String userAddress;
 
   @override
   _ExpressionFeedState createState() => _ExpressionFeedState();
@@ -38,6 +36,7 @@ class ExpressionFeed extends StatefulWidget {
 
 class _ExpressionFeedState extends State<ExpressionFeed> {
   bool twoColumnView = false;
+  String _userAddress;
 
   /// Changes the list view from two column layout to single
   void _switchColumnView(String columnType) {
@@ -48,6 +47,20 @@ class _ExpressionFeedState extends State<ExpressionFeed> {
         twoColumnView = false;
       }
     });
+  }
+
+  Future<void> getUserInformation() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      _userAddress = prefs.getString('user_id');
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUserInformation();
   }
 
   @override
@@ -105,11 +118,11 @@ class _ExpressionFeedState extends State<ExpressionFeed> {
                           duration: const Duration(milliseconds: 300),
                           firstCurve: Curves.easeInOut,
                           firstChild: TwoColumnSliverListView(
-                            userAddress: widget.userAddress,
+                            userAddress: _userAddress,
                             data: snapshot.data.results,
                           ),
                           secondChild: SingleColumnSliverListView(
-                            userAddress: widget.userAddress,
+                            userAddress: _userAddress,
                             data: snapshot.data.results,
                             privacyLayer: 'Public',
                           ),

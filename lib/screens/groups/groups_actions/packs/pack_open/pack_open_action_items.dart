@@ -67,7 +67,7 @@ class PackOpenActionItems extends StatelessWidget {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) => ConfirmDialog(
-                        context: context,
+                        buildContext: context,
                         confirm: leavePack,
                         confirmationText:
                             'Are you sure you want to leave this pack?',

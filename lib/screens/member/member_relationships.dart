@@ -11,20 +11,24 @@ import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
-import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
+import 'package:junto_beta_mobile/screens/member/member_action_items/no_relationship_action_items.dart';
+import 'package:junto_beta_mobile/screens/member/member_action_items/subscribed_action_items.dart';
+import 'package:junto_beta_mobile/screens/member/member_action_items/connected_action_items.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MemberRelationships extends StatelessWidget {
-  const MemberRelationships(
-      {this.isFollowing,
-      this.isConnected,
-      this.isPending,
-      this.userProvider,
-      this.userProfile,
-      this.toggleMemberRelationships,
-      this.memberProfile,
-      this.refreshRelations});
+  MemberRelationships({
+    Key key,
+    this.isFollowing,
+    this.isConnected,
+    this.isPending,
+    this.userProvider,
+    this.userProfile,
+    this.toggleMemberRelationships,
+    this.memberProfile,
+    this.refreshRelations,
+  }) : super(key: key);
 
   final bool isFollowing;
   final bool isConnected;
@@ -35,27 +39,16 @@ class MemberRelationships extends StatelessWidget {
   final UserData userProfile;
   final UserRepo userProvider;
 
-  Future<void> _subscribeToUser(BuildContext context) async {
-    print('subscribing to user');
-    JuntoLoader.showLoader(context);
+  Future<void> subscribeToUser(BuildContext buildContext) async {
     try {
-      // get address of follow perspective
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final Map<String, dynamic> decodedUserData =
-          jsonDecode(prefs.getString('user_data'));
-      final UserData userProfile = UserData.fromMap(decodedUserData);
       // add member to follow perspective
       await userProvider.addUsersToPerspective(
           userProfile.userPerspective.address, <String>[memberProfile.address]);
-
       refreshRelations();
-
-      JuntoLoader.hide();
     } on JuntoException catch (error) {
       print(error.message);
-      JuntoLoader.hide();
       showDialog(
-        context: context,
+        context: buildContext,
         builder: (BuildContext context) => const SingleActionDialog(
           dialogText: 'Hmm, something went wrong.',
         ),
@@ -63,47 +56,36 @@ class MemberRelationships extends StatelessWidget {
     }
   }
 
-  Future<void> _unsubscribeToUser(BuildContext context) async {
-    JuntoLoader.showLoader(context);
-    try {
-      // get address of follow perspective
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final Map<String, dynamic> decodedUserData =
-          jsonDecode(prefs.getString('user_data'));
-      final UserData userProfile = UserData.fromMap(decodedUserData);
-      // add member to follow perspective
-      await userProvider.deleteUsersFromPerspective(
-        <Map<String, String>>[
-          <String, String>{'user_address': memberProfile.address}
-        ],
-        userProfile.userPerspective.address,
-      );
-      refreshRelations();
-      JuntoLoader.hide();
-      Navigator.pop(context);
-    } on JuntoException catch (error) {
-      JuntoLoader.hide();
-      showDialog(
-        context: context,
-        builder: (BuildContext context) => const SingleActionDialog(
-          dialogText: 'Hmm, something went wrong.',
-        ),
-      );
+  Future<void> connectWithUser({
+    BuildContext buildContext,
+  }) async {
+    // subscribe to user if not already following
+    if (!isFollowing) {
+      await userProvider.addUsersToPerspective(
+          userProfile.userPerspective.address, <String>[memberProfile.address]);
     }
-  }
-
-  Future<void> _connectWithUser(BuildContext context) async {
-    JuntoLoader.showLoader(context);
     try {
       await userProvider.connectUser(memberProfile.address);
       refreshRelations();
-      JuntoLoader.hide();
-      await showFeedback(context, message: 'Connection Sent!');
-      Navigator.pop(context);
     } on JuntoException catch (error) {
-      JuntoLoader.hide();
+      print(error);
       showDialog(
-        context: context,
+        context: buildContext,
+        builder: (BuildContext buildContext) => const SingleActionDialog(
+          dialogText: 'Hmm, something went wrong.',
+        ),
+      );
+    }
+  }
+
+  Future<void> disconnectWithUser(BuildContext buildContext) async {
+    try {
+      await userProvider.removeUserConnection(memberProfile.address);
+      refreshRelations();
+    } on JuntoException catch (error) {
+      print(error.message);
+      showDialog(
+        context: buildContext,
         builder: (BuildContext context) => const SingleActionDialog(
           dialogText: 'Hmm, something went wrong.',
         ),
@@ -111,52 +93,15 @@ class MemberRelationships extends StatelessWidget {
     }
   }
 
-  Future<void> _disconnectWithUser(BuildContext context) async {
-    JuntoDialog.showJuntoDialog(
-        context, 'Are you sure you want to disconnect?', <Widget>[
-      FlatButton(
-        onPressed: () async {
-          try {
-            JuntoLoader.showLoader(context);
-            await userProvider.removeUserConnection(memberProfile.address);
-            refreshRelations();
-            JuntoLoader.hide();
-          } on JuntoException catch (error) {
-            JuntoLoader.hide();
-            showDialog(
-              context: context,
-              builder: (BuildContext context) => const SingleActionDialog(
-                dialogText: 'Hmm, something went wrong.',
-              ),
-            );
-          }
-          Navigator.pop(context);
-        },
-        child: const Text('Yes'),
-      ),
-      FlatButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        child: const Text('No'),
-      ),
-    ]);
-  }
-
-  Future<void> _inviteToPack(BuildContext context) async {
-    JuntoLoader.showLoader(context);
+  Future<void> inviteToPack(BuildContext buildContext) async {
     try {
-      await Provider.of<GroupRepo>(context, listen: false).addGroupMember(
+      await Provider.of<GroupRepo>(buildContext, listen: false).addGroupMember(
           userProfile.pack.address, <UserProfile>[memberProfile], 'Member');
       refreshRelations();
-      JuntoLoader.hide();
-      await showFeedback(context, message: 'Invited to Pack');
-      Navigator.pop(context);
     } on JuntoException catch (error) {
-      JuntoLoader.hide();
       if (error.message.contains('does not exist or is already a group member'))
         showDialog(
-          context: context,
+          context: buildContext,
           builder: (BuildContext context) => const SingleActionDialog(
             dialogText: 'Already sent a connection.',
           ),
@@ -164,11 +109,31 @@ class MemberRelationships extends StatelessWidget {
       if (!error.message
           .contains('does not exist or is already a group member'))
         showDialog(
-          context: context,
+          context: buildContext,
           builder: (BuildContext context) => SingleActionDialog(
             dialogText: error.message,
           ),
         );
+    }
+  }
+
+  // unsubscribe
+  Future<void> unsubscribeToUser(BuildContext buildContext) async {
+    try {
+      await userProvider.deleteUsersFromPerspective(
+        <Map<String, String>>[
+          <String, String>{'user_address': memberProfile.address}
+        ],
+        userProfile.userPerspective.address,
+      );
+      refreshRelations();
+    } on JuntoException catch (error) {
+      showDialog(
+        context: buildContext,
+        builder: (BuildContext buildContext) => const SingleActionDialog(
+          dialogText: 'Hmm, something went wrong.',
+        ),
+      );
     }
   }
 
@@ -227,445 +192,36 @@ class MemberRelationships extends StatelessWidget {
     );
   }
 
-  Widget _displayActionItems(BuildContext context) {
+  Widget _displayActionItems(BuildContext buildContext) {
     if (!isFollowing && !isConnected && !isPending) {
-      return _noRelationshipActionItems(context);
-    } else if (isFollowing && !isConnected) {
-      return _isSubscribedActionItems(context);
-    } else if (isFollowing && isConnected) {
-      return _isConnectedActionItems(context);
+      return NoRelationshipActionItems(
+        buildContext: buildContext,
+        subscribeToUser: subscribeToUser,
+        connectWithUser: connectWithUser,
+        inviteToPack: inviteToPack,
+      );
+    } else if (isFollowing && !isConnected && !isPending) {
+      return SubscribedActionItems(
+        buildContext: buildContext,
+        unsubscribeToUser: unsubscribeToUser,
+      );
+    } else if (isConnected || isPending) {
+      return ConnectedActionItems(
+        buildContext: buildContext,
+        subscribeToUser: subscribeToUser,
+        unsubscribeToUser: unsubscribeToUser,
+        disconnectWithUser: disconnectWithUser,
+        inviteToPack: inviteToPack,
+        isPending: isPending,
+        isConnected: isConnected,
+        isFollowing: isFollowing,
+      );
     }
-    return _noRelationshipActionItems(context);
-  }
-
-  Widget _noRelationshipActionItems(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        GestureDetector(
-          onTap: () {
-            _subscribeToUser(context);
-          },
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-              border: Border(
-                bottom: BorderSide(
-                    color: Theme.of(context).dividerColor, width: .5),
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  'SUBSCRIBE',
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: Theme.of(context).primaryColor,
-                      decoration: TextDecoration.none,
-                      letterSpacing: 1.2),
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                          color: Theme.of(context).primaryColor, width: 1.2),
-                      borderRadius: BorderRadius.circular(5)),
-                  child: Icon(Icons.add,
-                      size: 15, color: Theme.of(context).primaryColor),
-                )
-              ],
-            ),
-          ),
-        ),
-        GestureDetector(
-          onTap: () {
-            _connectWithUser(context);
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                    color: Theme.of(context).dividerColor, width: .5),
-              ),
-            ),
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  'CONNECT',
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: Theme.of(context).primaryColor,
-                      decoration: TextDecoration.none,
-                      letterSpacing: 1.2),
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                          color: Theme.of(context).primaryColor, width: 1.2),
-                      borderRadius: BorderRadius.circular(5)),
-                  child: Icon(Icons.add,
-                      size: 15, color: Theme.of(context).primaryColor),
-                )
-              ],
-            ),
-          ),
-        ),
-        GestureDetector(
-          onTap: () {
-            _inviteToPack(context);
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-              border: Border(
-                bottom: BorderSide(
-                    color: Theme.of(context).dividerColor, width: .5),
-              ),
-            ),
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  'INVITE TO PACK',
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: Theme.of(context).primaryColor,
-                      decoration: TextDecoration.none,
-                      letterSpacing: 1.2),
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                        color: Theme.of(context).primaryColor, width: 1.2),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Icon(Icons.add,
-                      size: 15, color: Theme.of(context).primaryColor),
-                )
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _isSubscribedActionItems(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        GestureDetector(
-          onTap: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) => ConfirmDialog(
-                context: context,
-                confirm: _unsubscribeToUser,
-                confirmationText: 'Are you sure you want to unsubscribe?',
-              ),
-            );
-          },
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-              border: Border(
-                bottom: BorderSide(
-                    color: Theme.of(context).dividerColor, width: .5),
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  'SUBSCRIBED',
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: Theme.of(context).primaryColor,
-                      decoration: TextDecoration.none,
-                      letterSpacing: 1.2),
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                        color: Theme.of(context).backgroundColor, width: 1.2),
-                    borderRadius: BorderRadius.circular(5),
-                    gradient: LinearGradient(
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                      stops: const <double>[0.1, 0.9],
-                      colors: <Color>[
-                        Theme.of(context).colorScheme.secondary,
-                        Theme.of(context).colorScheme.primary
-                      ],
-                    ),
-                  ),
-                  child: Icon(Icons.check, size: 15, color: Colors.white),
-                )
-              ],
-            ),
-          ),
-        ),
-        GestureDetector(
-          onTap: () => isPending ?? _connectWithUser(context),
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                    color: Theme.of(context).dividerColor, width: .5),
-              ),
-            ),
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      'CONNECT',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: Theme.of(context).primaryColor,
-                          decoration: TextDecoration.none,
-                          letterSpacing: 1.2),
-                    ),
-                    isPending
-                        ? Container(
-                            margin: const EdgeInsets.only(top: 2.5),
-                            child: Text('PENDING',
-                                style: Theme.of(context).textTheme.overline))
-                        : const SizedBox()
-                  ],
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                  decoration: isPending
-                      ? BoxDecoration(
-                          border: Border.all(
-                              color: Theme.of(context).backgroundColor,
-                              width: 1.2),
-                          borderRadius: BorderRadius.circular(5),
-                          gradient: LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            stops: const <double>[0.1, 0.9],
-                            colors: <Color>[
-                              Theme.of(context).colorScheme.secondary,
-                              Theme.of(context).colorScheme.primary
-                            ],
-                          ),
-                        )
-                      : BoxDecoration(
-                          border: Border.all(
-                              color: Theme.of(context).primaryColor,
-                              width: 1.2),
-                          borderRadius: BorderRadius.circular(5)),
-                  child: isPending
-                      ? Icon(Icons.check, size: 15, color: Colors.white)
-                      : Icon(Icons.add,
-                          size: 15, color: Theme.of(context).primaryColor),
-                )
-              ],
-            ),
-          ),
-        ),
-        GestureDetector(
-          onTap: () {
-            _inviteToPack(context);
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                    color: Theme.of(context).dividerColor, width: .5),
-              ),
-            ),
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  'INVITE TO PACK',
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: Theme.of(context).primaryColor,
-                      decoration: TextDecoration.none,
-                      letterSpacing: 1.2),
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                        color: Theme.of(context).primaryColor, width: 1.2),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Icon(Icons.add,
-                      size: 15, color: Theme.of(context).primaryColor),
-                )
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _isConnectedActionItems(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        GestureDetector(
-          onTap: () {
-            _unsubscribeToUser(context);
-          },
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-              border: Border(
-                bottom: BorderSide(
-                    color: Theme.of(context).dividerColor, width: .5),
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  'SUBSCRIBED',
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: Theme.of(context).primaryColor,
-                      decoration: TextDecoration.none,
-                      letterSpacing: 1.2),
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                        color: Theme.of(context).backgroundColor, width: 1.2),
-                    borderRadius: BorderRadius.circular(5),
-                    gradient: LinearGradient(
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                      stops: const <double>[0.1, 0.9],
-                      colors: <Color>[
-                        Theme.of(context).colorScheme.secondary,
-                        Theme.of(context).colorScheme.primary
-                      ],
-                    ),
-                  ),
-                  child: Icon(Icons.check, size: 15, color: Colors.white),
-                )
-              ],
-            ),
-          ),
-        ),
-        GestureDetector(
-          onTap: () {
-            _disconnectWithUser(context);
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                    color: Theme.of(context).dividerColor, width: .5),
-              ),
-            ),
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  'CONNECTED',
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: Theme.of(context).primaryColor,
-                      decoration: TextDecoration.none,
-                      letterSpacing: 1.2),
-                ),
-                Container(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          color: Theme.of(context).backgroundColor, width: 1.2),
-                      borderRadius: BorderRadius.circular(5),
-                      gradient: LinearGradient(
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
-                        stops: const <double>[0.1, 0.9],
-                        colors: <Color>[
-                          Theme.of(context).colorScheme.secondary,
-                          Theme.of(context).colorScheme.primary
-                        ],
-                      ),
-                    ),
-                    child: Icon(Icons.check, size: 15, color: Colors.white))
-              ],
-            ),
-          ),
-        ),
-        GestureDetector(
-          onTap: () {
-            _inviteToPack(context);
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                    color: Theme.of(context).dividerColor, width: .5),
-              ),
-            ),
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  'INVITE TO PACK',
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: Theme.of(context).primaryColor,
-                      decoration: TextDecoration.none,
-                      letterSpacing: 1.2),
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                        color: Theme.of(context).primaryColor, width: 1.2),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Icon(Icons.add,
-                      size: 15, color: Theme.of(context).primaryColor),
-                )
-              ],
-            ),
-          ),
-        ),
-      ],
+    return NoRelationshipActionItems(
+      buildContext: buildContext,
+      subscribeToUser: subscribeToUser,
+      connectWithUser: connectWithUser,
+      inviteToPack: inviteToPack,
     );
   }
 }

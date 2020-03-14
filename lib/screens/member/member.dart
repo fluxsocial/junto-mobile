@@ -3,14 +3,14 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/screens/member/member_about.dart';
 import 'package:junto_beta_mobile/screens/member/member_appbar.dart';
 import 'package:junto_beta_mobile/screens/member/member_relationships.dart';
-import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
+import 'package:junto_beta_mobile/screens/member/member_sliver_appbar.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/user_expressions.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:provider/provider.dart';
@@ -78,6 +78,7 @@ class _JuntoMemberState extends State<JuntoMember> {
     await userProvider
         .isRelated(_userAddress, widget.profile.address)
         .then((Map<String, dynamic> result) {
+      print(result);
       setState(() {
         isConnected = result['is_connected'];
         isFollowing = result['is_following'];
@@ -129,7 +130,7 @@ class _JuntoMemberState extends State<JuntoMember> {
               headerSliverBuilder:
                   (BuildContext context, bool innerBoxIsScrolled) {
                 return <Widget>[
-                  _MemberDenAppbar(
+                  MemberDenAppbar(
                     profile: widget.profile,
                     isConnected: isConnected,
                     toggleMemberRelationships: toggleMemberRelationships,
@@ -151,9 +152,10 @@ class _JuntoMemberState extends State<JuntoMember> {
                                 child: Text(
                                   name,
                                   style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w700,
-                                      color: Theme.of(context).primaryColor),
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w700,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
                                 ),
                               ),
                             ),
@@ -166,44 +168,11 @@ class _JuntoMemberState extends State<JuntoMember> {
               },
               body: TabBarView(
                 children: <Widget>[
-                  ListView(
-                    physics: const ClampingScrollPhysics(),
-                    shrinkWrap: true,
-                    padding: const EdgeInsets.only(left: 10),
-                    children: <Widget>[
-                      const SizedBox(height: 5),
-                      Container(
-                        padding: const EdgeInsets.only(top: 5, bottom: 5),
-                        child: Column(
-                          children: <Widget>[
-                            if (widget.profile.gender.isNotEmpty &&
-                                widget.profile.gender[0].isNotEmpty)
-                              _ProfileDetails(
-                                iconData: CustomIcons.gender,
-                                item: widget.profile.gender,
-                              ),
-                            if (widget.profile.location.isNotEmpty &&
-                                widget.profile.location[0].isNotEmpty)
-                              _ProfileDetails(
-                                imageUri:
-                                    'assets/images/junto-mobile__location.png',
-                                item: widget.profile.location,
-                              ),
-                            if (widget.profile.website.isNotEmpty &&
-                                widget.profile.website[0].isNotEmpty)
-                              _ProfileDetails(
-                                imageUri:
-                                    'assets/images/junto-mobile__link.png',
-                                item: widget.profile.website,
-                              )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        child: Text(widget.profile.bio,
-                            style: Theme.of(context).textTheme.caption),
-                      ),
-                    ],
+                  JuntoMemberAbout(
+                    gender: widget.profile.gender,
+                    location: widget.profile.location,
+                    website: widget.profile.website,
+                    bio: widget.profile.bio,
                   ),
                   UserExpressions(
                     privacy: 'Public',
@@ -220,239 +189,18 @@ class _JuntoMemberState extends State<JuntoMember> {
           child: Visibility(
             visible: memberRelationshipsVisible,
             child: MemberRelationships(
-                isFollowing: isFollowing,
-                isConnected: isConnected,
-                isPending: isPending,
-                userProvider: userProvider,
-                memberProfile: widget.profile,
-                userProfile: _userProfile,
-                toggleMemberRelationships: toggleMemberRelationships,
-                refreshRelations: refreshRelations),
+              isFollowing: isFollowing,
+              isConnected: isConnected,
+              isPending: isPending,
+              userProvider: userProvider,
+              memberProfile: widget.profile,
+              userProfile: _userProfile,
+              toggleMemberRelationships: toggleMemberRelationships,
+              refreshRelations: refreshRelations,
+            ),
           ),
         ),
       ],
-    );
-  }
-}
-
-/// Used to display the user's location, gender and website. Image and Icon data
-/// cannot be supplied at the same time.
-class _ProfileDetails extends StatelessWidget {
-  const _ProfileDetails({
-    Key key,
-    @required this.item,
-    this.iconData,
-    this.imageUri,
-  }) : super(key: key);
-
-  final List<String> item;
-  final IconData iconData;
-  final String imageUri;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      child: Row(
-        children: <Widget>[
-          if (imageUri != null)
-            Image.asset(
-              imageUri,
-              height: 15,
-              color: Theme.of(context).primaryColor,
-            ),
-          if (iconData != null)
-            Icon(CustomIcons.gender,
-                size: 17, color: Theme.of(context).primaryColor),
-          const SizedBox(width: 5),
-          Text(
-            item[0],
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-                color: Theme.of(context).primaryColor,
-                fontSize: 15,
-                fontWeight: FontWeight.w600),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _MemberDenAppbar extends StatefulWidget {
-  const _MemberDenAppbar(
-      {Key key,
-      @required this.profile,
-      @required this.isConnected,
-      @required this.toggleMemberRelationships,
-      this.isFollowing})
-      : super(key: key);
-
-  final UserProfile profile;
-  final bool isConnected;
-  final bool isFollowing;
-  final Function toggleMemberRelationships;
-
-  @override
-  State<StatefulWidget> createState() {
-    return _MemberDenAppbarState();
-  }
-}
-
-class _MemberDenAppbarState extends State<_MemberDenAppbar> {
-  final GlobalKey<_MemberDenAppbarState> _keyFlexibleSpace =
-      GlobalKey<_MemberDenAppbarState>();
-
-  String _currentTheme;
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback(_getFlexibleSpaceSize);
-    getCurrentTheme();
-  }
-
-  double _flexibleHeightSpace;
-
-  void _getFlexibleSpaceSize(_) {
-    final RenderBox renderBoxFlexibleSpace =
-        _keyFlexibleSpace.currentContext.findRenderObject();
-    final Size sizeFlexibleSpace = renderBoxFlexibleSpace.size;
-    final double heightFlexibleSpace = sizeFlexibleSpace.height;
-
-    setState(() {
-      _flexibleHeightSpace = heightFlexibleSpace;
-    });
-  }
-
-  Future<void> getCurrentTheme() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _currentTheme = prefs.getString('current-theme');
-    });
-  }
-
-  String _getBackgroundImageAsset() {
-    if (_currentTheme == 'rainbow' || _currentTheme == 'rainbow-night') {
-      return 'assets/images/junto-mobile__themes--rainbow.png';
-    } else if (_currentTheme == 'aqueous' || _currentTheme == 'aqueous-night') {
-      return 'assets/images/junto-mobile__themes--aqueous.png';
-    } else if (_currentTheme == 'royal' || _currentTheme == 'royal-night') {
-      return 'assets/images/junto-mobile__themes--royal.png';
-    } else {
-      return 'assets/images/junto-mobile__themes--rainbow.png';
-    }
-  }
-
-  Widget _displayRelationshipIndicator(BuildContext context) {
-    if (widget.isFollowing == true && widget.isConnected == false) {
-      return Icon(CustomIcons.groups,
-          size: 17, color: Theme.of(context).primaryColor);
-    } else if (widget.isFollowing == true && widget.isConnected == true) {
-      return Icon(CustomIcons.pawprints,
-          size: 17, color: Theme.of(context).primaryColor);
-    } else if (widget.isFollowing == false && widget.isConnected == false) {
-      return Image.asset('assets/images/junto-mobile__infinity.png',
-          height: 14, color: Theme.of(context).primaryColor);
-    } else {
-      return Image.asset('assets/images/junto-mobile__infinity.png',
-          height: 14, color: Theme.of(context).primaryColor);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SliverAppBar(
-      brightness: Brightness.light,
-      automaticallyImplyLeading: false,
-      primary: false,
-      actions: const <Widget>[SizedBox(height: 0, width: 0)],
-      backgroundColor: Theme.of(context).colorScheme.background,
-      pinned: false,
-      flexibleSpace: FlexibleSpaceBar(
-        collapseMode: CollapseMode.pin,
-        background: Stack(
-          children: <Widget>[
-            Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    height: MediaQuery.of(context).size.height * .2,
-                    width: MediaQuery.of(context).size.width,
-                    child: Image.asset(
-                      _getBackgroundImageAsset(),
-                      height: MediaQuery.of(context).size.height * .2,
-                      width: MediaQuery.of(context).size.width,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  Container(
-                    key: _keyFlexibleSpace,
-                    margin: const EdgeInsets.only(top: 30),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 15),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Flexible(
-                            child: Text(
-                              widget.profile.name,
-                              style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w700,
-                                  color: Theme.of(context).primaryColor),
-                            ),
-                          ),
-                          const SizedBox(width: 15),
-                          GestureDetector(
-                            onTap: () {
-                              widget.toggleMemberRelationships();
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 5),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Theme.of(context).primaryColor,
-                                    width: 1.5),
-                                borderRadius: BorderRadius.circular(25),
-                              ),
-                              child: Row(
-                                children: <Widget>[
-                                  const SizedBox(width: 14),
-                                  _displayRelationshipIndicator(context),
-                                  const SizedBox(width: 2),
-                                  Icon(Icons.keyboard_arrow_down,
-                                      size: 12,
-                                      color: Theme.of(context).primaryColor)
-                                ],
-                              ),
-                            ),
-                          ),
-                        ]),
-                  ),
-                ],
-              ),
-            ),
-            Positioned(
-              top: MediaQuery.of(context).size.height * .2 - 30,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: MemberAvatar(
-                  diameter: 60,
-                  profilePicture: widget.profile.profilePicture,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      expandedHeight: _flexibleHeightSpace == null
-          ? 1000
-          : _flexibleHeightSpace + MediaQuery.of(context).size.height * .2,
-      forceElevated: false,
     );
   }
 }

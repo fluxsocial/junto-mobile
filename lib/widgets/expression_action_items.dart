@@ -6,7 +6,6 @@ import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
-import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
@@ -101,7 +100,7 @@ class ExpressionActionItems extends StatelessWidget {
             showDialog(
               context: context,
               builder: (BuildContext context) => ConfirmDialog(
-                context: context,
+                buildContext: context,
                 confirm: _deleteExpression,
                 confirmationText:
                     'Are you sure you want to delete this expression?',
