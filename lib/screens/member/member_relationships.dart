@@ -226,7 +226,9 @@ class MemberRelationships extends StatelessWidget {
         buildContext: buildContext,
         unsubscribeToUser: unsubscribeToUser,
       );
-    } else if (isConnected ||
+    } else if (isConnected &&
+            hasPendingPackRequest != true &&
+            isPackMember != true ||
         hasPendingConnection &&
             hasPendingPackRequest != true &&
             isPackMember != true) {
