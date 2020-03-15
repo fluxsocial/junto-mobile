@@ -136,32 +136,21 @@ class ConnectedActionItems extends StatelessWidget {
                 Container(
                   padding:
                       const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                  decoration: hasPendingConnection || isConnected
-                      ? BoxDecoration(
-                          border: Border.all(
-                              color: Theme.of(context).backgroundColor,
-                              width: 1.2),
-                          borderRadius: BorderRadius.circular(5),
-                          gradient: LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            stops: const <double>[0.1, 0.9],
-                            colors: <Color>[
-                              Theme.of(context).colorScheme.secondary,
-                              Theme.of(context).colorScheme.primary
-                            ],
-                          ),
-                        )
-                      : BoxDecoration(
-                          border: Border.all(
-                              color: Theme.of(context).primaryColor,
-                              width: 1.2),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                  child: hasPendingConnection || isConnected
-                      ? Icon(Icons.check, size: 15, color: Colors.white)
-                      : Icon(Icons.add,
-                          size: 15, color: Theme.of(context).primaryColor),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        color: Theme.of(context).backgroundColor, width: 1.2),
+                    borderRadius: BorderRadius.circular(5),
+                    gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      stops: const <double>[0.1, 0.9],
+                      colors: <Color>[
+                        Theme.of(context).colorScheme.secondary,
+                        Theme.of(context).colorScheme.primary
+                      ],
+                    ),
+                  ),
+                  child: Icon(Icons.check, size: 15, color: Colors.white),
                 )
               ],
             ),
@@ -199,8 +188,11 @@ class ConnectedActionItems extends StatelessWidget {
                         color: Theme.of(context).primaryColor, width: 1.2),
                     borderRadius: BorderRadius.circular(5),
                   ),
-                  child: Icon(Icons.add,
-                      size: 15, color: Theme.of(context).primaryColor),
+                  child: Icon(
+                    Icons.add,
+                    size: 15,
+                    color: Theme.of(context).primaryColor,
+                  ),
                 )
               ],
             ),

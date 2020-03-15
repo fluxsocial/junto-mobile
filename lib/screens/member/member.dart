@@ -86,6 +86,8 @@ class _JuntoMemberState extends State<JuntoMember> {
         isFollowing = result['is_following'];
         isFollowed = result['is_followed'];
         hasPendingConnection = result['has_pending_connection'];
+        hasPendingPackRequest = result['has_pending_pack_request'];
+        isPackMember = result['is_pack_member'];
       });
     });
   }
@@ -99,6 +101,8 @@ class _JuntoMemberState extends State<JuntoMember> {
         isFollowing = result['is_following'];
         isFollowed = result['is_followed'];
         hasPendingConnection = result['has_pending_connection'];
+        hasPendingPackRequest = result['has_pending_pack_request'];
+        isPackMember = result['is_pack_member'];
       });
     });
   }
@@ -194,6 +198,8 @@ class _JuntoMemberState extends State<JuntoMember> {
               isFollowing: isFollowing,
               isConnected: isConnected,
               hasPendingConnection: hasPendingConnection,
+              hasPendingPackRequest: hasPendingPackRequest,
+              isPackMember: isPackMember,
               userProvider: userProvider,
               memberProfile: widget.profile,
               userProfile: _userProfile,

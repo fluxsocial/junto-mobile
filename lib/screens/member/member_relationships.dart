@@ -6,6 +6,7 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
+import 'package:junto_beta_mobile/screens/member/member_action_items/pack_action_items.dart';
 import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
@@ -18,11 +19,13 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MemberRelationships extends StatelessWidget {
-  MemberRelationships({
+  const MemberRelationships({
     Key key,
     this.isFollowing,
     this.isConnected,
     this.hasPendingConnection,
+    this.hasPendingPackRequest,
+    this.isPackMember,
     this.userProvider,
     this.userProfile,
     this.toggleMemberRelationships,
@@ -33,6 +36,8 @@ class MemberRelationships extends StatelessWidget {
   final bool isFollowing;
   final bool isConnected;
   final bool hasPendingConnection;
+  final bool hasPendingPackRequest;
+  final bool isPackMember;
   final Function toggleMemberRelationships;
   final Function refreshRelations;
   final UserProfile memberProfile;
@@ -56,9 +61,9 @@ class MemberRelationships extends StatelessWidget {
     }
   }
 
-  Future<void> connectWithUser({
+  Future<void> connectWithUser(
     BuildContext buildContext,
-  }) async {
+  ) async {
     // subscribe to user if not already following
     if (!isFollowing) {
       await userProvider.addUsersToPerspective(
@@ -94,6 +99,12 @@ class MemberRelationships extends StatelessWidget {
   }
 
   Future<void> inviteToPack(BuildContext buildContext) async {
+    // subscribe to user if not already following
+    if (!isFollowing) {
+      await userProvider.addUsersToPerspective(
+          userProfile.userPerspective.address, <String>[memberProfile.address]);
+    }
+
     try {
       await Provider.of<GroupRepo>(buildContext, listen: false).addGroupMember(
           userProfile.pack.address, <UserProfile>[memberProfile], 'Member');
@@ -139,6 +150,8 @@ class MemberRelationships extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(hasPendingPackRequest);
+    print(isPackMember);
     return Container(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
@@ -193,19 +206,30 @@ class MemberRelationships extends StatelessWidget {
   }
 
   Widget _displayActionItems(BuildContext buildContext) {
-    if (!isFollowing && !isConnected && !hasPendingConnection) {
+    if (!isFollowing &&
+        !isConnected &&
+        !hasPendingConnection &&
+        !hasPendingPackRequest &&
+        !isPackMember) {
       return NoRelationshipActionItems(
         buildContext: buildContext,
         subscribeToUser: subscribeToUser,
         connectWithUser: connectWithUser,
         inviteToPack: inviteToPack,
       );
-    } else if (isFollowing && !isConnected && !hasPendingConnection) {
+    } else if (isFollowing &&
+        !isConnected &&
+        !hasPendingConnection &&
+        !hasPendingPackRequest &&
+        !isPackMember) {
       return SubscribedActionItems(
         buildContext: buildContext,
         unsubscribeToUser: unsubscribeToUser,
       );
-    } else if (isConnected || hasPendingConnection) {
+    } else if (isConnected ||
+        hasPendingConnection &&
+            hasPendingPackRequest != true &&
+            isPackMember != true) {
       return ConnectedActionItems(
         buildContext: buildContext,
         subscribeToUser: subscribeToUser,
@@ -215,6 +239,20 @@ class MemberRelationships extends StatelessWidget {
         hasPendingConnection: hasPendingConnection,
         isConnected: isConnected,
         isFollowing: isFollowing,
+      );
+    } else if (hasPendingPackRequest || isPackMember) {
+      print('yeooo');
+      return PackActionItems(
+        buildContext: buildContext,
+        subscribeToUser: subscribeToUser,
+        unsubscribeToUser: unsubscribeToUser,
+        disconnectWithUser: disconnectWithUser,
+        inviteToPack: inviteToPack,
+        hasPendingConnection: hasPendingConnection,
+        isConnected: isConnected,
+        isFollowing: isFollowing,
+        hasPendingPackRequest: hasPendingPackRequest,
+        isPackMember: isPackMember,
       );
     }
     return NoRelationshipActionItems(
