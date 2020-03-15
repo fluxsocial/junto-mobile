@@ -1,9 +1,12 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/appbar/collective_appbar.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Homepage feed containing a List of expression for the given perspective.
@@ -35,18 +38,24 @@ class ExpressionFeed extends StatefulWidget {
 }
 
 class _ExpressionFeedState extends State<ExpressionFeed> {
-  bool twoColumnView = false;
   String _userAddress;
+  AppRepo appState;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    appState = Provider.of<AppRepo>(context);
+  }
 
   /// Changes the list view from two column layout to single
-  void _switchColumnView(String columnType) {
-    setState(() {
-      if (columnType == 'two') {
-        twoColumnView = true;
-      } else if (columnType == 'single') {
-        twoColumnView = false;
-      }
-    });
+  Future<void> _switchColumnView(String columnType) async {
+    if (columnType == 'two') {
+      appState.setLayout(true);
+    } else if (columnType == 'single') {
+      appState.setLayout(false);
+    }
+    setState(() {});
+    return;
   }
 
   Future<void> getUserInformation() async {
@@ -101,7 +110,7 @@ class _ExpressionFeedState extends State<ExpressionFeed> {
                           delegate: CollectiveAppBar(
                             expandedHeight: 135,
                             appbarTitle: value,
-                            twoColumnView: twoColumnView,
+                            twoColumnView: appState.twoColumnLayout,
                             switchColumnView: _switchColumnView,
                           ),
                           pinned: false,
@@ -112,7 +121,7 @@ class _ExpressionFeedState extends State<ExpressionFeed> {
                     SliverList(
                       delegate: SliverChildListDelegate(<Widget>[
                         AnimatedCrossFade(
-                          crossFadeState: twoColumnView
+                          crossFadeState: appState.twoColumnLayout
                               ? CrossFadeState.showFirst
                               : CrossFadeState.showSecond,
                           duration: const Duration(milliseconds: 300),
