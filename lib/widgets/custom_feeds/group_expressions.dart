@@ -81,11 +81,12 @@ class _GroupExpressionsState extends State<GroupExpressions> {
 
   Future<void> getUserInformation() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      if (prefs.getBool('two-column-view') != null) {
-        twoColumnView = prefs.getBool('two-column-view');
-      }
-    });
+    if (mounted)
+      setState(() {
+        if (prefs.getBool('two-column-view') != null) {
+          twoColumnView = prefs.getBool('two-column-view');
+        }
+      });
   }
 
   @override
