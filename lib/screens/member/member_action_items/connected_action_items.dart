@@ -6,7 +6,7 @@ class ConnectedActionItems extends StatelessWidget {
   const ConnectedActionItems({
     this.buildContext,
     this.isFollowing,
-    this.isPending,
+    this.hasPendingConnection,
     this.isConnected,
     this.subscribeToUser,
     this.unsubscribeToUser,
@@ -16,7 +16,7 @@ class ConnectedActionItems extends StatelessWidget {
 
   final BuildContext buildContext;
   final bool isFollowing;
-  final bool isPending;
+  final bool hasPendingConnection;
   final bool isConnected;
   final Function subscribeToUser;
   final Function unsubscribeToUser;
@@ -98,7 +98,7 @@ class ConnectedActionItems extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            if (!isPending) {
+            if (!hasPendingConnection) {
               disconnectWithUser(buildContext);
             }
           },
@@ -117,7 +117,7 @@ class ConnectedActionItems extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      isPending ? 'CONNECT' : 'CONNECTED',
+                      hasPendingConnection ? 'CONNECT' : 'CONNECTED',
                       style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
@@ -125,7 +125,7 @@ class ConnectedActionItems extends StatelessWidget {
                           decoration: TextDecoration.none,
                           letterSpacing: 1.2),
                     ),
-                    isPending
+                    hasPendingConnection
                         ? Container(
                             margin: const EdgeInsets.only(top: 2.5),
                             child: Text('PENDING',
@@ -136,7 +136,7 @@ class ConnectedActionItems extends StatelessWidget {
                 Container(
                   padding:
                       const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                  decoration: isPending || isConnected
+                  decoration: hasPendingConnection || isConnected
                       ? BoxDecoration(
                           border: Border.all(
                               color: Theme.of(context).backgroundColor,
@@ -158,7 +158,7 @@ class ConnectedActionItems extends StatelessWidget {
                               width: 1.2),
                           borderRadius: BorderRadius.circular(5),
                         ),
-                  child: isPending || isConnected
+                  child: hasPendingConnection || isConnected
                       ? Icon(Icons.check, size: 15, color: Colors.white)
                       : Icon(Icons.add,
                           size: 15, color: Theme.of(context).primaryColor),

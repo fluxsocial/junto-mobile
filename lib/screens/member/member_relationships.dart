@@ -22,7 +22,7 @@ class MemberRelationships extends StatelessWidget {
     Key key,
     this.isFollowing,
     this.isConnected,
-    this.isPending,
+    this.hasPendingConnection,
     this.userProvider,
     this.userProfile,
     this.toggleMemberRelationships,
@@ -32,7 +32,7 @@ class MemberRelationships extends StatelessWidget {
 
   final bool isFollowing;
   final bool isConnected;
-  final bool isPending;
+  final bool hasPendingConnection;
   final Function toggleMemberRelationships;
   final Function refreshRelations;
   final UserProfile memberProfile;
@@ -193,26 +193,26 @@ class MemberRelationships extends StatelessWidget {
   }
 
   Widget _displayActionItems(BuildContext buildContext) {
-    if (!isFollowing && !isConnected && !isPending) {
+    if (!isFollowing && !isConnected && !hasPendingConnection) {
       return NoRelationshipActionItems(
         buildContext: buildContext,
         subscribeToUser: subscribeToUser,
         connectWithUser: connectWithUser,
         inviteToPack: inviteToPack,
       );
-    } else if (isFollowing && !isConnected && !isPending) {
+    } else if (isFollowing && !isConnected && !hasPendingConnection) {
       return SubscribedActionItems(
         buildContext: buildContext,
         unsubscribeToUser: unsubscribeToUser,
       );
-    } else if (isConnected || isPending) {
+    } else if (isConnected || hasPendingConnection) {
       return ConnectedActionItems(
         buildContext: buildContext,
         subscribeToUser: subscribeToUser,
         unsubscribeToUser: unsubscribeToUser,
         disconnectWithUser: disconnectWithUser,
         inviteToPack: inviteToPack,
-        isPending: isPending,
+        hasPendingConnection: hasPendingConnection,
         isConnected: isConnected,
         isFollowing: isFollowing,
       );

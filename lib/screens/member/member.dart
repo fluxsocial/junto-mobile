@@ -47,7 +47,9 @@ class _JuntoMemberState extends State<JuntoMember> {
   bool isConnected;
   bool isFollowing;
   bool isFollowed;
-  bool isPending;
+  bool hasPendingConnection;
+  bool hasPendingPackRequest;
+  bool isPackMember;
 
   bool memberRelationshipsVisible = false;
 
@@ -83,7 +85,7 @@ class _JuntoMemberState extends State<JuntoMember> {
         isConnected = result['is_connected'];
         isFollowing = result['is_following'];
         isFollowed = result['is_followed'];
-        isPending = result['has_pending_connection'];
+        hasPendingConnection = result['has_pending_connection'];
       });
     });
   }
@@ -96,7 +98,7 @@ class _JuntoMemberState extends State<JuntoMember> {
         isConnected = result['is_connected'];
         isFollowing = result['is_following'];
         isFollowed = result['is_followed'];
-        isPending = result['has_pending_connection'];
+        hasPendingConnection = result['has_pending_connection'];
       });
     });
   }
@@ -191,7 +193,7 @@ class _JuntoMemberState extends State<JuntoMember> {
             child: MemberRelationships(
               isFollowing: isFollowing,
               isConnected: isConnected,
-              isPending: isPending,
+              hasPendingConnection: hasPendingConnection,
               userProvider: userProvider,
               memberProfile: widget.profile,
               userProfile: _userProfile,
