@@ -148,6 +148,25 @@ class MemberRelationships extends StatelessWidget {
     }
   }
 
+  Future<void> leavePack(BuildContext buildContext) async {
+    try {
+      await Provider.of<GroupRepo>(buildContext, listen: false)
+          .removeGroupMember(
+        userProfile.pack.address,
+        memberProfile.address,
+      );
+      refreshRelations();
+    } catch (error) {
+      print(error);
+      showDialog(
+        context: buildContext,
+        builder: (BuildContext buildContext) => const SingleActionDialog(
+          dialogText: 'Hmm, something went wrong.',
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     print(hasPendingPackRequest);
@@ -255,6 +274,7 @@ class MemberRelationships extends StatelessWidget {
         isFollowing: isFollowing,
         hasPendingPackRequest: hasPendingPackRequest,
         isPackMember: isPackMember,
+        leavePack: leavePack,
       );
     }
     return NoRelationshipActionItems(
