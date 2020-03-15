@@ -14,6 +14,7 @@ class PackActionItems extends StatelessWidget {
     this.unsubscribeToUser,
     this.disconnectWithUser,
     this.inviteToPack,
+    this.leavePack,
   });
 
   final BuildContext buildContext;
@@ -26,6 +27,7 @@ class PackActionItems extends StatelessWidget {
   final Function unsubscribeToUser;
   final Function disconnectWithUser;
   final Function inviteToPack;
+  final Function leavePack;
 
   @override
   Widget build(BuildContext context) {
@@ -175,6 +177,14 @@ class PackActionItems extends StatelessWidget {
           onTap: () {
             if (isPackMember) {
               // leave pack
+              showDialog(
+                context: buildContext,
+                builder: (BuildContext context) => ConfirmDialog(
+                  buildContext: buildContext,
+                  confirmationText: 'Are you sure you want to leave this pack?',
+                  confirm: leavePack,
+                ),
+              );
             }
           },
           child: Container(
@@ -192,7 +202,9 @@ class PackActionItems extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      hasPendingPackRequest ? 'INVITED TO PACK' : 'IN PACK',
+                      hasPendingPackRequest && !isPackMember
+                          ? 'INVITED TO PACK'
+                          : 'IN PACK',
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
@@ -201,7 +213,7 @@ class PackActionItems extends StatelessWidget {
                         letterSpacing: 1.2,
                       ),
                     ),
-                    hasPendingPackRequest
+                    hasPendingPackRequest && !isPackMember
                         ? Container(
                             margin: const EdgeInsets.only(top: 2.5),
                             child: Text(

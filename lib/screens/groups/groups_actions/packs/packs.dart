@@ -86,7 +86,7 @@ class PacksState extends State<Packs> with ListDistinct {
         ),
       );
     } catch (error) {
-      print(error);
+      print(error.message);
       return null;
     }
   }
