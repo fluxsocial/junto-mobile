@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:junto_beta_mobile/app/themes_provider.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
+import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
 import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
@@ -44,6 +45,7 @@ class JuntoAppState extends State<JuntoApp> {
         Provider<ExpressionRepo>.value(value: backend.expressionRepo),
         Provider<SearchRepo>.value(value: backend.searchRepo),
         Provider<NotificationRepo>.value(value: backend.notificationRepo),
+        Provider<AppRepo>.value(value: backend.appRepo),
       ],
       child: MaterialAppWithTheme(
         loggedIn: widget.loggedIn,
