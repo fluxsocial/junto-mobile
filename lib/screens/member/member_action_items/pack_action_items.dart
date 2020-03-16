@@ -31,7 +31,6 @@ class PackActionItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('Pack Action Items');
     return Column(
       children: <Widget>[
         GestureDetector(
@@ -53,7 +52,9 @@ class PackActionItems extends StatelessWidget {
               color: Colors.transparent,
               border: Border(
                 bottom: BorderSide(
-                    color: Theme.of(context).dividerColor, width: .5),
+                  color: Theme.of(context).dividerColor,
+                  width: .5,
+                ),
               ),
             ),
             child: Row(
@@ -62,20 +63,24 @@ class PackActionItems extends StatelessWidget {
                 Text(
                   isFollowing ? 'SUBSCRIBED' : 'SUBSCRIBE',
                   style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: Theme.of(context).primaryColor,
-                      decoration: TextDecoration.none,
-                      letterSpacing: 1.2),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: Theme.of(context).primaryColor,
+                    decoration: TextDecoration.none,
+                    letterSpacing: 1.2,
+                  ),
                 ),
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 5,
+                    horizontal: 10,
+                  ),
                   decoration: isFollowing
                       ? BoxDecoration(
                           border: Border.all(
-                              color: Theme.of(context).backgroundColor,
-                              width: 1.2),
+                            color: Theme.of(context).backgroundColor,
+                            width: 1.2,
+                          ),
                           borderRadius: BorderRadius.circular(5),
                           gradient: LinearGradient(
                             begin: Alignment.centerLeft,
@@ -89,14 +94,22 @@ class PackActionItems extends StatelessWidget {
                         )
                       : BoxDecoration(
                           border: Border.all(
-                              color: Theme.of(context).primaryColor,
-                              width: 1.2),
+                            color: Theme.of(context).primaryColor,
+                            width: 1.2,
+                          ),
                           borderRadius: BorderRadius.circular(5),
                         ),
                   child: isFollowing
-                      ? Icon(Icons.check, size: 15, color: Colors.white)
-                      : Icon(Icons.add,
-                          size: 15, color: Theme.of(context).primaryColor),
+                      ? Icon(
+                          Icons.check,
+                          size: 15,
+                          color: Colors.white,
+                        )
+                      : Icon(
+                          Icons.add,
+                          size: 15,
+                          color: Theme.of(context).primaryColor,
+                        ),
                 )
               ],
             ),
@@ -119,7 +132,9 @@ class PackActionItems extends StatelessWidget {
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                    color: Theme.of(context).dividerColor, width: .5),
+                  color: Theme.of(context).dividerColor,
+                  width: .5,
+                ),
               ),
             ),
             padding: const EdgeInsets.symmetric(vertical: 20),
@@ -132,23 +147,29 @@ class PackActionItems extends StatelessWidget {
                     Text(
                       hasPendingConnection ? 'CONNECT' : 'CONNECTED',
                       style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: Theme.of(context).primaryColor,
-                          decoration: TextDecoration.none,
-                          letterSpacing: 1.2),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        color: Theme.of(context).primaryColor,
+                        decoration: TextDecoration.none,
+                        letterSpacing: 1.2,
+                      ),
                     ),
                     hasPendingConnection
                         ? Container(
                             margin: const EdgeInsets.only(top: 2.5),
-                            child: Text('PENDING',
-                                style: Theme.of(context).textTheme.overline))
+                            child: Text(
+                              'PENDING',
+                              style: Theme.of(context).textTheme.overline,
+                            ),
+                          )
                         : const SizedBox()
                   ],
                 ),
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 5,
+                    horizontal: 10,
+                  ),
                   decoration: hasPendingConnection || isConnected
                       ? BoxDecoration(
                           border: Border.all(
@@ -172,9 +193,16 @@ class PackActionItems extends StatelessWidget {
                           borderRadius: BorderRadius.circular(5),
                         ),
                   child: hasPendingConnection || isConnected
-                      ? Icon(Icons.check, size: 15, color: Colors.white)
-                      : Icon(Icons.add,
-                          size: 15, color: Theme.of(context).primaryColor),
+                      ? Icon(
+                          Icons.check,
+                          size: 15,
+                          color: Colors.white,
+                        )
+                      : Icon(
+                          Icons.add,
+                          size: 15,
+                          color: Theme.of(context).primaryColor,
+                        ),
                 )
               ],
             ),
@@ -198,7 +226,9 @@ class PackActionItems extends StatelessWidget {
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                    color: Theme.of(context).dividerColor, width: .5),
+                  color: Theme.of(context).dividerColor,
+                  width: .5,
+                ),
               ),
             ),
             padding: const EdgeInsets.symmetric(vertical: 20),
@@ -232,11 +262,15 @@ class PackActionItems extends StatelessWidget {
                   ],
                 ),
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 5,
+                    horizontal: 10,
+                  ),
                   decoration: BoxDecoration(
                     border: Border.all(
-                        color: Theme.of(context).backgroundColor, width: 1.2),
+                      color: Theme.of(context).backgroundColor,
+                      width: 1.2,
+                    ),
                     borderRadius: BorderRadius.circular(5),
                     gradient: LinearGradient(
                       begin: Alignment.centerLeft,
@@ -248,7 +282,11 @@ class PackActionItems extends StatelessWidget {
                       ],
                     ),
                   ),
-                  child: Icon(Icons.check, size: 15, color: Colors.white),
+                  child: Icon(
+                    Icons.check,
+                    size: 15,
+                    color: Colors.white,
+                  ),
                 )
               ],
             ),

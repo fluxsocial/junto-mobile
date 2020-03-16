@@ -183,7 +183,11 @@ class MemberRelationships extends StatelessWidget {
           Container(
             width: MediaQuery.of(context).size.width,
             margin: const EdgeInsets.symmetric(horizontal: 20),
-            padding: const EdgeInsets.only(top: 25, left: 25, right: 25),
+            padding: const EdgeInsets.only(
+              top: 25,
+              left: 25,
+              right: 25,
+            ),
             decoration: BoxDecoration(
               color: Theme.of(context).backgroundColor,
               borderRadius: BorderRadius.circular(25),
@@ -192,7 +196,11 @@ class MemberRelationships extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Image.asset('assets/images/junto-mobile__logo.png', height: 24),
+                Image.asset(
+                  'assets/images/junto-mobile__logo.png',
+                  height: 24,
+                  color: Theme.of(context).primaryColor,
+                ),
                 const SizedBox(height: 15),
                 _displayActionItems(context),
                 const SizedBox(height: 15),
@@ -208,11 +216,12 @@ class MemberRelationships extends StatelessWidget {
                     child: Text(
                       'CLOSE',
                       style: TextStyle(
-                          fontSize: 12,
-                          color: Theme.of(context).primaryColor,
-                          letterSpacing: 1.4,
-                          fontWeight: FontWeight.w700,
-                          decoration: TextDecoration.none),
+                        fontSize: 12,
+                        color: Theme.of(context).primaryColor,
+                        letterSpacing: 1.4,
+                        fontWeight: FontWeight.w700,
+                        decoration: TextDecoration.none,
+                      ),
                     ),
                   ),
                 ),
