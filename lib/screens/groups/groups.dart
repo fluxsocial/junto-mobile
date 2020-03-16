@@ -47,11 +47,17 @@ class JuntoGroupsState extends State<JuntoGroups>
 
     if (group.groupType == 'Pack') {
       setState(() {
-        _currentGroup = PackOpen(pack: group);
+        _currentGroup = PackOpen(
+          key: ValueKey<String>(group.address),
+          pack: group,
+        );
       });
     } else if (group.groupType == 'Sphere') {
       setState(() {
-        _currentGroup = SphereOpen(group: group);
+        _currentGroup = SphereOpen(
+          key: ValueKey<String>(group.address),
+          group: group,
+        );
       });
     }
   }
@@ -125,7 +131,10 @@ class JuntoGroupsState extends State<JuntoGroups>
   void _changeGroup(Group group) {
     if (group.groupType == 'Pack') {
       setState(() {
-        _currentGroup = PackOpen(pack: group);
+        _currentGroup = PackOpen(
+          key: ValueKey<String>(group.address),
+          pack: group,
+        );
         spheresVisible = false;
       });
     }
@@ -136,6 +145,7 @@ class JuntoGroupsState extends State<JuntoGroups>
       });
       setState(() {
         _currentGroup = SphereOpen(
+          key: ValueKey<String>(group.address),
           group: group,
         );
       });
