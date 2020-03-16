@@ -15,6 +15,7 @@ class GroupExpressions extends StatefulWidget {
     @required this.userAddress,
     @required this.expressionsPrivacy,
     @required this.shouldRefresh,
+    @required this.channels,
   }) : super(key: key);
 
   /// Group
@@ -22,6 +23,7 @@ class GroupExpressions extends StatefulWidget {
   final String userAddress;
   final String expressionsPrivacy;
   final ValueNotifier<bool> shouldRefresh;
+  final List<String> channels;
 
   @override
   _GroupExpressionsState createState() => _GroupExpressionsState();
@@ -43,6 +45,7 @@ class _GroupExpressionsState extends State<GroupExpressions> {
         'context': widget.group.address,
         'context_type': 'Group',
         'pagination_position': '0',
+        if (widget.channels.isNotEmpty) 'channels[0]': widget.channels[0]
       };
       widget.shouldRefresh.value = false;
       final QueryResults<ExpressionResponse> results =

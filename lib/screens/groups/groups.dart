@@ -10,10 +10,11 @@ import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
+import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
 
-// This screen displays groups a member belongs two. Currently, there are two types of
+// This screen displays groups a member belongs to. Currently, there are two types of
 // groups: spheres (communities) and packs (agent-centric communities)
 class JuntoGroups extends StatefulWidget {
   const JuntoGroups({@required this.initialGroup});
@@ -32,8 +33,9 @@ class JuntoGroupsState extends State<JuntoGroups>
   GlobalKey<JuntoFilterDrawerState> _filterDrawerKey;
 
   bool actionsVisible = false;
-  Widget _currentGroup;
   bool spheresVisible = false;
+  final List<String> _channels = <String>[];
+  Group _currentGroup;
 
   @override
   void initState() {
@@ -47,17 +49,11 @@ class JuntoGroupsState extends State<JuntoGroups>
 
     if (group.groupType == 'Pack') {
       setState(() {
-        _currentGroup = PackOpen(
-          key: ValueKey<String>(group.address),
-          pack: group,
-        );
+        _currentGroup = group;
       });
     } else if (group.groupType == 'Sphere') {
       setState(() {
-        _currentGroup = SphereOpen(
-          key: ValueKey<String>(group.address),
-          group: group,
-        );
+        _currentGroup = group;
       });
     }
   }
@@ -68,10 +64,9 @@ class JuntoGroupsState extends State<JuntoGroups>
       body: JuntoFilterDrawer(
         key: _filterDrawerKey,
         leftDrawer: FilterDrawerContent(
-          //todo(dominikroszkowski): implement these
-          filterByChannel: (_) {},
-          channels: [],
-          resetChannels: () {},
+          filterByChannel: _filterByChannel,
+          channels: _channels,
+          resetChannels: _resetChannels,
         ),
         rightMenu: JuntoDrawer(),
         scaffold: Scaffold(
@@ -108,7 +103,27 @@ class JuntoGroupsState extends State<JuntoGroups>
               AnimatedOpacity(
                 duration: const Duration(milliseconds: 300),
                 opacity: actionsVisible ? 0.0 : 1.0,
-                child: _currentGroup,
+                child: Builder(
+                  builder: (BuildContext context) {
+                    if (_currentGroup == null) {
+                      return JuntoProgressIndicator();
+                    }
+                    if (_currentGroup.groupType == 'Pack') {
+                      return PackOpen(
+                        key: ValueKey<String>(_currentGroup.address),
+                        pack: _currentGroup,
+                        channels: _channels,
+                      );
+                    } else if (_currentGroup.groupType == 'Sphere') {
+                      return SphereOpen(
+                        key: ValueKey<String>(_currentGroup.address),
+                        group: _currentGroup,
+                        channels: _channels,
+                      );
+                    }
+                    return Container();
+                  },
+                ),
               ),
               AnimatedOpacity(
                 duration: const Duration(milliseconds: 300),
@@ -128,26 +143,37 @@ class JuntoGroupsState extends State<JuntoGroups>
     );
   }
 
+  void _filterByChannel(Channel channel) {
+    setState(() {
+      if (_channels.isEmpty) {
+        _channels.add(channel.name);
+      } else {
+        _channels.first = channel.name;
+      }
+    });
+  }
+
+  void _resetChannels() {
+    setState(() {
+      _channels.clear();
+    });
+    Navigator.pop(context);
+  }
+
   void _changeGroup(Group group) {
     if (group.groupType == 'Pack') {
       setState(() {
-        _currentGroup = PackOpen(
-          key: ValueKey<String>(group.address),
-          pack: group,
-        );
+        _currentGroup = group;
         spheresVisible = false;
       });
     }
 
     if (group.groupType == 'Sphere') {
       setState(() {
-        _currentGroup = const SizedBox();
+        _currentGroup = null;
       });
       setState(() {
-        _currentGroup = SphereOpen(
-          key: ValueKey<String>(group.address),
-          group: group,
-        );
+        _currentGroup = group;
       });
       spheresVisible = true;
     }

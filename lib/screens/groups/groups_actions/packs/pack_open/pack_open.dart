@@ -14,9 +14,11 @@ class PackOpen extends StatefulWidget {
   const PackOpen({
     Key key,
     @required this.pack,
+    @required this.channels,
   }) : super(key: key);
 
   final Group pack;
+  final List<String> channels;
 
   @override
   State<StatefulWidget> createState() {
@@ -124,17 +126,20 @@ class PackOpenState extends State<PackOpen> {
               child: TabBarView(
                 children: <Widget>[
                   GroupExpressions(
-                      key: const PageStorageKey<String>('public-pack'),
-                      group: widget.pack,
-                      userAddress: _userAddress,
-                      expressionsPrivacy: 'Public',
-                      shouldRefresh: _shouldRefreshPublic),
+                    key: const PageStorageKey<String>('public-pack'),
+                    group: widget.pack,
+                    userAddress: _userAddress,
+                    expressionsPrivacy: 'Public',
+                    shouldRefresh: _shouldRefreshPublic,
+                    channels: widget.channels,
+                  ),
                   GroupExpressions(
                     key: const PageStorageKey<String>('private-pack'),
                     group: widget.pack,
                     userAddress: _userAddress,
                     expressionsPrivacy: 'Private',
                     shouldRefresh: _shouldRefreshPack,
+                    channels: widget.channels,
                   ),
                   PackOpenMembers(
                     key: UniqueKey(),

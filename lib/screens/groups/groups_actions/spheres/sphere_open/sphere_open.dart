@@ -19,10 +19,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SphereOpen extends StatefulWidget {
   const SphereOpen({
     Key key,
-    this.group,
+    @required this.group,
+    @required this.channels,
   }) : super(key: key);
 
   final Group group;
+  final List<String> channels;
 
   @override
   State<StatefulWidget> createState() {
@@ -114,6 +116,7 @@ class SphereOpenState extends State<SphereOpen> with HideFab {
                   userAddress: _userAddress,
                   expressionsPrivacy: 'Public',
                   shouldRefresh: shouldRefresh,
+                  channels: widget.channels,
                 )
             ],
           ),

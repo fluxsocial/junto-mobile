@@ -299,12 +299,13 @@ class JuntoFilterDrawerState extends State<JuntoFilterDrawer>
     _controller.fling(velocity: -1);
   }
 
-  void _close({DrawerPosition direction}) {
+  Future<void> _close({DrawerPosition direction}) async {
     if (FocusScope.of(context).hasFocus) {
-      FocusScope.of(context).unfocus();
+      // we need to create new focus node as unfocus() doesn't work properly here
+      FocusScope.of(context).requestFocus(FocusNode());
     }
     if (direction != null) _position = direction;
-    _controller.fling(velocity: 1);
+    await _controller.fling(velocity: 1);
   }
 
   /// Open or Close JuntoDrawer
