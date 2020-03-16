@@ -4,18 +4,21 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/widgets/appbar/filter_drawer_button.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 
+typedef SwitchColumnView = Future<void> Function(String layout);
+
 // Junto app bar used in collective screen.
 class CollectiveAppBar extends SliverPersistentHeaderDelegate {
-  CollectiveAppBar(
-      {@required this.expandedHeight,
-      this.appbarTitle,
-      this.twoColumnView,
-      this.switchColumnView});
+  CollectiveAppBar({
+    @required this.expandedHeight,
+    this.appbarTitle,
+    this.twoColumnView,
+    this.switchColumnView,
+  });
 
   final double expandedHeight;
   final String appbarTitle;
   final bool twoColumnView;
-  final Function switchColumnView;
+  final SwitchColumnView switchColumnView;
 
   @override
   Widget build(

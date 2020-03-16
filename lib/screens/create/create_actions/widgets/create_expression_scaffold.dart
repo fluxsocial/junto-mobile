@@ -20,14 +20,10 @@ class CreateExpressionScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO(dominik): wrap with bloc
     return Scaffold(
       body: JuntoFilterDrawer(
-        // TO DO: implement filter by channel
-        leftDrawer: FilterDrawerContent(
-          filterByChannel: null,
-          channels: [],
-          resetChannels: () {},
-        ),
+        leftDrawer: const FilterDrawerContent('Collective'),
         rightMenu: JuntoDrawer(),
         scaffold: Scaffold(
           appBar: CreateAppBar(

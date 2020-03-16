@@ -13,7 +13,7 @@ import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
 
-// This screen displays groups a member belongs two. Currently, there are two types of
+// This screen displays groups a member belongs to. Currently, there are two types of
 // groups: spheres (communities) and packs (agent-centric communities)
 class JuntoGroups extends StatefulWidget {
   const JuntoGroups({@required this.initialGroup});
@@ -64,15 +64,11 @@ class JuntoGroupsState extends State<JuntoGroups>
 
   @override
   Widget build(BuildContext context) {
+    //TODO(dominik): wrap with bloc
     return Scaffold(
       body: JuntoFilterDrawer(
         key: _filterDrawerKey,
-        leftDrawer: FilterDrawerContent(
-          //todo(dominikroszkowski): implement these
-          filterByChannel: (_) {},
-          channels: [],
-          resetChannels: () {},
-        ),
+        leftDrawer: const FilterDrawerContent('TODO?'),
         rightMenu: JuntoDrawer(),
         scaffold: Scaffold(
           floatingActionButton: ValueListenableBuilder<bool>(

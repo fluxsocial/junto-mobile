@@ -87,3 +87,4 @@ ios/Flutter/Flutter.podspec
 .flutter-plugins-dependencies
 *.http
 ios/Runner.xcodeproj/project.pbxproj
+fvm
