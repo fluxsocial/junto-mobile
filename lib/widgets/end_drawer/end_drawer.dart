@@ -75,7 +75,7 @@ class JuntoDrawerState extends State<JuntoDrawer> {
         Container(
           padding: EdgeInsets.only(
             top: MediaQuery.of(context).size.height * .2,
-            left: 80,
+            left: 32,
             bottom: MediaQuery.of(context).size.height * .2,
             right: 32,
           ),

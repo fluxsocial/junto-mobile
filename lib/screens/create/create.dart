@@ -6,6 +6,8 @@ import 'package:junto_beta_mobile/screens/create/create_templates/longform.dart'
 import 'package:junto_beta_mobile/screens/create/create_templates/photo.dart';
 import 'package:junto_beta_mobile/screens/create/create_templates/shortform.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
+import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 
 import 'create_actions/widgets/create_expression_icon.dart';
 import 'create_actions/widgets/home_icon.dart';

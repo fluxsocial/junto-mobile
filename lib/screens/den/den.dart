@@ -14,6 +14,9 @@ import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
+import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
 
 /// Displays the user's DEN or "profile screen"
 class JuntoDen extends StatefulWidget {
@@ -153,37 +156,49 @@ class JuntoDenState extends State<JuntoDen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _constructAppBar(),
-      floatingActionButton: ValueListenableBuilder<bool>(
-        valueListenable: _isVisible,
-        builder: (
-          BuildContext context,
-          bool visible,
-          Widget child,
-        ) {
-          return AnimatedOpacity(
-            duration: const Duration(milliseconds: 300),
-            opacity: visible ? 1.0 : 0.0,
-            child: child,
-          );
-        },
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 25),
-          child: BottomNav(
-            actionsVisible: false,
-            onLeftButtonTap: () {
-              Navigator.push(
-                context,
-                CupertinoPageRoute<Widget>(
-                  builder: (BuildContext context) => JuntoEditDen(),
-                ),
+      body: JuntoFilterDrawer(
+        // TO DO: implement filter by channel
+        leftDrawer: FilterDrawerContent(
+          filterByChannel: null,
+          channels: [],
+          resetChannels: () {},
+        ),
+        rightMenu: JuntoDrawer(),
+        scaffold: Scaffold(
+          appBar: _constructAppBar(),
+          floatingActionButton: ValueListenableBuilder<bool>(
+            valueListenable: _isVisible,
+            builder: (
+              BuildContext context,
+              bool visible,
+              Widget child,
+            ) {
+              return AnimatedOpacity(
+                duration: const Duration(milliseconds: 300),
+                opacity: visible ? 1.0 : 0.0,
+                child: child,
               );
             },
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 25),
+              child: BottomNav(
+                actionsVisible: false,
+                onLeftButtonTap: () {
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute<Widget>(
+                      builder: (BuildContext context) => JuntoEditDen(),
+                    ),
+                  );
+                },
+              ),
+            ),
           ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          body: _buildBody(),
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      body: _buildBody(),
     );
   }
 
