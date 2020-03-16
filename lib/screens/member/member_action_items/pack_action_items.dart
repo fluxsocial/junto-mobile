@@ -104,8 +104,15 @@ class PackActionItems extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            if (!hasPendingConnection) {
-              disconnectWithUser(buildContext);
+            if (isConnected) {
+              showDialog(
+                context: buildContext,
+                builder: (BuildContext context) => ConfirmDialog(
+                  buildContext: buildContext,
+                  confirmationText: 'Are you sure you want to disconnect?',
+                  confirm: disconnectWithUser,
+                ),
+              );
             }
           },
           child: Container(
