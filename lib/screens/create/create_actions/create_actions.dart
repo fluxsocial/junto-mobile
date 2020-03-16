@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/app/expressions.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
@@ -13,9 +14,11 @@ import 'package:junto_beta_mobile/screens/create/create_actions/create_actions_a
 import 'package:junto_beta_mobile/screens/create/create_actions/sphere_select_modal.dart';
 import 'package:junto_beta_mobile/screens/den/den.dart';
 import 'package:junto_beta_mobile/screens/groups/groups.dart';
-import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
+import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -30,7 +33,7 @@ class CreateActions extends StatefulWidget {
 
   /// Represents the type of expression being created. Possible values include
   /// "LongForm", "ShortForm", "EventForm", etc
-  final String expressionType;
+  final ExpressionType expressionType;
 
   /// This represents the Expression's context. Please see [ExpressionContext]
   final ExpressionContext expressionContext;
@@ -105,12 +108,31 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
     );
   }
 
+  void _postCreateAction() {
+    Widget child;
+    if (_currentExpressionContext == 'Collective') {
+      child = JuntoCollective();
+    } else if (_currentExpressionContext == 'My Pack') {
+      child = JuntoGroups(initialGroup: _address);
+    } else if (_currentExpressionContext == 'Sphere') {
+      child = JuntoGroups(initialGroup: _address);
+    } else {
+      child = JuntoDen();
+    }
+    Navigator.of(context).pushAndRemoveUntil(
+      FadeRoute<void>(child: child),
+      (Route<dynamic> route) {
+        return route.isFirst;
+      },
+    );
+  }
+
   Future<void> _createExpression() async {
     // set expression context
     _setExpressionContext();
 
     try {
-      if (widget.expressionType == 'PhotoForm') {
+      if (widget.expressionType == ExpressionType.photo) {
         JuntoLoader.showLoader(context);
         final String _photoKey =
             await Provider.of<ExpressionRepo>(context, listen: false)
@@ -121,7 +143,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         );
         JuntoLoader.hide();
         _expression = ExpressionModel(
-          type: widget.expressionType,
+          type: widget.expressionType.modelName(),
           expressionData: PhotoFormExpression(
             image: _photoKey,
             caption: widget.expression['caption'],
@@ -129,7 +151,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
           context: _expressionContext,
           channels: channel,
         );
-      } else if (widget.expressionType == 'EventForm') {
+      } else if (widget.expressionType == ExpressionType.event) {
         String eventPhoto = '';
         if (widget.expression['photo'] != null) {
           JuntoLoader.showLoader(context);
@@ -144,14 +166,14 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
           eventPhoto = _eventPhotoKey;
         }
         _expression = ExpressionModel(
-          type: widget.expressionType,
+          type: widget.expressionType.modelName(),
           expressionData: EventFormExpression(
               photo: eventPhoto,
               description: widget.expression['description'],
               title: widget.expression['title'],
               location: widget.expression['location'],
-              startTime: widget.expression['startTime'],
-              endTime: widget.expression['endTime'],
+              startTime: widget.expression['start_time'],
+              endTime: widget.expression['end_time'],
               facilitators: <String>[],
               members: <String>[]).toMap(),
           channels: channel,
@@ -159,7 +181,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         );
       } else {
         _expression = ExpressionModel(
-          type: widget.expressionType,
+          type: widget.expressionType.modelName(),
           expressionData: widget.expression.toMap(),
           context: _expressionContext,
           channels: channel,
@@ -174,63 +196,24 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         _address,
       );
       JuntoLoader.hide();
-      JuntoDialog.showJuntoDialog(
+
+      await showFeedback(
         context,
-        'Expression Created!',
-        <Widget>[
-          FlatButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                PageRouteBuilder<dynamic>(
-                  pageBuilder: (
-                    BuildContext context,
-                    Animation<double> animation,
-                    Animation<double> secondaryAnimation,
-                  ) {
-                    if (_currentExpressionContext == 'Collective') {
-                      return JuntoCollective();
-                    } else if (_currentExpressionContext == 'My Pack') {
-                      return JuntoGroups(initialGroup: _address);
-                    } else if (_currentExpressionContext == 'Sphere') {
-                      return JuntoGroups(initialGroup: _address);
-                    } else {
-                      return JuntoDen();
-                    }
-                  },
-                  transitionsBuilder: (
-                    BuildContext context,
-                    Animation<double> animation,
-                    Animation<double> secondaryAnimation,
-                    Widget child,
-                  ) {
-                    return FadeTransition(
-                      opacity: animation,
-                      child: child,
-                    );
-                  },
-                  transitionDuration: const Duration(
-                    milliseconds: 300,
-                  ),
-                ),
-              );
-            },
-            child: const Text('Ok'),
-          )
-        ],
+        icon: Icon(
+          CustomIcons.create,
+          size: 17,
+          color: Theme.of(context).primaryColor,
+        ),
+        message: 'Expression Created!',
       );
+      _postCreateAction();
     } catch (error) {
       JuntoLoader.hide();
-      JuntoDialog.showJuntoDialog(
-        context,
-        'Something went wrong',
-        <Widget>[
-          FlatButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text('Ok'),
-          )
-        ],
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => SingleActionDialog(
+          dialogText: error.message,
+        ),
       );
     }
   }
@@ -429,13 +412,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
             );
           }
           if (userSpheres.isEmpty) {
-            JuntoDialog.showJuntoDialog(
-              context,
-              'You are not apart of any spheres',
-              <Widget>[
-                DialogBack(),
-              ],
-            );
+            showFeedback(context, message: 'You are not apart of any spheres');
             setState(() {
               _currentExpressionContext = 'Collective';
             });

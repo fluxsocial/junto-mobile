@@ -1,8 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 // This class renders a preview of a sphere
 class SpherePreview extends StatelessWidget {
@@ -27,8 +27,8 @@ class SpherePreview extends StatelessWidget {
                       end: Alignment.topRight,
                       stops: const <double>[0.3, 0.9],
                       colors: <Color>[
-                                Theme.of(context).colorScheme.primary,
-                                Theme.of(context).colorScheme.secondary,
+                        Theme.of(context).colorScheme.primary,
+                        Theme.of(context).colorScheme.secondary,
                       ],
                     ),
                     borderRadius: BorderRadius.circular(100),

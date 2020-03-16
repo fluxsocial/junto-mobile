@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/utils/junto_dialog.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
@@ -183,12 +183,11 @@ class _EditGroupInfoState extends State<EditGroupInfo> {
       Navigator.pop(context);
     } on JuntoException catch (error) {
       JuntoLoader.hide();
-      JuntoDialog.showJuntoDialog(
-        context,
-        error.message,
-        <Widget>[
-          DialogBack(),
-        ],
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => const SingleActionDialog(
+          dialogText: 'Hmm, something went wrong.',
+        ),
       );
     }
   }
@@ -218,7 +217,7 @@ class _EditGroupInfoState extends State<EditGroupInfo> {
                       ),
                       child: CircleAvatar(
                         child: Image.asset(
-                          'assets/images/junto-mobile__logo--spheres.png',
+                          'assets/images/junto-mobile__logo.png',
                           fit: BoxFit.fill,
                         ),
                       ),

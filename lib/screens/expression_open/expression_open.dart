@@ -11,8 +11,9 @@ import 'package:junto_beta_mobile/screens/expression_open/expressions/event_open
 import 'package:junto_beta_mobile/screens/expression_open/expressions/longform_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/photo_open.dart';
 import 'package:junto_beta_mobile/screens/expression_open/expressions/shortform_open.dart';
-import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:junto_beta_mobile/widgets/previews/comment_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
@@ -96,15 +97,23 @@ class ExpressionOpenState extends State<ExpressionOpen> {
     FocusScope.of(context).requestFocus(_focusNode);
   }
 
+  void _openComments() {
+    setState(() {
+      commentsVisible = true;
+    });
+  }
+
+  void _closeComment() {
+    setState(() {
+      commentsVisible = false;
+    });
+  }
+
   void _showComments() {
     if (commentsVisible == false) {
-      setState(() {
-        commentsVisible = true;
-      });
+      _openComments();
     } else if (commentsVisible == true) {
-      setState(() {
-        commentsVisible = false;
-      });
+      _closeComment();
     }
   }
 
@@ -123,29 +132,25 @@ class ExpressionOpenState extends State<ExpressionOpen> {
         );
         commentController.clear();
         JuntoLoader.hide();
-        JuntoDialog.showJuntoDialog(
+        await showFeedback(
           context,
-          'Comment Created',
-          <Widget>[
-            FlatButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Ok'),
-            ),
-          ],
+          icon: Icon(
+            CustomIcons.create,
+            size: 17,
+            color: Theme.of(context).primaryColor,
+          ),
+          message: 'Comment Created',
         );
+        await _refreshComments();
+        _openComments();
       } catch (error) {
         debugPrint('Error posting comment $error');
         JuntoLoader.hide();
-
-        JuntoDialog.showJuntoDialog(
-          context,
-          'Error posting comment',
-          <Widget>[
-            FlatButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Ok'),
-            ),
-          ],
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => const SingleActionDialog(
+            dialogText: 'Hmm, something went wrong.',
+          ),
         );
       }
     } else {
@@ -228,7 +233,9 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                                           child: Row(
                                             children: <Widget>[
                                               Text(
-                                                'Show replies',
+                                                commentsVisible
+                                                    ? 'Hide replies'
+                                                    : 'Show replies (${snapshot.data.results.length})',
                                                 style: TextStyle(
                                                     color: Theme.of(context)
                                                         .primaryColorLight,
@@ -312,6 +319,7 @@ class ExpressionContextChannelPreview extends StatelessWidget {
   const ExpressionContextChannelPreview(this.channel);
 
   final String channel;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -389,9 +397,10 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
     return SafeArea(
       top: false,
       child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 10,
-          vertical: 20,
+        padding: const EdgeInsets.only(
+          left: 10,
+          right: 10,
+          top: 14.0,
         ),
         decoration: BoxDecoration(
           border: Border(
@@ -431,6 +440,7 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
                         cursorWidth: 2,
                         style: Theme.of(context).textTheme.caption,
                         textInputAction: TextInputAction.newline,
+                        keyboardAppearance: Theme.of(context).brightness,
                       ),
                     ),
                   ],

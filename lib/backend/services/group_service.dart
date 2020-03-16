@@ -27,12 +27,27 @@ class GroupServiceCentralized implements GroupService {
   }
 
   @override
+  Future<void> deleteGroup(String groupAddress) async {
+    await client.delete('/groups/$groupAddress');
+  }
+
+  @override
   Future<Group> getGroup(String groupAddress) async {
     final http.Response _serverResponse =
         await client.get('/groups/$groupAddress');
     final Map<String, dynamic> _data =
         JuntoHttp.handleResponse(_serverResponse);
     return Group.fromMap(_data);
+  }
+
+  @override
+  Future<Map<String, dynamic>> getRelationToGroup(
+      String groupAddress, String userAddress) async {
+    final http.Response _serverResponse = await client
+        .postWithoutEncoding('/groups/$groupAddress/members/$userAddress');
+    final Map<String, dynamic> _data =
+        JuntoHttp.handleResponse(_serverResponse);
+    return _data;
   }
 
   @override

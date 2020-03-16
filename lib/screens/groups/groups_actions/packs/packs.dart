@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,7 @@ class Packs extends StatefulWidget {
 
 class PacksState extends State<Packs> with ListDistinct {
   String _userAddress;
+  UserData _userProfile;
   UserRepo _userProvider;
   NotificationRepo _notificationProvider;
 
@@ -57,8 +59,11 @@ class PacksState extends State<Packs> with ListDistinct {
 
   Future<void> getUserInformation() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final Map<String, dynamic> decodedUserData =
+        jsonDecode(prefs.getString('user_data'));
     setState(() {
       _userAddress = prefs.getString('user_id');
+      _userProfile = UserData.fromMap(decodedUserData);
     });
   }
 
@@ -81,7 +86,7 @@ class PacksState extends State<Packs> with ListDistinct {
         ),
       );
     } catch (error) {
-      print(error);
+      print(error.message);
       return null;
     }
   }
@@ -110,7 +115,10 @@ class PacksState extends State<Packs> with ListDistinct {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text('Packs', style: Theme.of(context).textTheme.headline4),
-                const SizedBox(width: 38, height: 38)
+                const SizedBox(
+                  width: 38,
+                  height: 38,
+                )
               ],
             ),
           ),
@@ -121,20 +129,23 @@ class PacksState extends State<Packs> with ListDistinct {
               children: <Widget>[
                 GestureDetector(
                   onTap: () {
-                    packsPageController.animateToPage(0,
-                        duration: const Duration(milliseconds: 200),
-                        curve: Curves.easeIn);
+                    packsPageController.animateToPage(
+                      0,
+                      duration: const Duration(milliseconds: 200),
+                      curve: Curves.easeIn,
+                    );
                   },
                   child: Container(
                     child: Text(
                       'My Packs',
                       style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          color: _currentIndex == 0
-                              ? Theme.of(context).primaryColorDark
-                              : Theme.of(context).primaryColorLight,
-                          decoration: TextDecoration.none),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: _currentIndex == 0
+                            ? Theme.of(context).primaryColorDark
+                            : Theme.of(context).primaryColorLight,
+                        decoration: TextDecoration.none,
+                      ),
                     ),
                   ),
                 ),
@@ -149,12 +160,13 @@ class PacksState extends State<Packs> with ListDistinct {
                     child: Text(
                       'Requests',
                       style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          color: _currentIndex == 1
-                              ? Theme.of(context).primaryColorDark
-                              : Theme.of(context).primaryColorLight,
-                          decoration: TextDecoration.none),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: _currentIndex == 1
+                            ? Theme.of(context).primaryColorDark
+                            : Theme.of(context).primaryColorLight,
+                        decoration: TextDecoration.none,
+                      ),
                     ),
                   ),
                 )
@@ -193,6 +205,7 @@ class PacksState extends State<Packs> with ListDistinct {
                             final List<Group> ownedGroups = snapshot.data.owned;
                             final List<Group> associatedGroups =
                                 snapshot.data.associated;
+
                             final List<Group> userPacks = distinct<Group>(
                                     ownedGroups, associatedGroups)
                                 .where(
@@ -210,6 +223,7 @@ class PacksState extends State<Packs> with ListDistinct {
                                     },
                                     child: PackPreview(
                                       group: group,
+                                      userProfile: _userProfile,
                                     ),
                                   )
                               ],
@@ -255,8 +269,10 @@ class PacksState extends State<Packs> with ListDistinct {
                                     in snapshot.data.groupJoinNotifications)
                                   if (packRequest.groupType == 'Pack')
                                     PackRequest(
-                                        pack: packRequest,
-                                        refreshGroups: refreshGroupsAndRequests)
+                                      userProfile: _userProfile,
+                                      pack: packRequest,
+                                      refreshGroups: refreshGroupsAndRequests,
+                                    )
                               ],
                             ));
                           }

@@ -8,7 +8,7 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/create_sphere/create_sphere_page_one.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/create_sphere/create_sphere_page_two.dart';
-import 'package:junto_beta_mobile/utils/junto_dialog.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
@@ -74,7 +74,7 @@ class CreateSphereState extends State<CreateSphere> {
     final SphereModel sphere = SphereModel(
       name: sphereName,
       description: sphereDescription,
-      facilitators: <String>[userAddress],
+      facilitators: <String>[],
       photo: sphereImageKey,
       members: _sphereMembers,
       principles: '',
@@ -85,16 +85,14 @@ class CreateSphereState extends State<CreateSphere> {
     try {
       await Provider.of<GroupRepo>(context, listen: false).createSphere(sphere);
       JuntoLoader.hide();
-      widget.refreshSpheres();
       Navigator.pop(context);
     } on JuntoException catch (error) {
       JuntoLoader.hide();
-      JuntoDialog.showJuntoDialog(
-        context,
-        error.message,
-        <Widget>[
-          DialogBack(),
-        ],
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => SingleActionDialog(
+          dialogText: error.message,
+        ),
       );
     }
   }
@@ -126,22 +124,19 @@ class CreateSphereState extends State<CreateSphere> {
 
   void _validateSphereCreation() {
     if (_formKey.currentState.validate()) {
+      if (FocusScope.of(context).hasFocus) {
+        FocusScope.of(context).unfocus();
+      }
       createSphereController.nextPage(
         curve: Curves.easeIn,
         duration: const Duration(milliseconds: 300),
       );
     } else {
-      JuntoDialog.showJuntoDialog(
-        context,
-        'Please ensure all fields are filled',
-        <Widget>[
-          DialogBack(),
-        ],
-      );
+      return;
     }
   }
 
-  void _sphereAddMember(UserProfile member) {
+  void sphereAddMember(UserProfile member) {
     _sphereMembers.add(member.address);
   }
 
@@ -153,15 +148,7 @@ class CreateSphereState extends State<CreateSphere> {
     return ListView(
       children: <Widget>[
         _spherePrivacy('Public',
-            'Anyone can join this sphere, read its expressions and share to it'),
-        // _spherePrivacy(
-        //     'Shared',
-        //     'Only members can read expressions '
-        //         'and share to it. Facilitators can invite members or accept their request to join.'),
-        // _spherePrivacy(
-        //     'Private',
-        //     'Members must be invited into this sphere. This sphere is only searchable by members.'
-        //         ' Only members can read expressions '),
+            'Anyone can join this circle, read its expressions, and share to it'),
       ],
     );
   }
@@ -176,16 +163,21 @@ class CreateSphereState extends State<CreateSphere> {
       child: Container(
         decoration: BoxDecoration(
           border: Border(
-            bottom: BorderSide(color: Theme.of(context).dividerColor, width: 1),
+            bottom: BorderSide(
+              color: Theme.of(context).dividerColor,
+              width: .75,
+            ),
           ),
         ),
-        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+        padding: const EdgeInsets.symmetric(
+          vertical: 15,
+          horizontal: 10,
+        ),
         child: InkWell(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Container(
-                width: MediaQuery.of(context).size.width * .75,
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -196,27 +188,31 @@ class CreateSphereState extends State<CreateSphere> {
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    Text(privacyDescription,
-                        style: Theme.of(context).textTheme.bodyText1)
+                    Text(
+                      privacyDescription,
+                      style: Theme.of(context).textTheme.bodyText1,
+                    )
                   ],
                 ),
               ),
+              const SizedBox(width: 10),
               AnimatedContainer(
                 duration: kThemeChangeDuration,
                 height: 22,
                 width: 22,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                      colors: _currentPrivacy == privacyLayer
-                          ? <Color>[
-                              Theme.of(context).colorScheme.secondary,
-                              Theme.of(context).colorScheme.primary
-                            ]
-                          : <Color>[Colors.white, Colors.white],
-                      begin: Alignment.bottomLeft,
-                      end: Alignment.topRight),
+                    colors: _currentPrivacy == privacyLayer
+                        ? <Color>[
+                            Theme.of(context).colorScheme.secondary,
+                            Theme.of(context).colorScheme.primary
+                          ]
+                        : <Color>[Colors.white, Colors.white],
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
+                  ),
                   border: Border.all(
-                    color: Theme.of(context).dividerColor,
+                    color: Theme.of(context).backgroundColor,
                     width: 2,
                   ),
                   borderRadius: BorderRadius.circular(25),
@@ -260,7 +256,9 @@ class CreateSphereState extends State<CreateSphere> {
                 onTap: () {
                   createSphereController.previousPage(
                     curve: Curves.easeIn,
-                    duration: const Duration(milliseconds: 300),
+                    duration: const Duration(
+                      milliseconds: 300,
+                    ),
                   );
                 },
                 child: Container(
@@ -268,8 +266,11 @@ class CreateSphereState extends State<CreateSphere> {
                   color: Colors.transparent,
                   width: 60,
                   alignment: Alignment.centerLeft,
-                  child: Icon(CustomIcons.back,
-                      size: 17, color: Theme.of(context).primaryColorDark),
+                  child: Icon(
+                    CustomIcons.back,
+                    size: 17,
+                    color: Theme.of(context).primaryColorDark,
+                  ),
                 ),
               ),
             if (_currentIndex == 0)
@@ -285,30 +286,24 @@ class CreateSphereState extends State<CreateSphere> {
                   padding: const EdgeInsets.only(right: 10),
                   width: 60,
                   alignment: Alignment.centerRight,
-                  child: Text('create',
-                      style: Theme.of(context).textTheme.caption),
+                  child: Text(
+                    'create',
+                    style: Theme.of(context).textTheme.caption,
+                  ),
                 ),
               ),
             if (_currentIndex != 2)
               GestureDetector(
-                onTap: () {
-                  if (_currentIndex == 0) {
-                    setState(() {
-                      sphereName = sphereNameController.value.text;
-                      sphereHandle = sphereHandleController.value.text;
-                      sphereDescription =
-                          sphereDescriptionController.value.text;
-                    });
-                  }
-                  _validateSphereCreation();
-                },
+                onTap: _onNextPress,
                 child: Container(
                   color: Colors.transparent,
                   padding: const EdgeInsets.only(right: 10),
                   width: 48,
                   alignment: Alignment.centerRight,
-                  child:
-                      Text('next', style: Theme.of(context).textTheme.caption),
+                  child: Text(
+                    'next',
+                    style: Theme.of(context).textTheme.caption,
+                  ),
                 ),
               )
           ],
@@ -318,10 +313,29 @@ class CreateSphereState extends State<CreateSphere> {
         preferredSize: const Size.fromHeight(.75),
         child: Container(
           height: .75,
-          decoration: BoxDecoration(color: Theme.of(context).dividerColor),
+          decoration: BoxDecoration(
+            color: Theme.of(context).dividerColor,
+          ),
         ),
       ),
     );
+  }
+
+  void _onNextPress() {
+    if (_currentIndex == 0) {
+      setState(() {
+        sphereName = sphereNameController.value.text;
+        sphereHandle = sphereHandleController.value.text;
+        sphereDescription = sphereDescriptionController.value.text;
+      });
+      _validateSphereCreation();
+      return;
+    }
+    createSphereController.nextPage(
+      curve: Curves.easeIn,
+      duration: const Duration(milliseconds: 300),
+    );
+    return;
   }
 
   @override
@@ -356,7 +370,7 @@ class CreateSphereState extends State<CreateSphere> {
                   ),
                   CreateSpherePageTwo(
                     future: getUserRelationships(),
-                    addMember: _sphereAddMember,
+                    addMember: sphereAddMember,
                     removeMember: _sphereRemoveMember,
                     tabs: _tabs,
                   ),

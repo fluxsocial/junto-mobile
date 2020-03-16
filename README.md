@@ -19,6 +19,52 @@ storeFile=file-location
 ```
 3) Congratulations! You should now be able to build the project in debug. Feel free to inspect our code and contribute to the project. PRs are welcome!
 
+To run call:
+
+```
+flutter run --flavor tst
+```
+
+
+## Flavors support
+
+Junto app has additional flavors called `tst` and `prod`. This allows to install 2 apps side by side - one from Google Play (prod) and second from CI or your computer.
+
+To run this flavor call:
+
+```
+flutter run --flavor tst
+flutter run --flavor prod
+```
+
+You can also add launch configuration to VS Code:
+
+```json
+"configurations": [
+{
+    "name": "Flutter Tst",
+    "request": "launch",
+    "type": "dart",
+    "flutterMode": "debug",
+    "program": "lib/main.dart",
+    "args": [
+        "--flavor",
+        "tst"
+    ],
+},
+{
+    "name": "Flutter Prod",
+    "request": "launch",
+    "type": "dart",
+    "flutterMode": "debug",
+    "program": "lib/main.dart",
+    "args": [
+        "--flavor",
+        "prod"
+    ],
+},
+```
+
 ## Junto Error Codes 
 | Error Code  | Message  | Cause  |  
 |---|---|---|

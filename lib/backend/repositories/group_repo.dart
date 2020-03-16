@@ -10,8 +10,17 @@ class GroupRepo {
     return _groupService.createSphere(sphere);
   }
 
+  Future<void> deleteGroup(String groupAddress) {
+    return _groupService.deleteGroup(groupAddress);
+  }
+
   Future<Group> getGroup(String groupAddress) {
     return _groupService.getGroup(groupAddress);
+  }
+
+  Future<Map<String, dynamic>> getRelationToGroup(
+      String groupAddress, String userAddress) {
+    return _groupService.getRelationToGroup(groupAddress, userAddress);
   }
 
   Future<List<Users>> getGroupMembers(String groupAddress) {

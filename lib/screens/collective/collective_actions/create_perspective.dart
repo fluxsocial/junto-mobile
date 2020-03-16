@@ -3,25 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/utils/form-validation.dart';
-import 'package:junto_beta_mobile/utils/junto_dialog.dart';
+import 'package:junto_beta_mobile/screens/collective/collective_actions/perspective_body.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart'
     show JuntoException;
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
-import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview_select.dart';
-import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
+import 'package:junto_beta_mobile/widgets/perspective_textfield.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:provider/provider.dart';
 
 class CreatePerspective extends StatefulWidget {
   const CreatePerspective({this.refreshPerspectives});
 
-  final Function refreshPerspectives;
+  final VoidCallback refreshPerspectives;
 
   @override
-  State<StatefulWidget> createState() {
-    return CreatePerspectiveState();
-  }
+  State<StatefulWidget> createState() => CreatePerspectiveState();
 }
 
 class CreatePerspectiveState extends State<CreatePerspective> {
@@ -65,12 +62,10 @@ class CreatePerspectiveState extends State<CreatePerspective> {
         duration: const Duration(milliseconds: 300),
       );
     } else {
-      JuntoDialog.showJuntoDialog(
-        context,
-        'Please ensure all fields are filled',
-        <Widget>[
-          DialogBack(),
-        ],
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => const SingleActionDialog(
+            dialogText: 'Please fill in all the fields.'),
       );
     }
   }
@@ -96,18 +91,26 @@ class CreatePerspectiveState extends State<CreatePerspective> {
       print(error);
       print(stacktrace);
       JuntoLoader.hide();
-      JuntoDialog.showJuntoDialog(
-        context,
-        error.message,
-        <Widget>[
-          FlatButton(
-            onPressed: () {
-              return Navigator.pop(context);
-            },
-            child: const Text('Ok'),
-          ),
-        ],
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => SingleActionDialog(
+          dialogText: error.message,
+        ),
       );
+    }
+  }
+
+  void _onTap() {
+    if (_currentIndex == 0) {
+      Navigator.pop(context);
+      return;
+    }
+    if (_currentIndex != 0) {
+      _pageController.previousPage(
+        curve: Curves.easeIn,
+        duration: const Duration(milliseconds: 300),
+      );
+      return;
     }
   }
 
@@ -139,14 +142,7 @@ class CreatePerspectiveState extends State<CreatePerspective> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 GestureDetector(
-                  onTap: () {
-                    _currentIndex == 0
-                        ? Navigator.pop(context)
-                        : _pageController.previousPage(
-                            curve: Curves.easeIn,
-                            duration: const Duration(milliseconds: 300),
-                          );
-                  },
+                  onTap: _onTap,
                   child: Container(
                     height: 45,
                     width: 45,
@@ -169,9 +165,10 @@ class CreatePerspectiveState extends State<CreatePerspective> {
                       child: Text(
                         'create',
                         style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700,
-                            color: Theme.of(context).primaryColor),
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                          color: Theme.of(context).primaryColor,
+                        ),
                       ),
                     ),
                   ),
@@ -186,9 +183,10 @@ class CreatePerspectiveState extends State<CreatePerspective> {
                       child: Text(
                         'next',
                         style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700,
-                            color: Theme.of(context).primaryColor),
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                          color: Theme.of(context).primaryColor,
+                        ),
                       ),
                     ),
                   ),
@@ -198,11 +196,7 @@ class CreatePerspectiveState extends State<CreatePerspective> {
         ),
       ),
       body: PageView(
-        onPageChanged: (int index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
+        onPageChanged: (int index) => setState(() => _currentIndex = index),
         physics: const NeverScrollableScrollPhysics(),
         controller: _pageController,
         children: <Widget>[
@@ -214,15 +208,18 @@ class CreatePerspectiveState extends State<CreatePerspective> {
                   child: ListView(
                     children: <Widget>[
                       const SizedBox(height: 10),
-                      _buildPerspectiveTextField(
-                          name: 'Name Perspective',
-                          controller: _nameController),
+                      PerspectiveTextField(
+                        name: 'Name Perspective',
+                        controller: _nameController,
+                      ),
                       const SizedBox(height: 10),
-                      _buildPerspectiveTextField(
-                          name: 'About', controller: _aboutController),
+                      PerspectiveTextField(
+                        name: 'About',
+                        controller: _aboutController,
+                      ),
                     ],
                   ),
-                  autovalidate: true,
+                  autovalidate: false,
                 ),
               ),
             ],
@@ -233,116 +230,15 @@ class CreatePerspectiveState extends State<CreatePerspective> {
               physics: const ClampingScrollPhysics(),
               headerSliverBuilder:
                   (BuildContext context, bool innerBoxIsScrolled) {
-                return <Widget>[
-                  SliverPersistentHeader(
-                    delegate: JuntoAppBarDelegate(
-                      TabBar(
-                        labelPadding: const EdgeInsets.all(0),
-                        isScrollable: true,
-                        labelColor: Theme.of(context).primaryColorDark,
-                        labelStyle: Theme.of(context).textTheme.subtitle1,
-                        indicatorWeight: 0.0001,
-                        tabs: <Widget>[
-                          for (String name in _tabs)
-                            Container(
-                              margin: const EdgeInsets.only(right: 24),
-                              color: Theme.of(context).colorScheme.background,
-                              child: Tab(
-                                text: name,
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
-                    pinned: true,
-                  ),
-                ];
+                return <Widget>[_Header(tabs: _tabs)];
               },
-              body: FutureBuilder<Map<String, dynamic>>(
+              body: CreatePerspectiveBody(
                 future: getUserRelationships(),
-                builder: (
-                  BuildContext context,
-                  AsyncSnapshot<Map<String, dynamic>> snapshot,
-                ) {
-                  if (snapshot.hasData) {
-                    // get list of connections
-                    final List<UserProfile> _connectionsMembers =
-                        snapshot.data['connections']['results'];
-
-                    // get list of following
-                    final List<UserProfile> _followingMembers =
-                        snapshot.data['following']['results'];
-
-                    return TabBarView(
-                      children: <Widget>[
-                        // subscriptions
-                        ListView(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          children: _followingMembers
-                              .map(
-                                (dynamic connection) => MemberPreviewSelect(
-                                  profile: connection,
-                                  onSelect: () {
-                                    _perspectiveMembers.add(connection.address);
-                                  },
-                                  onDeselect: () {
-                                    _perspectiveMembers
-                                        .indexWhere(connection.addres);
-                                    _perspectiveMembers
-                                        .remove(connection.address);
-                                  },
-                                ),
-                              )
-                              .toList(),
-                        ),
-                        // connections
-                        ListView(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          children: <Widget>[
-                            for (UserProfile connection in _connectionsMembers)
-                              MemberPreviewSelect(
-                                  profile: connection,
-                                  onSelect: () {
-                                    _perspectiveMembers.add(connection.address);
-                                  },
-                                  onDeselect: () {
-                                    _perspectiveMembers
-                                        .remove(connection.address);
-                                  }),
-                          ],
-                        ),
-                      ],
-                    );
-                  } else if (snapshot.hasError) {
-                    return TabBarView(
-                      children: <Widget>[
-                        Center(
-                          child: Transform.translate(
-                            offset: const Offset(0.0, -50),
-                            child: Text('Hmmm, something is up',
-                                style: Theme.of(context).textTheme.caption),
-                          ),
-                        ),
-                        Center(
-                          child: Transform.translate(
-                            offset: const Offset(0.0, -50),
-                            child: Text('Hmmm, something is up',
-                                style: Theme.of(context).textTheme.caption),
-                          ),
-                        ),
-                      ],
-                    );
-                  }
-                  return TabBarView(
-                    children: <Widget>[
-                      Center(
-                        child: JuntoProgressIndicator(),
-                      ),
-                      Center(
-                        child: JuntoProgressIndicator(),
-                      ),
-                    ],
-                  );
+                removeUser: (UserProfile user) {
+                  _perspectiveMembers.remove(user.address);
+                },
+                addUser: (UserProfile user) {
+                  _perspectiveMembers.add(user.address);
                 },
               ),
             ),
@@ -351,44 +247,39 @@ class CreatePerspectiveState extends State<CreatePerspective> {
       ),
     );
   }
+}
 
-  Widget _buildPerspectiveTextField(
-      {String name, TextEditingController controller}) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: TextFormField(
-        key: UniqueKey(),
-        validator: Validator.validateNonEmpty,
-        controller: controller,
-        buildCounter: (
-          BuildContext context, {
-          int currentLength,
-          int maxLength,
-          bool isFocused,
-        }) =>
-            null,
-        decoration: InputDecoration(
-          contentPadding: const EdgeInsets.all(0),
-          border: InputBorder.none,
-          hintText: name,
-          hintStyle: TextStyle(
-            fontSize: 17,
-            fontWeight: FontWeight.w500,
-            color: Theme.of(context).primaryColorLight,
-          ),
+/// Builder header section using [SliverPersistentHeader]
+class _Header extends StatelessWidget {
+  const _Header({
+    Key key,
+    @required this.tabs,
+  }) : super(key: key);
+  final List<String> tabs;
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverPersistentHeader(
+      delegate: JuntoAppBarDelegate(
+        TabBar(
+          labelPadding: const EdgeInsets.all(0),
+          isScrollable: true,
+          labelColor: Theme.of(context).primaryColorDark,
+          labelStyle: Theme.of(context).textTheme.subtitle1,
+          indicatorWeight: 0.0001,
+          tabs: <Widget>[
+            for (String name in tabs)
+              Container(
+                margin: const EdgeInsets.only(right: 24),
+                color: Theme.of(context).colorScheme.background,
+                child: Tab(
+                  text: name,
+                ),
+              ),
+          ],
         ),
-        cursorColor: Theme.of(context).primaryColorDark,
-        cursorWidth: 2,
-        maxLines: 1,
-        style: TextStyle(
-          fontSize: 17,
-          fontWeight: FontWeight.w600,
-          color: Theme.of(context).primaryColor,
-        ),
-        maxLength: 80,
-        textInputAction: TextInputAction.done,
       ),
+      pinned: true,
     );
   }
 }

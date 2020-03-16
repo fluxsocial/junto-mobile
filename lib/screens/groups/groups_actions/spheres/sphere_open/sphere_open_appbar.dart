@@ -2,17 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_open/sphere_open_action_items.dart';
+import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_open/action_items/creator/action_items.dart';
+import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_open/action_items/member/action_items.dart';
 
 class SphereOpenAppbar extends StatelessWidget {
-  const SphereOpenAppbar({Key key, @required this.group}) : super(key: key);
+  const SphereOpenAppbar(
+      {Key key,
+      @required this.group,
+      @required this.relationToGroup,
+      @required this.userAddress})
+      : super(key: key);
 
   final Group group;
+  final String userAddress;
+  final Map<String, dynamic> relationToGroup;
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
+      actions: <Widget>[Container()],
       brightness: Brightness.light,
       iconTheme: const IconThemeData(color: JuntoPalette.juntoSleek),
       elevation: 0,
@@ -24,35 +33,18 @@ class SphereOpenAppbar extends StatelessWidget {
           children: <Widget>[
             Row(
               children: <Widget>[
-                Icon(CustomIcons.spheres,
-                    color: Theme.of(context).primaryColor, size: 20),
-                // Container(
-                //   alignment: Alignment.center,
-                //   height: 32.0,
-                //   width: 32.0,
-                //   decoration: BoxDecoration(
-                //     gradient: const LinearGradient(
-                //       begin: Alignment.bottomLeft,
-                //       end: Alignment.topRight,
-                //       stops: <double>[0.3, 0.9],
-                //       colors: <Color>[
-                //         JuntoPalette.juntoSecondary,
-                //         JuntoPalette.juntoPrimary,
-                //       ],
-                //     ),
-                //     borderRadius: BorderRadius.circular(100),
-                //   ),
-                //   child: const Icon(
-                //     CustomIcons.spheres,
-                //     color: Colors.white,
-                //     size: 14,
-                //   ),
-                // ),
+                Icon(
+                  CustomIcons.spheres,
+                  color: Theme.of(context).primaryColor,
+                  size: 20,
+                ),
                 const SizedBox(width: 10),
                 Container(
                   margin: const EdgeInsets.only(right: 5),
-                  child: Text('s/' + group.groupData.sphereHandle,
-                      style: Theme.of(context).textTheme.subtitle1),
+                  child: Text(
+                    's/' + group.groupData.sphereHandle,
+                    style: Theme.of(context).textTheme.subtitle1,
+                  ),
                 ),
               ],
             ),
@@ -64,17 +56,28 @@ class SphereOpenAppbar extends StatelessWidget {
                     width: 38,
                     color: Colors.transparent,
                     alignment: Alignment.centerRight,
-                    child: Icon(CustomIcons.moon,
-                        size: 22, color: Theme.of(context).primaryColor),
+                    child: Icon(
+                      CustomIcons.moon,
+                      size: 22,
+                      color: Theme.of(context).primaryColor,
+                    ),
                   ),
                 ),
                 GestureDetector(
                   onTap: () {
                     showModalBottomSheet(
-                      context: context,
-                      builder: (BuildContext context) =>
-                          SphereOpenActionItems(sphere: group),
-                    );
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        context: context,
+                        builder: (BuildContext context) {
+                          return relationToGroup['creator']
+                              ? OwnerActionItems(sphere: group)
+                              : MemberActionItems(
+                                  sphere: group,
+                                  userAddress: userAddress,
+                                );
+                        });
                   },
                   child: Container(
                     width: 38,

@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/create_sphere/create_sphere.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/spheres_search.dart';
-import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/previews/sphere_preview/sphere_preview.dart';
@@ -64,20 +64,20 @@ class SpheresState extends State<Spheres> with ListDistinct {
         getSphereRequests = getGroupNotifications();
       });
     } on JuntoException catch (error) {
-      JuntoDialog.showJuntoDialog(
-        context,
-        error.message,
-        <Widget>[
-          DialogBack(),
-        ],
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => SingleActionDialog(
+          dialogText: error.message,
+        ),
       );
     }
   }
 
   Future<void> getUserInformation() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final Map<String, dynamic> decodedUserData =
-        jsonDecode(prefs.getString('user_data'));
+    final Map<String, dynamic> decodedUserData = jsonDecode(
+      prefs.getString('user_data'),
+    );
     setState(() {
       _userProfile = UserData.fromMap(decodedUserData);
     });
@@ -102,12 +102,11 @@ class SpheresState extends State<Spheres> with ListDistinct {
         ),
       );
     } catch (error) {
-      JuntoDialog.showJuntoDialog(
-        context,
-        error.message,
-        <Widget>[
-          DialogBack(),
-        ],
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => const SingleActionDialog(
+          dialogText: 'Hmm, something went wrong.',
+        ),
       );
       return null;
     }
@@ -250,7 +249,8 @@ class SpheresState extends State<Spheres> with ListDistinct {
                                 child: Transform.translate(
                                   offset: const Offset(0.0, -50),
                                   child: const Text(
-                                      'Hmm, something is up with our server'),
+                                    'Hmm, something is up with our server',
+                                  ),
                                 ),
                               ),
                             );
@@ -259,11 +259,14 @@ class SpheresState extends State<Spheres> with ListDistinct {
                             final List<Group> ownedGroups = snapshot.data.owned;
                             final List<Group> associatedGroups =
                                 snapshot.data.associated;
-                            final List<Group> userSpheres =
-                                distinct<Group>(ownedGroups, associatedGroups)
-                                    .where((Group group) =>
-                                        group.groupType == 'Sphere')
-                                    .toList();
+
+                            final List<Group> userSpheres = distinct<Group>(
+                              ownedGroups,
+                              associatedGroups,
+                            )
+                                .where((Group group) =>
+                                    group.groupType == 'Sphere')
+                                .toList();
 
                             return Expanded(
                                 child: ListView(

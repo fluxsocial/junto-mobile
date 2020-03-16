@@ -27,9 +27,24 @@ class MockSphere with ChangeNotifier implements GroupService {
   }
 
   @override
+  Future<void> deleteGroup(String groupAddress) async {
+    await Future<void>.delayed(
+      const Duration(milliseconds: 500),
+    );
+    return;
+  }
+
+  @override
   Future<Group> getGroup(String groupAddress) async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     return kGroups.first;
+  }
+
+  @override
+  Future<Map<String, dynamic>> getRelationToGroup(
+      String groupAddress, String userAddress) async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    return {};
   }
 
   @override

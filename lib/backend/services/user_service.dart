@@ -49,11 +49,14 @@ class UserServiceCentralized implements UserService {
 
   @override
   Future<UserData> getUser(String userAddress) async {
+    print(userAddress);
     final http.Response _serverResponse =
         await client.get('/users/$userAddress');
+
     final Map<String, dynamic> _resultMap =
         JuntoHttp.handleResponse(_serverResponse);
     final UserData _userData = UserData.fromMap(_resultMap);
+    print(_userData);
     return _userData;
   }
 
@@ -103,7 +106,6 @@ class UserServiceCentralized implements UserService {
   Future<UserGroupsResponse> getUserGroups(String userAddress) async {
     final http.Response response = await client.get(
       '/users/$userAddress/groups',
-      // queryParams: <String, String>{'spheres': 'false', 'pack': 'false'},
     );
     final Map<String, dynamic> _responseMap =
         JuntoHttp.handleResponse(response);
@@ -234,6 +236,7 @@ class UserServiceCentralized implements UserService {
     final http.Response _serverResponse = await client.delete(
       '/users/$userAddress/connect',
     );
+    print(_serverResponse.statusCode);
     JuntoHttp.handleResponse(_serverResponse);
   }
 

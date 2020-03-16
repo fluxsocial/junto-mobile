@@ -7,8 +7,9 @@ import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/pack_open/
 import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/sphere_open/sphere_open.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
+import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
+import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/zoom_scaffold.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
 
@@ -28,21 +29,16 @@ class JuntoGroups extends StatefulWidget {
 class JuntoGroupsState extends State<JuntoGroups>
     with HideFab, ListDistinct, TickerProviderStateMixin {
   final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(true);
+  GlobalKey<JuntoFilterDrawerState> _filterDrawerKey;
 
   bool actionsVisible = false;
-  dynamic _currentGroup;
+  Widget _currentGroup;
   bool spheresVisible = false;
-
-  MenuController menuController;
 
   @override
   void initState() {
     super.initState();
     getUserInformation();
-
-    menuController = MenuController(
-      vsync: this,
-    )..addListener(() => setState(() {}));
   }
 
   Future<void> getUserInformation() async {
@@ -51,71 +47,81 @@ class JuntoGroupsState extends State<JuntoGroups>
 
     if (group.groupType == 'Pack') {
       setState(() {
-        _currentGroup = PackOpen(pack: group);
+        _currentGroup = PackOpen(
+          key: ValueKey<String>(group.address),
+          pack: group,
+        );
       });
     } else if (group.groupType == 'Sphere') {
       setState(() {
-        _currentGroup = SphereOpen(group: group);
+        _currentGroup = SphereOpen(
+          key: ValueKey<String>(group.address),
+          group: group,
+        );
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<MenuController>.value(
-      value: menuController,
-      child: ZoomScaffold(
-        menuScreen: JuntoDrawer(),
-        contentScreen: Layout(
-          contentBuilder: (BuildContext context) => Scaffold(
-            floatingActionButton: ValueListenableBuilder<bool>(
-              valueListenable: _isVisible,
-              builder: (BuildContext context, bool visible, Widget child) {
-                return AnimatedOpacity(
-                  duration: const Duration(milliseconds: 300),
-                  opacity: visible ? 1.0 : 0.0,
-                  child: child,
-                );
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 25),
-                child: BottomNav(
-                    actionsVisible: actionsVisible,
-                    screen: 'groups',
-                    onTap: () {
-                      if (actionsVisible) {
-                        setState(() {
-                          actionsVisible = false;
-                        });
-                      } else {
-                        setState(() {
-                          actionsVisible = true;
-                        });
-                      }
-                    }),
-              ),
+    return Scaffold(
+      body: JuntoFilterDrawer(
+        key: _filterDrawerKey,
+        leftDrawer: FilterDrawerContent(
+          //todo(dominikroszkowski): implement these
+          filterByChannel: (_) {},
+          channels: [],
+          resetChannels: () {},
+        ),
+        rightMenu: JuntoDrawer(),
+        scaffold: Scaffold(
+          floatingActionButton: ValueListenableBuilder<bool>(
+            valueListenable: _isVisible,
+            builder: (BuildContext context, bool visible, Widget child) {
+              return AnimatedOpacity(
+                duration: const Duration(milliseconds: 300),
+                opacity: visible ? 1.0 : 0.0,
+                child: child,
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 25),
+              child: BottomNav(
+                  actionsVisible: actionsVisible,
+                  onLeftButtonTap: () {
+                    if (actionsVisible) {
+                      setState(() {
+                        actionsVisible = false;
+                      });
+                    } else {
+                      setState(() {
+                        actionsVisible = true;
+                      });
+                    }
+                  }),
             ),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerDocked,
-            body: Stack(
-              children: <Widget>[
-                AnimatedOpacity(
-                    duration: const Duration(milliseconds: 300),
-                    opacity: actionsVisible ? 0.0 : 1.0,
-                    child: _currentGroup),
-                AnimatedOpacity(
-                  duration: const Duration(milliseconds: 300),
-                  opacity: actionsVisible ? 1.0 : 0.0,
-                  child: Visibility(
-                    visible: actionsVisible,
-                    child: JuntoGroupsActions(
-                      changeGroup: _changeGroup,
-                      spheresVisible: spheresVisible,
-                    ),
+          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          body: Stack(
+            children: <Widget>[
+              AnimatedOpacity(
+                duration: const Duration(milliseconds: 300),
+                opacity: actionsVisible ? 0.0 : 1.0,
+                child: _currentGroup,
+              ),
+              AnimatedOpacity(
+                duration: const Duration(milliseconds: 300),
+                opacity: actionsVisible ? 1.0 : 0.0,
+                child: Visibility(
+                  visible: actionsVisible,
+                  child: JuntoGroupsActions(
+                    changeGroup: _changeGroup,
+                    spheresVisible: spheresVisible,
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -125,7 +131,10 @@ class JuntoGroupsState extends State<JuntoGroups>
   void _changeGroup(Group group) {
     if (group.groupType == 'Pack') {
       setState(() {
-        _currentGroup = PackOpen(pack: group);
+        _currentGroup = PackOpen(
+          key: ValueKey<String>(group.address),
+          pack: group,
+        );
         spheresVisible = false;
       });
     }
@@ -136,6 +145,7 @@ class JuntoGroupsState extends State<JuntoGroups>
       });
       setState(() {
         _currentGroup = SphereOpen(
+          key: ValueKey<String>(group.address),
           group: group,
         );
       });

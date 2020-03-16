@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_actions/perspectives.dart';
 
@@ -9,7 +10,7 @@ class JuntoCollectiveActions extends StatelessWidget {
   });
 
   final UserData userProfile;
-  final Function changePerspective;
+  final ValueChanged<PerspectiveModel> changePerspective;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,9 @@ class JuntoCollectiveActions extends StatelessWidget {
           color: Theme.of(context).backgroundColor,
           height: MediaQuery.of(context).size.height - 90,
           child: JuntoPerspectives(
-              userProfile: userProfile, changePerspective: changePerspective),
+            userProfile: userProfile,
+            changePerspective: changePerspective,
+          ),
         ),
       ],
     );

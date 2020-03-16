@@ -1,19 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/widgets/appbar/filter_drawer_button.dart';
+import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 
 // Junto app bar used in collective screen.
 class CollectiveAppBar extends SliverPersistentHeaderDelegate {
   CollectiveAppBar(
       {@required this.expandedHeight,
       this.appbarTitle,
-      this.openFilterDrawer,
       this.twoColumnView,
       this.switchColumnView});
 
   final double expandedHeight;
   final String appbarTitle;
-  final Function openFilterDrawer;
   final bool twoColumnView;
   final Function switchColumnView;
 
@@ -21,7 +21,6 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
-      // height: 85,
       height: 135,
       child: Column(
         children: <Widget>[
@@ -48,8 +47,11 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                   height: 36,
                   child: Row(
                     children: <Widget>[
-                      Image.asset('assets/images/junto-mobile__logo.png',
-                          height: 22.0, width: 22.0),
+                      Image.asset(
+                        'assets/images/junto-mobile__logo.png',
+                        height: 22.0,
+                        color: Theme.of(context).primaryColor,
+                      ),
                       const SizedBox(width: 7.5),
                       Text(
                         appbarTitle,
@@ -86,53 +88,48 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                     color: Theme.of(context).dividerColor, width: .75),
               ),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                GestureDetector(
-                  onTap: () {
-                    openFilterDrawer();
-                  },
-                  child: Container(
-                    child: Image.asset('assets/images/junto-mobile__filter.png',
-                        height: 17, color: Theme.of(context).primaryColor),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 2.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  const FilterDrawerButton(),
+                  Row(
+                    children: <Widget>[
+                      GestureDetector(
+                        onTap: () {
+                          switchColumnView('two');
+                        },
+                        child: Container(
+                          color: Colors.transparent,
+                          alignment: Alignment.centerRight,
+                          width: 38,
+                          child: Icon(CustomIcons.twocolumn,
+                              size: 20,
+                              color: twoColumnView
+                                  ? Theme.of(context).primaryColorDark
+                                  : Theme.of(context).primaryColorLight),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          switchColumnView('single');
+                        },
+                        child: Container(
+                          color: Colors.transparent,
+                          alignment: Alignment.centerRight,
+                          width: 38,
+                          child: Icon(CustomIcons.singlecolumn,
+                              size: 20,
+                              color: twoColumnView
+                                  ? Theme.of(context).primaryColorLight
+                                  : Theme.of(context).primaryColorDark),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                Row(
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: () {
-                        switchColumnView('two');
-                      },
-                      child: Container(
-                        color: Colors.transparent,
-                        alignment: Alignment.centerRight,
-                        width: 38,
-                        child: Icon(CustomIcons.twocolumn,
-                            size: 20,
-                            color: twoColumnView
-                                ? Theme.of(context).primaryColorDark
-                                : Theme.of(context).primaryColorLight),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        switchColumnView('single');
-                      },
-                      child: Container(
-                        color: Colors.transparent,
-                        alignment: Alignment.centerRight,
-                        width: 38,
-                        child: Icon(CustomIcons.singlecolumn,
-                            size: 20,
-                            color: twoColumnView
-                                ? Theme.of(context).primaryColorLight
-                                : Theme.of(context).primaryColorDark),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+                ],
+              ),
             ),
           )
         ],

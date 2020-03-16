@@ -4,8 +4,12 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
-import 'package:junto_beta_mobile/utils/junto_dialog.dart';
+import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
+import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
+import 'package:junto_beta_mobile/widgets/buttons/call_to_action.dart';
+import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -42,6 +46,10 @@ class _SignInState extends State<SignIn> {
   Future<void> _handleSignIn(BuildContext context) async {
     final String email = _emailController.value.text;
     final String password = _passwordController.value.text;
+    if (email.isEmpty || password.isEmpty) {
+      _showValidationError();
+      return;
+    }
     final UserAuthLoginDetails loginDetails =
         UserAuthLoginDetails(email: email, password: password);
     JuntoLoader.showLoader(context);
@@ -50,46 +58,25 @@ class _SignInState extends State<SignIn> {
           .loginUser(loginDetails);
       JuntoLoader.hide();
       Navigator.of(context).pushReplacement(
-        PageRouteBuilder<dynamic>(
-          pageBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-          ) {
-            return const JuntoLotus(
-              address: null,
-              expressionContext: ExpressionContext.Collective,
-            );
-          },
-          transitionsBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-            Widget child,
-          ) {
-            return FadeTransition(
-              opacity: animation,
-              child: child,
-            );
-          },
-          transitionDuration: const Duration(
-            milliseconds: 1000,
+        FadeRoute<void>(
+          child: const JuntoLotus(
+            address: null,
+            expressionContext: ExpressionContext.Collective,
           ),
         ),
       );
-    } catch (error) {
-      print(error);
+    } on JuntoException catch (error) {
       JuntoLoader.hide();
-      JuntoDialog.showJuntoDialog(
-          context,
-          'Unable to login user. Please recheck your '
-          'account.',
-          <Widget>[
-            FlatButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('OK'),
-            ),
-          ]);
+      debugPrint('Error during signing in. Error code: ${error.errorCode}');
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => const SingleActionDialog(
+          dialogText:
+              'Unable to login. Please double check your login credentials.',
+        ),
+      );
+    } catch (e, s) {
+      debugPrint('Unknown error during sign in: $e, $s');
     }
   }
 
@@ -103,11 +90,15 @@ class _SignInState extends State<SignIn> {
         children: <Widget>[
           const SizedBox(height: 70),
           GestureDetector(
+            behavior: HitTestBehavior.opaque,
             onTap: () {
               widget.signInController.previousPage(
                 curve: Curves.easeIn,
                 duration: const Duration(milliseconds: 300),
               );
+              if (FocusScope.of(context).hasFocus) {
+                FocusScope.of(context).unfocus();
+              }
             },
             child: Container(
               width: 38,
@@ -120,100 +111,48 @@ class _SignInState extends State<SignIn> {
             child: ListView(
               children: <Widget>[
                 SizedBox(height: MediaQuery.of(context).size.height * .2),
-                Container(
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        child: TextField(
-                          controller: _emailController,
-                          cursorColor: Colors.white70,
-                          decoration: InputDecoration(
-                            enabledBorder: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            labelStyle: TextStyle(color: Colors.green),
-                            hintText: 'Email',
-                            hintStyle: const TextStyle(
-                              color: Colors.white70,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            fillColor: Colors.white,
-                          ),
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                SignUpTextField(
+                  hint: 'Email',
+                  maxLength: 100,
+                  onSubmit: () {
+                    FocusScope.of(context).nextFocus();
+                  },
+                  valueController: _emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  textCapitalization: TextCapitalization.none,
                 ),
                 const SizedBox(height: 25),
-                Container(
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        child: TextField(
-                          controller: _passwordController,
-                          cursorColor: Colors.white70,
-                          decoration: InputDecoration(
-                            enabledBorder: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            labelStyle: TextStyle(color: Colors.green),
-                            hintText: 'Password',
-                            hintStyle: const TextStyle(
-                              color: Colors.white70,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            fillColor: Colors.white,
-                          ),
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                SignUpTextField(
+                  hint: 'Password',
+                  maxLength: 100,
+                  onSubmit: () {
+                    FocusScope.of(context).unfocus();
+                  },
+                  obscureText: true,
+                  valueController: _passwordController,
+                  keyboardType: TextInputType.visiblePassword,
+                  textCapitalization: TextCapitalization.none,
                 ),
                 const SizedBox(height: 50),
-                GestureDetector(
-                  onTap: () {
+                CallToActionButton(
+                  onSignUp: () {
                     _handleSignIn(context);
                   },
-                  child: Container(
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 20,
-                    ),
-                    margin: const EdgeInsets.symmetric(horizontal: 20),
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).accentColor,
-                        borderRadius: BorderRadius.circular(1000),
-                        boxShadow: <BoxShadow>[
-                          BoxShadow(
-                              color: const Color(0xff222222).withOpacity(.2),
-                              offset: const Offset(0.0, 5.0),
-                              blurRadius: 9),
-                        ]),
-                    child: const Text(
-                      'SIGN IN',
-                      style: TextStyle(
-                          letterSpacing: 1.2,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 14),
-                    ),
-                  ),
-                )
+                  title: 'SIGN IN',
+                ),
               ],
             ),
           )
         ],
+      ),
+    );
+  }
+
+  void _showValidationError() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => const SingleActionDialog(
+        dialogText: 'Wrong email or password.',
       ),
     );
   }

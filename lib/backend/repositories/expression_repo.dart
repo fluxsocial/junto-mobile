@@ -9,6 +9,7 @@ class ExpressionRepo {
   ExpressionRepo(this._expressionService);
 
   final ExpressionService _expressionService;
+  QueryResults<ExpressionResponse> cachedResults;
 
   Future<ExpressionResponse> createExpression(
     ExpressionModel expression,
@@ -90,6 +91,13 @@ class ExpressionRepo {
   Future<QueryResults<ExpressionResponse>> getCollectiveExpressions(
       Map<String, String> params) {
     return _expressionService.getCollectiveExpressions(params);
+  }
+
+  Future<QueryResults<ExpressionResponse>> getPackExpressions(
+    Map<String, String> params,
+  ) async {
+    cachedResults = await _expressionService.getCollectiveExpressions(params);
+    return cachedResults;
   }
 
   List<ExpressionResponse> get collectiveExpressions =>

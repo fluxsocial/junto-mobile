@@ -6,10 +6,12 @@ import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
-import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
+import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 import 'package:provider/provider.dart';
 
 class ExpressionActionItems extends StatelessWidget {
@@ -20,6 +22,26 @@ class ExpressionActionItems extends StatelessWidget {
 
   final ExpressionResponse expression;
   final String userAddress;
+
+  Future<void> _deleteExpression(BuildContext context) async {
+    JuntoLoader.showLoader(context);
+    try {
+      await Provider.of<ExpressionRepo>(context, listen: false)
+          .deleteExpression(expression.address);
+
+      JuntoLoader.hide();
+      Navigator.pop(context);
+    } catch (error) {
+      Navigator.pop(context);
+      JuntoLoader.hide();
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => SingleActionDialog(
+          dialogText: error.message,
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,47 +96,15 @@ class ExpressionActionItems extends StatelessWidget {
       children: <Widget>[
         ListTile(
           onTap: () {
-            JuntoDialog.showJuntoDialog(
-              context,
-              'Are you sure you want to delete this expression?',
-              <Widget>[
-                FlatButton(
-                  onPressed: () async {
-                    JuntoLoader.showLoader(context);
-                    try {
-                      await Provider.of<ExpressionRepo>(context, listen: false)
-                          .deleteExpression(expression.address);
-
-                      JuntoLoader.hide();
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                    } catch (error) {
-                      print(error);
-                      print(error.message);
-                      Navigator.pop(context);
-                      JuntoLoader.hide();
-                      JuntoDialog.showJuntoDialog(
-                        context,
-                        'Sorry, something went wrong',
-                        <Widget>[
-                          FlatButton(
-                            onPressed: () async {
-                              Navigator.pop(context);
-                            },
-                            child: const Text('Ok'),
-                          )
-                        ],
-                      );
-                    }
-                  },
-                  child: const Text('Yes'),
-                ),
-                FlatButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text('No'))
-              ],
+            Navigator.pop(context);
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => ConfirmDialog(
+                buildContext: context,
+                confirm: _deleteExpression,
+                confirmationText:
+                    'Are you sure you want to delete this expression?',
+              ),
             );
           },
           contentPadding:
@@ -126,25 +116,6 @@ class ExpressionActionItems extends StatelessWidget {
             ],
           ),
         ),
-        // if (expression.expressionData is CentralizedEventFormExpression)
-        //   ListTile(
-        //     onTap: () => Navigator.push(
-        //       context,
-        //       _AddEventMembers.route(
-        //         expression,
-        //       ),
-        //     ),
-        //     contentPadding:
-        //         const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
-        //     title: Row(
-        //       children: <Widget>[
-        //         Text(
-        //           'Add member to event',
-        //           style: Theme.of(context).textTheme.headline5,
-        //         ),
-        //       ],
-        //     ),
-        //   ),
       ],
     );
   }
@@ -241,21 +212,15 @@ class __AddEventMembersState extends State<_AddEventMembers>
         'Member',
       );
       JuntoLoader.hide();
-      JuntoDialog.showJuntoDialog(
-        context,
-        'Members added',
-        <Widget>[
-          DialogBack(),
-        ],
-      );
+      await showFeedback(context, message: 'Member Added');
+      Navigator.pop(context);
     } catch (error) {
       JuntoLoader.hide();
-      JuntoDialog.showJuntoDialog(
-        context,
-        error.message,
-        <Widget>[
-          DialogBack(),
-        ],
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => const SingleActionDialog(
+          dialogText: 'Hmm, something went wrong.',
+        ),
       );
     }
   }

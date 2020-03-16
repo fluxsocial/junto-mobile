@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_page_title.dart';
+import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field.dart';
+import 'package:keyboard_avoider/keyboard_avoider.dart';
 
 class SignUpRegister extends StatefulWidget {
   const SignUpRegister({Key key}) : super(key: key);
@@ -14,6 +17,10 @@ class SignUpRegisterState extends State<SignUpRegister> {
   TextEditingController passwordController;
   TextEditingController confirmPasswordController;
 
+  FocusNode emailNode = FocusNode();
+  FocusNode passwordNode = FocusNode();
+  FocusNode confirmPasswordNode = FocusNode();
+
   @override
   void initState() {
     super.initState();
@@ -27,6 +34,9 @@ class SignUpRegisterState extends State<SignUpRegister> {
     emailController.dispose();
     passwordController.dispose();
     confirmPasswordController.dispose();
+    emailNode.dispose();
+    passwordNode.dispose();
+    confirmPasswordNode.dispose();
     super.dispose();
   }
 
@@ -49,112 +59,55 @@ class SignUpRegisterState extends State<SignUpRegister> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Container(
-              child: const Text(
-                'Almost done!',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w700),
-              ),
-            ),
+            const SignUpPageTitle(title: 'Almost done!'),
             Expanded(
-              child: ListView(
-                children: <Widget>[
-                  Container(
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          child: TextField(
-                            controller: emailController,
-                            textInputAction: TextInputAction.done,
-                            maxLines: null,
-                            cursorColor: Colors.white70,
-                            decoration: const InputDecoration(
-                              enabledBorder: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              hintText: 'Email',
-                              hintStyle: TextStyle(
-                                color: Colors.white70,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              fillColor: Colors.white,
-                            ),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+              child: KeyboardAvoider(
+                autoScroll: true,
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.only(top: 24.0),
+                  child: Column(
+                    children: <Widget>[
+                      SignUpTextField(
+                        valueController: emailController,
+                        onSubmit: () {
+                          FocusScope.of(context).requestFocus(passwordNode);
+                        },
+                        focusNode: emailNode,
+                        hint: 'Email',
+                        maxLength: 1000,
+                        textCapitalization: TextCapitalization.none,
+                        keyboardType: TextInputType.emailAddress,
+                      ),
+                      const SizedBox(height: 40),
+                      SignUpTextField(
+                        valueController: passwordController,
+                        onSubmit: () {
+                          FocusScope.of(context)
+                              .requestFocus(confirmPasswordNode);
+                        },
+                        focusNode: passwordNode,
+                        hint: 'Password',
+                        maxLength: 1000,
+                        textCapitalization: TextCapitalization.none,
+                        keyboardType: TextInputType.emailAddress,
+                        obscureText: true,
+                      ),
+                      const SizedBox(height: 40),
+                      SignUpTextField(
+                        valueController: confirmPasswordController,
+                        onSubmit: () {
+                          FocusScope.of(context).unfocus();
+                        },
+                        focusNode: confirmPasswordNode,
+                        hint: 'Confirm Password',
+                        maxLength: 1000,
+                        textCapitalization: TextCapitalization.none,
+                        keyboardType: TextInputType.emailAddress,
+                        obscureText: true,
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 50),
-                  Container(
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          child: TextField(
-                            controller: passwordController,
-                            cursorColor: Colors.white70,
-                            textInputAction: TextInputAction.done,
-                            obscureText: true,
-                            decoration: const InputDecoration(
-                              enabledBorder: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              hintText: 'Password',
-                              hintStyle: TextStyle(
-                                color: Colors.white70,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              fillColor: Colors.white,
-                            ),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 50),
-                  Container(
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          child: TextField(
-                            controller: confirmPasswordController,
-                            cursorColor: Colors.white70,
-                            obscureText: true,
-                            textInputAction: TextInputAction.done,
-                            decoration: const InputDecoration(
-                              enabledBorder: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              hintText: 'Confirm password',
-                              hintStyle: TextStyle(
-                                color: Colors.white70,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              fillColor: Colors.white,
-                            ),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 50),
-                ],
+                ),
               ),
             )
           ],

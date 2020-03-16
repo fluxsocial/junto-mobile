@@ -8,6 +8,7 @@ import 'package:junto_beta_mobile/backend/mock/mock_search.dart';
 import 'package:junto_beta_mobile/backend/mock/mock_sphere.dart';
 import 'package:junto_beta_mobile/backend/mock/mock_user.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
+import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/backend/repositories/search_repo.dart';
 import 'package:junto_beta_mobile/backend/repositories/user_repo.dart';
 import 'package:junto_beta_mobile/backend/services.dart';
@@ -24,16 +25,16 @@ export 'package:junto_beta_mobile/backend/repositories.dart';
 export 'package:junto_beta_mobile/backend/services.dart';
 
 class Backend {
-  const Backend._({
-    this.searchRepo,
-    this.authRepo,
-    this.userRepo,
-    this.collectiveProvider,
-    this.groupsProvider,
-    this.expressionRepo,
-    this.currentTheme,
-    this.notificationRepo,
-  });
+  const Backend._(
+      {this.searchRepo,
+      this.authRepo,
+      this.userRepo,
+      this.collectiveProvider,
+      this.groupsProvider,
+      this.expressionRepo,
+      this.currentTheme,
+      this.notificationRepo,
+      this.appRepo});
 
   static Future<Backend> init() async {
     final ThemeData currentTheme = await JuntoThemesProvider.loadDefault();
@@ -56,6 +57,7 @@ class Backend {
       expressionRepo: ExpressionRepo(expressionService),
       currentTheme: currentTheme,
       notificationRepo: NotificationRepo(notificationService),
+      appRepo: AppRepo(),
     );
   }
 
@@ -72,7 +74,8 @@ class Backend {
         groupsProvider: GroupRepo(groupService),
         expressionRepo: ExpressionRepo(expressionService),
         searchRepo: SearchRepo(searchService),
-        currentTheme: JuntoThemes().aqueous);
+        currentTheme: JuntoThemes().aqueous,
+        appRepo: AppRepo());
   }
 
   final SearchRepo searchRepo;
@@ -82,5 +85,6 @@ class Backend {
   final GroupRepo groupsProvider;
   final ExpressionRepo expressionRepo;
   final NotificationRepo notificationRepo;
-  final ThemeData   currentTheme;
+  final ThemeData currentTheme;
+  final AppRepo appRepo;
 }

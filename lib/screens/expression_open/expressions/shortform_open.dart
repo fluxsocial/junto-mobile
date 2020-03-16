@@ -6,6 +6,7 @@ class ShortformOpen extends StatelessWidget {
   const ShortformOpen(this.expression);
 
   final ExpressionResponse expression;
+
   @override
   Widget build(BuildContext context) {
     return Container(
