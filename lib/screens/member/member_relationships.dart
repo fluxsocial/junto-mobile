@@ -123,8 +123,11 @@ class MemberRelationships extends StatelessWidget {
 
     // send connection to user if there isn't an existing request of connection
     if (!hasPendingConnection && !isConnected) {
+      print('mhm');
+
       await userProvider.connectUser(memberProfile.address);
     }
+
     try {
       await Provider.of<GroupRepo>(buildContext, listen: false).addGroupMember(
           userProfile.pack.address, <UserProfile>[memberProfile], 'Member');
