@@ -10,6 +10,7 @@ class BottomNav extends StatelessWidget {
   });
 
   final VoidCallback onLeftButtonTap;
+  final String screen;
   final bool actionsVisible;
 
   @override
@@ -54,6 +55,7 @@ class BottomNav extends StatelessWidget {
             child: GestureDetector(
               onTap: () {
                 Navigator.of(context).pop();
+
               },
               child: Container(
                 alignment: Alignment.center,
