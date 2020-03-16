@@ -288,7 +288,8 @@ class FilterLogo extends StatelessWidget {
       child: Row(
         children: <Widget>[
           Image.asset(
-            'assets/images/junto-mobile__logo--white.png',
+            'assets/images/junto-mobile__logo.png',
+            color: Colors.white,
             height: 24,
           ),
         ],

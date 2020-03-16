@@ -27,7 +27,8 @@ class MemberAvatarPlaceholder extends StatelessWidget {
         borderRadius: BorderRadius.circular(100),
       ),
       child: Image.asset(
-        'assets/images/junto-mobile__logo--white.png',
+        'assets/images/junto-mobile__logo.png',
+        color: Colors.white,
         height: diameter / 3,
       ),
     );

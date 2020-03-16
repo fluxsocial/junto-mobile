@@ -25,8 +25,9 @@ class WelcomeMain extends StatelessWidget {
             Container(
               margin: const EdgeInsets.only(top: 120, bottom: 30),
               child: Image.asset(
-                'assets/images/junto-mobile__logo--white.png',
+                'assets/images/junto-mobile__logo.png',
                 height: 69,
+                color: Colors.white,
               ),
             ),
             Container(

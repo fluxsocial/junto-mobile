@@ -217,7 +217,7 @@ class _EditGroupInfoState extends State<EditGroupInfo> {
                       ),
                       child: CircleAvatar(
                         child: Image.asset(
-                          'assets/images/junto-mobile__logo--spheres.png',
+                          'assets/images/junto-mobile__logo.png',
                           fit: BoxFit.fill,
                         ),
                       ),

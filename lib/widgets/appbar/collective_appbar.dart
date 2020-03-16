@@ -47,8 +47,11 @@ class CollectiveAppBar extends SliverPersistentHeaderDelegate {
                   height: 36,
                   child: Row(
                     children: <Widget>[
-                      Image.asset('assets/images/junto-mobile__logo.png',
-                          height: 22.0, width: 22.0),
+                      Image.asset(
+                        'assets/images/junto-mobile__logo.png',
+                        height: 22.0,
+                        color: Theme.of(context).primaryColor,
+                      ),
                       const SizedBox(width: 7.5),
                       Text(
                         appbarTitle,
