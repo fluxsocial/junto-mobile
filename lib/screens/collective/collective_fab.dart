@@ -13,7 +13,7 @@ class CollectiveActionButton extends StatelessWidget {
     @required this.onTap,
   }) : super(key: key);
   final ValueNotifier<bool> isVisible;
-  final ValueNotifier<bool> actionsVisible;
+  final bool actionsVisible;
   final UserData userProfile;
   final VoidCallback onTap;
 
@@ -30,14 +30,9 @@ class CollectiveActionButton extends StatelessWidget {
       },
       child: Padding(
         padding: const EdgeInsets.only(bottom: 25),
-        child: ValueListenableBuilder<bool>(
-          valueListenable: actionsVisible,
-          builder: (BuildContext context, bool value, _) {
-            return BottomNav(
-              actionsVisible: value,
-              onLeftButtonTap: onTap,
-            );
-          },
+        child: BottomNav(
+          actionsVisible: actionsVisible,
+          onLeftButtonTap: onTap,
         ),
       ),
     );
