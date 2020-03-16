@@ -75,6 +75,9 @@ class SubscribedActionItems extends StatelessWidget {
           ),
         ),
         GestureDetector(
+          onTap: () {
+            connectWithUser(buildContext);
+          },
           child: Container(
             decoration: BoxDecoration(
               border: Border(
@@ -119,7 +122,9 @@ class SubscribedActionItems extends StatelessWidget {
           ),
         ),
         GestureDetector(
-          onTap: () {},
+          onTap: () {
+            inviteToPack(buildContext);
+          },
           child: Container(
             decoration: BoxDecoration(
               border: Border(
@@ -136,22 +141,30 @@ class SubscribedActionItems extends StatelessWidget {
                 Text(
                   'INVITE TO PACK',
                   style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: Theme.of(context).primaryColor,
-                      decoration: TextDecoration.none,
-                      letterSpacing: 1.2),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: Theme.of(context).primaryColor,
+                    decoration: TextDecoration.none,
+                    letterSpacing: 1.2,
+                  ),
                 ),
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 5,
+                    horizontal: 10,
+                  ),
                   decoration: BoxDecoration(
                     border: Border.all(
-                        color: Theme.of(context).primaryColor, width: 1.2),
+                      color: Theme.of(context).primaryColor,
+                      width: 1.2,
+                    ),
                     borderRadius: BorderRadius.circular(5),
                   ),
-                  child: Icon(Icons.add,
-                      size: 15, color: Theme.of(context).primaryColor),
+                  child: Icon(
+                    Icons.add,
+                    size: 15,
+                    color: Theme.of(context).primaryColor,
+                  ),
                 )
               ],
             ),

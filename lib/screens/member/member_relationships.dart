@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
@@ -7,16 +5,12 @@ import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/member/member_action_items/pack_action_items.dart';
-import 'package:junto_beta_mobile/utils/junto_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart';
-import 'package:junto_beta_mobile/utils/junto_overlay.dart';
-import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/screens/member/member_action_items/no_relationship_action_items.dart';
 import 'package:junto_beta_mobile/screens/member/member_action_items/subscribed_action_items.dart';
 import 'package:junto_beta_mobile/screens/member/member_action_items/connected_action_items.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class MemberRelationships extends StatelessWidget {
   const MemberRelationships({
@@ -248,6 +242,8 @@ class MemberRelationships extends StatelessWidget {
       return SubscribedActionItems(
         buildContext: buildContext,
         unsubscribeToUser: unsubscribeToUser,
+        connectWithUser: connectWithUser,
+        inviteToPack: inviteToPack,
       );
     } else if (isConnected &&
             hasPendingPackRequest != true &&
