@@ -40,7 +40,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
       GlobalKey<ScaffoldState>();
   final GlobalKey<JuntoFilterDrawerState> _filterDrawerKey =
       GlobalKey<JuntoFilterDrawerState>();
-  final GlobalKey<NavigatorState> _navKey = GlobalKey<NavigatorState>();
 
   // Completer which controls expressions querying.
   final ValueNotifier<Future<QueryResults<ExpressionResponse>>>
@@ -56,8 +55,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
   ScrollController _collectiveController;
   final ValueNotifier<String> _appbarTitle = ValueNotifier<String>('JUNTO');
   final List<String> _channels = <String>[];
-  final ValueNotifier<bool> _actionsVisible = ValueNotifier<bool>(false);
-  // bool actionsVisible = false;
+  bool _actionsVisible = false;
   bool twoColumnView = true;
 
   @override
@@ -73,12 +71,10 @@ class JuntoCollectiveState extends State<JuntoCollective>
     });
     _addPostFrameCallback();
     getUserInformation();
-    _actionsVisible.addListener(actionListener);
   }
 
   @override
   void dispose() {
-    _actionsVisible.removeListener(actionListener);
     _collectiveController.removeListener(_onScrollingHasChanged);
     _collectiveController.dispose();
     super.dispose();
@@ -88,22 +84,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
   void didChangeDependencies() {
     super.didChangeDependencies();
     refreshData();
-  }
-
-  void actionListener() {
-    if (_actionsVisible.value) {
-      _navKey.currentState.push(
-        FadeRoute<void>(
-          child: JuntoCollectiveActions(
-            userProfile: _userProfile,
-            changePerspective: _changePerspective,
-          ),
-        ),
-      );
-    }
-    if (!_actionsVisible.value) {
-      _navKey.currentState.pop();
-    }
   }
 
   void _addPostFrameCallback() {
@@ -208,22 +188,42 @@ class JuntoCollectiveState extends State<JuntoCollective>
             userProfile: _userProfile,
             isVisible: _isVisible,
             actionsVisible: _actionsVisible,
-            onTap: () => _actionsVisible.value = !_actionsVisible.value,
+            onTap: () {
+              setState(() {
+                if (_actionsVisible) {
+                  _actionsVisible = false;
+                } else {
+                  _actionsVisible = true;
+                }
+              });
+            },
           ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
-          body: Navigator(
-            key: _navKey,
-            onGenerateRoute: (RouteSettings settings) {
-              return FadeRoute<void>(
+          body: Stack(
+            children: <Widget>[
+              AnimatedOpacity(
+                duration: const Duration(milliseconds: 300),
+                opacity: _actionsVisible ? 0.0 : 1.0,
                 child: ExpressionFeed(
                   refreshData: refreshData,
                   expressionCompleter: _expressionCompleter,
                   collectiveController: _collectiveController,
                   appbarTitle: _appbarTitle,
                 ),
-              );
-            },
+              ),
+              AnimatedOpacity(
+                duration: const Duration(milliseconds: 300),
+                opacity: _actionsVisible ? 1.0 : 0.0,
+                child: Visibility(
+                  visible: _actionsVisible,
+                  child: JuntoCollectiveActions(
+                    userProfile: _userProfile,
+                    changePerspective: _changePerspective,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -238,7 +238,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
         _channels.first = channel.name;
       }
     });
-    _actionsVisible.value = false;
     _expressionCompleter.value = getCollectiveExpressions(
       contextType: 'Collective',
       paginationPos: 0,
@@ -276,6 +275,5 @@ class JuntoCollectiveState extends State<JuntoCollective>
         channels: _channels,
       );
     }
-    _actionsVisible.value = false;
   }
 }

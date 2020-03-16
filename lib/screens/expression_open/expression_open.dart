@@ -401,7 +401,6 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
           left: 10,
           right: 10,
           top: 14.0,
-          bottom: 46.0,
         ),
         decoration: BoxDecoration(
           border: Border(
