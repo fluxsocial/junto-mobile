@@ -2,6 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
+import 'package:junto_beta_mobile/widgets/fade_route.dart';
+import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/backend/repositories.dart';
 
 class BottomNav extends StatelessWidget {
   const BottomNav({
@@ -10,7 +14,6 @@ class BottomNav extends StatelessWidget {
   });
 
   final VoidCallback onLeftButtonTap;
-  final String screen;
   final bool actionsVisible;
 
   @override
@@ -54,8 +57,15 @@ class BottomNav extends StatelessWidget {
           Expanded(
             child: GestureDetector(
               onTap: () {
-                Navigator.of(context).pop();
-
+                Navigator.push(
+                  context,
+                  FadeRoute<void>(
+                    child: const JuntoLotus(
+                      address: null,
+                      expressionContext: ExpressionContext.Collective,
+                    ),
+                  ),
+                );
               },
               child: Container(
                 alignment: Alignment.center,
