@@ -253,8 +253,11 @@ class JuntoEditDenState extends State<JuntoEditDen> {
           ),
           borderRadius: BorderRadius.circular(100),
         ),
-        child: Image.asset('assets/images/junto-mobile__logo--white.png',
-            height: 15),
+        child: Image.asset(
+          'assets/images/junto-mobile__logo.png',
+          color: Colors.white,
+          height: 15,
+        ),
       );
   }
 

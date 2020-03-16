@@ -313,8 +313,10 @@ class WelcomeState extends State<Welcome> {
                   top: MediaQuery.of(context).size.height * .08,
                   left: 20,
                   child: Image.asset(
-                      'assets/images/junto-mobile__logo--white.png',
-                      height: 45),
+                    'assets/images/junto-mobile__logo.png',
+                    height: 45,
+                    color: Colors.white,
+                  ),
                 ),
             ],
           ),
