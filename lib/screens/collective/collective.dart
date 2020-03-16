@@ -275,5 +275,8 @@ class JuntoCollectiveState extends State<JuntoCollective>
         channels: _channels,
       );
     }
+    setState(() {
+      _actionsVisible = false;
+    });
   }
 }

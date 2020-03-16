@@ -160,8 +160,8 @@ class SelectedChannelChip extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
       margin: const EdgeInsets.only(top: 15),
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
-        borderRadius: BorderRadius.circular(10),
+        color: Theme.of(context).primaryColorLight,
+        borderRadius: BorderRadius.circular(5),
       ),
       child: Text(
         channel,
