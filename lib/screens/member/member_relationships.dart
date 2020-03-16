@@ -61,6 +61,27 @@ class MemberRelationships extends StatelessWidget {
     }
   }
 
+  // unsubscribe
+  Future<void> unsubscribeToUser(BuildContext buildContext) async {
+    try {
+      await userProvider.deleteUsersFromPerspective(
+        <Map<String, String>>[
+          <String, String>{'user_address': memberProfile.address}
+        ],
+        userProfile.userPerspective.address,
+      );
+      refreshRelations();
+    } on JuntoException catch (error) {
+      print(error);
+      showDialog(
+        context: buildContext,
+        builder: (BuildContext buildContext) => const SingleActionDialog(
+          dialogText: 'Hmm, something went wrong.',
+        ),
+      );
+    }
+  }
+
   Future<void> connectWithUser(
     BuildContext buildContext,
   ) async {
@@ -87,6 +108,7 @@ class MemberRelationships extends StatelessWidget {
     try {
       await userProvider.removeUserConnection(memberProfile.address);
       refreshRelations();
+      print(isConnected);
     } on JuntoException catch (error) {
       print(error.message);
       showDialog(
@@ -128,26 +150,6 @@ class MemberRelationships extends StatelessWidget {
     }
   }
 
-  // unsubscribe
-  Future<void> unsubscribeToUser(BuildContext buildContext) async {
-    try {
-      await userProvider.deleteUsersFromPerspective(
-        <Map<String, String>>[
-          <String, String>{'user_address': memberProfile.address}
-        ],
-        userProfile.userPerspective.address,
-      );
-      refreshRelations();
-    } on JuntoException catch (error) {
-      showDialog(
-        context: buildContext,
-        builder: (BuildContext buildContext) => const SingleActionDialog(
-          dialogText: 'Hmm, something went wrong.',
-        ),
-      );
-    }
-  }
-
   Future<void> leavePack(BuildContext buildContext) async {
     try {
       await Provider.of<GroupRepo>(buildContext, listen: false)
@@ -169,8 +171,6 @@ class MemberRelationships extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(hasPendingPackRequest);
-    print(isPackMember);
     return Container(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
