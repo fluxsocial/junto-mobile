@@ -85,8 +85,6 @@ class JuntoLotusState extends State<JuntoLotus> {
         expressionContext: widget.expressionContext,
         expressionCenterBackground: backgroundImageAsset,
       );
-    } else if (screen == Screen.lotus) {
-      child = JuntoCollective();
     }
     backButtonTappedOnce = false;
     Navigator.of(context).push(
@@ -273,7 +271,7 @@ class JuntoLotusState extends State<JuntoLotus> {
                         children: <Widget>[
                           GestureDetector(
                             onTap: () {
-                              _navigateTo(Screen.lotus);
+                              Navigator.pop(context);
                             },
                             child: Container(
                               height: 80,
