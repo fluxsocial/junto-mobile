@@ -400,7 +400,8 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
         padding: const EdgeInsets.only(
           left: 10,
           right: 10,
-          top: 14.0,
+          top: 15.0,
+          bottom: 15.0,
         ),
         decoration: BoxDecoration(
           border: Border(
