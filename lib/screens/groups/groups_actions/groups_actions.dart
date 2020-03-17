@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/groups/groups_actions/packs/packs.dart';
-import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/spheres.dart';
+import 'package:junto_beta_mobile/screens/groups/groups_actions/spheres/spheres_temp.dart';
 
 class JuntoGroupsActions extends StatefulWidget {
   const JuntoGroupsActions({
@@ -49,7 +49,7 @@ class JuntoGroupsActionsState extends State<JuntoGroupsActions> {
         builder: (BuildContext context, bool snapshot, _) {
           return Stack(
             children: <Widget>[
-              if (snapshot) Spheres(changeGroup: widget.changeGroup),
+              if (snapshot) SpheresTemp(),
               if (!snapshot)
                 Packs(
                   userProfile: widget.userProfile,
