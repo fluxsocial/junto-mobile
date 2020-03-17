@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/screens.dart';
@@ -10,8 +9,8 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/create/create.dart';
 import 'package:junto_beta_mobile/screens/groups/groups.dart';
-import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/user_feedback.dart';
+import 'package:junto_beta_mobile/widgets/fade_route.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class JuntoLotus extends StatefulWidget {
@@ -93,7 +92,7 @@ class JuntoLotusState extends State<JuntoLotus> {
     return;
   }
 
-  Widget _setBackground() {
+  ImageProvider _setBackground() {
     setState(
       () {
         if (_currentTheme == 'aqueous' || _currentTheme == 'aqueous-night') {
@@ -287,12 +286,12 @@ class JuntoLotusState extends State<JuntoLotus> {
                         ],
                       ),
                     ),
-                  ],
-                )
-              ],
-            ),
-          )
-        ]),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
