@@ -24,6 +24,7 @@ class SpheresTemp extends StatelessWidget {
               ],
             ),
           ),
+          // todo: Eric will add illustration + test to fill blank space
           const Expanded(
             child: SizedBox(),
           ),
