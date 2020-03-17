@@ -20,14 +20,16 @@ class PhotoOpen extends StatelessWidget {
                   child: Hero(
                     tag: 'photo_preview-' + photoExpression.address,
                     child: CachedNetworkImage(
-                        imageUrl: photoExpression.expressionData.image,
-                        placeholder: (BuildContext context, String _) {
-                          return Container(
-                              height: MediaQuery.of(context).size.width,
-                              width: MediaQuery.of(context).size.width,
-                              color: Theme.of(context).dividerColor);
-                        },
-                        fit: BoxFit.cover),
+                      imageUrl: photoExpression.expressionData.image,
+                      placeholder: (BuildContext context, String _) {
+                        return Container(
+                          height: MediaQuery.of(context).size.width,
+                          width: MediaQuery.of(context).size.width,
+                          color: Theme.of(context).dividerColor,
+                        );
+                      },
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
           photoExpression.expressionData.caption != ''
@@ -37,7 +39,9 @@ class PhotoOpen extends StatelessWidget {
                   child: Text(
                     photoExpression.expressionData.caption,
                     style: const TextStyle(
-                        fontWeight: FontWeight.w500, fontSize: 15),
+                      fontWeight: FontWeight.w500,
+                      fontSize: 17,
+                    ),
                   ),
                 )
               : const SizedBox()

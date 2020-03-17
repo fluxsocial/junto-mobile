@@ -16,7 +16,7 @@ class SpheresTemp extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text(
+                Text( 
                   'Circles',
                   style: Theme.of(context).textTheme.headline4,
                 ),
