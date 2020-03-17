@@ -13,16 +13,14 @@ import 'package:junto_beta_mobile/widgets/previews/expression_preview/two_column
 
 /// Renders a concise overview of one given [ExpressionResult].
 class TwoColumnExpressionPreview extends StatelessWidget with MemberValidation {
-  const TwoColumnExpressionPreview(
-      {Key key,
-      @required this.expression,
-      @required this.userAddress,
-      this.allowComments = true})
-      : super(key: key);
+  const TwoColumnExpressionPreview({
+    Key key,
+    @required this.expression,
+    @required this.userAddress,
+  }) : super(key: key);
 
   final ExpressionResponse expression;
   final String userAddress;
-  final bool allowComments;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +34,6 @@ class TwoColumnExpressionPreview extends StatelessWidget with MemberValidation {
               child: ExpressionOpen(
                 expression,
                 userAddress,
-                allowComments,
               ),
             ),
           );
@@ -48,7 +45,10 @@ class TwoColumnExpressionPreview extends StatelessWidget with MemberValidation {
                 Animation<double> animation,
                 Animation<double> secondaryAnimation,
               ) {
-                return ExpressionOpen(expression, userAddress, allowComments);
+                return ExpressionOpen(
+                  expression,
+                  userAddress,
+                );
               },
               transitionsBuilder: (
                 BuildContext context,

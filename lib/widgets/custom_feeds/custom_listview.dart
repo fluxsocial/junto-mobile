@@ -10,13 +10,11 @@ class TwoColumnListView extends StatelessWidget {
     @required this.data,
     @required this.userAddress,
     @required this.privacyLayer,
-    @required this.showComments,
   }) : super(key: key);
 
   final List<ExpressionResponse> data;
   final String userAddress;
   final String privacyLayer;
-  final bool showComments;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +40,6 @@ class TwoColumnListView extends StatelessWidget {
                       TwoColumnExpressionPreview(
                         expression: data[index],
                         userAddress: userAddress,
-                        allowComments: showComments,
                       )
                     else
                       const SizedBox()
@@ -65,7 +62,6 @@ class TwoColumnListView extends StatelessWidget {
                       TwoColumnExpressionPreview(
                         expression: data[index],
                         userAddress: userAddress,
-                        allowComments: showComments,
                       )
                     else
                       const SizedBox()
@@ -155,13 +151,11 @@ class SingleColumnListView extends StatelessWidget {
     @required this.data,
     @required this.userAddress,
     @required this.privacyLayer,
-    @required this.showComments,
   }) : super(key: key);
 
   final List<ExpressionResponse> data;
   final String userAddress;
   final String privacyLayer;
-  final bool showComments;
 
   @override
   Widget build(BuildContext context) {

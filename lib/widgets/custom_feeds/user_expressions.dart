@@ -115,13 +115,11 @@ class _UserExpressionsState extends State<UserExpressions> {
                             userAddress: widget.userProfile.address,
                             data: snapshot.data,
                             privacyLayer: 'Public',
-                            showComments: false,
                           ),
                           secondChild: SingleColumnListView(
                             userAddress: widget.userProfile.address,
                             data: snapshot.data,
                             privacyLayer: 'Public',
-                            showComments: false,
                           ),
                         )),
                   ],

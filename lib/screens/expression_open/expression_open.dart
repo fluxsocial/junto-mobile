@@ -19,11 +19,13 @@ import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
 
 class ExpressionOpen extends StatefulWidget {
-  const ExpressionOpen(this.expression, this.userAddress, this.allowComments);
+  const ExpressionOpen(
+    this.expression,
+    this.userAddress,
+  );
 
   final ExpressionResponse expression;
   final String userAddress;
-  final bool allowComments;
 
   @override
   State<StatefulWidget> createState() => ExpressionOpenState();
@@ -44,15 +46,12 @@ class ExpressionOpenState extends State<ExpressionOpen> {
 
   Future<QueryResults<Comment>> futureComments;
 
-  bool get allowComments => widget.allowComments;
-
   @override
   void initState() {
     super.initState();
 
     commentController = TextEditingController();
     _focusNode = FocusNode();
-    print(widget.expression.channels);
   }
 
   @override
@@ -204,99 +203,99 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                             userAddress: widget.userAddress),
                         _buildExpression(),
                         ExpressionOpenBottom(
-                            widget.expression, toggleExpressionContext),
-                        if (allowComments)
-                          FutureBuilder<QueryResults<Comment>>(
-                            future: futureComments,
-                            builder: (
-                              BuildContext context,
-                              AsyncSnapshot<QueryResults<Comment>> snapshot,
-                            ) {
-                              if (snapshot.hasError) {
-                                return Container(
-                                  child: const Text('Error occured'),
-                                );
-                              }
+                          widget.expression,
+                          toggleExpressionContext,
+                        ),
+                        FutureBuilder<QueryResults<Comment>>(
+                          future: futureComments,
+                          builder: (
+                            BuildContext context,
+                            AsyncSnapshot<QueryResults<Comment>> snapshot,
+                          ) {
+                            if (snapshot.hasError) {
+                              return Container(
+                                child: const Text('Hmm, something went wrong'),
+                              );
+                            }
 
-                              if (snapshot.hasData) {
-                                if (snapshot.data.results.isNotEmpty) {
-                                  return Column(
-                                    children: <Widget>[
-                                      GestureDetector(
-                                        onTap: _showComments,
-                                        child: Container(
-                                          color: Colors.transparent,
-                                          margin: EdgeInsets.only(
-                                              bottom: commentsVisible ? 0 : 15),
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 10, vertical: 15),
-                                          child: Row(
-                                            children: <Widget>[
-                                              Text(
-                                                commentsVisible
-                                                    ? 'Hide replies'
-                                                    : 'Show replies (${snapshot.data.results.length})',
-                                                style: TextStyle(
-                                                    color: Theme.of(context)
-                                                        .primaryColorLight,
-                                                    fontSize: 14,
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                              ),
-                                              const SizedBox(width: 5),
-                                              if (!commentsVisible)
-                                                Icon(Icons.keyboard_arrow_down,
-                                                    size: 15,
-                                                    color: Theme.of(context)
-                                                        .primaryColorLight),
-                                              if (commentsVisible)
-                                                Icon(Icons.keyboard_arrow_up,
-                                                    size: 15,
-                                                    color: Theme.of(context)
-                                                        .primaryColorLight),
-                                            ],
-                                          ),
+                            if (snapshot.hasData) {
+                              if (snapshot.data.results.isNotEmpty) {
+                                return Column(
+                                  children: <Widget>[
+                                    GestureDetector(
+                                      onTap: _showComments,
+                                      child: Container(
+                                        color: Colors.transparent,
+                                        margin: EdgeInsets.only(
+                                          bottom: commentsVisible ? 0 : 15,
+                                        ),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 10,
+                                          vertical: 15,
+                                        ),
+                                        child: Row(
+                                          children: <Widget>[
+                                            Text(
+                                              commentsVisible
+                                                  ? 'Hide replies'
+                                                  : 'Show replies (${snapshot.data.results.length})',
+                                              style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .primaryColorLight,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                            const SizedBox(width: 5),
+                                            if (!commentsVisible)
+                                              Icon(Icons.keyboard_arrow_down,
+                                                  size: 15,
+                                                  color: Theme.of(context)
+                                                      .primaryColorLight),
+                                            if (commentsVisible)
+                                              Icon(Icons.keyboard_arrow_up,
+                                                  size: 15,
+                                                  color: Theme.of(context)
+                                                      .primaryColorLight),
+                                          ],
                                         ),
                                       ),
-                                      if (commentsVisible)
-                                        ListView.builder(
-                                          shrinkWrap: true,
-                                          physics:
-                                              const ClampingScrollPhysics(),
-                                          itemCount:
-                                              snapshot.data.results.length,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return CommentPreview(
-                                              comment:
-                                                  snapshot.data.results[index],
-                                              parent: widget.expression,
-                                              userAddress: widget.userAddress,
-                                            );
-                                          },
-                                        ),
-                                    ],
-                                  );
-                                } else
-                                  return const SizedBox();
-                              }
-                              return Transform.translate(
-                                offset: const Offset(0.0, 50.0),
-                                child: JuntoProgressIndicator(),
-                              );
-                            },
-                          )
+                                    ),
+                                    if (commentsVisible)
+                                      ListView.builder(
+                                        shrinkWrap: true,
+                                        physics: const ClampingScrollPhysics(),
+                                        itemCount: snapshot.data.results.length,
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          return CommentPreview(
+                                            comment:
+                                                snapshot.data.results[index],
+                                            parent: widget.expression,
+                                            userAddress: widget.userAddress,
+                                          );
+                                        },
+                                      ),
+                                  ],
+                                );
+                              } else
+                                return const SizedBox(height: 25);
+                            }
+                            return Transform.translate(
+                              offset: const Offset(0.0, 50.0),
+                              child: JuntoProgressIndicator(),
+                            );
+                          },
+                        )
                       ],
                     ),
                   ),
                 ),
               ),
-              if (allowComments)
-                _BottomCommentBar(
-                  postComment: _createComment,
-                  commentController: commentController,
-                  focusNode: _focusNode,
-                ),
+              _BottomCommentBar(
+                postComment: _createComment,
+                commentController: commentController,
+                focusNode: _focusNode,
+              ),
             ],
           ),
         ),
