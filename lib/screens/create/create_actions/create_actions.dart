@@ -279,7 +279,6 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
                   child: Row(children: <Widget>[
                     const SizedBox(width: 15),
                     _expressionContextSelector(expressionContext: 'Collective'),
-                    _expressionContextSelector(expressionContext: 'Sphere'),
                     _expressionContextSelector(expressionContext: 'My Pack'),
                   ]),
                 ),
