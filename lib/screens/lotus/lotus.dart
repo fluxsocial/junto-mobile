@@ -127,6 +127,17 @@ class JuntoLotusState extends State<JuntoLotus> {
     return false;
   }
 
+  void _handleLotusPress() {
+    final Route<dynamic> route = ModalRoute.of(context);
+    if (!route.isFirst) {
+      Navigator.of(context).pop();
+      return;
+    }
+    Navigator.of(context)
+        .push(FadeRoute<void>(child: JuntoCollective(), name: 'collective'));
+    return;
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -263,27 +274,25 @@ class JuntoLotusState extends State<JuntoLotus> {
                       ],
                     ),
                   ),
-                  Builder(
-                    builder: (BuildContext context) => Container(
-                      height: 80,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          GestureDetector(
-                            onTap: () => Navigator.of(context).pop(),
-                            child: Container(
-                              height: 80,
-                              width: 80,
-                              color: Colors.transparent,
-                              child: Icon(
-                                CustomIcons.lotus,
-                                size: 33,
-                                color: Colors.white,
-                              ),
+                  Container(
+                    height: 80,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        GestureDetector(
+                          onTap: _handleLotusPress,
+                          child: Container(
+                            height: 80,
+                            width: 80,
+                            color: Colors.transparent,
+                            child: Icon(
+                              CustomIcons.lotus,
+                              size: 33,
+                              color: Colors.white,
                             ),
-                          )
-                        ],
-                      ),
+                          ),
+                        )
+                      ],
                     ),
                   ),
                 ],
