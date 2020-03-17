@@ -141,13 +141,11 @@ class _GroupExpressionsState extends State<GroupExpressions> {
                             userAddress: widget.userAddress,
                             data: snapshot.data.results,
                             privacyLayer: widget.expressionsPrivacy,
-                            showComments: false,
                           ),
                           secondChild: SingleColumnListView(
                             userAddress: widget.userAddress,
                             data: snapshot.data.results,
                             privacyLayer: widget.expressionsPrivacy,
-                            showComments: false,
                           ),
                         ),
                       ),

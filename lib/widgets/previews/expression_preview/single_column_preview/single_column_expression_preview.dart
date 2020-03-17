@@ -14,16 +14,14 @@ import 'package:junto_beta_mobile/widgets/previews/expression_preview/single_col
 /// Renders a concise overview of one given [ExpressionResult].
 class SingleColumnExpressionPreview extends StatelessWidget
     with MemberValidation {
-  const SingleColumnExpressionPreview(
-      {Key key,
-      @required this.expression,
-      @required this.userAddress,
-      this.allowComments = true})
-      : super(key: key);
+  const SingleColumnExpressionPreview({
+    Key key,
+    @required this.expression,
+    @required this.userAddress,
+  }) : super(key: key);
 
   final ExpressionResponse expression;
   final String userAddress;
-  final bool allowComments;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +35,6 @@ class SingleColumnExpressionPreview extends StatelessWidget
               child: ExpressionOpen(
                 expression,
                 userAddress,
-                allowComments,
               ),
             ),
           );
@@ -49,7 +46,7 @@ class SingleColumnExpressionPreview extends StatelessWidget
                 Animation<double> animation,
                 Animation<double> secondaryAnimation,
               ) {
-                return ExpressionOpen(expression, userAddress, allowComments);
+                return ExpressionOpen(expression, userAddress);
               },
               transitionsBuilder: (
                 BuildContext context,
