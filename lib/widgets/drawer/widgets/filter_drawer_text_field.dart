@@ -5,9 +5,11 @@ class FilterDrawerTextField extends StatelessWidget {
   const FilterDrawerTextField({
     Key key,
     @required this.textEditingController,
+    @required this.focusNode,
   }) : super(key: key);
 
   final TextEditingController textEditingController;
+  final FocusNode focusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +28,7 @@ class FilterDrawerTextField extends StatelessWidget {
           Expanded(
             child: TextField(
               controller: textEditingController,
+              focusNode: focusNode,
               decoration: InputDecoration(
                 contentPadding: const EdgeInsets.all(0),
                 border: InputBorder.none,

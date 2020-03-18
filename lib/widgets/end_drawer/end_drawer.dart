@@ -91,9 +91,9 @@ class JuntoDrawerState extends State<JuntoDrawer> {
                         ? Container(
                             margin: const EdgeInsets.only(right: 32),
                             child: MemberAvatar(
-                                profilePicture:
-                                    _userProfile.user.profilePicture,
-                                diameter: 28),
+                              profilePicture: _userProfile.user.profilePicture,
+                              diameter: 28,
+                            ),
                           )
                         : const SizedBox(),
                     title: 'My Den',

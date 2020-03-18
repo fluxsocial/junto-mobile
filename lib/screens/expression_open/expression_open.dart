@@ -200,8 +200,9 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                       physics: const AlwaysScrollableScrollPhysics(),
                       children: <Widget>[
                         ExpressionOpenTop(
-                            expression: widget.expression,
-                            userAddress: widget.userAddress),
+                          expression: widget.expression,
+                          userAddress: widget.userAddress,
+                        ),
                         _buildExpression(),
                         ExpressionOpenBottom(
                           widget.expression,

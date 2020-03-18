@@ -12,8 +12,7 @@ class FilterQueryUpdated extends ChannelFilteringEvent {
 class FilterSelected extends ChannelFilteringEvent {
   FilterSelected(this.item, this.contextType);
   final Channel item;
-  //TODO: change to some enum e.g. ExpressionContextType
-  final String contextType;
+  final ExpressionContextType contextType;
 }
 
 class FilterReset extends ChannelFilteringEvent {}

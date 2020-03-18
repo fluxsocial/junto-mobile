@@ -138,12 +138,10 @@ class _GroupExpressionsState extends State<GroupExpressions> {
                             milliseconds: 200,
                           ),
                           firstChild: TwoColumnListView(
-                            userAddress: widget.userAddress,
                             data: snapshot.data.results,
                             privacyLayer: widget.expressionsPrivacy,
                           ),
                           secondChild: SingleColumnListView(
-                            userAddress: widget.userAddress,
                             data: snapshot.data.results,
                             privacyLayer: widget.expressionsPrivacy,
                           ),

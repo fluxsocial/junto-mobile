@@ -12,16 +12,16 @@ import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:provider/provider.dart';
 
-class CreatePerspective extends StatefulWidget {
-  const CreatePerspective({this.refreshPerspectives});
+class CreatePerspectivePage extends StatefulWidget {
+  const CreatePerspectivePage({@required this.refreshPerspectives});
 
   final VoidCallback refreshPerspectives;
 
   @override
-  State<StatefulWidget> createState() => CreatePerspectiveState();
+  State<StatefulWidget> createState() => CreatePerspectivePageState();
 }
 
-class CreatePerspectiveState extends State<CreatePerspective> {
+class CreatePerspectivePageState extends State<CreatePerspectivePage> {
   TextEditingController _nameController;
   TextEditingController _aboutController;
   PageController _pageController;

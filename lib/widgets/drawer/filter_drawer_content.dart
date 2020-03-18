@@ -4,14 +4,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
+import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/drawer/channel_preview.dart';
 import 'package:junto_beta_mobile/widgets/drawer/widgets/widgets.dart';
+import 'package:provider/provider.dart';
 
 class FilterDrawerContent extends StatefulWidget {
   const FilterDrawerContent(this.contextType);
 
-  final String contextType;
+  final ExpressionContextType contextType;
 
   @override
   _FilterDrawerContentState createState() => _FilterDrawerContentState();
@@ -42,9 +44,11 @@ class _FilterDrawerContentState extends State<FilterDrawerContent> {
 
   @override
   Widget build(BuildContext context) {
+    final focusNode = Provider.of<FocusNode>(context, listen: false);
     return BlocBuilder<ChannelFilteringBloc, ChannelFilteringState>(
         builder: (BuildContext context, ChannelFilteringState state) {
       return FilterDrawerWrapper(
+        focusNode: focusNode,
         children: <Widget>[
           const FilterLogo(),
           Flexible(
@@ -52,6 +56,7 @@ class _FilterDrawerContentState extends State<FilterDrawerContent> {
               children: <Widget>[
                 FilterDrawerTextField(
                   textEditingController: textEditingController,
+                  focusNode: focusNode,
                 ),
                 if (state is ChannelsPopulatedState &&
                     state.selectedChannel != null)
@@ -95,10 +100,14 @@ class _FilterDrawerContentState extends State<FilterDrawerContent> {
 }
 
 class FilterDrawerWrapper extends StatelessWidget {
-  const FilterDrawerWrapper({Key key, @required this.children})
-      : super(key: key);
+  const FilterDrawerWrapper({
+    Key key,
+    @required this.children,
+    this.focusNode,
+  }) : super(key: key);
 
   final List<Widget> children;
+  final FocusNode focusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -111,6 +120,7 @@ class FilterDrawerWrapper extends StatelessWidget {
             if (FocusScope.of(context).hasFocus) {
               FocusScope.of(context).unfocus();
             }
+            focusNode.unfocus();
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(

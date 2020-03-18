@@ -1,23 +1,22 @@
-import 'dart:async';
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
+import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_actions/collective_actions.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_fab.dart';
+import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/expression_feed.dart';
+import 'package:junto_beta_mobile/screens/welcome/welcome.dart';
+import 'package:junto_beta_mobile/user_data/user_data_provider.dart';
 import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 // This class is a collective screen
 class JuntoCollective extends StatefulWidget {
@@ -41,14 +40,10 @@ class JuntoCollectiveState extends State<JuntoCollective>
   final GlobalKey<JuntoFilterDrawerState> _filterDrawerKey =
       GlobalKey<JuntoFilterDrawerState>();
 
-  String _userAddress;
-  UserData _userProfile;
-
   final ValueNotifier<bool> _isFabVisible = ValueNotifier<bool>(true);
   ScrollController _collectiveController;
   final ValueNotifier<String> _appbarTitle = ValueNotifier<String>('JUNTO');
   bool _actionsVisible = false;
-  bool twoColumnView = true;
 
   @override
   void initState() {
@@ -56,7 +51,6 @@ class JuntoCollectiveState extends State<JuntoCollective>
 
     _collectiveController = ScrollController();
     _addPostFrameCallbackToHideFabOnScroll();
-    getUserInformation();
   }
 
   @override
@@ -80,46 +74,20 @@ class JuntoCollectiveState extends State<JuntoCollective>
     super.hideFabOnScroll(_collectiveController, _isFabVisible);
   }
 
-  Future<void> getUserInformation() async {
-    //TODO(dominik): extract this somewhere else outside the collective layout
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final Map<String, dynamic> decodedUserData = jsonDecode(
-      prefs.getString('user_data'),
-    );
-
-    setState(() {
-      _userAddress = prefs.getString('user_id');
-      _userProfile = UserData.fromMap(decodedUserData);
-      if (prefs.getBool('two-column-view') != null) {
-        twoColumnView = prefs.getBool('two-column-view');
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
-        BlocProvider<ChannelFilteringBloc>(
-          create: (context) => ChannelFilteringBloc(
-            Provider.of<SearchRepo>(context, listen: false),
-          ),
-        ),
-        BlocProvider<CollectiveBloc>(
-          create: (context) => CollectiveBloc(
-            Provider.of<ExpressionRepo>(context, listen: false),
-          )..add(CollectiveFetch('Collective')),
-        ),
-      ],
+      providers: _getBlocProviders(),
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: JuntoFilterDrawer(
           key: _filterDrawerKey,
-          leftDrawer: const FilterDrawerContent('Collective'),
+          leftDrawer:
+              const FilterDrawerContent(ExpressionContextType.Collective),
           rightMenu: JuntoDrawer(),
           scaffold: Scaffold(
             key: _juntoCollectiveKey,
             floatingActionButton: CollectiveActionButton(
-              userProfile: _userProfile,
               isVisible: _isFabVisible,
               actionsVisible: _actionsVisible,
               onTap: () {
@@ -132,13 +100,10 @@ class JuntoCollectiveState extends State<JuntoCollective>
                 FloatingActionButtonLocation.centerDocked,
             body: Stack(
               children: <Widget>[
-                //TODO: maybe AnimatedSwitcher?
                 AnimatedOpacity(
                   duration: const Duration(milliseconds: 300),
                   opacity: _actionsVisible ? 0.0 : 1.0,
                   child: ExpressionFeed(
-                    refreshData: () =>
-                        context.bloc<CollectiveBloc>().add(CollectiveRefresh()),
                     collectiveController: _collectiveController,
                     appbarTitle: _appbarTitle,
                   ),
@@ -148,10 +113,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
                   opacity: _actionsVisible ? 1.0 : 0.0,
                   child: Visibility(
                     visible: _actionsVisible,
-                    child: JuntoCollectiveActions(
-                      userProfile: _userProfile,
-                      changePerspective: _changePerspective,
-                    ),
+                    child: const JuntoCollectiveActions(),
                   ),
                 ),
               ],
@@ -160,6 +122,42 @@ class JuntoCollectiveState extends State<JuntoCollective>
         ),
       ),
     );
+  }
+
+  List<BlocProvider> _getBlocProviders() {
+    return [
+      BlocProvider<CollectiveBloc>(
+        create: (ctx) => CollectiveBloc(
+          Provider.of<ExpressionRepo>(ctx, listen: false),
+          () => Navigator.of(context).pushReplacement(Welcome.route()),
+        )..add(
+            FetchCollective(
+              ExpressionQueryParams(ExpressionContextType.Collective, '0'),
+            ),
+          ),
+      ),
+      BlocProvider<PerspectivesBloc>(
+        create: (ctx) => PerspectivesBloc(
+          Provider.of<UserRepo>(ctx, listen: false),
+          Provider.of<UserDataProvider>(ctx, listen: false),
+        )..add(FetchPerspectives()),
+        lazy: false,
+      ),
+      BlocProvider<ChannelFilteringBloc>(
+        create: (ctx) => ChannelFilteringBloc(
+          Provider.of<SearchRepo>(ctx, listen: false),
+          (value) => BlocProvider.of<CollectiveBloc>(ctx).add(
+            FetchCollective(
+              ExpressionQueryParams(
+                ExpressionContextType.Collective,
+                '0',
+                channels: value != null ? [value.name] : null,
+              ),
+            ),
+          ),
+        ),
+      ),
+    ];
   }
 
 // Switch between perspectives; used in perspectives side drawer.

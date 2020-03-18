@@ -2,31 +2,27 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:junto_beta_mobile/backend/repositories/app_repo.dart';
 import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
+import 'package:junto_beta_mobile/user_data/user_data_provider.dart';
 import 'package:junto_beta_mobile/widgets/appbar/collective_appbar.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/custom_listview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+enum ExpressionFeedLayout { single, two }
 
 /// Homepage feed containing a List of expression for the given perspective.
 /// The following parameters must be supplied:
-///  - [refreshData]
-///  - [expressionCompleter]
 ///  - [collectiveController]
 ///  - [appbarTitle]
 class ExpressionFeed extends StatefulWidget {
   const ExpressionFeed({
     Key key,
-    @required this.refreshData,
     @required this.collectiveController,
     @required this.appbarTitle,
-  })  : assert(refreshData != null),
-        assert(collectiveController != null),
+  })  : assert(collectiveController != null),
         assert(appbarTitle != null),
         super(key: key);
-  final VoidCallback refreshData;
   final ScrollController collectiveController;
   final ValueNotifier<String> appbarTitle;
 
@@ -35,46 +31,12 @@ class ExpressionFeed extends StatefulWidget {
 }
 
 class _ExpressionFeedState extends State<ExpressionFeed> {
-  String _userAddress;
-  AppRepo appState;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    appState = Provider.of<AppRepo>(context);
-  }
-
-  /// Changes the list view from two column layout to single
-  Future<void> _switchColumnView(String columnType) async {
-    if (columnType == 'two') {
-      appState.setLayout(true);
-    } else if (columnType == 'single') {
-      appState.setLayout(false);
-    }
-    setState(() {});
-    return;
-  }
-
-  Future<void> getUserInformation() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    setState(() {
-      _userAddress = prefs.getString('user_id');
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getUserInformation();
-  }
-
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
         //TODO: add completer
-        widget.refreshData();
+        context.bloc<CollectiveBloc>().add(RefreshCollective());
         await Future.value(true);
       },
       child: BlocBuilder<CollectiveBloc, CollectiveState>(
@@ -85,42 +47,77 @@ class _ExpressionFeedState extends State<ExpressionFeed> {
               child: Text('hmm, something is up with our servers'),
             );
           }
-          if (state is CollectivePopulated) {
-            return CustomScrollView(
-              controller: widget.collectiveController,
-              slivers: <Widget>[
-                AppBarWrapper(
-                  widget: widget,
-                  appState: appState,
-                  onSwitchColumnView: _switchColumnView,
-                ),
+          return CustomScrollView(
+            controller: widget.collectiveController,
+            slivers: <Widget>[
+              AppBarWrapper(
+                title: widget.appbarTitle.value,
+              ),
+              if (state is CollectivePopulated)
                 SliverList(
                   delegate: SliverChildListDelegate(<Widget>[
-                    AnimatedCrossFade(
-                      crossFadeState: appState.twoColumnLayout
-                          ? CrossFadeState.showFirst
-                          : CrossFadeState.showSecond,
-                      duration: const Duration(milliseconds: 300),
-                      firstCurve: Curves.easeInOut,
-                      firstChild: TwoColumnSliverListView(
-                        userAddress: _userAddress,
-                        data: state.results,
-                      ),
-                      secondChild: SingleColumnSliverListView(
-                        userAddress: _userAddress,
-                        data: state.results,
-                        privacyLayer: 'Public',
+                    Consumer<UserDataProvider>(
+                      builder: (context, data, _) => AnimatedCrossFade(
+                        crossFadeState: data.twoColumnView
+                            ? CrossFadeState.showFirst
+                            : CrossFadeState.showSecond,
+                        duration: const Duration(milliseconds: 300),
+                        firstCurve: Curves.easeInOut,
+                        firstChild: TwoColumnSliverListView(
+                          data: state.results,
+                        ),
+                        secondChild: SingleColumnSliverListView(
+                          data: state.results,
+                          privacyLayer: 'Public',
+                        ),
                       ),
                     )
                   ]),
-                )
-              ],
-            );
-          }
-          return Center(
-            child: JuntoProgressIndicator(),
+                ),
+              const GetMoreExpressionsButton(),
+              if (state is CollectiveLoading)
+                const ExpressionProgressIndicator(),
+            ],
           );
         },
+      ),
+    );
+  }
+}
+
+class GetMoreExpressionsButton extends StatelessWidget {
+  const GetMoreExpressionsButton({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverPadding(
+      padding: const EdgeInsets.only(bottom: 100.0),
+      sliver: SliverToBoxAdapter(
+        child: FlatButton(
+          onPressed: () => BlocProvider.of<CollectiveBloc>(context)
+              .add(FetchMoreCollective()),
+          child: const Text('Get more'),
+        ),
+      ),
+    );
+  }
+}
+
+class ExpressionProgressIndicator extends StatelessWidget {
+  const ExpressionProgressIndicator({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverToBoxAdapter(
+      child: Container(
+        height: MediaQuery.of(context).size.height / 2,
+        child: Center(
+          child: JuntoProgressIndicator(),
+        ),
       ),
     );
   }
@@ -129,35 +126,20 @@ class _ExpressionFeedState extends State<ExpressionFeed> {
 class AppBarWrapper extends StatelessWidget {
   const AppBarWrapper({
     Key key,
-    @required this.widget,
-    @required this.appState,
-    @required this.onSwitchColumnView,
+    @required this.title,
   }) : super(key: key);
 
-  final ExpressionFeed widget;
-  final AppRepo appState;
-  final SwitchColumnView onSwitchColumnView;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<String>(
-      valueListenable: widget.appbarTitle,
-      builder: (
-        BuildContext context,
-        String value,
-        Widget child,
-      ) {
-        return SliverPersistentHeader(
-          delegate: CollectiveAppBar(
-            expandedHeight: 135,
-            appbarTitle: value,
-            twoColumnView: appState.twoColumnLayout,
-            switchColumnView: onSwitchColumnView,
-          ),
-          pinned: false,
-          floating: true,
-        );
-      },
+    return SliverPersistentHeader(
+      delegate: CollectiveAppBar(
+        expandedHeight: 135,
+        appbarTitle: title,
+      ),
+      pinned: false,
+      floating: true,
     );
   }
 }

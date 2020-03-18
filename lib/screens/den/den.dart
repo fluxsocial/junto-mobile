@@ -2,7 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
+import 'package:junto_beta_mobile/filters/bloc/channel_filtering_bloc.dart';
+import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/den/den_sliver_appbar.dart';
@@ -13,6 +17,7 @@ import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_edit_den.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/utils/hide_fab.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
@@ -155,44 +160,60 @@ class JuntoDenState extends State<JuntoDen>
 
   @override
   Widget build(BuildContext context) {
-    //TODO(dominik): wrap with bloc
-    return Scaffold(
-      body: JuntoFilterDrawer(
-        leftDrawer: const FilterDrawerContent('Collective'),
-        rightMenu: JuntoDrawer(),
-        scaffold: Scaffold(
-          appBar: _constructAppBar(),
-          floatingActionButton: ValueListenableBuilder<bool>(
-            valueListenable: _isVisible,
-            builder: (
-              BuildContext context,
-              bool visible,
-              Widget child,
-            ) {
-              return AnimatedOpacity(
-                duration: const Duration(milliseconds: 300),
-                opacity: visible ? 1.0 : 0.0,
-                child: child,
-              );
-            },
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 25),
-              child: BottomNav(
-                actionsVisible: false,
-                onLeftButtonTap: () {
-                  Navigator.push(
-                    context,
-                    CupertinoPageRoute<Widget>(
-                      builder: (BuildContext context) => JuntoEditDen(),
-                    ),
-                  );
-                },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<ChannelFilteringBloc>(
+          create: (ctx) => ChannelFilteringBloc(
+            Provider.of<SearchRepo>(ctx, listen: false),
+            //TODO pass call to the bloc
+            (_) {},
+          ),
+        ),
+        //TODO(dominik): use expression bloc to fetch den's expressions
+        // BlocProvider<CollectiveBloc>(
+        //   create: (ctx) => CollectiveBloc(
+        //     Provider.of<ExpressionRepo>(ctx, listen: false),
+        //   )..add(CollectiveFetch('Collective')),
+        // ),
+      ],
+      child: Scaffold(
+        body: JuntoFilterDrawer(
+          leftDrawer: const FilterDrawerContent(ExpressionContextType.Collective),
+          rightMenu: JuntoDrawer(),
+          scaffold: Scaffold(
+            appBar: _constructAppBar(),
+            floatingActionButton: ValueListenableBuilder<bool>(
+              valueListenable: _isVisible,
+              builder: (
+                BuildContext context,
+                bool visible,
+                Widget child,
+              ) {
+                return AnimatedOpacity(
+                  duration: const Duration(milliseconds: 300),
+                  opacity: visible ? 1.0 : 0.0,
+                  child: child,
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 25),
+                child: BottomNav(
+                  actionsVisible: false,
+                  onLeftButtonTap: () {
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute<Widget>(
+                        builder: (BuildContext context) => JuntoEditDen(),
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
+            body: _buildBody(),
           ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
-          body: _buildBody(),
         ),
       ),
     );

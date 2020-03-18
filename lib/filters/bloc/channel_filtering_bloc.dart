@@ -1,21 +1,43 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
+import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:meta/meta.dart';
+import 'package:rxdart/rxdart.dart';
 
 part 'channel_filtering_event.dart';
 part 'channel_filtering_state.dart';
 
+typedef OnFilterApplied = void Function(Channel);
+
 class ChannelFilteringBloc
     extends Bloc<ChannelFilteringEvent, ChannelFilteringState> {
-  ChannelFilteringBloc(this.searchRepository);
+  ChannelFilteringBloc(this.searchRepository, this.onFilterApplied);
 
   final SearchRepo searchRepository;
+  final OnFilterApplied onFilterApplied;
 
   @override
-  ChannelFilteringState get initialState => ChannelsLoadingState();
+  ChannelFilteringState get initialState => const ChannelsInitialState();
+
+  // This debounces type events but leaves other events with normal "pace"
+  @override
+  Stream<ChannelFilteringState> transformEvents(
+    Stream<ChannelFilteringEvent> events,
+    Stream<ChannelFilteringState> Function(ChannelFilteringEvent event) next,
+  ) {
+    final nonDebounceStream =
+        events.where((event) => event is! FilterQueryUpdated);
+    final debounceStream = events
+        .where((event) => event is FilterQueryUpdated)
+        .debounceTime(const Duration(milliseconds: 600));
+    return super.transformEvents(
+        MergeStream([nonDebounceStream, debounceStream]), next);
+  }
 
   @override
   Stream<ChannelFilteringState> mapEventToState(
@@ -26,29 +48,37 @@ class ChannelFilteringBloc
     }
     if (event is FilterSelected) {
       yield* _mapFilterSelectedToState(event);
-      //
     }
     if (event is FilterReset) {
-      //
+      yield* _mapFilterResetToState(event);
     }
   }
 
   Stream<ChannelFilteringState> _mapFilterUpdatedToState(
       FilterQueryUpdated event) async* {
     try {
-      yield ChannelsLoadingState();
-      final result = await searchRepository.searchChannel(event.term);
-      print(result);
-      yield ChannelsPopulatedState(result.results, null);
+      if (event.term.isNotEmpty && event.term.length > 1) {
+        final result = await searchRepository.searchChannel(event.term);
+        debugPrint(
+            'Channels available for query ${event.term} ${result.results.length}');
+        yield ChannelsPopulatedState(result.results, state.selectedChannel);
+      }
     } catch (e, s) {
-      yield ChannelsErrorState();
+      debugPrint(e);
+      debugPrint(s.toString());
+      yield const ChannelsErrorState();
     }
   }
 
   Stream<ChannelFilteringState> _mapFilterSelectedToState(
       FilterSelected event) async* {
-    //TODO(dominik): pass the info to the CollectiveBloc to fetch new expressions according to the filter
+    onFilterApplied(event.item);
+    yield ChannelsPopulatedState([], event.item);
   }
 
-  //await
+  Stream<ChannelFilteringState> _mapFilterResetToState(
+      FilterReset event) async* {
+    onFilterApplied(null);
+    yield const ChannelsPopulatedState([], null);
+  }
 }

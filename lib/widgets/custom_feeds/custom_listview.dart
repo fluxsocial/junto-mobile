@@ -8,12 +8,10 @@ class TwoColumnListView extends StatelessWidget {
   const TwoColumnListView({
     Key key,
     @required this.data,
-    @required this.userAddress,
     @required this.privacyLayer,
   }) : super(key: key);
 
   final List<ExpressionResponse> data;
-  final String userAddress;
   final String privacyLayer;
 
   @override
@@ -39,7 +37,6 @@ class TwoColumnListView extends StatelessWidget {
                         data[index].privacy == privacyLayer)
                       TwoColumnExpressionPreview(
                         expression: data[index],
-                        userAddress: userAddress,
                       )
                     else
                       const SizedBox()
@@ -61,7 +58,6 @@ class TwoColumnListView extends StatelessWidget {
                     else if (index.isOdd && data[index].privacy == privacyLayer)
                       TwoColumnExpressionPreview(
                         expression: data[index],
-                        userAddress: userAddress,
                       )
                     else
                       const SizedBox()
@@ -80,11 +76,9 @@ class TwoColumnSliverListView extends StatelessWidget {
   const TwoColumnSliverListView({
     Key key,
     @required this.data,
-    @required this.userAddress,
   }) : super(key: key);
 
   final List<ExpressionResponse> data;
-  final String userAddress;
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +105,6 @@ class TwoColumnSliverListView extends StatelessWidget {
                     TwoColumnExpressionPreview(
                       key: ValueKey<String>(data[index].address),
                       expression: data[index],
-                      userAddress: userAddress,
                     )
               ],
             ),
@@ -133,7 +126,6 @@ class TwoColumnSliverListView extends StatelessWidget {
                     TwoColumnExpressionPreview(
                       key: ValueKey<String>(data[index].address),
                       expression: data[index],
-                      userAddress: userAddress,
                     )
               ],
             ),
@@ -149,12 +141,10 @@ class SingleColumnListView extends StatelessWidget {
   const SingleColumnListView({
     Key key,
     @required this.data,
-    @required this.userAddress,
     @required this.privacyLayer,
   }) : super(key: key);
 
   final List<ExpressionResponse> data;
-  final String userAddress;
   final String privacyLayer;
 
   @override
@@ -172,7 +162,6 @@ class SingleColumnListView extends StatelessWidget {
               SingleColumnExpressionPreview(
                 key: ValueKey<String>(data[index].address),
                 expression: data[index],
-                userAddress: userAddress,
               )
         ],
       ),
@@ -183,14 +172,10 @@ class SingleColumnListView extends StatelessWidget {
 /// Sliver implementation of the custom `ListView` used across Junto.
 class SingleColumnSliverListView extends StatelessWidget {
   const SingleColumnSliverListView(
-      {Key key,
-      @required this.data,
-      @required this.userAddress,
-      @required this.privacyLayer})
+      {Key key, @required this.data, @required this.privacyLayer})
       : super(key: key);
 
   final List<ExpressionResponse> data;
-  final String userAddress;
   final String privacyLayer;
 
   @override
@@ -207,7 +192,6 @@ class SingleColumnSliverListView extends StatelessWidget {
               SingleColumnExpressionPreview(
                 key: ValueKey<String>(data[index].address),
                 expression: data[index],
-                userAddress: userAddress,
               )
         ],
       ),

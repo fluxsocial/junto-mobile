@@ -3,11 +3,13 @@ import 'dart:convert';
 
 import 'package:async/async.dart' show AsyncMemoizer;
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/expressions.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/expression.dart';
 import 'package:junto_beta_mobile/models/models.dart';
+import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/channel_search_modal.dart';
 import 'package:junto_beta_mobile/screens/create/create_actions/create_actions_appbar.dart';
@@ -125,6 +127,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         return route.isFirst;
       },
     );
+    BlocProvider.of<CollectiveBloc>(context).add(RefreshCollective());
   }
 
   Future<void> _createExpression() async {

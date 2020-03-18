@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 
 abstract class SearchService {
@@ -104,7 +105,7 @@ abstract class ExpressionService {
   /// Returns a [QueryExpressionResults] containing a list of results which
   /// satisfies the query.
   Future<QueryResults<ExpressionResponse>> getCollectiveExpressions(
-      Map<String, String> params);
+      Map<String, dynamic> params);
 
   /// Returns mock expression data.
   List<ExpressionResponse> get collectiveExpressions;

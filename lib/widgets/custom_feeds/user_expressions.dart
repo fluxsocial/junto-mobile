@@ -112,12 +112,10 @@ class _UserExpressionsState extends State<UserExpressions> {
                               : CrossFadeState.showSecond,
                           duration: const Duration(milliseconds: 200),
                           firstChild: TwoColumnListView(
-                            userAddress: widget.userProfile.address,
                             data: snapshot.data,
                             privacyLayer: 'Public',
                           ),
                           secondChild: SingleColumnListView(
-                            userAddress: widget.userProfile.address,
                             data: snapshot.data,
                             privacyLayer: 'Public',
                           ),

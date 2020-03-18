@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/bottom_nav.dart';
 
 /// Floating action button used by [JuntoCollective]. Controls the switching
@@ -9,12 +8,10 @@ class CollectiveActionButton extends StatelessWidget {
     Key key,
     @required this.isVisible,
     @required this.actionsVisible,
-    @required this.userProfile,
     @required this.onTap,
   }) : super(key: key);
   final ValueNotifier<bool> isVisible;
   final bool actionsVisible;
-  final UserData userProfile;
   final VoidCallback onTap;
 
   @override

@@ -20,7 +20,7 @@ class AppRepo {
     return;
   }
 
-// Exposes the current layout config.
+  // Exposes the current layout config.
   bool get twoColumnLayout => _twoColumn;
 
   // Allows the layout type to be updated and saved.
