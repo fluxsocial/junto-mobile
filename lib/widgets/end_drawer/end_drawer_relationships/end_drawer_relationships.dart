@@ -26,10 +26,10 @@ class JuntoRelationships extends StatefulWidget {
 class JuntoRelationshipsState extends State<JuntoRelationships> {
   Future<dynamic> _userRelations;
   final List<String> _tabs = <String>[
-    'Connections',
-    'Subscriptions',
+    'CONNECTIONS',
+    'SUBSCRIPTIONS',
     // 'Subscribers',
-    'Pending'
+    'PENDING'
   ];
 
   @override
@@ -88,7 +88,9 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
-                      color: Theme.of(context).dividerColor, width: .75),
+                    color: Theme.of(context).dividerColor,
+                    width: .75,
+                  ),
                 ),
               ),
             ),
@@ -107,15 +109,22 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                     labelPadding: const EdgeInsets.all(0),
                     isScrollable: true,
                     labelColor: Theme.of(context).primaryColorDark,
+                    unselectedLabelColor: Theme.of(context).primaryColorLight,
                     labelStyle: Theme.of(context).textTheme.subtitle1,
                     indicatorWeight: 0.0001,
                     tabs: <Widget>[
                       for (String name in _tabs)
                         Container(
-                          margin: const EdgeInsets.only(right: 24),
+                          margin: const EdgeInsets.only(right: 20),
                           color: Theme.of(context).colorScheme.background,
                           child: Tab(
-                            text: name,
+                            child: Text(
+                              name,
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
                           ),
                         ),
                     ],
