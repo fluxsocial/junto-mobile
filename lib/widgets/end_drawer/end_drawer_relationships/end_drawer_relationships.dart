@@ -10,6 +10,7 @@ import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/pending_relationships.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
 import 'package:provider/provider.dart';
 
 class JuntoRelationships extends StatefulWidget {
@@ -258,24 +259,16 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                 );
               } else if (snapshot.hasError) {
                 print(snapshot.error);
-                return TabBarView(
+                return const TabBarView(
                   children: <Widget>[
-                    Center(
-                      child: Text('Hmmm, something is up',
-                          style: Theme.of(context).textTheme.caption),
-                    ),
-                    Center(
-                      child: Text('Hmmm, something is up',
-                          style: Theme.of(context).textTheme.caption),
-                    ),
-                    Center(
-                      child: Text('Hmmm, something is up',
-                          style: Theme.of(context).textTheme.caption),
-                    ),
-                    Center(
-                      child: Text('Hmmm, something is up',
-                          style: Theme.of(context).textTheme.caption),
-                    ),
+                    FutureBuilderErrorWidget(
+                        errorMessage: 'Hmm, something went wrong'),
+                    FutureBuilderErrorWidget(
+                        errorMessage: 'Hmm, something went wrong'),
+                    FutureBuilderErrorWidget(
+                        errorMessage: 'Hmm, something went wrong'),
+                    FutureBuilderErrorWidget(
+                        errorMessage: 'Hmm, something went wrong'),
                   ],
                 );
               }

@@ -9,6 +9,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/relationship_request.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
 import 'package:provider/provider.dart';
 
 class PendingRelationships extends StatefulWidget {
@@ -162,16 +163,12 @@ class PendingRelationshipsState extends State<PendingRelationships> {
                 );
               } else if (snapshot.hasError) {
                 print(snapshot.error);
-                return TabBarView(
+                return const TabBarView(
                   children: <Widget>[
-                    Center(
-                      child: Text('Hmmm, something is up',
-                          style: Theme.of(context).textTheme.caption),
-                    ),
-                    Center(
-                      child: Text('Hmmm, something is up',
-                          style: Theme.of(context).textTheme.caption),
-                    ),
+                    FutureBuilderErrorWidget(
+                        errorMessage: 'Hmm, something went wrong'),
+                    FutureBuilderErrorWidget(
+                        errorMessage: 'Hmm, something went wrong'),
                   ],
                 );
               }
