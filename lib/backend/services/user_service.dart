@@ -252,12 +252,14 @@ class UserServiceCentralized implements UserService {
 
     // set each relationship key into its own variable
     final Map<String, dynamic> _following = _results['following'];
+    final Map<String, dynamic> _followers = _results['followers'];
     final Map<String, dynamic> _connections = _results['connections'];
     final Map<String, dynamic> _pendingConnections =
         _results['pending_connections'];
 
     // get the list of users for each relationship type
     final List<dynamic> _followingResults = _results['following']['results'];
+    final List<dynamic> _followerResults = _results['followers']['results'];
     final List<dynamic> _connectionsResults =
         _results['connections']['results'];
     final List<dynamic> _pendingConnectionsResults =
@@ -267,6 +269,7 @@ class UserServiceCentralized implements UserService {
     // list of users above to UserProfile
     final List<UserProfile> _connectionsMembers = <UserProfile>[];
     final List<UserProfile> _followingMembers = <UserProfile>[];
+    final List<UserProfile> _followerMembers = <UserProfile>[];
     final List<UserProfile> _pendingConnectionsMembers = <UserProfile>[];
 
     if (_connectionsResults.isNotEmpty) {
@@ -285,6 +288,14 @@ class UserServiceCentralized implements UserService {
       }
     }
 
+    if (_followerResults.isNotEmpty) {
+      for (final dynamic result in _followerResults) {
+        _followerMembers.add(
+          UserProfile.fromMap(result['user']),
+        );
+      }
+    }
+
     for (final dynamic result in _pendingConnectionsResults) {
       _pendingConnectionsMembers.add(
         UserProfile.fromMap(result),
@@ -293,11 +304,13 @@ class UserServiceCentralized implements UserService {
 
     // replace the results (list of users) from the server response with new list of UserProfiles
     _following['results'] = _followingMembers;
+    _followers['results'] = _followerMembers;
     _connections['results'] = _connectionsMembers;
     _pendingConnections['results'] = _pendingConnectionsMembers;
 
     // replace originalrelationship keys with updated versions
     _results['following'] = _following;
+    _results['followers'] = _followers;
     _results['connections'] = _connections;
     _results['pending_connections'] = _pendingConnections;
     return _results;

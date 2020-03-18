@@ -26,10 +26,10 @@ class JuntoRelationships extends StatefulWidget {
 class JuntoRelationshipsState extends State<JuntoRelationships> {
   Future<dynamic> _userRelations;
   final List<String> _tabs = <String>[
-    'CONNECTIONS',
     'SUBSCRIPTIONS',
-    // 'Subscribers',
-    'PENDING'
+    'SUBSCRIBERS',
+    'CONNECTIONS',
+    'PACK',
   ];
 
   @override
@@ -143,8 +143,11 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                     snapshot.data['connections']['results'];
 
                 // get list of following
-                final List<UserProfile> _followingMembers =
+                final List<UserProfile> _subscriptionMembers =
                     snapshot.data['following']['results'];
+
+                final List<UserProfile> _subscriberMembers =
+                    snapshot.data['followers']['results'];
 
                 // get list of pending connections
                 final List<UserProfile> _pendingConnectionsMembers =
@@ -152,6 +155,28 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
 
                 return TabBarView(
                   children: <Widget>[
+                    // subscriptions
+                    ListView(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      children: _subscriptionMembers
+                          .map(
+                            (dynamic subscription) =>
+                                MemberPreview(profile: subscription),
+                          )
+                          .toList(),
+                    ),
+
+                    // subscribers
+                    ListView(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      children: _subscriberMembers
+                          .map(
+                            (dynamic subscriber) =>
+                                MemberPreview(profile: subscriber),
+                          )
+                          .toList(),
+                    ),
+
                     // connections
                     ListView(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -163,28 +188,10 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                           .toList(),
                     ),
 
-                    // subscriptions
+                    // todo: waiting on API - return pack members
                     ListView(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      children: _followingMembers
-                          .map(
-                            (dynamic connection) =>
-                                MemberPreview(profile: connection),
-                          )
-                          .toList(),
-                    ),
-                    // pending connections
-                    ListView(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      children: _pendingConnectionsMembers
-                          .map(
-                            (dynamic connection) => RelationshipRequest(
-                              connection,
-                              _refreshActions,
-                            ),
-                          )
-                          .toList(),
-                    ),
+                      children: <Widget>[],
+                    )
                   ],
                 );
               } else if (snapshot.hasError) {
@@ -216,7 +223,10 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                   ),
                   Center(
                     child: JuntoProgressIndicator(),
-                  )
+                  ),
+                  Center(
+                    child: JuntoProgressIndicator(),
+                  ),
                 ],
               );
             },
