@@ -25,6 +25,9 @@ class JuntoRelationships extends StatefulWidget {
 
 class JuntoRelationshipsState extends State<JuntoRelationships> {
   Future<dynamic> _userRelations;
+  List<UserProfile> pendingConnectionRequests;
+  List<UserProfile> pendingPackRequests;
+
   final List<String> _tabs = <String>[
     'SUBSCRIPTIONS',
     'SUBSCRIBERS',
@@ -149,9 +152,13 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                 final List<UserProfile> _subscriberMembers =
                     snapshot.data['followers']['results'];
 
-                // get list of pending connections
-                final List<UserProfile> _pendingConnectionsMembers =
-                    snapshot.data['pending_connections']['results'];
+                // set state for pending connection and pack requests
+                // setState(() {
+                //   pendingConnectionRequests =
+                //       snapshot.data['pending_connections']['results'];
+                //   // pendingPackRequests =
+                //   //     snapshot.data['pending_group_joins']['results'];
+                // });
 
                 return TabBarView(
                   children: <Widget>[
@@ -189,15 +196,17 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                     ),
 
                     // todo: waiting on API - return pack members
-                    ListView(
-                      children: <Widget>[],
-                    )
+                    const SizedBox()
                   ],
                 );
               } else if (snapshot.hasError) {
                 print(snapshot.error);
                 return TabBarView(
                   children: <Widget>[
+                    Center(
+                      child: Text('Hmmm, something is up',
+                          style: Theme.of(context).textTheme.caption),
+                    ),
                     Center(
                       child: Text('Hmmm, something is up',
                           style: Theme.of(context).textTheme.caption),
