@@ -305,8 +305,9 @@ class ExpressionOpenState extends State<ExpressionOpen> {
           child: Visibility(
             visible: expressionContextVisible,
             child: ExpressionOpenContext(
-                channels: widget.expression.channels,
-                toggleExpressionContext: toggleExpressionContext),
+              channels: widget.expression.channels,
+              toggleExpressionContext: toggleExpressionContext,
+            ),
           ),
         ),
       ],
@@ -431,9 +432,10 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
                           border: InputBorder.none,
                           hintText: 'write a reply...',
                           hintStyle: TextStyle(
-                              fontSize: 13,
-                              color: Theme.of(context).primaryColorLight,
-                              fontWeight: FontWeight.w500),
+                            fontSize: 16,
+                            color: Theme.of(context).primaryColorLight,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                         maxLines: null,
                         cursorColor: Theme.of(context).primaryColor,
@@ -453,7 +455,7 @@ class _BottomCommentBarState extends State<_BottomCommentBar> {
               child: Icon(
                 Icons.send,
                 size: 20,
-                color: Theme.of(context).colorScheme.secondary,
+                color: Theme.of(context).primaryColor,
               ),
             )
           ],

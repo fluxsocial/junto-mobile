@@ -38,10 +38,7 @@ class PhotoOpen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Text(
                     photoExpression.expressionData.caption,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 17,
-                    ),
+                    style: Theme.of(context).textTheme.caption,
                   ),
                 )
               : const SizedBox()

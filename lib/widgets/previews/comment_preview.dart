@@ -5,7 +5,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/comment_open/comment_open.dart';
 import 'package:junto_beta_mobile/screens/member/member.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
-import 'package:junto_beta_mobile/widgets/comment_action_items.dart';
+import 'package:junto_beta_mobile/widgets/action_items/comment_action_items.dart';
 import 'package:junto_beta_mobile/widgets/utils/date_parsing.dart';
 
 /// Shows a preview of the comments. Takes a un-named [String] as a param.
@@ -80,6 +80,9 @@ class CommentPreview extends StatelessWidget {
                     onTap: () {
                       showModalBottomSheet(
                         context: context,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
                         builder: (BuildContext context) => Container(
                           color: Colors.transparent,
                           child: CommentActionItems(

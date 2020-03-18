@@ -4,7 +4,7 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
-import 'package:junto_beta_mobile/widgets/expression_action_items.dart';
+import 'package:junto_beta_mobile/widgets/action_items/expression_action_items.dart';
 
 class ExpressionOpenTop extends StatelessWidget with MemberValidation {
   const ExpressionOpenTop({Key key, this.expression, this.userAddress})
@@ -49,6 +49,9 @@ class ExpressionOpenTop extends StatelessWidget with MemberValidation {
             onTap: () {
               showModalBottomSheet(
                 context: context,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
                 builder: (BuildContext context) => ExpressionActionItems(
                     expression: expression, userAddress: userAddress),
               );
