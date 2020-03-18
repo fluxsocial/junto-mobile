@@ -198,6 +198,7 @@ class ExpressionOpenState extends State<ExpressionOpen> {
                   child: RefreshIndicator(
                     onRefresh: _refreshComments,
                     child: ListView(
+                      physics: const AlwaysScrollableScrollPhysics(),
                       children: <Widget>[
                         ExpressionOpenTop(
                             expression: widget.expression,

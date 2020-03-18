@@ -98,6 +98,7 @@ class _ExpressionFeedState extends State<ExpressionFeed> {
               if (snapshot.hasData) {
                 return CustomScrollView(
                   controller: widget.collectiveController,
+                  physics: const AlwaysScrollableScrollPhysics(),
                   slivers: <Widget>[
                     ValueListenableBuilder<String>(
                       valueListenable: widget.appbarTitle,
