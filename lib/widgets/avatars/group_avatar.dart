@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:junto_beta_mobile/widgets/avatars/group_avatar_placeholder.dart';
+import 'package:junto_cached_network_image/cached_network_image.dart';
 
 class GroupAvatar extends StatelessWidget {
   const GroupAvatar({this.profilePicture, this.diameter});
