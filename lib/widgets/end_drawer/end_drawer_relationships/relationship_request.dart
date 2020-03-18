@@ -14,7 +14,7 @@ class RelationshipRequest extends StatelessWidget {
   const RelationshipRequest(this.user, this.onAction);
 
   ///  Called whenever a user is accepted or rejected.
-  final ValueChanged<bool> onAction;
+  final Function onAction;
   final UserProfile user;
 
   Future<void> _acceptConnection(
