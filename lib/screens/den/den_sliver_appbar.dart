@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/screens/den/edit_den.dart';
-import 'package:junto_beta_mobile/widgets/about_member/about_member.dart';
+import 'package:junto_beta_mobile/widgets/member_widgets/profile_picture_avatar.dart';
+import 'package:junto_beta_mobile/widgets/member_widgets/about_item.dart';
+import 'package:junto_beta_mobile/widgets/member_widgets/bio.dart';
 
 class JuntoDenSliverAppbar extends StatefulWidget {
   const JuntoDenSliverAppbar(
@@ -149,22 +150,22 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
                             widget.profile.user.location.isNotEmpty ||
                             widget.profile.user.website.isNotEmpty)
                           const SizedBox(height: 15),
-                        _displayAboutItem(
-                          widget.profile.user.gender,
-                          Icon(CustomIcons.gender,
+                        AboutItem(
+                          item: widget.profile.user.gender,
+                          icon: Icon(CustomIcons.gender,
                               size: 17, color: Theme.of(context).primaryColor),
                         ),
-                        _displayAboutItem(
-                          widget.profile.user.location,
-                          Image.asset(
+                        AboutItem(
+                          item: widget.profile.user.location,
+                          icon: Image.asset(
                             'assets/images/junto-mobile__location.png',
                             height: 15,
                             color: Theme.of(context).primaryColor,
                           ),
                         ),
-                        _displayAboutItem(
-                          widget.profile.user.website,
-                          Image.asset(
+                        AboutItem(
+                          item: widget.profile.user.website,
+                          icon: Image.asset(
                             'assets/images/junto-mobile__link.png',
                             height: 15,
                             color: Theme.of(context).primaryColor,
@@ -173,35 +174,14 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
                         if (widget.profile.user.bio != '' &&
                             widget.profile.user.bio != null &&
                             widget.profile.user.bio != ' ')
-                          _displayBio()
+                          MemberBio(profile: widget.profile)
                       ],
                     ),
                   ),
                 ],
               ),
             ),
-            Positioned(
-              top: MediaQuery.of(context).size.height * .2 - 30,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    CupertinoPageRoute<dynamic>(
-                      builder: (BuildContext context) => AboutMember(
-                        profile: widget.profile,
-                      ),
-                    ),
-                  );
-                },
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: MemberAvatar(
-                    profilePicture: widget.profile.user.profilePicture,
-                    diameter: 60,
-                  ),
-                ),
-              ),
-            ),
+            MemberProfilePictureAvatar(profile: widget.profile),
           ],
         ),
       ),
@@ -210,53 +190,5 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
           : _flexibleHeightSpace + MediaQuery.of(context).size.height * .2,
       forceElevated: false,
     );
-  }
-
-  Widget _displayBio() {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          CupertinoPageRoute<dynamic>(
-            builder: (BuildContext context) =>
-                AboutMember(profile: widget.profile),
-          ),
-        );
-      },
-      child: Container(
-        padding: const EdgeInsets.only(top: 10),
-        width: MediaQuery.of(context).size.width,
-        color: Colors.transparent,
-        child: Text(
-          widget.profile.user.bio,
-          style: Theme.of(context).textTheme.caption,
-        ),
-      ),
-    );
-  }
-
-  Widget _displayAboutItem(List<String> item, dynamic icon) {
-    if (item.isNotEmpty && item[0].isNotEmpty) {
-      return Container(
-        margin: const EdgeInsets.symmetric(vertical: 5),
-        child: Row(
-          children: <Widget>[
-            icon,
-            const SizedBox(width: 5),
-            Text(
-              item[0],
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                  color: Theme.of(context).primaryColor,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600),
-            ),
-          ],
-        ),
-      );
-    } else {
-      return const SizedBox();
-    }
   }
 }
