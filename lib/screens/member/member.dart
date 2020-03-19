@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
+import 'package:junto_beta_mobile/models/expression_query_params.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/member/member_appbar.dart';
@@ -167,11 +168,8 @@ class _JuntoMemberState extends State<JuntoMember>
   Widget build(BuildContext context) {
     return Scaffold(
       body: JuntoFilterDrawer(
-        leftDrawer: FilterDrawerContent(
-          filterByChannel: null,
-          channels: [],
-          resetChannels: () {},
-        ),
+        //TODO
+        leftDrawer: FilterDrawerContent(ExpressionContextType.Collective),
         rightMenu: JuntoDrawer(),
         scaffold: Stack(
           children: <Widget>[

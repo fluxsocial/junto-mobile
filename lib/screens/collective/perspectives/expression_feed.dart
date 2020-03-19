@@ -36,6 +36,7 @@ class _ExpressionFeedState extends State<ExpressionFeed> {
     final metrics = scrollNotification.metrics;
     double scrollPercent = (metrics.pixels / metrics.maxScrollExtent) * 100;
     if (scrollPercent.roundToDouble() == 60.0) {
+      print('fetching');
       BlocProvider.of<CollectiveBloc>(context).add(FetchMoreCollective());
       return true;
     }
@@ -54,9 +55,7 @@ class _ExpressionFeedState extends State<ExpressionFeed> {
         builder: (BuildContext context, CollectiveState state) {
           if (state is CollectiveError) {
             //TODO(Nash): Add illustration for empty state.
-            return const Center(
-              child: Text('hmm, something is up with our servers'),
-            );
+            return CollectiveErrorLabel();
           }
           return NotificationListener(
             onNotification: _onScrollNotification,
@@ -99,6 +98,23 @@ class _ExpressionFeedState extends State<ExpressionFeed> {
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class CollectiveErrorLabel extends StatelessWidget {
+  const CollectiveErrorLabel({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      physics: AlwaysScrollableScrollPhysics(),
+      child: Container(
+        height: MediaQuery.of(context).size.height,
+        child: Center(child: Text('hmm, something is up with our servers')),
       ),
     );
   }
