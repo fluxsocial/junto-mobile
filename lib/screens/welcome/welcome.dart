@@ -21,6 +21,7 @@ import 'widgets/sign_up_arrows.dart';
 import 'widgets/sign_up_text_field_wrapper.dart';
 import 'widgets/welcome_background.dart';
 import 'widgets/welcome_main.dart';
+import 'package:junto_beta_mobile/widgets/fade_route.dart';
 
 class Welcome extends StatefulWidget {
   static Route<dynamic> route() {
@@ -115,7 +116,6 @@ class WelcomeState extends State<Welcome> {
       final UserData results =
           await Provider.of<AuthRepo>(context, listen: false)
               .registerUser(details);
-      print('ok');
       final Map<String, dynamic> resultsMap = results.toMap();
       final String resultsMapToString = json.encode(resultsMap);
 
@@ -187,31 +187,8 @@ class WelcomeState extends State<Welcome> {
     JuntoLoader.hide();
     // Navigate to community agreements
     Navigator.of(context).pushReplacement(
-      PageRouteBuilder<dynamic>(
-        pageBuilder: (
-          BuildContext context,
-          Animation<double> animation,
-          Animation<double> secondaryAnimation,
-        ) {
-          return SignUpAgreements();
-        },
-        transitionsBuilder: (
-          BuildContext context,
-          Animation<double> animation,
-          Animation<double> secondaryAnimation,
-          Widget child,
-        ) {
-          return SlideTransition(
-            position: Tween<Offset>(
-              begin: const Offset(-1, 0),
-              end: Offset.zero,
-            ).animate(animation),
-            child: child,
-          );
-        },
-        transitionDuration: const Duration(
-          milliseconds: 400,
-        ),
+      FadeRoute<void>(
+        child: SignUpAgreements(),
       ),
     );
   }
