@@ -135,7 +135,10 @@ class AboutMember extends StatelessWidget {
 
   Widget _displayName(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.only(
+        top: 10,
+        bottom: 5,
+      ),
       child: Text(
         profile.user.name,
         style: TextStyle(
