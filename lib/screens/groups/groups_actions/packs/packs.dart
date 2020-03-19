@@ -27,7 +27,7 @@ class Packs extends StatefulWidget {
 class PacksState extends State<Packs> with ListDistinct {
   String _userAddress;
   UserData _userProfile;
-  UserRepo _userProvider;
+  GroupRepo _groupRepo;
   NotificationRepo _notificationProvider;
 
   Future<UserGroupsResponse> userGroups;
@@ -49,7 +49,7 @@ class PacksState extends State<Packs> with ListDistinct {
     super.didChangeDependencies();
 
     setState(() {
-      _userProvider = Provider.of<UserRepo>(context, listen: false);
+      _groupRepo = Provider.of<GroupRepo>(context, listen: false);
       _notificationProvider =
           Provider.of<NotificationRepo>(context, listen: false);
     });
@@ -69,7 +69,7 @@ class PacksState extends State<Packs> with ListDistinct {
 
   Future<UserGroupsResponse> getUserGroups() async {
     try {
-      return _userProvider.getUserGroups(_userAddress);
+      return _groupRepo.getUserGroups(_userAddress);
     } catch (error) {
       print(error);
       return null;
