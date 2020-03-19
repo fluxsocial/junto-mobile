@@ -131,10 +131,14 @@ class WelcomeState extends State<Welcome> {
         _userAddress = results.user.address;
       });
     } catch (error) {
-      _welcomeController.jumpToPage(0);
       JuntoLoader.hide();
       print(error);
-      print('Error: $error');
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => SingleActionDialog(
+          dialogText: error.message,
+        ),
+      );
     }
 
     // Update user with profile photos
