@@ -40,7 +40,7 @@ class SignUpPhotosState extends State<SignUpPhotos> {
                   color: Colors.white,
                   width: 3,
                 ),
-                borderRadius: BorderRadius.circular(5),
+                borderRadius: BorderRadius.circular(10),
               ),
               child: profilePicture == null
                   ? Icon(
