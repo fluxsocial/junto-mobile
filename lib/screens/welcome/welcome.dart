@@ -234,6 +234,7 @@ class WelcomeState extends State<Welcome> {
                   PageKeepAlive(
                     // 1
                     child: SignUpTextFieldWrapper(
+                      textInputActionType: TextInputAction.done,
                       onValueChanged: (String value) => name = value,
                       onSubmit: () async {
                         if (name.isNotEmpty &&
@@ -253,6 +254,7 @@ class WelcomeState extends State<Welcome> {
                   PageKeepAlive(
                     // 2
                     child: SignUpTextFieldWrapper(
+                      textInputActionType: TextInputAction.done,
                       onValueChanged: (String value) => username = value,
                       onSubmit: () async {
                         if (username.isNotEmpty &&

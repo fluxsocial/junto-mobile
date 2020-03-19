@@ -48,6 +48,7 @@ class WelcomeMain extends StatelessWidget {
                 onSignUp: _onSignUp,
                 title: 'WELCOME TO THE PACK',
               ),
+              const SizedBox(height: 30),
               Container(
                 margin: const EdgeInsets.only(bottom: 120),
                 child: GestureDetector(
@@ -55,10 +56,11 @@ class WelcomeMain extends StatelessWidget {
                   child: const Text(
                     'SIGN IN',
                     style: TextStyle(
-                        letterSpacing: 1.2,
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700),
+                      letterSpacing: 1.7,
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
               ),
