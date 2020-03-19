@@ -13,7 +13,8 @@ class FetchMoreCollective extends CollectiveEvent {}
 
 class RefreshCollective extends CollectiveEvent {}
 
-class ChangePerspective extends CollectiveEvent {
-  ChangePerspective(this.perspective);
-  final PerspectiveModel perspective;
-}
+//TODO: switch perspectives via bloc
+// class ChangePerspective extends CollectiveEvent {
+//   ChangePerspective(this.perspective);
+//   final PerspectiveModel perspective;
+// }
