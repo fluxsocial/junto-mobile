@@ -89,7 +89,7 @@ class SignUpAboutState extends State<SignUpAbout> {
                         onSubmit: () {
                           FocusScope.of(context).nextFocus();
                         },
-                        hint: 'Gender pronouns',
+                        hint: 'Gender Pronouns',
                         maxLength: 50,
                       ),
                       SignUpTextFieldLabelAndCounter(
