@@ -74,6 +74,7 @@ class SignUpAboutState extends State<SignUpAbout> {
                         onSubmit: () {
                           FocusScope.of(context).nextFocus();
                         },
+                        textInputActionType: TextInputAction.next,
                         hint: 'Location',
                         maxLength: 30,
                       ),
@@ -89,6 +90,7 @@ class SignUpAboutState extends State<SignUpAbout> {
                         onSubmit: () {
                           FocusScope.of(context).nextFocus();
                         },
+                        textInputActionType: TextInputAction.next,
                         hint: 'Gender Pronouns',
                         maxLength: 30,
                       ),
@@ -101,6 +103,7 @@ class SignUpAboutState extends State<SignUpAbout> {
                       const SizedBox(height: 30),
                       SignUpTextField(
                         valueController: websiteController,
+                        textInputActionType: TextInputAction.done,
                         onSubmit: () {
                           FocusScope.of(context).unfocus();
                         },

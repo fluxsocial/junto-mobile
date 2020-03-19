@@ -6,7 +6,6 @@ import 'package:junto_beta_mobile/screens/collective/collective.dart';
 import 'package:junto_beta_mobile/screens/lotus/lotus.dart';
 import 'package:junto_beta_mobile/screens/welcome/widgets/sign_up_text_field.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
-import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/buttons/call_to_action.dart';
 import 'package:junto_beta_mobile/widgets/fade_route.dart';
@@ -65,9 +64,8 @@ class _SignInState extends State<SignIn> {
           ),
         ),
       );
-    } on JuntoException catch (error) {
+    } catch (error) {
       JuntoLoader.hide();
-      debugPrint('Error during signing in. Error code: ${error.errorCode}');
       showDialog(
         context: context,
         builder: (BuildContext context) => const SingleActionDialog(
@@ -75,8 +73,6 @@ class _SignInState extends State<SignIn> {
               'Unable to login. Please double check your login credentials.',
         ),
       );
-    } catch (e, s) {
-      debugPrint('Unknown error during sign in: $e, $s');
     }
   }
 
@@ -104,41 +100,52 @@ class _SignInState extends State<SignIn> {
               width: 38,
               height: 38,
               alignment: Alignment.centerLeft,
-              child: Icon(CustomIcons.back, color: Colors.white70, size: 20),
+              child: Icon(
+                CustomIcons.back,
+                color: Colors.white70,
+                size: 20,
+              ),
             ),
           ),
           Expanded(
-            child: ListView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                SizedBox(height: MediaQuery.of(context).size.height * .2),
-                SignUpTextField(
-                  hint: 'Email',
-                  maxLength: 100,
-                  onSubmit: () {
-                    FocusScope.of(context).nextFocus();
-                  },
-                  valueController: _emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  textCapitalization: TextCapitalization.none,
-                ),
-                const SizedBox(height: 25),
-                SignUpTextField(
-                  hint: 'Password',
-                  maxLength: 100,
-                  onSubmit: () {
-                    FocusScope.of(context).unfocus();
-                  },
-                  obscureText: true,
-                  valueController: _passwordController,
-                  keyboardType: TextInputType.visiblePassword,
-                  textCapitalization: TextCapitalization.none,
-                ),
-                const SizedBox(height: 50),
-                CallToActionButton(
-                  onSignUp: () {
-                    _handleSignIn(context);
-                  },
-                  title: 'SIGN IN',
+                Column(
+                  children: <Widget>[
+                    SignUpTextField(
+                      hint: 'Email',
+                      maxLength: 100,
+                      textInputActionType: TextInputAction.next,
+                      onSubmit: () {
+                        FocusScope.of(context).nextFocus();
+                      },
+                      valueController: _emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      textCapitalization: TextCapitalization.none,
+                    ),
+                    const SizedBox(height: 30),
+                    SignUpTextField(
+                      hint: 'Password',
+                      maxLength: 100,
+                      textInputActionType: TextInputAction.done,
+                      onSubmit: () {
+                        // FocusScope.of(context).unfocus();
+                      },
+                      obscureText: true,
+                      valueController: _passwordController,
+                      keyboardType: TextInputType.visiblePassword,
+                      textCapitalization: TextCapitalization.none,
+                    ),
+                    const SizedBox(height: 60),
+                    CallToActionButton(
+                      onSignUp: () {
+                        _handleSignIn(context);
+                      },
+                      title: 'SIGN IN',
+                    ),
+                  ],
                 ),
               ],
             ),

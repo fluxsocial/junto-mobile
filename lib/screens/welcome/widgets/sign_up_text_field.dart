@@ -9,6 +9,7 @@ class SignUpTextField extends StatefulWidget {
     @required this.hint,
     @required this.maxLength,
     @required this.onSubmit,
+    @required this.textInputActionType,
     this.textCapitalization = TextCapitalization.words,
     this.keyboardType = TextInputType.text,
     this.maxLines = 1,
@@ -22,6 +23,7 @@ class SignUpTextField extends StatefulWidget {
   final VoidCallback onSubmit;
   final TextInputType keyboardType;
   final TextCapitalization textCapitalization;
+  final TextInputAction textInputActionType;
   final int maxLines;
   final bool obscureText;
   final FocusNode focusNode;
@@ -47,7 +49,6 @@ class _SignUpTextFieldState extends State<SignUpTextField> {
         labelStyle: TextStyle(color: Colors.green),
         hintText: widget.hint,
         suffix: _visibilityIconIfObscured(),
-
         hintStyle: const TextStyle(
           color: Colors.white70,
           fontSize: 20,
@@ -65,7 +66,7 @@ class _SignUpTextFieldState extends State<SignUpTextField> {
       maxLines: widget.maxLines,
       maxLength: widget.maxLength,
       textCapitalization: widget.textCapitalization,
-      textInputAction: TextInputAction.done,
+      textInputAction: widget.textInputActionType,
       keyboardType: widget.obscureText
           ? TextInputType.visiblePassword
           : widget.keyboardType,
@@ -86,6 +87,7 @@ class _SignUpTextFieldState extends State<SignUpTextField> {
         icon: Icon(
           _temporarilyVisible ? Icons.visibility_off : Icons.visibility,
           color: Colors.white70,
+          size: 20,
         ),
         onPressed: () {
           setState(() {

@@ -13,6 +13,7 @@ class SignUpTextFieldWrapper extends StatefulWidget {
     @required this.hint,
     @required this.label,
     @required this.title,
+    @required this.textInputActionType,
   }) : super(key: key);
 
   /// Called when the user enters a value in the textfield.
@@ -23,6 +24,7 @@ class SignUpTextFieldWrapper extends StatefulWidget {
   final String hint;
   final String label;
   final String title;
+  final TextInputAction textInputActionType;
 
   @override
   State<StatefulWidget> createState() {
@@ -70,6 +72,7 @@ class SignUpTextFieldWrapperState extends State<SignUpTextFieldWrapper> {
                   onSubmit: widget.onSubmit,
                   hint: widget.hint,
                   maxLength: widget.maxLength,
+                  textInputActionType: widget.textInputActionType,
                 ),
                 SignUpTextFieldLabelAndCounter(
                   label: widget.label,
