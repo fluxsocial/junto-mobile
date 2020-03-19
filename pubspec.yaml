@@ -18,8 +18,8 @@ dependencies:
   sentry: 3.0.0+1
   localstorage: 3.0.1+4
   giphy_client: 0.2.0
-  junto_cached_network_image:
-    path: ./lib/packages/flutter_cached_network_image
+  cached_network_image:
+    git: https://github.com/juntofoundation/flutter_cached_network_image
   carousel_slider: 1.4.1
   flutter_spinkit: 4.1.2
   path_provider: 1.6.1
@@ -32,6 +32,7 @@ dependencies:
   json_serializable: ^3.2.5
   freezed_annotation: ^0.7.1
   dio: ^3.0.9
+  animations: ^1.0.0+5
 
 dev_dependencies:
   flutter_test:

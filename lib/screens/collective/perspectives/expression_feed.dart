@@ -55,26 +55,29 @@ class _ExpressionFeedState extends State<ExpressionFeed> {
               ),
               if (state is CollectivePopulated)
                 SliverList(
-                  delegate: SliverChildListDelegate(<Widget>[
-                    Consumer<UserDataProvider>(
-                      builder: (context, data, _) => AnimatedCrossFade(
-                        crossFadeState: data.twoColumnView
-                            ? CrossFadeState.showFirst
-                            : CrossFadeState.showSecond,
-                        duration: const Duration(milliseconds: 300),
-                        firstCurve: Curves.easeInOut,
-                        firstChild: TwoColumnSliverListView(
-                          data: state.results,
+                  delegate: SliverChildListDelegate(
+                    <Widget>[
+                      Consumer<UserDataProvider>(
+                        builder: (context, user, _) => AnimatedCrossFade(
+                          crossFadeState: user.twoColumnView
+                              ? CrossFadeState.showFirst
+                              : CrossFadeState.showSecond,
+                          duration: const Duration(milliseconds: 300),
+                          firstCurve: Curves.easeInOut,
+                          firstChild: TwoColumnSliverListView(
+                            data: state.results,
+                          ),
+                          secondChild: SingleColumnSliverListView(
+                            data: state.results,
+                            privacyLayer: 'Public',
+                          ),
                         ),
-                        secondChild: SingleColumnSliverListView(
-                          data: state.results,
-                          privacyLayer: 'Public',
-                        ),
-                      ),
-                    )
-                  ]),
+                      )
+                    ],
+                  ),
                 ),
-              const GetMoreExpressionsButton(),
+              if (state is CollectivePopulated)
+                const GetMoreExpressionsButton(),
               if (state is CollectiveLoading)
                 const ExpressionProgressIndicator(),
             ],

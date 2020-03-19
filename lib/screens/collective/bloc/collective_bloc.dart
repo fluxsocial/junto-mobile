@@ -49,6 +49,7 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
   Stream<CollectiveState> _mapFetchCollectiveToState(
       FetchCollective event) async* {
     try {
+      yield CollectiveLoading();
       final data = event.param;
 
       _params = <String, String>{
