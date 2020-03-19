@@ -31,10 +31,6 @@ class UserRepo {
     return _userService.getUserPerspective(userAddress);
   }
 
-  Future<UserGroupsResponse> getUserGroups(String userAddress) {
-    return _userService.getUserGroups(userAddress);
-  }
-
   Future<List<ExpressionResponse>> getUsersResonations(String userAddress) {
     return _userService.getUsersResonations(userAddress);
   }

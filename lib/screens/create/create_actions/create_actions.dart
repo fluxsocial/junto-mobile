@@ -106,7 +106,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
 
   Future<UserGroupsResponse> getUserGroups() async {
     return _memoizer.runOnce(
-      () => Provider.of<UserRepo>(context).getUserGroups(_userAddress),
+      () => Provider.of<GroupRepo>(context).getUserGroups(_userAddress),
     );
   }
 
@@ -394,7 +394,7 @@ class CreateActionsState extends State<CreateActions> with ListDistinct {
         if (expressionContext == 'Sphere') {
           JuntoLoader.showLoader(context);
           final UserGroupsResponse _userGroups =
-              await Provider.of<UserRepo>(context, listen: false)
+              await Provider.of<GroupRepo>(context, listen: false)
                   .getUserGroups(_userAddress);
           JuntoLoader.hide();
           final List<Group> ownedGroups = _userGroups.owned;
