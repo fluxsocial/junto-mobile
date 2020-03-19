@@ -31,6 +31,17 @@ class ExpressionFeed extends StatefulWidget {
 }
 
 class _ExpressionFeedState extends State<ExpressionFeed> {
+  // Fetches more expressions when the user scrolls past 60% of the existing list
+  bool _onScrollNotification(ScrollNotification scrollNotification) {
+    final metrics = scrollNotification.metrics;
+    double scrollPercent = (metrics.pixels / metrics.maxScrollExtent) * 100;
+    if (scrollPercent.roundToDouble() == 60.0) {
+      BlocProvider.of<CollectiveBloc>(context).add(FetchMoreCollective());
+      return true;
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
@@ -47,40 +58,45 @@ class _ExpressionFeedState extends State<ExpressionFeed> {
               child: Text('hmm, something is up with our servers'),
             );
           }
-          return CustomScrollView(
-            controller: widget.collectiveController,
-            slivers: <Widget>[
-              AppBarWrapper(
-                title: widget.appbarTitle.value,
-              ),
-              if (state is CollectivePopulated)
-                SliverList(
-                  delegate: SliverChildListDelegate(
-                    <Widget>[
-                      Consumer<UserDataProvider>(
-                        builder: (context, user, _) => AnimatedCrossFade(
-                          crossFadeState: user.twoColumnView
-                              ? CrossFadeState.showFirst
-                              : CrossFadeState.showSecond,
-                          duration: const Duration(milliseconds: 300),
-                          firstCurve: Curves.easeInOut,
-                          firstChild: TwoColumnSliverListView(
-                            data: state.results,
-                          ),
-                          secondChild: SingleColumnSliverListView(
-                            data: state.results,
-                            privacyLayer: 'Public',
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
+          return NotificationListener(
+            onNotification: _onScrollNotification,
+            child: CustomScrollView(
+              controller: widget.collectiveController,
+              slivers: <Widget>[
+                AppBarWrapper(
+                  title: widget.appbarTitle.value,
                 ),
-              if (state is CollectivePopulated)
-                const GetMoreExpressionsButton(),
-              if (state is CollectiveLoading)
-                const ExpressionProgressIndicator(),
-            ],
+                if (state is CollectivePopulated)
+                  SliverList(
+                    delegate: SliverChildListDelegate(
+                      <Widget>[
+                        Consumer<UserDataProvider>(
+                          builder: (context, user, _) => AnimatedCrossFade(
+                            crossFadeState: user.twoColumnView
+                                ? CrossFadeState.showFirst
+                                : CrossFadeState.showSecond,
+                            duration: const Duration(milliseconds: 300),
+                            firstCurve: Curves.easeInOut,
+                            firstChild: TwoColumnSliverListView(
+                              data: state.results,
+                            ),
+                            secondChild: SingleColumnSliverListView(
+                              data: state.results,
+                              privacyLayer: 'Public',
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                if (state is CollectivePopulated)
+                  const GetMoreExpressionsButton(),
+                if (state is CollectivePopulated && state.loadingMore == true)
+                  const ExpressionProgressIndicator(),
+                if (state is CollectiveLoading)
+                  const ExpressionProgressIndicator(),
+              ],
+            ),
           );
         },
       ),

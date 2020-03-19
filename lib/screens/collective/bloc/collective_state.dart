@@ -6,8 +6,9 @@ abstract class CollectiveState {}
 class CollectiveInitial extends CollectiveState {}
 
 class CollectivePopulated extends CollectiveState {
-  CollectivePopulated(this.results);
+  CollectivePopulated(this.results, [this.loadingMore = false]);
   final List<ExpressionResponse> results;
+  final bool loadingMore;
 }
 
 class CollectiveLoading extends CollectiveState {}

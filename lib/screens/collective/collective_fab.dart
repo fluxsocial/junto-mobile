@@ -9,23 +9,34 @@ class CollectiveActionButton extends StatelessWidget {
     @required this.isVisible,
     @required this.actionsVisible,
     @required this.onTap,
+    @required this.onUpTap,
   }) : super(key: key);
   final ValueNotifier<bool> isVisible;
   final bool actionsVisible;
   final VoidCallback onTap;
+  final VoidCallback onUpTap;
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<bool>(
       valueListenable: isVisible,
       builder: (BuildContext context, bool visible, Widget child) {
-        return AnimatedOpacity(
+        return AnimatedSwitcher(
           duration: const Duration(milliseconds: 300),
-          opacity: visible ? 1.0 : 0.0,
-          child: child,
+          child: visible
+              ? child
+              : Padding(
+                  key: ValueKey('Up-Button'),
+                  padding: const EdgeInsets.only(bottom: 25),
+                  child: FloatingActionButton(
+                    child: Icon(Icons.arrow_drop_up),
+                    onPressed: onUpTap,
+                  ),
+                ),
         );
       },
       child: Padding(
+        key: ValueKey('Down-Button'),
         padding: const EdgeInsets.only(bottom: 25),
         child: BottomNav(
           actionsVisible: actionsVisible,
