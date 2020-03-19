@@ -2,10 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
-import 'package:junto_beta_mobile/screens/den/edit_den.dart';
+import 'package:junto_beta_mobile/screens/den/edit_den_button.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/profile_picture_avatar.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/about_item.dart';
 import 'package:junto_beta_mobile/widgets/member_widgets/bio.dart';
+import 'package:junto_beta_mobile/widgets/member_widgets/background_placeholder.dart';
 
 class JuntoDenSliverAppbar extends StatefulWidget {
   const JuntoDenSliverAppbar(
@@ -43,55 +44,6 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
     });
   }
 
-  String _getBackgroundImageAsset() {
-    if (widget.currentTheme == 'rainbow' ||
-        widget.currentTheme == 'rainbow-night') {
-      return 'assets/images/junto-mobile__themes--rainbow.png';
-    } else if (widget.currentTheme == 'aqueous' ||
-        widget.currentTheme == 'aqueous-night') {
-      return 'assets/images/junto-mobile__themes--aqueous.png';
-    } else if (widget.currentTheme == 'royal' ||
-        widget.currentTheme == 'royal-night') {
-      return 'assets/images/junto-mobile__themes--royal.png';
-    } else {
-      return 'assets/images/junto-mobile__themes--rainbow.png';
-    }
-  }
-
-  Widget _editDen() {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          CupertinoPageRoute<dynamic>(
-            builder: (BuildContext context) => JuntoEditDen(),
-          ),
-        );
-      },
-      child: Container(
-        margin: const EdgeInsets.only(left: 15),
-        padding: const EdgeInsets.symmetric(
-          horizontal: 10,
-          vertical: 5,
-        ),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
-          border: Border.all(
-            color: Theme.of(context).primaryColor,
-            width: 1,
-          ),
-        ),
-        child: Text(
-          'Edit Den',
-          style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
@@ -109,16 +61,7 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Container(
-                    height: MediaQuery.of(context).size.height * .2,
-                    width: MediaQuery.of(context).size.width,
-                    child: Image.asset(
-                      _getBackgroundImageAsset(),
-                      height: MediaQuery.of(context).size.height * .2,
-                      width: MediaQuery.of(context).size.width,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+                  MemberBackgroundPlaceholder(theme: widget.currentTheme),
                   Container(
                     key: _keyFlexibleSpace,
                     margin: const EdgeInsets.only(top: 30),
@@ -143,7 +86,7 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
                                 ),
                               ),
                             ),
-                            _editDen(),
+                            EditDenButton(),
                           ],
                         ),
                         if (widget.profile.user.gender.isNotEmpty ||
@@ -171,10 +114,7 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
                             color: Theme.of(context).primaryColor,
                           ),
                         ),
-                        if (widget.profile.user.bio != '' &&
-                            widget.profile.user.bio != null &&
-                            widget.profile.user.bio != ' ')
-                          MemberBio(profile: widget.profile)
+                        MemberBio(profile: widget.profile)
                       ],
                     ),
                   ),
