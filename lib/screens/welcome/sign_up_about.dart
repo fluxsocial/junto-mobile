@@ -75,11 +75,11 @@ class SignUpAboutState extends State<SignUpAbout> {
                           FocusScope.of(context).nextFocus();
                         },
                         hint: 'Location',
-                        maxLength: 100,
+                        maxLength: 30,
                       ),
                       SignUpTextFieldLabelAndCounter(
                         label: 'LOCATION',
-                        maxLength: 100,
+                        maxLength: 30,
                         valueController: locationController,
                         compact: true,
                       ),
@@ -90,11 +90,11 @@ class SignUpAboutState extends State<SignUpAbout> {
                           FocusScope.of(context).nextFocus();
                         },
                         hint: 'Gender Pronouns',
-                        maxLength: 50,
+                        maxLength: 30,
                       ),
                       SignUpTextFieldLabelAndCounter(
                         label: 'PRONOUNS',
-                        maxLength: null,
+                        maxLength: 30,
                         valueController: locationController,
                         compact: true,
                       ),
@@ -105,13 +105,13 @@ class SignUpAboutState extends State<SignUpAbout> {
                           FocusScope.of(context).unfocus();
                         },
                         hint: 'Website',
-                        maxLength: 50,
+                        maxLength: 100,
                         keyboardType: TextInputType.url,
                         textCapitalization: TextCapitalization.none,
                       ),
                       SignUpTextFieldLabelAndCounter(
                         label: 'WEBSITE',
-                        maxLength: null,
+                        maxLength: 100,
                         valueController: locationController,
                         compact: true,
                       ),
