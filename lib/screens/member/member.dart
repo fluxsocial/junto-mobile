@@ -129,63 +129,21 @@ class _JuntoMemberState extends State<JuntoMember> {
             preferredSize: const Size.fromHeight(45),
             child: MemberAppbar(widget.profile.username),
           ),
-          body: DefaultTabController(
-            length: _tabs.length,
-            child: NestedScrollView(
-              physics: const ClampingScrollPhysics(),
-              headerSliverBuilder:
-                  (BuildContext context, bool innerBoxIsScrolled) {
-                return <Widget>[
-                  MemberDenAppbar(
-                    profile: widget.profile,
-                    isConnected: isConnected,
-                    toggleMemberRelationships: toggleMemberRelationships,
-                  ),
-                  SliverPersistentHeader(
-                    delegate: JuntoAppBarDelegate(
-                      TabBar(
-                        labelPadding: const EdgeInsets.all(0),
-                        isScrollable: true,
-                        labelColor: Theme.of(context).primaryColor,
-                        labelStyle: Theme.of(context).textTheme.subtitle1,
-                        indicatorWeight: 0.0001,
-                        tabs: <Widget>[
-                          for (String name in _tabs)
-                            Container(
-                              margin: const EdgeInsets.only(right: 20),
-                              color: Theme.of(context).colorScheme.background,
-                              child: Tab(
-                                child: Text(
-                                  name,
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w700,
-                                    color: Theme.of(context).primaryColor,
-                                  ),
-                                ),
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
-                    pinned: true,
-                  ),
-                ];
-              },
-              body: TabBarView(
-                children: <Widget>[
-                  JuntoMemberAbout(
-                    gender: widget.profile.gender,
-                    location: widget.profile.location,
-                    website: widget.profile.website,
-                    bio: widget.profile.bio,
-                  ),
-                  UserExpressions(
-                    privacy: 'Public',
-                    userProfile: widget.profile,
-                  )
-                ],
-              ),
+          body: NestedScrollView(
+            physics: const ClampingScrollPhysics(),
+            headerSliverBuilder:
+                (BuildContext context, bool innerBoxIsScrolled) {
+              return <Widget>[
+                MemberDenAppbar(
+                  profile: widget.profile,
+                  isConnected: isConnected,
+                  toggleMemberRelationships: toggleMemberRelationships,
+                ),
+              ];
+            },
+            body: UserExpressions(
+              privacy: 'Public',
+              userProfile: widget.profile,
             ),
           ),
         ),
