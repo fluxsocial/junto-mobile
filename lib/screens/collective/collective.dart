@@ -63,16 +63,18 @@ class JuntoCollectiveState extends State<JuntoCollective>
   void _addPostFrameCallbackToHideFabOnScroll() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _collectiveController.addListener(_onScrollingHasChanged);
-      if (_collectiveController.hasClients)
+      if (_collectiveController.hasClients) {
         _collectiveController.position.isScrollingNotifier.addListener(
           _onScrollingHasChanged,
         );
+      }
     });
   }
 
   void _scrollToTop() {
     if (_collectiveController.hasClients) {
-      _collectiveController.animateTo(0.0, duration: kTabScrollDuration, curve: Curves.decelerate);
+      _collectiveController.animateTo(0.0,
+          duration: kTabScrollDuration, curve: Curves.decelerate);
     }
   }
 
@@ -120,7 +122,8 @@ class JuntoCollectiveState extends State<JuntoCollective>
                   opacity: _actionsVisible ? 1.0 : 0.0,
                   child: Visibility(
                     visible: _actionsVisible,
-                    child: const JuntoCollectiveActions(),
+                    child:
+                        JuntoCollectiveActions(onChanged: _changePerspective),
                   ),
                 ),
               ],
@@ -168,36 +171,51 @@ class JuntoCollectiveState extends State<JuntoCollective>
   }
 
   // Switch between perspectives; used in perspectives side drawer.
-  void _changePerspective(PerspectiveModel perspective) {
+  void _changePerspective(BuildContext context, PerspectiveModel perspective) {
     //TODO(dominik): implement switching via bloc
-    // if (perspective.name == 'JUNTO') {
-    //   _appbarTitle.value = 'JUNTO';
-    //   _expressionCompleter.value = getCollectiveExpressions(
-    //       contextType: 'Collective', paginationPos: 0, channels: _channels);
-    // } else if (perspective.name == 'Connections') {
-    //   _appbarTitle.value = 'Connections';
-    //   _expressionCompleter.value = getCollectiveExpressions(
-    //     paginationPos: 0,
-    //     contextType: 'ConnectPerspective',
-    //     dos: 0,
-    //   );
-    // } else {
-    //   setState(() {
-    //     if (perspective.name ==
-    //         _userProfile.user.name + "'s Follow Perspective") {
-    //       _appbarTitle.value = 'Subscriptions';
-    //     } else {
-    //       _appbarTitle.value = perspective.name;
-    //     }
-    //   });
-    //   _expressionCompleter.value = getCollectiveExpressions(
-    //     paginationPos: 0,
-    //     contextString: perspective.address,
-    //     contextType: 'FollowPerspective',
-    //     dos: null,
-    //     channels: _channels,
-    //   );
-    // }
+    if (perspective.name == 'JUNTO') {
+      _appbarTitle.value = 'JUNTO';
+      context.bloc<CollectiveBloc>().add(
+            FetchCollective(
+              ExpressionQueryParams(
+                ExpressionContextType.Collective,
+                '0',
+              ),
+            ),
+          );
+    } else if (perspective.name == 'Connections') {
+      _appbarTitle.value = 'Connections';
+      context.bloc<CollectiveBloc>().add(
+            FetchCollective(
+              ExpressionQueryParams(
+                ExpressionContextType.ConnectPerspective,
+                '0',
+                dos: '0',
+                context: perspective.address,
+              ),
+            ),
+          );
+    } else {
+      setState(() {
+        //TODO this may be wrong
+        if (perspective.name.contains("'s Follow Perspective")) {
+          _appbarTitle.value = 'Subscriptions';
+        } else {
+          _appbarTitle.value = perspective.name;
+        }
+      });
+
+      context.bloc<CollectiveBloc>().add(
+            FetchCollective(
+              ExpressionQueryParams(
+                ExpressionContextType.FollowPerspective,
+                '0',
+                dos: null,
+                context: perspective.address,
+              ),
+            ),
+          );
+    }
     setState(() {
       _actionsVisible = false;
     });

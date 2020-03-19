@@ -18,6 +18,7 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
   final ExpressionRepo expressionRepository;
   final VoidCallback onUnauthorized;
   Map<String, String> _params;
+  ExpressionQueryParams _previousParams;
   int _currentPage = 0;
   String _lastTimeStamp;
 
@@ -53,7 +54,7 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
     try {
       yield CollectiveLoading();
 
-      _updateParams(true, null);
+      _updateParams(true, _previousParams);
       final expressions = await _fetchExpressions();
 
       yield CollectivePopulated(expressions.results);
@@ -122,14 +123,17 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
       //refreshing or fetching from zero
       _lastTimeStamp = null;
       _currentPage = 0;
-
+      _previousParams = param;
       _params = <String, String>{
-        'context_type': 'Collective',
-        // 'context': event.contextString,
+        'context_type': ExpressionContextTypeEnumMap[param.contextType],
         'pagination_position': '$_currentPage',
         if (param?.channels?.isNotEmpty == true)
           'channels[0]': param.channels[0]
       };
+
+      if (param.context != null) {
+        _params['context'] = param.context;
+      }
     } else {
       // scrolling down
       _params['last_timestamp'] = _lastTimeStamp;
@@ -145,4 +149,12 @@ class CollectiveBloc extends Bloc<CollectiveEvent, CollectiveState> {
       onUnauthorized();
     }
   }
+
+  static const ExpressionContextTypeEnumMap = {
+    ExpressionContextType.Dos: 'Dos',
+    ExpressionContextType.FollowPerspective: 'FollowPerspective',
+    ExpressionContextType.Collective: 'Collective',
+    ExpressionContextType.Group: 'Group',
+    ExpressionContextType.ConnectPerspective: 'ConnectPerspective',
+  };
 }

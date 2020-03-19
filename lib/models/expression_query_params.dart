@@ -5,7 +5,7 @@ part 'expression_query_params.g.dart';
 
 enum ExpressionContextType {
   Dos,
-  FellowPerspective,
+  FollowPerspective,
   Collective,
   Group,
   ConnectPerspective

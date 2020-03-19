@@ -66,30 +66,7 @@ class _ExpressionFeedState extends State<ExpressionFeed> {
                   title: widget.appbarTitle.value,
                 ),
                 if (state is CollectivePopulated)
-                  SliverList(
-                    delegate: SliverChildListDelegate(
-                      <Widget>[
-                        Consumer<UserDataProvider>(
-                          builder: (context, user, _) => AnimatedCrossFade(
-                            crossFadeState: user.twoColumnView
-                                ? CrossFadeState.showFirst
-                                : CrossFadeState.showSecond,
-                            duration: const Duration(milliseconds: 300),
-                            firstCurve: Curves.easeInOut,
-                            firstChild: TwoColumnSliverListView(
-                              data: state.results,
-                            ),
-                            secondChild: SingleColumnSliverListView(
-                              data: state.results,
-                              privacyLayer: 'Public',
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                if (state is CollectivePopulated)
-                  const GetMoreExpressionsButton(),
+                  CollectivePopulatedList(state),
                 if (state is CollectivePopulated && state.loadingMore == true)
                   const ExpressionProgressIndicator(),
                 if (state is CollectiveLoading)
@@ -100,6 +77,53 @@ class _ExpressionFeedState extends State<ExpressionFeed> {
         },
       ),
     );
+  }
+}
+
+class CollectivePopulatedList extends StatelessWidget {
+  const CollectivePopulatedList(
+    this.state, {
+    Key key,
+  }) : super(key: key);
+
+  final CollectivePopulated state;
+
+  @override
+  Widget build(BuildContext context) {
+    if (state.results.length == 0) {
+      return SliverToBoxAdapter(
+        child: Padding(
+          padding: const EdgeInsets.all(28.0),
+          child: Center(
+            child: Text('No expressions'),
+          ),
+        ),
+      );
+    } else {
+      return SliverList(
+        delegate: SliverChildListDelegate(
+          <Widget>[
+            Consumer<UserDataProvider>(
+              builder: (context, user, _) => AnimatedCrossFade(
+                crossFadeState: user.twoColumnView
+                    ? CrossFadeState.showFirst
+                    : CrossFadeState.showSecond,
+                duration: const Duration(milliseconds: 300),
+                firstCurve: Curves.easeInOut,
+                firstChild: TwoColumnSliverListView(
+                  data: state.results,
+                ),
+                secondChild: SingleColumnSliverListView(
+                  data: state.results,
+                  privacyLayer: 'Public',
+                ),
+              ),
+            ),
+            const GetMoreExpressionsButton(),
+          ],
+        ),
+      );
+    }
   }
 }
 
@@ -127,14 +151,12 @@ class GetMoreExpressionsButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverPadding(
+    return Padding(
       padding: const EdgeInsets.only(bottom: 100.0),
-      sliver: SliverToBoxAdapter(
-        child: FlatButton(
-          onPressed: () => BlocProvider.of<CollectiveBloc>(context)
-              .add(FetchMoreCollective()),
-          child: const Text('Get more'),
-        ),
+      child: FlatButton(
+        onPressed: () =>
+            BlocProvider.of<CollectiveBloc>(context).add(FetchMoreCollective()),
+        child: const Text('Get more'),
       ),
     );
   }

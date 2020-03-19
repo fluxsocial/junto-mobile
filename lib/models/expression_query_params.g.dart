@@ -60,7 +60,7 @@ T _$enumDecodeNullable<T>(
 
 const _$ExpressionContextTypeEnumMap = {
   ExpressionContextType.Dos: 'Dos',
-  ExpressionContextType.FellowPerspective: 'FellowPerspective',
+  ExpressionContextType.FollowPerspective: 'FellowPerspective',
   ExpressionContextType.Collective: 'Collective',
   ExpressionContextType.Group: 'Group',
   ExpressionContextType.ConnectPerspective: 'ConnectPerspective',

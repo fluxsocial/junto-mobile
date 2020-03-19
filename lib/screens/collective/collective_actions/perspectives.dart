@@ -18,6 +18,10 @@ import 'package:junto_beta_mobile/utils/junto_exception.dart'
 import 'package:provider/provider.dart';
 
 class JuntoPerspectives extends StatefulWidget {
+  const JuntoPerspectives({this.onChanged});
+
+  final Function(BuildContext, PerspectiveModel) onChanged;
+
   @override
   State<StatefulWidget> createState() {
     return JuntoPerspectivesState();
@@ -32,6 +36,16 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
 
   @override
   Widget build(BuildContext context) {
+    const juntoPerspective = const PerspectiveModel(
+      address: null,
+      name: 'JUNTO',
+      about: null,
+      creator: null,
+      createdAt: null,
+      isDefault: true,
+      userCount: null,
+      users: null,
+    );
     return Container(
       height: MediaQuery.of(context).size.height - 150,
       child: Column(
@@ -77,19 +91,10 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
               padding: const EdgeInsets.all(0),
               children: <Widget>[
                 PerspectiveItem(
-                  perspective: const PerspectiveModel(
-                    address: null,
-                    name: 'JUNTO',
-                    about: null,
-                    creator: null,
-                    createdAt: null,
-                    isDefault: true,
-                    userCount: null,
-                    users: null,
-                  ),
-                  onTap: () {},
+                  perspective: juntoPerspective,
+                  onTap: () => widget.onChanged(context, juntoPerspective),
                 ),
-                const PerspectivesList(),
+                PerspectivesList(onChanged: widget.onChanged),
               ],
             ),
           )
@@ -102,7 +107,10 @@ class JuntoPerspectivesState extends State<JuntoPerspectives> {
 class PerspectivesList extends StatelessWidget {
   const PerspectivesList({
     Key key,
+    this.onChanged,
   }) : super(key: key);
+
+  final Function(BuildContext, PerspectiveModel) onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -132,7 +140,7 @@ class PerspectivesList extends StatelessWidget {
                   if (perspective.isDefault == true) {
                     return PerspectiveItem(
                       perspective: perspective,
-                      onTap: () {},
+                      onTap: () => onChanged(context, perspective),
                     );
                   } else {
                     return const SizedBox();
@@ -151,9 +159,10 @@ class PerspectivesList extends StatelessWidget {
                       return GestureDetector(
                         child: PerspectiveItem(
                           perspective: perspective,
-                          onTap: () => context.bloc<CollectiveBloc>().add(
-                                ChangePerspective(perspective),
-                              ),
+                          onTap: () => onChanged(context, perspective),
+                          // context.bloc<CollectiveBloc>().add(
+                          //       ChangePerspective(perspective),
+                          //     ),
                         ),
                       );
                     } else {
@@ -172,8 +181,11 @@ class PerspectivesList extends StatelessWidget {
 }
 
 class PerspectiveItem extends StatelessWidget {
-  const PerspectiveItem({Key key, this.perspective, this.onTap})
-      : super(key: key);
+  const PerspectiveItem({
+    Key key,
+    @required this.perspective,
+    @required this.onTap,
+  }) : super(key: key);
   final PerspectiveModel perspective;
   final VoidCallback onTap;
 
@@ -200,7 +212,6 @@ class PerspectiveItem extends StatelessWidget {
             iconWidget: Icon(Icons.edit,
                 size: 15, color: Theme.of(context).primaryColor),
             onTap: () {
-              //TODO fixme
               Navigator.push(
                 context,
                 CupertinoPageRoute<dynamic>(
@@ -304,6 +315,7 @@ class PerspectiveItem extends StatelessWidget {
       BuildContext context, PerspectiveModel perspective) async {
     print(perspective);
     try {
+      //TODO(dominik): replace with bloc
       JuntoLoader.showLoader(context);
       await Provider.of<UserRepo>(context, listen: false)
           .deletePerspective(perspective.address);
@@ -320,9 +332,9 @@ class PerspectiveItem extends StatelessWidget {
     try {
       context.bloc<PerspectivesBloc>().add(FetchPerspectives());
     } on JuntoException catch (error) {
-      //TODO fixme
+      //TODO replace with bloc
       showDialog(
-        // context: context,
+        context: context,
         builder: (BuildContext context) => SingleActionDialog(
           dialogText: error.message,
         ),
