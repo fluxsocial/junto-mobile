@@ -68,30 +68,13 @@ class SignUpAboutState extends State<SignUpAbout> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: <Widget>[
-                      const SizedBox(height: 30),
-                      SignUpTextField(
-                        valueController: bioController,
-                        onSubmit: () {
-                          FocusScope.of(context).nextFocus();
-                        },
-                        hint: 'Short or long bio',
-                        maxLength: 50,
-                        textCapitalization: TextCapitalization.sentences,
-                        maxLines: null,
-                      ),
-                      SignUpTextFieldLabelAndCounter(
-                        label: 'ABOUT',
-                        maxLength: 50,
-                        valueController: bioController,
-                        compact: true,
-                      ),
-                      const SizedBox(height: 40),
+                      const SizedBox(height: 50),
                       SignUpTextField(
                         valueController: locationController,
                         onSubmit: () {
                           FocusScope.of(context).nextFocus();
                         },
-                        hint: 'Where do you live?',
+                        hint: 'Location',
                         maxLength: 100,
                       ),
                       SignUpTextFieldLabelAndCounter(
@@ -106,11 +89,11 @@ class SignUpAboutState extends State<SignUpAbout> {
                         onSubmit: () {
                           FocusScope.of(context).nextFocus();
                         },
-                        hint: 'Your gender',
+                        hint: 'Gender pronouns',
                         maxLength: 50,
                       ),
                       SignUpTextFieldLabelAndCounter(
-                        label: 'GENDER',
+                        label: 'PRONOUNS',
                         maxLength: null,
                         valueController: locationController,
                         compact: true,

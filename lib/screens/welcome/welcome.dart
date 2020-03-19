@@ -276,7 +276,7 @@ class WelcomeState extends State<Welcome> {
                       maxLength: 22,
                       hint: 'I\'ll go by...',
                       label: 'USERNAME',
-                      title: 'Choose a unique username!',
+                      title: 'Choose a unique username',
                     ),
                   ),
                   PageKeepAlive(
