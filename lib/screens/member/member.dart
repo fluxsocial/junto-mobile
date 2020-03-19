@@ -7,12 +7,10 @@ import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
-import 'package:junto_beta_mobile/screens/member/member_about.dart';
 import 'package:junto_beta_mobile/screens/member/member_appbar.dart';
 import 'package:junto_beta_mobile/screens/member/member_relationships.dart';
 import 'package:junto_beta_mobile/screens/member/member_sliver_appbar.dart';
 import 'package:junto_beta_mobile/widgets/custom_feeds/user_expressions.dart';
-import 'package:junto_beta_mobile/widgets/tab_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -40,7 +38,6 @@ class JuntoMember extends StatefulWidget {
 
 class _JuntoMemberState extends State<JuntoMember> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  final List<String> _tabs = <String>['ABOUT', 'EXPRESSIONS'];
   String _userAddress;
   UserData _userProfile;
   UserRepo userProvider;
@@ -80,7 +77,6 @@ class _JuntoMemberState extends State<JuntoMember> {
     await userProvider
         .isRelated(_userAddress, widget.profile.address)
         .then((Map<String, dynamic> result) {
-      print(result);
       setState(() {
         isConnected = result['is_connected'];
         isFollowing = result['is_following'];
