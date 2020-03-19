@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/screens/den/den_sliver_appbar.dart';
@@ -15,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:junto_beta_mobile/widgets/drawer/junto_filter_drawer.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer.dart';
 import 'package:junto_beta_mobile/widgets/drawer/filter_drawer_content.dart';
+import 'package:junto_beta_mobile/widgets/about_member/about_member.dart';
 
 /// Displays the user's DEN or "profile screen"
 class JuntoDen extends StatefulWidget {
@@ -99,16 +99,10 @@ class JuntoDenState extends State<JuntoDen>
           ];
         },
         body: SafeArea(
-          child: TabBarView(
-            children: <Widget>[
-              // public expressions of user
-              UserExpressions(
-                privacy: 'Public',
-                userProfile: _userProfile.user,
-              )
-            ],
-          ),
-        ),
+            child: UserExpressions(
+          privacy: 'Public',
+          userProfile: _userProfile.user,
+        )),
       );
     } else {
       return Center(
@@ -149,6 +143,13 @@ class JuntoDenState extends State<JuntoDen>
                 actionsVisible: false,
                 onLeftButtonTap: () {
                   // open about page
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute<dynamic>(
+                      builder: (BuildContext context) =>
+                          AboutMember(profile: _userProfile),
+                    ),
+                  );
                 },
               ),
             ),
