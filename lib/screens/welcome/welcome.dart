@@ -255,9 +255,13 @@ class WelcomeState extends State<Welcome> {
                     child: SignUpTextFieldWrapper(
                       onValueChanged: (String value) => name = value,
                       onSubmit: () async {
-                        FocusScope.of(context).nextFocus();
+                        if (name.length > 0) {
+                          await _nextSignUpPage();
+                        } else {
+                          FocusScope.of(context).unfocus();
+                        }
                       },
-                      maxLength: 36,
+                      maxLength: 50,
                       hint: 'My name is...',
                       label: 'FULL NAME',
                       title: 'Hey, what\'s your name?',
@@ -268,10 +272,11 @@ class WelcomeState extends State<Welcome> {
                     child: SignUpTextFieldWrapper(
                       onValueChanged: (String value) => username = value,
                       onSubmit: () async {
-                        if (FocusScope.of(context).hasFocus) {
+                        if (username.length > 0 && username.length <= 22) {
+                          await _nextSignUpPage();
+                        } else {
                           FocusScope.of(context).unfocus();
                         }
-                        await _nextSignUpPage();
                       },
                       maxLength: 22,
                       hint: 'I\'ll go by...',
@@ -327,7 +332,15 @@ class WelcomeState extends State<Welcome> {
 
   Future<void> _nextSignUpPage() async {
     try {
-      if (_currentIndex == 4) {
+      if (_currentIndex == 1) {
+        if (name.length == 0 || name.length > 50) {
+          return;
+        }
+      } else if (_currentIndex == 2) {
+        if (username.length == 0 || username.length > 22) {
+          return;
+        }
+      } else if (_currentIndex == 4) {
         final AboutPageModel _aboutPageModel =
             signUpAboutKey.currentState.returnDetails();
         bio = _aboutPageModel.bio;

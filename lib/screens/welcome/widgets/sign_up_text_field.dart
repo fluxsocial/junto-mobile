@@ -65,7 +65,7 @@ class _SignUpTextFieldState extends State<SignUpTextField> {
       maxLines: widget.maxLines,
       maxLength: widget.maxLength,
       textCapitalization: widget.textCapitalization,
-      textInputAction: TextInputAction.next,
+      textInputAction: TextInputAction.done,
       keyboardType: widget.obscureText
           ? TextInputType.visiblePassword
           : widget.keyboardType,
