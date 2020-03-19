@@ -16,12 +16,12 @@ import 'package:junto_beta_mobile/utils/junto_exception.dart';
 import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:junto_beta_mobile/widgets/fade_route.dart';
 
 import 'widgets/sign_up_arrows.dart';
 import 'widgets/sign_up_text_field_wrapper.dart';
 import 'widgets/welcome_background.dart';
 import 'widgets/welcome_main.dart';
-import 'package:junto_beta_mobile/widgets/fade_route.dart';
 
 class Welcome extends StatefulWidget {
   static Route<dynamic> route() {
@@ -277,17 +277,25 @@ class WelcomeState extends State<Welcome> {
                   ),
                   PageKeepAlive(
                     // 4
-                    child: SignUpAbout(key: signUpAboutKey),
+                    child: SignUpAbout(
+                      key: signUpAboutKey,
+                      nextPage: _nextSignUpPage,
+                    ),
                   ),
                   PageKeepAlive(
+                    // 5
                     child: SignUpPhotos(key: signUpPhotosKey),
                   ),
                   PageKeepAlive(
+                    // 6
                     child: SignUpRegister(key: signUpRegisterKey),
                   ),
                   PageKeepAlive(
+                    // 7
                     child: SignUpVerify(
-                        key: signUpVerifyKey, handleSignUp: _handleSignUp),
+                      key: signUpVerifyKey,
+                      handleSignUp: _handleSignUp,
+                    ),
                   )
                 ],
               ),
