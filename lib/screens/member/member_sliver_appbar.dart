@@ -80,7 +80,12 @@ class MemberDenAppbarState extends State<MemberDenAppbar> {
       brightness: Brightness.light,
       automaticallyImplyLeading: false,
       primary: false,
-      actions: const <Widget>[SizedBox(height: 0, width: 0)],
+      actions: const <Widget>[
+        SizedBox(
+          height: 0,
+          width: 0,
+        )
+      ],
       backgroundColor: Theme.of(context).colorScheme.background,
       pinned: false,
       flexibleSpace: FlexibleSpaceBar(
@@ -96,7 +101,9 @@ class MemberDenAppbarState extends State<MemberDenAppbar> {
                     key: _keyFlexibleSpace,
                     margin: const EdgeInsets.only(top: 30),
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 15),
+                      horizontal: 10,
+                      vertical: 15,
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -107,9 +114,10 @@ class MemberDenAppbarState extends State<MemberDenAppbar> {
                                 child: Text(
                                   widget.profile.name,
                                   style: TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.w700,
-                                      color: Theme.of(context).primaryColor),
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w700,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
                                 ),
                               ),
                               MemberRelationButton(
@@ -123,8 +131,11 @@ class MemberDenAppbarState extends State<MemberDenAppbar> {
                           const SizedBox(height: 15),
                         AboutItem(
                           item: widget.profile.gender,
-                          icon: Icon(CustomIcons.gender,
-                              size: 17, color: Theme.of(context).primaryColor),
+                          icon: Icon(
+                            CustomIcons.gender,
+                            size: 17,
+                            color: Theme.of(context).primaryColor,
+                          ),
                         ),
                         AboutItem(
                           item: widget.profile.location,
