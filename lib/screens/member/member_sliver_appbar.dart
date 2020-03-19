@@ -77,7 +77,6 @@ class MemberDenAppbarState extends State<MemberDenAppbar> {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      brightness: Brightness.light,
       automaticallyImplyLeading: false,
       primary: false,
       actions: const <Widget>[
@@ -86,13 +85,19 @@ class MemberDenAppbarState extends State<MemberDenAppbar> {
           width: 0,
         )
       ],
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).backgroundColor,
       pinned: false,
       flexibleSpace: FlexibleSpaceBar(
         collapseMode: CollapseMode.pin,
         background: Stack(
           children: <Widget>[
             Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                      color: Theme.of(context).dividerColor, width: .75),
+                ),
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -170,7 +175,9 @@ class MemberDenAppbarState extends State<MemberDenAppbar> {
       ),
       expandedHeight: _flexibleHeightSpace == null
           ? 1000
-          : _flexibleHeightSpace + MediaQuery.of(context).size.height * .2,
+          : _flexibleHeightSpace +
+              MediaQuery.of(context).size.height * .2 +
+              .75,
       forceElevated: false,
     );
   }

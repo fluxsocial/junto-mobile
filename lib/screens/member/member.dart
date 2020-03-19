@@ -45,6 +45,7 @@ class JuntoMember extends StatefulWidget {
 class _JuntoMemberState extends State<JuntoMember>
     with HideFab, TickerProviderStateMixin {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  UserData _memberProfile;
   String _userAddress;
   UserData _userProfile;
   UserRepo userProvider;
@@ -62,6 +63,14 @@ class _JuntoMemberState extends State<JuntoMember>
   @override
   void initState() {
     super.initState();
+    _memberProfile = UserData(
+      user: widget.profile,
+      pack: null,
+      connectionPerspective: null,
+      userPerspective: null,
+      privateDen: null,
+      publicDen: null,
+    );
     _memberController = ScrollController();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -193,8 +202,9 @@ class _JuntoMemberState extends State<JuntoMember>
                       Navigator.push(
                         context,
                         CupertinoPageRoute<dynamic>(
-                          builder: (BuildContext context) =>
-                              AboutMember(profile: _userProfile),
+                          builder: (BuildContext context) => AboutMember(
+                            profile: _memberProfile,
+                          ),
                         ),
                       );
                     },
