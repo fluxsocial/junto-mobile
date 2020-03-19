@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
+import 'package:junto_beta_mobile/app/custom_icons.dart';
 
 class JuntoDenSliverAppbar extends StatefulWidget {
   const JuntoDenSliverAppbar(
@@ -81,24 +82,64 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  Container(
-                    key: _keyFlexibleSpace,
-                    margin: const EdgeInsets.only(top: 30),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Flexible(
-                          child: Text(
-                            widget.profile.user.name,
-                            style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.w700,
+                  GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      key: _keyFlexibleSpace,
+                      margin: const EdgeInsets.only(top: 30),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 15),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Flexible(
+                                child: Text(
+                                  widget.profile.user.name,
+                                  style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w700,
+                                      color: Theme.of(context).primaryColor),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 15),
+                          _displayAboutItem(
+                            widget.profile.user.gender,
+                            Icon(CustomIcons.gender,
+                                size: 17,
                                 color: Theme.of(context).primaryColor),
                           ),
-                        ),
-                      ],
+                          _displayAboutItem(
+                            widget.profile.user.location,
+                            Image.asset(
+                              'assets/images/junto-mobile__location.png',
+                              height: 15,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                          _displayAboutItem(
+                            widget.profile.user.website,
+                            Image.asset(
+                              'assets/images/junto-mobile__link.png',
+                              height: 15,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                          if (widget.profile.user.bio != '' &&
+                              widget.profile.user.bio != null &&
+                              widget.profile.user.bio != ' ')
+                            Container(
+                              child: Text(
+                                widget.profile.user.bio,
+                                style: Theme.of(context).textTheme.caption,
+                              ),
+                            ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -122,5 +163,30 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
           : _flexibleHeightSpace + MediaQuery.of(context).size.height * .2,
       forceElevated: false,
     );
+  }
+
+  Widget _displayAboutItem(List<String> item, dynamic icon) {
+    if (item.isNotEmpty && item[0].isNotEmpty) {
+      return Container(
+        margin: const EdgeInsets.symmetric(vertical: 5),
+        child: Row(
+          children: <Widget>[
+            icon,
+            const SizedBox(width: 5),
+            Text(
+              item[0],
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600),
+            ),
+          ],
+        ),
+      );
+    } else {
+      return const SizedBox();
+    }
   }
 }

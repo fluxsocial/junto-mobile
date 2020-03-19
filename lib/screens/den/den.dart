@@ -26,7 +26,7 @@ class JuntoDen extends StatefulWidget {
 
 class JuntoDenState extends State<JuntoDen>
     with HideFab, TickerProviderStateMixin {
-  final List<String> _tabs = <String>['ABOUT', 'EXPRESSIONS'];
+  final List<String> _tabs = <String>['EXPRESSIONS'];
   UserData _userProfile;
   String _currentTheme;
 
@@ -101,41 +101,40 @@ class JuntoDenState extends State<JuntoDen>
                 profile: _userProfile,
                 currentTheme: _currentTheme,
               ),
-              SliverPersistentHeader(
-                delegate: JuntoAppBarDelegate(
-                  TabBar(
-                    labelPadding: const EdgeInsets.all(0),
-                    isScrollable: true,
-                    labelColor: Theme.of(context).primaryColorDark,
-                    labelStyle: Theme.of(context).textTheme.subtitle1,
-                    indicatorWeight: 0.0001,
-                    tabs: <Widget>[
-                      for (String name in _tabs)
-                        Container(
-                          margin: const EdgeInsets.only(right: 20),
-                          color: Theme.of(context).colorScheme.background,
-                          child: Tab(
-                            child: Text(
-                              name,
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
-                                color: Theme.of(context).primaryColor,
-                              ),
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
-                pinned: true,
-              ),
+              // SliverPersistentHeader(
+              //   delegate: JuntoAppBarDelegate(
+              //     TabBar(
+              //       labelPadding: const EdgeInsets.all(0),
+              //       isScrollable: true,
+              //       labelColor: Theme.of(context).primaryColorDark,
+              //       labelStyle: Theme.of(context).textTheme.subtitle1,
+              //       indicatorWeight: 0.0001,
+              //       tabs: <Widget>[
+              //         for (String name in _tabs)
+              //           Container(
+              //             margin: const EdgeInsets.only(right: 20),
+              //             color: Theme.of(context).colorScheme.background,
+              //             child: Tab(
+              //               child: Text(
+              //                 name,
+              //                 style: TextStyle(
+              //                   fontSize: 12,
+              //                   fontWeight: FontWeight.w700,
+              //                   color: Theme.of(context).primaryColor,
+              //                 ),
+              //               ),
+              //             ),
+              //           ),
+              //       ],
+              //     ),
+              //   ),
+              //   pinned: true,
+              // ),
             ];
           },
           body: SafeArea(
             child: TabBarView(
               children: <Widget>[
-                _buildAbout(context),
                 // public expressions of user
                 UserExpressions(
                   privacy: 'Public',
