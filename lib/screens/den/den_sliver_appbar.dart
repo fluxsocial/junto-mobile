@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:junto_beta_mobile/models/user_model.dart';
 import 'package:junto_beta_mobile/widgets/avatars/member_avatar.dart';
 import 'package:junto_beta_mobile/app/custom_icons.dart';
+import 'package:junto_beta_mobile/screens/den/edit_den.dart';
 
 class JuntoDenSliverAppbar extends StatefulWidget {
   const JuntoDenSliverAppbar(
@@ -58,7 +59,12 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
   Widget _editDen() {
     return GestureDetector(
       onTap: () {
-        // navigate to edit den
+        Navigator.push(
+          context,
+          CupertinoPageRoute<dynamic>(
+            builder: (BuildContext context) => JuntoEditDen(),
+          ),
+        );
       },
       child: Container(
         margin: const EdgeInsets.only(left: 15),

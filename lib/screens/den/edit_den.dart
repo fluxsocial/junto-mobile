@@ -292,7 +292,7 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                   ),
                 ),
                 Container(
-                  child: Text('Edit Profile',
+                  child: Text('Edit Den',
                       style: Theme.of(context).textTheme.subtitle1),
                 ),
                 GestureDetector(
@@ -349,7 +349,7 @@ class JuntoEditDenState extends State<JuntoEditDen> {
                       child: Row(children: <Widget>[
                         _displayCurrentProfilePicture(),
                         const SizedBox(width: 10),
-                        Text('Edit profile picture',
+                        Text('Change profile picture',
                             style: Theme.of(context).textTheme.bodyText1)
                       ]),
                     ),
