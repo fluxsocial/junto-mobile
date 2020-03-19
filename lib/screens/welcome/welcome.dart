@@ -255,7 +255,9 @@ class WelcomeState extends State<Welcome> {
                     child: SignUpTextFieldWrapper(
                       onValueChanged: (String value) => name = value,
                       onSubmit: () async {
-                        if (name.length > 0) {
+                        if (name.isNotEmpty &&
+                            name.length <= 50 &&
+                            name != null) {
                           await _nextSignUpPage();
                         } else {
                           FocusScope.of(context).unfocus();
@@ -272,7 +274,9 @@ class WelcomeState extends State<Welcome> {
                     child: SignUpTextFieldWrapper(
                       onValueChanged: (String value) => username = value,
                       onSubmit: () async {
-                        if (username.length > 0 && username.length <= 22) {
+                        if (username.isNotEmpty &&
+                            username.length <= 22 &&
+                            username != null) {
                           await _nextSignUpPage();
                         } else {
                           FocusScope.of(context).unfocus();
@@ -333,11 +337,11 @@ class WelcomeState extends State<Welcome> {
   Future<void> _nextSignUpPage() async {
     try {
       if (_currentIndex == 1) {
-        if (name.length == 0 || name.length > 50) {
+        if (name == null || name.isEmpty || name.length > 50) {
           return;
         }
       } else if (_currentIndex == 2) {
-        if (username.length == 0 || username.length > 22) {
+        if (username == null || username.isEmpty || username.length > 22) {
           return;
         }
       } else if (_currentIndex == 4) {
@@ -347,6 +351,7 @@ class WelcomeState extends State<Welcome> {
         location = _aboutPageModel.location;
         gender = _aboutPageModel.gender;
         website = _aboutPageModel.website;
+        print(bio.length);
       } else if (_currentIndex == 5) {
         profilePictures = signUpPhotosKey.currentState.returnDetails();
         print(profilePictures);
@@ -355,7 +360,20 @@ class WelcomeState extends State<Welcome> {
         password = signUpRegisterKey.currentState.returnDetails()['password'];
         confirmPassword =
             signUpRegisterKey.currentState.returnDetails()['confirmPassword'];
+        if (email == null ||
+            email.isEmpty ||
+            password.isEmpty ||
+            confirmPassword.isEmpty) {
+          return;
+        }
+        // validate passwords
+        if (!_validatePasswords(password, confirmPassword)) {
+          return;
+        }
+        JuntoLoader.showLoader(context);
+        // verify email address
         await Provider.of<AuthRepo>(context, listen: false).verifyEmail(email);
+        JuntoLoader.hide();
       }
       // transition to next page of sign up flow
       _welcomeController.nextPage(
@@ -363,12 +381,36 @@ class WelcomeState extends State<Welcome> {
         duration: const Duration(milliseconds: 600),
       );
     } on JuntoException catch (error) {
+      JuntoLoader.hide();
       showDialog(
         context: context,
         builder: (BuildContext context) => SingleActionDialog(
           dialogText: error.message,
         ),
       );
+    }
+  }
+
+  // ensure passwords are same and meet our specifications
+  bool _validatePasswords(String password, String confirmPassword) {
+    if (password != confirmPassword) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => const SingleActionDialog(
+          dialogText: 'Both passwords must match.',
+        ),
+      );
+      return false;
+    } else if (password.length < 8 || confirmPassword.length < 8) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => const SingleActionDialog(
+          dialogText: 'Your password must be greater than 8 characters.',
+        ),
+      );
+      return false;
+    } else {
+      return true;
     }
   }
 
