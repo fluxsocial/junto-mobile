@@ -70,6 +70,12 @@ class JuntoCollectiveState extends State<JuntoCollective>
     });
   }
 
+  void _scrollToTop() {
+    if (_collectiveController.hasClients) {
+      _collectiveController.animateTo(0.0, duration: kTabScrollDuration, curve: Curves.decelerate);
+    }
+  }
+
   void _onScrollingHasChanged() {
     super.hideFabOnScroll(_collectiveController, _isFabVisible);
   }
@@ -90,6 +96,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
             floatingActionButton: CollectiveActionButton(
               isVisible: _isFabVisible,
               actionsVisible: _actionsVisible,
+              onUpTap: _scrollToTop,
               onTap: () {
                 setState(() {
                   _actionsVisible = !_actionsVisible;
@@ -160,7 +167,7 @@ class JuntoCollectiveState extends State<JuntoCollective>
     ];
   }
 
-// Switch between perspectives; used in perspectives side drawer.
+  // Switch between perspectives; used in perspectives side drawer.
   void _changePerspective(PerspectiveModel perspective) {
     //TODO(dominik): implement switching via bloc
     // if (perspective.name == 'JUNTO') {
