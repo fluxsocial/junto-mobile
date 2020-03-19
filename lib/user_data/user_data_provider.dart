@@ -30,17 +30,19 @@ class UserDataProvider extends ChangeNotifier {
 
   Future<void> getUserInformation() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final Map<String, dynamic> decodedUserData = jsonDecode(
-      prefs.getString('user_data'),
-    );
+    final userData = prefs.getString('user_data');
+    if (userData != null && userData.isNotEmpty) {
+      final Map<String, dynamic> decodedUserData = jsonDecode(userData);
 
-    userAddress = prefs.getString('user_id');
-    userProfile = UserData.fromMap(decodedUserData);
-    if (prefs.getBool('twoColumnView') != null) {
-      twoColumnView = prefs.getBool('twoColumnView');
+      userAddress = prefs.getString('user_id');
+      userProfile = UserData.fromMap(decodedUserData);
+      if (prefs.getBool('twoColumnView') != null) {
+        twoColumnView = prefs.getBool('twoColumnView');
+      }
+
+      notifyListeners();
     }
-
-    notifyListeners();
+    return;
   }
 
   Future<void> switchColumnLayout(ExpressionFeedLayout layout) async {
