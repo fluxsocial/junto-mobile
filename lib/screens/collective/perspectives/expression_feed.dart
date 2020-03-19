@@ -31,12 +31,13 @@ class ExpressionFeed extends StatefulWidget {
 }
 
 class _ExpressionFeedState extends State<ExpressionFeed> {
+  Completer<void> refreshCompleter;
+
   // Fetches more expressions when the user scrolls past 60% of the existing list
   bool _onScrollNotification(ScrollNotification scrollNotification) {
     final metrics = scrollNotification.metrics;
     double scrollPercent = (metrics.pixels / metrics.maxScrollExtent) * 100;
     if (scrollPercent.roundToDouble() == 60.0) {
-      print('fetching');
       BlocProvider.of<CollectiveBloc>(context).add(FetchMoreCollective());
       return true;
     }
@@ -45,38 +46,50 @@ class _ExpressionFeedState extends State<ExpressionFeed> {
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: () async {
-        //TODO: add completer
-        context.bloc<CollectiveBloc>().add(RefreshCollective());
-        await Future.value(true);
-      },
-      child: BlocBuilder<CollectiveBloc, CollectiveState>(
-        builder: (BuildContext context, CollectiveState state) {
-          if (state is CollectiveError) {
-            //TODO(Nash): Add illustration for empty state.
-            return CollectiveErrorLabel();
-          }
-          return NotificationListener(
-            onNotification: _onScrollNotification,
-            child: CustomScrollView(
-              controller: widget.collectiveController,
-              slivers: <Widget>[
-                AppBarWrapper(
-                  title: widget.appbarTitle.value,
-                ),
-                if (state is CollectivePopulated)
-                  CollectivePopulatedList(state),
-                if (state is CollectivePopulated && state.loadingMore == true)
-                  const ExpressionProgressIndicator(),
-                if (state is CollectiveLoading)
-                  const ExpressionProgressIndicator(),
-              ],
+    return BlocBuilder<CollectiveBloc, CollectiveState>(
+      builder: (BuildContext context, CollectiveState state) {
+        if (state is CollectiveError) {
+          //TODO(Nash): Add illustration for error state.
+          return CollectiveErrorLabel();
+        }
+        return RefreshIndicator(
+          onRefresh: () {
+            refreshCompleter = Completer();
+            context.bloc<CollectiveBloc>().add(RefreshCollective());
+            return refreshCompleter.future;
+          },
+          child: BlocListener<CollectiveBloc, CollectiveState>(
+            listener: _blocListener,
+            child: NotificationListener(
+              onNotification: _onScrollNotification,
+              child: CustomScrollView(
+                controller: widget.collectiveController,
+                slivers: <Widget>[
+                  AppBarWrapper(
+                    title: widget.appbarTitle.value,
+                  ),
+                  if (state is CollectivePopulated)
+                    CollectivePopulatedList(state),
+                  if (state is CollectivePopulated && state.loadingMore == true)
+                    const ExpressionProgressIndicator(),
+                  if (state is CollectiveLoading)
+                    const ExpressionProgressIndicator(),
+                ],
+              ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
+  }
+
+  void _blocListener(BuildContext context, CollectiveState state) {
+    if (state is CollectivePopulated) {
+      refreshCompleter?.complete();
+    }
+    if (state is CollectiveError) {
+      refreshCompleter?.completeError('Error during fetching');
+    }
   }
 }
 
@@ -92,6 +105,7 @@ class CollectivePopulatedList extends StatelessWidget {
   Widget build(BuildContext context) {
     if (state.results.length == 0) {
       return SliverToBoxAdapter(
+        //TODO(Nash): Add illustration for error state.
         child: Padding(
           padding: const EdgeInsets.all(28.0),
           child: Center(
@@ -103,19 +117,30 @@ class CollectivePopulatedList extends StatelessWidget {
       return SliverList(
         delegate: SliverChildListDelegate(
           <Widget>[
-            Consumer<UserDataProvider>(
-              builder: (context, user, _) => AnimatedCrossFade(
-                crossFadeState: user.twoColumnView
-                    ? CrossFadeState.showFirst
-                    : CrossFadeState.showSecond,
-                duration: const Duration(milliseconds: 300),
-                firstCurve: Curves.easeInOut,
-                firstChild: TwoColumnSliverListView(
-                  data: state.results,
-                ),
-                secondChild: SingleColumnSliverListView(
-                  data: state.results,
-                  privacyLayer: 'Public',
+            TweenAnimationBuilder<double>(
+              duration: Duration(milliseconds: 1000),
+              curve: Curves.ease,
+              tween: Tween<double>(begin: 0.0, end: 1.0),
+              builder: (context, anim, child) {
+                return Opacity(
+                  opacity: anim,
+                  child: child,
+                );
+              },
+              child: Consumer<UserDataProvider>(
+                builder: (context, user, _) => AnimatedCrossFade(
+                  crossFadeState: user.twoColumnView
+                      ? CrossFadeState.showFirst
+                      : CrossFadeState.showSecond,
+                  duration: const Duration(milliseconds: 300),
+                  firstCurve: Curves.easeInOut,
+                  firstChild: TwoColumnSliverListView(
+                    data: state.results,
+                  ),
+                  secondChild: SingleColumnSliverListView(
+                    data: state.results,
+                    privacyLayer: 'Public',
+                  ),
                 ),
               ),
             ),
@@ -134,11 +159,11 @@ class CollectiveErrorLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      physics: AlwaysScrollableScrollPhysics(),
-      child: Container(
-        height: MediaQuery.of(context).size.height,
-        child: Center(child: Text('hmm, something is up with our servers')),
+    return Center(
+      child: FlatButton(
+        child: Text('hmm, something is up with our servers'),
+        onPressed: () =>
+            context.bloc<CollectiveBloc>().add(RefreshCollective()),
       ),
     );
   }
