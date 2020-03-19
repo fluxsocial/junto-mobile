@@ -69,7 +69,6 @@ class JuntoGroupsState extends State<JuntoGroups>
 
   @override
   Widget build(BuildContext context) {
-    //TODO(dominik): wrap with bloc
     return MultiBlocProvider(
       providers: _getBlocProviders(),
       child: Scaffold(

@@ -101,9 +101,7 @@ class EditPerspectiveAddMembersState extends State<EditPerspectiveAddMembers>
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {
-                      addMembersToPerspective();
-                    },
+                    onTap: addMembersToPerspective,
                     child: Container(
                         height: 45,
                         width: 45,

@@ -4,14 +4,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:junto_beta_mobile/backend/backend.dart';
 import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/collective/bloc/collective_bloc.dart';
 import 'package:junto_beta_mobile/screens/collective/collective_actions/create_perspective.dart';
+import 'package:junto_beta_mobile/screens/collective/collective_actions/edit_perspective.dart';
 import 'package:junto_beta_mobile/screens/collective/perspectives/bloc/perspectives_bloc.dart';
+import 'package:junto_beta_mobile/utils/junto_overlay.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/single_action_dialog.dart';
 import 'package:junto_beta_mobile/widgets/dialogs/confirm_dialog.dart';
 import 'package:junto_beta_mobile/utils/junto_exception.dart'
     show JuntoException;
+import 'package:provider/provider.dart';
 
 class JuntoPerspectives extends StatefulWidget {
   @override
@@ -197,16 +201,15 @@ class PerspectiveItem extends StatelessWidget {
                 size: 15, color: Theme.of(context).primaryColor),
             onTap: () {
               //TODO fixme
-              // Navigator.push(
-              //   context,
-              //   CupertinoPageRoute<dynamic>(
-              //     builder: (BuildContext context) => EditPerspective(
-              //       perspective: perspective,
-              //       //TODO: refresh Perspectives
-              //       // refreshPerspectives: _refreshPerspectives,
-              //     ),
-              //   ),
-              // );
+              Navigator.push(
+                context,
+                CupertinoPageRoute<dynamic>(
+                  builder: (BuildContext context) => EditPerspective(
+                    perspective: perspective,
+                    refreshPerspectives: () => _refreshPerspectives(context),
+                  ),
+                ),
+              );
             },
           ),
           IconSlideAction(
@@ -219,7 +222,7 @@ class PerspectiveItem extends StatelessWidget {
                     confirmationText:
                         'Are you sure you want to delete this perspective?',
                     confirm: () {
-                      _deletePerspective(perspective);
+                      _deletePerspective(context, perspective);
                     },
                   ),
                 );
@@ -297,24 +300,25 @@ class PerspectiveItem extends StatelessWidget {
     );
   }
 
-  Future<void> _deletePerspective(perspective) async {
-    // print(perspective);
-    // try {
-    //   JuntoLoader.showLoader(context);
-    //   await Provider.of<UserRepo>(context, listen: false)
-    //       .deletePerspective(perspective.address);
-    //   _refreshPerspectives();
-    //   JuntoLoader.hide();
-    //   Navigator.pop(context);
-    // } catch (error) {
-    //   print(error);
-    //   JuntoLoader.hide();
+  Future<void> _deletePerspective(
+      BuildContext context, PerspectiveModel perspective) async {
+    print(perspective);
+    try {
+      JuntoLoader.showLoader(context);
+      await Provider.of<UserRepo>(context, listen: false)
+          .deletePerspective(perspective.address);
+      context.bloc<PerspectivesBloc>().add(FetchPerspectives());
+      JuntoLoader.hide();
+      Navigator.pop(context);
+    } catch (error) {
+      print(error);
+      JuntoLoader.hide();
+    }
   }
 
-  Future<void> _refreshPerspectives() async {
+  Future<void> _refreshPerspectives(BuildContext context) async {
     try {
-      // Provider.of<UserDataProvider>(context, listen: false)
-      //     .refreshPerspectives();
+      context.bloc<PerspectivesBloc>().add(FetchPerspectives());
     } on JuntoException catch (error) {
       //TODO fixme
       showDialog(

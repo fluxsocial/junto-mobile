@@ -52,6 +52,7 @@ class _GroupExpressionsState extends State<GroupExpressions> {
       ).getPackExpressions(
         _params,
       );
+      print(results.results);
       // Rebuild UI with results
       setState(() {});
       return results;
