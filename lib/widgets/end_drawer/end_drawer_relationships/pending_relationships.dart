@@ -6,36 +6,28 @@ import 'package:junto_beta_mobile/app/custom_icons.dart';
 import 'package:junto_beta_mobile/app/palette.dart';
 import 'package:junto_beta_mobile/backend/repositories.dart';
 import 'package:junto_beta_mobile/models/models.dart';
-import 'package:junto_beta_mobile/widgets/previews/member_preview/member_preview.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
 import 'package:junto_beta_mobile/widgets/tab_bar.dart';
-import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/pending_relationships.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/relationship_request.dart';
 import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
 import 'package:provider/provider.dart';
 
-class JuntoRelationships extends StatefulWidget {
-  const JuntoRelationships(this.userAddress, this.userFollowPerspectiveAddress);
+class PendingRelationships extends StatefulWidget {
+  PendingRelationships({
+    this.refreshActions,
+  });
 
-  final String userAddress;
-  final String userFollowPerspectiveAddress;
+  Function refreshActions;
 
   @override
   State<StatefulWidget> createState() {
-    return JuntoRelationshipsState();
+    return PendingRelationshipsState();
   }
 }
 
-class JuntoRelationshipsState extends State<JuntoRelationships> {
+class PendingRelationshipsState extends State<PendingRelationships> {
   Future<dynamic> _userRelations;
-  List<UserProfile> pendingConnectionRequests;
-  List<UserProfile> pendingPackRequests;
-
-  final List<String> _tabs = <String>[
-    'SUBSCRIPTIONS',
-    'SUBSCRIBERS',
-    'CONNECTIONS',
-    'PACK',
-  ];
+  final List<String> _tabs = <String>['CONNECTION REQUESTS', 'PACK REQUESTS'];
 
   @override
   void didChangeDependencies() {
@@ -44,37 +36,14 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
   }
 
   Future<dynamic> getUserRelationships() async {
-    final dynamic userRelations =
-        await Provider.of<UserRepo>(context, listen: false).userRelations();
-    setState(() {
-      pendingConnectionRequests =
-          userRelations['pending_connections']['results'];
-      pendingPackRequests =
-          userRelations['pending_group_join_requests']['results'];
-    });
-
-    return userRelations;
+    return await Provider.of<UserRepo>(context, listen: false).userRelations();
   }
 
   void _refreshActions(bool action) {
     setState(() {
       _userRelations = getUserRelationships();
     });
-  }
-
-  Widget _notificationSignal() {
-    return Positioned(
-      top: 10,
-      right: 5,
-      child: Container(
-        height: 7,
-        width: 7,
-        decoration: BoxDecoration(
-          color: Theme.of(context).accentColor,
-          borderRadius: BorderRadius.circular(100),
-        ),
-      ),
-    );
+    widget.refreshActions();
   }
 
   @override
@@ -104,44 +73,6 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                       CustomIcons.back,
                       color: Theme.of(context).primaryColorDark,
                       size: 17,
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute<dynamic>(
-                        builder: (BuildContext context) => PendingRelationships(
-                          refreshActions: _refreshActions,
-                        ),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    width: 42,
-                    height: 42,
-                    alignment: Alignment.centerRight,
-                    color: Colors.transparent,
-                    child: Stack(
-                      children: <Widget>[
-                        Container(
-                          height: 42,
-                          width: 42,
-                          alignment: Alignment.centerRight,
-                          padding: const EdgeInsets.only(right: 10),
-                          child: Icon(
-                            CustomIcons.request,
-                            color: Theme.of(context).primaryColorDark,
-                            size: 17,
-                          ),
-                        ),
-                        if (pendingConnectionRequests != null &&
-                            pendingPackRequests != null)
-                          if (pendingConnectionRequests.isNotEmpty ||
-                              pendingPackRequests.isNotEmpty)
-                            _notificationSignal()
-                      ],
                     ),
                   ),
                 ),
@@ -206,54 +137,27 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (snapshot.hasData) {
                 // get list of connections
-                final List<UserProfile> _connectionsMembers =
-                    snapshot.data['connections']['results'];
+                final List<UserProfile> _connectionRequests =
+                    snapshot.data['pending_connections']['results'];
 
                 // get list of following
-                final List<UserProfile> _subscriptionMembers =
-                    snapshot.data['following']['results'];
-
-                final List<UserProfile> _subscriberMembers =
-                    snapshot.data['followers']['results'];
-
-                print(snapshot.data['pending_connections']['results']);
+                final List<UserProfile> _packRequests =
+                    snapshot.data['pending_group_join_requests']['results'];
 
                 return TabBarView(
                   children: <Widget>[
-                    // subscriptions
+                    // connection requsts
                     ListView(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
-                      children: _subscriptionMembers
+                      children: _connectionRequests
                           .map(
-                            (dynamic subscription) =>
-                                MemberPreview(profile: subscription),
+                            (dynamic request) =>
+                                RelationshipRequest(request, _refreshActions),
                           )
                           .toList(),
                     ),
 
-                    // subscribers
-                    ListView(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      children: _subscriberMembers
-                          .map(
-                            (dynamic subscriber) =>
-                                MemberPreview(profile: subscriber),
-                          )
-                          .toList(),
-                    ),
-
-                    // connections
-                    ListView(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      children: _connectionsMembers
-                          .map(
-                            (dynamic connection) =>
-                                MemberPreview(profile: connection),
-                          )
-                          .toList(),
-                    ),
-
-                    // todo: waiting on API - return pack members
+                    // todo: waiting on API fix - pending pack requests
                     const SizedBox()
                   ],
                 );
@@ -265,21 +169,11 @@ class JuntoRelationshipsState extends State<JuntoRelationships> {
                         errorMessage: 'Hmm, something went wrong'),
                     FutureBuilderErrorWidget(
                         errorMessage: 'Hmm, something went wrong'),
-                    FutureBuilderErrorWidget(
-                        errorMessage: 'Hmm, something went wrong'),
-                    FutureBuilderErrorWidget(
-                        errorMessage: 'Hmm, something went wrong'),
                   ],
                 );
               }
               return TabBarView(
                 children: <Widget>[
-                  Center(
-                    child: JuntoProgressIndicator(),
-                  ),
-                  Center(
-                    child: JuntoProgressIndicator(),
-                  ),
                   Center(
                     child: JuntoProgressIndicator(),
                   ),
