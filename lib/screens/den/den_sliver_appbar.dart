@@ -55,6 +55,35 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
     }
   }
 
+  Widget _editDen() {
+    return GestureDetector(
+      onTap: () {
+        // navigate to edit den
+      },
+      child: Container(
+        margin: const EdgeInsets.only(left: 15),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 10,
+          vertical: 5,
+        ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          border: Border.all(
+            color: Theme.of(context).primaryColor,
+            width: 1,
+          ),
+        ),
+        child: Text(
+          'Edit Den',
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
@@ -88,7 +117,9 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
                       key: _keyFlexibleSpace,
                       margin: const EdgeInsets.only(top: 30),
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 15),
+                        horizontal: 10,
+                        vertical: 15,
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
@@ -99,14 +130,19 @@ class JuntoDenSliverAppbarState extends State<JuntoDenSliverAppbar> {
                                 child: Text(
                                   widget.profile.user.name,
                                   style: TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.w700,
-                                      color: Theme.of(context).primaryColor),
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w700,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
                                 ),
                               ),
+                              _editDen(),
                             ],
                           ),
-                          const SizedBox(height: 15),
+                          if (widget.profile.user.gender.isNotEmpty ||
+                              widget.profile.user.location.isNotEmpty ||
+                              widget.profile.user.website.isNotEmpty)
+                            const SizedBox(height: 15),
                           _displayAboutItem(
                             widget.profile.user.gender,
                             Icon(CustomIcons.gender,
