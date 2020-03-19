@@ -71,6 +71,17 @@ class _JuntoMemberState extends State<JuntoMember>
           _onScrollingHasChanged,
         );
     });
+    _addPostFrameCallback();
+  }
+
+  void _addPostFrameCallback() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _memberController.addListener(_onScrollingHasChanged);
+      if (_memberController.hasClients)
+        _memberController.position.isScrollingNotifier.addListener(
+          _onScrollingHasChanged,
+        );
+    });
   }
 
   @override
