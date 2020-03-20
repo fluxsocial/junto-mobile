@@ -22,6 +22,6 @@ class GroupError extends GroupBlocState {
 class GroupLoaded extends GroupBlocState {
   GroupLoaded(this.groups, this.notifications);
 
-  final UserGroupsResponse groups;
+  final List<Group> groups;
   final NotificationResultsModel notifications;
 }

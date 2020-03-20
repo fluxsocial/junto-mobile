@@ -40,7 +40,14 @@ class GroupBloc extends Bloc<GroupBlocEvent, GroupBlocState> {
       yield GroupLoading();
       final groups = await groupRepo.getUserGroups(uid);
       final users = await notificationRepo.getNotifications(params);
-      yield GroupLoaded(groups, users);
+      final List<Group> ownedGroups = groups.owned;
+      final List<Group> associatedGroups = groups.associated;
+
+      final List<Group> userPacks =
+          ListDistinct<Group>(ownedGroups, associatedGroups)
+              .where((Group group) => group.groupType == 'Pack')
+              .toList();
+      yield GroupLoaded(userPacks, users);
     } on JuntoException catch (error) {
       yield GroupError(error.message);
     } catch (e, s) {
@@ -48,5 +55,18 @@ class GroupBloc extends Bloc<GroupBlocEvent, GroupBlocState> {
       print(s.toString());
       yield GroupError();
     }
+  }
+
+  List<T> ListDistinct<T>(List<T> listOne, List<T> listTwo) {
+    final List<T> _newList = <T>[];
+    _newList.addAll(listOne);
+    for (final T item in listTwo) {
+      if (_newList.contains(item)) {
+        _newList.remove(item);
+      } else {
+        _newList.add(item);
+      }
+    }
+    return _newList;
   }
 }

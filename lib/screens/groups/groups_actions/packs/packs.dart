@@ -8,6 +8,7 @@ import 'package:junto_beta_mobile/models/models.dart';
 import 'package:junto_beta_mobile/screens/groups/bloc/group_bloc.dart';
 import 'package:junto_beta_mobile/user_data/user_data_provider.dart';
 import 'package:junto_beta_mobile/utils/utils.dart';
+import 'package:junto_beta_mobile/widgets/end_drawer/end_drawer_relationships/error_widget.dart';
 import 'package:junto_beta_mobile/widgets/previews/pack_preview/pack_preview.dart';
 import 'package:junto_beta_mobile/widgets/previews/pack_preview/pack_request.dart';
 import 'package:junto_beta_mobile/widgets/progress_indicator.dart';
@@ -15,10 +16,10 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Packs extends StatefulWidget {
-  const Packs({this.userProfile, this.changeGroup});
+  const Packs({this.userProfile, this.selectedGroup});
 
   final UserData userProfile;
-  final ValueChanged<Group> changeGroup;
+  final ValueChanged<Group> selectedGroup;
 
   @override
   State<StatefulWidget> createState() {
@@ -154,7 +155,7 @@ class PacksState extends State<Packs> {
               },
               children: <Widget>[
                 MyPacks(
-                  selectedGroup: widget.changeGroup,
+                  selectedGroup: widget.selectedGroup,
                 ),
                 PackRequests(),
               ],
@@ -172,14 +173,6 @@ class PackRequests extends StatefulWidget {
 }
 
 class _PackRequestsState extends State<PackRequests> {
-  UserData _userProfile;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _userProfile = Provider.of<UserDataProvider>(context).userProfile;
-  }
-
   Widget _loader() {
     return Expanded(
       child: Center(
@@ -193,47 +186,50 @@ class _PackRequestsState extends State<PackRequests> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        BlocBuilder<GroupBloc, GroupBlocState>(
-          builder: (BuildContext context, GroupBlocState state) {
-            if (state is GroupLoading) {
-              return _loader();
-            }
-            if (state is GroupLoaded) {
-              return Expanded(
-                child: ListView(
-                  padding: const EdgeInsets.all(0),
-                  children: <Widget>[
-                    for (Group packRequest
-                        in state.notifications.groupJoinNotifications)
-                      if (packRequest.groupType == 'Pack')
-                        PackRequest(
-                          userProfile: _userProfile,
-                          pack: packRequest,
-                          refreshGroups: () async {
-                            context.bloc<GroupBloc>().add(FetchMyPack());
-                          },
-                        )
-                  ],
-                ),
-              );
-            }
-            if (state is GroupError) {
-              return Expanded(
-                child: Center(
-                  child: Transform.translate(
-                    offset: const Offset(0.0, -50),
-                    child: const Text('Hmm, something is up with our server'),
+    return Consumer<UserDataProvider>(
+        builder: (context, UserDataProvider user, _) {
+      return Column(
+        children: <Widget>[
+          BlocBuilder<GroupBloc, GroupBlocState>(
+            builder: (BuildContext context, GroupBlocState state) {
+              if (state is GroupLoading) {
+                return _loader();
+              }
+              if (state is GroupLoaded) {
+                return Expanded(
+                  child: ListView(
+                    padding: const EdgeInsets.all(0),
+                    children: <Widget>[
+                      for (Group packRequest
+                          in state.notifications.groupJoinNotifications)
+                        if (packRequest.groupType == 'Pack')
+                          PackRequest(
+                            userProfile: user.userProfile,
+                            pack: packRequest,
+                            refreshGroups: () async {
+                              context.bloc<GroupBloc>().add(FetchMyPack());
+                            },
+                          )
+                    ],
                   ),
-                ),
-              );
-            }
-            return _loader();
-          },
-        ),
-      ],
-    );
+                );
+              }
+              if (state is GroupError) {
+                return Expanded(
+                  child: Center(
+                    child: Transform.translate(
+                      offset: const Offset(0.0, -50),
+                      child: const Text('Hmm, something is up with our server'),
+                    ),
+                  ),
+                );
+              }
+              return _loader();
+            },
+          ),
+        ],
+      );
+    });
   }
 }
 
@@ -274,24 +270,15 @@ class _MyPacksState extends State<MyPacks> with ListDistinct {
       children: <Widget>[
         BlocBuilder<GroupBloc, GroupBlocState>(
           builder: (context, state) {
-            print(state);
             if (state is GroupLoading) {
               return _loader();
             }
             if (state is GroupLoaded) {
-              final List<Group> ownedGroups = state.groups.owned;
-              final List<Group> associatedGroups = state.groups.associated;
-
-              final List<Group> userPacks =
-                  distinct<Group>(ownedGroups, associatedGroups)
-                      .where((Group group) => group.groupType == 'Pack')
-                      .toList();
-
               return Expanded(
                   child: ListView(
                 padding: const EdgeInsets.all(0),
                 children: <Widget>[
-                  for (Group group in userPacks)
+                  for (Group group in state.groups)
                     GestureDetector(
                       onTap: () => widget.selectedGroup(group),
                       child: PackPreview(
@@ -303,13 +290,8 @@ class _MyPacksState extends State<MyPacks> with ListDistinct {
               ));
             }
             if (state is GroupError) {
-              return Expanded(
-                child: Center(
-                  child: Transform.translate(
-                    offset: const Offset(0.0, -50),
-                    child: const Text('Hmm, something is up with our server'),
-                  ),
-                ),
+              FutureBuilderErrorWidget(
+                errorMessage: state.groupError,
               );
             }
             return SizedBox();
